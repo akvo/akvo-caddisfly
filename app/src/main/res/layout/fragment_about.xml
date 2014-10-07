@@ -1,0 +1,116 @@
+<!--
+~ Copyright (C) TernUp Research Labs
+~
+~ This file is part of Caddisfly
+~
+~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+~ either version 3 of the License or any later version.
+~
+~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+~ See the GNU Affero General Public License included below for more details.
+~
+~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="@drawable/home_logo"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:alpha="0.9"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/appName"
+            android:textAllCaps="true"
+            android:textSize="25sp"
+            android:textStyle="normal"
+            tools:ignore="UnusedAttribute" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="6dp"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:gravity="center"
+            android:singleLine="false"
+            android:src="@drawable/logo"
+            android:textIsSelectable="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="@string/waterQualitySystem"
+            android:textAllCaps="true"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+
+        <View
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:background="#dd746e64" />
+
+        <TextView
+            android:id="@+id/textVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutAboutCompany"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#bb437e41"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#ff7700" />
+
+        <ImageView
+            android:id="@+id/organizationImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/akvo" />
+    </LinearLayout>
+</FrameLayout>
+

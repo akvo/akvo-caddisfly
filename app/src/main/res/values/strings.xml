@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+-->
+<resources>
+    <!--xml-->
+    <string name="appName">Akvo Caddisfly</string>
+    <string name="waterQualitySystem">Water Quality System</string>
+    <string name="settings">Settings</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="analyzingWait">Analyzing…</string>
+    <string name="calibrate_info">Ensure cartridge is attached correctly and press OK</string>
+    <string name="appUpdate">Caddisfly update</string>
+    <string name="askForUpdate">An updated version is available, Do you want to update now?</string>
+    <string name="checkUpdate">Check update</string>
+    <string name="dataConnection">Data Connection</string>
+    <string name="testInProgress">Test in progress</string>
+    <string name="alreadyHaveLatest">You already have the latest version of Caddisfly installed</string>
+    <string name="remaining">remaining</string>
+    <string name="result">Result</string>
+    <string name="rgb">rgb</string>
+    <string name="ppm">ppm</string>
+    <string name="checkingForUpdates">Checking for updates…</string>
+    <string name="starting">Starting…</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="outOfRange">Color out of range</string>
+    <string name="placeDeviceInStand">Place the phone on a flat surface to continue</string>
+    <string name="shakeToContinue">Shake the phone to ensure proper mixing of the solution</string>
+    <string name="shakeMe">Shake Me</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="checkUpdateSummary">Check if an update is available for Akvo Caddisfly</string>
+    <string name="next">Next</string>
+    <string name="preparation">Preparation</string>
+    <string name="fillCartridge">Fill cartridge with source water</string>
+    <string name="placeReagent">Place an unused reagent dispenser into the cartridge and close lid</string>
+    <string name="attachBackCase">Attach back case to the phone</string>
+    <string name="attachCartridge">Attach cartridge to the back case and align to the arrow mark</string>
+    <string name="caddisflyTraining">Akvo Caddisfly Training</string>
+    <string name="watchTrainingVideo">Watch Training Video</string>
+    <string name="selectValueToCalibrate">Select a value to calibrate</string>
+    <string name="startSurvey">Start Survey</string>
+    <string name="backToSurvey">Back to Survey</string>
+    <string name="calibrationColorError">The calibrated color seems to be incorrect. Recalibrate with the provided standard solutions.</string>
+    <string name="fluoride">Fluoride</string>
+    <string name="waterQualityTest">Water Quality Test</string>
+    <string name="attachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
+
+    <!--java-->
+    <string name="testFailedMessage">Solution color out of range. Check cartridge placement.</string>
+    <string name="testFailedQualityMessage">Photo quality below %d%%. Check cartridge placement.</string>
+    <string name="gettingUpdate">Getting Caddisfly update…</string>
+    <string name="calibrate_error">Caddisfly calibration is incomplete. Correct the calibration before starting a test.</string>
+    <string name="enableInternet">Internet connection required</string>
+    <string name="photoQualityError">Photo quality too low</string>
+    <string name="analyze">Analyze</string>
+    <string name="clickAnalyze">Click Analyze to continue</string>
+    <string name="notCalibrated">Not Calibrated</string>
+    <string name="installAkvoFlow">Please install Akvo Flow app</string>
+    <string name="analysisInProgress">Analysis in progress</string>
+    <string name="updateRequired">Please update to a newer version to enable this feature</string>
+    <string name="fluoride2">Fluoride 7 Step</string>
+    <string name="outOfSequence">Out of Sequence</string>
+    <string name="duplicateSwatch">Duplicate or similar color</string>
+    <string name="about">About</string>
+    <string name="swatches">Swatches</string>
+    <string name="delete">Delete</string>
+    <string name="reset">Reset</string>
+    <string name="selectedWillBeDeleted">Selected items will be deleted</string>
+    <string name="language">Language</string>
+
+    <string name="load">Load</string>
+    <string name="noSavedCalibrations">There are no previously saved calibrations</string>
+    <string name="notFound">Not Found</string>
+    <string name="loadCalibration">Load Calibration</string>
+    <string name="testInterrupted">Test was interrupted. Do not move the phone during the test.</string>
+    <string name="revertVersion">Revert to previous version</string>
+    <string name="appVersion">App version</string>
+    <string name="revertingVersion">Reverting to previous version</string>
+    <string name="waitTillCameraSound">Then wait for the camera sound in about a minute</string>
+    <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
+    <string name="aboutSummary">Displays version number</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="oneStepCalibration">One step calibration</string>
+
+
+</resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
+<resources>
+    <declare-styleable name="FlowTheme">
+
+        <!-- TEXT -->
+        <attr name="textColorPrimary" format="reference|color" />
+        <attr name="textColorSecondary" format="reference|color" />
+        <attr name="textColorTertiary" format="reference|color" />
+
+        <!-- BACKGROUND -->
+        <attr name="list_item_bg1" format="reference|color" />
+        <attr name="list_item_bg2" format="reference|color" />
+
+
+    </declare-styleable>
+
+    <!-- note: to re-use an existing Android attribute not already used by the superclass,
+ name should have prefix "android:" and do not define a format -->
+    <declare-styleable name="NumberPickerPreference">
+        <attr name="android:summary" />
+        <attr name="android:max" />
+        <attr name="min" format="integer" />
+        <attr name="interval" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="FlatButton">
+        <attr name="text2" format="string" />
+    </declare-styleable>
+
+    <attr name="backgroundColor" format="color" />
+    <attr name="windowBackground" format="reference|color" />
+    <attr name="drawerBackground" format="reference|color" />
+    <attr name="textColor" format="color" />
+    <attr name="drawerText" format="reference|color" />
+    <attr name="drawerSelector" format="reference" />
+    <attr name="listSelector" format="reference" />
+    <attr name="cardBackground" format="reference" />
+    <attr name="buttonStyle" format="color" />
+    <attr name="subtitleTextColor" format="color" />
+    <attr name="listButton" format="color" />
+    <attr name="arrowRight" format="reference" />
+    <attr name="drink" format="integer" />
+    <attr name="cook" format="integer" />
+    <attr name="bath" format="integer" />
+    <attr name="wash" format="integer" />
+    <attr name="alarm" format="integer" />
+    <attr name="minute" format="integer" />
+    <attr name="sendIcon" format="reference" />
+    <attr name="deleteIcon" format="reference" />
+    <attr name="saveIcon" format="reference" />
+    <attr name="loadIcon" format="reference" />
+
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+
+</resources>

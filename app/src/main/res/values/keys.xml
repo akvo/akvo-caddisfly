@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="languageKey">language</string>
+
+    <string name="lastUpdateCheck">lastUpdateCheck</string>
+    <string name="updateAvailable">updateAvailable</string>
+
+    <string name="swatchIndex">swatchIndex</string>
+
+    <string name="folderName">currentFolderName</string>
+    <string name="runningTestFolder">runningTestFolder</string>
+    <string name="currentTestId">currentTestId</string>
+    <string name="currentLocationId">currentLocationId</string>
+    <string name="currentTestTypeId">currentTestTypeId</string>
+    <string name="autoAnalyzeKey">autoAnalyzeKey</string>
+    <string name="minPhotoQualityKey">minPhotoQuality</string>
+    <string name="samplingCountKey">samplingCount</string>
+    <string name="currentSamplingCountKey">currentSamplingCount</string>
+    <string name="samplingIndexKey">sampling_result_%d</string>
+    <string name="samplingColorIndexKey">sampling_color_%d</string>
+    <string name="samplingQualityIndexKey">sampling_quality_%d</string>
+    <string name="resultValueKey">result_%1$d_%2$d_%3$d</string>
+    <string name="resultColorKey">resultColor_%1$d_%2$d_%3$d</string>
+    <string name="resultQualityKey">resultQuality_%1$d_%2$d_%3$d</string>
+
+    // width and height of sampled image
+    <string name="photoSampleDimensionKey">photoSampleDimension</string>
+    <string name="cameraSoundKey">cameraSound</string>
+    <string name="cameraTorchKey">cameraTorch</string>
+    <string name="cameraCloudyKey">cameraCloudy</string>
+    <string name="cameraInfinityKey">cameraInfinity</string>
+    <string name="cropToSquareKey">cropToSquare</string>
+    <string name="revertVersionKey">revertVersion</string>
+    <string name="oneStepCalibrationKey">oneStepCalibration</string>
+</resources>
