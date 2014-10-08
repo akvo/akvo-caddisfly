@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+-->
+<resources>
+    <!--xml-->
+    <string name="appName">"Akvo Caddisfly"</string>
+    <string name="waterQualitySystem">"ಜಲ ಗುಣಮಟ್ಟ ವ್ಯವಸ್ಥೆ"</string>
+    <string name="settings">"ಸೆಟ್ಟಿಂಗ್‌ಗಳು"</string>
+    <string name="calibrate">"ಮಾಪನಾಂಕ"</string>
+    <string name="analyzingWait">"ವಿಶ್ಲೇಷಿಸುವ …"</string>
+    <string name="calibrate_info">"ಕಾರ್ಟ್ರಿಡ್ಜ್ ಸರಿಯಾಗಿ ಜೋಡಿಸಲಾದ ಮತ್ತು ಪತ್ರಿಕಾ ಸರಿ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ"</string>
+    <string name="appUpdate">"Caddisfly ಅಪ್ಡೇಟ್"</string>
+    <string name="askForUpdate">"ಒಂದು ಅಪ್ಡೇಟೆಡ್ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ, ನೀವು ಈಗ ನವೀಕರಿಸಲು ಬಯಸುತ್ತೀರಾ?"</string>
+    <string name="checkUpdate">"ಚೆಕ್ ಅಪ್ಡೇಟ್"</string>
+    <string name="dataConnection">"ಡೇಟಾ ಸಂಪರ್ಕ"</string>
+    <string name="testInProgress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ ಟೆಸ್ಟ್"</string>
+    <string name="alreadyHaveLatest">"ನೀವು ಈಗಾಗಲೇ Caddisfly ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿದ"</string>
+    <string name="remaining">"ಉಳಿದ"</string>
+    <string name="result">"ಫಲಿತಾಂಶ"</string>
+    <string name="rgb">"RGB"</string>
+    <string name="ppm">"ppm ನಷ್ಟು"</string>
+    <string name="checkingForUpdates">"ಅಪ್ಡೇಟ್ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ …"</string>
+    <string name="starting">"ಪ್ರಾರಂಭಿಸಿ …"</string>
+    <string name="error">"ದೋಷ"</string>
+    <string name="retry">"ಮತ್ತೆ ಪ್ರಯತ್ನಿಸು"</string>
+    <string name="outOfRange">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಬಣ್ಣ"</string>
+    <string name="placeDeviceInStand">"ಮುಂದುವರಿಸಲು ಒಂದು ಚಪ್ಪಟೆಯಾದ ಮೇಲ್ಮೈ ಮೇಲೆ ಫೋನ್ ಇರಿಸಿ"</string>
+    <string name="shakeToContinue">"ಪರಿಹಾರ ಸರಿಯಾದ ಮಿಶ್ರಣ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಫೋನ್ ಶೇಕ್"</string>
+    <string name="shakeMe">"ಮಿ ಶೇಕ್"</string>
+    <string name="ok">"ಓಕೆ"</string>
+    <string name="cancel">"ರದ್ದುಮಾಡು "</string>
+    <string name="checkUpdateSummary">"ಒಂದು ಅಪ್ಡೇಟ್ Akvo Caddisfly ಲಭ್ಯವಿದೆ ಪರೀಕ್ಷಿಸಲು"</string>
+    <string name="next">"ಮುಂದಕ್ಕೆ "</string>
+    <string name="preparation">"ತಯಾರು ಮಾಡುವಿಕೆ"</string>
+    <string name="fillCartridge">"ಮೂಲ ನೀರು ಕಾರ್ಟ್ರಿಡ್ಜ್ ಭರ್ತಿ"</string>
+    <string name="placeReagent">"ಕಾರ್ಟ್ರಿಡ್ಜ್ ಮತ್ತು ನಿಕಟ ಮುಚ್ಚಳವನ್ನು ಒಳಗೆ ಬಳಕೆಯಾಗದ ಕಾರಕ ವಿತರಕ ಇರಿಸಿ"</string>
+    <string name="attachBackCase">"ಫೋನ್ ಪ್ರಕರಣವನ್ನು ಮತ್ತೆ ಲಗತ್ತಿಸಿ"</string>
+    <string name="attachCartridge">"ಮತ್ತೆ ಪ್ರಕರಣಕ್ಕೆ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ ಮತ್ತು ಬಾಣದ ಗುರುತು align"</string>
+    <string name="caddisflyTraining">"Akvo Caddisfly ತರಬೇತಿ"</string>
+    <string name="watchTrainingVideo">"ತರಬೇತಿ ವಿಡಿಯೋ ವೀಕ್ಷಿಸಿ"</string>
+    <string name="selectValueToCalibrate">"ಮಾಪನಾಂಕ ಈ ಕೆಳಗಿನ ನಗರವನ್ನು"</string>
+    <string name="startSurvey">"ಪ್ರಾರಂಭ ಸಮೀಕ್ಷೆ"</string>
+    <string name="backToSurvey">"ಬ್ಯಾಕ್ ಸಮೀಕ್ಷೆಯ"</string>
+    <string name="calibrationColorError">"ಮಾಪನಾಂಕ ಬಣ್ಣದ ತಪ್ಪು ತೋರುತ್ತದೆ. ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಪರಿಹಾರಗಳನ್ನು recalibrate."</string>
+    <string name="fluoride">"ಫ್ಲೋರೈಡ್"</string>
+    <string name="waterQualityTest">"ಜಲ ಗುಣಮಟ್ಟ ಟೆಸ್ಟ್"</string>
+    <string name="attachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
+
+    <!--java-->
+    <string name="testFailedMessage">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಪರಿಹಾರ ಬಣ್ಣ. ಕಾರ್ಟ್ರಿಡ್ಜ್ ಉದ್ಯೊಗ ಪರಿಶೀಲಿಸಿ."</string>
+    <string name="testFailedQualityMessage">"ಕೆಳಗೆ ಫೋಟೋ ಗುಣಮಟ್ಟದ %d %% . ಕಾರ್ಟ್ರಿಡ್ಜ್ ಉದ್ಯೊಗ ಪರಿಶೀಲಿಸಿ."</string>
+    <string name="gettingUpdate">"Caddisfly ಅಪ್ಡೇಟ್ ಪಡೆಯಲಾಗುತ್ತಿದೆ …"</string>
+    <string name="calibrate_error">"Caddisfly ಮಾಪನಾಂಕ ಅಪೂರ್ಣ. ಪರೀಕ್ಷಾ ಪ್ರಾರಂಭಿಸುವ ಮೊದಲು ಮಾಪನಾಂಕ ಸರಿಪಡಿಸಿ."</string>
+    <string name="enableInternet">"ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕ ಅಗತ್ಯವಿದೆ"</string>
+    <string name="photoQualityError">"ಫೋಟೋ ಗುಣಮಟ್ಟದ ತುಂಬಾ ಕಡಿಮೆ"</string>
+    <string name="analyze">"ವಿಶ್ಲೇಷಿಸಿ"</string>
+    <string name="clickAnalyze">"ಮುಂದುವರಿಸಲು ವಿಶ್ಲೇಷಿಸಿ ಕ್ಲಿಕ್"</string>
+    <string name="notCalibrated">"ಮಾಪನಾಂಕ"</string>
+    <string name="installAkvoFlow">"ಅನುಸ್ಥಾಪಿಸಲು ದಯವಿಟ್ಟು Akvo ಫ್ಲೋ ಅಪ್ಲಿಕೇಶನ್"</string>
+    <string name="analysisInProgress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ ವಿಶ್ಲೇಷಣೆ"</string>
+    <string name="updateRequired">"ಈ ಲಕ್ಷಣವನ್ನು ಶಕ್ತಗೊಳಿಸಲು ಒಂದು ಹೊಸ ಆವೃತ್ತಿಗೆ ನವೀಕರಿಸಿ"</string>
+    <string name="fluoride2">"ಫ್ಲೋರೈಡ್ 7 ಹಂತ"</string>
+    <string name="outOfSequence">"ಅನುಕ್ರಮದ ಔಟ್"</string>
+    <string name="duplicateSwatch">"ನಕಲು ಅಥವಾ ಇದೇ ರೀತಿಯ ವರ್ಣ"</string>
+    <string name="about">"ಕುರಿತಾಗಿ"</string>
+    <string name="swatches">"Swatches"</string>
+    <string name="delete">"ಅಳಿಸು"</string>
+    <string name="reset">"ಮತ್ತೆ ಜೋಡಿಸಿ."</string>
+    <string name="selectedWillBeDeleted">"ಆಯ್ಕೆಮಾಡಿದ ಐಟಂಗಳನ್ನು ಅಳಿಸಲ್ಪಡುತ್ತದೆ"</string>
+    <string name="language">"ಭಾಷೆ"</string>
+    <string name="load">"ಲೋಡ್"</string>
+    <string name="noSavedCalibrations">"ಯಾವುದೇ ಉಳಿಸಿದ ಹಿಂದಿನ ಮಾಪನಾಂಕ ಇವೆ"</string>
+    <string name="notFound">"ಕಂಡುಬಂದಿಲ್ಲ"</string>
+    <string name="loadCalibration">"ಲೋಡ್ ಕ್ಯಾಲಿಬ್ರೇಶನ್"</string>
+    <string name="testInterrupted">"ಟೆಸ್ಟ್ ಅಡ್ಡಿಯಾದವು. ಪರೀಕ್ಷೆಯ ಸಮಯದಲ್ಲಿ ಫೋನ್ ಚಲಿಸುವುದಿಲ್ಲ."</string>
+    <string name="revertVersion">"ಹಿಂದಿನ ಆವೃತ್ತಿ ಹಿಂದಿರುಗುತ್ತವೆ"</string>
+    <string name="appVersion">"ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ"</string>
+    <string name="revertingVersion">"ಹಿಂದಿನ ಆವೃತ್ತಿಗೆ ಮರಳುವಂತೆ"</string>
+    <string name="waitTillCameraSound">"ನಂತರ ಸುಮಾರು ಒಂದು ನಿಮಿಷದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಧ್ವನಿ ನಿರೀಕ್ಷಿಸಿ"</string>
+    <string name="calibrateSummary">"ಈ ಫೋನ್ ಮಾಪನಾಂಕ ಕಿಟ್ ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಬಣ್ಣ ಮಿಶ್ರಣಗಳನ್ನು ಬಳಸಿ"</string>
+    <string name="aboutSummary">"ಆವೃತ್ತಿ ಸಂಖ್ಯೆ ಪ್ರದರ್ಶಿಸುತ್ತದೆ"</string>
+    <string name="back">"ಹಿಂದಕ್ಕೆ"</string>
+    <string name="start">"ಪ್ರಾರಂಭ"</string>
+    <string name="oneStepCalibration">"ಒಂದು ಹೆಜ್ಜೆಯೆಂದರೆ ಮಾಪನಾಂಕ ನಿರ್ಣಯ"</string>
+</resources>

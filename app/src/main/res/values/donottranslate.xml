@@ -24,16 +24,16 @@
 
     <string-array name="languages">
         <item>English</item>
-        <item>עברית</item>
         <item>हिंदी</item>
         <item>ಕನ್ನಡ</item>
+        <item>العربية</item>
     </string-array>
 
     <string-array name="language_codes">
         <item>en</item>
-        <item>iw</item>
         <item>hi</item>
         <item>kn</item>
+        <item>ar</item>
     </string-array>
 
 </resources>

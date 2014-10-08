@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+-->
+<resources>
+    <!--xml-->
+    <string name="appName">"Akvo Caddisfly"</string>
+    <string name="waterQualitySystem">"نظام الجودة المياه"</string>
+    <string name="settings">"إعدادات"</string>
+    <string name="calibrate">"معايرة"</string>
+    <string name="analyzingWait">"تحليل …"</string>
+    <string name="calibrate_info">"ضمان خرطوشة تعلق بشكل صحيح ثم اضغط على OK"</string>
+    <string name="appUpdate">"تحديث Caddisfly"</string>
+    <string name="askForUpdate">"نسخة محدثة هو متاح، هل تريد تحديث الآن؟"</string>
+    <string name="checkUpdate">"الاختيار تحديث"</string>
+    <string name="dataConnection">"اتصال البيانات"</string>
+    <string name="testInProgress">"اختبار في التقدم"</string>
+    <string name="alreadyHaveLatest">"لديك بالفعل أحدث نسخة من Caddisfly تثبيت"</string>
+    <string name="remaining">"المتبقي"</string>
+    <string name="result">"ا نتيجة"</string>
+    <string name="rgb">"RGB"</string>
+    <string name="ppm">"جزء من المليون"</string>
+    <string name="checkingForUpdates">"التحقق من وجود تحديثات …"</string>
+    <string name="starting">"بدءا …"</string>
+    <string name="error">"خطأ"</string>
+    <string name="retry">"أعد المحاولة"</string>
+    <string name="outOfRange">"لون خارج النطاق"</string>
+    <string name="placeDeviceInStand">"ضع الهاتف على سطح مستو لمواصلة"</string>
+    <string name="shakeToContinue">"هز الهاتف لضمان خلط الصحيح من الحل"</string>
+    <string name="shakeMe">"يهز البيانات"</string>
+    <string name="ok">"موافق"</string>
+    <string name="cancel">"إلغاء"</string>
+    <string name="checkUpdateSummary">"تحقق إذا كان يتوفر تحديث لAkvo Caddisfly"</string>
+    <string name="next">"التالي"</string>
+    <string name="preparation">"والتحضير"</string>
+    <string name="fillCartridge">"ملء خرطوشة مع الماء مصدر"</string>
+    <string name="placeReagent">"وضع كاشف موزع غير المستخدمة في خرطوشة وغطاء وثيق"</string>
+    <string name="attachBackCase">"نعلق القضية مرة أخرى إلى الهاتف"</string>
+    <string name="attachCartridge">"إرفاق خرطوشة إلى القضية مرة أخرى ومحاذاة إلى علامة السهم"</string>
+    <string name="caddisflyTraining">"التدريب Akvo Caddisfly"</string>
+    <string name="watchTrainingVideo">"مشاهدة فيديو للتدريب"</string>
+    <string name="selectValueToCalibrate">"حدد قيمة لمعايرة"</string>
+    <string name="startSurvey">"مسح البداية"</string>
+    <string name="backToSurvey">"العودة الى في خضم"</string>
+    <string name="calibrationColorError">"لون معايرة يبدو غير صحيحة. إعادة تقويم مع حلول القياسية المقدمة."</string>
+    <string name="fluoride">"فلوريد"</string>
+    <string name="waterQualityTest">"اختبار جودة المياه"</string>
+    <string name="attachStandardCartridge">"إرفاق خرطوشة حل القياسية لهذه القيمة ثم اضغط معايرة"</string>
+
+    <!--java-->
+    <string name="testFailedMessage">"اللون حل خارج النطاق. تحقق من وضع خرطوشة."</string>
+    <string name="testFailedQualityMessage">"جودة الصورة أدناه %d %% . تحقق من وضع خرطوشة."</string>
+    <string name="gettingUpdate">"الحصول على Caddisfly تحديث …"</string>
+    <string name="calibrate_error">"معايرة Caddisfly غير مكتملة. تصحيح المعايرة قبل البدء في الاختبار."</string>
+    <string name="enableInternet">"اتصال إنترنت المطلوبة"</string>
+    <string name="photoQualityError">"جودة الصورة منخفضة جدا"</string>
+    <string name="analyze">"تحليل "</string>
+    <string name="clickAnalyze">"انقر فوق تحليل لمواصلة"</string>
+    <string name="notCalibrated">"لا معايرة"</string>
+    <string name="installAkvoFlow">"الرجاء تثبيت Akvo تدفق التطبيق"</string>
+    <string name="analysisInProgress">"التحليل في التقدم"</string>
+    <string name="updateRequired">"يرجى تحديث إلى نسخة أحدث لتمكين هذه الميزة"</string>
+    <string name="fluoride2">"فلوريد 7 الخطوة"</string>
+    <string name="outOfSequence">"من تسلسل"</string>
+    <string name="duplicateSwatch">"مكررة أو لون مماثل"</string>
+    <string name="about">"نبذة "</string>
+    <string name="swatches">"حوامل"</string>
+    <string name="delete">"حذف"</string>
+    <string name="reset">"إعادة تعيين"</string>
+    <string name="selectedWillBeDeleted">"سيتم حذف العناصر المحددة"</string>
+    <string name="language">"اللغة"</string>
+    <string name="load">"تحميل"</string>
+    <string name="noSavedCalibrations">"لا توجد المعايرة المحفوظة مسبقا"</string>
+    <string name="notFound">"لم يتم العثور على"</string>
+    <string name="loadCalibration">"معايرة الحمل"</string>
+    <string name="testInterrupted">"وتوقفت الاختبار. لا تحرك الهاتف أثناء الاختبار."</string>
+    <string name="revertVersion">"العودة إلى الإصدار السابق"</string>
+    <string name="appVersion">"نسخة التطبيق"</string>
+    <string name="revertingVersion">"العودة إلى الإصدار السابق"</string>
+    <string name="waitTillCameraSound">"ثم الانتظار لصوت الكاميرا في حوالي دقيقة واحدة"</string>
+    <string name="calibrateSummary">"استخدام خليط الألوان القياسية المنصوص عليها في عدة لمعايرة هذا الهاتف"</string>
+    <string name="aboutSummary">"يعرض رقم الإصدار"</string>
+    <string name="back">"رجوع"</string>
+    <string name="start">"البداية"</string>
+    <string name="oneStepCalibration">"خطوة واحدة المعايرة"</string>
+</resources>

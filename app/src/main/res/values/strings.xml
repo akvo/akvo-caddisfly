@@ -80,7 +80,6 @@
     <string name="reset">Reset</string>
     <string name="selectedWillBeDeleted">Selected items will be deleted</string>
     <string name="language">Language</string>
-
     <string name="load">Load</string>
     <string name="noSavedCalibrations">There are no previously saved calibrations</string>
     <string name="notFound">Not Found</string>
@@ -95,6 +94,4 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="oneStepCalibration">One step calibration</string>
-
-
 </resources>
