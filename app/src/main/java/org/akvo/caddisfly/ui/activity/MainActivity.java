@@ -17,20 +17,30 @@
 package org.akvo.caddisfly.ui.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -41,14 +51,17 @@ import org.akvo.caddisfly.ui.fragment.CalibrateItemFragment;
 import org.akvo.caddisfly.ui.fragment.SettingsFragment;
 import org.akvo.caddisfly.ui.fragment.StartFragment;
 import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.DateUtils;
+import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -60,7 +73,9 @@ public class MainActivity extends MainActivityBase implements
         StartFragment.OnBackListener,
         StartFragment.OnStartTestListener,
         StartFragment.OnVideoListener,
-        StartFragment.OnStartSurveyListener {
+        StartFragment.OnStartSurveyListener,
+        CalibrateFragment.OnLoadCalibrationListener,
+        CalibrateItemFragment.OnLoadCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
     private int mTestType = Config.FLUORIDE_2_INDEX;
@@ -105,7 +120,7 @@ public class MainActivity extends MainActivityBase implements
         MainApp mainApp = ((MainApp) getApplicationContext());
 
         // Default app to Fluoride swatches
-        mainApp.setFluorideSwatches();
+        mainApp.setFluoride2Swatches();
 
         // Set the locale according to preference
         Locale myLocale = new Locale(
@@ -436,4 +451,124 @@ public class MainActivity extends MainActivityBase implements
     public void onCalibrate() {
         displayView(Config.CALIBRATE_SCREEN_INDEX, true);
     }
+
+    @Override
+    public void onLoadCalibration(final Handler.Callback callback) {
+        final Context context = this;
+        final MainApp mainApp = (MainApp) this.getApplicationContext();
+
+        try {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+            builderSingle.setIcon(R.drawable.ic_launcher);
+            builderSingle.setTitle(R.string.loadCalibration);
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
+                    android.R.layout.select_dialog_singlechoice);
+
+            File external = Environment.getExternalStorageDirectory();
+            final String folderName = Config.CALIBRATE_FOLDER_NAME;
+            String path = external.getPath() + folderName;
+            File folder = new File(path);
+            if (folder.exists()) {
+                final File[] listFiles = folder.listFiles();
+                for (File listFile : listFiles) {
+                    arrayAdapter.add(listFile.getName());
+                }
+
+                builderSingle.setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }
+                );
+
+                builderSingle.setAdapter(arrayAdapter,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String fileName = listFiles[which].getName();
+                                final ArrayList<Integer> swatchList = new ArrayList<Integer>();
+
+                                final ArrayList<String> rgbList = FileUtils.loadFromFile(fileName);
+                                if (rgbList != null) {
+
+                                    for (String rgb : rgbList) {
+                                        swatchList.add(ColorUtils.getColorFromRgb(rgb));
+                                    }
+                                    (new AsyncTask<Void, Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground(Void... params) {
+                                            mainApp.saveCalibratedSwatches(mainApp.currentTestType, swatchList);
+
+                                            mainApp.setSwatches(mainApp.currentTestType);
+
+                                            SharedPreferences sharedPreferences = PreferenceManager
+                                                    .getDefaultSharedPreferences(context);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                            for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
+                                                int index = i * mainApp.rangeIncrementStep;
+
+                                                ColorUtils.autoGenerateColors(
+                                                        index,
+                                                        mainApp.currentTestType,
+                                                        mainApp.colorList,
+                                                        mainApp.rangeIncrementStep, editor);
+                                            }
+                                            editor.apply();
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void result) {
+                                            super.onPostExecute(result);
+                                            callback.handleMessage(null);
+                                        }
+                                    }).execute();
+
+                                }
+                            }
+                        }
+                );
+
+                final AlertDialog alert = builderSingle.create();
+                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        final ListView listView = alert.getListView();
+                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                final int position = i;
+
+                                AlertUtils.askQuestion(context, R.string.delete, R.string.selectedWillBeDeleted, new DialogInterface.OnClickListener() {
+                                    @SuppressWarnings("unchecked")
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String fileName = listFiles[position].getName();
+                                        FileUtils.deleteFile(folderName, fileName);
+                                        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                        listAdapter.remove(listAdapter.getItem(position));
+                                    }
+                                }, null);
+                                return true;
+                            }
+                        });
+
+                    }
+                });
+                alert.show();
+            } else {
+                AlertUtils.showMessage(context, R.string.notFound, R.string.noSavedCalibrations);
+            }
+        } catch (ActivityNotFoundException e) {
+            AlertUtils.showMessage(context, R.string.error,
+                    R.string.updateRequired);
+        }
+
+        callback.handleMessage(null);
+    }
+
 }

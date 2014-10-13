@@ -17,18 +17,14 @@
 package org.akvo.caddisfly.ui.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,16 +32,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ColorUtils;
-import org.akvo.caddisfly.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +44,7 @@ import java.util.ArrayList;
 public class CalibrateFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
     private CalibrateItemFragment mCalibrateItemFragment;
+    private OnLoadCalibrationListener mOnLoadCalibrationListener;
 
     public CalibrateFragment() {
     }
@@ -164,7 +156,6 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
         switch (item.getItemId()) {
             case R.id.menu_swatches:
                 SwatchFragment fragment = new SwatchFragment();
@@ -176,133 +167,40 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
                 ft.commit();
                 return true;
             case R.id.menu_load:
-                try {
-
-                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-                    builderSingle.setIcon(R.drawable.ic_launcher);
-                    builderSingle.setTitle(R.string.loadCalibration);
-
-                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-                            android.R.layout.select_dialog_singlechoice);
-
-                    File external = Environment.getExternalStorageDirectory();
-                    final String folderName = Config.CALIBRATE_FOLDER_NAME;
-                    String path = external.getPath() + folderName;
-                    File folder = new File(path);
-                    if (folder.exists()) {
-                        final File[] listFiles = folder.listFiles();
-                        for (File listFile : listFiles) {
-                            arrayAdapter.add(listFile.getName());
-                        }
-
-                        builderSingle.setNegativeButton(R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                        );
-
-                        builderSingle.setAdapter(arrayAdapter,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String fileName = listFiles[which].getName();
-                                        final ArrayList<Integer> swatchList = new ArrayList<Integer>();
-
-                                        final ArrayList<String> rgbList = FileUtils.loadFromFile(fileName);
-                                        if (rgbList != null) {
-
-                                            for (String rgb : rgbList) {
-                                                swatchList.add(ColorUtils.getColorFromRgb(rgb));
-                                            }
-
-                                            (new AsyncTask<Void, Void, Void>() {
-
-                                                @Override
-                                                protected Void doInBackground(Void... params) {
-                                                    mainApp.saveCalibratedSwatches(mainApp.currentTestType, swatchList);
-
-                                                    mainApp.setSwatches(mainApp.currentTestType);
-
-                                                    SharedPreferences sharedPreferences = PreferenceManager
-                                                            .getDefaultSharedPreferences(getActivity());
-                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                                    for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
-                                                        int index = i * mainApp.rangeIncrementStep;
-
-                                                        ColorUtils.autoGenerateColors(
-                                                                index,
-                                                                mainApp.currentTestType,
-                                                                mainApp.colorList,
-                                                                mainApp.rangeIncrementStep, editor);
-                                                    }
-                                                    editor.apply();
-
-
-                                                    return null;
-                                                }
-
-                                                @Override
-                                                protected void onPostExecute(Void result) {
-                                                    super.onPostExecute(result);
-                                                    changeTestType(mainApp.currentTestType);
-                                                    CalibrateListAdapter adapter = (CalibrateListAdapter) getListAdapter();
-                                                    adapter.notifyDataSetChanged();
-                                                }
-                                            }).execute();
-                                        }
-                                    }
-                                }
-                        );
-                        //builderSingle.show();
-
-                        final AlertDialog alert = builderSingle.create();
-                        alert.setOnShowListener(new DialogInterface.OnShowListener() {
-                            @Override
-                            public void onShow(DialogInterface dialogInterface) {
-                                final ListView listView = alert.getListView();
-                                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                                    @Override
-                                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        final int position = i;
-
-                                        AlertUtils.askQuestion(getActivity(), R.string.delete, R.string.selectedWillBeDeleted, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                String fileName = listFiles[position].getName();
-                                                FileUtils.deleteFile(folderName, fileName);
-                                                ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
-                                                //noinspection unchecked
-                                                listAdapter.remove(listAdapter.getItem(position));
-                                            }
-                                        }, null);
-                                        return true;
-                                    }
-                                });
-
-                            }
-                        });
-
-                        alert.show();
-
-
-                    } else {
-                        AlertUtils.showMessage(getActivity(), R.string.notFound, R.string.noSavedCalibrations);
+                Handler.Callback callback = new Handler.Callback() {
+                    public boolean handleMessage(Message msg) {
+                        //changeTestType(mainApp.currentTestType);
+                        CalibrateListAdapter adapter = (CalibrateListAdapter) getListAdapter();
+                        adapter.notifyDataSetChanged();
+                        return true;
                     }
-
-                } catch (ActivityNotFoundException e) {
-                    AlertUtils.showMessage(getActivity(), R.string.error,
-                            R.string.updateRequired);
-
-                }
-
+                };
+                mOnLoadCalibrationListener.onLoadCalibration(callback);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mOnLoadCalibrationListener = (OnLoadCalibrationListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnLoadCalibrationListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOnLoadCalibrationListener = null;
+    }
+
+    public interface OnLoadCalibrationListener {
+        public void onLoadCalibration(Handler.Callback callback);
     }
 
 }

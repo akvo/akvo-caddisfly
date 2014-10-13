@@ -46,8 +46,6 @@ class UpdateChecker {
 
     private boolean useToasts = false;
 
-    private DownloadManager downloadManager;
-
     /**
      * Constructor for UpdateChecker
      * <p/>
@@ -137,7 +135,7 @@ class UpdateChecker {
     @SuppressWarnings("SameParameterValue")
     public void downloadAndInstall(String apkUrl, boolean previousVersion) {
         if (NetworkUtils.isOnline(mContext)) {
-            downloadManager = new DownloadManager(mContext, true, previousVersion);
+            DownloadManager downloadManager = new DownloadManager(mContext, true, previousVersion);
             downloadManager.execute(apkUrl);
         } else {
             makeToastFromString("Update failed. No internet connection available").show();
@@ -197,10 +195,10 @@ class UpdateChecker {
         return "File read error";
     }
 
-    public void cancel() {
+  /*  public void cancel() {
         if (downloadManager != null) {
             downloadManager.stop();
         }
-    }
+    }*/
 
 }

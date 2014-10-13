@@ -98,7 +98,7 @@ public class MainApp extends Application {
         rangeStartIncrement = 0;
         doubleFormat = new DecimalFormat("0.0");
 
-        currentTestType = Config.FLUORIDE_2_INDEX;
+        currentTestType = Config.FLUORIDE_INDEX;
 
         for (double i = 0.0; i < 3.1; i += (rangeIncrementStep * rangeIncrementValue)) {
             rangeIntervals.add(i);
@@ -135,7 +135,7 @@ public class MainApp extends Application {
         }
 
         //colorList = new ArrayList<Integer>(presetColorList);
-        loadCalibratedSwatches(Config.FLUORIDE_2_INDEX);
+        loadCalibratedSwatches(currentTestType);
     }
 
 

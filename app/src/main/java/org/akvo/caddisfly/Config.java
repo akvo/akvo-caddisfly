@@ -16,11 +16,11 @@ public class Config {
 
     // Caddisfly update check path
     public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/akvoapp/v.txt?check=40";
+            = "http://caddisfly.ternup.com/akvoapp/v.txt?check=41";
 
     // Caddisfly update path
     public static final String UPDATE_URL
-            = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk?check=40";
+            = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk?check=41";
 
     public static final String DEFAULT_LOCALE = "en";
 

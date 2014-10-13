@@ -16,7 +16,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
@@ -67,21 +66,17 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private final Handler delayHandler = new Handler();
     private final PhotoTakenHandler mPhotoTakenHandler = new PhotoTakenHandler((ProgressActivity) this);
     private PowerManager.WakeLock wakeLock;
-    private int mInterval = 4000;
     private int mTestType;
     // The folder path where the photos will be stored
     private String mFolderName;
     private CameraFragment mCameraFragment;
     //private ProgressBar mSingleProgress;
-    private Timer timer;
     private Runnable delayRunnable;
     private Animation mSlideInRight;
     private Animation mSlideOutLeft;
     private TextView mTitleText;
     private TextView mRemainingText;
     private ProgressBar mProgressBar;
-    private TextView mTimeText;
-    private long mNextAlarmTime;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -130,14 +125,9 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 new int[]{Color.rgb(28, 53, 63), Color.rgb(44, 85, 103)},
                 new float[]{0, 1}, Shader.TileMode.CLAMP);
         mTitleText.getPaint().setShader(textShader);
-        //mProgressLayout = (LinearLayout) findViewById(R.id.progressLayout);
-        //mStillnessLayout = (LinearLayout) findViewById(R.id.stillnessLayout);
-        //mShakeLayout = (LinearLayout) findViewById(R.id.shakeLayout);
         mRemainingValueText = (TextView) findViewById(R.id.remainingValueText);
         mRemainingText = (TextView) findViewById(R.id.remainingText);
         mProgressBar = (ProgressBar) findViewById(R.id.testProgressBar);
-        mTimeText = (TextView) findViewById(R.id.timeText);
-        //mPlaceInStandText = (TextView) findViewById(R.id.placeInStandText);
         Button mNextButton = (Button) findViewById(R.id.nextButton);
 
         Button shakeButton = (Button) findViewById(R.id.shakeButton);
@@ -151,7 +141,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
         mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
-
 
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -525,53 +514,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 .getFilePaths(this, mFolderName, "/small/", mLocationId);
         int doneCount = imagePaths.size();
 
-        if (doneCount > 0) {
-
-            //Context context = getApplicationContext();
-            // boolean is24HourFormat = android.text.format.DateFormat.is24HourFormat(context);
-            //String timePattern = context.getString(is24HourFormat ? R.string.twentyFourHourTime : R.string.twelveHourTime);
-
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MILLISECOND, mInterval);
-
-            startTimeDisplay(cal.getTimeInMillis());
-
-            // Using SimpleDateFormat to display seconds also
-            //DateFormat timeFormat = new SimpleDateFormat(timePattern);
-            //mTimeText.setText(timeFormat.format(cal.getTimeInMillis()));
-
-            mProgressBar.setMax(mTestTotal);
-            mProgressBar.setProgress(doneCount);
-        }
-
         mRemainingValueText.setText(String.valueOf(mTestTotal - doneCount));
-    }
-
-    private String formatTime(long time) {
-        String res = "";
-        res += time / 60 + ":";
-        if (time % 60 < 10) {
-            res += "0";
-        }
-        res += (time % 60);
-        return res;
-    }
-
-    private void displayRemainingTime() {
-        long timeLeft = (mNextAlarmTime - System.currentTimeMillis()) / 1000;
-        mTimeText.setText(formatTime(timeLeft));
-
-    }
-
-    private void startTimeDisplay(long nextTime) {
-        if (timer != null) {
-            timer.cancel();
-        }
-        mNextAlarmTime = nextTime - Config.INITIAL_DELAY - Config.INITIAL_DELAY;
-        displayRemainingTime();
-        timer = new Timer(5000, 5000);
-        timer.start();
-
     }
 
     void startTest(final String folderName) {
@@ -589,13 +532,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
             @Override
             protected Void doInBackground(Void... params) {
-/*
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-*/
                 return null;
             }
 
@@ -854,7 +790,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                     service.sendResult(msg);
                 } else {
                     Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.MILLISECOND, (service.mInterval - Config.INITIAL_DELAY
+                    int mInterval = 4000;
+                    cal.add(Calendar.MILLISECOND, (mInterval - Config.INITIAL_DELAY
                             - Config.INITIAL_DELAY));
 
 
@@ -868,21 +805,4 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         }
     }
 
-    public class Timer extends CountDownTimer {
-
-        public Timer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onFinish() {
-            timer = new Timer(5000, 5000);
-            timer.start();
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            displayRemainingTime();
-        }
-    }
 }

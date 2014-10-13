@@ -190,7 +190,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#454545"
             android:textSize="40sp"
-            tools:text="@string/bacteria" />
+            tools:text="@string/fluoride" />
 
         <TextView
             android:layout_width="match_parent"

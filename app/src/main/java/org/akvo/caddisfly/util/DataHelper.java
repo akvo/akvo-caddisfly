@@ -174,7 +174,7 @@ public class DataHelper {
     }
 
     //Ref: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-    private static double round(double value, int places) {
+    private static double round(double value, @SuppressWarnings("SameParameterValue") int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);

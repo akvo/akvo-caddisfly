@@ -230,7 +230,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
         }
     }
 
-    public void stop() {
+  /*  public void stop() {
         if (progressDialog != null) {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
@@ -238,6 +238,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
             progressDialog = null;
         }
 
-    }
+    }*/
 
 }
