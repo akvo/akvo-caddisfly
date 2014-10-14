@@ -47,4 +47,5 @@
     <string name="cropToSquareKey">cropToSquare</string>
     <string name="revertVersionKey">revertVersion</string>
     <string name="oneStepCalibrationKey">oneStepCalibration</string>
+    <string name="showStartPageKey">showStartPage</string>
 </resources>

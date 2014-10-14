@@ -94,4 +94,5 @@
     <string name="back">"رجوع"</string>
     <string name="start">"البداية"</string>
     <string name="oneStepCalibration">"خطوة واحدة المعايرة"</string>
+    <string name="showStartPage">تظهر صفحة البداية</string>
 </resources>

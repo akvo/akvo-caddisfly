@@ -128,7 +128,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mRemainingValueText = (TextView) findViewById(R.id.remainingValueText);
         mRemainingText = (TextView) findViewById(R.id.remainingText);
         mProgressBar = (ProgressBar) findViewById(R.id.testProgressBar);
-        Button mNextButton = (Button) findViewById(R.id.nextButton);
 
         Button shakeButton = (Button) findViewById(R.id.shakeButton);
         shakeButton.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +141,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
         mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
 
+/*
+        Button mNextButton = (Button) findViewById(R.id.nextButton);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +158,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
             }
         });
+*/
 
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
@@ -355,7 +357,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 mWaitingForFirstShake = false;
 
                 mViewAnimator.showNext();
-                mViewAnimator.showNext();
+                // mViewAnimator.showNext();
                 mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                         SensorManager.SENSOR_DELAY_UI);
 

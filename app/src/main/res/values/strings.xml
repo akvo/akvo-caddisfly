@@ -94,4 +94,5 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="oneStepCalibration">One step calibration</string>
+    <string name="showStartPage">Show start page</string>
 </resources>

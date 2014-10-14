@@ -82,7 +82,7 @@ public class Config {
     public static final int ERROR_COLOR_IS_GRAY = 6;
 
     public static final boolean CAMERA_TORCH_MODE_DEFAULT = false;
-    public static final boolean REQUIRE_SHAKE_DEFAULT = true;
+    public static final boolean REQUIRE_SHAKE_DEFAULT = false;
     public static final boolean CAMERA_SOUND_DEFAULT = true;
 
 }

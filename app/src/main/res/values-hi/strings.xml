@@ -94,4 +94,5 @@
     <string name="back">"वापस जाएं"</string>
     <string name="start">"शुरू करें"</string>
     <string name="oneStepCalibration">"एक कदम अंशांकन"</string>
+    <string name="showStartPage">आरम्भ पृष्ठ दिखाएँ</string>
 </resources>

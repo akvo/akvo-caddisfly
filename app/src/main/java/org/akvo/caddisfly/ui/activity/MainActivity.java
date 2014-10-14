@@ -179,6 +179,11 @@ public class MainActivity extends MainActivityBase implements
 
         switch (position) {
             case Config.HOME_SCREEN_INDEX:
+                if (external && !PreferencesUtils.getBoolean(this, R.string.showStartPageKey, true)) {
+                    onStartTest();
+                    return;
+                }
+
                 fragment = StartFragment.newInstance(external, mTestType);
                 break;
             case Config.CALIBRATE_SCREEN_INDEX:
@@ -389,7 +394,11 @@ public class MainActivity extends MainActivityBase implements
                     this.setResult(Activity.RESULT_OK, intent);
                     finish();
                 } else {
-                    displayView(Config.CHECKLIST_SCREEN_INDEX, true);
+                    if (!PreferencesUtils.getBoolean(this, R.string.showStartPageKey, true)) {
+                        onBack();
+                        return;
+                    }
+                    //displayView(Config.CHECKLIST_SCREEN_INDEX, true);
                 }
                 break;
             default:

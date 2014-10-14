@@ -23,6 +23,12 @@
         android:summary="@string/calibrateSummary"
         android:title="@string/calibrate" />
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/showStartPageKey"
+        android:layout="@layout/preference"
+        android:title="@string/showStartPage" />
+
     <Preference
         android:key="checkUpdate"
         android:layout="@layout/preference"
