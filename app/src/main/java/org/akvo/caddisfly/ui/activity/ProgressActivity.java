@@ -45,6 +45,7 @@ import org.akvo.caddisfly.util.PhotoHandler;
 import org.akvo.caddisfly.util.PreferencesHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
+import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -85,7 +86,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private int mIndex = -1;
     private int mTestTotal;
     private boolean mShakeDevice;
-    private boolean mTestCompleted;
     // Track if the test was just started in which case it can be cancelled by back button
     private boolean mWaitingForFirstShake;
     private boolean mWaitingForShake = true;
@@ -93,8 +93,18 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private long mLocationId;
     private TextView mRemainingValueText;
     private ViewAnimator mViewAnimator;
-
+    private SoundPoolPlayer sound;
     private boolean isCalibration;
+
+    private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
+        Animation inAnimation = viewAnimator.getInAnimation();
+        Animation outAnimation = viewAnimator.getOutAnimation();
+        viewAnimator.setInAnimation(null);
+        viewAnimator.setOutAnimation(null);
+        viewAnimator.setDisplayedChild(whichChild);
+        viewAnimator.setInAnimation(inAnimation);
+        viewAnimator.setOutAnimation(outAnimation);
+    }
 
     @Override
     public void onAttachedToWindow() {
@@ -112,12 +122,21 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        InitializeTest();
+        startNewTest(mTestType);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_progress);
 
         this.setTitle(R.string.appName);
+
+        sound = new SoundPoolPlayer(this);
 
         // Gradient shading for title
         mTitleText = (TextView) findViewById(R.id.titleText);
@@ -141,29 +160,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
         mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
 
-/*
-        Button mNextButton = (Button) findViewById(R.id.nextButton);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mViewAnimator.showNext();
-
-                if (!mShakeDevice) {
-                    mViewAnimator.showNext();
-                }
-
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-
-            }
-        });
-*/
-
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
-
-        //mSingleProgress = (ProgressBar) findViewById(R.id.singleProgress);
 
         //Set up the shake detector
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -173,17 +171,11 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
             @Override
             public void onShake() {
                 if (mWaitingForShake) {
-
                     shakeDone();
                 } else {
                     if (!mWaitingForStillness && mCameraFragment != null) {
                         mWaitingForStillness = true;
                         mViewAnimator.showNext();
-/*
-                        mStillnessLayout.setVisibility(View.VISIBLE);
-                        mShakeLayout.setVisibility(View.GONE);
-                        mProgressLayout.setVisibility(View.GONE);
-*/
                         if (mCameraFragment != null) {
                             try {
                                 mCameraFragment.stopCamera();
@@ -191,11 +183,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-                            //mViewAnimator.setVisibility(View.GONE);
-                            //mStillnessLayout.setVisibility(View.GONE);
-                            //mProgressLayout.setVisibility(View.GONE);
-                            //mShakeLayout.setVisibility(View.GONE);
 
                             showError(getString(R.string.testInterrupted), null);
                         }
@@ -209,6 +196,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
                 if (!mWaitingForShake && mWaitingForStillness) {
                     mWaitingForStillness = false;
+                    sound.playShortResource(R.raw.beep);
                     dismissShakeAndStartTest();
                 }
             }
@@ -231,13 +219,14 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
     private void showError(String message, Bitmap bitmap) {
         cancelService();
+        sound.playShortResource(R.raw.err);
         AlertUtils.showError(this, R.string.error, message, bitmap, R.string.retry,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FileUtils.deleteFolder(new File(mFolderName));
-                        startNewTest(mTestType);
                         InitializeTest();
+                        startNewTest(mTestType);
                     }
                 },
                 new DialogInterface.OnClickListener() {
@@ -263,20 +252,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         startTest(mFolderName);
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        // Acquire a wake lock while waiting for user action
-/*
-        if (wakeLock == null || !wakeLock.isHeld()) {
-            PowerManager pm = (PowerManager) getApplicationContext()
-                    .getSystemService(Context.POWER_SERVICE);
-            wakeLock = pm
-                    .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                            | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
-            wakeLock.acquire();
-        }
-*/
+    private void InitializeTest() {
 
         MainApp mainApp = (MainApp) getApplicationContext();
         // Get intent, action and MIME type
@@ -299,82 +275,10 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
             mLocationId = PreferencesHelper.getCurrentLocationId(this, intent);
         }
 
-        // If test is already completed go back to home page
-        if (mTestCompleted) {
-            startHomeActivity(getApplicationContext());
-            return;
-        }
-
-        if (mFolderName != null && !mFolderName.isEmpty()) {
-
-            if (!hasTestCompleted(mFolderName)) {
-                // If test was automatically started then initialize
-                if (getIntent().getBooleanExtra("alarm", false)) {
-                    getIntent().removeExtra("alarm");
-                    InitializeTest();
-                }
-                return;
-            }
-
-            // Test is complete so cancel
-            cancelService();
-
-        } else if (mTestType > -1) {
-
-            mRemainingText.setVisibility(View.GONE);
-            mRemainingValueText.setVisibility(View.GONE);
-            mProgressBar.setMax(mTestTotal);
-            mProgressBar.setProgress(0);
-            startNewTest(mTestType);
-
-            if (mShakeDevice) {
-                mViewAnimator.setInAnimation(null);
-                mViewAnimator.setOutAnimation(null);
-                mViewAnimator.setDisplayedChild(0);
-                mViewAnimator.setInAnimation(mSlideInRight);
-                mViewAnimator.setOutAnimation(mSlideOutLeft);
-
-/*
-                mShakeLayout.setVisibility(View.VISIBLE);
-                mStillnessLayout.setVisibility(View.GONE);
-                mProgressLayout.setVisibility(View.GONE);
-*/
-                mWaitingForFirstShake = true;
-
-                mSensorManager.unregisterListener(mShakeDetector);
-
-                mWaitingForShake = true;
-                mWaitingForStillness = false;
-
-                mViewAnimator.showNext();
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-
-            } else {
-
-                mWaitingForStillness = true;
-                mWaitingForShake = false;
-                mWaitingForFirstShake = false;
-
-                mViewAnimator.showNext();
-                // mViewAnimator.showNext();
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-
-/*
-                mStillnessLayout.setVisibility(View.VISIBLE);
-                mShakeLayout.setVisibility(View.GONE);
-                mProgressLayout.setVisibility(View.GONE);
-*/
-                //displayInfo();
-                //startTest(getApplicationContext(), mFolderName);
-            }
-        } else {
-            startHomeActivity(getApplicationContext());
-        }
-    }
-
-    private void InitializeTest() {
+        mRemainingText.setVisibility(View.GONE);
+        mRemainingValueText.setVisibility(View.GONE);
+        mProgressBar.setMax(mTestTotal);
+        mProgressBar.setProgress(0);
 
         if (wakeLock == null || !wakeLock.isHeld()) {
             PowerManager pm = (PowerManager) getApplicationContext()
@@ -386,28 +290,27 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
             wakeLock.acquire();
         }
 
-        if (mShakeDevice) {
+        mSensorManager.unregisterListener(mShakeDetector);
 
-            mWaitingForShake = true;
-            mWaitingForStillness = false;
-            mSensorManager.unregisterListener(mShakeDetector);
+        mIndex = -1;
+
+        if (mShakeDevice) {
             mShakeDetector.minShakeAcceleration = 5;
             mShakeDetector.maxShakeDuration = 2000;
+            mWaitingForFirstShake = true;
+            mWaitingForShake = true;
+            mWaitingForStillness = false;
         } else {
-            mWaitingForShake = false;
             mWaitingForStillness = true;
+            mWaitingForShake = false;
+            mWaitingForFirstShake = false;
+            setAnimatorDisplayedChild(mViewAnimator, 1);
         }
 
         mViewAnimator.setInAnimation(null);
         mViewAnimator.setOutAnimation(null);
-        mViewAnimator.setDisplayedChild(0);
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
-
-/*
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                SensorManager.SENSOR_DELAY_UI);
-*/
 
     }
 
@@ -442,7 +345,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
         mFolderName = PreferencesUtils.getString(this, R.string.runningTestFolder, "");
 
-        mTestCompleted = sharedPreferences.getBoolean("testCompleted", false);
+        //boolean mTestCompleted = sharedPreferences.getBoolean("testCompleted", false);
 
         if (mId == -1) {
             mId = PreferencesHelper.getCurrentTestId(this, getIntent(), null);
@@ -477,6 +380,10 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         editor.putString(getString(R.string.runningTestFolder), mFolderName);
         editor.putInt(PreferencesHelper.CURRENT_TEST_TYPE_KEY, testType);
         editor.apply();
+
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                SensorManager.SENSOR_DELAY_UI);
+
     }
 
     private void cancelService() {
@@ -677,15 +584,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mSensorManager.unregisterListener(mShakeDetector);
     }
 
-    void startHomeActivity(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-
-        finish();
-    }
-
     void sendResult(final Message msg) {
         if (mFolderName != null && !mFolderName.isEmpty()) {
             if (msg != null && msg.getData() != null) {
@@ -699,6 +597,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 String title = DataHelper.getTestTitle(this, mTestType);
 
                 if (result >= 0 && quality >= minAccuracy) {
+                    sound.playShortResource(R.raw.done);
+
                     ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg);
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
@@ -767,6 +667,12 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         sendResult2(msg);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sound.release();
+    }
+
     private static class PhotoTakenHandler extends Handler {
 
         private final WeakReference<ProgressActivity> mService;
@@ -806,5 +712,4 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
             }
         }
     }
-
 }

@@ -42,12 +42,6 @@
     <string name="ok">"موافق"</string>
     <string name="cancel">"إلغاء"</string>
     <string name="checkUpdateSummary">"تحقق إذا كان يتوفر تحديث لAkvo Caddisfly"</string>
-    <string name="next">"التالي"</string>
-    <string name="preparation">"والتحضير"</string>
-    <string name="fillCartridge">"ملء خرطوشة مع الماء مصدر"</string>
-    <string name="placeReagent">"وضع كاشف موزع غير المستخدمة في خرطوشة وغطاء وثيق"</string>
-    <string name="attachBackCase">"نعلق القضية مرة أخرى إلى الهاتف"</string>
-    <string name="attachCartridge">"إرفاق خرطوشة إلى القضية مرة أخرى ومحاذاة إلى علامة السهم"</string>
     <string name="caddisflyTraining">"التدريب Akvo Caddisfly"</string>
     <string name="watchTrainingVideo">"مشاهدة فيديو للتدريب"</string>
     <string name="selectValueToCalibrate">"حدد قيمة لمعايرة"</string>

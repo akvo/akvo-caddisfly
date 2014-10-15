@@ -42,12 +42,6 @@
     <string name="ok">"ठीक है"</string>
     <string name="cancel">"रद्द करें "</string>
     <string name="checkUpdateSummary">"एक अद्यतन Akvo Caddisfly के लिए उपलब्ध है की जाँच"</string>
-    <string name="next">"अगला "</string>
-    <string name="preparation">"तैयारी"</string>
-    <string name="fillCartridge">"स्रोत पानी के साथ कारतूस भरें"</string>
-    <string name="placeReagent">"कारतूस और करीब ढक्कन में एक अप्रयुक्त अभिकर्मक औषधि रखें"</string>
-    <string name="attachBackCase">"फोन करने के लिए मामला वापस अटैच"</string>
-    <string name="attachCartridge">"वापस मामले को कारतूस देते हैं और तीर निशान को संरेखित"</string>
     <string name="caddisflyTraining">"Akvo Caddisfly प्रशिक्षण"</string>
     <string name="watchTrainingVideo">"घड़ी प्रशिक्षण वीडियो"</string>
     <string name="selectValueToCalibrate">"जांच करने के लिए एक मूल्य का चयन करें"</string>

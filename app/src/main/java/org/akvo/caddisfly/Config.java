@@ -60,7 +60,7 @@ public class Config {
     // folder for calibration photos
     public static final String CALIBRATE_FOLDER = "calibrate";
 
-    public static final int INITIAL_DELAY = 4000;
+    public static final int INITIAL_DELAY = 500;
 
     public static final int MINIMUM_PHOTO_QUALITY = 50;
 

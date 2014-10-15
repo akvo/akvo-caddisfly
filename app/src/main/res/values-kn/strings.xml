@@ -42,12 +42,6 @@
     <string name="ok">"ಓಕೆ"</string>
     <string name="cancel">"ರದ್ದುಮಾಡು "</string>
     <string name="checkUpdateSummary">"ಒಂದು ಅಪ್ಡೇಟ್ Akvo Caddisfly ಲಭ್ಯವಿದೆ ಪರೀಕ್ಷಿಸಲು"</string>
-    <string name="next">"ಮುಂದಕ್ಕೆ "</string>
-    <string name="preparation">"ತಯಾರು ಮಾಡುವಿಕೆ"</string>
-    <string name="fillCartridge">"ಮೂಲ ನೀರು ಕಾರ್ಟ್ರಿಡ್ಜ್ ಭರ್ತಿ"</string>
-    <string name="placeReagent">"ಕಾರ್ಟ್ರಿಡ್ಜ್ ಮತ್ತು ನಿಕಟ ಮುಚ್ಚಳವನ್ನು ಒಳಗೆ ಬಳಕೆಯಾಗದ ಕಾರಕ ವಿತರಕ ಇರಿಸಿ"</string>
-    <string name="attachBackCase">"ಫೋನ್ ಪ್ರಕರಣವನ್ನು ಮತ್ತೆ ಲಗತ್ತಿಸಿ"</string>
-    <string name="attachCartridge">"ಮತ್ತೆ ಪ್ರಕರಣಕ್ಕೆ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ ಮತ್ತು ಬಾಣದ ಗುರುತು align"</string>
     <string name="caddisflyTraining">"Akvo Caddisfly ತರಬೇತಿ"</string>
     <string name="watchTrainingVideo">"ತರಬೇತಿ ವಿಡಿಯೋ ವೀಕ್ಷಿಸಿ"</string>
     <string name="selectValueToCalibrate">"ಮಾಪನಾಂಕ ಈ ಕೆಳಗಿನ ನಗರವನ್ನು"</string>

@@ -38,6 +38,7 @@ import android.widget.FrameLayout;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.PreferencesUtils;
+import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,10 +62,9 @@ public class CameraFragment extends DialogFragment {
             mgr.playSoundEffect(AudioManager.FLAG_PLAY_SOUND);
         }
     };
-
     private final Boolean makeShutterSound = false;
-
     public Camera.PictureCallback pictureCallback;
+    private SoundPoolPlayer sound;
     private boolean mCancelled = false;
     private AlertDialog progressDialog;
     private Camera mCamera;
@@ -83,6 +83,12 @@ public class CameraFragment extends DialogFragment {
             e.printStackTrace();
         }
         return c;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sound = new SoundPoolPlayer(getActivity());
     }
 
     @Override
@@ -166,9 +172,10 @@ public class CameraFragment extends DialogFragment {
                     PictureCallback localCallback = new PictureCallback();
                     try {
                         if (shutterSound && (makeShutterSound || hasTestCompleted(getActivity()))) {
-                            mCamera.takePicture(shutterCallback, null, localCallback);
+                            mCamera.takePicture(null, null, localCallback);
                         } else {
                             mCamera.takePicture(null, null, localCallback);
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -244,6 +251,12 @@ public class CameraFragment extends DialogFragment {
             mPreview.destroyDrawingCache();
             mPreview.mCamera = null;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        sound.release();
     }
 
     public interface Cancelled {
@@ -416,6 +429,7 @@ public class CameraFragment extends DialogFragment {
             if (!mCancelled) {
                 if (!hasTestCompleted(getActivity())) {
                     pictureCallback.onPictureTaken(bytes, camera);
+                    sound.playShortResource(R.raw.beep);
                     takePicture();
                 } else {
                     pictureCallback.onPictureTaken(bytes, camera);

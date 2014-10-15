@@ -42,12 +42,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="checkUpdateSummary">Check if an update is available for Akvo Caddisfly</string>
-    <string name="next">Next</string>
-    <string name="preparation">Preparation</string>
-    <string name="fillCartridge">Fill cartridge with source water</string>
-    <string name="placeReagent">Place an unused reagent dispenser into the cartridge and close lid</string>
-    <string name="attachBackCase">Attach back case to the phone</string>
-    <string name="attachCartridge">Attach cartridge to the back case and align to the arrow mark</string>
     <string name="caddisflyTraining">Akvo Caddisfly Training</string>
     <string name="watchTrainingVideo">Watch Training Video</string>
     <string name="selectValueToCalibrate">Select a value to calibrate</string>
