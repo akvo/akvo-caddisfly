@@ -119,9 +119,11 @@ public class MainActivity extends MainActivityBase implements
 
         MainApp mainApp = ((MainApp) getApplicationContext());
 
-        // Default app to Fluoride swatches
-        mainApp.setFluoride2Swatches();
-
+        if (PreferencesUtils.getBoolean(this, R.string.oneStepCalibrationKey, false)) {
+            mainApp.setFluorideSwatches();
+        } else {
+            mainApp.setFluoride2Swatches();
+        }
         // Set the locale according to preference
         Locale myLocale = new Locale(
                 PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));

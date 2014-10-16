@@ -54,6 +54,7 @@ import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.PreferencesHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
+import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.util.ArrayList;
 
@@ -61,9 +62,8 @@ import java.util.ArrayList;
 public class CalibrateItemFragment extends ListFragment {
 
     protected int mTestType = Config.FLUORIDE_2_INDEX;
-
     protected GalleryListAdapter mAdapter;
-
+    private SoundPoolPlayer sound;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;
 
     //protected View mListHeader;
@@ -337,6 +337,7 @@ public class CalibrateItemFragment extends ListFragment {
         if (requestCode == 200) {
             if (resultCode == Activity.RESULT_OK) {
                 //Bundle bundle = data.getExtras();
+                sound.playShortResource(R.raw.done);
                 storeCalibratedData(data.getIntExtra("position", 0), data.getIntExtra(Config.RESULT_COLOR_KEY, -1),
                         data.getIntExtra(Config.QUALITY_KEY, -1));
                 displayInfo();
@@ -497,6 +498,7 @@ public class CalibrateItemFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        sound = new SoundPoolPlayer(getActivity());
         super.onCreate(savedInstanceState);
     }
 
@@ -560,6 +562,7 @@ public class CalibrateItemFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         mOnLoadCalibrationListener = null;
+        sound.release();
     }
 
     public interface OnLoadCalibrationListener {

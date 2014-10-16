@@ -455,14 +455,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                     PhotoHandler photoHandler = new PhotoHandler(mainContext, mPhotoTakenHandler,
                             mIndex, folderName, mTestType);
 
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                    Fragment prev = getFragmentManager().findFragmentByTag("cameraDialog");
-                    if (prev != null) {
-                        ft.remove(prev);
-                    }
-                    ft.addToBackStack(null);
-
                     mCameraFragment = CameraFragment.newInstance();
                     mCameraFragment.pictureCallback = photoHandler;
 
@@ -480,8 +472,14 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                     delayRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            mCameraFragment.show(ft, "cameraDialog");
+                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
+                            Fragment prev = getFragmentManager().findFragmentByTag("cameraDialog");
+                            if (prev != null) {
+                                ft.remove(prev);
+                            }
+                            ft.addToBackStack(null);
+                            mCameraFragment.show(ft, "cameraDialog");
                         }
                     };
 
@@ -598,7 +596,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
                 if (result >= 0 && quality >= minAccuracy) {
                     sound.playShortResource(R.raw.done);
-
                     ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg);
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
@@ -639,7 +636,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         if (result < 0 || quality < minAccuracy) {
             showError(message, ImageUtils.getAnalysedBitmap(msg.getData().getString("file")));
         } else {
-
             releaseResources();
 
             Intent intent = new Intent(getIntent());

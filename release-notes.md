@@ -1,3 +1,14 @@
+v0.41 alpha
+-----------
+1. Beep sounds during test
+2. Success sound on valid result
+3. Error sound on invalid test
+4. Shake disabled
+5. Show start page option
+6. One step calibration fix
+7. Translations added
+8. Retry issue fix
+
 v0.36 - v0.40 alpha
 -------------------
 1. Green UI styles
