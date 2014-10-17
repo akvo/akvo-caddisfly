@@ -89,4 +89,5 @@
     <string name="start">Start</string>
     <string name="oneStepCalibration">One step calibration</string>
     <string name="showStartPage">Show start page</string>
+    <string name="cameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
 </resources>

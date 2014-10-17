@@ -47,7 +47,7 @@ public class Config {
 
     public static final int CALIBRATE_SCREEN_INDEX = 2;
 
-    public static final int CHECKLIST_SCREEN_INDEX = 4;
+    //public static final int CHECKLIST_SCREEN_INDEX = 4;
 
     // Index of test types
     public static final int FLUORIDE_INDEX = 0;

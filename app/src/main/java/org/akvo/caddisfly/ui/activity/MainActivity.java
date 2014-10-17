@@ -26,8 +26,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,32 +85,80 @@ public class MainActivity extends MainActivityBase implements
     private SettingsFragment mSettingsFragment = null;
     //private HelpFragment helpFragment = null;
 
+    private static Camera getCameraInstance() {
+        Camera c = null;
+        try {
+            c = Camera.open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //MainApp mainApp = (MainApp) this.getApplicationContext();
         setContentView(R.layout.activity_main);
 
-        loadSavedPreferences();
+        if (!checkCameraFlash()) {
+            AlertUtils.showError(this, R.string.error,
+                    getString(R.string.cameraFlashRequired),
+                    null,
+                    R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    },
+                    null);
+        } else {
 
-        if (savedInstanceState == null) {
-            displayView(Config.HOME_SCREEN_INDEX, false);
-        }
+            loadSavedPreferences();
 
-        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheck);
+            if (savedInstanceState == null) {
+                displayView(Config.HOME_SCREEN_INDEX, false);
+            }
 
-        // last update check date
-        Calendar lastCheckDate = Calendar.getInstance();
-        lastCheckDate.setTimeInMillis(updateLastCheck);
+            long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheck);
 
-        Calendar currentDate = Calendar.getInstance();
+            // last update check date
+            Calendar lastCheckDate = Calendar.getInstance();
+            lastCheckDate.setTimeInMillis(updateLastCheck);
 
-        if (!PreferencesUtils.getBoolean(this, R.string.revertVersionKey, false)) {
-            if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-                checkUpdate(true);
+            Calendar currentDate = Calendar.getInstance();
+
+            if (!PreferencesUtils.getBoolean(this, R.string.revertVersionKey, false)) {
+                if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
+                    checkUpdate(true);
+                }
             }
         }
+    }
+
+    private boolean checkCameraFlash() {
+        boolean hasFlash = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        Camera camera = getCameraInstance();
+        try {
+            Camera.Parameters p;
+
+            if (hasFlash) {
+                p = camera.getParameters();
+                if (p.getSupportedFlashModes() == null) {
+                    hasFlash = false;
+                } else {
+                    if (p.getSupportedFlashModes().size() == 1) {
+                        if (p.getSupportedFlashModes().get(0).equals("off")) {
+                            hasFlash = false;
+                        }
+                    }
+                }
+            }
+        } finally {
+            camera.release();
+        }
+        return hasFlash;
     }
 
     /**

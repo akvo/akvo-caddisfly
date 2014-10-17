@@ -89,4 +89,5 @@
     <string name="start">"ಪ್ರಾರಂಭ"</string>
     <string name="oneStepCalibration">"ಒಂದು ಹೆಜ್ಜೆಯೆಂದರೆ ಮಾಪನಾಂಕ ನಿರ್ಣಯ"</string>
     <string name="showStartPage">ಆರಂಭ ಪುಟ ತೋರಿಸಿ</string>
+    <string name="cameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
 </resources>

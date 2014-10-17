@@ -115,6 +115,7 @@ public class FileUtils {
     }*/
 
     // Reading file paths from SDCard
+    @SuppressWarnings("SameParameterValue")
     public static ArrayList<String> getFilePaths(Context context, String folderName,
                                                  String subFolder, long locationId) {
 

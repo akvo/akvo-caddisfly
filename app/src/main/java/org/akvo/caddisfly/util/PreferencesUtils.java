@@ -97,6 +97,7 @@ public class PreferencesUtils {
      * @param keyId   the key id
      * @param value   the value
      */
+    @SuppressWarnings("SameParameterValue")
     public static void setInt(Context context, int keyId, int value) {
         setInt(context, getKey(context, keyId), value);
     }
@@ -145,6 +146,7 @@ public class PreferencesUtils {
         setDouble(context, getKey(context, keyId), value);
     }
 */
+    @SuppressWarnings("SameParameterValue")
     public static long getLong(Context context, int keyId) {
         return PreferencesUtils.getLong(context, getKey(context, keyId));
     }
@@ -168,6 +170,7 @@ public class PreferencesUtils {
      * @param keyId   the key id
      * @param value   the value
      */
+    @SuppressWarnings("SameParameterValue")
     public static void setLong(Context context, int keyId, long value) {
         setLong(context, getKey(context, keyId), value);
     }
@@ -208,6 +211,7 @@ public class PreferencesUtils {
         editor.apply();
     }
 */
+    @SuppressWarnings("SameParameterValue")
     public static void removeKey(Context context, int keyId) {
         PreferencesUtils.removeKey(context, getKey(context, keyId));
     }

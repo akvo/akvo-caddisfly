@@ -58,29 +58,16 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     private boolean downloaded = false;
 
     /**
-     * Constructor for the Download Manager. DO NOT USE ON YOUR OWN. All calls are through
-     * UpdateChecker
-     *
-     * @param context Activity context
-     * @since API 1
-     */
-    public DownloadManager(Context context) {
-        this(context, true, false);
-    }
-
-    /**
      * Constructor for the download manager. DO NOT USE ON YOUR OWN. All calls are handled through
      * UpdateChecker.
      *
-     * @param context              Activity context
-     * @param installAfterDownload true if you want to install immediately after download, false
-     *                             otherwise
+     * @param context Activity context
      * @since API 2
      */
-    public DownloadManager(Context context, boolean installAfterDownload, boolean previousVersion) {
+    public DownloadManager(Context context, boolean previousVersion) {
         mContext = context;
         mPreviousVersion = previousVersion;
-        this.installAfterDownload = installAfterDownload;
+        this.installAfterDownload = true;
     }
 
     /**

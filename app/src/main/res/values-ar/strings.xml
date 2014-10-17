@@ -89,4 +89,5 @@
     <string name="start">"البداية"</string>
     <string name="oneStepCalibration">"خطوة واحدة المعايرة"</string>
     <string name="showStartPage">تظهر صفحة البداية</string>
+    <string name="cameraFlashRequired">لم يكن هذا الهاتف فلاش الكاميرا الذي مطلوب من قبل Caddisfly</string>
 </resources>

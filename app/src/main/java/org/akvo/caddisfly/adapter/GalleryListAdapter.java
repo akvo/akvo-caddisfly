@@ -57,6 +57,7 @@ public class GalleryListAdapter extends BaseAdapter {
 
     private ArrayList<String> mFilePaths = new ArrayList<String>();
 
+    @SuppressWarnings("SameParameterValue")
     public GalleryListAdapter(Activity activity, int testType, long testId,
                               ArrayList<String> filePaths, boolean showResult) {
         mContext = activity;

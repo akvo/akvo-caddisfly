@@ -56,6 +56,7 @@ class UpdateChecker {
      * @param toasts  True if you want toast notifications, false by default
      * @since API 2
      */
+    @SuppressWarnings("SameParameterValue")
     public UpdateChecker(Context context, boolean toasts) {
         mContext = context;
         if (mContext != null) {
@@ -135,7 +136,7 @@ class UpdateChecker {
     @SuppressWarnings("SameParameterValue")
     public void downloadAndInstall(String apkUrl, boolean previousVersion) {
         if (NetworkUtils.isOnline(mContext)) {
-            DownloadManager downloadManager = new DownloadManager(mContext, true, previousVersion);
+            DownloadManager downloadManager = new DownloadManager(mContext, previousVersion);
             downloadManager.execute(apkUrl);
         } else {
             makeToastFromString("Update failed. No internet connection available").show();

@@ -23,7 +23,6 @@ import android.content.DialogInterface;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -55,13 +54,6 @@ import java.util.List;
  */
 public class CameraFragment extends DialogFragment {
 
-    private final Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
-        public void onShutter() {
-            AudioManager mgr = (AudioManager) getActivity()
-                    .getSystemService(Context.AUDIO_SERVICE);
-            mgr.playSoundEffect(AudioManager.FLAG_PLAY_SOUND);
-        }
-    };
     private final Boolean makeShutterSound = false;
     public Camera.PictureCallback pictureCallback;
     private SoundPoolPlayer sound;

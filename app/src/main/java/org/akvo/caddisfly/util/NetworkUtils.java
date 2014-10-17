@@ -29,11 +29,6 @@ import org.akvo.caddisfly.R;
 
 public class NetworkUtils {
 
-    protected NetworkUtils() {
-        // prevents calls from subclass
-        throw new UnsupportedOperationException();
-    }
-
     public static boolean checkInternetConnection(final Context context) {
 
         ConnectivityManager cm =

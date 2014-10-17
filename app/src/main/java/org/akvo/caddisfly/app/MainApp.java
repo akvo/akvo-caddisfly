@@ -41,9 +41,6 @@ public class MainApp extends Application {
 
     public DecimalFormat doubleFormat = new DecimalFormat("0.0");
 
-    public MainApp() {
-    }
-
     public static String getVersion(Context context) {
         try {
             String version = context.getPackageManager()

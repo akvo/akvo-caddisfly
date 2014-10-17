@@ -29,11 +29,6 @@ import org.akvo.caddisfly.R;
 
 public class AlertUtils {
 
-    protected AlertUtils() {
-        // prevents calls from subclass
-        throw new UnsupportedOperationException();
-    }
-
     public static void showMessage(Context context, int title, int message) {
         showAlert(context, title, message, null, null);
     }
@@ -60,80 +55,25 @@ public class AlertUtils {
     private static void showAlert(final Context context, int title, String message, int okButtonText,
                                   DialogInterface.OnClickListener callback,
                                   DialogInterface.OnClickListener cancelListener) {
-        //if ( title == null ) title = context.getResources().getString(R.string.app_name);
-
-/*
-        int iconId;
-        assert context.getApplicationContext() != null;
-        if (((MainApp) context.getApplicationContext()).CurrentTheme
-                == R.style.AppTheme_Dark) {
-            iconId = R.drawable.ic_action_warning_dark;
-        } else {
-            iconId = R.drawable.ic_action_warning;
-        }
-*/
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title)
                 .setMessage(message)
-                        //.setIcon(iconId)
                 .setCancelable(false);
 
         if (callback != null) {
             builder.setPositiveButton(okButtonText, callback);
         }
 
-        if (cancelListener == null) {
-            int buttonText = R.string.cancel;
-            if (callback == null) {
-                buttonText = okButtonText;
-            }
-            builder.setNegativeButton(buttonText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-        } else {
+        if (cancelListener != null) {
             builder.setNegativeButton(R.string.cancel, cancelListener);
         }
 
         final AlertDialog alert = builder.create();
-        alert.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                //Button btnPositive = alert.getButton(Dialog.BUTTON_POSITIVE);
-
-                //float textSize = context.getResources().getDimension(R.dimen.textSize);
-                // btnPositive.setTextSize(textSize);
-
-                //Button btnNegative = alert.getButton(Dialog.BUTTON_NEGATIVE);
-                //btnNegative.setTextSize(textSize);
-            }
-        });
-
         alert.show();
-
     }
 
-    /**
-     * Generic error dialog with a close button.
-     */
-   /* public static void showDialog(String title, String message, Context context) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
-        alertDialogBuilder.setTitle(title);
-        alertDialogBuilder
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }*/
+    @SuppressWarnings("SameParameterValue")
     @SuppressLint("InflateParams")
     public static void showError(Context context, int title, String message, Bitmap bitmap, int okButtonText,
                                  DialogInterface.OnClickListener callback,
@@ -166,6 +106,8 @@ public class AlertUtils {
         }
 
         if (cancelListener == null) {
+            builder.setNegativeButton(R.string.cancel, null);
+        } else {
             int buttonText = R.string.cancel;
             if (callback == null) {
                 buttonText = okButtonText;
@@ -176,8 +118,6 @@ public class AlertUtils {
                     dialogInterface.dismiss();
                 }
             });
-        } else {
-            builder.setNegativeButton(R.string.cancel, cancelListener);
         }
 
         builder.setCancelable(false);

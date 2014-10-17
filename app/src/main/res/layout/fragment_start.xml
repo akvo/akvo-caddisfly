@@ -48,77 +48,78 @@
             android:scaleType="fitXY"
             android:src="@drawable/watch_video" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="-36dp"
-            android:background="#b3db8514"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:padding="10dp"
-                android:shadowColor="#000"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="50"
-                android:text="@string/watchTrainingVideo"
-                android:textColor="#e6ffffff"
-                android:textColorHighlight="#000"
-                android:textSize="20sp" />
-
-            <at.markushi.ui.CircleButton
-                android:id="@+id/videoButton"
-                android:layout_width="64dip"
-                android:layout_height="64dip"
-                android:src="@android:drawable/ic_media_play"
-                app:cb_color="#eef3f11d"
-                app:cb_pressedRingWidth="8dip" />
-
-        </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/startLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/backButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/blue_button"
-                android:text="@string/back"
-                android:textAllCaps="true"
-                android:textColor="#fff" />
 
-            <Button
-                android:id="@+id/startButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+                android:gravity="center_horizontal"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/backButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_button"
+                    android:text="@string/back"
+                    android:textAllCaps="true"
+                    android:textColor="#fff" />
+
+                <Button
+                    android:id="@+id/startButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/green_button"
+                    android:text="@string/start"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/green_button"
-                android:text="@string/start"
-                android:textAllCaps="true"
-                android:textColor="#fff"
-                android:textStyle="bold" />
+                android:background="#b3db8514"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:padding="10dp"
+                    android:shadowColor="#000"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="50"
+                    android:text="@string/watchTrainingVideo"
+                    android:textColor="#e6ffffff"
+                    android:textColorHighlight="#000"
+                    android:textSize="20sp" />
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/videoButton"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip"
+                    android:src="@android:drawable/ic_media_play"
+                    app:cb_color="#eef3f11d"
+                    app:cb_pressedRingWidth="8dip" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <Button
@@ -199,5 +200,6 @@
             android:text="@string/startSurvey" />
 
     </LinearLayout>
+
 
 </FrameLayout>

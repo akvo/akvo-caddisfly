@@ -431,6 +431,7 @@ public class ColorUtils {
         );
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void autoGenerateColorCurve(int testType, ArrayList<ColorInfo> colorList,
                                               int startColor, int size,
                                               SharedPreferences.Editor editor) {

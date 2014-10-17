@@ -96,6 +96,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private SoundPoolPlayer sound;
     private boolean isCalibration;
 
+    @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
         Animation inAnimation = viewAnimator.getInAnimation();
         Animation outAnimation = viewAnimator.getOutAnimation();
