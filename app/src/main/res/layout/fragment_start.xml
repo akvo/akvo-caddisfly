@@ -29,25 +29,25 @@
         android:background="@drawable/home_logo"
         android:contentDescription="@null" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:alpha="0.8"
+        android:baselineAlignBottom="false"
+        android:contentDescription="@null"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/watch_video" />
+
     <LinearLayout
         android:id="@+id/videoLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:gravity="bottom"
         android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:adjustViewBounds="true"
-            android:alpha="0.8"
-            android:baselineAlignBottom="false"
-            android:contentDescription="@null"
-            android:cropToPadding="false"
-            android:scaleType="fitXY"
-            android:src="@drawable/watch_video" />
-
 
         <LinearLayout
             android:id="@+id/startLinearLayout"
@@ -58,7 +58,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:padding="10dp">
 
@@ -73,7 +73,8 @@
                     android:background="@drawable/blue_button"
                     android:text="@string/back"
                     android:textAllCaps="true"
-                    android:textColor="#fff" />
+                    android:textColor="#fff"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/startButton"
@@ -88,7 +89,22 @@
                     android:text="@string/start"
                     android:textAllCaps="true"
                     android:textColor="#fff"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/surveyButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/green_button"
+                    android:text="@string/startSurvey"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -122,19 +138,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/surveyButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/green_button"
-            android:text="@string/startSurvey"
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

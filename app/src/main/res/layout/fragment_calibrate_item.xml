@@ -65,7 +65,7 @@
                 android:id="@+id/colorButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="110dp"
                 android:background="#ffff00"
                 android:clickable="false"
                 android:paddingEnd="8dp"

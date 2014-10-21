@@ -107,7 +107,6 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     @SuppressWarnings("NullableProblems")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //getActivity().getActionBar().hide();
         return inflater.inflate(R.layout.fragment_calibrate, container, false);
     }
 
@@ -145,12 +144,10 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         Double[] rangeArray = rangeIntervals.toArray(new Double[rangeIntervals.size()]);
 
         CalibrateListAdapter customList = new CalibrateListAdapter(getActivity(), rangeArray);
-        //customList.setTestType(mainApp.currentTestType);
         setListAdapter(customList);
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //CursorWrapper content = (CursorWrapper) adapterView.getItemAtPosition(i);
         displayCalibrateItem(i);
     }
 
@@ -169,7 +166,6 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
             case R.id.menu_load:
                 Handler.Callback callback = new Handler.Callback() {
                     public boolean handleMessage(Message msg) {
-                        //changeTestType(mainApp.currentTestType);
                         CalibrateListAdapter adapter = (CalibrateListAdapter) getListAdapter();
                         adapter.notifyDataSetChanged();
                         return true;

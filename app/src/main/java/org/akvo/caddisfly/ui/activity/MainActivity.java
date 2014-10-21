@@ -156,7 +156,9 @@ public class MainActivity extends MainActivityBase implements
                 }
             }
         } finally {
-            camera.release();
+            if (camera != null) {
+                camera.release();
+            }
         }
         return hasFlash;
     }
@@ -254,11 +256,8 @@ public class MainActivity extends MainActivityBase implements
                     fragment = new CalibrateFragment();
 
                 }
-                //}
-                //fragment = mCalibrateFragment;
                 break;
             case Config.SETTINGS_SCREEN_INDEX:
-                //showCheckUpdateOption = true;
                 if (mSettingsFragment == null) {
                     mSettingsFragment = new SettingsFragment();
                 }
@@ -294,39 +293,6 @@ public class MainActivity extends MainActivityBase implements
 
             case R.id.menu_settings:
                 displayView(Config.SETTINGS_SCREEN_INDEX, true);
-                //checkUpdate(false);
-/*
-                AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-                builderSingle.setIcon(R.drawable.ic_launcher);
-                final Context context = this;
-                //builderSingle.setTitle(R.string.selectTestType);
-
-                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                        android.R.layout.select_dialog_singleChoice);
-                arrayAdapter.addAll(getResources().getStringArray(R.array.languages));
-
-                builderSingle.setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                dialog.dismiss();
-                            }
-                        }
-                );
-                builderSingle.setAdapter(arrayAdapter,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String languageCode = getResources().getStringArray(R.array.language_codes)[which];
-                                PreferencesUtils.setString(context, R.string.currentLocale, languageCode);
-                                recreate();
-                            }
-                        }
-                );
-                builderSingle.show();
-*/
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -370,8 +336,8 @@ public class MainActivity extends MainActivityBase implements
                         public void onClick(
                                 DialogInterface dialogInterface,
                                 int i) {
+                            dialogInterface.dismiss();
                             displayView(Config.CALIBRATE_SCREEN_INDEX, true);
-
                         }
                     }, null
             );

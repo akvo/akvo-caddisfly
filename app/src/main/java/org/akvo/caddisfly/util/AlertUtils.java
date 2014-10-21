@@ -63,6 +63,13 @@ public class AlertUtils {
 
         if (callback != null) {
             builder.setPositiveButton(okButtonText, callback);
+        } else if (cancelListener == null) {
+            builder.setNegativeButton(okButtonText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
         }
 
         if (cancelListener != null) {

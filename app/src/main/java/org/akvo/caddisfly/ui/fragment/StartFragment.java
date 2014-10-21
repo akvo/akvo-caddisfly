@@ -80,7 +80,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        final Button backButton = (Button) view.findViewById(R.id.backButton);
+        Button backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +90,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        final Button startSurveyButton = (Button) view.findViewById(R.id.surveyButton);
+        Button startSurveyButton = (Button) view.findViewById(R.id.surveyButton);
         startSurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +100,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        final Button startButton = (Button) view.findViewById(R.id.startButton);
+        Button startButton = (Button) view.findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,11 +112,13 @@ public class StartFragment extends Fragment {
 
         final LinearLayout startLinearLayout = (LinearLayout) view.findViewById(R.id.startLinearLayout);
         if (mIsExternal) {
-            startLinearLayout.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.VISIBLE);
+            startButton.setVisibility(View.VISIBLE);
             startSurveyButton.setVisibility(View.GONE);
         } else {
             startSurveyButton.setVisibility(View.VISIBLE);
-            startLinearLayout.setVisibility(View.GONE);
+            backButton.setVisibility(View.GONE);
+            startButton.setVisibility(View.GONE);
         }
 
         return view;
