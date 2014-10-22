@@ -68,9 +68,9 @@ public class CalibrateListAdapter extends ArrayAdapter<Double> {
 
             // display ppm value
             ppmText.setText(mainApp.doubleFormat
-                    .format((position + mainApp.rangeStartIncrement) * (
+                    .format(mainApp.rangeStartIncrement + (position * (
                             mainApp.rangeIncrementValue
-                                    * mainApp.rangeIncrementStep)));
+                                    * mainApp.rangeIncrementStep))));
 
             int r = Color.red(color);
             int g = Color.green(color);

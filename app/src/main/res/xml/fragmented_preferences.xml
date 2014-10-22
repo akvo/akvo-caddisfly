@@ -23,10 +23,15 @@
         android:summary="@string/calibrateSummary"
         android:title="@string/calibrate" />
 
+    <Preference
+        android:key="highRange"
+        android:layout="@layout/preference"
+        android:title="@string/highRange" />
+
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/showStartPageKey"
-        android:layout="@layout/preference"
+        android:layout="@layout/preference_alternate"
         android:title="@string/showStartPage" />
 
     <Preference

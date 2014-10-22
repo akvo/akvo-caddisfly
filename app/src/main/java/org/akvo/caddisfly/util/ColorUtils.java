@@ -271,10 +271,10 @@ public class ColorUtils {
     }
 
     public static void autoGenerateColors(int index, int testType, ArrayList<ColorInfo> colorList, int incrementStep,
-                                          SharedPreferences.Editor editor) {
+                                          SharedPreferences.Editor editor, int startIndex, int endIndex) {
 
         int startColor = colorList.get(index).getColor();
-        if (index < 30) {
+        if (index < endIndex) {
             for (int i = 1; i < incrementStep; i++) {
                 int nextColor = ColorUtils.getGradientColor(startColor,
                         colorList.get(index + incrementStep).getColor(), incrementStep,
@@ -282,12 +282,14 @@ public class ColorUtils {
                 ColorInfo colorInfo = new ColorInfo(nextColor, 100);
                 colorList.set(index + i, colorInfo);
 
-                editor.putInt(String.format("%d-%s", testType, String.valueOf(index + i)),
-                        nextColor);
+                if (editor != null) {
+                    editor.putInt(String.format("%d-%d", testType, index + i),
+                            nextColor);
+                }
             }
         }
 
-        if (index > 0) {
+        if (index > startIndex) {
             for (int i = 1; i < incrementStep; i++) {
                 int nextColor = ColorUtils.getGradientColor(startColor,
                         colorList.get(index - incrementStep).getColor(), incrementStep,
@@ -295,8 +297,10 @@ public class ColorUtils {
                 ColorInfo colorInfo = new ColorInfo(nextColor, 100);
                 colorList.set(index - i, colorInfo);
 
-                editor.putInt(String.format("%d-%s", testType, String.valueOf(index - i)),
-                        nextColor);
+                if (editor != null) {
+                    editor.putInt(String.format("%d-%d", testType, index - i),
+                            nextColor);
+                }
             }
         }
     }

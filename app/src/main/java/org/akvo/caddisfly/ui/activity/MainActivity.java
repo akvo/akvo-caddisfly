@@ -80,7 +80,7 @@ public class MainActivity extends MainActivityBase implements
         CalibrateItemFragment.OnLoadCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
-    private int mTestType = Config.FLUORIDE_2_INDEX;
+    private int mTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
     private boolean mShouldFinish = false;
     private SettingsFragment mSettingsFragment = null;
     //private HelpFragment helpFragment = null;
@@ -172,9 +172,9 @@ public class MainActivity extends MainActivityBase implements
         MainApp mainApp = ((MainApp) getApplicationContext());
 
         if (PreferencesUtils.getBoolean(this, R.string.oneStepCalibrationKey, false)) {
-            mainApp.setFluorideSwatches();
+            mainApp.setFluorideOneStepSwatches();
         } else {
-            mainApp.setFluoride2Swatches();
+            mainApp.setFluorideSevenStepSwatches();
         }
         // Set the locale according to preference
         Locale myLocale = new Locale(
@@ -369,6 +369,7 @@ public class MainActivity extends MainActivityBase implements
         Context context = this;
 
         MainApp mainApp = (MainApp) context.getApplicationContext();
+        mainApp.setLowRangeSwatches();
 
         if (mainApp.getCalibrationErrorCount() > 0) {
             AlertUtils.showAlert(context, R.string.error,
@@ -542,9 +543,10 @@ public class MainActivity extends MainActivityBase implements
                                                         index,
                                                         mainApp.currentTestType,
                                                         mainApp.colorList,
-                                                        mainApp.rangeIncrementStep, editor);
+                                                        mainApp.rangeIncrementStep, editor, 0, 30);
                                             }
                                             editor.apply();
+                                            mainApp.loadHighRangeSwatches();
                                             return null;
                                         }
 

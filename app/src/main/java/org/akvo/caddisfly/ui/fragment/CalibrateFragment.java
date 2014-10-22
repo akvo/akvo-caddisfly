@@ -69,7 +69,8 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        changeTestType(mainApp.currentTestType);
+        // changeTestType(mainApp.currentTestType);
+        setAdapter();
         getActivity().setTitle(R.string.calibrate);
         getListView().setOnItemClickListener(this);
     }
@@ -115,12 +116,12 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         mainApp.currentTestType = position;
 
         switch (position) {
-            case Config.FLUORIDE_INDEX:
-                mainApp.setFluorideSwatches();
+            case Config.FLUORIDE_ONE_STEP_INDEX:
+                mainApp.setFluorideOneStepSwatches();
                 setAdapter();
                 break;
-            case Config.FLUORIDE_2_INDEX:
-                mainApp.setFluoride2Swatches();
+            case Config.FLUORIDE_SEVEN_STEP_INDEX:
+                mainApp.setFluorideSevenStepSwatches();
                 setAdapter();
                 break;
             default:
@@ -167,7 +168,9 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
                 Handler.Callback callback = new Handler.Callback() {
                     public boolean handleMessage(Message msg) {
                         CalibrateListAdapter adapter = (CalibrateListAdapter) getListAdapter();
-                        adapter.notifyDataSetChanged();
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
                         return true;
                     }
                 };

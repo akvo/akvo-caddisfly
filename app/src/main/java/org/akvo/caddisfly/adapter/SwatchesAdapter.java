@@ -65,8 +65,8 @@ public class SwatchesAdapter extends ArrayAdapter<Integer> {
 
             //display ppm value
             ppmText.setText(doubleFormat
-                    .format((position + mainApp.rangeStartIncrement)
-                            * mainApp.rangeIncrementValue));
+                    .format(mainApp.rangeStartIncrement + (position
+                            * mainApp.rangeIncrementValue)));
 
             //display rgb value
             int r = Color.red(color);

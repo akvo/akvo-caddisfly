@@ -18,8 +18,10 @@ package org.akvo.caddisfly.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -34,13 +36,17 @@ public class MainApp extends Application {
 
     public final ArrayList<Double> rangeIntervals = new ArrayList<Double>();
     public final ArrayList<ColorInfo> colorList = new ArrayList<ColorInfo>();
+    public DecimalFormat doubleFormat = new DecimalFormat("0.0");
+    public int currentTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
     public int rangeIncrementStep = 5;
     public int rangeStartIncrement = 0;
-    public int currentTestType = Config.FLUORIDE_2_INDEX;
     public double rangeIncrementValue = 0.1;
+    private int maxRangeValue = 3;
 
-    public DecimalFormat doubleFormat = new DecimalFormat("0.0");
-
+    /**
+     * @param context The context
+     * @return The version name and number
+     */
     public static String getVersion(Context context) {
         try {
             String version = context.getPackageManager()
@@ -67,84 +73,140 @@ public class MainApp extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             return "";
         }
-
-    }
-/*
-    public static String getPreviousVersion(Context context) {
-        try {
-            int version = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0).versionCode;
-            return String.valueOf(version - 1);
-
-        } catch (PackageManager.NameNotFoundException e) {
-            return "";
-        }
-
-    }*/
-
-    /**
-     * Factory preset values for Fluoride
-     */
-    public void setFluorideSwatches() {
-        //ArrayList<Integer> presetColorList = new ArrayList<Integer>();
-        colorList.clear();
-        rangeIntervals.clear();
-
-        rangeIncrementStep = 30;
-        rangeIncrementValue = 0.1;
-        rangeStartIncrement = 0;
-        doubleFormat = new DecimalFormat("0.0");
-
-        currentTestType = Config.FLUORIDE_INDEX;
-
-        for (double i = 0.0; i < 3.1; i += (rangeIncrementStep * rangeIncrementValue)) {
-            rangeIntervals.add(i);
-        }
-
-        for (double i = 0; i < 31; i++) {
-            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
-
-        loadCalibratedSwatches(currentTestType);
     }
 
     /**
-     * Factory preset values for Fluoride
+     * Factory preset values for Fluoride (One step calibration)
      */
-    public void setFluoride2Swatches() {
-        //ArrayList<Integer> presetColorList = new ArrayList<Integer>();
+    public void setFluorideOneStepSwatches() {
         colorList.clear();
         rangeIntervals.clear();
 
+        maxRangeValue = 3;
         rangeIncrementStep = 5;
-        rangeIncrementValue = 0.1;
         rangeStartIncrement = 0;
-        doubleFormat = new DecimalFormat("0.0");
+        rangeIncrementValue = 0.1;
 
-        currentTestType = Config.FLUORIDE_2_INDEX;
+        currentTestType = Config.FLUORIDE_ONE_STEP_INDEX;
 
-        for (double i = 0.0; i < 3.1; i += (rangeIncrementStep * rangeIncrementValue)) {
+        for (double i = 0.0; i <= maxRangeValue; i += ((maxRangeValue * 10) * rangeIncrementValue)) {
             rangeIntervals.add(i);
         }
 
-        for (double i = 0; i < 31; i++) {
+        for (double i = 0; i <= maxRangeValue * 10; i++) {
             colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
         }
 
-        //colorList = new ArrayList<Integer>(presetColorList);
         loadCalibratedSwatches(currentTestType);
     }
 
+    /**
+     * Factory preset values for Fluoride (Seven step calibration)
+     */
+    public void setFluorideSevenStepSwatches() {
+        colorList.clear();
+        rangeIntervals.clear();
 
-    public void setSwatches(int testType) {
-        switch (testType) {
-            case Config.FLUORIDE_INDEX:
-                setFluorideSwatches();
-                break;
-            case Config.FLUORIDE_2_INDEX:
-                setFluoride2Swatches();
-                break;
+        maxRangeValue = 3;
+        rangeIncrementStep = 5;
+        rangeStartIncrement = 0;
+        rangeIncrementValue = 0.1;
+
+        currentTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
+
+        for (double i = 0.0; i <= maxRangeValue; i += (rangeIncrementStep * rangeIncrementValue)) {
+            rangeIntervals.add(i);
         }
+
+        for (double i = 0; i <= maxRangeValue * 10; i++) {
+            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
+        }
+
+        loadCalibratedSwatches(currentTestType);
+    }
+
+    public void setHighRangeSwatches() {
+        rangeIntervals.clear();
+
+        ArrayList<ColorInfo> highRangeColorList = new ArrayList<ColorInfo>();
+
+        maxRangeValue = 12;
+        rangeIncrementStep = 20;
+        rangeStartIncrement = 3;
+        rangeIncrementValue = 0.1;
+
+        for (double i = 0.0; i <= maxRangeValue; i += (rangeIncrementStep * rangeIncrementValue)) {
+            rangeIntervals.add(i);
+        }
+
+        for (double i = 0; i <= maxRangeValue * 10; i++) {
+            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
+        }
+
+        loadCalibratedSwatches(Config.FLUORIDE_HIGH_RANGE);
+    }
+
+    public void setLowRangeSwatches() {
+        if (PreferencesUtils.getBoolean(getApplicationContext(), R.string.oneStepCalibrationKey, false)) {
+            setFluorideOneStepSwatches();
+        } else {
+            setFluorideSevenStepSwatches();
+        }
+    }
+
+        /**
+         * @param testType The type of test
+         */
+        public void setSwatches(int testType) {
+            switch (testType) {
+                case Config.FLUORIDE_ONE_STEP_INDEX:
+                    setFluorideOneStepSwatches();
+                    break;
+                case Config.FLUORIDE_SEVEN_STEP_INDEX:
+                    setFluorideSevenStepSwatches();
+                    break;
+                case Config.FLUORIDE_HIGH_RANGE:
+                    setHighRangeSwatches();
+                    break;
+        }
+    }
+
+    public void loadHighRangeSwatches() {
+
+        ArrayList<ColorInfo> highRangeColorList = new ArrayList<ColorInfo>();
+
+        maxRangeValue = 12;
+        rangeIncrementStep = 20;
+        rangeStartIncrement = 3;
+        rangeIncrementValue = 0.1;
+
+        currentTestType = Config.FLUORIDE_HIGH_RANGE;
+
+        for (double i = 0; i <= maxRangeValue * 10; i++) {
+            highRangeColorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
+        }
+
+        int index = 30;
+
+        for (int i = colorList.size() - 1; i >= 30; i -= 20) {
+            highRangeColorList.set(i, colorList.get(index));
+            index -= 5;
+        }
+
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        for (int i = 0; i < maxRangeValue * 10; i += 20) {
+            ColorUtils.autoGenerateColors(
+                    i,
+                    Config.FLUORIDE_HIGH_RANGE,
+                    highRangeColorList,
+                    rangeIncrementStep, editor, 0, maxRangeValue * 10);
+        }
+        editor.apply();
+
+        setLowRangeSwatches();
     }
 
     /**
@@ -155,7 +217,6 @@ public class MainApp extends Application {
     void loadCalibratedSwatches(int testType) {
         MainApp context = ((MainApp) this.getApplicationContext());
         for (int i = 0; i < colorList.size(); i++) {
-
             if (PreferencesUtils.contains(context, String.format("%d-%d", testType, i))) {
                 int value = PreferencesUtils.getInt(context, String.format("%d-%d", testType, i), -1);
 
@@ -194,6 +255,10 @@ public class MainApp extends Application {
 
     }
 
+    /**
+     * @param testType  The type of test
+     * @param colorList List of swatch colors to be saved
+     */
     public void saveCalibratedSwatches(int testType, ArrayList<Integer> colorList) {
         MainApp context = ((MainApp) this.getApplicationContext());
         assert context != null;
@@ -210,6 +275,9 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * @return The number of errors found
+     */
     public int getCalibrationErrorCount() {
         MainApp mainApp = this;
         int minAccuracy = PreferencesUtils
@@ -218,10 +286,6 @@ public class MainApp extends Application {
         int count = 0;
         for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
             final int index = i * mainApp.rangeIncrementStep;
-/*
-            int accuracy = Math.max(-1, PreferencesUtils.getInt(mainApp, String
-                    .format("%d-a-%d", testType, index), -1));
-*/
             if (mainApp.colorList.get(index).getErrorCode() > 0 ||
                     (mainApp.colorList.get(index).getQuality() > -1 && mainApp.colorList.get(index).getQuality() < minAccuracy)) {
                 count++;

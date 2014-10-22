@@ -61,7 +61,7 @@ import java.util.ArrayList;
 @SuppressWarnings("WeakerAccess")
 public class CalibrateItemFragment extends ListFragment {
 
-    protected int mTestType = Config.FLUORIDE_2_INDEX;
+    protected int mTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
     protected GalleryListAdapter mAdapter;
     private SoundPoolPlayer sound;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;
@@ -211,8 +211,8 @@ public class CalibrateItemFragment extends ListFragment {
         }
 
         mValueButton.setText(mainApp.doubleFormat
-                .format((position + mainApp.rangeStartIncrement) * (mainApp.rangeIncrementStep
-                        * mainApp.rangeIncrementValue)));
+                .format(mainApp.rangeStartIncrement + (position * (mainApp.rangeIncrementStep
+                        * mainApp.rangeIncrementValue))));
 
         mStartButton.setEnabled(true);
     }
@@ -291,7 +291,7 @@ public class CalibrateItemFragment extends ListFragment {
                                     index,
                                     mainApp.currentTestType,
                                     mainApp.colorList,
-                                    mainApp.rangeIncrementStep, editor);
+                                    mainApp.rangeIncrementStep, editor, 0, 30);
                         }
                     }
                     editor.apply();

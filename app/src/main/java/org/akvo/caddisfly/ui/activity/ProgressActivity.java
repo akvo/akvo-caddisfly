@@ -323,15 +323,15 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 .getDefaultSharedPreferences(getApplicationContext());
 
         switch (mTestType) {
-            case Config.FLUORIDE_INDEX:
+            case Config.FLUORIDE_ONE_STEP_INDEX:
                 mTestTotal = 1;
                 mTitleText.setText(R.string.fluoride);
-                mainContext.setFluorideSwatches();
+                mainContext.setFluorideOneStepSwatches();
                 break;
-            case Config.FLUORIDE_2_INDEX:
+            case Config.FLUORIDE_SEVEN_STEP_INDEX:
                 mTestTotal = 1;
                 mTitleText.setText(R.string.fluoride2);
-                mainContext.setFluoride2Swatches();
+                mainContext.setFluorideSevenStepSwatches();
                 break;
         }
 

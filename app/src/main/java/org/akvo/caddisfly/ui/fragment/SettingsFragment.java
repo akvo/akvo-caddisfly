@@ -71,6 +71,24 @@ public class SettingsFragment extends PreferenceFragment
         if (calibratePreference != null) {
             calibratePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
+                    Context context = mActivity.getApplicationContext();
+                    MainApp mainApp = (MainApp) context;
+
+                    mainApp.setLowRangeSwatches();
+                    mOnCalibrateListener.onCalibrate();
+                    return true;
+                }
+            });
+        }
+
+        Preference highRangePreference = findPreference("highRange");
+        if (highRangePreference != null) {
+            highRangePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    Context context = mActivity.getApplicationContext();
+                    MainApp mainApp = (MainApp) context;
+
+                    mainApp.setSwatches(Config.FLUORIDE_HIGH_RANGE);
                     mOnCalibrateListener.onCalibrate();
                     return true;
                 }
@@ -172,9 +190,9 @@ public class SettingsFragment extends PreferenceFragment
                 mActivity.recreate();
             } else if (context.getString(R.string.oneStepCalibrationKey).equals(s)) {
                 if (PreferencesUtils.getBoolean(context, R.string.oneStepCalibrationKey, false)) {
-                    mainApp.setFluorideSwatches();
+                    mainApp.setFluorideOneStepSwatches();
                 } else {
-                    mainApp.setFluoride2Swatches();
+                    mainApp.setFluorideSevenStepSwatches();
                 }
             }
         }

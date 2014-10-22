@@ -30,9 +30,9 @@ public class DataHelper {
 
     public static String getTestTitle(Context context, int testType) {
         switch (testType) {
-            case Config.FLUORIDE_INDEX:
+            case Config.FLUORIDE_ONE_STEP_INDEX:
                 return context.getString(R.string.fluoride);
-            case Config.FLUORIDE_2_INDEX:
+            case Config.FLUORIDE_SEVEN_STEP_INDEX:
                 return context.getString(R.string.fluoride);
             default:
                 return context.getString(R.string.fluoride);
@@ -42,19 +42,19 @@ public class DataHelper {
     public static int getTestTypeFromCode(String code) {
 
         if (("FLUOR").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("ALKAL").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("COLIF").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("TURBI").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("NITRA").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("IRONA").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         } else if (("ARSEN").equals(code)) {
-            return Config.FLUORIDE_INDEX;
+            return Config.FLUORIDE_ONE_STEP_INDEX;
         }
 
         return -1;
