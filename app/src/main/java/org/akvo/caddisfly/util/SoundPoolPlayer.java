@@ -15,6 +15,7 @@ public class SoundPoolPlayer {
         this.mShortPlayer = new SoundPool(4, AudioManager.STREAM_ALARM, 0);
 
         mSounds.put(R.raw.beep, this.mShortPlayer.load(pContext, R.raw.beep, 1));
+        mSounds.put(R.raw.beep_long, this.mShortPlayer.load(pContext, R.raw.beep_long, 1));
         mSounds.put(R.raw.done, this.mShortPlayer.load(pContext, R.raw.done, 1));
         mSounds.put(R.raw.err, this.mShortPlayer.load(pContext, R.raw.err, 1));
     }

@@ -279,6 +279,10 @@ public class CalibrateItemFragment extends ListFragment {
                         editor.putInt(String.format("%d-a-%s", mTestType, String.valueOf(index)),
                                 accuracy);
 
+                        if (mainApp.colorList.size() == 0) {
+                            mainApp.setLowRangeSwatches();
+                        }
+
                         if (PreferencesUtils.getBoolean(getActivity(), R.string.oneStepCalibrationKey, false)) {
                             ColorUtils.autoGenerateColorCurve(
                                     mainApp.currentTestType,

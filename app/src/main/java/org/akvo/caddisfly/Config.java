@@ -16,11 +16,11 @@ public class Config {
 
     // Caddisfly update check path
     public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/akvoapp/v.txt?check=41";
+            = "http://caddisfly.ternup.com/akvoapp/v.txt";
 
     // Caddisfly update path
     public static final String UPDATE_URL
-            = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk?check=41";
+            = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
 
     public static final String DEFAULT_LOCALE = "en";
 
@@ -53,8 +53,6 @@ public class Config {
     public static final int FLUORIDE_ONE_STEP_INDEX = 0;
 
     public static final int FLUORIDE_SEVEN_STEP_INDEX = 1;
-
-    public static final int FLUORIDE_HIGH_RANGE = 2;
 
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;

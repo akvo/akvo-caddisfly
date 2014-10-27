@@ -36,6 +36,7 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.ui.fragment.CameraFragment;
+import org.akvo.caddisfly.ui.fragment.MessageFragment;
 import org.akvo.caddisfly.ui.fragment.ResultFragment;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.DataHelper;
@@ -55,7 +56,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ProgressActivity extends Activity implements ResultFragment.ResultDialogListener {
+public class ProgressActivity extends Activity implements ResultFragment.ResultDialogListener, MessageFragment.ResultDialogListener {
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -96,6 +97,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private SoundPoolPlayer sound;
     private boolean isCalibration;
 
+    private boolean isHighRangeTest = false;
+
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
         Animation inAnimation = viewAnimator.getInAnimation();
@@ -126,7 +129,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     protected void onStart() {
         super.onStart();
         InitializeTest();
-        startNewTest(mTestType);
+        startNewTest();
     }
 
     @Override
@@ -227,7 +230,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FileUtils.deleteFolder(new File(mFolderName));
                         InitializeTest();
-                        startNewTest(mTestType);
+                        startNewTest();
                     }
                 },
                 new DialogInterface.OnClickListener() {
@@ -353,7 +356,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         }
     }
 
-    private void startNewTest(int testType) {
+    private void startNewTest() {
 
         if (isCalibration) {
             File calibrateFolder = new File(
@@ -379,7 +382,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.runningTestFolder), mFolderName);
-        editor.putInt(PreferencesHelper.CURRENT_TEST_TYPE_KEY, testType);
+        editor.putInt(PreferencesHelper.CURRENT_TEST_TYPE_KEY, mTestType);
         editor.apply();
 
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -480,7 +483,12 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                                 ft.remove(prev);
                             }
                             ft.addToBackStack(null);
-                            mCameraFragment.show(ft, "cameraDialog");
+                            try {
+                                mCameraFragment.show(ft, "cameraDialog");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                finish();
+                            }
                         }
                     };
 
@@ -542,11 +550,12 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
             this.setResult(Activity.RESULT_CANCELED, intent);
             finish();
         } else {
+            super.onBackPressed();
             //Clear the activity back stack
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            //Intent intent = new Intent(Intent.ACTION_MAIN);
+            //intent.addCategory(Intent.CATEGORY_HOME);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //startActivity(intent);
         }
     }
 
@@ -587,8 +596,13 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         if (mFolderName != null && !mFolderName.isEmpty()) {
             if (msg != null && msg.getData() != null) {
 
-                final double result = msg.getData().getDouble(Config.RESULT_VALUE_KEY, -1);
+                double result = msg.getData().getDouble(Config.RESULT_VALUE_KEY, -1);
                 final int quality = msg.getData().getInt(Config.QUALITY_KEY, 0);
+
+                if (isHighRangeTest) {
+                    result = 3 + ((result / 0.5) * 2);
+                    msg.getData().putDouble(Config.RESULT_VALUE_KEY, result);
+                }
 
                 int minAccuracy = PreferencesUtils
                         .getInt(this, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
@@ -596,16 +610,32 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 String title = DataHelper.getTestTitle(this, mTestType);
 
                 if (result >= 0 && quality >= minAccuracy) {
-                    sound.playShortResource(R.raw.done);
-                    ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg);
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    if (result > 2.5 && !isHighRangeTest) {
+                        isHighRangeTest = true;
+                        MessageFragment mMessageFragment = MessageFragment.newInstance(title, msg);
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                    Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                    if (prev != null) {
-                        ft.remove(prev);
+                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        mMessageFragment.setCancelable(false);
+                        mMessageFragment.show(ft, "messageDialog");
+                        sound.playShortResource(R.raw.beep_long);
+                    } else {
+                        isHighRangeTest = false;
+                        sound.playShortResource(R.raw.done);
+                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg);
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        mResultFragment.setCancelable(false);
+                        mResultFragment.show(ft, "resultDialog");
                     }
-                    mResultFragment.setCancelable(false);
-                    mResultFragment.show(ft, "resultDialog");
+
                 } else {
                     sendResult2(msg);
                 }
@@ -659,9 +689,15 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     }
 
     public void onFinishDialog(Bundle bundle) {
-        Message msg = new Message();
-        msg.setData(bundle);
-        sendResult2(msg);
+        if (isHighRangeTest) {
+            //mResultFragment.dismiss();
+            InitializeTest();
+            startNewTest();
+        } else {
+            Message msg = new Message();
+            msg.setData(bundle);
+            sendResult2(msg);
+        }
     }
 
     @Override

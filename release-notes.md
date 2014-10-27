@@ -1,3 +1,10 @@
+v0.42 alpha
+-----------
+1. High Range test added
+2. UI changes for small screens
+3. Check for camera flash
+4. Sound effect on calibration
+
 v0.41 alpha
 -----------
 1. Beep sounds during test

@@ -194,7 +194,9 @@ public class MainActivity extends MainActivityBase implements
      * @param background true: check for update silently, false: show messages to user
      */
     void checkUpdate(boolean background) {
-        UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, background, false);
+        MainApp mainApp = (MainApp) this.getApplicationContext();
+
+        UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, background, mainApp.getVersion(this));
         updateCheckTask.execute();
     }
 
@@ -327,7 +329,6 @@ public class MainActivity extends MainActivityBase implements
 
         MainApp mainApp = (MainApp) this.getApplicationContext();
 
-
         if (mainApp.getCalibrationErrorCount() > 0) {
             AlertUtils.showAlert(context, R.string.error,
                     R.string.calibrate_error,
@@ -393,8 +394,8 @@ public class MainActivity extends MainActivityBase implements
         intent.putExtra(PreferencesHelper.CURRENT_LOCATION_ID_KEY, (long) 0);
         intent.putExtra("isCalibration", false);
         //intent.getBooleanExtra("skipInfo", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, REQUEST_TEST);
 
     }
@@ -428,9 +429,7 @@ public class MainActivity extends MainActivityBase implements
     public void onBackPressed() {
         super.onBackPressed();
         try {
-            //showCheckUpdateOption = getCurrentFragmentIndex() == Config.SETTINGS_SCREEN_INDEX;
             invalidateOptionsMenu();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -546,7 +545,6 @@ public class MainActivity extends MainActivityBase implements
                                                         mainApp.rangeIncrementStep, editor, 0, 30);
                                             }
                                             editor.apply();
-                                            mainApp.loadHighRangeSwatches();
                                             return null;
                                         }
 
@@ -599,5 +597,4 @@ public class MainActivity extends MainActivityBase implements
 
         callback.handleMessage(null);
     }
-
 }

@@ -23,33 +23,28 @@
         android:summary="@string/calibrateSummary"
         android:title="@string/calibrate" />
 
-    <Preference
-        android:key="highRange"
-        android:layout="@layout/preference"
-        android:title="@string/highRange" />
-
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/showStartPageKey"
-        android:layout="@layout/preference_alternate"
+        android:layout="@layout/preference"
         android:title="@string/showStartPage" />
 
     <Preference
         android:key="checkUpdate"
-        android:layout="@layout/preference"
+        android:layout="@layout/preference_alternate"
         android:summary="@string/checkUpdateSummary"
         android:title="@string/checkUpdate" />
 
     <Preference
         android:key="about"
-        android:layout="@layout/preference_alternate"
+        android:layout="@layout/preference"
         android:summary="@string/aboutSummary"
         android:title="@string/about" />
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="@string/oneStepCalibrationKey"
-        android:layout="@layout/preference"
+        android:layout="@layout/preference_alternate"
         android:title="@string/oneStepCalibration" />
 
     <ListPreference
@@ -58,19 +53,8 @@
         android:entries="@array/languages"
         android:entryValues="@array/language_codes"
         android:key="@string/languageKey"
-        android:layout="@layout/preference_alternate"
+        android:layout="@layout/preference"
         android:negativeButtonText="@string/cancel"
         android:summary="%s"
         android:title="@string/language" />
-
-    <!--
-        <org.akvo.caddisfly.component.ConfirmPreference
-            android:defaultValue="false"
-            android:dialogTitle="@string/appVersion"
-            android:key="@string/revertVersionKey"
-            android:layout="@layout/preference"
-            android:summary="@string/revertSummary"
-            android:title="@string/revertVersion" />
-    -->
-
 </PreferenceScreen>

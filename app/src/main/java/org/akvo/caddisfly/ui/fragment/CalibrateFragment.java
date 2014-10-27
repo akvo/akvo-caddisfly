@@ -68,8 +68,6 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        // changeTestType(mainApp.currentTestType);
         setAdapter();
         getActivity().setTitle(R.string.calibrate);
         getListView().setOnItemClickListener(this);

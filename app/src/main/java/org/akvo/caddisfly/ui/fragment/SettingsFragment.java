@@ -71,24 +71,6 @@ public class SettingsFragment extends PreferenceFragment
         if (calibratePreference != null) {
             calibratePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    Context context = mActivity.getApplicationContext();
-                    MainApp mainApp = (MainApp) context;
-
-                    mainApp.setLowRangeSwatches();
-                    mOnCalibrateListener.onCalibrate();
-                    return true;
-                }
-            });
-        }
-
-        Preference highRangePreference = findPreference("highRange");
-        if (highRangePreference != null) {
-            highRangePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    Context context = mActivity.getApplicationContext();
-                    MainApp mainApp = (MainApp) context;
-
-                    mainApp.setSwatches(Config.FLUORIDE_HIGH_RANGE);
                     mOnCalibrateListener.onCalibrate();
                     return true;
                 }

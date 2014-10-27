@@ -31,31 +31,18 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
     private static UpdateChecker checker;
 
     private final Context mContext;
+    private final String mVersion;
 
     private final boolean mBackground;
 
-    private final boolean mPreviousVersion;
 
     private ProgressDialog progressDialog;
 
-    public UpdateCheckTask(Context context, boolean background, boolean previousVersion) {
+    public UpdateCheckTask(Context context, boolean background, String version) {
         mContext = context;
         mBackground = background;
-        mPreviousVersion = previousVersion;
+        mVersion = version;
     }
-
-/*
-    public static String getPreviousVersion(Context context) {
-        try {
-            int version = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0).versionCode;
-            return String.valueOf(version - 1);
-
-        } catch (PackageManager.NameNotFoundException e) {
-            return "";
-        }
-    }
-*/
 
     @Override
     protected void onPreExecute() {
@@ -63,18 +50,12 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (NetworkUtils.isOnline(mContext)) {
             checker = new UpdateChecker(mContext, false);
-            if (mPreviousVersion) {
-                String url = Config.UPDATE_URL.replace(".apk", "_prev" + ".apk");
-                checker.downloadAndInstall(url, true);
-                this.cancel(true);
-            } else {
-                if (!mBackground) {
-                    progressDialog = new ProgressDialog(mContext);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setMessage(mContext.getString(R.string.checkingForUpdates));
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                }
+            if (!mBackground) {
+                progressDialog = new ProgressDialog(mContext);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage(mContext.getString(R.string.checkingForUpdates));
+                progressDialog.setCancelable(false);
+                progressDialog.show();
             }
         } else {
             this.cancel(true);
@@ -91,7 +72,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
                 .getBoolean(mContext, R.string.updateAvailable, false);
 
         if (!updateAvailable) {
-            if (checker.checkForUpdateByVersionCode(Config.UPDATE_CHECK_URL)) {
+            if (checker.checkForUpdateByVersionCode(Config.UPDATE_CHECK_URL + "?" + mVersion)) {
                 PreferencesUtils.setLong(mContext, R.string.lastUpdateCheck,
                         Calendar.getInstance().getTimeInMillis());
                 if (checker.isUpdateAvailable()) {
@@ -113,12 +94,11 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         }
 
         if (checker.isUpdateAvailable()) {
-
             AlertUtils.askQuestion(mContext, R.string.appUpdate, R.string.askForUpdate,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            checker.downloadAndInstall(Config.UPDATE_URL, false);
+                            checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion, false);
                             PreferencesUtils.removeKey(mContext, R.string.updateAvailable);
                         }
                     }, null

@@ -90,5 +90,7 @@
     <string name="oneStepCalibration">"एक कदम अंशांकन"</string>
     <string name="showStartPage">आरम्भ पृष्ठ दिखाएँ</string>
     <string name="cameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
-    <string name="highRange">High Range Swatches</string>
+    <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
+    <string name="placeHighRangeCartridge">नमूना पानी के साथ एक उच्च सीमा कारतूस प्लेस और जारी रखने के</string>
+    <string name="startHighRangeTest">उच्च रेंज परीक्षण शुरू</string>
 </resources>

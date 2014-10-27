@@ -90,5 +90,7 @@
     <string name="oneStepCalibration">"خطوة واحدة المعايرة"</string>
     <string name="showStartPage">تظهر صفحة البداية</string>
     <string name="cameraFlashRequired">لم يكن هذا الهاتف فلاش الكاميرا الذي مطلوب من قبل Caddisfly</string>
-    <string name="highRange">High Range Swatches</string>
+    <string name="highLevelsFound">تم الكشف عن مستويات عالية من الفلوريد</string>
+    <string name="placeHighRangeCartridge">ضع خرطوشة المدى العليا مع عينة المياه والاستمرار</string>
+    <string name="startHighRangeTest">بدء اختبار عالية المدى</string>
 </resources>

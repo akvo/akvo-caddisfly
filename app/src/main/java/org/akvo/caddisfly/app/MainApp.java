@@ -18,10 +18,8 @@ package org.akvo.caddisfly.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -125,27 +123,6 @@ public class MainApp extends Application {
         loadCalibratedSwatches(currentTestType);
     }
 
-    public void setHighRangeSwatches() {
-        rangeIntervals.clear();
-
-        ArrayList<ColorInfo> highRangeColorList = new ArrayList<ColorInfo>();
-
-        maxRangeValue = 12;
-        rangeIncrementStep = 20;
-        rangeStartIncrement = 3;
-        rangeIncrementValue = 0.1;
-
-        for (double i = 0.0; i <= maxRangeValue; i += (rangeIncrementStep * rangeIncrementValue)) {
-            rangeIntervals.add(i);
-        }
-
-        for (double i = 0; i <= maxRangeValue * 10; i++) {
-            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
-
-        loadCalibratedSwatches(Config.FLUORIDE_HIGH_RANGE);
-    }
-
     public void setLowRangeSwatches() {
         if (PreferencesUtils.getBoolean(getApplicationContext(), R.string.oneStepCalibrationKey, false)) {
             setFluorideOneStepSwatches();
@@ -154,59 +131,18 @@ public class MainApp extends Application {
         }
     }
 
-        /**
-         * @param testType The type of test
-         */
-        public void setSwatches(int testType) {
-            switch (testType) {
-                case Config.FLUORIDE_ONE_STEP_INDEX:
-                    setFluorideOneStepSwatches();
-                    break;
-                case Config.FLUORIDE_SEVEN_STEP_INDEX:
-                    setFluorideSevenStepSwatches();
-                    break;
-                case Config.FLUORIDE_HIGH_RANGE:
-                    setHighRangeSwatches();
-                    break;
+    /**
+     * @param testType The type of test
+     */
+    public void setSwatches(int testType) {
+        switch (testType) {
+            case Config.FLUORIDE_ONE_STEP_INDEX:
+                setFluorideOneStepSwatches();
+                break;
+            case Config.FLUORIDE_SEVEN_STEP_INDEX:
+                setFluorideSevenStepSwatches();
+                break;
         }
-    }
-
-    public void loadHighRangeSwatches() {
-
-        ArrayList<ColorInfo> highRangeColorList = new ArrayList<ColorInfo>();
-
-        maxRangeValue = 12;
-        rangeIncrementStep = 20;
-        rangeStartIncrement = 3;
-        rangeIncrementValue = 0.1;
-
-        currentTestType = Config.FLUORIDE_HIGH_RANGE;
-
-        for (double i = 0; i <= maxRangeValue * 10; i++) {
-            highRangeColorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
-
-        int index = 30;
-
-        for (int i = colorList.size() - 1; i >= 30; i -= 20) {
-            highRangeColorList.set(i, colorList.get(index));
-            index -= 5;
-        }
-
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        for (int i = 0; i < maxRangeValue * 10; i += 20) {
-            ColorUtils.autoGenerateColors(
-                    i,
-                    Config.FLUORIDE_HIGH_RANGE,
-                    highRangeColorList,
-                    rangeIncrementStep, editor, 0, maxRangeValue * 10);
-        }
-        editor.apply();
-
-        setLowRangeSwatches();
     }
 
     /**

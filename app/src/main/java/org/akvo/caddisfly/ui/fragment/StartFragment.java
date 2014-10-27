@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -110,7 +109,6 @@ public class StartFragment extends Fragment {
             }
         });
 
-        final LinearLayout startLinearLayout = (LinearLayout) view.findViewById(R.id.startLinearLayout);
         if (mIsExternal) {
             backButton.setVisibility(View.VISIBLE);
             startButton.setVisibility(View.VISIBLE);

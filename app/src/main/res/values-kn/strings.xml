@@ -90,5 +90,7 @@
     <string name="oneStepCalibration">"ಒಂದು ಹೆಜ್ಜೆಯೆಂದರೆ ಮಾಪನಾಂಕ ನಿರ್ಣಯ"</string>
     <string name="showStartPage">ಆರಂಭ ಪುಟ ತೋರಿಸಿ</string>
     <string name="cameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
-    <string name="highRange">High Range Swatches</string>
+    <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
+    <string name="placeHighRangeCartridge">ಮಾದರಿ ನೀರಿನಿಂದ ಹೈ ರೇಂಜ್ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಇರಿಸಿ ಮತ್ತು ಮುಂದುವರೆಯಲು</string>
+    <string name="startHighRangeTest">ಹೈ ರೇಂಜ್ ಟೆಸ್ಟ್ ಪ್ರಾರಂಭಿಸಿ</string>
 </resources>
