@@ -61,7 +61,7 @@ import java.util.ArrayList;
 @SuppressWarnings("WeakerAccess")
 public class CalibrateItemFragment extends ListFragment {
 
-    protected int mTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
+    protected int mTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
     protected GalleryListAdapter mAdapter;
     private SoundPoolPlayer sound;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;
@@ -280,7 +280,7 @@ public class CalibrateItemFragment extends ListFragment {
                                 accuracy);
 
                         if (mainApp.colorList.size() == 0) {
-                            mainApp.setLowRangeSwatches();
+                            mainApp.setSwatches();
                         }
 
                         if (PreferencesUtils.getBoolean(getActivity(), R.string.oneStepCalibrationKey, false)) {

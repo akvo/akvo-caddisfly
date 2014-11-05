@@ -24,7 +24,11 @@ import android.graphics.Color;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.DataHelper;
+import org.akvo.caddisfly.util.FileUtils;
+import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.text.DecimalFormat;
@@ -35,11 +39,11 @@ public class MainApp extends Application {
     public final ArrayList<Double> rangeIntervals = new ArrayList<Double>();
     public final ArrayList<ColorInfo> colorList = new ArrayList<ColorInfo>();
     public DecimalFormat doubleFormat = new DecimalFormat("0.0");
-    public int currentTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
+    public int currentTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
     public int rangeIncrementStep = 5;
     public int rangeStartIncrement = 0;
     public double rangeIncrementValue = 0.1;
-    private int maxRangeValue = 3;
+    public TestInfo currentTestInfo;
 
     /**
      * @param context The context
@@ -73,76 +77,51 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Factory preset values for Fluoride (One step calibration)
-     */
-    public void setFluorideOneStepSwatches() {
-        colorList.clear();
-        rangeIntervals.clear();
-
-        maxRangeValue = 3;
-        rangeIncrementStep = 5;
-        rangeStartIncrement = 0;
-        rangeIncrementValue = 0.1;
-
-        currentTestType = Config.FLUORIDE_ONE_STEP_INDEX;
-
-        for (double i = 0.0; i <= maxRangeValue; i += ((maxRangeValue * 10) * rangeIncrementValue)) {
-            rangeIntervals.add(i);
-        }
-
-        for (double i = 0; i <= maxRangeValue * 10; i++) {
-            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
-
-        loadCalibratedSwatches(currentTestType);
+    public void setSwatches() {
+        setSwatches(currentTestType);
     }
 
     /**
-     * Factory preset values for Fluoride (Seven step calibration)
-     */
-    public void setFluorideSevenStepSwatches() {
-        colorList.clear();
-        rangeIntervals.clear();
-
-        maxRangeValue = 3;
-        rangeIncrementStep = 5;
-        rangeStartIncrement = 0;
-        rangeIncrementValue = 0.1;
-
-        currentTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
-
-        for (double i = 0.0; i <= maxRangeValue; i += (rangeIncrementStep * rangeIncrementValue)) {
-            rangeIntervals.add(i);
-        }
-
-        for (double i = 0; i <= maxRangeValue * 10; i++) {
-            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
-
-        loadCalibratedSwatches(currentTestType);
-    }
-
-    public void setLowRangeSwatches() {
-        if (PreferencesUtils.getBoolean(getApplicationContext(), R.string.oneStepCalibrationKey, false)) {
-            setFluorideOneStepSwatches();
-        } else {
-            setFluorideSevenStepSwatches();
-        }
-    }
-
-    /**
-     * @param testType The type of test
+     * Factory preset values for Nitrate
      */
     public void setSwatches(int testType) {
-        switch (testType) {
-            case Config.FLUORIDE_ONE_STEP_INDEX:
-                setFluorideOneStepSwatches();
-                break;
-            case Config.FLUORIDE_SEVEN_STEP_INDEX:
-                setFluorideSevenStepSwatches();
-                break;
+        colorList.clear();
+        rangeIntervals.clear();
+
+        currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), DataHelper.getTestCode(testType));
+
+        double maxRangeValue = currentTestInfo.getRangeEnd();
+        rangeStartIncrement = 0;
+
+        rangeIncrementStep = 5;
+        rangeIncrementValue = 0.1;
+        double increment;
+
+        if (testType == Config.FLUORIDE_ONE_STEP_TEST || testType == Config.FLUORIDE_SEVEN_STEP_TEST) {
+            if (PreferencesUtils.getBoolean(getApplicationContext(), R.string.oneStepCalibrationKey, false)) {
+                testType = Config.FLUORIDE_ONE_STEP_TEST;
+            } else {
+                testType = Config.FLUORIDE_SEVEN_STEP_TEST;
+            }
         }
+
+        currentTestType = testType;
+
+        if (testType == Config.FLUORIDE_ONE_STEP_TEST) {
+            increment = maxRangeValue * 10 * rangeIncrementValue;
+        } else {
+            increment = rangeIncrementStep * rangeIncrementValue;
+        }
+
+        for (double i = 0.0; i <= maxRangeValue; i += increment) {
+            rangeIntervals.add(i);
+        }
+
+        for (double i = 0; i <= maxRangeValue * 10; i++) {
+            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
+        }
+
+        loadCalibratedSwatches(currentTestType);
     }
 
     /**

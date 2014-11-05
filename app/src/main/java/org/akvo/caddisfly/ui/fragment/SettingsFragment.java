@@ -37,7 +37,6 @@ import android.widget.ListView;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.Locale;
 
@@ -171,11 +170,7 @@ public class SettingsFragment extends PreferenceFragment
                 res.updateConfiguration(conf, dm);
                 mActivity.recreate();
             } else if (context.getString(R.string.oneStepCalibrationKey).equals(s)) {
-                if (PreferencesUtils.getBoolean(context, R.string.oneStepCalibrationKey, false)) {
-                    mainApp.setFluorideOneStepSwatches();
-                } else {
-                    mainApp.setFluorideSevenStepSwatches();
-                }
+                mainApp.setSwatches();
             }
         }
     }

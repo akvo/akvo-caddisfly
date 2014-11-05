@@ -47,12 +47,22 @@ public class Config {
 
     public static final int CALIBRATE_SCREEN_INDEX = 2;
 
-    //public static final int CHECKLIST_SCREEN_INDEX = 4;
+    // test types
+    public static final int FLUORIDE_ONE_STEP_TEST = 0;
+    public static final int FLUORIDE_SEVEN_STEP_TEST = 1;
+    public static final String FLUORIDE_CODE = "FLUOR";
 
-    // Index of test types
-    public static final int FLUORIDE_ONE_STEP_INDEX = 0;
+    public static final int PH_TEST = 2;
+    public static final String PH_CODE = "PHTES";
 
-    public static final int FLUORIDE_SEVEN_STEP_INDEX = 1;
+    public static final int NITRATE_TEST = 3;
+    public static final String NITRATE_CODE = "NITRA";
+
+    public static final int ARSENIC_TEST = 4;
+    public static final String ARSENIC_CODE = "ARSEN";
+
+    public static final int TURBIDITY_TEST = 5;
+    public static final String TURBIDITY_CODE = "TURBI";
 
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;
@@ -84,5 +94,4 @@ public class Config {
     public static final boolean CAMERA_TORCH_MODE_DEFAULT = false;
     public static final boolean REQUIRE_SHAKE_DEFAULT = false;
     public static final boolean CAMERA_SOUND_DEFAULT = true;
-
 }

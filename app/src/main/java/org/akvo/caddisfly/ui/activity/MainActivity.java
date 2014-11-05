@@ -80,10 +80,9 @@ public class MainActivity extends MainActivityBase implements
         CalibrateItemFragment.OnLoadCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
-    private int mTestType = Config.FLUORIDE_SEVEN_STEP_INDEX;
+    private int mTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
     private boolean mShouldFinish = false;
     private SettingsFragment mSettingsFragment = null;
-    //private HelpFragment helpFragment = null;
 
     private static Camera getCameraInstance() {
         Camera c = null;
@@ -169,13 +168,6 @@ public class MainActivity extends MainActivityBase implements
     private void loadSavedPreferences() {
         assert getApplicationContext() != null;
 
-        MainApp mainApp = ((MainApp) getApplicationContext());
-
-        if (PreferencesUtils.getBoolean(this, R.string.oneStepCalibrationKey, false)) {
-            mainApp.setFluorideOneStepSwatches();
-        } else {
-            mainApp.setFluorideSevenStepSwatches();
-        }
         // Set the locale according to preference
         Locale myLocale = new Locale(
                 PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
@@ -194,9 +186,7 @@ public class MainActivity extends MainActivityBase implements
      * @param background true: check for update silently, false: show messages to user
      */
     void checkUpdate(boolean background) {
-        MainApp mainApp = (MainApp) this.getApplicationContext();
-
-        UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, background, mainApp.getVersion(this));
+        UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, background, MainApp.getVersion(this));
         updateCheckTask.execute();
     }
 
@@ -220,6 +210,8 @@ public class MainActivity extends MainActivityBase implements
         String type = intent.getType();
         Boolean external = false;
 
+        MainApp mainApp = (MainApp) getApplicationContext();
+
         if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 external = true;
@@ -230,6 +222,8 @@ public class MainActivity extends MainActivityBase implements
                 mTestType = DataHelper.getTestTypeFromCode(code);
             }
         }
+
+        mainApp.setSwatches(mTestType);
 
         Fragment fragment;
 
@@ -249,7 +243,6 @@ public class MainActivity extends MainActivityBase implements
 
                     Bundle args = new Bundle();
                     args.putInt(getString(R.string.swatchIndex), 0);
-                    MainApp mainApp = (MainApp) this.getApplicationContext();
                     args.putInt(getString(R.string.currentTestTypeId), mainApp.currentTestType);
                     mCalibrateFragment.setArguments(args);
                     fragment = mCalibrateFragment;
@@ -370,7 +363,6 @@ public class MainActivity extends MainActivityBase implements
         Context context = this;
 
         MainApp mainApp = (MainApp) context.getApplicationContext();
-        mainApp.setLowRangeSwatches();
 
         if (mainApp.getCalibrationErrorCount() > 0) {
             AlertUtils.showAlert(context, R.string.error,

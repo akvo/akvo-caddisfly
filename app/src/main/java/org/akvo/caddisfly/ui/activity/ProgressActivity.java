@@ -39,7 +39,6 @@ import org.akvo.caddisfly.ui.fragment.CameraFragment;
 import org.akvo.caddisfly.ui.fragment.MessageFragment;
 import org.akvo.caddisfly.ui.fragment.ResultFragment;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PhotoHandler;
@@ -320,23 +319,15 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
     private void getSharedPreferences() {
 
-        MainApp mainContext = (MainApp) getApplicationContext();
+        MainApp mainApp = (MainApp) getApplicationContext();
 
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
 
-        switch (mTestType) {
-            case Config.FLUORIDE_ONE_STEP_INDEX:
-                mTestTotal = 1;
-                mTitleText.setText(R.string.fluoride);
-                mainContext.setFluorideOneStepSwatches();
-                break;
-            case Config.FLUORIDE_SEVEN_STEP_INDEX:
-                mTestTotal = 1;
-                mTitleText.setText(R.string.fluoride2);
-                mainContext.setFluorideSevenStepSwatches();
-                break;
-        }
+        mainApp.setSwatches(mTestType);
+        mTitleText.setText(mainApp.currentTestInfo.getName());
+
+        mTestTotal = 1;
 
         mTitleText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -607,7 +598,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 int minAccuracy = PreferencesUtils
                         .getInt(this, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
 
-                String title = DataHelper.getTestTitle(this, mTestType);
+                String title = ((MainApp) getApplicationContext()).currentTestInfo.getName();
 
                 if (result >= 0 && quality >= minAccuracy) {
                     if (result > 2.5 && !isHighRangeTest) {

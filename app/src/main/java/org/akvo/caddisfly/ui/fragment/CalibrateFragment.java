@@ -111,20 +111,8 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
 
     void changeTestType(int position) {
         final MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        mainApp.currentTestType = position;
-
-        switch (position) {
-            case Config.FLUORIDE_ONE_STEP_INDEX:
-                mainApp.setFluorideOneStepSwatches();
-                setAdapter();
-                break;
-            case Config.FLUORIDE_SEVEN_STEP_INDEX:
-                mainApp.setFluorideSevenStepSwatches();
-                setAdapter();
-                break;
-            default:
-                break;
-        }
+        mainApp.setSwatches(position);
+        setAdapter();
     }
 
     @Override

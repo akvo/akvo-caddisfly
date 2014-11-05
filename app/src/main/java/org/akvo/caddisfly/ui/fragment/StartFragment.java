@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.DataHelper;
+import org.akvo.caddisfly.app.MainApp;
 
 import at.markushi.ui.CircleButton;
 
@@ -61,13 +61,15 @@ public class StartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         getActivity().setTitle(R.string.appName);
 
+        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+
         if (getArguments() != null) {
             mIsExternal = getArguments().getBoolean(EXTERNAL_PARAM);
             mTestType = getArguments().getInt(TEST_TYPE_PARAM);
         }
 
         TextView testTypeTextView = (TextView) view.findViewById(R.id.testTypeTextView);
-        testTypeTextView.setText(DataHelper.getTestTitle(getActivity(), mTestType));
+        testTypeTextView.setText(mainApp.currentTestInfo.getName());
 
         final CircleButton videoButton = (CircleButton) view.findViewById(R.id.videoButton);
         videoButton.setOnClickListener(new View.OnClickListener() {

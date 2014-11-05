@@ -28,36 +28,42 @@ import java.math.RoundingMode;
 
 public class DataHelper {
 
-    public static String getTestTitle(Context context, int testType) {
-        switch (testType) {
-            case Config.FLUORIDE_ONE_STEP_INDEX:
-                return context.getString(R.string.fluoride);
-            case Config.FLUORIDE_SEVEN_STEP_INDEX:
-                return context.getString(R.string.fluoride);
-            default:
-                return context.getString(R.string.fluoride);
-        }
-    }
-
     public static int getTestTypeFromCode(String code) {
 
-        if (("FLUOR").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("ALKAL").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("COLIF").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("TURBI").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("NITRA").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("IRONA").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
-        } else if (("ARSEN").equals(code)) {
-            return Config.FLUORIDE_ONE_STEP_INDEX;
+        if (Config.FLUORIDE_CODE.equalsIgnoreCase(code)) {
+            return Config.FLUORIDE_ONE_STEP_TEST;
+        } else if (Config.PH_CODE.equalsIgnoreCase(code)) {
+            return Config.PH_TEST;
+        } else if (Config.NITRATE_CODE.equalsIgnoreCase(code)) {
+            return Config.NITRATE_TEST;
+        } else if (Config.ARSENIC_CODE.equalsIgnoreCase(code)) {
+            return Config.ARSENIC_TEST;
+        } else if (Config.TURBIDITY_CODE.equalsIgnoreCase(code)) {
+            return Config.TURBIDITY_TEST;
         }
 
         return -1;
+    }
+
+
+    public static String getTestCode(int id) {
+
+        switch (id) {
+            case Config.FLUORIDE_ONE_STEP_TEST:
+                return Config.FLUORIDE_CODE;
+            case Config.FLUORIDE_SEVEN_STEP_TEST:
+                return Config.FLUORIDE_CODE;
+            case Config.PH_TEST:
+                return Config.PH_CODE;
+            case Config.NITRATE_TEST:
+                return Config.NITRATE_CODE;
+            case Config.ARSENIC_TEST:
+                return Config.ARSENIC_CODE;
+            case Config.TURBIDITY_TEST:
+                return Config.TURBIDITY_CODE;
+            default:
+                return Config.FLUORIDE_CODE;
+        }
     }
 
     public static String getSwatchError(Context context, int errorCode) {
