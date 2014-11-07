@@ -32,7 +32,7 @@ public class DataHelper {
 
         if (Config.FLUORIDE_CODE.equalsIgnoreCase(code)) {
             return Config.FLUORIDE_ONE_STEP_TEST;
-        } else if (Config.PH_CODE.equalsIgnoreCase(code)) {
+        } else if (Config.COLIFORM_CODE.equalsIgnoreCase(code)) {
             return Config.PH_TEST;
         } else if (Config.NITRATE_CODE.equalsIgnoreCase(code)) {
             return Config.NITRATE_TEST;
@@ -54,7 +54,7 @@ public class DataHelper {
             case Config.FLUORIDE_SEVEN_STEP_TEST:
                 return Config.FLUORIDE_CODE;
             case Config.PH_TEST:
-                return Config.PH_CODE;
+                return Config.COLIFORM_CODE;
             case Config.NITRATE_TEST:
                 return Config.NITRATE_CODE;
             case Config.ARSENIC_TEST:

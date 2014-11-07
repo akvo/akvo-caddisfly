@@ -53,7 +53,8 @@ public class Config {
     public static final String FLUORIDE_CODE = "FLUOR";
 
     public static final int PH_TEST = 2;
-    public static final String PH_CODE = "PHTES";
+    public static final String COLIFORM_CODE = "COLIF";
+    //public static final String PH_CODE = "PHTES";
 
     public static final int NITRATE_TEST = 3;
     public static final String NITRATE_CODE = "NITRA";

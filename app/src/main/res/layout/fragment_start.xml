@@ -16,6 +16,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -138,35 +139,38 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/testTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00e4cb2a"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:shadowColor="#000"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="25"
-            android:text="@string/fluoride"
-            android:textAllCaps="false"
-            android:textColor="#b7ffffff"
-            android:textSize="40sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
             android:text="@string/waterQualityTest"
             android:textAllCaps="true"
-            android:textColor="#daffffff"
+            android:textColor="#ccffffff"
             android:textSize="@dimen/subtitleTextSize"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/testTypeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25"
+            android:textAllCaps="false"
+            android:textColor="#ddffffff"
+            android:textSize="40sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="Fluoride" />
+
+
     </LinearLayout>
 
     <LinearLayout

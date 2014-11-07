@@ -68,8 +68,6 @@ public class StartFragment extends Fragment {
             mTestType = getArguments().getInt(TEST_TYPE_PARAM);
         }
 
-        TextView testTypeTextView = (TextView) view.findViewById(R.id.testTypeTextView);
-        testTypeTextView.setText(mainApp.currentTestInfo.getName());
 
         final CircleButton videoButton = (CircleButton) view.findViewById(R.id.videoButton);
         videoButton.setOnClickListener(new View.OnClickListener() {
@@ -111,11 +109,17 @@ public class StartFragment extends Fragment {
             }
         });
 
+        TextView testTypeTextView = (TextView) view.findViewById(R.id.testTypeTextView);
+
         if (mIsExternal) {
+            testTypeTextView.setText(mainApp.currentTestInfo.getName());
+            testTypeTextView.setVisibility(View.VISIBLE);
+
             backButton.setVisibility(View.VISIBLE);
             startButton.setVisibility(View.VISIBLE);
             startSurveyButton.setVisibility(View.GONE);
         } else {
+            testTypeTextView.setVisibility(View.GONE);
             startSurveyButton.setVisibility(View.VISIBLE);
             backButton.setVisibility(View.GONE);
             startButton.setVisibility(View.GONE);

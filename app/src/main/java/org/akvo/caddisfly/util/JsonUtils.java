@@ -21,6 +21,13 @@ public class JsonUtils {
                             array.getJSONObject(i).getString("code"),
                             array.getJSONObject(i).getJSONObject("lowRange").getDouble("start"),
                             array.getJSONObject(i).getJSONObject("lowRange").getDouble("end"));
+
+                    try {
+                        testInfo.setIncrement(array.getJSONObject(i).getJSONObject("lowRange").getInt("increment"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         } catch (JSONException e) {

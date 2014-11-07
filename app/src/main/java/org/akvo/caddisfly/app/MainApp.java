@@ -41,7 +41,7 @@ public class MainApp extends Application {
     public DecimalFormat doubleFormat = new DecimalFormat("0.0");
     public int currentTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
     public int rangeIncrementStep = 5;
-    public int rangeStartIncrement = 0;
+    public double rangeStartIncrement = 0;
     public double rangeIncrementValue = 0.1;
     public TestInfo currentTestInfo;
 
@@ -90,10 +90,10 @@ public class MainApp extends Application {
 
         currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), DataHelper.getTestCode(testType));
 
+        rangeStartIncrement = currentTestInfo.getRangeStart();
         double maxRangeValue = currentTestInfo.getRangeEnd();
-        rangeStartIncrement = 0;
 
-        rangeIncrementStep = 5;
+        rangeIncrementStep = currentTestInfo.getIncrement();
         rangeIncrementValue = 0.1;
         double increment;
 

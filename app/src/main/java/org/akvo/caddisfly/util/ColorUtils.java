@@ -40,7 +40,7 @@ public class ColorUtils {
     private static final double MAX_COLOR_DISTANCE = 70.0;
 
     public static Bundle getPpmValue(byte[] data, ArrayList<ColorInfo> colorRange,
-                                     double rangeStepUnit, int rangeStartUnit, int length) {
+                                     double rangeStepUnit, double rangeStartUnit, int length) {
         ColorInfo photoColor = getColorFromByteArray(data, length);
         return analyzeColor(photoColor, colorRange, rangeStepUnit, rangeStartUnit);
     }
@@ -122,7 +122,7 @@ public class ColorUtils {
      * @return A bundle with the results
      */
     private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ColorInfo> colorRange,
-                                       double rangeStepUnit, int rangeStartUnit) {
+                                       double rangeStepUnit, double rangeStartUnit) {
 
         Bundle bundle = new Bundle();
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
