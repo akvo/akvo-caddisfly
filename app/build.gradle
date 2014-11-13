@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
@@ -19,9 +19,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            zipAlign true
+            zipAlignEnabled true
         }
     }
 
