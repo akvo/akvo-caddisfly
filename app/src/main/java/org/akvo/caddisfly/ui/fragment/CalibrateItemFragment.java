@@ -211,7 +211,7 @@ public class CalibrateItemFragment extends ListFragment {
         }
 
         mValueButton.setText(mainApp.doubleFormat
-                .format(mainApp.rangeStartIncrement + (position * (mainApp.rangeIncrementStep
+                .format(mainApp.rangeStart + (position * (mainApp.rangeIncrementStep
                         * mainApp.rangeIncrementValue))));
 
         mStartButton.setEnabled(true);

@@ -1,10 +1,11 @@
 {"tests":
     {"test":[
         {"name":"Fluoride","code":"fluor","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
-        {"name":"pH","code":"colif","lowRange":{"start":"1","end":"14", "increment":"10"}, "tolerance":"40"},
+        {"name":"pH","code":"phydr","lowRange":{"start":"1","end":"14", "increment":"10"}, "tolerance":"40"},
         {"name":"Nitrate","code":"nitra","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
         {"name":"Turbidity","code":"turbi","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
-        {"name":"Arsenic","code":"arsen","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"}
+        {"name":"Arsenic","code":"arsen","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
+        {"name":"Coliform","code":"colif","lowRange":{"start":"1","end":"14", "increment":"10"}, "tolerance":"40"},
         ]
     }
 }

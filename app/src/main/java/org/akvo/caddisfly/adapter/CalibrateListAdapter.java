@@ -68,7 +68,7 @@ public class CalibrateListAdapter extends ArrayAdapter<Double> {
 
             // display ppm value
             ppmText.setText(mainApp.doubleFormat
-                    .format(mainApp.rangeStartIncrement + (position * (
+                    .format(mainApp.rangeStart + (position * (
                             mainApp.rangeIncrementValue
                                     * mainApp.rangeIncrementStep))));
 

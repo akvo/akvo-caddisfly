@@ -41,7 +41,7 @@ public class MainApp extends Application {
     public DecimalFormat doubleFormat = new DecimalFormat("0.0");
     public int currentTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
     public int rangeIncrementStep = 5;
-    public double rangeStartIncrement = 0;
+    public double rangeStart = 0;
     public double rangeIncrementValue = 0.1;
     public TestInfo currentTestInfo;
 
@@ -90,8 +90,8 @@ public class MainApp extends Application {
 
         currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), DataHelper.getTestCode(testType));
 
-        rangeStartIncrement = currentTestInfo.getRangeStart();
-        double maxRangeValue = currentTestInfo.getRangeEnd();
+        rangeStart = currentTestInfo.getRangeStart();
+        double rangeEnd = currentTestInfo.getRangeEnd();
 
         rangeIncrementStep = currentTestInfo.getIncrement();
         rangeIncrementValue = 0.1;
@@ -108,16 +108,16 @@ public class MainApp extends Application {
         currentTestType = testType;
 
         if (testType == Config.FLUORIDE_ONE_STEP_TEST) {
-            increment = maxRangeValue * 10 * rangeIncrementValue;
+            increment = rangeEnd * 10 * rangeIncrementValue;
         } else {
             increment = rangeIncrementStep * rangeIncrementValue;
         }
 
-        for (double i = 0.0; i <= maxRangeValue; i += increment) {
+        for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
             rangeIntervals.add(i);
         }
 
-        for (double i = 0; i <= maxRangeValue * 10; i++) {
+        for (double i = 0; i <= (rangeEnd - rangeStart) * 10; i++) {
             colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
         }
 
@@ -206,6 +206,6 @@ public class MainApp extends Application {
                 count++;
             }
         }
-        return count;
+        return 0;
     }
 }

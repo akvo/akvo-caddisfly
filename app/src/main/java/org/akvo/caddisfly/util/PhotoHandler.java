@@ -138,7 +138,7 @@ public class PhotoHandler implements PictureCallback {
 
         Bundle bundle = ColorUtils.getPpmValue(croppedData, colorRange,
                 ((MainApp) mContext).rangeIncrementValue,
-                ((MainApp) mContext).rangeStartIncrement, sampleLength);
+                ((MainApp) mContext).rangeStart, sampleLength);
 
         File smallImageFolder = new File(photoFolder + "/small/");
         if (!smallImageFolder.exists()) {

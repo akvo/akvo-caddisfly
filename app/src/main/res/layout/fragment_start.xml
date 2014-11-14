@@ -22,24 +22,15 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.2"
-        android:background="@drawable/home_logo"
-        android:contentDescription="@null" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:adjustViewBounds="true"
-        android:alpha="0.8"
-        android:baselineAlignBottom="false"
+        android:adjustViewBounds="false"
+        android:alpha="0.85"
         android:contentDescription="@null"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
+        android:paddingTop="135dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/watch_video" />
 
     <LinearLayout
@@ -150,7 +141,7 @@
             android:shadowRadius="25"
             android:text="@string/waterQualityTest"
             android:textAllCaps="true"
-            android:textColor="#ccffffff"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/subtitleTextSize"
             android:visibility="visible" />
 

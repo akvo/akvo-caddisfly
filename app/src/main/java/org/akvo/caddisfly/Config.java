@@ -53,8 +53,7 @@ public class Config {
     public static final String FLUORIDE_CODE = "FLUOR";
 
     public static final int PH_TEST = 2;
-    public static final String COLIFORM_CODE = "COLIF";
-    //public static final String PH_CODE = "PHTES";
+    public static final String PH_CODE = "PHYDR";
 
     public static final int NITRATE_TEST = 3;
     public static final String NITRATE_CODE = "NITRA";
@@ -64,6 +63,10 @@ public class Config {
 
     public static final int TURBIDITY_TEST = 5;
     public static final String TURBIDITY_CODE = "TURBI";
+
+    public static final int COLIFORM_TEST = 6;
+    public static final String COLIFORM_CODE = "COLIF";
+
 
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;
