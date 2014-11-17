@@ -63,7 +63,6 @@ public class ImageUtils {
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(filePath, false);
             BitmapFactory.Options options1 = new BitmapFactory.Options();
             options1.inPreferQualityOverSpeed = true;
-            options1.inPurgeable = true;
             Rect re = new Rect(leftMargin, topMargin, leftMargin + sampleLength,
                     topMargin + sampleLength);
 

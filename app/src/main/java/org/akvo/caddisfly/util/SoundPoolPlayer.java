@@ -1,8 +1,10 @@
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.R;
@@ -12,7 +14,18 @@ public class SoundPoolPlayer {
     private SoundPool mShortPlayer = null;
 
     public SoundPoolPlayer(Context pContext) {
-        this.mShortPlayer = new SoundPool(4, AudioManager.STREAM_ALARM, 0);
+
+        if (Build.VERSION.SDK_INT > 20) {
+            AudioAttributes attr = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+
+            this.mShortPlayer = new SoundPool.Builder().setAudioAttributes(attr).setMaxStreams(4).build();
+        } else {
+            //noinspection deprecation
+            this.mShortPlayer = new SoundPool(4, AudioManager.STREAM_ALARM, 0);
+        }
 
         mSounds.put(R.raw.beep, this.mShortPlayer.load(pContext, R.raw.beep, 1));
         mSounds.put(R.raw.beep_long, this.mShortPlayer.load(pContext, R.raw.beep_long, 1));

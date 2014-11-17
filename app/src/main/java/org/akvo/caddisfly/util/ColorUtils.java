@@ -137,7 +137,7 @@ public class ColorUtils {
             value = value + rangeStartUnit;
             bundle.putDouble(Config.RESULT_VALUE_KEY,
                     (double) Math.round(value * 100) / 100); //NON-NLS
-            int color = colorRange.get((int) Math.round(value / rangeStepUnit)).getColor();
+            int color = colorRange.get((int) Math.round((value - rangeStartUnit) / rangeStepUnit)).getColor();
 
             bundle.putInt("standardColor", color); //NON-NLS
 
@@ -270,6 +270,7 @@ public class ColorUtils {
         return mostFrequent;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void autoGenerateColors(int index, String testCode, ArrayList<ColorInfo> colorList, int incrementStep,
                                           SharedPreferences.Editor editor, int startIndex, int endIndex) {
 
@@ -435,7 +436,7 @@ public class ColorUtils {
         );
     }
 
-    @SuppressWarnings("SameParameterValue")
+    /*@SuppressWarnings("SameParameterValue")
     public static void autoGenerateColorCurve(String testCode, ArrayList<ColorInfo> colorList,
                                               int startColor, int size,
                                               SharedPreferences.Editor editor) {
@@ -553,6 +554,6 @@ public class ColorUtils {
             editor.putInt(String.format("%s-%s", testCode, String.valueOf(i)),
                     nextColor);
         }
-    }
+    }*/
 
 }

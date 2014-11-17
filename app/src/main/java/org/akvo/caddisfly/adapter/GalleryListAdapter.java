@@ -51,14 +51,14 @@ public class GalleryListAdapter extends BaseAdapter {
 
     private final long mTestId;
 
-    private final int mTestType;
+    private final String mTestType;
 
     private final boolean mShowResult;
 
     private ArrayList<String> mFilePaths = new ArrayList<String>();
 
     @SuppressWarnings("SameParameterValue")
-    public GalleryListAdapter(Activity activity, int testType, long testId,
+    public GalleryListAdapter(Activity activity, String testType, long testId,
                               ArrayList<String> filePaths, boolean showResult) {
         mContext = activity;
         mInflater = activity.getLayoutInflater();

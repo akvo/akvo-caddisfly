@@ -36,7 +36,6 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
 
 import java.util.Locale;
 
@@ -111,10 +110,6 @@ public class SettingsFragment extends PreferenceFragment
                 screen.removePreference(pref);
             }
 
-            pref = screen.findPreference("oneStepCalibration");
-            if (pref != null) {
-                screen.removePreference(pref);
-            }
         }
     }
 
@@ -151,7 +146,6 @@ public class SettingsFragment extends PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (mActivity != null) {
             Context context = mActivity.getApplicationContext();
-            MainApp mainApp = (MainApp) context;
             assert context != null;
             //noinspection CallToStringEquals
             if (context.getString(R.string.languageKey).equals(s)) {
@@ -169,8 +163,6 @@ public class SettingsFragment extends PreferenceFragment
                 }
                 res.updateConfiguration(conf, dm);
                 mActivity.recreate();
-            } else if (context.getString(R.string.oneStepCalibrationKey).equals(s)) {
-                mainApp.setSwatches();
             }
         }
     }

@@ -31,9 +31,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -246,21 +244,8 @@ public class MainActivity extends MainActivityBase implements
                 fragment = StartFragment.newInstance(external, mainApp.currentTestType);
                 break;
             case Config.CALIBRATE_SCREEN_INDEX:
-                //if (mCalibrateFragment == null) {
-                if (PreferencesUtils.getBoolean(this, R.string.oneStepCalibrationKey, false)) {
-                    CalibrateItemFragment mCalibrateItemFragment = new CalibrateItemFragment();
-
-                    Bundle args = new Bundle();
-                    args.putInt(getString(R.string.swatchIndex), 0);
-                    args.putString(getString(R.string.currentTestTypeId), mainApp.currentTestType);
-                    mCalibrateItemFragment.setArguments(args);
-                    fragment = mCalibrateItemFragment;
-
-                } else {
-                    mCalibrateFragment = new CalibrateFragment();
-                    fragment = mCalibrateFragment;
-
-                }
+                mCalibrateFragment = new CalibrateFragment();
+                fragment = mCalibrateFragment;
                 setupActionBarSpinner();
 
                 break;
@@ -613,15 +598,14 @@ public class MainActivity extends MainActivityBase implements
         int selectedIndex = 0;
         int index = 0;
         for (TestInfo test : tests) {
-            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(), 1);
+            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName());
             if (test.getCode().equalsIgnoreCase(mainApp.currentTestType)) {
                 selectedIndex = index;
             }
             index++;
         }
 
-        Context context = getActionBar().getThemedContext();
-        @SuppressLint("InflateParams") View spinnerContainer = LayoutInflater.from(context)
+        @SuppressLint("InflateParams") View spinnerContainer = LayoutInflater.from(this)
                 .inflate(R.layout.actionbar_spinner, null);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -678,7 +662,6 @@ public class MainActivity extends MainActivityBase implements
     private class ExploreSpinnerAdapter extends BaseAdapter {
         // pairs of (tag, title)
         private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<ExploreSpinnerItem>();
-        private int mDotSize;
 
         private ExploreSpinnerAdapter() {
         }
@@ -687,8 +670,8 @@ public class MainActivity extends MainActivityBase implements
             mItems.clear();
         }
 
-        public void addItem(String tag, String title, int color) {
-            mItems.add(new ExploreSpinnerItem(false, tag, title, color));
+        public void addItem(String tag, String title) {
+            mItems.add(new ExploreSpinnerItem(tag, title));
         }
 
         @Override
@@ -704,11 +687,6 @@ public class MainActivity extends MainActivityBase implements
         @Override
         public long getItemId(int position) {
             return position;
-        }
-
-        private boolean isHeader(int position) {
-            return position >= 0 && position < mItems.size()
-                    && mItems.get(position).isHeader;
         }
 
         @Override
@@ -743,10 +721,6 @@ public class MainActivity extends MainActivityBase implements
             return position >= 0 && position < mItems.size() ? mItems.get(position).title : "";
         }
 
-        private int getColor(int position) {
-            return position >= 0 && position < mItems.size() ? mItems.get(position).color : 0;
-        }
-
         private String getTag(int position) {
             return position >= 0 && position < mItems.size() ? mItems.get(position).tag : "";
         }
@@ -754,30 +728,9 @@ public class MainActivity extends MainActivityBase implements
         private void setUpNormalDropdownView(int position, TextView textView) {
             textView.setText(getTitle(position));
             ShapeDrawable colorDrawable = (ShapeDrawable) textView.getCompoundDrawables()[2];
-            int color = getColor(position);
-            if (color == 0) {
-                if (colorDrawable != null) {
-                    textView.setCompoundDrawables(null, null, null, null);
-                }
-            } else {
-                if (mDotSize == 0) {
-                    mDotSize = 5;
-                }
-                if (colorDrawable == null) {
-                    colorDrawable = new ShapeDrawable(new OvalShape());
-                    colorDrawable.setIntrinsicWidth(mDotSize);
-                    colorDrawable.setIntrinsicHeight(mDotSize);
-                    colorDrawable.getPaint().setStyle(Paint.Style.FILL);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(null, null, colorDrawable, null);
-                }
-                colorDrawable.getPaint().setColor(color);
+            if (colorDrawable != null) {
+                textView.setCompoundDrawables(null, null, null, null);
             }
-
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return !isHeader(position);
         }
 
         @Override
@@ -797,16 +750,12 @@ public class MainActivity extends MainActivityBase implements
     }
 
     private class ExploreSpinnerItem {
-        final boolean isHeader;
         final String tag;
         final String title;
-        final int color;
 
-        ExploreSpinnerItem(boolean isHeader, String tag, String title, int color) {
-            this.isHeader = isHeader;
+        ExploreSpinnerItem(String tag, String title) {
             this.tag = tag;
             this.title = title;
-            this.color = color;
         }
     }
 }

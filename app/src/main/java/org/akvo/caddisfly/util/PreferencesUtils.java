@@ -56,6 +56,7 @@ public class PreferencesUtils {
      * @param keyId   the key id
      * @param value   the value
      */
+    @SuppressWarnings("SameParameterValue")
     public static void setBoolean(Context context, int keyId, boolean value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

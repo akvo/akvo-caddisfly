@@ -93,15 +93,8 @@ public class MainApp extends Application {
         rangeIncrementValue = 0.1;
         double increment;
 
-        //int calibrationType = Config.SEVEN_STEP_TEST;
-
         currentTestType = testCode;
-
-        //if (calibrationType == Config.ONE_STEP_TEST) {
-        //  increment = rangeEnd * 10 * rangeIncrementValue;
-        //} else {
         increment = rangeIncrementStep * rangeIncrementValue;
-        //}
 
         for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
             rangeIntervals.add(i);

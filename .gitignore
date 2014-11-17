@@ -49,6 +49,4 @@ build/
 *.ipr
 *~
 
-/*/src/androidTest/
-
 notes.md

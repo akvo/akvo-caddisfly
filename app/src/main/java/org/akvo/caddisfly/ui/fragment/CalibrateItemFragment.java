@@ -61,7 +61,7 @@ import java.util.ArrayList;
 @SuppressWarnings("WeakerAccess")
 public class CalibrateItemFragment extends ListFragment {
 
-    protected int mTestType;
+    protected String mTestType;
     protected GalleryListAdapter mAdapter;
     private SoundPoolPlayer sound;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;
@@ -105,7 +105,7 @@ public class CalibrateItemFragment extends ListFragment {
         final int position = getArguments().getInt(getString(R.string.swatchIndex));
         //final int index = position * INDEX_INCREMENT_STEP;
 
-        mTestType = getArguments().getInt(getString(R.string.currentTestTypeId));
+        mTestType = getArguments().getString(getString(R.string.currentTestTypeId));
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,11 +263,14 @@ public class CalibrateItemFragment extends ListFragment {
                 if (context != null) {
                     MainApp mainApp = ((MainApp) context.getApplicationContext());
                     ArrayList<ColorInfo> colorList = ((MainApp) context).colorList;
+                    if (colorList.size() == 0) {
+                        mainApp.setSwatches();
+                    }
                     int index = position * mainApp.rangeIncrementStep;
                     SharedPreferences sharedPreferences = PreferenceManager
                             .getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    String colorKey = String.format("%d-%s", mTestType, String.valueOf(index));
+                    String colorKey = String.format("%s-%s", mTestType, String.valueOf(index));
 
                     if (resultColor == -1) {
                         editor.remove(colorKey);
@@ -276,27 +279,18 @@ public class CalibrateItemFragment extends ListFragment {
                         colorList.set(index, colorInfo);
 
                         editor.putInt(colorKey, resultColor);
-                        editor.putInt(String.format("%d-a-%s", mTestType, String.valueOf(index)),
+                        editor.putInt(String.format("%s-a-%s", mTestType, String.valueOf(index)),
                                 accuracy);
 
                         if (mainApp.colorList.size() == 0) {
                             mainApp.setSwatches();
                         }
 
-                        if (PreferencesUtils.getBoolean(getActivity(), R.string.oneStepCalibrationKey, false)) {
-                            ColorUtils.autoGenerateColorCurve(
-                                    mainApp.currentTestType,
-                                    mainApp.colorList,
-                                    resultColor,
-                                    31,
-                                    editor);
-                        } else {
-                            ColorUtils.autoGenerateColors(
-                                    index,
-                                    mainApp.currentTestType,
-                                    mainApp.colorList,
-                                    mainApp.rangeIncrementStep, editor, 0, 30);
-                        }
+                        ColorUtils.autoGenerateColors(
+                                index,
+                                mainApp.currentTestType,
+                                mainApp.colorList,
+                                mainApp.rangeIncrementStep, editor, 0, 30);
                     }
                     editor.apply();
                 }
