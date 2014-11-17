@@ -270,7 +270,7 @@ public class ColorUtils {
         return mostFrequent;
     }
 
-    public static void autoGenerateColors(int index, int testType, ArrayList<ColorInfo> colorList, int incrementStep,
+    public static void autoGenerateColors(int index, String testCode, ArrayList<ColorInfo> colorList, int incrementStep,
                                           SharedPreferences.Editor editor, int startIndex, int endIndex) {
 
         int startColor = colorList.get(index).getColor();
@@ -283,7 +283,7 @@ public class ColorUtils {
                 colorList.set(index + i, colorInfo);
 
                 if (editor != null) {
-                    editor.putInt(String.format("%d-%d", testType, index + i),
+                    editor.putInt(String.format("%s-%d", testCode, index + i),
                             nextColor);
                 }
             }
@@ -298,7 +298,7 @@ public class ColorUtils {
                 colorList.set(index - i, colorInfo);
 
                 if (editor != null) {
-                    editor.putInt(String.format("%d-%d", testType, index - i),
+                    editor.putInt(String.format("%s-%d", testCode, index - i),
                             nextColor);
                 }
             }
@@ -436,7 +436,7 @@ public class ColorUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void autoGenerateColorCurve(int testType, ArrayList<ColorInfo> colorList,
+    public static void autoGenerateColorCurve(String testCode, ArrayList<ColorInfo> colorList,
                                               int startColor, int size,
                                               SharedPreferences.Editor editor) {
         int[] redDeviation = {
@@ -550,7 +550,7 @@ public class ColorUtils {
             ColorInfo colorInfo = new ColorInfo(nextColor, 100);
             colorList.set(i, colorInfo);
 
-            editor.putInt(String.format("%d-%s", testType, String.valueOf(i)),
+            editor.putInt(String.format("%s-%s", testCode, String.valueOf(i)),
                     nextColor);
         }
     }

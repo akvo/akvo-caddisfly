@@ -93,7 +93,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         Bundle args = new Bundle();
         args.putInt(getString(R.string.swatchIndex), index);
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        args.putInt(getString(R.string.currentTestTypeId), mainApp.currentTestType);
+        args.putString(getString(R.string.currentTestTypeId), mainApp.currentTestType);
         mCalibrateItemFragment.setArguments(args);
         ft.replace(R.id.container, mCalibrateItemFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -107,12 +107,6 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calibrate, container, false);
-    }
-
-    void changeTestType(int position) {
-        final MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        mainApp.setSwatches(position);
-        setAdapter();
     }
 
     @Override
@@ -182,6 +176,10 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     public void onDetach() {
         super.onDetach();
         mOnLoadCalibrationListener = null;
+    }
+
+    public void dataChanged() {
+        setAdapter();
     }
 
     public interface OnLoadCalibrationListener {

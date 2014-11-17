@@ -65,7 +65,6 @@
     <string name="installAkvoFlow">"स्थापित करें Akvo फ्लो अनुप्रयोग"</string>
     <string name="analysisInProgress">"प्रगति में विश्लेषण"</string>
     <string name="updateRequired">"इस सुविधा को सक्षम करने के लिए एक नए संस्करण को अपडेट करें"</string>
-    <string name="fluoride2">"फ्लोराइड 7 कदम"</string>
     <string name="outOfSequence">"अनुक्रम से बाहर"</string>
     <string name="duplicateSwatch">"नकली या इसी तरह के रंग"</string>
     <string name="about">"के बारे में"</string>
@@ -79,8 +78,6 @@
     <string name="notFound">"नहीं मिला"</string>
     <string name="loadCalibration">"लोड अंशांकन"</string>
     <string name="testInterrupted">"टेस्ट बाधित किया गया था. परीक्षण के दौरान फोन कदम नहीं है."</string>
-    <string name="revertVersion">"पिछले संस्करण पर लौटें"</string>
-    <string name="appVersion">"App संस्करण"</string>
     <string name="revertingVersion">"पिछले संस्करण में वापसी"</string>
     <string name="waitTillCameraSound">"फिर एक मिनट के बारे में कैमरा ध्वनि के लिए इंतजार"</string>
     <string name="calibrateSummary">"इस फोन को ठीक करना किट में दिए गए मानक रंग के मिश्रण का प्रयोग करें"</string>

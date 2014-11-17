@@ -26,7 +26,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
-import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -38,8 +37,8 @@ public class MainApp extends Application {
 
     public final ArrayList<Double> rangeIntervals = new ArrayList<Double>();
     public final ArrayList<ColorInfo> colorList = new ArrayList<ColorInfo>();
-    public DecimalFormat doubleFormat = new DecimalFormat("0.0");
-    public int currentTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
+    public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
+    public String currentTestType;
     public int rangeIncrementStep = 5;
     public double rangeStart = 0;
     public double rangeIncrementValue = 0.1;
@@ -81,14 +80,11 @@ public class MainApp extends Application {
         setSwatches(currentTestType);
     }
 
-    /**
-     * Factory preset values for Nitrate
-     */
-    public void setSwatches(int testType) {
+    public void setSwatches(String testCode) {
         colorList.clear();
         rangeIntervals.clear();
 
-        currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), DataHelper.getTestCode(testType));
+        currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), testCode);
 
         rangeStart = currentTestInfo.getRangeStart();
         double rangeEnd = currentTestInfo.getRangeEnd();
@@ -97,21 +93,15 @@ public class MainApp extends Application {
         rangeIncrementValue = 0.1;
         double increment;
 
-        if (testType == Config.FLUORIDE_ONE_STEP_TEST || testType == Config.FLUORIDE_SEVEN_STEP_TEST) {
-            if (PreferencesUtils.getBoolean(getApplicationContext(), R.string.oneStepCalibrationKey, false)) {
-                testType = Config.FLUORIDE_ONE_STEP_TEST;
-            } else {
-                testType = Config.FLUORIDE_SEVEN_STEP_TEST;
-            }
-        }
+        //int calibrationType = Config.SEVEN_STEP_TEST;
 
-        currentTestType = testType;
+        currentTestType = testCode;
 
-        if (testType == Config.FLUORIDE_ONE_STEP_TEST) {
-            increment = rangeEnd * 10 * rangeIncrementValue;
-        } else {
-            increment = rangeIncrementStep * rangeIncrementValue;
-        }
+        //if (calibrationType == Config.ONE_STEP_TEST) {
+        //  increment = rangeEnd * 10 * rangeIncrementValue;
+        //} else {
+        increment = rangeIncrementStep * rangeIncrementValue;
+        //}
 
         for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
             rangeIntervals.add(i);
@@ -127,16 +117,16 @@ public class MainApp extends Application {
     /**
      * Load any user calibrated swatches which overrides factory preset swatches
      *
-     * @param testType The type of test
+     * @param testCode The type of test
      */
-    void loadCalibratedSwatches(int testType) {
+    void loadCalibratedSwatches(String testCode) {
         MainApp context = ((MainApp) this.getApplicationContext());
         for (int i = 0; i < colorList.size(); i++) {
-            if (PreferencesUtils.contains(context, String.format("%d-%d", testType, i))) {
-                int value = PreferencesUtils.getInt(context, String.format("%d-%d", testType, i), -1);
+            if (PreferencesUtils.contains(context, String.format("%s-%d", testCode, i))) {
+                int value = PreferencesUtils.getInt(context, String.format("%s-%d", testCode, i), -1);
 
                 int quality = Math.max(-1, PreferencesUtils.getInt(context,
-                        String.format("%d-a-%d", testType, i), -1));
+                        String.format("%s-a-%d", testCode, i), -1));
 
                 int r = Color.red(value);
                 int g = Color.green(value);
@@ -144,11 +134,11 @@ public class MainApp extends Application {
 
                 // eliminate white and black colors
                 if (r == 255 && g == 255 && b == 255) {
-                    PreferencesUtils.setInt(this, String.format("%d-a-%d", testType, i), -1);
+                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testCode, i), -1);
                     value = -1;
                 }
                 if (r == 0 && g == 0 && b == 0) {
-                    PreferencesUtils.setInt(this, String.format("%d-a-%d", testType, i), -1);
+                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testCode, i), -1);
                     value = -1;
                 }
 
@@ -171,10 +161,10 @@ public class MainApp extends Application {
     }
 
     /**
-     * @param testType  The type of test
+     * @param testCode  The type of test
      * @param colorList List of swatch colors to be saved
      */
-    public void saveCalibratedSwatches(int testType, ArrayList<Integer> colorList) {
+    public void saveCalibratedSwatches(String testCode, ArrayList<Integer> colorList) {
         MainApp context = ((MainApp) this.getApplicationContext());
         assert context != null;
 
@@ -182,11 +172,11 @@ public class MainApp extends Application {
 
             PreferencesUtils
                     .setInt(context.getApplicationContext(),
-                            String.format("%d-%d", testType, i),
+                            String.format("%s-%d", testCode, i),
                             colorList.get(i));
             PreferencesUtils
                     .setInt(context.getApplicationContext(),
-                            String.format("%d-a-%d", testType, i), 100);
+                            String.format("%s-a-%d", testCode, i), 100);
         }
     }
 
@@ -206,6 +196,6 @@ public class MainApp extends Application {
                 count++;
             }
         }
-        return 0;
+        return count;
     }
 }

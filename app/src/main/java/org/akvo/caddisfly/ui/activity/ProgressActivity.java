@@ -67,7 +67,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private final Handler delayHandler = new Handler();
     private final PhotoTakenHandler mPhotoTakenHandler = new PhotoTakenHandler((ProgressActivity) this);
     private PowerManager.WakeLock wakeLock;
-    private int mTestType;
+    private String mTestType;
     // The folder path where the photos will be stored
     private String mFolderName;
     private CameraFragment mCameraFragment;
@@ -352,7 +352,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         if (isCalibration) {
             File calibrateFolder = new File(
                     FileUtils.getStoragePath(this, -1,
-                            String.format("%s/%d/%d/small/", Config.CALIBRATE_FOLDER, mTestType,
+                            String.format("%s/%s/%d/small/", Config.CALIBRATE_FOLDER, mTestType,
                                     mIndex),
                             false
                     )
@@ -373,7 +373,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.runningTestFolder), mFolderName);
-        editor.putInt(PreferencesHelper.CURRENT_TEST_TYPE_KEY, mTestType);
+        editor.putString(PreferencesHelper.CURRENT_TEST_TYPE_KEY, mTestType);
         editor.apply();
 
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,

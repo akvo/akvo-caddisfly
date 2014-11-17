@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -29,6 +31,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -37,16 +42,22 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.fragment.AboutFragment;
 import org.akvo.caddisfly.ui.fragment.CalibrateFragment;
 import org.akvo.caddisfly.ui.fragment.CalibrateItemFragment;
@@ -54,9 +65,9 @@ import org.akvo.caddisfly.ui.fragment.SettingsFragment;
 import org.akvo.caddisfly.ui.fragment.StartFragment;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
-import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.FileUtils;
+import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -80,9 +91,10 @@ public class MainActivity extends MainActivityBase implements
         CalibrateItemFragment.OnLoadCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
-    private int mTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
+    private final ExploreSpinnerAdapter mTopLevelSpinnerAdapter = new ExploreSpinnerAdapter();
     private boolean mShouldFinish = false;
     private SettingsFragment mSettingsFragment = null;
+    private CalibrateFragment mCalibrateFragment;
 
     private static Camera getCameraInstance() {
         Camera c = null;
@@ -181,7 +193,6 @@ public class MainActivity extends MainActivityBase implements
         res.updateConfiguration(conf, dm);
     }
 
-
     /**
      * @param background true: check for update silently, false: show messages to user
      */
@@ -219,11 +230,9 @@ public class MainActivity extends MainActivityBase implements
                 String questionTitle = getIntent().getStringExtra("questionTitle");
 
                 String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5));
-                mTestType = DataHelper.getTestTypeFromCode(code);
+                mainApp.setSwatches(code);
             }
         }
-
-        mainApp.setSwatches(mTestType);
 
         Fragment fragment;
 
@@ -234,23 +243,26 @@ public class MainActivity extends MainActivityBase implements
                     return;
                 }
 
-                fragment = StartFragment.newInstance(external, mTestType);
+                fragment = StartFragment.newInstance(external, mainApp.currentTestType);
                 break;
             case Config.CALIBRATE_SCREEN_INDEX:
                 //if (mCalibrateFragment == null) {
                 if (PreferencesUtils.getBoolean(this, R.string.oneStepCalibrationKey, false)) {
-                    CalibrateItemFragment mCalibrateFragment = new CalibrateItemFragment();
+                    CalibrateItemFragment mCalibrateItemFragment = new CalibrateItemFragment();
 
                     Bundle args = new Bundle();
                     args.putInt(getString(R.string.swatchIndex), 0);
-                    args.putInt(getString(R.string.currentTestTypeId), mainApp.currentTestType);
-                    mCalibrateFragment.setArguments(args);
-                    fragment = mCalibrateFragment;
+                    args.putString(getString(R.string.currentTestTypeId), mainApp.currentTestType);
+                    mCalibrateItemFragment.setArguments(args);
+                    fragment = mCalibrateItemFragment;
 
                 } else {
-                    fragment = new CalibrateFragment();
+                    mCalibrateFragment = new CalibrateFragment();
+                    fragment = mCalibrateFragment;
 
                 }
+                setupActionBarSpinner();
+
                 break;
             case Config.SETTINGS_SCREEN_INDEX:
                 if (mSettingsFragment == null) {
@@ -271,7 +283,7 @@ public class MainActivity extends MainActivityBase implements
         ft.commit();
 
         invalidateOptionsMenu();
-
+        updateActionBarNavigation(position);
     }
 
     @Override
@@ -279,6 +291,7 @@ public class MainActivity extends MainActivityBase implements
         if (getCurrentFragmentIndex() == Config.HOME_SCREEN_INDEX) {
             getMenuInflater().inflate(R.menu.home, menu);
         }
+        updateActionBarNavigation(getCurrentFragmentIndex());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -293,7 +306,6 @@ public class MainActivity extends MainActivityBase implements
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     /**
      * @return index of fragment currently showing
@@ -588,5 +600,213 @@ public class MainActivity extends MainActivityBase implements
         }
 
         callback.handleMessage(null);
+    }
+
+    private void setupActionBarSpinner() {
+        ActionBar ab = getActionBar();
+
+        ArrayList<TestInfo> tests = JsonUtils.loadTests(FileUtils.readRawTextFile(this, R.raw.tests_json));
+
+        mTopLevelSpinnerAdapter.clear();
+        MainApp mainApp = (MainApp) getApplicationContext();
+
+        int selectedIndex = 0;
+        int index = 0;
+        for (TestInfo test : tests) {
+            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(), 1);
+            if (test.getCode().equalsIgnoreCase(mainApp.currentTestType)) {
+                selectedIndex = index;
+            }
+            index++;
+        }
+
+        Context context = getActionBar().getThemedContext();
+        @SuppressLint("InflateParams") View spinnerContainer = LayoutInflater.from(context)
+                .inflate(R.layout.actionbar_spinner, null);
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        assert ab != null;
+        ab.setCustomView(spinnerContainer, lp);
+
+        Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.actionbar_spinner);
+        spinner.setAdapter(mTopLevelSpinnerAdapter);
+
+        spinner.setSelection(selectedIndex);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> spinner, View view, int position, long itemId) {
+                MainApp mainApp = (MainApp) getApplicationContext();
+                String testType = mTopLevelSpinnerAdapter.getTag(position);
+                mainApp.setSwatches(testType);
+                mCalibrateFragment.dataChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        updateActionBarNavigation(getCurrentFragmentIndex());
+    }
+
+    private void updateActionBarNavigation(int index) {
+        if (index == Config.CALIBRATE_SCREEN_INDEX) {
+            ActionBar ab = getActionBar();
+            assert ab != null;
+            ab.setDisplayShowCustomEnabled(true);
+            ab.setDisplayShowTitleEnabled(false);
+            ab.setDisplayUseLogoEnabled(false);
+        } else {
+            ActionBar ab = getActionBar();
+            assert ab != null;
+            ab.setDisplayShowCustomEnabled(false);
+            ab.setDisplayShowTitleEnabled(true);
+            ab.setDisplayUseLogoEnabled(true);
+        }
+
+        switch (index) {
+            case Config.SETTINGS_SCREEN_INDEX:
+                setTitle(R.string.settings);
+                break;
+        }
+    }
+
+
+    /**
+     * Adapter that provides views for our top-level Action Bar spinner.
+     */
+    private class ExploreSpinnerAdapter extends BaseAdapter {
+        // pairs of (tag, title)
+        private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<ExploreSpinnerItem>();
+        private int mDotSize;
+
+        private ExploreSpinnerAdapter() {
+        }
+
+        public void clear() {
+            mItems.clear();
+        }
+
+        public void addItem(String tag, String title, int color) {
+            mItems.add(new ExploreSpinnerItem(false, tag, title, color));
+        }
+
+        @Override
+        public int getCount() {
+            return mItems.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mItems.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        private boolean isHeader(int position) {
+            return position >= 0 && position < mItems.size()
+                    && mItems.get(position).isHeader;
+        }
+
+        @Override
+        public View getDropDownView(int position, View view, ViewGroup parent) {
+            if (view == null || !view.getTag().toString().equals("DROPDOWN")) {
+                view = getLayoutInflater().inflate(R.layout.actionbar_spinner_item_dropdown,
+                        parent, false);
+                view.setTag("DROPDOWN");
+            }
+
+            TextView normalTextView = (TextView) view.findViewById(R.id.normal_text);
+
+            normalTextView.setVisibility(View.VISIBLE);
+            setUpNormalDropdownView(position, normalTextView);
+
+            return view;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            if (view == null || !view.getTag().toString().equals("NON_DROPDOWN")) {
+                view = getLayoutInflater().inflate(R.layout.actionbar_spinner_item,
+                        parent, false);
+                view.setTag("NON_DROPDOWN");
+            }
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getTitle(position));
+            return view;
+        }
+
+        private String getTitle(int position) {
+            return position >= 0 && position < mItems.size() ? mItems.get(position).title : "";
+        }
+
+        private int getColor(int position) {
+            return position >= 0 && position < mItems.size() ? mItems.get(position).color : 0;
+        }
+
+        private String getTag(int position) {
+            return position >= 0 && position < mItems.size() ? mItems.get(position).tag : "";
+        }
+
+        private void setUpNormalDropdownView(int position, TextView textView) {
+            textView.setText(getTitle(position));
+            ShapeDrawable colorDrawable = (ShapeDrawable) textView.getCompoundDrawables()[2];
+            int color = getColor(position);
+            if (color == 0) {
+                if (colorDrawable != null) {
+                    textView.setCompoundDrawables(null, null, null, null);
+                }
+            } else {
+                if (mDotSize == 0) {
+                    mDotSize = 5;
+                }
+                if (colorDrawable == null) {
+                    colorDrawable = new ShapeDrawable(new OvalShape());
+                    colorDrawable.setIntrinsicWidth(mDotSize);
+                    colorDrawable.setIntrinsicHeight(mDotSize);
+                    colorDrawable.getPaint().setStyle(Paint.Style.FILL);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(null, null, colorDrawable, null);
+                }
+                colorDrawable.getPaint().setColor(color);
+            }
+
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return !isHeader(position);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return false;
+        }
+    }
+
+    private class ExploreSpinnerItem {
+        final boolean isHeader;
+        final String tag;
+        final String title;
+        final int color;
+
+        ExploreSpinnerItem(boolean isHeader, String tag, String title, int color) {
+            this.isHeader = isHeader;
+            this.tag = tag;
+            this.title = title;
+            this.color = color;
+        }
     }
 }

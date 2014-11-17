@@ -23,4 +23,8 @@
     <color name="green_button">#ff12ac6f</color>
     <color name="background_main">#f8ebf6ff</color>
     <color name="background_alternate">#ffdef1e9</color>
+
+    <color name="dropdown_item_normal">#ff333333</color>
+    <color name="item_selected">#ff066b72</color>
+
 </resources>

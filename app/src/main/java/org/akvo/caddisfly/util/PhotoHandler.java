@@ -50,15 +50,15 @@ public class PhotoHandler implements PictureCallback {
 
     private final String mFolderName;
 
-    private final int mTestType;
+    private final String mTestType;
 
     public PhotoHandler(Context context, Handler handler, int index, String folderName,
-                        int testType) {
+                        String testCode) {
         this.mContext = context;
         this.mHandler = handler;
         this.mIndex = index;
         this.mFolderName = folderName;
-        this.mTestType = testType;
+        this.mTestType = testCode;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class PhotoHandler implements PictureCallback {
             pictureFile = new File(photoFolder + photoFile);
         } else {
             photoFolder = FileUtils.getStoragePath(mContext, -1,
-                    String.format("%s/%d/%d/", Config.CALIBRATE_FOLDER, mTestType, mIndex),
+                    String.format("%s/%s/%d/", Config.CALIBRATE_FOLDER, mTestType, mIndex),
                     true);
             pictureFile = new File(photoFolder + photoFile);
         }

@@ -65,7 +65,6 @@
     <string name="installAkvoFlow">"الرجاء تثبيت Akvo تدفق التطبيق"</string>
     <string name="analysisInProgress">"التحليل في التقدم"</string>
     <string name="updateRequired">"يرجى تحديث إلى نسخة أحدث لتمكين هذه الميزة"</string>
-    <string name="fluoride2">"فلوريد 7 الخطوة"</string>
     <string name="outOfSequence">"من تسلسل"</string>
     <string name="duplicateSwatch">"مكررة أو لون مماثل"</string>
     <string name="about">"نبذة "</string>
@@ -79,8 +78,6 @@
     <string name="notFound">"لم يتم العثور على"</string>
     <string name="loadCalibration">"معايرة الحمل"</string>
     <string name="testInterrupted">"وتوقفت الاختبار. لا تحرك الهاتف أثناء الاختبار."</string>
-    <string name="revertVersion">"العودة إلى الإصدار السابق"</string>
-    <string name="appVersion">"نسخة التطبيق"</string>
     <string name="revertingVersion">"العودة إلى الإصدار السابق"</string>
     <string name="waitTillCameraSound">"ثم الانتظار لصوت الكاميرا في حوالي دقيقة واحدة"</string>
     <string name="calibrateSummary">"استخدام خليط الألوان القياسية المنصوص عليها في عدة لمعايرة هذا الهاتف"</string>

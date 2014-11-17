@@ -28,48 +28,6 @@ import java.math.RoundingMode;
 
 public class DataHelper {
 
-    public static int getTestTypeFromCode(String code) {
-
-        if (Config.FLUORIDE_CODE.equalsIgnoreCase(code)) {
-            return Config.FLUORIDE_ONE_STEP_TEST;
-        } else if (Config.PH_CODE.equalsIgnoreCase(code)) {
-            return Config.PH_TEST;
-        } else if (Config.COLIFORM_CODE.equalsIgnoreCase(code)) {
-            return Config.COLIFORM_TEST;
-        } else if (Config.NITRATE_CODE.equalsIgnoreCase(code)) {
-            return Config.NITRATE_TEST;
-        } else if (Config.ARSENIC_CODE.equalsIgnoreCase(code)) {
-            return Config.ARSENIC_TEST;
-        } else if (Config.TURBIDITY_CODE.equalsIgnoreCase(code)) {
-            return Config.TURBIDITY_TEST;
-        }
-
-        return -1;
-    }
-
-
-    public static String getTestCode(int id) {
-
-        switch (id) {
-            case Config.FLUORIDE_ONE_STEP_TEST:
-                return Config.FLUORIDE_CODE;
-            case Config.FLUORIDE_SEVEN_STEP_TEST:
-                return Config.FLUORIDE_CODE;
-            case Config.PH_TEST:
-                return Config.PH_CODE;
-            case Config.COLIFORM_TEST:
-                return Config.COLIFORM_CODE;
-            case Config.NITRATE_TEST:
-                return Config.NITRATE_CODE;
-            case Config.ARSENIC_TEST:
-                return Config.ARSENIC_CODE;
-            case Config.TURBIDITY_TEST:
-                return Config.TURBIDITY_CODE;
-            default:
-                return Config.FLUORIDE_CODE;
-        }
-    }
-
     public static String getSwatchError(Context context, int errorCode) {
         switch (errorCode) {
             case Config.ERROR_NOT_YET_CALIBRATED:
@@ -89,7 +47,7 @@ public class DataHelper {
         }
     }
 
-    public static void saveResultToPreferences(Context context, int testType, long id, String folderName,
+    public static void saveResultToPreferences(Context context, String testType, long id, String folderName,
                                                double finalResult, int resultColor) {
         int samplingCount = PreferencesUtils
                 .getInt(context, R.string.samplingCountKey, Config.SAMPLING_COUNT_DEFAULT);

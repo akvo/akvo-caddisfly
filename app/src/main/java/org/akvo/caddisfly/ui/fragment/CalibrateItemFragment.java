@@ -61,7 +61,7 @@ import java.util.ArrayList;
 @SuppressWarnings("WeakerAccess")
 public class CalibrateItemFragment extends ListFragment {
 
-    protected int mTestType = Config.FLUORIDE_SEVEN_STEP_TEST;
+    protected int mTestType;
     protected GalleryListAdapter mAdapter;
     private SoundPoolPlayer sound;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;

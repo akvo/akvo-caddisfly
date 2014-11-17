@@ -65,7 +65,6 @@
     <string name="installAkvoFlow">Please install Akvo Flow app</string>
     <string name="analysisInProgress">Analysis in progress</string>
     <string name="updateRequired">Please update to a newer version to enable this feature</string>
-    <string name="fluoride2">Fluoride 7 Step</string>
     <string name="outOfSequence">Out of Sequence</string>
     <string name="duplicateSwatch">Duplicate or similar color</string>
     <string name="about">About</string>
@@ -79,8 +78,6 @@
     <string name="notFound">Not Found</string>
     <string name="loadCalibration">Load Calibration</string>
     <string name="testInterrupted">Test was interrupted. Do not move the phone during the test.</string>
-    <string name="revertVersion">Revert to previous version</string>
-    <string name="appVersion">App version</string>
     <string name="revertingVersion">Reverting to previous version</string>
     <string name="waitTillCameraSound">Then wait for the camera sound in about a minute</string>
     <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>

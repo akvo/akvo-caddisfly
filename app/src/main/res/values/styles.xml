@@ -69,4 +69,16 @@
         <item name="android:alpha">0.7</item>
     </style>
 
+    <style name="FrameworkRoot.Widget.Spinner" parent="android:Widget.Holo.Light.Spinner" />
+
+    <style name="Widget.HeaderBar.Spinner.Base" parent="FrameworkRoot.Widget.Spinner">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="Widget.HeaderBar.Spinner" parent="Widget.HeaderBar.Spinner.Base" />
+
+
 </resources>

@@ -47,27 +47,6 @@ public class Config {
 
     public static final int CALIBRATE_SCREEN_INDEX = 2;
 
-    // test types
-    public static final int FLUORIDE_ONE_STEP_TEST = 0;
-    public static final int FLUORIDE_SEVEN_STEP_TEST = 1;
-    public static final String FLUORIDE_CODE = "FLUOR";
-
-    public static final int PH_TEST = 2;
-    public static final String PH_CODE = "PHYDR";
-
-    public static final int NITRATE_TEST = 3;
-    public static final String NITRATE_CODE = "NITRA";
-
-    public static final int ARSENIC_TEST = 4;
-    public static final String ARSENIC_CODE = "ARSEN";
-
-    public static final int TURBIDITY_TEST = 5;
-    public static final String TURBIDITY_CODE = "TURBI";
-
-    public static final int COLIFORM_TEST = 6;
-    public static final String COLIFORM_CODE = "COLIF";
-
-
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;
 

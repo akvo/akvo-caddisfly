@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (C) TernUp Research Labs
+  ~
+  ~ This file is part of Caddisfly
+  ~
+  ~ Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/explore_spinner_width"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/spinner_triangle"
+        android:drawablePadding="4dp"
+        android:drawableRight="@drawable/spinner_triangle"
+        android:paddingEnd="4dp"
+        android:paddingLeft="@dimen/spinner_left_padding"
+        android:paddingRight="4dp"
+        android:paddingStart="@dimen/spinner_left_padding"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        tools:ignore="NewApi" />
+
+</LinearLayout>

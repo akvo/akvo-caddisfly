@@ -65,7 +65,6 @@
     <string name="installAkvoFlow">"ಅನುಸ್ಥಾಪಿಸಲು ದಯವಿಟ್ಟು Akvo ಫ್ಲೋ ಅಪ್ಲಿಕೇಶನ್"</string>
     <string name="analysisInProgress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ ವಿಶ್ಲೇಷಣೆ"</string>
     <string name="updateRequired">"ಈ ಲಕ್ಷಣವನ್ನು ಶಕ್ತಗೊಳಿಸಲು ಒಂದು ಹೊಸ ಆವೃತ್ತಿಗೆ ನವೀಕರಿಸಿ"</string>
-    <string name="fluoride2">"ಫ್ಲೋರೈಡ್ 7 ಹಂತ"</string>
     <string name="outOfSequence">"ಅನುಕ್ರಮದ ಔಟ್"</string>
     <string name="duplicateSwatch">"ನಕಲು ಅಥವಾ ಇದೇ ರೀತಿಯ ವರ್ಣ"</string>
     <string name="about">"ಕುರಿತಾಗಿ"</string>
@@ -79,8 +78,6 @@
     <string name="notFound">"ಕಂಡುಬಂದಿಲ್ಲ"</string>
     <string name="loadCalibration">"ಲೋಡ್ ಕ್ಯಾಲಿಬ್ರೇಶನ್"</string>
     <string name="testInterrupted">"ಟೆಸ್ಟ್ ಅಡ್ಡಿಯಾದವು. ಪರೀಕ್ಷೆಯ ಸಮಯದಲ್ಲಿ ಫೋನ್ ಚಲಿಸುವುದಿಲ್ಲ."</string>
-    <string name="revertVersion">"ಹಿಂದಿನ ಆವೃತ್ತಿ ಹಿಂದಿರುಗುತ್ತವೆ"</string>
-    <string name="appVersion">"ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ"</string>
     <string name="revertingVersion">"ಹಿಂದಿನ ಆವೃತ್ತಿಗೆ ಮರಳುವಂತೆ"</string>
     <string name="waitTillCameraSound">"ನಂತರ ಸುಮಾರು ಒಂದು ನಿಮಿಷದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಧ್ವನಿ ನಿರೀಕ್ಷಿಸಿ"</string>
     <string name="calibrateSummary">"ಈ ಫೋನ್ ಮಾಪನಾಂಕ ಕಿಟ್ ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಬಣ್ಣ ಮಿಶ್ರಣಗಳನ್ನು ಬಳಸಿ"</string>

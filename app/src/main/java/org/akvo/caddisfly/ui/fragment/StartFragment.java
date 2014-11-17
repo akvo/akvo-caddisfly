@@ -42,15 +42,13 @@ public class StartFragment extends Fragment {
     private OnVideoListener mOnVideoListener;
     private OnBackListener mOnBackListener;
 
-    // private boolean mIsExternal = false;
-    private int mTestType;
     private boolean mIsExternal;
 
-    public static StartFragment newInstance(boolean external, int testType) {
+    public static StartFragment newInstance(boolean external, String testCode) {
         StartFragment fragment = new StartFragment();
         Bundle args = new Bundle();
         args.putBoolean(EXTERNAL_PARAM, external);
-        args.putInt(TEST_TYPE_PARAM, testType);
+        args.putString(TEST_TYPE_PARAM, testCode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +63,6 @@ public class StartFragment extends Fragment {
 
         if (getArguments() != null) {
             mIsExternal = getArguments().getBoolean(EXTERNAL_PARAM);
-            mTestType = getArguments().getInt(TEST_TYPE_PARAM);
         }
 
 

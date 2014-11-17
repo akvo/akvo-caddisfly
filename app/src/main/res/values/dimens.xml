@@ -5,4 +5,11 @@
 
     <dimen name="subtitleTextSize">15sp</dimen>
     <dimen name="bigButtonTextSize">20sp</dimen>
+
+    <dimen name="explore_spinner_width">200dp</dimen>
+    <dimen name="spinner_left_padding">4dp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="explore_dropdown_item_height">48dp</dimen>
+
+
 </resources>
