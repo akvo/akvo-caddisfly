@@ -21,6 +21,7 @@ public class JsonUtils {
                     testInfo = new TestInfo(
                             array.getJSONObject(i).getString("name"),
                             array.getJSONObject(i).getString("code"),
+                            array.getJSONObject(i).getString("unit"),
                             array.getJSONObject(i).getJSONObject("lowRange").getDouble("start"),
                             array.getJSONObject(i).getJSONObject("lowRange").getDouble("end"));
 
@@ -52,6 +53,7 @@ public class JsonUtils {
                 testInfo = new TestInfo(
                         array.getJSONObject(i).getString("name"),
                         array.getJSONObject(i).getString("code"),
+                        array.getJSONObject(i).getString("unit"),
                         array.getJSONObject(i).getJSONObject("lowRange").getDouble("start"),
                         array.getJSONObject(i).getJSONObject("lowRange").getDouble("end"));
 

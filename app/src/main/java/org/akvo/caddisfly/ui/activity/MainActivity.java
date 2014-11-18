@@ -93,6 +93,10 @@ public class MainActivity extends MainActivityBase implements
     private boolean mShouldFinish = false;
     private SettingsFragment mSettingsFragment = null;
     private CalibrateFragment mCalibrateFragment;
+    private Boolean external = false;
+    private StartFragment mStartFragment;
+    private String mQuestionTitle;
+
 
     private static Camera getCameraInstance() {
         Camera c = null;
@@ -204,6 +208,43 @@ public class MainActivity extends MainActivityBase implements
         super.onResume();
         invalidateOptionsMenu();
         mShouldFinish = false;
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        MainApp mainApp = (MainApp) getApplicationContext();
+
+        if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
+            if ("text/plain".equals(type)) { //NON-NLS
+
+                String errorTitle;
+                if (mQuestionTitle.length() > 0) {
+                    if (mQuestionTitle.length() > 30) {
+                        mQuestionTitle = mQuestionTitle.substring(0, 30);
+                    }
+                    errorTitle = mQuestionTitle;
+                } else {
+                    errorTitle = getString(R.string.error);
+                }
+
+
+                if (mainApp.currentTestInfo == null) {
+                    AlertUtils.showAlert(this, errorTitle,
+                            R.string.testNotAvailable,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        DialogInterface dialogInterface,
+                                        int i) {
+                                    finish();
+                                }
+                            }, null
+                    );
+                }
+            }
+        }
+
     }
 
     void displayView(int position, boolean addToBackStack) {
@@ -214,20 +255,20 @@ public class MainActivity extends MainActivityBase implements
             return;
         }
 
+        MainApp mainApp = (MainApp) getApplicationContext();
+
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        Boolean external = false;
-
-        MainApp mainApp = (MainApp) getApplicationContext();
 
         if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 external = true;
                 //mQuestionId = getIntent().getStringExtra("questionId");
-                String questionTitle = getIntent().getStringExtra("questionTitle");
+                mQuestionTitle = getIntent().getStringExtra("questionTitle");
 
-                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5));
+                String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
+
                 mainApp.setSwatches(code);
             }
         }
@@ -241,7 +282,8 @@ public class MainActivity extends MainActivityBase implements
                     return;
                 }
 
-                fragment = StartFragment.newInstance(external, mainApp.currentTestType);
+                mStartFragment = StartFragment.newInstance(external, mainApp.currentTestType);
+                fragment = mStartFragment;
                 break;
             case Config.CALIBRATE_SCREEN_INDEX:
                 mCalibrateFragment = new CalibrateFragment();
@@ -273,6 +315,26 @@ public class MainActivity extends MainActivityBase implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        MainApp mainApp = (MainApp) getApplicationContext();
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
+            if ("text/plain".equals(type)) { //NON-NLS
+                external = true;
+                //mQuestionId = getIntent().getStringExtra("questionId");
+                String questionTitle = getIntent().getStringExtra("questionTitle");
+
+                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5));
+
+                mainApp.setSwatches(code);
+            }
+        }
+
+        mStartFragment.refresh();
+
         if (getCurrentFragmentIndex() == Config.HOME_SCREEN_INDEX) {
             getMenuInflater().inflate(R.menu.home, menu);
         }
@@ -315,25 +377,6 @@ public class MainActivity extends MainActivityBase implements
     }
 
     public void onStartSurvey() {
-        Context context = this;
-
-        MainApp mainApp = (MainApp) this.getApplicationContext();
-
-        if (mainApp.getCalibrationErrorCount() > 0) {
-            AlertUtils.showAlert(context, R.string.error,
-                    R.string.calibrate_error,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(
-                                DialogInterface dialogInterface,
-                                int i) {
-                            dialogInterface.dismiss();
-                            displayView(Config.CALIBRATE_SCREEN_INDEX, true);
-                        }
-                    }, null
-            );
-            return;
-        }
 
         Intent LaunchIntent = getPackageManager()
                 .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
@@ -652,6 +695,10 @@ public class MainActivity extends MainActivityBase implements
             case Config.SETTINGS_SCREEN_INDEX:
                 setTitle(R.string.settings);
                 break;
+            case Config.HOME_SCREEN_INDEX:
+                setTitle(R.string.appName);
+                break;
+
         }
     }
 

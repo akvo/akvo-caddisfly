@@ -25,7 +25,6 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -81,10 +80,16 @@ public class MainApp extends Application {
     }
 
     public void setSwatches(String testCode) {
+        testCode = testCode.toUpperCase();
+
         colorList.clear();
         rangeIntervals.clear();
 
         currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), testCode);
+
+        if (currentTestInfo == null) {
+            return;
+        }
 
         rangeStart = currentTestInfo.getRangeStart();
         double rangeEnd = currentTestInfo.getRangeEnd();
@@ -113,6 +118,7 @@ public class MainApp extends Application {
      * @param testCode The type of test
      */
     void loadCalibratedSwatches(String testCode) {
+        testCode = testCode.toUpperCase();
         MainApp context = ((MainApp) this.getApplicationContext());
         for (int i = 0; i < colorList.size(); i++) {
             if (PreferencesUtils.contains(context, String.format("%s-%d", testCode, i))) {
@@ -146,10 +152,11 @@ public class MainApp extends Application {
                 colorList.set(i, colorInfo);
             }
         }
-        int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,
-                Config.MINIMUM_PHOTO_QUALITY);
 
-        ColorUtils.validateGradient(colorList, context.rangeIntervals.size(), context.rangeIncrementStep, minQuality);
+        //int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,
+        //        Config.MINIMUM_PHOTO_QUALITY);
+
+        //ColorUtils.validateGradient(colorList, context.rangeIncrementStep, minQuality);
 
     }
 
@@ -158,6 +165,8 @@ public class MainApp extends Application {
      * @param colorList List of swatch colors to be saved
      */
     public void saveCalibratedSwatches(String testCode, ArrayList<Integer> colorList) {
+        testCode = testCode.toUpperCase();
+
         MainApp context = ((MainApp) this.getApplicationContext());
         assert context != null;
 

@@ -29,12 +29,13 @@ import org.akvo.caddisfly.R;
 
 public class ResultFragment extends DialogFragment {
 
-    public static ResultFragment newInstance(String title, double result, Message msg) {
+    public static ResultFragment newInstance(String title, double result, Message msg, String unit) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putDouble("result", result);
         args.putBundle("message", msg.getData());
+        args.putString("unit", unit);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,6 +50,7 @@ public class ResultFragment extends DialogFragment {
 
         TextView resultView = (TextView) view.findViewById(R.id.result);
         TextView titleView = (TextView) view.findViewById(R.id.titleView);
+        TextView unitTextView = (TextView) view.findViewById(R.id.ppmText);
         Button button = (Button) view.findViewById(R.id.endSurveyButton);
 
         final Bundle bundle = getArguments().getBundle("message");
@@ -67,6 +69,8 @@ public class ResultFragment extends DialogFragment {
         double result = getArguments().getDouble("result", -1);
 
         resultView.setText(String.format("%.2f", result));
+
+        unitTextView.setText(getArguments().getString("unit", ""));
 
         return view;
     }

@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.ui.activity.MainActivity;
 
 public class AlertUtils {
 
@@ -45,14 +46,20 @@ public class AlertUtils {
         showAlert(context, title, message, R.string.ok, callback, cancelListener);
     }*/
 
+    @SuppressWarnings("SameParameterValue")
+    public static void showAlert(MainActivity context, String title, int message,
+                                 DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
+        showAlert(context, title, context.getString(message), R.string.ok, callback, cancelListener);
+    }
+
     public static void showAlert(Context context, int title, int message,
                                  DialogInterface.OnClickListener callback,
                                  DialogInterface.OnClickListener cancelListener) {
 
-        showAlert(context, title, context.getString(message), R.string.ok, callback, cancelListener);
+        showAlert(context, context.getString(title), context.getString(message), R.string.ok, callback, cancelListener);
     }
 
-    private static void showAlert(final Context context, int title, String message, int okButtonText,
+    private static void showAlert(final Context context, String title, String message, int okButtonText,
                                   DialogInterface.OnClickListener callback,
                                   DialogInterface.OnClickListener cancelListener) {
 
@@ -87,7 +94,7 @@ public class AlertUtils {
                                  DialogInterface.OnClickListener cancelListener) {
 
         if (bitmap == null) {
-            showAlert(context, title, message, okButtonText, callback, cancelListener);
+            showAlert(context, context.getString(title), message, okButtonText, callback, cancelListener);
             return;
         }
 

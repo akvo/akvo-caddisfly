@@ -36,12 +36,11 @@ public class StartFragment extends Fragment {
     private static final String EXTERNAL_PARAM = "external";
 
     private static final String TEST_TYPE_PARAM = "testType";
-
+    TextView testTypeTextView;
     private OnStartSurveyListener mOnStartSurveyListener;
     private OnStartTestListener mOnStartTestListener;
     private OnVideoListener mOnVideoListener;
     private OnBackListener mOnBackListener;
-
     private boolean mIsExternal;
 
     public static StartFragment newInstance(boolean external, String testCode) {
@@ -58,8 +57,6 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         getActivity().setTitle(R.string.appName);
-
-        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
 
         if (getArguments() != null) {
             mIsExternal = getArguments().getBoolean(EXTERNAL_PARAM);
@@ -106,12 +103,9 @@ public class StartFragment extends Fragment {
             }
         });
 
-        TextView testTypeTextView = (TextView) view.findViewById(R.id.testTypeTextView);
-
+        testTypeTextView = (TextView) view.findViewById(R.id.testTypeTextView);
         if (mIsExternal) {
-            testTypeTextView.setText(mainApp.currentTestInfo.getName());
             testTypeTextView.setVisibility(View.VISIBLE);
-
             backButton.setVisibility(View.VISIBLE);
             startButton.setVisibility(View.VISIBLE);
             startSurveyButton.setVisibility(View.GONE);
@@ -121,6 +115,8 @@ public class StartFragment extends Fragment {
             backButton.setVisibility(View.GONE);
             startButton.setVisibility(View.GONE);
         }
+
+        refresh();
 
         return view;
     }
@@ -146,6 +142,19 @@ public class StartFragment extends Fragment {
         mOnStartTestListener = null;
         mOnVideoListener = null;
         mOnBackListener = null;
+    }
+
+    public void refresh() {
+        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+
+        if (mainApp.currentTestInfo != null) {
+            if (mIsExternal) {
+                testTypeTextView.setText(mainApp.currentTestInfo.getName());
+                testTypeTextView.setVisibility(View.VISIBLE);
+            } else {
+                testTypeTextView.setVisibility(View.GONE);
+            }
+        }
     }
 
 

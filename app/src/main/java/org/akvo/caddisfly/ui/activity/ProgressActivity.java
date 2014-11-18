@@ -600,6 +600,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
                 String title = ((MainApp) getApplicationContext()).currentTestInfo.getName();
 
+                MainApp mainApp = (MainApp) getApplicationContext();
+
                 if (result >= 0 && quality >= minAccuracy) {
                     if (result > 2.5 && !isHighRangeTest) {
                         isHighRangeTest = true;
@@ -616,7 +618,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                     } else {
                         isHighRangeTest = false;
                         sound.playShortResource(R.raw.done);
-                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg);
+                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg, mainApp.currentTestInfo.getUnit());
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                         Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");

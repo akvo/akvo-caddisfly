@@ -306,7 +306,7 @@ public class ColorUtils {
         }
     }
 
-    public static void validateGradient(ArrayList<ColorInfo> colorList, int size, int increment, int minQuality) {
+    public static void validateGradient(ArrayList<ColorInfo> colorList, int increment, int minQuality) {
 
         int index1, index2;
         double previousDistance = 0;
@@ -321,7 +321,7 @@ public class ColorUtils {
             colorList.get(i).setDistance(distance);
         }
 
-        for (int i = 1; i < size; i++) {
+        for (int i = 1; i < colorList.size(); i++) {
             index1 = (i - 1) * increment;
             index2 = i * increment;
             int color1 = colorList.get(index1).getColor();
@@ -331,7 +331,7 @@ public class ColorUtils {
         }
 
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < colorList.size(); i++) {
             index1 = i * increment;
             int color1 = colorList.get(index1).getColor();
             if (color1 == -1) {
@@ -342,7 +342,7 @@ public class ColorUtils {
 
         if (!notCalibrated) {
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < colorList.size(); i++) {
                 int index = i * increment;
                 if (colorList.get(index).getErrorCode() == Config.ERROR_NOT_YET_CALIBRATED) {
                     notCalibrated = true;
@@ -353,7 +353,7 @@ public class ColorUtils {
 
         if (!notCalibrated) {
 
-            for (int i = 0; i < size - 1; i++) {
+            for (int i = 0; i < colorList.size() - 1; i++) {
                 index1 = i * increment;
                 int color1 = colorList.get(index1).getColor();
                 index2 = (i + 1) * increment;
@@ -366,7 +366,7 @@ public class ColorUtils {
                     if (colorList.get(index1).getErrorCode() == 0) {
                         errorFound = true;
 
-                        if (i < size - 2) {
+                        if (i < colorList.size() - 2) {
                             int index3 = (i + 2) * increment;
                             int color3 = colorList.get(index3).getColor();
                             distance = getDistance(color2, color3);
@@ -383,10 +383,10 @@ public class ColorUtils {
             }
 
             if (!errorFound) {
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < colorList.size(); i++) {
                     index1 = i * increment;
                     int color1 = colorList.get(index1).getColor();
-                    for (int j = 0; j < size; j++) {
+                    for (int j = 0; j < colorList.size(); j++) {
                         index2 = j * increment;
                         int color2 = colorList.get(index2).getColor();
                         if (index1 != index2) {
@@ -410,7 +410,7 @@ public class ColorUtils {
                 }
             }
 
-            for (int i = 0; i < size - 1; i++) {
+            for (int i = 0; i < colorList.size() - 1; i++) {
                 int index = i * increment;
                 if (colorList.get(index).getQuality() < minQuality) {
                     colorList.get(index).setErrorCode(Config.ERROR_LOW_QUALITY);

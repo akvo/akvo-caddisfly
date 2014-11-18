@@ -9,7 +9,7 @@ public class Config {
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     // Used to check if flow app is installed
-    public static final String FLOW_SURVEY_PACKAGE_NAME = "com.gallatinsystems.survey.device";
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
     // Caddisfly update file name
     public static final String UPDATE_FILE_NAME = "akvo_caddisfly_update.apk";

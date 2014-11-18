@@ -3,13 +3,15 @@ package org.akvo.caddisfly.model;
 public class TestInfo {
     private final String mName;
     private final String mCode;
+    private final String mUnit;
     private final double mRangeStart;
     private final double mRangeEnd;
     private int mIncrement;
 
-    public TestInfo(String name, String code, double rangeStart, double rangeEnd) {
+    public TestInfo(String name, String code, String unit, double rangeStart, double rangeEnd) {
         mName = name;
         mCode = code;
+        mUnit = unit;
         mRangeStart = rangeStart;
         mRangeEnd = rangeEnd;
     }
@@ -20,6 +22,10 @@ public class TestInfo {
 
     public String getCode() {
         return mCode;
+    }
+
+    public String getUnit() {
+        return mUnit;
     }
 
     public double getRangeStart() {
