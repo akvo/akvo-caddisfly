@@ -241,6 +241,11 @@ public class MainActivity extends MainActivityBase implements
                                 }
                             }, null
                     );
+                } else {
+                    if (external && !PreferencesUtils.getBoolean(this, R.string.showStartPageKey, true)) {
+                        onStartTest();
+                    }
+
                 }
             }
         }
@@ -277,11 +282,6 @@ public class MainActivity extends MainActivityBase implements
 
         switch (position) {
             case Config.HOME_SCREEN_INDEX:
-                if (external && !PreferencesUtils.getBoolean(this, R.string.showStartPageKey, true)) {
-                    onStartTest();
-                    return;
-                }
-
                 mStartFragment = StartFragment.newInstance(external, mainApp.currentTestType);
                 fragment = mStartFragment;
                 break;
@@ -333,7 +333,9 @@ public class MainActivity extends MainActivityBase implements
             }
         }
 
-        mStartFragment.refresh();
+        if (mStartFragment != null) {
+            mStartFragment.refresh();
+        }
 
         if (getCurrentFragmentIndex() == Config.HOME_SCREEN_INDEX) {
             getMenuInflater().inflate(R.menu.home, menu);
@@ -420,16 +422,11 @@ public class MainActivity extends MainActivityBase implements
             return;
         }
 
-        //final Intent intent = new Intent(getIntent());
         final Intent intent = new Intent(context, ProgressActivity.class);
         intent.setClass(context, ProgressActivity.class);
         intent.putExtra(PreferencesHelper.CURRENT_LOCATION_ID_KEY, (long) 0);
         intent.putExtra("isCalibration", false);
-        //intent.getBooleanExtra("skipInfo", true);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, REQUEST_TEST);
-
     }
 
     @Override
