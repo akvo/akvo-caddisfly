@@ -70,6 +70,7 @@ import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
+import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -217,19 +218,22 @@ public class MainActivity extends MainActivityBase implements
 
         if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
-
-                String errorTitle;
-                if (mQuestionTitle.length() > 0) {
-                    if (mQuestionTitle.length() > 30) {
-                        mQuestionTitle = mQuestionTitle.substring(0, 30);
-                    }
-                    errorTitle = mQuestionTitle;
-                } else {
-                    errorTitle = getString(R.string.error);
-                }
-
+                mQuestionTitle = getIntent().getStringExtra("questionTitle");
+                String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
+                mainApp.setSwatches(code);
 
                 if (mainApp.currentTestInfo == null) {
+
+                    String errorTitle;
+                    if (mQuestionTitle.length() > 0) {
+                        if (mQuestionTitle.length() > 30) {
+                            mQuestionTitle = mQuestionTitle.substring(0, 30);
+                        }
+                        errorTitle = mQuestionTitle;
+                    } else {
+                        errorTitle = getString(R.string.error);
+                    }
+
                     AlertUtils.showAlert(this, errorTitle,
                             R.string.testNotAvailable,
                             new DialogInterface.OnClickListener() {
@@ -282,7 +286,7 @@ public class MainActivity extends MainActivityBase implements
 
         switch (position) {
             case Config.HOME_SCREEN_INDEX:
-                mStartFragment = StartFragment.newInstance(external, mainApp.currentTestType);
+                mStartFragment = StartFragment.newInstance(external, mainApp.currentTestInfo.getCode());
                 fragment = mStartFragment;
                 break;
             case Config.CALIBRATE_SCREEN_INDEX:
@@ -556,9 +560,9 @@ public class MainActivity extends MainActivityBase implements
                                     (new AsyncTask<Void, Void, Void>() {
                                         @Override
                                         protected Void doInBackground(Void... params) {
-                                            mainApp.saveCalibratedSwatches(mainApp.currentTestType, swatchList);
+                                            mainApp.saveCalibratedSwatches(mainApp.currentTestInfo.getCode(), swatchList);
 
-                                            mainApp.setSwatches(mainApp.currentTestType);
+                                            mainApp.setSwatches(mainApp.currentTestInfo.getCode());
 
                                             SharedPreferences sharedPreferences = PreferenceManager
                                                     .getDefaultSharedPreferences(context);
@@ -569,7 +573,7 @@ public class MainActivity extends MainActivityBase implements
 
                                                 ColorUtils.autoGenerateColors(
                                                         index,
-                                                        mainApp.currentTestType,
+                                                        mainApp.currentTestInfo.getCode(),
                                                         mainApp.colorList,
                                                         mainApp.rangeIncrementStep, editor, 0, 30);
                                             }
@@ -630,16 +634,22 @@ public class MainActivity extends MainActivityBase implements
     private void setupActionBarSpinner() {
         ActionBar ab = getActionBar();
 
-        ArrayList<TestInfo> tests = JsonUtils.loadTests(FileUtils.readRawTextFile(this, R.raw.tests_json));
+        ArrayList<TestInfo> tests = null;
+        try {
+            tests = JsonUtils.loadTests(FileUtils.readRawTextFile(this, R.raw.tests_json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         mTopLevelSpinnerAdapter.clear();
         MainApp mainApp = (MainApp) getApplicationContext();
 
         int selectedIndex = 0;
         int index = 0;
+        assert tests != null;
         for (TestInfo test : tests) {
             mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName());
-            if (test.getCode().equalsIgnoreCase(mainApp.currentTestType)) {
+            if (test.getCode().equalsIgnoreCase(mainApp.currentTestInfo.getCode())) {
                 selectedIndex = index;
             }
             index++;

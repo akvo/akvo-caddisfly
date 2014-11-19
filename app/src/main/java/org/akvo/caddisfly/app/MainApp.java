@@ -25,9 +25,11 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
+import org.json.JSONException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -37,11 +39,11 @@ public class MainApp extends Application {
     public final ArrayList<Double> rangeIntervals = new ArrayList<Double>();
     public final ArrayList<ColorInfo> colorList = new ArrayList<ColorInfo>();
     public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
-    public String currentTestType;
+    public final double rangeIncrementValue = 0.1;
+
     public int rangeIncrementStep = 5;
     public double rangeStart = 0;
-    public double rangeIncrementValue = 0.1;
-    public TestInfo currentTestInfo;
+    public TestInfo currentTestInfo = new TestInfo("", "", "", -1, -1, -1, -1);
 
     /**
      * @param context The context
@@ -75,17 +77,17 @@ public class MainApp extends Application {
         }
     }
 
-    public void setSwatches() {
-        setSwatches(currentTestType);
-    }
-
     public void setSwatches(String testCode) {
         testCode = testCode.toUpperCase();
 
         colorList.clear();
         rangeIntervals.clear();
 
-        currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), testCode);
+        try {
+            currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), testCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (currentTestInfo == null) {
             return;
@@ -95,10 +97,8 @@ public class MainApp extends Application {
         double rangeEnd = currentTestInfo.getRangeEnd();
 
         rangeIncrementStep = currentTestInfo.getIncrement();
-        rangeIncrementValue = 0.1;
         double increment;
 
-        currentTestType = testCode;
         increment = rangeIncrementStep * rangeIncrementValue;
 
         for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
@@ -109,7 +109,7 @@ public class MainApp extends Application {
             colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
         }
 
-        loadCalibratedSwatches(currentTestType);
+        loadCalibratedSwatches(currentTestInfo.getCode());
     }
 
     /**
@@ -153,10 +153,10 @@ public class MainApp extends Application {
             }
         }
 
-        //int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,
-        //        Config.MINIMUM_PHOTO_QUALITY);
+        int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,
+                Config.MINIMUM_PHOTO_QUALITY);
 
-        //ColorUtils.validateGradient(colorList, context.rangeIncrementStep, minQuality);
+        ColorUtils.validateGradient(colorList, context.rangeIncrementStep, minQuality);
 
     }
 

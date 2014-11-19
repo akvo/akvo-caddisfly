@@ -77,6 +77,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private Animation mSlideOutLeft;
     private TextView mTitleText;
     private TextView mRemainingText;
+    private TextView mTestTypeTextView;
+
     private ProgressBar mProgressBar;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -143,6 +145,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
         // Gradient shading for title
         mTitleText = (TextView) findViewById(R.id.titleText);
+        mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
+
         Shader textShader = new LinearGradient(0, 0, 0, mTitleText.getPaint().getTextSize(),
                 new int[]{Color.rgb(28, 53, 63), Color.rgb(44, 85, 103)},
                 new float[]{0, 1}, Shader.TileMode.CLAMP);
@@ -263,7 +267,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         //String action = intent.getAction();
         //String type = intent.getType();
 
-        mTestType = mainApp.currentTestType;
+        mTestType = mainApp.currentTestInfo.getCode();
 
         getSharedPreferences();
 
@@ -326,6 +330,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
         mainApp.setSwatches(mTestType);
         mTitleText.setText(mainApp.currentTestInfo.getName());
+        mTestTypeTextView.setText(mainApp.currentTestInfo.getName());
 
         mTestTotal = 1;
 
@@ -590,8 +595,10 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 double result = msg.getData().getDouble(Config.RESULT_VALUE_KEY, -1);
                 final int quality = msg.getData().getInt(Config.QUALITY_KEY, 0);
 
+                MainApp mainApp = (MainApp) getApplicationContext();
+
                 if (isHighRangeTest) {
-                    result = 3 + ((result / 0.5) * 2);
+                    result = mainApp.currentTestInfo.getHighRangeStart() + ((result / 0.5) * 2);
                     msg.getData().putDouble(Config.RESULT_VALUE_KEY, result);
                 }
 
@@ -600,10 +607,10 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
                 String title = ((MainApp) getApplicationContext()).currentTestInfo.getName();
 
-                MainApp mainApp = (MainApp) getApplicationContext();
-
                 if (result >= 0 && quality >= minAccuracy) {
-                    if (result > 2.5 && !isHighRangeTest) {
+                    if (mainApp.currentTestInfo.getHighRangeStart() > -1 &&
+                            result > mainApp.currentTestInfo.getRangeEnd() - (0.1 * mainApp.currentTestInfo.getIncrement()) &&
+                            !isHighRangeTest) {
                         isHighRangeTest = true;
                         MessageFragment mMessageFragment = MessageFragment.newInstance(title, msg);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();

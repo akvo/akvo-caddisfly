@@ -26,7 +26,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -181,7 +180,7 @@ public class CalibrateItemFragment extends ListFragment {
     void displayInfo() {
 
         final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
-        mainApp.setSwatches(mainApp.currentTestType);
+        //mainApp.setSwatches(mainApp.currentTestType);
         final int position = getArguments().getInt(getString(R.string.swatchIndex));
         final int index = position * mainApp.rangeIncrementStep;
 
@@ -253,58 +252,34 @@ public class CalibrateItemFragment extends ListFragment {
 
     protected void storeCalibratedData(final int position, final int resultColor,
                                        final int accuracy) {
+        Context context = getActivity().getApplicationContext();
+        final MainApp mainApp = ((MainApp) context.getApplicationContext());
 
-        (new AsyncTask<Void, Void, Void>() {
+        int index = position * mainApp.rangeIncrementStep;
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String colorKey = String.format("%s-%s", mTestType, String.valueOf(index));
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                Context context = getActivity().getApplicationContext();
+        if (resultColor == -1) {
+            editor.remove(colorKey);
+        } else {
+            ColorInfo colorInfo = new ColorInfo(resultColor, accuracy);
+            mainApp.colorList.set(index, colorInfo);
 
-                if (context != null) {
-                    MainApp mainApp = ((MainApp) context.getApplicationContext());
-                    ArrayList<ColorInfo> colorList = ((MainApp) context).colorList;
-                    if (colorList.size() == 0) {
-                        mainApp.setSwatches();
-                    }
-                    int index = position * mainApp.rangeIncrementStep;
-                    SharedPreferences sharedPreferences = PreferenceManager
-                            .getDefaultSharedPreferences(context);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    String colorKey = String.format("%s-%s", mTestType, String.valueOf(index));
+            editor.putInt(colorKey, resultColor);
+            editor.putInt(String.format("%s-a-%s", mTestType, String.valueOf(index)),
+                    accuracy);
 
-                    if (resultColor == -1) {
-                        editor.remove(colorKey);
-                    } else {
-                        ColorInfo colorInfo = new ColorInfo(resultColor, accuracy);
-                        colorList.set(index, colorInfo);
-
-                        editor.putInt(colorKey, resultColor);
-                        editor.putInt(String.format("%s-a-%s", mTestType, String.valueOf(index)),
-                                accuracy);
-
-                        if (mainApp.colorList.size() == 0) {
-                            mainApp.setSwatches();
-                        }
-
-                        ColorUtils.autoGenerateColors(
-                                index,
-                                mainApp.currentTestType,
-                                mainApp.colorList,
-                                mainApp.rangeIncrementStep, editor, 0, 30);
-                    }
-                    editor.apply();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-
-                updateListView(position);
-                displayInfo();
-            }
-        }).execute();
+            ColorUtils.autoGenerateColors(
+                    index,
+                    mainApp.currentTestInfo.getCode(),
+                    mainApp.colorList,
+                    mainApp.rangeIncrementStep, editor, 0, 30);
+        }
+        editor.apply();
+        updateListView(position);
+        displayInfo();
     }
 
     protected void updateListView(int position) {

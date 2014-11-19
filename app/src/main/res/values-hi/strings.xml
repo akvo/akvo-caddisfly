@@ -89,5 +89,5 @@
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
     <string name="placeHighRangeCartridge">नमूना पानी के साथ एक उच्च सीमा कारतूस प्लेस और जारी रखने के</string>
     <string name="startHighRangeTest">उच्च रेंज परीक्षण शुरू</string>
-    <string name="testNotAvailable">This test is not available</string>
+    <string name="testNotAvailable">इस परीक्षण के लिए उपलब्ध नहीं है</string>
 </resources>

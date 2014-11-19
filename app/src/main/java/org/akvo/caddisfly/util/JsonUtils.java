@@ -9,63 +9,56 @@ import java.util.ArrayList;
 
 public class JsonUtils {
 
-    public static TestInfo loadJson(String jsonText, String testCode) {
-        JSONObject jsonObject;
-        TestInfo testInfo = null;
+    public static TestInfo loadJson(String jsonText, String testCode) throws JSONException {
+        ArrayList<TestInfo> tests = loadTests(jsonText);
 
-        try {
-            jsonObject = new JSONObject(jsonText).getJSONObject("tests");
-            JSONArray array = jsonObject.getJSONArray("test");
-            for (int i = 0; i < array.length(); i++) {
-                if (testCode.equalsIgnoreCase(array.getJSONObject(i).getString("code"))) {
-                    testInfo = new TestInfo(
-                            array.getJSONObject(i).getString("name"),
-                            array.getJSONObject(i).getString("code"),
-                            array.getJSONObject(i).getString("unit"),
-                            array.getJSONObject(i).getJSONObject("lowRange").getDouble("start"),
-                            array.getJSONObject(i).getJSONObject("lowRange").getDouble("end"));
-
-                    try {
-                        testInfo.setIncrement(array.getJSONObject(i).getJSONObject("lowRange").getInt("increment"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
+        for (TestInfo test : tests) {
+            if (test.getCode().equalsIgnoreCase(testCode)) {
+                return test;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-        return testInfo;
+        return null;
     }
 
 
-    public static ArrayList<TestInfo> loadTests(String jsonText) {
+    public static ArrayList<TestInfo> loadTests(String jsonText) throws JSONException {
         JSONObject jsonObject;
         TestInfo testInfo;
 
         ArrayList<TestInfo> tests = new ArrayList<TestInfo>();
+        jsonObject = new JSONObject(jsonText).getJSONObject("tests");
+        JSONArray array = jsonObject.getJSONArray("test");
+        for (int i = 0; i < array.length(); i++) {
 
-        try {
-            jsonObject = new JSONObject(jsonText).getJSONObject("tests");
-            JSONArray array = jsonObject.getJSONArray("test");
-            for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject item = array.getJSONObject(i);
+
+                double highRangeStart = -1;
+                double highRangeEnd = -1;
+
+                if (item.has("highRange")) {
+                    highRangeStart = item.getJSONObject("highRange").getDouble("start");
+                    highRangeEnd = item.getJSONObject("highRange").getDouble("end");
+                }
+
+                JSONObject lowRange = item.getJSONObject("lowRange");
+
                 testInfo = new TestInfo(
-                        array.getJSONObject(i).getString("name"),
-                        array.getJSONObject(i).getString("code"),
-                        array.getJSONObject(i).getString("unit"),
-                        array.getJSONObject(i).getJSONObject("lowRange").getDouble("start"),
-                        array.getJSONObject(i).getJSONObject("lowRange").getDouble("end"));
+                        item.getString("name"),
+                        item.getString("code").toUpperCase(),
+                        item.getString("unit"),
+                        lowRange.getDouble("start"),
+                        lowRange.getDouble("end"),
+                        highRangeStart,
+                        highRangeEnd);
 
-                try {
-                    testInfo.setIncrement(array.getJSONObject(i).getJSONObject("lowRange").getInt("increment"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (lowRange.has("increment")) {
+                    testInfo.setIncrement(lowRange.getInt("increment"));
                 }
                 tests.add(testInfo);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return tests;
     }

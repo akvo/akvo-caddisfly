@@ -3,7 +3,7 @@
         {"name":"Fluoride","code":"fluor","unit":"ppm","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
         {"name":"pH","code":"phydr","unit":"pH","lowRange":{"start":"1","end":"14", "increment":"10"}, "tolerance":"40"},
         {"name":"Nitrate","code":"nitra","unit":"ppm","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
-        {"name":"Turbidity","code":"turbi","unit":"ppm","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
+        {"name":"Turbidity","code":"turbi","unit":"FNU","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
         {"name":"Arsenic","code":"arsen","unit":"ppm","lowRange":{"start":"0","end":"3", "increment":"5"},"highRange":{"start":"3","end":"15"},"tolerance":"40"},
         {"name":"Coliform","code":"colif","unit":"ppm","lowRange":{"start":"1","end":"14", "increment":"10"}, "tolerance":"40"},
         ]

@@ -89,5 +89,5 @@
     <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
     <string name="placeHighRangeCartridge">ಮಾದರಿ ನೀರಿನಿಂದ ಹೈ ರೇಂಜ್ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಇರಿಸಿ ಮತ್ತು ಮುಂದುವರೆಯಲು</string>
     <string name="startHighRangeTest">ಹೈ ರೇಂಜ್ ಟೆಸ್ಟ್ ಪ್ರಾರಂಭಿಸಿ</string>
-    <string name="testNotAvailable">This test is not available</string>
+    <string name="testNotAvailable">ಈ ಪರೀಕ್ಷೆ ಲಭ್ಯವಿಲ್ಲ</string>
 </resources>

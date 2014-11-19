@@ -6,14 +6,19 @@ public class TestInfo {
     private final String mUnit;
     private final double mRangeStart;
     private final double mRangeEnd;
+    private final double mHighRangeStart;
+    private final double mHighRangeEnd;
     private int mIncrement;
 
-    public TestInfo(String name, String code, String unit, double rangeStart, double rangeEnd) {
+    public TestInfo(String name, String code, String unit, double rangeStart, double rangeEnd,
+                    double highRangeStart, double highRangeEnd) {
         mName = name;
         mCode = code;
         mUnit = unit;
         mRangeStart = rangeStart;
         mRangeEnd = rangeEnd;
+        mHighRangeStart = highRangeStart;
+        mHighRangeEnd = highRangeEnd;
     }
 
     public String getName() {
@@ -34,6 +39,10 @@ public class TestInfo {
 
     public double getRangeEnd() {
         return mRangeEnd;
+    }
+
+    public double getHighRangeStart() {
+        return mHighRangeStart;
     }
 
     public int getIncrement() {

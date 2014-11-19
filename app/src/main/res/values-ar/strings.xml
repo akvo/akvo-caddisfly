@@ -89,5 +89,5 @@
     <string name="highLevelsFound">تم الكشف عن مستويات عالية من الفلوريد</string>
     <string name="placeHighRangeCartridge">ضع خرطوشة المدى العليا مع عينة المياه والاستمرار</string>
     <string name="startHighRangeTest">بدء اختبار عالية المدى</string>
-    <string name="testNotAvailable">This test is not available</string>
+    <string name="testNotAvailable">هذا الاختبار غير متوفر</string>
 </resources>

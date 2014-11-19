@@ -93,7 +93,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         Bundle args = new Bundle();
         args.putInt(getString(R.string.swatchIndex), index);
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-        args.putString(getString(R.string.currentTestTypeId), mainApp.currentTestType);
+        args.putString(getString(R.string.currentTestTypeId), mainApp.currentTestInfo.getCode());
         mCalibrateItemFragment.setArguments(args);
         ft.replace(R.id.container, mCalibrateItemFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
