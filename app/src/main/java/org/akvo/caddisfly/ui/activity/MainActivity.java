@@ -149,6 +149,9 @@ public class MainActivity extends MainActivityBase implements
                 }
             }
         }
+
+        FileUtils.trimFolders(this);
+
     }
 
     private boolean checkCameraFlash() {
@@ -280,6 +283,10 @@ public class MainActivity extends MainActivityBase implements
 
                 mainApp.setSwatches(code);
             }
+        }
+
+        if (mainApp.currentTestInfo == null) {
+            mainApp.currentTestInfo = new TestInfo("", "", "", -1, -1, -1, -1);
         }
 
         Fragment fragment;

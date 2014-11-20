@@ -87,15 +87,15 @@ public class PhotoHandler implements PictureCallback {
             pictureFile = new File(photoFolder + photoFile);
         }
 
-        //if (PreferencesUtils.getBoolean(mContext, R.string.saveOriginalPhotoKey, false)) {
-        try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            fos.write(data);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (PreferencesUtils.getBoolean(mContext, R.string.saveOriginalPhotoKey, false)) {
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        //}
 
         int sampleLength = PreferencesUtils.getInt(mContext, R.string.photoSampleDimensionKey,
                 Config.SAMPLE_CROP_LENGTH_DEFAULT);

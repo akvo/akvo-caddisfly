@@ -246,4 +246,19 @@ public class FileUtils {
         }
         return text.toString();
     }
+
+    public static void trimFolders(Context context) {
+        File directory = context.getExternalFilesDir(null);
+        if (directory != null && directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null && files.length > 20) {
+                for (int i = files.length - 1; i > 4; i--) {
+                    if (files[i].isDirectory()) {
+                        deleteFolder(files[i]);
+                    }
+                }
+            }
+        }
+    }
+
 }

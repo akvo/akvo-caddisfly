@@ -37,9 +37,14 @@
 
     <Preference
         android:key="about"
-        android:layout="@layout/preference"
+        android:layout="@layout/preference_alternate"
         android:summary="@string/aboutSummary"
         android:title="@string/about" />
+
+    <org.akvo.caddisfly.component.ConfirmCheckBoxPreference
+        android:key="saveOriginalPhoto"
+        android:layout="@layout/preference_alternate"
+        android:title="@string/saveOriginalPhoto" />
 
     <ListPreference
         android:defaultValue="en"
@@ -51,4 +56,6 @@
         android:negativeButtonText="@string/cancel"
         android:summary="%s"
         android:title="@string/language" />
+
+
 </PreferenceScreen>

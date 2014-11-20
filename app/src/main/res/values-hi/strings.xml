@@ -51,6 +51,8 @@
     <string name="fluoride">"फ्लोराइड"</string>
     <string name="waterQualityTest">"जल गुणवत्ता परीक्षण"</string>
     <string name="attachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
+    <string name="saveOriginalPhoto">"सेव मूल फोटो"</string>
+    <string name="saveOriginalPhotoConfirm">"चेतावनी: सहेजा जा रहा मूल फोटो अपने फोन पर अंतरिक्ष के एक बहुत का उपयोग करेगा."</string>
 
     <!--java-->
     <string name="testFailedMessage">"सीमा से बाहर समाधान के लिए रंग. कारतूस नियुक्ति की जाँच करें."</string>

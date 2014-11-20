@@ -1,3 +1,13 @@
+v0.43 alpha
+-----------
+1. Moved test properties to json file
+2. Test type selection dropdown added on calibration screen
+3. Integration with new Flow App 2+
+4. Removed one step calibration
+5. Test name added on test progress screen
+6. Added save original photo preference
+7. Trim data folders to max of 20 folders
+
 v0.42 alpha
 -----------
 1. High Range test added

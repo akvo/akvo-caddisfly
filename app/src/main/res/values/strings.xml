@@ -51,6 +51,8 @@
     <string name="fluoride">Fluoride</string>
     <string name="waterQualityTest">Water Quality Test</string>
     <string name="attachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
+    <string name="saveOriginalPhoto">Save Original Photo</string>
+    <string name="saveOriginalPhotoConfirm">Warning: Saving original photos will use a lot of space on your phone.</string>
 
     <!--java-->
     <string name="testFailedMessage">Solution color out of range. Check cartridge placement.</string>

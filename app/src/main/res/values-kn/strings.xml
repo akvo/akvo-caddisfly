@@ -51,6 +51,8 @@
     <string name="fluoride">"ಫ್ಲೋರೈಡ್"</string>
     <string name="waterQualityTest">"ಜಲ ಗುಣಮಟ್ಟ ಟೆಸ್ಟ್"</string>
     <string name="attachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
+    <string name="saveOriginalPhoto">"ಉಳಿಸಿ ಮೂಲ ಫೋಟೋ"</string>
+    <string name="saveOriginalPhotoConfirm">"ಎಚ್ಚರಿಕೆ: ಉಳಿಸಲಾಗುತ್ತಿದೆ ಮೂಲ ಫೋಟೋಗಳನ್ನು ನಿಮ್ಮ ಫೋನ್ನಲ್ಲಿ ಜಾಗವನ್ನು ಸಾಕಷ್ಟು ಬಳಸುತ್ತದೆ."</string>
 
     <!--java-->
     <string name="testFailedMessage">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಪರಿಹಾರ ಬಣ್ಣ. ಕಾರ್ಟ್ರಿಡ್ಜ್ ಉದ್ಯೊಗ ಪರಿಶೀಲಿಸಿ."</string>

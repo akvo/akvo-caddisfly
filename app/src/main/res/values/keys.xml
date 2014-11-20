@@ -37,6 +37,7 @@
     <string name="resultValueKey">result_%1$s_%2$d_%3$d</string>
     <string name="resultColorKey">resultColor_%1$s_%2$d_%3$d</string>
     <string name="resultQualityKey">resultQuality_%1$s_%2$d_%3$d</string>
+    <string name="saveOriginalPhotoKey">saveOriginalPhoto</string>
 
     // width and height of sampled image
     <string name="photoSampleDimensionKey">photoSampleDimension</string>
