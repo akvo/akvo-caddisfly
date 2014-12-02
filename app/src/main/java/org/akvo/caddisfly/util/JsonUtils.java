@@ -36,25 +36,24 @@ public class JsonUtils {
                 double highRangeStart = -1;
                 double highRangeEnd = -1;
 
-                if (item.has("highRange")) {
-                    highRangeStart = item.getJSONObject("highRange").getDouble("start");
-                    highRangeEnd = item.getJSONObject("highRange").getDouble("end");
-                }
+                JSONArray ranges = item.getJSONArray("ranges");
 
-                JSONObject lowRange = item.getJSONObject("lowRange");
+                if (ranges.length() > 1) {
+                    highRangeStart = ranges.getJSONObject(1).getDouble("start");
+                    highRangeEnd = ranges.getJSONObject(1).getDouble("end");
+                }
 
                 testInfo = new TestInfo(
                         item.getString("name"),
                         item.getString("code").toUpperCase(),
                         item.getString("unit"),
-                        lowRange.getDouble("start"),
-                        lowRange.getDouble("end"),
+                        ranges.getJSONObject(0).getDouble("start"),
+                        ranges.getJSONObject(0).getDouble("end"),
                         highRangeStart,
                         highRangeEnd);
 
-                if (lowRange.has("increment")) {
-                    testInfo.setIncrement(lowRange.getInt("increment"));
-                }
+                testInfo.setIncrement((int) (item.getDouble("step") * 10));
+
                 tests.add(testInfo);
             } catch (JSONException e) {
                 e.printStackTrace();

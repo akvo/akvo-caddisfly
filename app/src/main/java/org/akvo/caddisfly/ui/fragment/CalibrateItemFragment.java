@@ -327,7 +327,7 @@ public class CalibrateItemFragment extends ListFragment {
                 SwatchFragment fragment = new SwatchFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.container, fragment, "SwatchFragment");
+                ft.replace(R.id.container, fragment, String.valueOf(Config.SWATCH_SCREEN_INDEX));
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.addToBackStack(null);
                 ft.commit();

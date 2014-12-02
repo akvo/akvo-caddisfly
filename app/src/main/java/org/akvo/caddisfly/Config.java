@@ -42,10 +42,9 @@ public class Config {
 
     // Index of screens that gets displayed in the app
     public static final int HOME_SCREEN_INDEX = 0;
-
     public static final int SETTINGS_SCREEN_INDEX = 1;
-
     public static final int CALIBRATE_SCREEN_INDEX = 2;
+    public static final int SWATCH_SCREEN_INDEX = 3;
 
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;

@@ -582,7 +582,9 @@ public class MainActivity extends MainActivityBase implements
                                                         index,
                                                         mainApp.currentTestInfo.getCode(),
                                                         mainApp.colorList,
-                                                        mainApp.rangeIncrementStep, editor, 0, 30);
+                                                        mainApp.rangeIncrementStep, editor,
+                                                        0,
+                                                        mainApp.currentTestInfo.getRangeEnd());
                                             }
                                             editor.apply();
                                             return null;
@@ -711,6 +713,9 @@ public class MainActivity extends MainActivityBase implements
                 break;
             case Config.HOME_SCREEN_INDEX:
                 setTitle(R.string.appName);
+                break;
+            case Config.SWATCH_SCREEN_INDEX:
+                setTitle(R.string.swatches);
                 break;
 
         }

@@ -272,7 +272,8 @@ public class ColorUtils {
 
     @SuppressWarnings("SameParameterValue")
     public static void autoGenerateColors(int index, String testCode, ArrayList<ColorInfo> colorList, int incrementStep,
-                                          SharedPreferences.Editor editor, int startIndex, int endIndex) {
+                                          SharedPreferences.Editor editor, int startIndex, double rangeEnd) {
+        int endIndex = colorList.size() - 1;
 
         int startColor = colorList.get(index).getColor();
         if (index < endIndex) {
