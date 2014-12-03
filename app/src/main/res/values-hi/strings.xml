@@ -81,7 +81,7 @@
     <string name="loadCalibration">"लोड अंशांकन"</string>
     <string name="testInterrupted">"टेस्ट बाधित किया गया था. परीक्षण के दौरान फोन कदम नहीं है."</string>
     <string name="revertingVersion">"पिछले संस्करण में वापसी"</string>
-    <string name="waitTillCameraSound">"फिर एक मिनट के बारे में कैमरा ध्वनि के लिए इंतजार"</string>
+    <string name="waitTillCameraSound">फिर एक मिनट के बारे में चेतावनी ध्वनि के लिए इंतजार</string>
     <string name="calibrateSummary">"इस फोन को ठीक करना किट में दिए गए मानक रंग के मिश्रण का प्रयोग करें"</string>
     <string name="aboutSummary">"संस्करण संख्या प्रदर्शित करता है"</string>
     <string name="back">"वापस जाएं"</string>
@@ -89,7 +89,6 @@
     <string name="showStartPage">आरम्भ पृष्ठ दिखाएँ</string>
     <string name="cameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
-    <string name="placeHighRangeCartridge">नमूना पानी के साथ एक उच्च सीमा कारतूस प्लेस और जारी रखने के</string>
-    <string name="startHighRangeTest">उच्च रेंज परीक्षण शुरू</string>
+    <string name="placeHighRangeCartridge">%1$.2f%% नमूना पानी और %1$.2f%% विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
     <string name="testNotAvailable">इस परीक्षण के लिए उपलब्ध नहीं है</string>
 </resources>

@@ -98,7 +98,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     private SoundPoolPlayer sound;
     private boolean isCalibration;
 
-    private boolean isHighRangeTest = false;
+    private int highRangeTest = 0;
+    private boolean testCompleted = false;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -597,10 +598,9 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
 
                 MainApp mainApp = (MainApp) getApplicationContext();
 
-                if (isHighRangeTest) {
-                    result = mainApp.currentTestInfo.getHighRangeStart() + ((result / 0.5) * 2);
-                    msg.getData().putDouble(Config.RESULT_VALUE_KEY, result);
-                }
+                double multiplier = mainApp.currentTestInfo.getRanges().get(highRangeTest).getMultiplier();
+                result = result * multiplier;
+                msg.getData().putDouble(Config.RESULT_VALUE_KEY, result);
 
                 int minAccuracy = PreferencesUtils
                         .getInt(this, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
@@ -608,10 +608,14 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 String title = ((MainApp) getApplicationContext()).currentTestInfo.getName();
 
                 if (result >= 0 && quality >= minAccuracy) {
-                    if (mainApp.currentTestInfo.getHighRangeStart() > -1 &&
-                            result > mainApp.currentTestInfo.getRangeEnd() - (0.1 * mainApp.currentTestInfo.getIncrement()) &&
-                            !isHighRangeTest) {
-                        isHighRangeTest = true;
+                    if (result >= mainApp.currentTestInfo.getRanges().get(highRangeTest).getEnd() &&
+                            mainApp.currentTestInfo.getRanges().size() > highRangeTest + 1) {
+                        highRangeTest++;
+
+                        multiplier = mainApp.currentTestInfo.getRanges().get(highRangeTest).getMultiplier();
+                        msg.getData().putDouble("multiplier", multiplier);
+
+                        testCompleted = false;
                         MessageFragment mMessageFragment = MessageFragment.newInstance(title, msg);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
@@ -623,7 +627,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                         mMessageFragment.show(ft, "messageDialog");
                         sound.playShortResource(R.raw.beep_long);
                     } else {
-                        isHighRangeTest = false;
+                        testCompleted = true;
                         sound.playShortResource(R.raw.done);
                         ResultFragment mResultFragment = ResultFragment.newInstance(title, result, msg, mainApp.currentTestInfo.getUnit());
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -689,14 +693,14 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
     }
 
     public void onFinishDialog(Bundle bundle) {
-        if (isHighRangeTest) {
-            //mResultFragment.dismiss();
-            InitializeTest();
-            startNewTest();
-        } else {
+        if (testCompleted) {
             Message msg = new Message();
             msg.setData(bundle);
             sendResult2(msg);
+        } else {
+            //mResultFragment.dismiss();
+            InitializeTest();
+            startNewTest();
         }
     }
 

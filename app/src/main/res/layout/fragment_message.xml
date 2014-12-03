@@ -52,12 +52,13 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/messageTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="@string/placeHighRangeCartridge"
                 android:textColor="#fff"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:text="@string/placeHighRangeCartridge" />
 
         </LinearLayout>
 
@@ -70,7 +71,7 @@
             android:layout_marginRight="3dp"
             android:layout_marginStart="3dp"
             android:background="@drawable/blue_button"
-            android:text="@string/startHighRangeTest"
+            android:text="@string/start"
             android:textColor="#fff" />
     </LinearLayout>
 

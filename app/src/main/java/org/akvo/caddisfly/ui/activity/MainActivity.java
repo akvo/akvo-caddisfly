@@ -286,7 +286,7 @@ public class MainActivity extends MainActivityBase implements
         }
 
         if (mainApp.currentTestInfo == null) {
-            mainApp.currentTestInfo = new TestInfo("", "", "", -1, -1, -1, -1);
+            mainApp.currentTestInfo = new TestInfo("", "", "");
         }
 
         Fragment fragment;
@@ -583,8 +583,7 @@ public class MainActivity extends MainActivityBase implements
                                                         mainApp.currentTestInfo.getCode(),
                                                         mainApp.colorList,
                                                         mainApp.rangeIncrementStep, editor,
-                                                        0,
-                                                        mainApp.currentTestInfo.getRangeEnd());
+                                                        0);
                                             }
                                             editor.apply();
                                             return null;

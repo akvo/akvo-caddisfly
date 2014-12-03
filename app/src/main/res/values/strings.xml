@@ -81,15 +81,14 @@
     <string name="loadCalibration">Load Calibration</string>
     <string name="testInterrupted">Test was interrupted. Do not move the phone during the test.</string>
     <string name="revertingVersion">Reverting to previous version</string>
-    <string name="waitTillCameraSound">Then wait for the camera sound in about a minute</string>
+    <string name="waitTillCameraSound">Then wait for alert sound in about a minute</string>
     <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
     <string name="aboutSummary">Displays version number</string>
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="showStartPage">Show start page</string>
     <string name="cameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
-    <string name="highLevelsFound">High levels of fluoride has been detected</string>
-    <string name="placeHighRangeCartridge">Place a High Range cartridge with the sample water and continue</string>
-    <string name="startHighRangeTest">Start High Range Test</string>
+    <string name="highLevelsFound">High level of fluoride has been detected</string>
+    <string name="placeHighRangeCartridge">Mix %1$.2f%% sample water and %2$.2f%% deionized water. Test this mixture now.</string>
     <string name="testNotAvailable">This test is not available</string>
 </resources>

@@ -43,7 +43,7 @@ public class MainApp extends Application {
 
     public int rangeIncrementStep = 5;
     public double rangeStart = 0;
-    public TestInfo currentTestInfo = new TestInfo("", "", "", -1, -1, -1, -1);
+    public TestInfo currentTestInfo = new TestInfo("", "", "");
 
     /**
      * @param context The context
@@ -93,8 +93,8 @@ public class MainApp extends Application {
             return;
         }
 
-        rangeStart = currentTestInfo.getRangeStart();
-        double rangeEnd = currentTestInfo.getRangeEnd();
+        rangeStart = currentTestInfo.getRanges().get(0).getStart();
+        double rangeEnd = currentTestInfo.getRanges().get(0).getEnd();
 
         rangeIncrementStep = currentTestInfo.getIncrement();
         double increment;

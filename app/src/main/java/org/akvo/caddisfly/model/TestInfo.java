@@ -1,24 +1,19 @@
 package org.akvo.caddisfly.model;
 
+import java.util.ArrayList;
+
 public class TestInfo {
     private final String mName;
     private final String mCode;
     private final String mUnit;
-    private final double mRangeStart;
-    private final double mRangeEnd;
-    private final double mHighRangeStart;
-    private final double mHighRangeEnd;
+    private final ArrayList<ResultRange> mRanges;
     private int mIncrement;
 
-    public TestInfo(String name, String code, String unit, double rangeStart, double rangeEnd,
-                    double highRangeStart, double highRangeEnd) {
+    public TestInfo(String name, String code, String unit) {
         mName = name;
         mCode = code;
         mUnit = unit;
-        mRangeStart = rangeStart;
-        mRangeEnd = rangeEnd;
-        mHighRangeStart = highRangeStart;
-        mHighRangeEnd = highRangeEnd;
+        mRanges = new ArrayList<ResultRange>();
     }
 
     public String getName() {
@@ -33,16 +28,12 @@ public class TestInfo {
         return mUnit;
     }
 
-    public double getRangeStart() {
-        return mRangeStart;
+    public ArrayList<ResultRange> getRanges() {
+        return mRanges;
     }
 
-    public double getRangeEnd() {
-        return mRangeEnd;
-    }
-
-    public double getHighRangeStart() {
-        return mHighRangeStart;
+    public void addRange(ResultRange value) {
+        mRanges.add(value);
     }
 
     public int getIncrement() {

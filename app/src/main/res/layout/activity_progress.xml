@@ -59,7 +59,6 @@
 
         <Button
             android:id="@+id/shakeButton"
-            style="@style/button_text"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:background="@color/transparent" />

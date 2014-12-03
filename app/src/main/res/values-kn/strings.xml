@@ -81,7 +81,7 @@
     <string name="loadCalibration">"ಲೋಡ್ ಕ್ಯಾಲಿಬ್ರೇಶನ್"</string>
     <string name="testInterrupted">"ಟೆಸ್ಟ್ ಅಡ್ಡಿಯಾದವು. ಪರೀಕ್ಷೆಯ ಸಮಯದಲ್ಲಿ ಫೋನ್ ಚಲಿಸುವುದಿಲ್ಲ."</string>
     <string name="revertingVersion">"ಹಿಂದಿನ ಆವೃತ್ತಿಗೆ ಮರಳುವಂತೆ"</string>
-    <string name="waitTillCameraSound">"ನಂತರ ಸುಮಾರು ಒಂದು ನಿಮಿಷದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಧ್ವನಿ ನಿರೀಕ್ಷಿಸಿ"</string>
+    <string name="waitTillCameraSound">ನಂತರ ಸುಮಾರು ಒಂದು ನಿಮಿಷದಲ್ಲಿ ಎಚ್ಚರಿಕೆ ಧ್ವನಿ ನಿರೀಕ್ಷಿಸಿ</string>
     <string name="calibrateSummary">"ಈ ಫೋನ್ ಮಾಪನಾಂಕ ಕಿಟ್ ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಬಣ್ಣ ಮಿಶ್ರಣಗಳನ್ನು ಬಳಸಿ"</string>
     <string name="aboutSummary">"ಆವೃತ್ತಿ ಸಂಖ್ಯೆ ಪ್ರದರ್ಶಿಸುತ್ತದೆ"</string>
     <string name="back">"ಹಿಂದಕ್ಕೆ"</string>
@@ -89,7 +89,6 @@
     <string name="showStartPage">ಆರಂಭ ಪುಟ ತೋರಿಸಿ</string>
     <string name="cameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
     <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
-    <string name="placeHighRangeCartridge">ಮಾದರಿ ನೀರಿನಿಂದ ಹೈ ರೇಂಜ್ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಇರಿಸಿ ಮತ್ತು ಮುಂದುವರೆಯಲು</string>
-    <string name="startHighRangeTest">ಹೈ ರೇಂಜ್ ಟೆಸ್ಟ್ ಪ್ರಾರಂಭಿಸಿ</string>
+    <string name="placeHighRangeCartridge">%1$.2f%% ಮಾದರಿ ನೀರು ಮತ್ತು %2$.2f%% ಡೀಐಯಾನೈಸ್ಡ್ ನೀರು ಮಿಶ್ರಣ. ಈಗ ಈ ಮಿಶ್ರಣವನ್ನು ಪರೀಕ್ಷಿಸಿ</string>
     <string name="testNotAvailable">ಈ ಪರೀಕ್ಷೆ ಲಭ್ಯವಿಲ್ಲ</string>
 </resources>

@@ -1,5 +1,6 @@
 package org.akvo.caddisfly.util;
 
+import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,24 +34,20 @@ public class JsonUtils {
             try {
                 JSONObject item = array.getJSONObject(i);
 
-                double highRangeStart = -1;
-                double highRangeEnd = -1;
-
-                JSONArray ranges = item.getJSONArray("ranges");
-
-                if (ranges.length() > 1) {
-                    highRangeStart = ranges.getJSONObject(1).getDouble("start");
-                    highRangeEnd = ranges.getJSONObject(1).getDouble("end");
-                }
-
                 testInfo = new TestInfo(
                         item.getString("name"),
                         item.getString("code").toUpperCase(),
-                        item.getString("unit"),
-                        ranges.getJSONObject(0).getDouble("start"),
-                        ranges.getJSONObject(0).getDouble("end"),
-                        highRangeStart,
-                        highRangeEnd);
+                        item.getString("unit"));
+
+                JSONArray ranges = item.getJSONArray("ranges");
+
+                for (int j = 0; j < ranges.length(); j++) {
+                    ResultRange resultRange = new ResultRange(
+                            ranges.getJSONObject(j).getDouble("start"),
+                            ranges.getJSONObject(j).getDouble("end"),
+                            ranges.getJSONObject(j).getDouble("multiplier"));
+                    testInfo.addRange(resultRange);
+                }
 
                 testInfo.setIncrement((int) (item.getDouble("step") * 10));
 

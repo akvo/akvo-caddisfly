@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
@@ -56,10 +57,17 @@ public class MessageFragment extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.fragment_message, container, false);
 
+        TextView messageTextView = (TextView) view.findViewById(R.id.messageTextView);
+
+
         //TextView titleView = (TextView) view.findViewById(R.id.titleView);
         Button button = (Button) view.findViewById(R.id.endSurveyButton);
 
         final Bundle bundle = getArguments().getBundle("message");
+        double multiplier = bundle.getDouble("multiplier");
+        messageTextView.setText(String.format(getString(R.string.placeHighRangeCartridge), (100 / multiplier), 100 - (100 / multiplier)));
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

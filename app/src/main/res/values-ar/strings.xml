@@ -81,7 +81,7 @@
     <string name="loadCalibration">"معايرة الحمل"</string>
     <string name="testInterrupted">"وتوقفت الاختبار. لا تحرك الهاتف أثناء الاختبار."</string>
     <string name="revertingVersion">"العودة إلى الإصدار السابق"</string>
-    <string name="waitTillCameraSound">"ثم الانتظار لصوت الكاميرا في حوالي دقيقة واحدة"</string>
+    <string name="waitTillCameraSound">ثم الانتظار للحصول على الصوت في حالة تأهب في حوالي دقيقة واحدة</string>
     <string name="calibrateSummary">"استخدام خليط الألوان القياسية المنصوص عليها في عدة لمعايرة هذا الهاتف"</string>
     <string name="aboutSummary">"يعرض رقم الإصدار"</string>
     <string name="back">"رجوع"</string>
@@ -89,7 +89,6 @@
     <string name="showStartPage">تظهر صفحة البداية</string>
     <string name="cameraFlashRequired">لم يكن هذا الهاتف فلاش الكاميرا الذي مطلوب من قبل Caddisfly</string>
     <string name="highLevelsFound">تم الكشف عن مستويات عالية من الفلوريد</string>
-    <string name="placeHighRangeCartridge">ضع خرطوشة المدى العليا مع عينة المياه والاستمرار</string>
-    <string name="startHighRangeTest">بدء اختبار عالية المدى</string>
+    <string name="placeHighRangeCartridge">خلط %1$.2f٪ عينة الماء والماء منزوع الأيونات %2$.2f٪. اختبار هذا الخليط الآن</string>
     <string name="testNotAvailable">هذا الاختبار غير متوفر</string>
 </resources>

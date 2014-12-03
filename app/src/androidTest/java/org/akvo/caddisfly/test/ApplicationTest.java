@@ -270,7 +270,7 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
 
         solo.waitForFragmentByTag("messageDialog", 60000);
 
-        solo.clickOnButton(solo.getString(R.string.startHighRangeTest));
+        solo.clickOnButton(solo.getString(R.string.start));
 
         solo.waitForActivity(ProgressActivity.class, 10000);
 

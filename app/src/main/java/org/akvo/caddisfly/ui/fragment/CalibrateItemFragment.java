@@ -275,7 +275,7 @@ public class CalibrateItemFragment extends ListFragment {
                     index,
                     mainApp.currentTestInfo.getCode(),
                     mainApp.colorList,
-                    mainApp.rangeIncrementStep, editor, 0, 30);
+                    mainApp.rangeIncrementStep, editor, 0);
         }
         editor.apply();
         updateListView(position);
