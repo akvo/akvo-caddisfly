@@ -48,7 +48,6 @@
     <string name="startSurvey">"ಪ್ರಾರಂಭ ಸಮೀಕ್ಷೆ"</string>
     <string name="backToSurvey">"ಬ್ಯಾಕ್ ಸಮೀಕ್ಷೆಯ"</string>
     <string name="calibrationColorError">"ಮಾಪನಾಂಕ ಬಣ್ಣದ ತಪ್ಪು ತೋರುತ್ತದೆ. ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಪರಿಹಾರಗಳನ್ನು recalibrate."</string>
-    <string name="fluoride">"ಫ್ಲೋರೈಡ್"</string>
     <string name="waterQualityTest">"ಜಲ ಗುಣಮಟ್ಟ ಟೆಸ್ಟ್"</string>
     <string name="attachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
     <string name="saveOriginalPhoto">"ಉಳಿಸಿ ಮೂಲ ಫೋಟೋ"</string>

@@ -48,7 +48,6 @@
     <string name="startSurvey">"प्रारंभ सर्वेक्षण"</string>
     <string name="backToSurvey">"पीछे सर्वेक्षण के"</string>
     <string name="calibrationColorError">"calibrated रंग गलत हो रहा है. प्रदान की मानक समाधान के साथ recalibrate."</string>
-    <string name="fluoride">"फ्लोराइड"</string>
     <string name="waterQualityTest">"जल गुणवत्ता परीक्षण"</string>
     <string name="attachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
     <string name="saveOriginalPhoto">"सेव मूल फोटो"</string>
@@ -89,6 +88,6 @@
     <string name="showStartPage">आरम्भ पृष्ठ दिखाएँ</string>
     <string name="cameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
-    <string name="placeHighRangeCartridge">%1$.2f%% नमूना पानी और %1$.2f%% विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
+    <string name="placeHighRangeCartridge">%1$.2f%% नमूना पानी और %2$.2f%% विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
     <string name="testNotAvailable">इस परीक्षण के लिए उपलब्ध नहीं है</string>
 </resources>

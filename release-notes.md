@@ -1,3 +1,7 @@
+v0.44 alpha
+-----------
+1. Multiple range testing to cater for higher ranges
+
 v0.43 alpha
 -----------
 1. Moved test properties to json file

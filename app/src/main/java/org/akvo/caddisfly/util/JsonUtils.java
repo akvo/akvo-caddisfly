@@ -45,7 +45,7 @@ public class JsonUtils {
                     ResultRange resultRange = new ResultRange(
                             ranges.getJSONObject(j).getDouble("start"),
                             ranges.getJSONObject(j).getDouble("end"),
-                            ranges.getJSONObject(j).getDouble("multiplier"));
+                            ranges.getJSONObject(j).has("multiplier") ? ranges.getJSONObject(j).getDouble("multiplier") : 1);
                     testInfo.addRange(resultRange);
                 }
 

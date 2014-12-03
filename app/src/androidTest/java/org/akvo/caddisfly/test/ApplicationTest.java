@@ -39,7 +39,7 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
 
         assertTrue(solo.searchText(solo.getString(R.string.watchTrainingVideo)));
 
-        solo.clickOnImage(3);
+        solo.clickOnImage(2);
 
         if (solo.searchButton(solo.getString(R.string.ok))) {
             solo.clickOnButton(solo.getString(R.string.ok));
@@ -277,6 +277,90 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
         solo.waitForFragmentByTag("resultDialog", 60000);
 
         solo.clickOnButton(solo.getString(R.string.backToSurvey));
+    }
+
+    public void testChangeTestTypes() {
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+        solo.clickOnActionBarItem(R.id.menu_settings);
+
+        solo.clickOnText(solo.getString(R.string.calibrate));
+
+        solo.clickOnText("Fluoride");
+
+        solo.clickOnText("pH");
+
+        solo.scrollToBottom();
+
+        solo.clickOnText("14.0");
+
+        solo.clickOnText(solo.getString(R.string.calibrate), 3);
+
+        solo.waitForDialogToOpen();
+
+        solo.clickOnButton(solo.getString(R.string.cancel));
+
+        solo.goBack();
+
+        solo.clickOnText("pH");
+
+        solo.clickOnText("Arsenic");
+
+        solo.clickOnText("Arsenic");
+
+        solo.clickOnText("Turbidity");
+
+        solo.clickOnText("Turbidity");
+
+        solo.clickOnText("Coliform");
+
+        solo.clickOnText("Coliform");
+
+        solo.clickOnText("Nitrate");
+
+        solo.clickOnText("Nitrate");
+
+        solo.clickOnText("Fluoride");
+
+        solo.scrollToBottom();
+
+        solo.clickInList(5);
+
+        solo.clickOnText(solo.getString(R.string.calibrate), 3);
+
+        solo.waitForDialogToOpen();
+
+        solo.clickOnButton(solo.getString(R.string.cancel));
+
+        solo.goBack();
+
+        int colorBefore = getButtonColor();
+
+        solo.clickOnActionBarItem(R.id.menu_load);
+
+        solo.clickInList(0);
+
+        int colorAfter = getButtonColor();
+
+        assertTrue("Calibrate error", colorAfter != colorBefore);
+
+        solo.clickOnText("Fluoride");
+
+        solo.clickOnText("pH");
+
+        colorBefore = getButtonColor();
+
+        assertTrue("Calibrate error", colorAfter != colorBefore);
+
+        assertTrue(solo.waitForFragmentByTag(String.valueOf(Config.CALIBRATE_SCREEN_INDEX)));
+
+        solo.goBack();
+
+        assertTrue(solo.waitForFragmentByTag(String.valueOf(Config.HOME_SCREEN_INDEX)));
+
+        solo.goBack();
+
     }
 
     private int getButtonColor() {

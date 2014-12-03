@@ -81,7 +81,7 @@
             android:textSize="40sp"
             android:textStyle="normal"
             android:visibility="visible"
-            tools:text="Fluoride" />
+            tools:text="Contaminant" />
 
         <TextView
             android:id="@+id/placeInStandText"
@@ -133,7 +133,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#454545"
             android:textSize="40sp"
-            tools:text="@string/fluoride" />
+            tools:text="Contaminant" />
 
         <TextView
             android:layout_width="match_parent"

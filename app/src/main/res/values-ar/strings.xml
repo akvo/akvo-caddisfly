@@ -48,7 +48,6 @@
     <string name="startSurvey">"مسح البداية"</string>
     <string name="backToSurvey">"العودة الى في خضم"</string>
     <string name="calibrationColorError">"لون معايرة يبدو غير صحيحة. إعادة تقويم مع حلول القياسية المقدمة."</string>
-    <string name="fluoride">"فلوريد"</string>
     <string name="waterQualityTest">"اختبار جودة المياه"</string>
     <string name="attachStandardCartridge">"إرفاق خرطوشة حل القياسية لهذه القيمة ثم اضغط معايرة"</string>
     <string name="saveOriginalPhoto">حفظ الصورة الأصلية</string>

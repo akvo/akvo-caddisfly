@@ -160,7 +160,7 @@
             android:textSize="40sp"
             android:textStyle="normal"
             android:visibility="visible"
-            tools:text="Fluoride" />
+            tools:text="Contaminant" />
 
 
     </LinearLayout>

@@ -8,8 +8,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 15
         targetSdkVersion 21
-        versionName "prototype 0.43 alpha"
-        versionCode 43
+        versionName "prototype 0.44 alpha"
+        versionCode 44
     }
 
     signingConfigs {
