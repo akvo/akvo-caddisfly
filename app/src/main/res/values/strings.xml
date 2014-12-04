@@ -88,6 +88,12 @@
     <string name="showStartPage">Show start page</string>
     <string name="cameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
     <string name="highLevelsFound">High level of contamination has been detected</string>
-    <string name="placeHighRangeCartridge">Mix %1$.2f%% sample water and %2$.2f%% deionized water. Test this mixture now.</string>
+    <string name="placeHighRangeCartridge">Mix %1$.0f%% sample water and %2$.0f%% deionized water. Test this mixture now.</string>
     <string name="testNotAvailable">This test is not available</string>
+    <string name="saveCalibration">Save Calibration</string>
+    <string name="giveNameForCalibration">Give a descriptive name for this calibration</string>
+    <string name="overwriteFile">Overwrite File</string>
+    <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
+    <string name="invalidName">Invalid name</string>
+    <string name="save">Save</string>
 </resources>

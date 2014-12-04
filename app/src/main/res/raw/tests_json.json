@@ -6,91 +6,41 @@
                 "code": "fluor",
                 "unit": "ppm",
                 "step": "0.5",
-                "ranges": [
-                    {
-                        "start": "0",
-                        "end": "2",
-                        "multiplier": "1"
-                    },
-                    {
-                        "start": "2",
-                        "end": "4",
-                        "multiplier": "2"
-                    },
-                    {
-                        "start": "4",
-                        "end": "8",
-                        "multiplier": "4"
-                    }
-                ],
-                "tolerance": "40"
+                "rangeStart": "0",
+                "rangeEnd": "2",
+                "dilutions": "0,50,75"
             },
             {
                 "name": "pH",
                 "code": "phydr",
                 "unit": "pH",
                 "step": "1",
-                "ranges": [
-                    {
-                        "start": "1",
-                        "end": "14",
-                        "multiplier": "1"
-                    }
-                ],
-                "tolerance": "40"
+                "rangeStart": "1",
+                "rangeEnd": "14"
             },
             {
                 "name": "Nitrate",
                 "code": "nitra",
                 "unit": "ppm",
-                "step": "0.5",
-                "ranges": [
-                    {
-                        "start": "0",
-                        "end": "3"
-                    }
-                ],
-                "tolerance": "40"
+                "step": "1",
+                "rangeStart": "0",
+                "rangeEnd": "50"
             },
             {
                 "name": "Turbidity",
                 "code": "turbi",
                 "unit": "FNU",
-                "step": "0.5",
-                "ranges": [
-                    {
-                        "start": "0",
-                        "end": "3"
-                    }
-                ],
-                "tolerance": "40"
+                "step": "1",
+                "rangeStart": "0",
+                "rangeEnd": "50"
             },
             {
                 "name": "Arsenic",
                 "code": "arsen",
                 "unit": "ppm",
-                "step": "0.5",
-                "ranges": [
-                    {
-                        "start": "0",
-                        "end": "3"
-                    }
-                ],
-                "tolerance": "40"
-            },
-            {
-                "name": "Coliform",
-                "code": "colif",
-                "unit": "ppm",
-                "step": "0.5",
-                "ranges": [
-                    {
-                        "start": "0",
-                        "end": "3",
-                        "multiplier": "1"
-                    }
-                ],
-                "tolerance": "40"
+                "step": "0.25",
+                "rangeStart": "0",
+                "rangeEnd": "8"
             }
         ]
     }

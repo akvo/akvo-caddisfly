@@ -39,15 +39,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -55,6 +62,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.fragment.AboutFragment;
 import org.akvo.caddisfly.ui.fragment.CalibrateFragment;
@@ -87,7 +95,8 @@ public class MainActivity extends MainActivityBase implements
         StartFragment.OnVideoListener,
         StartFragment.OnStartSurveyListener,
         CalibrateFragment.OnLoadCalibrationListener,
-        CalibrateItemFragment.OnLoadCalibrationListener {
+        CalibrateItemFragment.OnLoadCalibrationListener,
+        CalibrateFragment.OnSaveCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
     private final ExploreSpinnerAdapter mTopLevelSpinnerAdapter = new ExploreSpinnerAdapter();
@@ -518,6 +527,105 @@ public class MainActivity extends MainActivityBase implements
     public void onCalibrate() {
         displayView(Config.CALIBRATE_SCREEN_INDEX, true);
     }
+
+    void closeKeyboard(EditText input) {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+    }
+
+    public void onSaveCalibration() {
+        final Context context = this;
+        final MainApp mainApp = (MainApp) this.getApplicationContext();
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
+
+        alertDialogBuilder.setView(input);
+        alertDialogBuilder.setCancelable(false);
+
+        alertDialogBuilder.setTitle(R.string.saveCalibration);
+        alertDialogBuilder.setMessage(R.string.giveNameForCalibration);
+
+
+        alertDialogBuilder.setPositiveButton(R.string.ok, null);
+        alertDialogBuilder
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        closeKeyboard(input);
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create(); //create the box
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        if (!input.getText().toString().trim().isEmpty()) {
+                            final ArrayList<String> exportList = new ArrayList<String>();
+
+                            for (ColorInfo aColorList : mainApp.colorList) {
+                                exportList.add(ColorUtils.getColorRgbString(aColorList.getColor()));
+                            }
+
+                            File external = Environment.getExternalStorageDirectory();
+                            final String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
+
+                            File file = new File(path + input.getText());
+                            if (file.exists()) {
+                                AlertUtils.askQuestion(context, R.string.overwriteFile,
+                                        R.string.nameAlreadyExists, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                FileUtils.saveToFile(path, input.getText().toString(),
+                                                        exportList.toString());
+                                            }
+                                        }, null
+                                );
+                            } else {
+                                FileUtils.saveToFile(path, input.getText().toString(),
+                                        exportList.toString());
+                            }
+
+                            closeKeyboard(input);
+                            alertDialog.dismiss();
+                        } else {
+                            input.setError(getString(R.string.invalidName));
+                        }
+                    }
+                });
+            }
+        });
+
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
+                        == EditorInfo.IME_ACTION_DONE)) {
+
+                }
+                return false;
+            }
+        });
+
+        alertDialog.show();
+        input.requestFocus();
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+    }
+
 
     @Override
     public void onLoadCalibration(final Handler.Callback callback) {

@@ -45,6 +45,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
 
     private CalibrateItemFragment mCalibrateItemFragment;
     private OnLoadCalibrationListener mOnLoadCalibrationListener;
+    private OnSaveCalibrationListener mOnSaveCalibrationListener;
 
     public CalibrateFragment() {
     }
@@ -156,6 +157,9 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
                 };
                 mOnLoadCalibrationListener.onLoadCalibration(callback);
                 return true;
+            case R.id.menu_save:
+                mOnSaveCalibrationListener.onSaveCalibration();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -166,6 +170,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         super.onAttach(activity);
         try {
             mOnLoadCalibrationListener = (OnLoadCalibrationListener) activity;
+            mOnSaveCalibrationListener = (OnSaveCalibrationListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnLoadCalibrationListener");
@@ -176,6 +181,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
     public void onDetach() {
         super.onDetach();
         mOnLoadCalibrationListener = null;
+        mOnSaveCalibrationListener = null;
     }
 
     public void dataChanged() {
@@ -186,4 +192,7 @@ public class CalibrateFragment extends ListFragment implements AdapterView.OnIte
         public void onLoadCalibration(Handler.Callback callback);
     }
 
+    public interface OnSaveCalibrationListener {
+        public void onSaveCalibration();
+    }
 }

@@ -71,6 +71,8 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
 
         //solo.waitForDialogToOpen();
 
+        solo.clickOnButton(solo.getString(R.string.start));
+
         solo.clickOnButton(solo.getString(R.string.ok));
 
         solo.waitForDialogToClose();
@@ -312,10 +314,6 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
         solo.clickOnText("Turbidity");
 
         solo.clickOnText("Turbidity");
-
-        solo.clickOnText("Coliform");
-
-        solo.clickOnText("Coliform");
 
         solo.clickOnText("Nitrate");
 

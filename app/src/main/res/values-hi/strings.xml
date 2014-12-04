@@ -88,6 +88,12 @@
     <string name="showStartPage">आरम्भ पृष्ठ दिखाएँ</string>
     <string name="cameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
-    <string name="placeHighRangeCartridge">%1$.2f%% नमूना पानी और %2$.2f%% विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
+    <string name="placeHighRangeCartridge">%1$.0f%% नमूना पानी और %2$.0f%% विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
     <string name="testNotAvailable">इस परीक्षण के लिए उपलब्ध नहीं है</string>
+    <string name="saveCalibration">Save Calibration</string>
+    <string name="giveNameForCalibration">Give a descriptive name for this calibration</string>
+    <string name="overwriteFile">Overwrite File</string>
+    <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
+    <string name="invalidName">Invalid name</string>
+    <string name="save">Save</string>
 </resources>

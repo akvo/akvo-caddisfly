@@ -88,6 +88,12 @@
     <string name="showStartPage">ಆರಂಭ ಪುಟ ತೋರಿಸಿ</string>
     <string name="cameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
     <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
-    <string name="placeHighRangeCartridge">%1$.2f%% ಮಾದರಿ ನೀರು ಮತ್ತು %2$.2f%% ಡೀಐಯಾನೈಸ್ಡ್ ನೀರು ಮಿಶ್ರಣ. ಈಗ ಈ ಮಿಶ್ರಣವನ್ನು ಪರೀಕ್ಷಿಸಿ</string>
+    <string name="placeHighRangeCartridge">%1$.0f%% ಮಾದರಿ ನೀರು ಮತ್ತು %2$.0f%% ಡೀಐಯಾನೈಸ್ಡ್ ನೀರು ಮಿಶ್ರಣ. ಈಗ ಈ ಮಿಶ್ರಣವನ್ನು ಪರೀಕ್ಷಿಸಿ</string>
     <string name="testNotAvailable">ಈ ಪರೀಕ್ಷೆ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="saveCalibration">Save Calibration</string>
+    <string name="giveNameForCalibration">Give a descriptive name for this calibration</string>
+    <string name="overwriteFile">Overwrite File</string>
+    <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
+    <string name="invalidName">Invalid name</string>
+    <string name="save">Save</string>
 </resources>

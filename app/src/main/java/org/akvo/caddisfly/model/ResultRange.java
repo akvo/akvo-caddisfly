@@ -5,10 +5,10 @@ public class ResultRange {
     private final double mEnd;
     private final double mMultiplier;
 
-    public ResultRange(double rangeStart, double rangeEnd, double multiplier) {
+    public ResultRange(double rangeStart, double rangeEnd, double dilution) {
         mStart = rangeStart;
         mEnd = rangeEnd;
-        mMultiplier = multiplier;
+        mMultiplier = 100 / (100 - dilution);
     }
 
     public double getStart() {

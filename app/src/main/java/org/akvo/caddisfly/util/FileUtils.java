@@ -23,9 +23,11 @@ import android.util.Log;
 import org.akvo.caddisfly.Config;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -149,29 +151,29 @@ public class FileUtils {
         return filePaths;
     }
 
-/*
-    public static void saveToFile(Context context, String path, String name, String data) {
+    public static void saveToFile(String path, String name, String data) {
         try {
 
             File folder = new File(path);
             if (!folder.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 folder.mkdirs();
             }
 
             File file = new File(path + name);
+            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
-            FileWriter fileWriter = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(fileWriter);
+            FileWriter filewriter = new FileWriter(file);
+            BufferedWriter out = new BufferedWriter(filewriter);
 
             out.write(data);
 
             out.close();
-            fileWriter.close();
+            filewriter.close();
         } catch (Exception e) {
             Log.d("failed to save file", e.toString());
         }
     }
-*/
 
     public static ArrayList<String> loadFromFile(String name) {
         try {

@@ -39,13 +39,19 @@ public class JsonUtils {
                         item.getString("code").toUpperCase(),
                         item.getString("unit"));
 
-                JSONArray ranges = item.getJSONArray("ranges");
 
-                for (int j = 0; j < ranges.length(); j++) {
+                String dilutions = "0";
+                if (item.has("dilutions")) {
+                    dilutions = item.getString("dilutions");
+                }
+
+                String[] dilutionsArray = dilutions.split(",");
+
+                for (String dilution : dilutionsArray) {
                     ResultRange resultRange = new ResultRange(
-                            ranges.getJSONObject(j).getDouble("start"),
-                            ranges.getJSONObject(j).getDouble("end"),
-                            ranges.getJSONObject(j).has("multiplier") ? ranges.getJSONObject(j).getDouble("multiplier") : 1);
+                            item.getDouble("rangeStart"),
+                            item.getDouble("rangeEnd"),
+                            Double.valueOf(dilution));
                     testInfo.addRange(resultRange);
                 }
 

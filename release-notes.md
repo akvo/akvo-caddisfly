@@ -1,6 +1,7 @@
 v0.44 alpha
 -----------
 1. Multiple range testing to cater for higher ranges
+2. Save calibration to file
 
 v0.43 alpha
 -----------
