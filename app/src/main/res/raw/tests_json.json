@@ -15,8 +15,8 @@
                 "code": "phydr",
                 "unit": "pH",
                 "step": "1",
-                "rangeStart": "1",
-                "rangeEnd": "14"
+                "rangeStart": "3",
+                "rangeEnd": "9"
             },
             {
                 "name": "Nitrate",

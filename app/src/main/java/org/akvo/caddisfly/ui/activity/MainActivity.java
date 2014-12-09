@@ -66,7 +66,6 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.fragment.AboutFragment;
 import org.akvo.caddisfly.ui.fragment.CalibrateFragment;
-import org.akvo.caddisfly.ui.fragment.CalibrateItemFragment;
 import org.akvo.caddisfly.ui.fragment.SettingsFragment;
 import org.akvo.caddisfly.ui.fragment.StartFragment;
 import org.akvo.caddisfly.util.AlertUtils;
@@ -95,7 +94,6 @@ public class MainActivity extends MainActivityBase implements
         StartFragment.OnVideoListener,
         StartFragment.OnStartSurveyListener,
         CalibrateFragment.OnLoadCalibrationListener,
-        CalibrateItemFragment.OnLoadCalibrationListener,
         CalibrateFragment.OnSaveCalibrationListener {
 
     private static final int REQUEST_TEST = 1;
@@ -591,7 +589,7 @@ public class MainActivity extends MainActivityBase implements
                                                 FileUtils.saveToFile(path, input.getText().toString(),
                                                         exportList.toString());
                                             }
-                                        }, null
+                                        }
                                 );
                             } else {
                                 FileUtils.saveToFile(path, input.getText().toString(),
@@ -728,7 +726,7 @@ public class MainActivity extends MainActivityBase implements
                                         ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                         listAdapter.remove(listAdapter.getItem(position));
                                     }
-                                }, null);
+                                });
                                 return true;
                             }
                         });

@@ -44,7 +44,7 @@ public class ConfirmCheckBoxPreference extends CheckBoxPreference {
                                     .setBoolean(getContext(), R.string.saveOriginalPhotoKey, true);
                             setChecked(true);
                         }
-                    }, null
+                    }
             );
         } else {
             PreferencesUtils.setBoolean(getContext(), R.string.saveOriginalPhotoKey, false);

@@ -18,8 +18,6 @@ package org.akvo.caddisfly.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,14 +25,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -63,7 +56,6 @@ public class CalibrateItemFragment extends ListFragment {
     protected String mTestType;
     protected GalleryListAdapter mAdapter;
     private SoundPoolPlayer sound;
-    private OnLoadCalibrationListener mOnLoadCalibrationListener;
 
     private PowerManager.WakeLock wakeLock;
 
@@ -109,7 +101,7 @@ public class CalibrateItemFragment extends ListFragment {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                mStartButton.setEnabled(false);
+
                 AlertUtils.askQuestion(getActivity(), R.string.calibrate,
                         R.string.calibrate_info,
                         new DialogInterface.OnClickListener() {
@@ -118,11 +110,6 @@ public class CalibrateItemFragment extends ListFragment {
                                     DialogInterface dialogInterface,
                                     int i) {
                                 calibrate(position);
-                            }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mStartButton.setEnabled(true);
                             }
                         }
                 );
@@ -213,7 +200,6 @@ public class CalibrateItemFragment extends ListFragment {
                 .format(mainApp.rangeStart + (position * (mainApp.rangeIncrementStep
                         * mainApp.rangeIncrementValue))));
 
-        mStartButton.setEnabled(true);
     }
 
     public void startCalibration(final int index) {
@@ -304,69 +290,7 @@ public class CalibrateItemFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         sound = new SoundPoolPlayer(getActivity());
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        Intent LaunchIntent = getActivity().getPackageManager()
-                .getLaunchIntentForPackage(Config.CADDISFLY_PACKAGE_NAME);
-        if (LaunchIntent != null) {
-            inflater.inflate(R.menu.calibrate, menu);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_swatches:
-                SwatchFragment fragment = new SwatchFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.container, fragment, String.valueOf(Config.SWATCH_SCREEN_INDEX));
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-                return true;
-            case R.id.menu_load:
-
-                Handler.Callback callback = new Handler.Callback() {
-                    public boolean handleMessage(Message msg) {
-                        displayInfo();
-                        return true;
-                    }
-                };
-                mOnLoadCalibrationListener.onLoadCalibration(callback);
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mOnLoadCalibrationListener = (OnLoadCalibrationListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLoadCalibrationListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mOnLoadCalibrationListener = null;
-        sound.release();
-    }
-
-    public interface OnLoadCalibrationListener {
-        public void onLoadCalibration(Handler.Callback callback);
     }
 }

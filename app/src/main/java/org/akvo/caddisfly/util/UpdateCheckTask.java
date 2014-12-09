@@ -101,7 +101,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
                             checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion, false);
                             PreferencesUtils.removeKey(mContext, R.string.updateAvailable);
                         }
-                    }, null
+                    }
             );
         } else {
 

@@ -35,16 +35,14 @@ public class AlertUtils {
     }
 
     public static void askQuestion(Context context, int title, int message,
-                                   DialogInterface.OnClickListener callback,
-                                   DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, message, callback, cancelListener);
+                                   DialogInterface.OnClickListener callback) {
+        showAlert(context, title, message, callback, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
     }
-
-/*    public static void askQuestion(Context context, int title, String message,
-                                   DialogInterface.OnClickListener callback,
-                                   DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, message, R.string.ok, callback, cancelListener);
-    }*/
 
     @SuppressWarnings("SameParameterValue")
     public static void showAlert(MainActivity context, String title, int message,
