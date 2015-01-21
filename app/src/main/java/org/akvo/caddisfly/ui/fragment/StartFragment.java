@@ -18,6 +18,8 @@ package org.akvo.caddisfly.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,7 +151,10 @@ public class StartFragment extends Fragment {
 
         if (mainApp.currentTestInfo != null) {
             if (mIsExternal) {
-                testTypeTextView.setText(mainApp.currentTestInfo.getName());
+                Resources res = getResources();
+                Configuration conf = res.getConfiguration();
+
+                testTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
                 testTypeTextView.setVisibility(View.VISIBLE);
             } else {
                 testTypeTextView.setVisibility(View.GONE);

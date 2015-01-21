@@ -48,7 +48,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,6 +81,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Hashtable;
 import java.util.Locale;
 
 
@@ -157,6 +157,13 @@ public class MainActivity extends MainActivityBase implements
             }
         }
 
+        //File configPath = new File(getExternalFilesDir(null) + File.separator + Config.CONFIG_FOLDER);
+        File configPath = new File(Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER);
+
+        if (!configPath.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            configPath.mkdirs();
+        }
         FileUtils.trimFolders(this);
 
     }
@@ -293,7 +300,7 @@ public class MainActivity extends MainActivityBase implements
         }
 
         if (mainApp.currentTestInfo == null) {
-            mainApp.currentTestInfo = new TestInfo("", "", "");
+            mainApp.currentTestInfo = new TestInfo(new Hashtable(), "", "");
         }
 
         Fragment fragment;
@@ -608,10 +615,10 @@ public class MainActivity extends MainActivityBase implements
 
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
-                        == EditorInfo.IME_ACTION_DONE)) {
-
-                }
+//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
+//                        == EditorInfo.IME_ACTION_DONE)) {
+//
+//                }
                 return false;
             }
         });
@@ -750,7 +757,19 @@ public class MainActivity extends MainActivityBase implements
 
         ArrayList<TestInfo> tests = null;
         try {
-            tests = JsonUtils.loadTests(FileUtils.readRawTextFile(this, R.raw.tests_json));
+            //final String path = getExternalFilesDir(null) + Config.CONFIG_FILE_PATH;
+            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
+
+            File file = new File(path);
+            String text;
+
+            //Look for external json config file otherwise use the internal default one
+            if (file.exists()) {
+                text = FileUtils.loadTextFromFile(path);
+            } else {
+                text = FileUtils.readRawTextFile(this, R.raw.tests_json);
+            }
+            tests = JsonUtils.loadTests(text);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -761,8 +780,12 @@ public class MainActivity extends MainActivityBase implements
         int selectedIndex = 0;
         int index = 0;
         assert tests != null;
+
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+
         for (TestInfo test : tests) {
-            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName());
+            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(conf.locale.getLanguage()));
             if (test.getCode().equalsIgnoreCase(mainApp.currentTestInfo.getCode())) {
                 selectedIndex = index;
             }
@@ -826,12 +849,10 @@ public class MainActivity extends MainActivityBase implements
         }
     }
 
-
     /**
      * Adapter that provides views for our top-level Action Bar spinner.
      */
     private class ExploreSpinnerAdapter extends BaseAdapter {
-        // pairs of (tag, title)
         private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<ExploreSpinnerItem>();
 
         private ExploreSpinnerAdapter() {

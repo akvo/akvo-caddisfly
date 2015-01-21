@@ -20,6 +20,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Environment;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -31,8 +32,10 @@ import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.json.JSONException;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MainApp extends Application {
 
@@ -43,7 +46,7 @@ public class MainApp extends Application {
 
     public int rangeIncrementStep = 5;
     public double rangeStart = 0;
-    public TestInfo currentTestInfo = new TestInfo("", "", "");
+    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "");
 
     /**
      * @param context The context
@@ -84,7 +87,20 @@ public class MainApp extends Application {
         rangeIntervals.clear();
 
         try {
-            currentTestInfo = JsonUtils.loadJson(FileUtils.readRawTextFile(this, R.raw.tests_json), testCode);
+
+            //final String path = getExternalFilesDir(null) + Config.CONFIG_FILE_PATH;
+            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
+
+            File file = new File(path);
+            String text;
+
+            //Look for external json config file otherwise use the internal default one
+            if (file.exists()) {
+                text = FileUtils.loadTextFromFile(path);
+            } else {
+                text = FileUtils.readRawTextFile(this, R.raw.tests_json);
+            }
+            currentTestInfo = JsonUtils.loadJson(text, testCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }

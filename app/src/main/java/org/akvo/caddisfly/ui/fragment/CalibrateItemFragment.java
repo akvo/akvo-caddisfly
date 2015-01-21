@@ -61,7 +61,6 @@ public class CalibrateItemFragment extends ListFragment {
 
     private Button mValueButton;
     private Button mColorButton;
-    private Button mStartButton;
 
     private LinearLayout mErrorLayout;
     private TextView mErrorTextView;
@@ -87,7 +86,7 @@ public class CalibrateItemFragment extends ListFragment {
 
         assert header != null;
         mValueButton = (Button) header.findViewById(R.id.valueButton);
-        mStartButton = (Button) header.findViewById(R.id.startButton);
+        Button startButton = (Button) header.findViewById(R.id.startButton);
         mColorButton = (Button) header.findViewById(R.id.colorButton);
         mErrorLayout = (LinearLayout) header.findViewById(R.id.errorLayout);
         mErrorTextView = (TextView) header.findViewById(R.id.errorTextView);
@@ -98,7 +97,7 @@ public class CalibrateItemFragment extends ListFragment {
 
         mTestType = getArguments().getString(getString(R.string.currentTestTypeId));
 
-        mStartButton.setOnClickListener(new View.OnClickListener() {
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
 

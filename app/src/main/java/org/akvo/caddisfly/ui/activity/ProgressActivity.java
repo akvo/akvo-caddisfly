@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -330,8 +332,11 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 .getDefaultSharedPreferences(getApplicationContext());
 
         mainApp.setSwatches(mTestType);
-        mTitleText.setText(mainApp.currentTestInfo.getName());
-        mTestTypeTextView.setText(mainApp.currentTestInfo.getName());
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+
+        mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         mTestTotal = 1;
 
@@ -605,7 +610,10 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                 int minAccuracy = PreferencesUtils
                         .getInt(this, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
 
-                String title = ((MainApp) getApplicationContext()).currentTestInfo.getName();
+                Resources res = getResources();
+                Configuration conf = res.getConfiguration();
+
+                String title = ((MainApp) getApplicationContext()).currentTestInfo.getName(conf.locale.getLanguage());
 
                 if (result >= 0 && quality >= minAccuracy) {
                     if (result >= mainApp.currentTestInfo.getRanges().get(highRangeTest).getEnd() &&

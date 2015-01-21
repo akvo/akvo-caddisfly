@@ -295,7 +295,7 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
 
         solo.scrollToBottom();
 
-        solo.clickOnText("14.0");
+        solo.clickOnText("9.0");
 
         solo.clickOnText(solo.getString(R.string.calibrate), 3);
 
@@ -323,7 +323,7 @@ public class ApplicationTest extends ActivityInstrumentationTestCase2<MainActivi
 
         solo.scrollToBottom();
 
-        solo.clickInList(5);
+        solo.clickInList(3);
 
         solo.clickOnText(solo.getString(R.string.calibrate), 3);
 

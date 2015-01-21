@@ -76,4 +76,7 @@ public class Config {
     public static final boolean CAMERA_TORCH_MODE_DEFAULT = false;
     public static final boolean REQUIRE_SHAKE_DEFAULT = false;
     public static final boolean CAMERA_SOUND_DEFAULT = true;
+    public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
+    public static final String CONFIG_FILE = "tests.json";
+
 }

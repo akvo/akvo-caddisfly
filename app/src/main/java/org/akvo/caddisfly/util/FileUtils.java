@@ -175,6 +175,26 @@ public class FileUtils {
         }
     }
 
+    public static String loadTextFromFile(String filename) {
+
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            return text.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
     public static ArrayList<String> loadFromFile(String name) {
         try {
             File external = Environment.getExternalStorageDirectory();
@@ -189,7 +209,6 @@ public class FileUtils {
                 FileReader filereader = new FileReader(file);
 
                 BufferedReader in = new BufferedReader(filereader);
-
                 String data = in.readLine();
                 if (data != null) {
                     arrayList = new ArrayList<String>(Arrays.asList(data.substring(1, data.length() - 1).split(",\\s*")));

@@ -2,7 +2,12 @@
     "tests": {
         "test": [
             {
-                "name": "Fluoride",
+                "name":[
+                            {"en": "Fluoride"},
+                            {"kn": "ಫ್ಲೋರೈಡ್"},
+                            {"hi": "फ्लोराइड"},
+                            {"ar": "فلوريد"},
+                        ],
                 "code": "fluor",
                 "unit": "ppm",
                 "step": "0.5",
@@ -11,7 +16,9 @@
                 "dilutions": "0,50,75"
             },
             {
-                "name": "pH",
+                "name": [
+                            {"en": "pH"}
+                        ],
                 "code": "phydr",
                 "unit": "pH",
                 "step": "1",
@@ -19,7 +26,13 @@
                 "rangeEnd": "9"
             },
             {
-                "name": "Nitrate",
+                "name": [
+                            {"en": "Nitrate"},
+                            {"kn": "ನೈಟ್ರೇಟ್"},
+                            {"hi": "नाइट्रट"},
+                            {"ar": "نترات"}
+
+                        ],
                 "code": "nitra",
                 "unit": "ppm",
                 "step": "1",
@@ -27,7 +40,12 @@
                 "rangeEnd": "50"
             },
             {
-                "name": "Turbidity",
+                "name": [
+                            {"en": "Turbidity"},
+                            {"kn": "ಕೆಸರು"},
+                            {"hi": "मैलापन"},
+                            {"ar": "عكر"},
+                        ],
                 "code": "turbi",
                 "unit": "FNU",
                 "step": "1",
@@ -35,7 +53,12 @@
                 "rangeEnd": "50"
             },
             {
-                "name": "Arsenic",
+                "name": [
+                            {"en": "Arsenic"},
+                            {"kn": "ಆರ್ಸೆನಿಕ್"},
+                            {"hi": "संखिया"},
+                            {"ar": "زرنيخ"}
+                        ],
                 "code": "arsen",
                 "unit": "ppm",
                 "step": "0.25",

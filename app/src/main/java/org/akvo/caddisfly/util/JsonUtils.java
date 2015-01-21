@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 public class JsonUtils {
 
@@ -34,12 +36,26 @@ public class JsonUtils {
             try {
                 JSONObject item = array.getJSONObject(i);
 
+                JSONArray nameArray = item.getJSONArray("name");
+
+                Hashtable<String, String> namesHashTable = new Hashtable<String, String>(10, 10);
+
+                //Load test names in different languages
+                for (int j = 0; j < nameArray.length(); j++) {
+                    if (!nameArray.isNull(j)) {
+                        Iterator iterator = nameArray.getJSONObject(j).keys();
+                        String key = (String) iterator.next();
+                        String name = nameArray.getJSONObject(j).getString(key);
+                        namesHashTable.put(key, name);
+                    }
+                }
+
                 testInfo = new TestInfo(
-                        item.getString("name"),
+                        namesHashTable,
                         item.getString("code").toUpperCase(),
                         item.getString("unit"));
 
-
+                //Load the dilution percentages
                 String dilutions = "0";
                 if (item.has("dilutions")) {
                     dilutions = item.getString("dilutions");

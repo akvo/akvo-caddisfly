@@ -1,23 +1,29 @@
 package org.akvo.caddisfly.model;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class TestInfo {
-    private final String mName;
+    private final Hashtable mNames;
     private final String mCode;
     private final String mUnit;
     private final ArrayList<ResultRange> mRanges;
     private int mIncrement;
 
-    public TestInfo(String name, String code, String unit) {
-        mName = name;
+    public TestInfo(Hashtable names, String code, String unit) {
+        mNames = names;
         mCode = code;
         mUnit = unit;
         mRanges = new ArrayList<ResultRange>();
     }
 
-    public String getName() {
-        return mName;
+    public String getName(String languageCode) {
+        if (mNames.containsKey(languageCode)) {
+            return mNames.get(languageCode).toString();
+        } else {
+            return mNames.get("en").toString();
+        }
+
     }
 
     public String getCode() {
