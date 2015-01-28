@@ -28,7 +28,7 @@ public class JsonUtils {
         JSONObject jsonObject;
         TestInfo testInfo;
 
-        ArrayList<TestInfo> tests = new ArrayList<TestInfo>();
+        ArrayList<TestInfo> tests = new ArrayList<>();
         jsonObject = new JSONObject(jsonText).getJSONObject("tests");
         JSONArray array = jsonObject.getJSONArray("test");
         for (int i = 0; i < array.length(); i++) {
@@ -38,7 +38,7 @@ public class JsonUtils {
 
                 JSONArray nameArray = item.getJSONArray("name");
 
-                Hashtable<String, String> namesHashTable = new Hashtable<String, String>(10, 10);
+                Hashtable<String, String> namesHashTable = new Hashtable<>(10, 10);
 
                 //Load test names in different languages
                 for (int j = 0; j < nameArray.length(); j++) {
@@ -53,7 +53,8 @@ public class JsonUtils {
                 testInfo = new TestInfo(
                         namesHashTable,
                         item.getString("code").toUpperCase(),
-                        item.getString("unit"));
+                        item.getString("unit"),
+                        item.getInt("type"));
 
                 //Load the dilution percentages
                 String dilutions = "0";

@@ -55,7 +55,7 @@ public class SwatchFragment extends ListFragment {
             MainApp mainApp = (MainApp) activity.getApplicationContext();
 
             if (mainApp != null) {
-                ArrayList<Integer> swatchList = new ArrayList<Integer>();
+                ArrayList<Integer> swatchList = new ArrayList<>();
                 for (ColorInfo aColorList : mainApp.colorList) {
                     swatchList.add(aColorList.getColor());
                 }

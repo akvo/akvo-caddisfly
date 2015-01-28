@@ -39,14 +39,14 @@ import java.util.Hashtable;
 
 public class MainApp extends Application {
 
-    public final ArrayList<Double> rangeIntervals = new ArrayList<Double>();
-    public final ArrayList<ColorInfo> colorList = new ArrayList<ColorInfo>();
+    public final ArrayList<Double> rangeIntervals = new ArrayList<>();
+    public final ArrayList<ColorInfo> colorList = new ArrayList<>();
     public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
     public final double rangeIncrementValue = 0.1;
 
     public int rangeIncrementStep = 5;
     public double rangeStart = 0;
-    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "");
+    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
 
     /**
      * @param context The context
@@ -117,15 +117,17 @@ public class MainApp extends Application {
 
         increment = rangeIncrementStep * rangeIncrementValue;
 
-        for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
-            rangeIntervals.add(i);
-        }
+        if (currentTestInfo.getType() == 0) {
+            for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
+                rangeIntervals.add(i);
+            }
 
-        for (double i = 0; i <= (rangeEnd - rangeStart) * 10; i++) {
-            colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-        }
+            for (double i = 0; i <= (rangeEnd - rangeStart) * 10; i++) {
+                colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
+            }
 
-        loadCalibratedSwatches(currentTestInfo.getCode());
+            loadCalibratedSwatches(currentTestInfo.getCode());
+        }
     }
 
     /**

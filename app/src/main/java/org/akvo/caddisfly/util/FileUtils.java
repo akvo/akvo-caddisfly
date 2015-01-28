@@ -123,7 +123,7 @@ public class FileUtils {
     public static ArrayList<String> getFilePaths(Context context, String folderName,
                                                  String subFolder, long locationId) {
 
-        ArrayList<String> filePaths = new ArrayList<String>();
+        ArrayList<String> filePaths = new ArrayList<>();
 
         String folderPath = getStoragePath(context, locationId, folderName, false);
 
@@ -211,7 +211,7 @@ public class FileUtils {
                 BufferedReader in = new BufferedReader(filereader);
                 String data = in.readLine();
                 if (data != null) {
-                    arrayList = new ArrayList<String>(Arrays.asList(data.substring(1, data.length() - 1).split(",\\s*")));
+                    arrayList = new ArrayList<>(Arrays.asList(data.substring(1, data.length() - 1).split(",\\s*")));
                 }
 
                 in.close();

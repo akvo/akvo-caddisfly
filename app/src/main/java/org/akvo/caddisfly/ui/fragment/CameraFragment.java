@@ -315,7 +315,7 @@ public class CameraFragment extends DialogFragment {
             parameters.setZoom(0);
 
             if (parameters.getMaxNumMeteringAreas() > 0) {
-                List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                List<Camera.Area> meteringAreas = new ArrayList<>();
                 Rect areaRect1 = new Rect(-100, -100, 100, 100);
                 meteringAreas.add(new Camera.Area(areaRect1, 1000));
                 parameters.setMeteringAreas(meteringAreas);

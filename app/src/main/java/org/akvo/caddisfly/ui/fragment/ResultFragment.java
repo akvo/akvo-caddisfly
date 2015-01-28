@@ -68,7 +68,12 @@ public class ResultFragment extends DialogFragment {
 
         double result = getArguments().getDouble("result", -1);
 
-        resultView.setText(String.format("%.2f", result));
+        if (result > 999) {
+            resultView.setText(String.format("%.0f", result));
+        } else {
+            resultView.setText(String.format("%.2f", result));
+        }
+
 
         unitTextView.setText(getArguments().getString("unit", ""));
 

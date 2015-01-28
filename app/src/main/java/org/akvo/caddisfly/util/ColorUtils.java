@@ -248,7 +248,7 @@ public class ColorUtils {
 */
 
     public static double mostFrequent(double[] ary) {
-        Map<Double, Integer> m = new HashMap<Double, Integer>();
+        Map<Double, Integer> m = new HashMap<>();
 
         for (double a : ary) {
             if (a >= 0) {

@@ -96,4 +96,5 @@
     <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
     <string name="invalidName">Invalid name</string>
     <string name="save">Save</string>
+    <string name="connectSensorToUsb">Connect EC Sensor to Phone USB</string>
 </resources>

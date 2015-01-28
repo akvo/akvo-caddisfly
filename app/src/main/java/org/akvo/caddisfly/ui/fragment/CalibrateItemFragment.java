@@ -270,7 +270,7 @@ public class CalibrateItemFragment extends ListFragment {
     protected void updateListView(int position) {
 
         // override and show only headers by not providing data to list adapter
-        ArrayList<String> files = new ArrayList<String>();
+        ArrayList<String> files = new ArrayList<>();
         mAdapter = new GalleryListAdapter(getActivity(), mTestType, position, files, false);
         setListAdapter(mAdapter);
     }

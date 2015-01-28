@@ -67,8 +67,6 @@ public class ImageUtils {
                     topMargin + sampleLength);
 
             return decoder.decodeRegion(re, options1);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

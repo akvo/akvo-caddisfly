@@ -55,7 +55,7 @@ public class GalleryListAdapter extends BaseAdapter {
 
     private final boolean mShowResult;
 
-    private ArrayList<String> mFilePaths = new ArrayList<String>();
+    private ArrayList<String> mFilePaths = new ArrayList<>();
 
     @SuppressWarnings("SameParameterValue")
     public GalleryListAdapter(Activity activity, String testType, long testId,

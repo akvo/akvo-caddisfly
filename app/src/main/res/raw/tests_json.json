@@ -8,6 +8,7 @@
                             {"hi": "फ्लोराइड"},
                             {"ar": "فلوريد"},
                         ],
+                "type": "0",
                 "code": "fluor",
                 "unit": "ppm",
                 "step": "0.5",
@@ -19,6 +20,7 @@
                 "name": [
                             {"en": "pH"}
                         ],
+                "type": "0",
                 "code": "phydr",
                 "unit": "pH",
                 "step": "1",
@@ -33,6 +35,7 @@
                             {"ar": "نترات"}
 
                         ],
+                "type": "0",
                 "code": "nitra",
                 "unit": "ppm",
                 "step": "1",
@@ -46,6 +49,7 @@
                             {"hi": "मैलापन"},
                             {"ar": "عكر"},
                         ],
+                "type": "0",
                 "code": "turbi",
                 "unit": "FNU",
                 "step": "1",
@@ -59,11 +63,26 @@
                             {"hi": "संखिया"},
                             {"ar": "زرنيخ"}
                         ],
+                "type": "0",
                 "code": "arsen",
                 "unit": "ppm",
                 "step": "0.25",
                 "rangeStart": "0",
                 "rangeEnd": "8"
+            },
+            {
+                "name": [
+                            {"en": "Electrical Conductivity"},
+                            {"kn": "ವಿದ್ಯುತ್ ವಾಹಕ"},
+                            {"hi": "विद्युत चालकता"},
+                            {"ar": "الموصلية الكهربائية"}
+                        ],
+                "type": "1",
+                "code": "econd",
+                "unit": "μS/cm",
+                "step": "1",
+                "rangeStart": "0",
+                "rangeEnd": "10000"
             }
         ]
     }

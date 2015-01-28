@@ -96,4 +96,5 @@
     <string name="invalidName">Invalid name</string>
     <string name="save">Save</string>
     <string name="placeHighRangeCartridge">خلط %1$.0f٪ عينة الماء والماء منزوع الأيونات %2$.0f٪. اختبار هذا الخليط الآن.</string>
+    <string name="connectSensorToUsb">Connect EC Sensor to Phone USB</string>
 </resources>

@@ -165,7 +165,6 @@ public class MainActivity extends MainActivityBase implements
             configPath.mkdirs();
         }
         FileUtils.trimFolders(this);
-
     }
 
     private boolean checkCameraFlash() {
@@ -266,11 +265,9 @@ public class MainActivity extends MainActivityBase implements
                     if (external && !PreferencesUtils.getBoolean(this, R.string.showStartPageKey, true)) {
                         onStartTest();
                     }
-
                 }
             }
         }
-
     }
 
     void displayView(int position, boolean addToBackStack) {
@@ -300,7 +297,7 @@ public class MainActivity extends MainActivityBase implements
         }
 
         if (mainApp.currentTestInfo == null) {
-            mainApp.currentTestInfo = new TestInfo(new Hashtable(), "", "");
+            mainApp.currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
         }
 
         Fragment fragment;
@@ -420,7 +417,6 @@ public class MainActivity extends MainActivityBase implements
                     }
                 }
             }, 6000);
-
         }
     }
 
@@ -447,11 +443,18 @@ public class MainActivity extends MainActivityBase implements
             return;
         }
 
-        final Intent intent = new Intent(context, ProgressActivity.class);
-        intent.setClass(context, ProgressActivity.class);
-        intent.putExtra(PreferencesHelper.CURRENT_LOCATION_ID_KEY, (long) 0);
-        intent.putExtra("isCalibration", false);
-        startActivityForResult(intent, REQUEST_TEST);
+        if (mainApp.currentTestInfo.getType() == 0) {
+
+            final Intent intent = new Intent(context, ProgressActivity.class);
+            intent.setClass(context, ProgressActivity.class);
+            intent.putExtra(PreferencesHelper.CURRENT_LOCATION_ID_KEY, (long) 0);
+            intent.putExtra("isCalibration", false);
+            startActivityForResult(intent, REQUEST_TEST);
+        } else {
+            final Intent intent = new Intent(context, SensorActivity.class);
+            intent.setClass(context, SensorActivity.class);
+            startActivityForResult(intent, REQUEST_TEST);
+        }
     }
 
     @Override
@@ -498,7 +501,6 @@ public class MainActivity extends MainActivityBase implements
             ft.remove(prev);
         }
         aboutFragment.show(ft, "aboutDialog");
-
     }
 
     public void onCheckUpdate() {
@@ -578,7 +580,7 @@ public class MainActivity extends MainActivityBase implements
                     public void onClick(View view) {
 
                         if (!input.getText().toString().trim().isEmpty()) {
-                            final ArrayList<String> exportList = new ArrayList<String>();
+                            final ArrayList<String> exportList = new ArrayList<>();
 
                             for (ColorInfo aColorList : mainApp.colorList) {
                                 exportList.add(ColorUtils.getColorRgbString(aColorList.getColor()));
@@ -628,7 +630,6 @@ public class MainActivity extends MainActivityBase implements
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
     }
 
 
@@ -642,7 +643,7 @@ public class MainActivity extends MainActivityBase implements
             builderSingle.setIcon(R.drawable.ic_launcher);
             builderSingle.setTitle(R.string.loadCalibration);
 
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     android.R.layout.select_dialog_singlechoice);
 
             File external = Environment.getExternalStorageDirectory();
@@ -669,7 +670,7 @@ public class MainActivity extends MainActivityBase implements
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String fileName = listFiles[which].getName();
-                                final ArrayList<Integer> swatchList = new ArrayList<Integer>();
+                                final ArrayList<Integer> swatchList = new ArrayList<>();
 
                                 final ArrayList<String> rgbList = FileUtils.loadFromFile(fileName);
                                 if (rgbList != null) {
@@ -708,7 +709,6 @@ public class MainActivity extends MainActivityBase implements
                                             callback.handleMessage(null);
                                         }
                                     }).execute();
-
                                 }
                             }
                         }
@@ -785,11 +785,13 @@ public class MainActivity extends MainActivityBase implements
         Configuration conf = res.getConfiguration();
 
         for (TestInfo test : tests) {
-            mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(conf.locale.getLanguage()));
-            if (test.getCode().equalsIgnoreCase(mainApp.currentTestInfo.getCode())) {
-                selectedIndex = index;
+            if (test.getType() == 0) {
+                mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(conf.locale.getLanguage()));
+                if (test.getCode().equalsIgnoreCase(mainApp.currentTestInfo.getCode())) {
+                    selectedIndex = index;
+                }
+                index++;
             }
-            index++;
         }
 
         @SuppressLint("InflateParams") View spinnerContainer = LayoutInflater.from(this)
@@ -845,7 +847,6 @@ public class MainActivity extends MainActivityBase implements
             case Config.SWATCH_SCREEN_INDEX:
                 setTitle(R.string.swatches);
                 break;
-
         }
     }
 
@@ -853,7 +854,7 @@ public class MainActivity extends MainActivityBase implements
      * Adapter that provides views for our top-level Action Bar spinner.
      */
     private class ExploreSpinnerAdapter extends BaseAdapter {
-        private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<ExploreSpinnerItem>();
+        private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<>();
 
         private ExploreSpinnerAdapter() {
         }

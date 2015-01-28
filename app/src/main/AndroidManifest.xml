@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.usb.host" />
+
     <application
         android:name=".app.MainApp"
         android:allowBackup="true"
@@ -20,21 +22,27 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/appName"
+            android:launchMode="singleTop"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.activity.ProgressActivity"
             android:label="@string/appName"
+            android:launchMode="singleTop"
             android:screenOrientation="nosensor"
             android:showOnLockScreen="true" />
         <activity
@@ -43,6 +51,21 @@
             android:label="@string/caddisflyTraining"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".ui.activity.SensorActivity"
+            android:label="@string/title_activity_sensor"
+            android:launchMode="singleTop"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".ui.activity.UsbPermissionActivity"
+            android:label="@string/appName">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
     </application>
 
 </manifest>

@@ -8,22 +8,28 @@ public class TestInfo {
     private final String mCode;
     private final String mUnit;
     private final ArrayList<ResultRange> mRanges;
+    private final int mType;
     private int mIncrement;
 
-    public TestInfo(Hashtable names, String code, String unit) {
+    public TestInfo(Hashtable names, String code, String unit, int type) {
         mNames = names;
+        mType = type;
         mCode = code;
         mUnit = unit;
-        mRanges = new ArrayList<ResultRange>();
+        mRanges = new ArrayList<>();
     }
 
     public String getName(String languageCode) {
         if (mNames.containsKey(languageCode)) {
             return mNames.get(languageCode).toString();
-        } else {
+        } else if (mNames.containsKey("en")) {
             return mNames.get("en").toString();
         }
+        return "";
+    }
 
+    public int getType() {
+        return mType;
     }
 
     public String getCode() {

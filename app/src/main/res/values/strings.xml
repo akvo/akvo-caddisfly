@@ -14,7 +14,8 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
 -->
 <resources>
-    <!--xml-->
+
+    <!-- xml -->
     <string name="appName">Akvo Caddisfly</string>
     <string name="waterQualitySystem">Water Quality System</string>
     <string name="settings">Settings</string>
@@ -53,7 +54,7 @@
     <string name="saveOriginalPhoto">Save Original Photo</string>
     <string name="saveOriginalPhotoConfirm">Warning: Saving original photos will use a lot of space on your phone.</string>
 
-    <!--java-->
+    <!-- java -->
     <string name="testFailedMessage">Solution color out of range. Check cartridge placement.</string>
     <string name="testFailedQualityMessage">Photo quality below %d%%. Check cartridge placement.</string>
     <string name="gettingUpdate">Getting Caddisfly update…</string>
@@ -96,4 +97,8 @@
     <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
     <string name="invalidName">Invalid name</string>
     <string name="save">Save</string>
+    <string name="connectSensorToUsb">Connect EC Sensor via USB</string>
+    <string name="title_activity_sensor">SensorActivity</string>
+    <string name="title_activity_usb_permission">UsbPermissionActivity</string>
+
 </resources>

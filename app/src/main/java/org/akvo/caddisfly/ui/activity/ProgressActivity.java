@@ -153,6 +153,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         Shader textShader = new LinearGradient(0, 0, 0, mTitleText.getPaint().getTextSize(),
                 new int[]{Color.rgb(28, 53, 63), Color.rgb(44, 85, 103)},
                 new float[]{0, 1}, Shader.TileMode.CLAMP);
+
         mTitleText.getPaint().setShader(textShader);
         mRemainingValueText = (TextView) findViewById(R.id.remainingValueText);
         mRemainingText = (TextView) findViewById(R.id.remainingText);
@@ -193,10 +194,8 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                             showError(getString(R.string.testInterrupted), null);
                         }
-
                     }
                 }
             }
@@ -321,7 +320,6 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         mViewAnimator.setOutAnimation(null);
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
-
     }
 
     private void getSharedPreferences() {
@@ -723,7 +721,7 @@ public class ProgressActivity extends Activity implements ResultFragment.ResultD
         private final WeakReference<ProgressActivity> mService;
 
         public PhotoTakenHandler(ProgressActivity service) {
-            mService = new WeakReference<ProgressActivity>(service);
+            mService = new WeakReference<>(service);
         }
 
         @Override
