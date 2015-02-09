@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,15 @@ public class SensorActivity extends Activity implements ResultFragment.ResultDia
         }
         mTestTypeTextView.setText(testName);
 
+        mTestTypeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CRC32 crc32 = new CRC32();
+                crc32.update(("12.56,15000").getBytes());
+                Toast.makeText(getBaseContext(), String.valueOf(crc32.getValue()), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -60,29 +70,46 @@ public class SensorActivity extends Activity implements ResultFragment.ResultDia
             @Override
             public void run() {
                 while (!resultReceived) {
+                    usb.send("r");
+
                     String data = usb.read();
                     if (!data.equals("")) {
 
                         String[] result = data.trim().split(",");
-                        long crc;
+
+//                        resultReceived = true;
+//                        usb.stop();
+//                        Message msg2 = new Message();
+//                        msg2.obj = data;
+//                        mHandler.sendMessage(msg2);
+
+                        // long crc;
                         try {
                             if (result.length == 3) {
-                                String ecValue = result[0];
-                                String temperature = result[1];
-                                crc = Long.parseLong(result[2]);
+                                String temperature = result[0];
+                                String ecValue = result[1];
+                                String ec25Value = result[2];
+                                //crc = Long.parseLong(result[3]);
 
-                                CRC32 crc32 = new CRC32();
-                                crc32.update((ecValue + "," + temperature).getBytes());
-                                if (crc == crc32.getValue()) {
+                                //CRC32 crc32 = new CRC32();
+                                //crc32.update((temperature + "," + ecValue + "," + ec25Value).getBytes());
+
+                                //if (crc == crc32.getValue()) {
                                     resultReceived = true;
                                     usb.stop();
                                     Message msg = new Message();
-                                    msg.obj = ecValue;
+                                ec25Value = ec25Value.replaceAll("[^\\d.]", "");
+                                msg.obj = String.valueOf(ec25Value);
                                     mHandler.sendMessage(msg);
-                                }
+                                //}
                             }
                         } catch (Exception ex) {
-                            Toast.makeText(getBaseContext(), "error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getBaseContext(), "error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            Message msg = new Message();
+                            msg.obj = ex.getMessage();
+                            mHandler.sendMessage(msg);
+
                         }
                     }
                 }
