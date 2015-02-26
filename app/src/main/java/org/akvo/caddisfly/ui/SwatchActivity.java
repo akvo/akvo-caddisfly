@@ -14,33 +14,27 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.model;
+package org.akvo.caddisfly.ui;
 
-public class ResultRange {
-    private final double mValue;
-    private int mColor;
-    //private final double mMultiplier;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
-    public ResultRange(double value, int color) {
-        mValue = value;
-        mColor = color;
-        //mMultiplier = 100 / (100 - dilution);
+import org.akvo.caddisfly.R;
+
+public class SwatchActivity extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_swatch);
+        if (savedInstanceState == null) {
+
+            SwatchFragment fragment = new SwatchFragment();
+            //fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, fragment)
+                    .commit();
+
+        }
     }
-
-    public double getValue() {
-        return mValue;
-    }
-
-    public int getColor() {
-        return mColor;
-    }
-
-    public void setColor(int value) {
-        mColor = value;
-    }
-
-    //public double getMultiplier() {
-    //return mMultiplier;
-    //}
-
 }

@@ -1,13 +1,13 @@
 /*
- * Copyright (C) TernUp Research Labs
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- * Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
  * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
  * either version 3 of the License or any later version.
  *
- * Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License included below for more details.
  *
@@ -25,6 +25,8 @@ import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,10 +41,9 @@ public class ColorUtils {
 
     private static final double MAX_COLOR_DISTANCE = 70.0;
 
-    public static Bundle getPpmValue(byte[] data, ArrayList<ColorInfo> colorRange,
-                                     double rangeStepUnit, double rangeStartUnit, int length) {
+    public static Bundle getPpmValue(byte[] data, ArrayList<ResultRange> colorRange, int length) {
         ColorInfo photoColor = getColorFromByteArray(data, length);
-        return analyzeColor(photoColor, colorRange, rangeStepUnit, rangeStartUnit);
+        return analyzeColor(photoColor, colorRange);
     }
 
     private static ColorInfo getColorFromByteArray(byte[] data, int length) {
@@ -121,31 +122,26 @@ public class ColorUtils {
      * @param colorRange The range of colors to compare against
      * @return A bundle with the results
      */
-    private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ColorInfo> colorRange,
-                                       double rangeStepUnit, double rangeStartUnit) {
+    private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange) {
 
         Bundle bundle = new Bundle();
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
-        double value = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange,
-                rangeStepUnit);
+        double value = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange);
 
         if (value < 0) {
             bundle.putDouble(Config.RESULT_VALUE_KEY, -1); //NON-NLS
-
         } else {
-            value = value + rangeStartUnit;
-            bundle.putDouble(Config.RESULT_VALUE_KEY,
-                    (double) Math.round(value * 100) / 100); //NON-NLS
-            int color = colorRange.get((int) Math.round((value - rangeStartUnit) / rangeStepUnit)).getColor();
-
-            bundle.putInt("standardColor", color); //NON-NLS
-
-            bundle.putString("standardColorRgb",
-                    String.format("%d  %d  %d", Color.red(color),
-                            Color.green(color),
-                            Color.blue(color))
-            );
+            bundle.putDouble(Config.RESULT_VALUE_KEY, value);
+//            int color = colorRange.get((int) Math.round((value - rangeStartUnit) / rangeStepUnit)).getColor();
+//
+//            bundle.putInt("standardColor", color); //NON-NLS
+//
+//            bundle.putString("standardColorRgb",
+//                    String.format("%d  %d  %d", Color.red(color),
+//                            Color.green(color),
+//                            Color.blue(color))
+//            );
         }
 
         bundle.putString("color",
@@ -176,8 +172,7 @@ public class ColorUtils {
      * @param colorRange The range of colors from which to return the nearest color
      * @return A parts per million (ppm) value (color index multiplied by a step unit)
      */
-    private static double getNearestColorFromSwatchRange(int color, ArrayList<ColorInfo> colorRange,
-                                                         double rangeStepUnit) {
+    private static double getNearestColorFromSwatchRange(int color, ArrayList<ResultRange> colorRange) {
         double distance = MAX_COLOR_DISTANCE;
         double nearest = -1;
 
@@ -193,11 +188,11 @@ public class ColorUtils {
             double temp = Math.sqrt(blue + green + red);
 
             if (temp == 0.0) {
-                nearest = i * rangeStepUnit;
+                nearest = colorRange.get(i).getValue();
                 break;
             } else if (temp < distance) {
                 distance = temp;
-                nearest = i * rangeStepUnit;
+                nearest = colorRange.get(i).getValue();
             }
         }
 
@@ -271,151 +266,132 @@ public class ColorUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void autoGenerateColors(int index, String testCode, ArrayList<ColorInfo> colorList, int incrementStep,
-                                          SharedPreferences.Editor editor, int startIndex) {
-        int endIndex = colorList.size() - 1;
+    public static void autoGenerateColors(TestInfo testInfo, SharedPreferences.Editor editor) {
 
-        int startColor = colorList.get(index).getColor();
-        if (index < endIndex) {
-            for (int i = 1; i < incrementStep; i++) {
-                int nextColor = ColorUtils.getGradientColor(startColor,
-                        colorList.get(index + incrementStep).getColor(), incrementStep,
-                        i);
-                ColorInfo colorInfo = new ColorInfo(nextColor, 100);
-                colorList.set(index + i, colorInfo);
+        for (int i = 0; i < testInfo.getRanges().size() - 1; i++) {
 
-                if (editor != null) {
-                    editor.putInt(String.format("%s-%d", testCode, index + i),
-                            nextColor);
-                }
-            }
-        }
+            int startColor = testInfo.getRange(i).getColor();
+            int endColor = testInfo.getRange(i + 1).getColor();
+            double startValue = testInfo.getRange(i).getValue();
 
-        if (index > startIndex) {
-            for (int i = 1; i < incrementStep; i++) {
-                int nextColor = ColorUtils.getGradientColor(startColor,
-                        colorList.get(index - incrementStep).getColor(), incrementStep,
-                        i);
-                ColorInfo colorInfo = new ColorInfo(nextColor, 100);
-                colorList.set(index - i, colorInfo);
+            int steps = (int) ((testInfo.getRange(i + 1).getValue() - startValue) / 0.1);
 
-                if (editor != null) {
-                    editor.putInt(String.format("%s-%d", testCode, index - i),
-                            nextColor);
-                }
+            for (int j = 0; j < steps; j++) {
+                int color = ColorUtils.getGradientColor(startColor, endColor, steps, j);
+                editor.putInt(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * 0.1)), color);
             }
         }
     }
 
-    public static void validateGradient(ArrayList<ColorInfo> colorList, int increment, int minQuality) {
-
-        int index1, index2;
-        double previousDistance = 0;
-        int previousIndex = 0;
-        boolean errorFound = false;
-        boolean notCalibrated = false;
-
-        for (int i = 1; i < colorList.size(); i++) {
-            int color1 = colorList.get(i - 1).getColor();
-            int color2 = colorList.get(i).getColor();
-            double distance = getDistance(color1, color2);
-            colorList.get(i).setDistance(distance);
-        }
-
-        for (int i = 1; i < colorList.size() / increment; i++) {
-            index1 = (i - 1) * increment;
-            index2 = i * increment;
-            int color1 = colorList.get(index1).getColor();
-            int color2 = colorList.get(index2).getColor();
-            double distance = getDistance(color1, color2);
-            colorList.get(index2).setIncrementDistance(distance);
-        }
-
-
-        for (int i = 0; i < colorList.size(); i += increment) {
-            int color1 = colorList.get(i).getColor();
-            if (color1 == -1) {
-                colorList.get(i).setErrorCode(Config.ERROR_NOT_YET_CALIBRATED);
-                notCalibrated = true;
-            }
-        }
-
-        if (!notCalibrated) {
-
-            for (int i = 0; i < colorList.size(); i += increment) {
-                if (colorList.get(i).getErrorCode() == Config.ERROR_NOT_YET_CALIBRATED) {
-                    notCalibrated = true;
-                    break;
-                }
-            }
-        }
-
-        if (!notCalibrated) {
-
-            for (int i = 0; i < colorList.size() / increment; i++) {
-                index1 = i * increment;
-                int color1 = colorList.get(index1).getColor();
-                index2 = (i + 1) * increment;
-                int color2 = colorList.get(index2).getColor();
-                double distance = getDistance(color1, color2);
-                //Log.i("ColorInfo", String.valueOf(distance));
-                //Invalid if color is too distant from previous color in list
-                if (distance > 14 * increment) {
-                    //Only one color needs to be set as invalid
-                    if (colorList.get(index1).getErrorCode() == 0) {
-                        errorFound = true;
-
-                        if (i < (colorList.size() / increment) - 2) {
-                            int index3 = (i + 2) * increment;
-                            int color3 = colorList.get(index3).getColor();
-                            distance = getDistance(color2, color3);
-                            if (distance < 20) {
-                                colorList.get(index2).setErrorCode(Config.ERROR_OUT_OF_RANGE);
-                            } else {
-                                colorList.get(index1).setErrorCode(Config.ERROR_OUT_OF_RANGE);
-                            }
-                        } else {
-                            colorList.get(index2).setErrorCode(Config.ERROR_OUT_OF_RANGE);
-                        }
-                    }
-                }
-            }
-
-            if (!errorFound) {
-                for (int i = 0; i < colorList.size() / increment; i++) {
-                    index1 = i * increment;
-                    int color1 = colorList.get(index1).getColor();
-                    for (int j = 0; j < colorList.size() / increment; j++) {
-                        index2 = j * increment;
-                        int color2 = colorList.get(index2).getColor();
-                        if (index1 != index2) {
-                            double distance = getDistance(color1, color2);
-
-                            //Invalid if color gradient is in reverse
-                            if (i == 0 && previousDistance > distance) {
-                                colorList.get(previousIndex).setErrorCode(Config.ERROR_SWATCH_OUT_OF_PLACE);
-                            }
-
-                            previousIndex = index2;
-                            previousDistance = distance;
-                            //Log.i("ColorInfo", distance + "  =   "  + getColorRgbString(color1) + "  -  " + getColorRgbString(color2));
-
-                            //Invalid if the color is too close to any other color in the list
-                            if (distance < 2 * increment) {
-                                colorList.get(index1).setErrorCode(Config.ERROR_DUPLICATE_SWATCH);
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (int i = 0; i < colorList.size() - 1; i += increment) {
-                if (colorList.get(i).getQuality() < minQuality) {
-                    colorList.get(i).setErrorCode(Config.ERROR_LOW_QUALITY);
-                }
-            }
-        }
-    }
+//    public static void validateGradient(ArrayList<ColorInfo> colorList, int minQuality) {
+//
+//        int index1, index2;
+//        double previousDistance = 0;
+//        int previousIndex = 0;
+//        boolean errorFound = false;
+//        boolean notCalibrated = false;
+//
+//        for (int i = 1; i < colorList.size(); i++) {
+//            int color1 = colorList.get(i - 1).getColor();
+//            int color2 = colorList.get(i).getColor();
+//            double distance = getDistance(color1, color2);
+//            colorList.get(i).setDistance(distance);
+//        }
+//
+//        for (int i = 1; i < colorList.size() / increment; i++) {
+//            index1 = (i - 1) * increment;
+//            index2 = i * increment;
+//            int color1 = colorList.get(index1).getColor();
+//            int color2 = colorList.get(index2).getColor();
+//            double distance = getDistance(color1, color2);
+//            colorList.get(index2).setIncrementDistance(distance);
+//        }
+//
+//
+//        for (int i = 0; i < colorList.size(); i += increment) {
+//            int color1 = colorList.get(i).getColor();
+//            if (color1 == -1) {
+//                colorList.get(i).setErrorCode(Config.ERROR_NOT_YET_CALIBRATED);
+//                notCalibrated = true;
+//            }
+//        }
+//
+//        if (!notCalibrated) {
+//
+//            for (int i = 0; i < colorList.size(); i += increment) {
+//                if (colorList.get(i).getErrorCode() == Config.ERROR_NOT_YET_CALIBRATED) {
+//                    notCalibrated = true;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (!notCalibrated) {
+//
+//            for (int i = 0; i < colorList.size() / increment; i++) {
+//                index1 = i * increment;
+//                int color1 = colorList.get(index1).getColor();
+//                index2 = (i + 1) * increment;
+//                int color2 = colorList.get(index2).getColor();
+//                double distance = getDistance(color1, color2);
+//                //Log.i("ColorInfo", String.valueOf(distance));
+//                //Invalid if color is too distant from previous color in list
+//                if (distance > 14 * increment) {
+//                    //Only one color needs to be set as invalid
+//                    if (colorList.get(index1).getErrorCode() == 0) {
+//                        errorFound = true;
+//
+//                        if (i < (colorList.size() / increment) - 2) {
+//                            int index3 = (i + 2) * increment;
+//                            int color3 = colorList.get(index3).getColor();
+//                            distance = getDistance(color2, color3);
+//                            if (distance < 20) {
+//                                colorList.get(index2).setErrorCode(Config.ERROR_OUT_OF_RANGE);
+//                            } else {
+//                                colorList.get(index1).setErrorCode(Config.ERROR_OUT_OF_RANGE);
+//                            }
+//                        } else {
+//                            colorList.get(index2).setErrorCode(Config.ERROR_OUT_OF_RANGE);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if (!errorFound) {
+//                for (int i = 0; i < colorList.size() / increment; i++) {
+//                    index1 = i * increment;
+//                    int color1 = colorList.get(index1).getColor();
+//                    for (int j = 0; j < colorList.size() / increment; j++) {
+//                        index2 = j * increment;
+//                        int color2 = colorList.get(index2).getColor();
+//                        if (index1 != index2) {
+//                            double distance = getDistance(color1, color2);
+//
+//                            //Invalid if color gradient is in reverse
+//                            if (i == 0 && previousDistance > distance) {
+//                                colorList.get(previousIndex).setErrorCode(Config.ERROR_SWATCH_OUT_OF_PLACE);
+//                            }
+//
+//                            previousIndex = index2;
+//                            previousDistance = distance;
+//                            //Log.i("ColorInfo", distance + "  =   "  + getColorRgbString(color1) + "  -  " + getColorRgbString(color2));
+//
+//                            //Invalid if the color is too close to any other color in the list
+//                            if (distance < 2 * increment) {
+//                                colorList.get(index1).setErrorCode(Config.ERROR_DUPLICATE_SWATCH);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            for (int i = 0; i < colorList.size() - 1; i += increment) {
+//                if (colorList.get(i).getQuality() < minQuality) {
+//                    colorList.get(i).setErrorCode(Config.ERROR_LOW_QUALITY);
+//                }
+//            }
+//        }
+//    }
 
     public static Integer getColorFromRgb(String rgb) {
         String[] rgbArray = rgb.split("\\s+");

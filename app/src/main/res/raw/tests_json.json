@@ -11,9 +11,7 @@
                 "type": "0",
                 "code": "fluor",
                 "unit": "ppm",
-                "step": "0.5",
-                "rangeStart": "0",
-                "rangeEnd": "2",
+                "ranges": "0,0.5,1,1.5,2",
                 "dilutions": "0,50,75"
             },
             {
@@ -23,9 +21,7 @@
                 "type": "0",
                 "code": "phydr",
                 "unit": "pH",
-                "step": "1",
-                "rangeStart": "3",
-                "rangeEnd": "9"
+                "ranges": "3,4,5,6,7,8,9"
             },
             {
                 "name": [
@@ -38,38 +34,44 @@
                 "type": "0",
                 "code": "nitra",
                 "unit": "ppm",
-                "step": "1",
-                "rangeStart": "0",
-                "rangeEnd": "50"
+                "ranges": "0,10,20,30,40,50"
             },
-            {
-                "name": [
-                            {"en": "Turbidity"},
-                            {"kn": "ಕೆಸರು"},
-                            {"hi": "मैलापन"},
-                            {"ar": "عكر"},
-                        ],
-                "type": "0",
-                "code": "turbi",
-                "unit": "FNU",
-                "step": "1",
-                "rangeStart": "0",
-                "rangeEnd": "50"
-            },
-            {
-                "name": [
-                            {"en": "Arsenic"},
-                            {"kn": "ಆರ್ಸೆನಿಕ್"},
-                            {"hi": "संखिया"},
-                            {"ar": "زرنيخ"}
-                        ],
-                "type": "0",
-                "code": "arsen",
-                "unit": "ppm",
-                "step": "0.25",
-                "rangeStart": "0",
-                "rangeEnd": "8"
-            },
+         {
+            "name":[
+               {"en":"Nitrite"},
+            ],
+            "type": "0",
+            "code":"nitri",
+            "unit":"ppm",
+            "ranges": "0,0.5,1,1.5,2,2.5,3"
+         },
+         {
+            "name":[
+               {"en":"Total Iron"},
+            ],
+            "type": "0",
+            "code":"totfe",
+            "unit":"ppm",
+            "ranges": "0,0.2,0.4,0.6,0.8,1"
+         },
+         {
+            "name":[
+               { "en":"Total Chlorine" },
+            ],
+            "type": "0",
+            "code":"totcl",
+            "unit":"ppm",
+            "ranges": "0,0.5,1,1.5,2"
+         },
+         {
+            "name":[
+               { "en":"Free Chlorine" },
+            ],
+            "type": "0",
+            "code":"frecl",
+            "unit":"ppm",
+            "ranges": "0,0.5,1,2,4,10"
+         },
             {
                 "name": [
                             {"en": "Electrical Conductivity"},
@@ -80,9 +82,7 @@
                 "type": "1",
                 "code": "econd",
                 "unit": "μS/cm",
-                "step": "1",
-                "rangeStart": "0",
-                "rangeEnd": "10000"
+                "ranges": "0"
             }
         ]
     }

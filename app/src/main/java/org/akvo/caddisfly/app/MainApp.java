@@ -1,13 +1,13 @@
 /*
- * Copyright (C) TernUp Research Labs
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- * Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
  * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
  * either version 3 of the License or any later version.
  *
- * Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License included below for more details.
  *
@@ -19,14 +19,12 @@ package org.akvo.caddisfly.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Environment;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -39,13 +37,7 @@ import java.util.Hashtable;
 
 public class MainApp extends Application {
 
-    public final ArrayList<Double> rangeIntervals = new ArrayList<>();
-    public final ArrayList<ColorInfo> colorList = new ArrayList<>();
     public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
-    public final double rangeIncrementValue = 0.1;
-
-    public int rangeIncrementStep = 5;
-    public double rangeStart = 0;
     public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
 
     /**
@@ -83,9 +75,6 @@ public class MainApp extends Application {
     public void setSwatches(String testCode) {
         testCode = testCode.toUpperCase();
 
-        colorList.clear();
-        rangeIntervals.clear();
-
         try {
 
             //final String path = getExternalFilesDir(null) + Config.CONFIG_FILE_PATH;
@@ -109,72 +98,56 @@ public class MainApp extends Application {
             return;
         }
 
-        rangeStart = currentTestInfo.getRanges().get(0).getStart();
-        double rangeEnd = currentTestInfo.getRanges().get(0).getEnd();
-
-        rangeIncrementStep = currentTestInfo.getIncrement();
-        double increment;
-
-        increment = rangeIncrementStep * rangeIncrementValue;
-
         if (currentTestInfo.getType() == 0) {
-            for (double i = 0.0; i <= rangeEnd - rangeStart; i += increment) {
-                rangeIntervals.add(i);
-            }
-
-            for (double i = 0; i <= (rangeEnd - rangeStart) * 10; i++) {
-                colorList.add(new ColorInfo(Color.rgb(0, 0, 0), 100));
-            }
-
-            loadCalibratedSwatches(currentTestInfo.getCode());
+            loadCalibratedSwatches(currentTestInfo);
         }
     }
 
     /**
-     * Load any user calibrated swatches which overrides factory preset swatches
+     * Load any user calibrated swatches
      *
-     * @param testCode The type of test
+     * @param testInfo The type of test
      */
-    void loadCalibratedSwatches(String testCode) {
-        testCode = testCode.toUpperCase();
+    void loadCalibratedSwatches(TestInfo testInfo) {
+
         MainApp context = ((MainApp) this.getApplicationContext());
-        for (int i = 0; i < colorList.size(); i++) {
-            if (PreferencesUtils.contains(context, String.format("%s-%d", testCode, i))) {
-                int value = PreferencesUtils.getInt(context, String.format("%s-%d", testCode, i), -1);
 
-                int quality = Math.max(-1, PreferencesUtils.getInt(context,
-                        String.format("%s-a-%d", testCode, i), -1));
+        for (ResultRange range : testInfo.getRanges()) {
+            //if (PreferencesUtils.contains(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()))) {
 
-                int r = Color.red(value);
-                int g = Color.green(value);
-                int b = Color.blue(value);
+            int color = PreferencesUtils.getInt(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()), -1);
 
-                // eliminate white and black colors
-                if (r == 255 && g == 255 && b == 255) {
-                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testCode, i), -1);
-                    value = -1;
-                }
-                if (r == 0 && g == 0 && b == 0) {
-                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testCode, i), -1);
-                    value = -1;
-                }
+//                int r = Color.red(color);
+//                int g = Color.green(color);
+//                int b = Color.blue(color);
+//
+//                // eliminate white and black colors
+//                if (r == 255 && g == 255 && b == 255) {
+//                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testInfo.getCode(), range.getValue()), -1);
+//                    color = -1;
+//                }
+//                if (r == 0 && g == 0 && b == 0) {
+//                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testInfo.getCode(), range.getValue()), -1);
+//                    color = -1;
+//                }
+            range.setColor(color);
+            //}
+        }
 
-                ColorInfo colorInfo = new ColorInfo(value, quality);
-                if (value == -1) {
-                    colorInfo.setErrorCode(Config.ERROR_COLOR_IS_GRAY);
-                }
-                colorList.set(i, colorInfo);
-            } else {
-                ColorInfo colorInfo = new ColorInfo(-1, 0);
-                colorInfo.setErrorCode(Config.ERROR_NOT_YET_CALIBRATED);
-                colorList.set(i, colorInfo);
+        if (currentTestInfo.getRanges().size() > 0) {
+            int startValue = (int) currentTestInfo.getRange(0).getValue() * 10;
+            int endValue = (int) currentTestInfo.getRange(currentTestInfo.getRanges().size() - 1).getValue() * 10;
+            for (int i = startValue; i <= endValue; i += 1) {
+                String key = String.format("%s-%.2f", currentTestInfo.getCode(), (i / 10f));
+                ResultRange range = new ResultRange((double) i / 10,
+                        PreferencesUtils.getInt(context, key, -1));
+                currentTestInfo.getSwatches().add(range);
             }
         }
 
-        int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,
-                Config.MINIMUM_PHOTO_QUALITY);
+        //int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,  Config.MINIMUM_PHOTO_QUALITY);
 
-        ColorUtils.validateGradient(colorList, context.rangeIncrementStep, minQuality);
+        //ColorUtils.validateGradient(colorList, minQuality);
 
     }
 
@@ -205,17 +178,16 @@ public class MainApp extends Application {
      */
     public int getCalibrationErrorCount() {
         MainApp mainApp = this;
-        int minAccuracy = PreferencesUtils
-                .getInt(mainApp, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
+        //int minAccuracy = PreferencesUtils
+        //      .getInt(mainApp, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
 
         int count = 0;
-        for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
-            final int index = i * mainApp.rangeIncrementStep;
-            if (mainApp.colorList.get(index).getErrorCode() > 0 ||
-                    (mainApp.colorList.get(index).getQuality() > -1 && mainApp.colorList.get(index).getQuality() < minAccuracy)) {
-                count++;
-            }
-        }
+        //for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
+//            if (mainApp.colorList.get(index).getErrorCode() > 0 ||
+//                    (mainApp.colorList.get(index).getQuality() > -1 && mainApp.colorList.get(index).getQuality() < minAccuracy)) {
+//                count++;
+//            }
+        //}
         return count;
     }
 }

@@ -1,20 +1,20 @@
 /*
- * Copyright (C) TernUp Research Labs
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- * Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
  * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
  * either version 3 of the License or any later version.
  *
- * Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License included below for more details.
  *
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.ui.fragment;
+package org.akvo.caddisfly.ui;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class ResultFragment extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putDouble("result", result);
-        args.putBundle("message", msg.getData());
+        //args.putBundle("message", msg.getData());
         args.putString("unit", unit);
         fragment.setArguments(args);
         return fragment;

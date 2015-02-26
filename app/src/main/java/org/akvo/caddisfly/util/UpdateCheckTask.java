@@ -1,13 +1,13 @@
 /*
- * Copyright (C) TernUp Research Labs
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- * Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
  * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
  * either version 3 of the License or any later version.
  *
- * Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License included below for more details.
  *
@@ -73,7 +73,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (!updateAvailable) {
             if (checker.checkForUpdateByVersionCode(Config.UPDATE_CHECK_URL + "?" + mVersion)) {
-                PreferencesUtils.setLong(mContext, R.string.lastUpdateCheck,
+                PreferencesUtils.setLong(mContext, R.string.lastUpdateCheckKey,
                         Calendar.getInstance().getTimeInMillis());
                 if (checker.isUpdateAvailable()) {
                     PreferencesUtils.setBoolean(mContext, R.string.updateAvailable, true);

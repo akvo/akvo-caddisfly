@@ -1,72 +1,47 @@
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
 
-    <style name="FrameworkRoot.Theme" parent="android:Theme.Holo.Light.DarkActionBar" />
-
-    <style name="FrameworkRoot.ActionBar" parent="android:Widget.Holo.ActionBar" />
-
-    <style name="FrameworkRoot.ActionBar.TitleText" parent="android:TextAppearance.Holo.Widget.ActionBar.Title" />
-
-    <!-- Immediate parent theme to specify base values for custom attributes -->
-    <style name="Theme" parent="FrameworkRoot.Theme">
-        <!-- Only needed for pre-L -->
-    </style>
-
-    <style name="Caddisfly" parent="Theme">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="actionBarStyle">@style/Theme.MyApp.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 
-    <!-- Action bar -->
-    <style name="ActionBar.Base" parent="FrameworkRoot.ActionBar">
-        <item name="android:background">@drawable/actionbar_background</item>
-        <item name="android:icon">@drawable/ic_launcher</item>
-        <item name="android:displayOptions">showHome|showTitle</item>
-        <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
-    </style>
-
-    <style name="ActionBar" parent="ActionBar.Base" />
-
-    <style name="ActionBar.TitleText" parent="FrameworkRoot.ActionBar.TitleText">
-        <item name="android:textColor">#fff</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TranslucentActionBar" parent="ActionBar">
-        <item name="android:background">@color/translucent_actionbar_background</item>
+    <!--http://stackoverflow.com/questions/27960435/change-elevation-of-actionbar-by-theme-->
+    <style name="Theme.MyApp.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="button_text">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/button_text_color</item>
+        <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:textSize">@dimen/bigButtonTextSize</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:shadowColor">#777</item>
+        <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">6</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:alpha">0.7</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 
     <style name="FrameworkRoot.Widget.Spinner" parent="android:Widget.Holo.Light.Spinner" />
@@ -79,6 +54,5 @@
     </style>
 
     <style name="Widget.HeaderBar.Spinner" parent="Widget.HeaderBar.Spinner.Base" />
-
 
 </resources>

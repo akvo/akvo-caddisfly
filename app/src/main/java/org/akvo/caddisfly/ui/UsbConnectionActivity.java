@@ -14,33 +14,31 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.model;
+package org.akvo.caddisfly.ui;
 
-public class ResultRange {
-    private final double mValue;
-    private int mColor;
-    //private final double mMultiplier;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 
-    public ResultRange(double value, int color) {
-        mValue = value;
-        mColor = color;
-        //mMultiplier = 100 / (100 - dilution);
+import org.akvo.caddisfly.R;
+
+
+public class UsbConnectionActivity extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_usb_connection);
     }
 
-    public double getValue() {
-        return mValue;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                finish();
+            }
+        }, 6000);
+
     }
-
-    public int getColor() {
-        return mColor;
-    }
-
-    public void setColor(int value) {
-        mColor = value;
-    }
-
-    //public double getMultiplier() {
-    //return mMultiplier;
-    //}
-
 }

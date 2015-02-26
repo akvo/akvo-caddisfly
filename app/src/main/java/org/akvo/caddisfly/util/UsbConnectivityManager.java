@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
+ *
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.util;
 
 import android.app.PendingIntent;
@@ -11,12 +27,14 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
+import android.util.Log;
 
 import java.util.Arrays;
 
 public class UsbConnectivityManager {
 
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    private static final String TAG = "sensoring";
 
     private final UsbManager usbManager;
     private final PendingIntent permissionIntent;
@@ -33,33 +51,36 @@ public class UsbConnectivityManager {
             if (ACTION_USB_PERMISSION.equals(action)) {
                 synchronized (this) {
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        Log.w(TAG, "************* Permission Granted");
 
                         try {
                             if (usbDevice != null) {
+                                Log.w(TAG, "************* USB DEVICE " + usbDevice.getInterfaceCount());
 
                                 for (int i = 0; i < usbDevice.getInterfaceCount(); i++) {
-                                    if (usbDevice.getInterface(i).getInterfaceClass() == UsbConstants.USB_CLASS_CDC_DATA) {
-                                        usbInterface = usbDevice.getInterface(i);
+                                    //if (usbDevice.getInterface(i).getInterfaceClass() == UsbConstants.USB_CLASS_CDC_DATA) {
+                                    usbInterface = usbDevice.getInterface(i);
 
-                                        for (int j = 0; j < usbInterface.getEndpointCount(); j++) {
+                                    Log.w(TAG, "************* USB DEVICE " + usbInterface.getEndpointCount());
 
-                                            if (usbInterface.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_OUT &&
-                                                    usbInterface.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) {
-                                                output = usbInterface.getEndpoint(j);
-                                            }
+                                    for (int j = 0; j < usbInterface.getEndpointCount(); j++) {
 
-                                            if (usbInterface.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_IN &&
-                                                    usbInterface.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) {
-                                                input = usbInterface.getEndpoint(j);
-                                            }
+                                        if (usbInterface.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_OUT &&
+                                                usbInterface.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) {
+                                            output = usbInterface.getEndpoint(j);
+                                        }
+
+                                        if (usbInterface.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_IN &&
+                                                usbInterface.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) {
+                                            input = usbInterface.getEndpoint(j);
                                         }
                                     }
+                                    //}
                                 }
-
 
                                 connection = usbManager.openDevice(usbDevice);
                                 connection.claimInterface(usbInterface, true);
-                                connection.controlTransfer(0x21, 0x22, 0x1, 0, null, 0, 0);
+                                //connection.controlTransfer(0x21, 0x22, 0x1, 0, null, 0, 0);
                             }
                         } catch (Exception ignored) {
                         }
@@ -85,7 +106,7 @@ public class UsbConnectivityManager {
         //get first device
         usbDevice = usbManager.getDeviceList().values().iterator().next();
 
-        if (usbDevice.getVendorId() == 0x2341) {
+        if (usbDevice.getVendorId() == 0x0403) {
             //get permission
             usbManager.requestPermission(usbDevice, permissionIntent);
         }
@@ -104,6 +125,10 @@ public class UsbConnectivityManager {
             return "";
         }
 
+        if (output == null) {
+            return "";
+        }
+
         int sentBytes = 0;
         if (!data.equals("")) {
             synchronized (this) {
@@ -118,6 +143,10 @@ public class UsbConnectivityManager {
     public String read() {
         if (connection == null || usbDevice == null || !usbManager.hasPermission(usbDevice)) {
             connect();
+            return "";
+        }
+
+        if (input == null) {
             return "";
         }
         String readValue = "";

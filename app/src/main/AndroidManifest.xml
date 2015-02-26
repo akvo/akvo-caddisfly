@@ -1,6 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,13 +28,12 @@
     <application
         android:name=".app.MainApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@style/Caddisfly"
-        tools:ignore="UnusedAttribute">
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:launchMode="singleTop"
             android:screenOrientation="nosensor"
@@ -37,34 +50,58 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
         </activity>
         <activity
-            android:name=".ui.activity.ProgressActivity"
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="nosensor"></activity>
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor"></activity>
+        <activity
+            android:name=".ui.SensorActivity"
             android:label="@string/appName"
-            android:launchMode="singleTop"
-            android:screenOrientation="nosensor"
-            android:showOnLockScreen="true" />
+            android:screenOrientation="nosensor"></activity>
         <activity
-            android:name=".ui.activity.VideoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/caddisflyTraining"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".ui.activity.SensorActivity"
-            android:label="@string/title_activity_sensor"
-            android:launchMode="singleTop"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".ui.activity.UsbPermissionActivity"
-            android:label="@string/appName">
+            android:name=".ui.UsbConnectionActivity"
+            android:label="@string/appName"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
+        </activity>
+        <activity
+            android:name=".ui.CameraSensorActivity"
+            android:label="@string/appName"
+            android:screenOrientation="nosensor"></activity>
+        <activity
+            android:name=".ui.CalibrateListActivity"
+            android:label="@string/calibrate"
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor"></activity>
+        <activity
+            android:name=".ui.CalibrateDetailActivity"
+            android:label="@string/calibrate"
+            android:parentActivityName=".ui.CalibrateListActivity"
+            android:screenOrientation="nosensor">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.CalibrateListActivity" />
+        </activity>
+        <activity
+            android:name=".ui.SwatchActivity"
+            android:label="@string/swatches"
+            android:screenOrientation="nosensor">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.CalibrateListActivity" />
         </activity>
     </application>
 

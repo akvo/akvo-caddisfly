@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
+ *
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
@@ -24,7 +40,7 @@ public class SoundPoolPlayer {
 
     public void playShortResource(int piResource) {
         int iSoundId = mSounds.get(piResource);
-        this.mShortPlayer.play(iSoundId, 0.99f, 0.99f, 0, 0, 1);
+        this.mShortPlayer.play(iSoundId, 0.0f, 0.0f, 0, 0, 1);
     }
 
     public void release() {

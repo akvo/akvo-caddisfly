@@ -1,4 +1,22 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
+ *
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.util;
+
+import android.graphics.Color;
 
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
@@ -57,22 +75,30 @@ public class JsonUtils {
                         item.getInt("type"));
 
                 //Load the dilution percentages
-                String dilutions = "0";
-                if (item.has("dilutions")) {
-                    dilutions = item.getString("dilutions");
+//                String dilutions = "0";
+//                if (item.has("dilutions")) {
+//                    dilutions = item.getString("dilutions");
+//                }
+//
+//                String[] dilutionsArray = dilutions.split(",");
+//
+//                for (String dilution : dilutionsArray) {
+//                    ResultRange resultRange = new ResultRange(
+//                            Double.valueOf(dilution));
+//                    testInfo.addRange(resultRange);
+//                }
+
+                String ranges = "0";
+                if (item.has("ranges")) {
+                    ranges = item.getString("ranges");
                 }
 
-                String[] dilutionsArray = dilutions.split(",");
+                String[] rangesArray = ranges.split(",");
 
-                for (String dilution : dilutionsArray) {
-                    ResultRange resultRange = new ResultRange(
-                            item.getDouble("rangeStart"),
-                            item.getDouble("rangeEnd"),
-                            Double.valueOf(dilution));
+                for (String range : rangesArray) {
+                    ResultRange resultRange = new ResultRange(Double.valueOf(range), Color.TRANSPARENT);
                     testInfo.addRange(resultRange);
                 }
-
-                testInfo.setIncrement((int) (item.getDouble("step") * 10));
 
                 tests.add(testInfo);
             } catch (JSONException e) {
