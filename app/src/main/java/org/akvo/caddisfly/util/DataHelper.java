@@ -31,17 +31,17 @@ public class DataHelper {
     public static String getSwatchError(Context context, int errorCode) {
         switch (errorCode) {
             case Config.ERROR_NOT_YET_CALIBRATED:
-                return context.getString(R.string.notCalibrated);
+                return context.getString(R.string.errorNotCalibrated);
             case Config.ERROR_DUPLICATE_SWATCH:
-                return context.getString(R.string.duplicateSwatch);
+                return context.getString(R.string.errorDuplicateSwatch);
             case Config.ERROR_SWATCH_OUT_OF_PLACE:
-                return context.getString(R.string.outOfSequence);
+                return context.getString(R.string.errorOutOfSequence);
             case Config.ERROR_OUT_OF_RANGE:
-                return context.getString(R.string.outOfRange);
+                return context.getString(R.string.errorOutOfRange);
             case Config.ERROR_COLOR_IS_GRAY:
-                return context.getString(R.string.outOfRange);
+                return context.getString(R.string.errorOutOfRange);
             case Config.ERROR_LOW_QUALITY:
-                return context.getString(R.string.photoQualityError);
+                return context.getString(R.string.errorPhotoQuality);
             default:
                 return context.getString(R.string.error);
         }

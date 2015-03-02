@@ -32,7 +32,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.Config;
@@ -131,11 +130,11 @@ public class CameraFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
-            getDialog().setTitle(R.string.analysisInProgress);
-        } else {
-            getDialog().setTitle(R.string.clickAnalyze);
-        }
+        //if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
+        getDialog().setTitle(R.string.analysisInProgress);
+        //} else {
+        //  getDialog().setTitle(R.string.clickAnalyze);
+        //}
 
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
@@ -146,15 +145,15 @@ public class CameraFragment extends DialogFragment {
             return view;
         }
 
-        Button captureButton = (Button) view.findViewById(R.id.button_capture);
-        captureButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startTakingPictures();
-                    }
-                }
-        );
+//        Button captureButton = (Button) view.findViewById(R.id.button_capture);
+//        captureButton.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        startTakingPictures();
+//                    }
+//                }
+//        );
         return view;
     }
 
@@ -192,11 +191,7 @@ public class CameraFragment extends DialogFragment {
 
         Camera.Parameters parameters = mCamera.getParameters();
 
-        if (PreferencesUtils.getBoolean(getActivity(), R.string.cameraTorchKey, Config.CAMERA_TORCH_MODE_DEFAULT)) {
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-        } else {
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-        }
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 
         mCamera.setParameters(parameters);
 
@@ -228,7 +223,7 @@ public class CameraFragment extends DialogFragment {
     }
 
     public boolean hasTestCompleted() {
-        return samplingCount > 1;
+        return samplingCount > 5;
 //        int currentSamplingCount = PreferencesUtils
 //                .getInt(context, R.string.currentSamplingCountKey, 0);
 //        int samplingCount = PreferencesUtils
@@ -354,19 +349,9 @@ public class CameraFragment extends DialogFragment {
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.Parameters parameters = mCamera.getParameters();
 
-            if (PreferencesUtils.getBoolean(context, R.string.cameraCloudyKey, true)) {
-                parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
-            } else {
-                parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_DAYLIGHT);
-            }
-
+            parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
             parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
             parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
-
-            if (PreferencesUtils.getBoolean(context, R.string.cameraInfinityKey, false)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-            }
-
             parameters.setPictureFormat(ImageFormat.JPEG);
             parameters.setJpegQuality(100);
             parameters.setZoom(0);

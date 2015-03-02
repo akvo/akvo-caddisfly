@@ -22,13 +22,7 @@
 
     <string name="swatchIndex">swatchIndex</string>
 
-    <string name="folderName">currentFolderName</string>
-    <string name="runningTestFolder">runningTestFolder</string>
-    <string name="currentTestId">currentTestId</string>
-    <string name="currentLocationId">currentLocationId</string>
-    <string name="currentTestTypeId">currentTestTypeId</string>
     <string name="autoAnalyzeKey">autoAnalyzeKey</string>
-    <string name="minPhotoQualityKey">minPhotoQuality</string>
     <string name="samplingCountKey">samplingCount</string>
     <string name="currentSamplingCountKey">currentSamplingCount</string>
     <string name="samplingIndexKey">sampling_result_%d</string>
@@ -41,11 +35,4 @@
 
     // width and height of sampled image
     <string name="photoSampleDimensionKey">photoSampleDimension</string>
-    <string name="cameraSoundKey">cameraSound</string>
-    <string name="cameraTorchKey">cameraTorch</string>
-    <string name="cameraCloudyKey">cameraCloudy</string>
-    <string name="cameraInfinityKey">cameraInfinity</string>
-    <string name="cropToSquareKey">cropToSquare</string>
-    <string name="revertVersionKey">revertVersion</string>
-    <string name="showStartPageKey">showStartPage</string>
 </resources>

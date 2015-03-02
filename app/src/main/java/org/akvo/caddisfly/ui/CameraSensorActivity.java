@@ -120,7 +120,7 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        showError(getString(R.string.testInterrupted), null);
+                        showError(getString(R.string.errorTestInterrupted), null);
                     }
                 }
             }
@@ -137,7 +137,6 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
         });
         mShakeDetector.minShakeAcceleration = 5;
         mShakeDetector.maxShakeDuration = 2000;
-
     }
 
     private void InitializeTest() {
@@ -166,7 +165,6 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
 
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                 SensorManager.SENSOR_DELAY_UI);
-
     }
 
     /**
@@ -224,9 +222,21 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
         MainApp mainApp = (MainApp) getApplicationContext();
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
-        mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-        mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-        InitializeTest();
+
+        if (mainApp.currentTestInfo.getCode().isEmpty()) {
+            AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    }, null);
+
+        } else {
+            mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+            mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+            InitializeTest();
+        }
     }
 
     void startTest() {
@@ -272,22 +282,20 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
 
                             byte[] croppedData;
 
-                            if (PreferencesUtils.getBoolean(getBaseContext(), R.string.cropToSquareKey, false)) {
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                                croppedData = bos.toByteArray();
-                            } else {
-                                bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
-                                bitmap.setHasAlpha(true);
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                                croppedData = bos.toByteArray();
-                            }
+//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//                            croppedData = bos.toByteArray();
+
+                            bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
+                            bitmap.setHasAlpha(true);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                            croppedData = bos.toByteArray();
 
                             ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
 
                             Bundle bundle = ColorUtils.getPpmValue(croppedData, ranges, sampleLength);
 
                             final double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
-                            String message = getString(R.string.testFailedMessage);
+                            String message = getString(R.string.errorTestFailed);
 
                             boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                             if (mCameraFragment.hasTestCompleted()) {
@@ -362,12 +370,7 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
                     delayHandler.postDelayed(delayRunnable, Config.INITIAL_DELAY);
                 }
             }
-        }
-
-        ).
-
-                execute();
-
+        }).execute();
     }
 
     @Override
@@ -396,5 +399,4 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
             finish();
         }
     }
-
 }

@@ -24,7 +24,7 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:orientation="vertical"
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
@@ -64,7 +65,7 @@
                 android:layout_marginTop="-40dp"
                 android:textColor="#333"
                 android:textSize="20sp"
-                tools:text="@string/ppm" />
+                tools:text="ppm" />
 
         </LinearLayout>
 
@@ -77,6 +78,8 @@
             android:layout_marginRight="3dp"
             android:layout_marginStart="3dp"
             android:background="@drawable/green_button"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:text="@string/backToSurvey" />
     </LinearLayout>
 

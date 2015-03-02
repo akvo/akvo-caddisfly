@@ -36,12 +36,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.software.shell.fab.ActionButton;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.DateUtils;
+import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
@@ -53,6 +57,8 @@ public class MainActivity extends ActionBarActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
+    TextView mWatchTextView;
+    TextView mDemoTextView;
     private boolean mShouldFinish = false;
 
     private static Camera getCameraInstance() {
@@ -72,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (!checkCameraFlash()) {
             AlertUtils.showError(this, R.string.error,
-                    getString(R.string.cameraFlashRequired),
+                    getString(R.string.errorCameraFlashRequired),
                     null,
                     R.string.ok,
                     new DialogInterface.OnClickListener() {
@@ -103,6 +109,17 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        final Context context = this;
+        final ActionButton trainingLinkButton = (ActionButton) findViewById(R.id.trainingVideoLink);
+        trainingLinkButton.playShowAnimation();
+        trainingLinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkUtils.openWebBrowser(context, Config.TRAINING_VIDEO_LINK);
+            }
+        });
+
         Button startSurveyButton = (Button) findViewById(R.id.surveyButton);
         startSurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +130,9 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+
+        mWatchTextView = (TextView) findViewById(R.id.watchTextView);
+        mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
     }
 
@@ -127,14 +147,21 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         loadSavedPreferences();
+
+        mWatchTextView.measure(0, 0);
+        mDemoTextView.measure(0, 0);
+        float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
+        mDemoTextView.setWidth((int) width);
+
     }
 
     public void startSurvey() {
         Intent LaunchIntent = getPackageManager()
                 .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
         if (LaunchIntent == null) {
-            AlertUtils.showMessage(this, R.string.error, R.string.installAkvoFlow);
+            AlertUtils.showMessage(this, R.string.error, R.string.errorAkvoFlowRequired);
         } else {
             startActivity(LaunchIntent);
             mShouldFinish = true;
@@ -167,7 +194,16 @@ public class MainActivity extends ActionBarActivity {
                 conf.setLayoutDirection(myLocale);
             }
             res.updateConfiguration(conf, dm);
-            this.recreate();
+            final Activity context = this;
+            context.recreate();
+
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    context.recreate();
+//                }
+//            }, 0);
         }
 
     }
@@ -186,9 +222,7 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivityForResult(intent, REQUEST_LANGUAGE);
             return true;
@@ -229,7 +263,7 @@ public class MainActivity extends ActionBarActivity {
                     }
 
                     AlertUtils.showAlert(this, errorTitle,
-                            R.string.testNotAvailable,
+                            R.string.errorTestNotAvailable,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(
@@ -250,15 +284,40 @@ public class MainActivity extends ActionBarActivity {
         Context context = this;
         MainApp mainApp = (MainApp) context.getApplicationContext();
         if (mainApp.currentTestInfo.getType() == 0) {
+
+            if (mainApp.getCalibrationErrorCount() > 0) {
+                Configuration conf = getResources().getConfiguration();
+
+                AlertUtils.showAlert(context,
+                        mainApp.currentTestInfo.getName(conf.locale.getLanguage()),
+                        R.string.errorCalibrationIncomplete,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface,
+                                    int i) {
+                                final Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                                startActivity(intent);
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface,
+                                    int i) {
+                                finish();
+                            }
+                        }
+                );
+                return;
+            }
+
             final Intent intent = new Intent(context, CameraSensorActivity.class);
             //intent.setClass(context, CameraSensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
-            //finish();
         } else if (mainApp.currentTestInfo.getType() == 1) {
             final Intent intent = new Intent(context, SensorActivity.class);
             //intent.setClass(context, SensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
-            //finish();
         }
 
     }

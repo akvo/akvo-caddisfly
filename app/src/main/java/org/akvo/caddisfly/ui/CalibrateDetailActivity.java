@@ -66,6 +66,8 @@ public class CalibrateDetailActivity extends ActionBarActivity {
                     .add(R.id.calibrate_detail_container, fragment)
                     .commit();
         }
+
+        setTitle(R.string.calibrate);
     }
 
     @Override

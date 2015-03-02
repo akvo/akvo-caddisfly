@@ -18,28 +18,47 @@ package org.akvo.caddisfly.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.ShapeDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.json.JSONException;
@@ -89,16 +108,33 @@ public class CalibrateListActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_swatches) {
-
-            final Intent intent = new Intent(this, SwatchActivity.class);
-            startActivity(intent);
-            return true;
+        switch (id) {
+            case R.id.action_swatches:
+                final Intent intent = new Intent(this, SwatchActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_load:
+                Handler.Callback callback = new Handler.Callback() {
+                    public boolean handleMessage(Message msg) {
+                        CalibrateListAdapter adapter = (CalibrateListAdapter) ((CalibrateListFragment)
+                                getSupportFragmentManager()
+                                        .findFragmentById(R.id.calibrate_list))
+                                .getListAdapter();
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        return true;
+                    }
+                };
+                loadCalibration(callback);
+                return true;
+            case R.id.menu_save:
+                saveCalibration();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,9 +155,18 @@ public class CalibrateListActivity extends ActionBarActivity
                     .setActivateOnItemClick(true);
         }
 
-        // TODO: If exposing deep links into your app, handle intents here.
-        setupActionBarSpinner();
+        try {
+            setupActionBarSpinner();
+        } catch (Exception ex) {
+            AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    }, null);
 
+        }
     }
 
     /**
@@ -236,32 +281,320 @@ public class CalibrateListActivity extends ActionBarActivity
     }
 
     private void updateActionBarNavigation() {
-//        if (index == Config.CALIBRATE_SCREEN_INDEX) {
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayShowCustomEnabled(true);
         ab.setDisplayShowTitleEnabled(false);
         ab.setDisplayUseLogoEnabled(false);
-//        } else {
-//            ActionBar ab = getActionBar();
-//            assert ab != null;
-//            ab.setDisplayShowCustomEnabled(false);
-//            ab.setDisplayShowTitleEnabled(true);
-//            ab.setDisplayUseLogoEnabled(true);
-//        }
-
-//        switch (index) {
-//            case Config.SETTINGS_SCREEN_INDEX:
-//                setTitle(R.string.settings);
-//                break;
-//            case Config.HOME_SCREEN_INDEX:
-//                setTitle(R.string.appName);
-//                break;
-//            case Config.SWATCH_SCREEN_INDEX:
-//                setTitle(R.string.swatches);
-//                break;
-//        }
     }
+
+    void closeKeyboard(EditText input) {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+    }
+
+    public void saveCalibration() {
+        final Context context = this;
+        final MainApp mainApp = (MainApp) this.getApplicationContext();
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
+
+        alertDialogBuilder.setView(input);
+        alertDialogBuilder.setCancelable(false);
+
+        alertDialogBuilder.setTitle(R.string.saveCalibration);
+        alertDialogBuilder.setMessage(R.string.saveProvideFileName);
+
+
+        alertDialogBuilder.setPositiveButton(R.string.ok, null);
+        alertDialogBuilder
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        closeKeyboard(input);
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create(); //create the box
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        if (!input.getText().toString().trim().isEmpty()) {
+                            final StringBuilder exportList = new StringBuilder();
+
+                            for (ResultRange range : mainApp.currentTestInfo.getRanges()) {
+                                exportList.append(range.getValue() + "=" + ColorUtils.getColorRgbString(range.getColor()));
+                                exportList.append('\n');
+                            }
+
+                            File external = Environment.getExternalStorageDirectory();
+                            final String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
+
+                            File file = new File(path + input.getText());
+                            if (file.exists()) {
+                                AlertUtils.askQuestion(context, R.string.saveConfirmOverwriteFile,
+                                        R.string.saveNameAlreadyExists, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                FileUtils.saveToFile(path, input.getText().toString(),
+                                                        exportList.toString());
+                                            }
+                                        }
+                                );
+                            } else {
+                                FileUtils.saveToFile(path, input.getText().toString(),
+                                        exportList.toString());
+                            }
+
+                            closeKeyboard(input);
+                            alertDialog.dismiss();
+                        } else {
+                            input.setError(getString(R.string.saveInvalidFileName));
+                        }
+                    }
+                });
+            }
+        });
+
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
+//                        == EditorInfo.IME_ACTION_DONE)) {
+//
+//                }
+                return false;
+            }
+        });
+
+        alertDialog.show();
+        input.requestFocus();
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+
+    public void loadCalibration(final Handler.Callback callback) {
+        final Context context = this;
+        final MainApp mainApp = (MainApp) this.getApplicationContext();
+
+        try {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+            builderSingle.setIcon(R.mipmap.ic_launcher);
+            builderSingle.setTitle(R.string.loadCalibration);
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
+                    android.R.layout.select_dialog_singlechoice);
+
+            File external = Environment.getExternalStorageDirectory();
+            final String folderName = Config.CALIBRATE_FOLDER_NAME;
+            String path = external.getPath() + folderName;
+            File folder = new File(path);
+            if (folder.exists()) {
+                final File[] listFiles = folder.listFiles();
+                for (File listFile : listFiles) {
+                    arrayAdapter.add(listFile.getName());
+                }
+
+                builderSingle.setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }
+                );
+
+                builderSingle.setAdapter(arrayAdapter,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String fileName = listFiles[which].getName();
+                                final ArrayList<ResultRange> swatchList = new ArrayList<>();
+
+                                final ArrayList<String> rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
+                                if (rgbList != null) {
+                                    for (String rgb : rgbList) {
+                                        String[] values = rgb.split("=");
+                                        ResultRange range = new ResultRange(Double.valueOf(values[0]), ColorUtils.getColorFromRgb(values[1]));
+                                        swatchList.add(range);
+                                    }
+                                    (new AsyncTask<Void, Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground(Void... params) {
+                                            mainApp.saveCalibratedSwatches(swatchList);
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void result) {
+                                            super.onPostExecute(result);
+                                            callback.handleMessage(null);
+                                        }
+                                    }).execute();
+                                }
+                            }
+                        }
+                );
+
+                final AlertDialog alert = builderSingle.create();
+                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        final ListView listView = alert.getListView();
+                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                final int position = i;
+
+                                AlertUtils.askQuestion(context, R.string.delete, R.string.deleteConfirm, new DialogInterface.OnClickListener() {
+                                    @SuppressWarnings("unchecked")
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String fileName = listFiles[position].getName();
+                                        FileUtils.deleteFile(folderName, fileName);
+                                        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                        listAdapter.remove(listAdapter.getItem(position));
+                                    }
+                                });
+                                return true;
+                            }
+                        });
+
+                    }
+                });
+                alert.show();
+            } else {
+                AlertUtils.showMessage(context, R.string.notFound, R.string.loadFilesNotAvailable);
+            }
+        } catch (ActivityNotFoundException ignored) {
+        }
+
+        callback.handleMessage(null);
+
+    }
+
+//        public void loadCalibration(final Handler.Callback callback) {
+//        final Context context = this;
+//        final MainApp mainApp = (MainApp) this.getApplicationContext();
+//
+//        try {
+//            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+//            builderSingle.setIcon(R.mipmap.ic_launcher);
+//            builderSingle.setTitle(R.string.loadCalibration);
+//
+//            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
+//                    android.R.layout.select_dialog_singlechoice);
+//
+//            File external = Environment.getExternalStorageDirectory();
+//            final String folderName = Config.CALIBRATE_FOLDER_NAME;
+//            String path = external.getPath() + folderName;
+//            File folder = new File(path);
+//            if (folder.exists()) {
+//                final File[] listFiles = folder.listFiles();
+//                for (File listFile : listFiles) {
+//                    arrayAdapter.add(listFile.getName());
+//                }
+//
+//                builderSingle.setNegativeButton(R.string.cancel,
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        }
+//                );
+//
+//                builderSingle.setAdapter(arrayAdapter,
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                String fileName = listFiles[which].getName();
+//                                final ArrayList<Integer> swatchList = new ArrayList<>();
+//
+//                                final ArrayList<String> rgbList = FileUtils.loadFromFile(fileName);
+//                                if (rgbList != null) {
+//
+//                                    for (String rgb : rgbList) {
+//                                        swatchList.add(ColorUtils.getColorFromRgb(rgb));
+//                                    }
+//                                    (new AsyncTask<Void, Void, Void>() {
+//                                        @Override
+//                                        protected Void doInBackground(Void... params) {
+//                                            mainApp.saveCalibratedSwatches(mainApp.currentTestInfo.getCode(), swatchList);
+//
+//                                            mainApp.setSwatches(mainApp.currentTestInfo.getCode());
+//
+//                                            SharedPreferences sharedPreferences = PreferenceManager
+//                                                    .getDefaultSharedPreferences(context);
+//                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//                                            for (int i = 0; i < mainApp.currentTestInfo.getRanges().size(); i++) {
+//                                                ColorUtils.autoGenerateColors(mainApp.currentTestInfo, editor);
+//                                            }
+//                                            editor.apply();
+//                                            return null;
+//                                        }
+//
+//                                        @Override
+//                                        protected void onPostExecute(Void result) {
+//                                            super.onPostExecute(result);
+//                                            callback.handleMessage(null);
+//                                        }
+//                                    }).execute();
+//                                }
+//                            }
+//                        }
+//                );
+//
+//                final AlertDialog alert = builderSingle.create();
+//                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+//                    @Override
+//                    public void onShow(DialogInterface dialogInterface) {
+//                        final ListView listView = alert.getListView();
+//                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                            @Override
+//                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                                final int position = i;
+//
+//                                AlertUtils.askQuestion(context, R.string.delete, R.string.deleteConfirm, new DialogInterface.OnClickListener() {
+//                                    @SuppressWarnings("unchecked")
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                        String fileName = listFiles[position].getName();
+//                                        FileUtils.deleteFile(folderName, fileName);
+//                                        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+//                                        listAdapter.remove(listAdapter.getItem(position));
+//                                    }
+//                                });
+//                                return true;
+//                            }
+//                        });
+//
+//                    }
+//                });
+//                alert.show();
+//            } else {
+//                AlertUtils.showMessage(context, R.string.notFound, R.string.loadFilesNotAvailable);
+//            }
+//        } catch (ActivityNotFoundException ignored) {
+//        }
+//
+//        callback.handleMessage(null);
+//    }
 
     /**
      * Adapter that provides views for our top-level Action Bar spinner.
@@ -364,4 +697,5 @@ public class CalibrateListActivity extends ActionBarActivity
             this.title = title;
         }
     }
+
 }

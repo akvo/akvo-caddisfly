@@ -46,6 +46,8 @@ public class Config {
     // Link to company web site for about information
     public static final String ORG_WEBSITE = "http://akvo.org";
 
+    public static final String TRAINING_VIDEO_LINK = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
+
     public static final String CADDISFLY_PACKAGE_NAME = "com.ternup.caddisfly";
 
     public static final String CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
@@ -68,7 +70,7 @@ public class Config {
     // folder for calibration photos
     public static final String CALIBRATE_FOLDER = "calibrate";
 
-    public static final int INITIAL_DELAY = 2500;
+    public static final int INITIAL_DELAY = 6000;
 
     public static final int MINIMUM_PHOTO_QUALITY = 50;
 

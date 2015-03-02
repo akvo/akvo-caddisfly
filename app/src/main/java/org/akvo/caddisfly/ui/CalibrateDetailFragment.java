@@ -20,11 +20,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,7 +37,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 
@@ -102,7 +99,7 @@ public class CalibrateDetailFragment extends Fragment {
             public void onClick(final View v) {
 
                 AlertUtils.askQuestion(getActivity(), R.string.calibrate,
-                        R.string.calibrate_info,
+                        R.string.startTestConfirm,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(
@@ -156,20 +153,20 @@ public class CalibrateDetailFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
         if (requestCode == 200 && data != null) {
             Bundle bundle = data.getExtras();
 
             if (resultCode == Activity.RESULT_OK) {
-                //sound.playShortResource(R.raw.done);
-                storeCalibratedData(mRange,
-                        bundle.getInt(Config.RESULT_COLOR_KEY, -1),
-                        bundle.getInt(Config.QUALITY_KEY, -1));
+                mainApp.storeCalibratedData(mRange,
+                        bundle.getInt(Config.RESULT_COLOR_KEY, -1));
                 displayInfo();
                 getActivity().setResult(Activity.RESULT_OK);
                 getActivity().finish();
             } else {
                 if (bundle != null) {
-                    storeCalibratedData(mRange, -1, -1);
+                    mainApp.storeCalibratedData(mRange, -1);
                     displayInfo();
                 }
             }
@@ -207,25 +204,6 @@ public class CalibrateDetailFragment extends Fragment {
         }
 
         mValueTextView.setText(mainApp.doubleFormat.format(mainApp.currentTestInfo.getRanges().get(position).getValue()));
-    }
-
-    protected void storeCalibratedData(ResultRange range, final int resultColor,
-                                       final int accuracy) {
-        Context context = getActivity().getApplicationContext();
-        final MainApp mainApp = ((MainApp) context.getApplicationContext());
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String colorKey = String.format("%s-%.2f", mainApp.currentTestInfo.getCode(), range.getValue());
-
-        if (resultColor == -1) {
-            editor.remove(colorKey);
-        } else {
-            range.setColor(resultColor);
-            editor.putInt(colorKey, resultColor);
-            ColorUtils.autoGenerateColors(mainApp.currentTestInfo, editor);
-        }
-        editor.apply();
     }
 
     private void releaseResources() {

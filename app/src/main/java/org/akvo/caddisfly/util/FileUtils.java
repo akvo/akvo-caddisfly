@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.model.TestInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -195,11 +196,12 @@ public class FileUtils {
         return "";
     }
 
-    public static ArrayList<String> loadFromFile(String name) {
+    public static ArrayList<String> loadFromFile(TestInfo testInfo, String name) {
         try {
             File external = Environment.getExternalStorageDirectory();
             String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
-            ArrayList<String> arrayList = null;
+            ArrayList<String> arrayList = new ArrayList<>();
+            boolean oldVersion = false;
 
             File folder = new File(path);
             if (folder.exists()) {
@@ -209,13 +211,30 @@ public class FileUtils {
                 FileReader filereader = new FileReader(file);
 
                 BufferedReader in = new BufferedReader(filereader);
-                String data = in.readLine();
-                if (data != null) {
-                    arrayList = new ArrayList<>(Arrays.asList(data.substring(1, data.length() - 1).split(",\\s*")));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    if (line.length() > 20) {
+                        oldVersion = true;
+                        arrayList = new ArrayList<>(Arrays.asList(line.substring(1, line.length() - 1).split(",\\s*")));
+                        break;
+                    } else {
+                        arrayList.add(line);
+                    }
                 }
-
                 in.close();
                 filereader.close();
+
+                if (oldVersion) {
+                    ArrayList<String> newArrayList = new ArrayList<>();
+                    int start = (int) (testInfo.getRange(0).getValue() / 0.1);
+                    int end = arrayList.size() + start;
+                    int index = 0;
+                    for (int i = start; i < end; i++) {
+                        newArrayList.add(String.format("%.2f=%s", i * 0.1, arrayList.get(index++)));
+                    }
+                    return newArrayList;
+                }
+
             }
             return arrayList;
         } catch (Exception e) {

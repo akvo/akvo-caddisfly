@@ -134,9 +134,9 @@ class UpdateChecker {
      * @since API 1
      */
     @SuppressWarnings("SameParameterValue")
-    public void downloadAndInstall(String apkUrl, boolean previousVersion) {
+    public void downloadAndInstall(String apkUrl) {
         if (NetworkUtils.isOnline(mContext)) {
-            DownloadManager downloadManager = new DownloadManager(mContext, previousVersion);
+            DownloadManager downloadManager = new DownloadManager(mContext);
             downloadManager.execute(apkUrl);
         } else {
             makeToastFromString("Update failed. No internet connection available").show();

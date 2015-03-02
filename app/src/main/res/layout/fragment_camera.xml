@@ -33,19 +33,19 @@
         android:alpha="0.2"
         android:gravity="center" />
 
-    <RelativeLayout
-        android:id="@+id/innerRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/innerRelativeLayout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true">-->
 
-        <Button
-            android:id="@+id/button_capture"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dp"
-            android:text="@string/analyze"
-            android:textColor="#fff" />
-    </RelativeLayout>
+    <!--<Button-->
+    <!--android:id="@+id/button_capture"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:text="@string/analyze"-->
+    <!--android:textColor="#fff" />-->
+    <!--</RelativeLayout>-->
 </RelativeLayout>

@@ -53,7 +53,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     private boolean installAfterDownload = true;
 
-    private boolean mPreviousVersion = false;
+    //private boolean mPreviousVersion = false;
 
     private boolean downloaded = false;
 
@@ -64,9 +64,9 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      * @param context Activity context
      * @since API 2
      */
-    public DownloadManager(Context context, boolean previousVersion) {
+    public DownloadManager(Context context) {
         mContext = context;
-        mPreviousVersion = previousVersion;
+        //mPreviousVersion = previousVersion;
         this.installAfterDownload = true;
     }
 
@@ -172,11 +172,11 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        if (mPreviousVersion) {
-            progressDialog.setMessage(mContext.getString(R.string.revertingVersion));
-        } else {
-            progressDialog.setMessage(mContext.getString(R.string.gettingUpdate));
-        }
+        //if (mPreviousVersion) {
+        //  progressDialog.setMessage(mContext.getString(R.string.revertingVersion));
+        //} else {
+        progressDialog.setMessage(mContext.getString(R.string.updateFetching));
+        //}
         progressDialog.setCancelable(false);
         progressDialog.show();
     }

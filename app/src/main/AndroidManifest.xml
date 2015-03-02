@@ -15,6 +15,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -31,23 +32,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/appName"
-            android:launchMode="singleTop"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
@@ -55,16 +53,16 @@
             android:name=".ui.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".ui.SettingsActivity"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.SensorActivity"
             android:label="@string/appName"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.UsbConnectionActivity"
             android:label="@string/appName"
@@ -72,7 +70,6 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
-
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
@@ -80,12 +77,12 @@
         <activity
             android:name=".ui.CameraSensorActivity"
             android:label="@string/appName"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateListActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.SettingsActivity"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateDetailActivity"
             android:label="@string/calibrate"
@@ -104,5 +101,4 @@
                 android:value=".ui.CalibrateListActivity" />
         </activity>
     </application>
-
 </manifest>

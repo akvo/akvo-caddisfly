@@ -1,0 +1,96 @@
+<!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+<resources>
+
+    <string name="appName">"Akvo Caddisfly"</string>
+    <string name="waterQualityTest">"Test de qualité de l'eau"</string>
+    <string name="waterQualitySystem">"Système de qualité de l'eau"</string>
+    <string name="settings">"Paramètres"</string>
+    <string name="ok">"D'accord"</string>
+    <string name="cancel">"Annuler"</string>
+    <string name="back">"Arrière"</string>
+    <string name="start">"Début"</string>
+    <string name="about">"Sur"</string>
+    <string name="swatches">"Nuancier"</string>
+    <string name="delete">"Effacer"</string>
+    <string name="reset">"Remettre"</string>
+    <string name="language">"Langue"</string>
+    <string name="load">"Charge"</string>
+    <string name="remaining">"restant"</string>
+    <string name="result">"Résultat"</string>
+    <string name="starting">"À partir …"</string>
+    <string name="error">"Erreur"</string>
+    <string name="retry">"Refaire"</string>
+    <string name="save">"Enregistrer"</string>
+    <string name="calibrate">"Étalonner"</string>
+    <string name="notFound">"Pas Trouvé"</string>
+    <string name="watchVideo">Regarder </string>
+    <string name="demonstration">Démo</string>
+    <string name="analyzingWait">"Analyse …"</string>
+    <string name="startSurvey">"Enquête sur Démarrer"</string>
+    <string name="backToSurvey">"Retour à l'aperçu"</string>
+    <string name="acceptResult">"Accepter Résultat"</string>
+    <string name="dataConnection">"Connexion de données"</string>
+    <string name="enableInternet">"Connexion Internet requise"</string>
+    <string name="analysisInProgress">"Analyse en cours"</string>
+    <string name="waitTillCameraSound">"Puis attendre son d'alerte en environ une minute"</string>
+    <string name="startTestConfirm">"Assurer cartouche est fixée correctement et appuyez sur OK"</string>
+    <string name="testInProgress">"Test en cours"</string>
+    <string name="placeDeviceInStand">"Placez la face du téléphone vers le bas sur une surface plane pour continuer"</string>
+    <string name="highLevelsFound">"Haut niveau de contamination a été détectée"</string>
+    <string name="placeHighRangeCartridge">Mélanger %1$.0f%% d\'eau de l\'échantillon et %2$.0f%% d\'eau déminéralisée. Testez ce mélange maintenant.</string>
+    <string name="watchTrainingVideo">"Regarder Vidéo de formation"</string>
+    <string name="calibrateAttachStandardCartridge">"Fixez une cartouche de solution standard pour cette valeur et appuyez sur Calibrer"</string>
+    <string name="calibrateSummary">"Utilisez les mélanges de couleurs standard fournis dans le kit de calibrer ce téléphone"</string>
+    <string name="displaysVersionNumber">"Affiche le numéro de version"</string>
+    <string name="deleteConfirm">"Les éléments sélectionnés seront supprimés"</string>
+
+    <string name="updateSummary">"Vérifier si une mise à jour est disponible pour Akvo Caddisfly"</string>
+    <string name="updateApp">"Mise à jour Akvo Caddisfly"</string>
+    <string name="updateCheck">"Vérifier la mise à jour"</string>
+    <string name="updateCheckingFor">"Vérification des mises à jour …"</string>
+    <string name="updatedAlready">"Vous avez déjà la dernière version de Akvo Caddisfly installé"</string>
+    <string name="updateRequest">"Une version mise à jour est disponible, Voulez-vous mettre à jour maintenant?"</string>
+    <string name="updateFetching">"Obtenir la mise à jour Akvo Caddisfly …"</string>
+
+    <string name="loadCalibration">"Calibration de charge"</string>
+    <string name="loadFilesNotAvailable">"Il n'y a pas étalonnages précédemment enregistrés"</string>
+    <string name="saveCalibration">"Enregistrer calibration"</string>
+    <string name="saveProvideFileName">"Donnez un nom descriptif pour cet étalonnage"</string>
+    <string name="saveConfirmOverwriteFile">"Écraser le fichier"</string>
+    <string name="saveNameAlreadyExists">"Nom existe déjà. Ecraser le fichier?"</string>
+    <string name="saveInvalidFileName">"Nom invalide"</string>
+    <string name="saveOriginalPhoto">"Sauvegarder Photo originale"</string>
+    <string name="saveOriginalPhotoConfirm">"Attention: Enregistrement de photos originales utilisera beaucoup d'espace sur votre téléphone."</string>
+
+    <string name="deviceConnectSensor">"Connectez EC capteur Akvo"</string>
+    <string name="deviceConnecting">"Branchement à un périphérique"</string>
+    <string name="deviceConnected">"Périphérique connecté avec succès"</string>
+
+    <string name="errorTestFailed">"Couleur de la solution hors de portée. Vérifiez l'emplacement de la cartouche."</string>
+    <string name="errorOutOfRange">"Couleur hors de portée"</string>
+    <string name="errorCalibrationIncomplete">"L'étalonnage est incomplète. Voulez-vous pour calibrer maintenant?"</string>
+    <string name="errorPhotoQuality">"Qualité photo trop faible"</string>
+    <string name="errorNotCalibrated">"Non Calibré"</string>
+    <string name="errorAkvoFlowRequired">"Se il vous plaît installer Akvo Flow app"</string>
+    <string name="errorOutOfSequence">"Hors séquence"</string>
+    <string name="errorDuplicateSwatch">"Dupliquer ou couleur similaire"</string>
+    <string name="errorTestInterrupted">"Le test a été interrompu. Ne déplacez pas le téléphone pendant le test."</string>
+    <string name="errorCameraFlashRequired">"Ce téléphone n'a pas de flash d'appareil photo qui est requis par Caddisfly"</string>
+    <string name="errorTestNotAvailable">"Ce test ne est pas disponible"</string>
+    <string name="errorLoadingTestTypes">Types de tests de chargement d\'erreur. Vérifiez que fichier tests.json est valide.</string>
+    <string name="errorCalibrationColor">"La couleur calibré semble incorrect. Recalibrer avec les solutions standard fournis."</string>
+</resources>

@@ -87,7 +87,7 @@
             android:paddingRight="10dp"
             android:paddingStart="10dp"
             android:src="@drawable/error"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/moreArrow"

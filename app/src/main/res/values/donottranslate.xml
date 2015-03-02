@@ -16,14 +16,9 @@
 
 <resources>
 
-    <!-- User interface labels and strings -->
-    <!-- Labels -->
-    <!-- Messages -->
-    <string name="twentyFourHourTime">HH:mm:ss</string>
-    <string name="twelveHourTime">h:mm:ss a</string>
-
     <string-array name="languages">
         <item>English</item>
+        <item>Français</item>
         <item>हिंदी</item>
         <item>ಕನ್ನಡ</item>
         <item>العربية</item>
@@ -31,6 +26,7 @@
 
     <string-array name="language_codes">
         <item>en</item>
+        <item>fr</item>
         <item>hi</item>
         <item>kn</item>
         <item>ar</item>

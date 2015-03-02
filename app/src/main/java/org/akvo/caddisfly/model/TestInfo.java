@@ -17,6 +17,8 @@
 package org.akvo.caddisfly.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 
 public class TestInfo {
@@ -35,6 +37,14 @@ public class TestInfo {
         mUnit = unit;
         mRanges = new ArrayList<>();
         mSwatches = new ArrayList<>();
+    }
+
+    public void sortRange() {
+        Collections.sort(mRanges, new Comparator<ResultRange>() {
+            public int compare(ResultRange c1, ResultRange c2) {
+                return Double.compare(c1.getValue(), (c2.getValue()));
+            }
+        });
     }
 
     public String getName(String languageCode) {

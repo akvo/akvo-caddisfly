@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.provider.Settings;
 
 import org.akvo.caddisfly.R;
@@ -66,6 +67,17 @@ public class NetworkUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * Open a web Browser and navigate to given url
+     *
+     * @param url The url to navigate to
+     */
+    public static void openWebBrowser(Context context, String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        context.startActivity(intent);
     }
 
 }

@@ -18,13 +18,16 @@ package org.akvo.caddisfly.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -151,43 +154,58 @@ public class MainApp extends Application {
 
     }
 
+    public void storeCalibratedData(ResultRange range, final int resultColor) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String colorKey = String.format("%s-%.2f", currentTestInfo.getCode(), range.getValue());
+
+        if (resultColor == -1) {
+            editor.remove(colorKey);
+        } else {
+            range.setColor(resultColor);
+            editor.putInt(colorKey, resultColor);
+            ColorUtils.autoGenerateColors(currentTestInfo, editor);
+        }
+        editor.apply();
+    }
+
+
     /**
-     * @param testCode  The type of test
-     * @param colorList List of swatch colors to be saved
+     * @param rangeList List of swatch colors to be saved
      */
-    public void saveCalibratedSwatches(String testCode, ArrayList<Integer> colorList) {
-        testCode = testCode.toUpperCase();
+    public void saveCalibratedSwatches(ArrayList<ResultRange> rangeList) {
 
         MainApp context = ((MainApp) this.getApplicationContext());
         assert context != null;
 
-        for (int i = 0; i < colorList.size(); i++) {
-
+        for (ResultRange range : rangeList) {
             PreferencesUtils
                     .setInt(context.getApplicationContext(),
-                            String.format("%s-%d", testCode, i),
-                            colorList.get(i));
-            PreferencesUtils
-                    .setInt(context.getApplicationContext(),
-                            String.format("%s-a-%d", testCode, i), 100);
+                            String.format("%s-%.2f", currentTestInfo.getCode(), range.getValue()),
+                            range.getColor());
         }
+        loadCalibratedSwatches(currentTestInfo);
+
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        ColorUtils.autoGenerateColors(currentTestInfo, editor);
+
+        editor.apply();
     }
 
     /**
      * @return The number of errors found
      */
     public int getCalibrationErrorCount() {
-        MainApp mainApp = this;
-        //int minAccuracy = PreferencesUtils
-        //      .getInt(mainApp, R.string.minPhotoQualityKey, Config.MINIMUM_PHOTO_QUALITY);
-
         int count = 0;
-        //for (int i = 0; i < mainApp.rangeIntervals.size(); i++) {
-//            if (mainApp.colorList.get(index).getErrorCode() > 0 ||
-//                    (mainApp.colorList.get(index).getQuality() > -1 && mainApp.colorList.get(index).getQuality() < minAccuracy)) {
-//                count++;
-//            }
-        //}
+        for (int i = 0; i < currentTestInfo.getRanges().size(); i++) {
+            if (currentTestInfo.getRange(i).getColor() == -1) {
+                count++;
+            }
+        }
         return count;
     }
 }

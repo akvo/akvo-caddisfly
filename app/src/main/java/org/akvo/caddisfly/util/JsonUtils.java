@@ -41,7 +41,6 @@ public class JsonUtils {
         return null;
     }
 
-
     public static ArrayList<TestInfo> loadTests(String jsonText) throws JSONException {
         JSONObject jsonObject;
         TestInfo testInfo;
@@ -68,11 +67,16 @@ public class JsonUtils {
                     }
                 }
 
+                int type = 0;
+                if (item.has("type")) {
+                    type = item.getInt("type");
+                }
+
                 testInfo = new TestInfo(
                         namesHashTable,
                         item.getString("code").toUpperCase(),
                         item.getString("unit"),
-                        item.getInt("type"));
+                        type);
 
                 //Load the dilution percentages
 //                String dilutions = "0";
@@ -96,9 +100,11 @@ public class JsonUtils {
                 String[] rangesArray = ranges.split(",");
 
                 for (String range : rangesArray) {
-                    ResultRange resultRange = new ResultRange(Double.valueOf(range), Color.TRANSPARENT);
+                    ResultRange resultRange = new ResultRange(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
                     testInfo.addRange(resultRange);
                 }
+
+                testInfo.sortRange();
 
                 tests.add(testInfo);
             } catch (JSONException e) {

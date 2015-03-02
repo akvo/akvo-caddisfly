@@ -14,89 +14,86 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- xml -->
     <string name="appName">Akvo Caddisfly</string>
+    <string name="waterQualityTest">Water Quality Test</string>
     <string name="waterQualitySystem">Water Quality System</string>
     <string name="settings">Settings</string>
-    <string name="calibrate">Calibrate</string>
-    <string name="analyzingWait">Analyzing…</string>
-    <string name="calibrate_info">Ensure cartridge is attached correctly and press OK</string>
-    <string name="appUpdate">Caddisfly update</string>
-    <string name="askForUpdate">An updated version is available, Do you want to update now?</string>
-    <string name="checkUpdate">Check update</string>
-    <string name="dataConnection">Data Connection</string>
-    <string name="testInProgress">Test in progress</string>
-    <string name="alreadyHaveLatest">You already have the latest version of Caddisfly installed</string>
-    <string name="remaining">remaining</string>
-    <string name="result">Result</string>
-    <string name="rgb">rgb</string>
-    <string name="ppm">ppm</string>
-    <string name="checkingForUpdates">Checking for updates…</string>
-    <string name="starting">Starting…</string>
-    <string name="error">Error</string>
-    <string name="retry">Retry</string>
-    <string name="outOfRange">Color out of range</string>
-    <string name="placeDeviceInStand">Place the phone on a flat surface to continue</string>
-    <string name="shakeToContinue">Shake the phone to ensure proper mixing of the solution</string>
-    <string name="shakeMe">Shake Me</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="checkUpdateSummary">Check if an update is available for Akvo Caddisfly</string>
-    <string name="caddisflyTraining">Akvo Caddisfly Training</string>
-    <string name="watchTrainingVideo">Watch Training Video</string>
-    <string name="selectValueToCalibrate">Select a value to calibrate</string>
-    <string name="startSurvey">Start Survey</string>
-    <string name="backToSurvey">Back to Survey</string>
-    <string name="calibrationColorError">The calibrated color seems to be incorrect. Recalibrate with the provided standard solutions.</string>
-    <string name="waterQualityTest">Water Quality Test</string>
-    <string name="attachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
-    <string name="saveOriginalPhoto">Save Original Photo</string>
-    <string name="saveOriginalPhotoConfirm">Warning: Saving original photos will use a lot of space on your phone.</string>
-
-    <!-- java -->
-    <string name="testFailedMessage">Solution color out of range. Check cartridge placement.</string>
-    <string name="testFailedQualityMessage">Photo quality below %d%%. Check cartridge placement.</string>
-    <string name="gettingUpdate">Getting Caddisfly update…</string>
-    <string name="calibrate_error">Caddisfly calibration is incomplete. Correct the calibration before starting a test.</string>
-    <string name="enableInternet">Internet connection required</string>
-    <string name="photoQualityError">Photo quality too low</string>
-    <string name="analyze">Analyze</string>
-    <string name="clickAnalyze">Click Analyze to continue</string>
-    <string name="notCalibrated">Not Calibrated</string>
-    <string name="installAkvoFlow">Please install Akvo Flow app</string>
-    <string name="analysisInProgress">Analysis in progress</string>
-    <string name="updateRequired">Please update to a newer version to enable this feature</string>
-    <string name="outOfSequence">Out of Sequence</string>
-    <string name="duplicateSwatch">Duplicate or similar color</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
     <string name="about">About</string>
     <string name="swatches">Swatches</string>
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
-    <string name="selectedWillBeDeleted">Selected items will be deleted</string>
     <string name="language">Language</string>
     <string name="load">Load</string>
-    <string name="noSavedCalibrations">There are no previously saved calibrations</string>
-    <string name="notFound">Not Found</string>
-    <string name="loadCalibration">Load Calibration</string>
-    <string name="testInterrupted">Test was interrupted. Do not move the phone during the test.</string>
-    <string name="revertingVersion">Reverting to previous version</string>
-    <string name="waitTillCameraSound">Then wait for alert sound in about a minute</string>
-    <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
-    <string name="aboutSummary">Displays version number</string>
-    <string name="back">Back</string>
-    <string name="start">Start</string>
-    <string name="showStartPage">Show start page</string>
-    <string name="cameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
-    <string name="highLevelsFound">High level of contamination has been detected</string>
-    <string name="placeHighRangeCartridge">Mix %1$.0f%% sample water and %2$.0f%% deionized water. Test this mixture now.</string>
-    <string name="testNotAvailable">This test is not available</string>
-    <string name="saveCalibration">Save Calibration</string>
-    <string name="giveNameForCalibration">Give a descriptive name for this calibration</string>
-    <string name="overwriteFile">Overwrite File</string>
-    <string name="nameAlreadyExists">Name already exists. Overwrite file?</string>
-    <string name="invalidName">Invalid name</string>
+    <string name="remaining">remaining</string>
+    <string name="result">Result</string>
+    <string name="starting">Starting…</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
     <string name="save">Save</string>
-    <string name="connectSensorToUsb">Connect EC Sensor via USB</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="notFound">Not Found</string>
+    <string name="analyzingWait">Analyzing…</string>
+    <string name="startSurvey">Start Survey</string>
+    <string name="backToSurvey">Back to Survey</string>
+    <string name="acceptResult">Accept Result</string>
+    <string name="dataConnection">Data Connection</string>
+    <string name="enableInternet">Internet connection required</string>
+    <string name="analysisInProgress">Analysis in progress</string>
+    <string name="waitTillCameraSound">Then wait for alert sound in about a minute</string>
+    <string name="startTestConfirm">Ensure cartridge is attached correctly and press OK</string>
+    <string name="testInProgress">Test in progress</string>
+    <string name="placeDeviceInStand">Place the phone face down on a flat surface to continue</string>
+    <string name="highLevelsFound">High level of contamination has been detected</string>
+    <string name="placeHighRangeCartridge">
+        Mix <xliff:g example="25%" id="percentage">%1$.0f%%</xliff:g> sample water and <xliff:g example="75%" id="time">%2$.0f%%</xliff:g> deionized water. Test this mixture now.
+    </string>
+    <string name="watchTrainingVideo">Watch Training Video</string>
+    <string name="calibrateAttachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
+    <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
+    <string name="displaysVersionNumber">Displays version number</string>
+    <string name="deleteConfirm">Selected items will be deleted</string>
+
+    <string name="updateSummary">Check if an update is available for Akvo Caddisfly</string>
+    <string name="updateApp">Akvo Caddisfly update</string>
+    <string name="updateCheck">Check update</string>
+    <string name="updateCheckingFor">Checking for updates…</string>
+    <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
+    <string name="updateRequest">An updated version is available, Do you want to update now?</string>
+    <string name="updateFetching">Getting Akvo Caddisfly update…</string>
+
+    <string name="loadCalibration">Load Calibration</string>
+    <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
+    <string name="saveCalibration">Save Calibration</string>
+    <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
+    <string name="saveConfirmOverwriteFile">Overwrite File</string>
+    <string name="saveNameAlreadyExists">Name already exists. Overwrite file?</string>
+    <string name="saveInvalidFileName">Invalid name</string>
+    <string name="saveOriginalPhoto">Save Original Photo</string>
+    <string name="saveOriginalPhotoConfirm">Warning: Saving original photos will use a lot of space on your phone.</string>
+
+    <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
+    <string name="deviceConnecting">Connecting to Device</string>
+    <string name="deviceConnected">Device Connected</string>
+
+    <string name="errorTestFailed">Solution color out of range. Check cartridge placement.</string>
+    <string name="errorOutOfRange">Color out of range</string>
+    <string name="errorCalibrationIncomplete">Calibration is incomplete. Do you want to calibrate now?</string>
+    <string name="errorPhotoQuality">Photo quality too low</string>
+    <string name="errorNotCalibrated">Not Calibrated</string>
+    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
+    <string name="errorOutOfSequence">Out of Sequence</string>
+    <string name="errorDuplicateSwatch">Duplicate or similar color</string>
+    <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test.</string>
+    <string name="errorCameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
+    <string name="errorTestNotAvailable">This test is not available</string>
+    <string name="errorLoadingTestTypes">Error loading test types. Verify that <xliff:g id="filename">tests.json</xliff:g> file is valid.</string>
+    <string name="errorCalibrationColor">The calibrated color seems to be incorrect. Recalibrate with the provided standard solutions.</string>
+    <string name="watchVideo">Watch</string>
+    <string name="demonstration">Demo</string>
 </resources>

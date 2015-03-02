@@ -53,7 +53,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
             if (!mBackground) {
                 progressDialog = new ProgressDialog(mContext);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage(mContext.getString(R.string.checkingForUpdates));
+                progressDialog.setMessage(mContext.getString(R.string.updateCheckingFor));
                 progressDialog.setCancelable(false);
                 progressDialog.show();
             }
@@ -94,11 +94,11 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         }
 
         if (checker.isUpdateAvailable()) {
-            AlertUtils.askQuestion(mContext, R.string.appUpdate, R.string.askForUpdate,
+            AlertUtils.askQuestion(mContext, R.string.updateApp, R.string.updateRequest,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion, false);
+                            checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion);
                             PreferencesUtils.removeKey(mContext, R.string.updateAvailable);
                         }
                     }
@@ -106,7 +106,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         } else {
 
             if (!mBackground) {
-                AlertUtils.showMessage(mContext, R.string.appName, R.string.alreadyHaveLatest);
+                AlertUtils.showMessage(mContext, R.string.appName, R.string.updatedAlready);
             }
         }
     }

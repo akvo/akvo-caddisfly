@@ -123,12 +123,14 @@ public class AlertUtils {
             if (callback == null) {
                 buttonText = okButtonText;
             }
-            builder.setNegativeButton(buttonText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            builder.setNegativeButton(buttonText, cancelListener);
+
+//            builder.setNegativeButton(buttonText, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    dialogInterface.dismiss();
+//                }
+//            });
         }
 
         builder.setCancelable(false);

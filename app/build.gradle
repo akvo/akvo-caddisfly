@@ -56,9 +56,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.pnikosis:materialish-progress:1.4'
+    compile 'com.github.shell-software:fab:1.0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-    compile project(':usbSerialForAndroid')
 }
 
 

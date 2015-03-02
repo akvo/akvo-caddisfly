@@ -3,82 +3,121 @@
         "test": [
             {
                 "name":[
-                            {"en": "Fluoride"},
-                            {"kn": "ಫ್ಲೋರೈಡ್"},
-                            {"hi": "फ्लोराइड"},
-                            {"ar": "فلوريد"},
+                            { "en": "Fluoride"},
+                            { "fr": "Fluorure"},
+                            { "ar": "فلوريد"},
+                            { "hi": "फ्लोराइड"},
+                            { "kn": "ಫ್ಲೋರೈಡ್"},
                         ],
                 "type": "0",
                 "code": "fluor",
                 "unit": "ppm",
-                "ranges": "0,0.5,1,1.5,2",
-                "dilutions": "0,50,75"
+                "ranges": "0,.5,1,1.5,2",
+                "step":"0.5",
+                "rangeStart":"0",
+                "rangeEnd":"2",
+                "dilutions":"0,50,75"
             },
             {
                 "name": [
-                            {"en": "pH"}
+                            { "en": "pH"}
                         ],
                 "type": "0",
                 "code": "phydr",
                 "unit": "pH",
-                "ranges": "3,4,5,6,7,8,9"
+                "ranges": "3,4,5,6,7,8,9",
+                "step":"1",
+                "rangeStart":"3",
+                "rangeEnd":"9"
             },
             {
                 "name": [
-                            {"en": "Nitrate"},
-                            {"kn": "ನೈಟ್ರೇಟ್"},
-                            {"hi": "नाइट्रट"},
-                            {"ar": "نترات"}
-
+                            { "en": "Nitrate"},
+                            { "fr": "Nitrate"},
+                            { "ar": "نترات"},
+                            { "hi": "नाइट्रट"},
+                            { "kn": "ನೈಟ್ರೇಟ್"},
                         ],
                 "type": "0",
                 "code": "nitra",
                 "unit": "ppm",
-                "ranges": "0,10,20,30,40,50"
+                "ranges": "0,10,20,30,40,50",
+                "step":"10",
+                "rangeStart":"0",
+                "rangeEnd":"50"
             },
-         {
-            "name":[
-               {"en":"Nitrite"},
-            ],
-            "type": "0",
-            "code":"nitri",
-            "unit":"ppm",
-            "ranges": "0,0.5,1,1.5,2,2.5,3"
-         },
-         {
-            "name":[
-               {"en":"Total Iron"},
-            ],
-            "type": "0",
-            "code":"totfe",
-            "unit":"ppm",
-            "ranges": "0,0.2,0.4,0.6,0.8,1"
-         },
-         {
-            "name":[
-               { "en":"Total Chlorine" },
-            ],
-            "type": "0",
-            "code":"totcl",
-            "unit":"ppm",
-            "ranges": "0,0.5,1,1.5,2"
-         },
-         {
-            "name":[
-               { "en":"Free Chlorine" },
-            ],
-            "type": "0",
-            "code":"frecl",
-            "unit":"ppm",
-            "ranges": "0,0.5,1,2,4,10"
-         },
+            {
+                "name":[
+                            { "en": "Nitrite"},
+                            { "fr": "Nitrite"},
+                            { "ar": "نتريت"},
+                            { "hi": "नाइट्राइट"},
+                            { "kn": "ನೈಟ್ರೈಟ್"},
+                ],
+                "type": "0",
+                "code":"nitri",
+                "unit":"ppm",
+                "ranges": "0,0.5,1,1.5,2,2.5,3",
+                "step":"0.5",
+                "rangeStart":"0",
+                "rangeEnd":"3"
+            },
+            {
+                "name":[
+                            { "en": "Total Iron"},
+                            { "fr": "Total de Fer"},
+                            { "ar": "مجموع الحديد"},
+                            { "hi": "कुल आयरन"},
+                            { "kn": "ಒಟ್ಟು ಐರನ್"},
+                ],
+                "type": "0",
+                "code":"totfe",
+                "unit":"ppm",
+                "ranges": "0,0.2,0.4,0.6,0.8,1",
+                "step":"0.2",
+                "rangeStart":"0",
+                "rangeEnd":"1"
+            },
+            {
+                "name":[
+                            { "en":"Total Chlorine" },
+                            { "fr": "Chlore Total"},
+                            { "kn": "ಒಟ್ಟು ಕ್ಲೋರಿನ್"},
+                            { "hi": "कुल क्लोरीन"},
+                            { "ar": "إجمالي الكلور"}
+                ],
+                "type": "0",
+                "code":"totcl",
+                "unit":"ppm",
+                "ranges": "0,0.5,1,1.5,2",
+                "step":"0.5",
+                "rangeStart":"0",
+                "rangeEnd":"2"
+            },
+            {
+                "name":[
+                            { "en":"Free Chlorine" },
+                            { "fr": "Chlore Libre"},
+                            { "kn": "ಉಚಿತ ಕ್ಲೋರಿನ್" },
+                            { "hi": "मुक्त क्लोरीन" },
+                            { "ar": "الكلور الحر" }
+                ],
+                "type": "0",
+                "code":"frecl",
+                "unit":"ppm",
+                "ranges": "0,0.5,1,1.5,2",
+                "step":"0.5",
+                "rangeStart":"0",
+                "rangeEnd":"2"
+            },
             {
                 "name": [
-                            {"en": "Electrical Conductivity"},
-                            {"kn": "ವಿದ್ಯುತ್ ವಾಹಕ"},
-                            {"hi": "विद्युत चालकता"},
-                            {"ar": "الموصلية الكهربائية"}
-                        ],
+                            { "en": "Electrical Conductivity"},
+                            { "fr": "Conductivité électrique"},
+                            { "ar": "الموصلية الكهربائية"},
+                            { "hi": "विद्युत चालकता"},
+                            { "kn": "ವಿದ್ಯುತ್ ವಾಹಕ"}
+                ],
                 "type": "1",
                 "code": "econd",
                 "unit": "μS/cm",

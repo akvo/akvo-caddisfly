@@ -16,15 +16,14 @@
 
 <resources>
 
-    <color name="background">#ff19927e</color>
     <color name="primary">#ff35924d</color>
     <color name="primary_dark">#ff0a632b</color>
     <color name="accent">#000</color>
-    <color name="actionBarText">#fff</color>
     <color name="background_main">#f8ebf6ff</color>
     <color name="background_alternate">#ffdef1e9</color>
 
     <color name="dropdown_item_normal">#ff333333</color>
     <color name="item_selected">#ff066b72</color>
+    <color name="side_button">#ff096f14</color>
 
 </resources>
