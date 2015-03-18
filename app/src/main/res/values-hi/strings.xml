@@ -93,5 +93,11 @@
     <string name="saveOriginalPhotoConfirm">"चेतावनी: सहेजा जा रहा मूल फोटो अपने फोन पर अंतरिक्ष के एक बहुत का उपयोग करेगा."</string>
     <string name="watchVideo">Watch</string>
     <string name="demonstration">Demo</string>
+    <string name="cameraPreview">Camera Preview</string>
+    <string name="temperature">Temperature</string>
+    <string name="selectDilution">Select Dilution</string>
+    <string name="hundredPercentSampleWater">100% Sample Water</string>
+    <string name="fiftyPercentSampleWater">50% Sample Water</string>
+    <string name="twentyFivePercentSampleWater">25% Sample Water</string>
 
 </resources>

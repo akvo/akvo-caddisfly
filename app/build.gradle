@@ -17,8 +17,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22"
 
     packagingOptions {
         exclude 'LICENSE.txt'
@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 16
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionName "prototype 0.48 alpha"
         versionCode 48
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -54,8 +54,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:22+'
+    compile 'com.android.support:support-v4:22+'
     compile 'com.pnikosis:materialish-progress:1.4'
     compile 'com.github.shell-software:fab:1.0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'

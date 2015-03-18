@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,6 +47,7 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
@@ -54,10 +56,14 @@ import org.akvo.caddisfly.util.SoundPoolPlayer;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class CameraSensorActivity extends ActionBarActivity implements ResultFragment.ResultDialogListener {
+public class CameraSensorActivity extends ActionBarActivity
+        implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener {
     private final Handler delayHandler = new Handler();
+    DilutionFragment mDilutionFragment;
+    int mDilutionLevel = 0;
     private TextView mTitleText;
     private TextView mTestTypeTextView;
+    private TextView mDilutionTextView;
     private SoundPoolPlayer sound;
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
@@ -71,6 +77,8 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
     private CameraFragment mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
+    private ArrayList<Double> results;
+    private ArrayList<Integer> colors;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -95,6 +103,8 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
 
         mTitleText = (TextView) findViewById(R.id.titleText);
         mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
+
+        mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
@@ -141,6 +151,13 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
 
     private void InitializeTest() {
 
+        MainApp mainApp = (MainApp) getApplicationContext();
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+
+        mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+
         if (wakeLock == null || !wakeLock.isHeld()) {
             PowerManager pm = (PowerManager) getApplicationContext()
                     .getSystemService(Context.POWER_SERVICE);
@@ -178,7 +195,7 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
         startTest();
     }
 
-    private void showError(String message, Bitmap bitmap) {
+    private void showError(String message, final Bitmap bitmap) {
         releaseResources();
         sound.playShortResource(R.raw.err);
         AlertUtils.showError(this, R.string.error, message, bitmap, R.string.retry,
@@ -222,6 +239,7 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
         MainApp mainApp = (MainApp) getApplicationContext();
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
+        boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
             AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,
@@ -232,14 +250,60 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
                         }
                     }, null);
 
+        } else if (!isCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
+            mDilutionFragment = DilutionFragment.newInstance();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+            Fragment prev = getFragmentManager().findFragmentByTag("dilutionFragment");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            mDilutionFragment.setCancelable(false);
+            mDilutionFragment.show(ft, "dilutionFragment");
+
+            mDilutionTextView.setVisibility(View.VISIBLE);
+
         } else {
-            mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-            mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
             InitializeTest();
         }
     }
 
+    private void getResult(byte[] bytes) {
+
+        Bitmap bitmap = getBitmap(bytes);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] croppedData;
+
+        croppedData = bos.toByteArray();
+
+        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
+                Config.SAMPLE_CROP_LENGTH_DEFAULT);
+
+        ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
+        Bundle bundle = ColorUtils.getPpmValue(croppedData, ranges, sampleLength);
+        bitmap.recycle();
+
+        double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
+        int color = bundle.getInt(Config.RESULT_COLOR_KEY, -1);
+
+        switch (mDilutionLevel) {
+            case 1:
+                result = result * 2;
+                break;
+            case 2:
+                result = result * 4;
+                break;
+        }
+
+        colors.add(color);
+        results.add(result);
+    }
+
     void startTest() {
+        results = new ArrayList<>();
+        colors = new ArrayList<>();
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
@@ -265,64 +329,38 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
                     mCameraFragment.pictureCallback = new Camera.PictureCallback() {
                         @Override
                         public void onPictureTaken(byte[] data, Camera camera) {
-                            int sampleLength = PreferencesUtils.getInt(getBaseContext(), R.string.photoSampleDimensionKey,
-                                    Config.SAMPLE_CROP_LENGTH_DEFAULT);
-                            int[] pixels = new int[sampleLength * sampleLength];
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            bitmap.getPixels(pixels, 0, sampleLength,
-                                    (bitmap.getWidth() - sampleLength) / 2,
-                                    (bitmap.getHeight() - sampleLength) / 2,
-                                    sampleLength,
-                                    sampleLength);
-                            bitmap = Bitmap.createBitmap(pixels, 0, sampleLength,
-                                    sampleLength,
-                                    sampleLength,
-                                    Bitmap.Config.ARGB_8888);
 
-                            byte[] croppedData;
-
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//                            croppedData = bos.toByteArray();
-
-                            bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
-                            bitmap.setHasAlpha(true);
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                            croppedData = bos.toByteArray();
-
-                            ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
-
-                            Bundle bundle = ColorUtils.getPpmValue(croppedData, ranges, sampleLength);
-
-                            final double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
                             String message = getString(R.string.errorTestFailed);
 
-                            boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+                            getResult(data);
+
                             if (mCameraFragment.hasTestCompleted()) {
+
+                                double result = DataHelper.getAverageResult(getBaseContext(), results);
+                                int color = DataHelper.getAverageColor(getBaseContext(), colors);
+                                boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                                 releaseResources();
                                 Intent intent = new Intent(getIntent());
-                                intent.putExtras(bundle);
                                 intent.putExtra("result", result);
+                                intent.putExtra("color", color);
                                 //intent.putExtra("questionId", mQuestionId);
                                 intent.putExtra("response", String.valueOf(result));
                                 setResult(Activity.RESULT_OK, intent);
 
                                 if (isCalibration) {
                                     sound.playShortResource(R.raw.done);
-                                    bitmap.recycle();
                                     finish();
                                 } else {
-                                    if (result < 0) {
-                                        showError(message, bitmap);
+                                    if (result < 0 || color == -1) {
+                                        showError(message, getBitmap(data));
                                     } else {
                                         sound.playShortResource(R.raw.done);
-                                        bitmap.recycle();
                                         Resources res = getResources();
                                         Configuration conf = res.getConfiguration();
                                         String title = ((MainApp) getApplicationContext()).currentTestInfo.getName(conf.locale.getLanguage());
                                         MainApp mainApp = (MainApp) getApplicationContext();
                                         ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
-                                                null, mainApp.currentTestInfo.getUnit());
+                                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
                                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                                         Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
@@ -373,6 +411,28 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
         }).execute();
     }
 
+    private Bitmap getBitmap(byte[] bytes) {
+        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
+                Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        int[] pixels = new int[sampleLength * sampleLength];
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        bitmap.getPixels(pixels, 0, sampleLength,
+                (bitmap.getWidth() - sampleLength) / 2,
+                (bitmap.getHeight() - sampleLength) / 2,
+                sampleLength,
+                sampleLength);
+        bitmap = Bitmap.createBitmap(pixels, 0, sampleLength,
+                sampleLength,
+                sampleLength,
+                Bitmap.Config.ARGB_8888);
+//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//                            croppedData = bos.toByteArray();
+
+        bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
+        bitmap.setHasAlpha(true);
+        return bitmap;
+    }
+
     @Override
     public void onFinishDialog(Bundle bundle) {
         finish();
@@ -397,6 +457,33 @@ public class CameraSensorActivity extends ActionBarActivity implements ResultFra
             Intent intent = new Intent(getIntent());
             this.setResult(Activity.RESULT_CANCELED, intent);
             finish();
+        }
+    }
+
+    @Override
+    public void onFinishDilutionDialog(int index) {
+        if (index == -1) {
+            releaseResources();
+            Intent intent = new Intent(getIntent());
+            this.setResult(Activity.RESULT_CANCELED, intent);
+            finish();
+        } else {
+            mDilutionLevel = index;
+            mDilutionFragment.dismiss();
+
+            switch (mDilutionLevel) {
+                case 0:
+                    mDilutionTextView.setText(R.string.hundredPercentSampleWater);
+                    break;
+                case 1:
+                    mDilutionTextView.setText(R.string.fiftyPercentSampleWater);
+                    break;
+                case 2:
+                    mDilutionTextView.setText(R.string.twentyFivePercentSampleWater);
+                    break;
+            }
+
+            InitializeTest();
         }
     }
 }

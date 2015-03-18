@@ -74,7 +74,7 @@ public class Config {
 
     public static final int MINIMUM_PHOTO_QUALITY = 50;
 
-    public static final int SAMPLING_COUNT_DEFAULT = 6;
+    public static final int SAMPLING_COUNT_DEFAULT = 1;
 
     // width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
@@ -95,6 +95,6 @@ public class Config {
     public static final boolean REQUIRE_SHAKE_DEFAULT = false;
     public static final boolean CAMERA_SOUND_DEFAULT = true;
     public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
-    public static final String CONFIG_FILE = "tests.json";
+    public static final String CONFIG_FILE = "testsensor.json";
 
 }

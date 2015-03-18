@@ -42,17 +42,20 @@ public class FtdiSerial {
             mReadBuffer = new byte[DEFAULT_READ_BUFFER_SIZE];
             mReadAgain = true;
             while (mReadAgain) {
-                synchronized (this) {
-                    length = mDevice.getQueueStatus();
-                }
-                if (length > 0) {
-                    synchronized (this) {
-                        mDevice.read(mReadBuffer, length, 10);
-                    }
-                }
                 try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ignored) {
+                    synchronized (this) {
+                        length = mDevice.getQueueStatus();
+                    }
+                    if (length > 0) {
+                        synchronized (this) {
+                            mDevice.read(mReadBuffer, length, 10);
+                        }
+                    }
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ignored) {
+                    }
+                } catch (Exception ignored) {
                 }
             }
         }

@@ -32,7 +32,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
@@ -137,7 +136,6 @@ public class CalibrateDetailFragment extends Fragment {
         if (getArguments().containsKey(ARG_ITEM_ID)) {
 
             final int position = getArguments().getInt(ARG_ITEM_ID);
-
             final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
             mRange = mainApp.currentTestInfo.getRange(position);
 
@@ -156,19 +154,20 @@ public class CalibrateDetailFragment extends Fragment {
 
         final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
         if (requestCode == 200 && data != null) {
-            Bundle bundle = data.getExtras();
+
+            if (mRange == null) {
+                final int position = getArguments().getInt(ARG_ITEM_ID);
+                mRange = mainApp.currentTestInfo.getRange(position);
+            }
 
             if (resultCode == Activity.RESULT_OK) {
-                mainApp.storeCalibratedData(mRange,
-                        bundle.getInt(Config.RESULT_COLOR_KEY, -1));
+                mainApp.storeCalibratedData(mRange, data.getIntExtra("color", -1));
                 displayInfo();
                 getActivity().setResult(Activity.RESULT_OK);
                 getActivity().finish();
             } else {
-                if (bundle != null) {
-                    mainApp.storeCalibratedData(mRange, -1);
-                    displayInfo();
-                }
+                mainApp.storeCalibratedData(mRange, -1);
+                displayInfo();
             }
         }
     }

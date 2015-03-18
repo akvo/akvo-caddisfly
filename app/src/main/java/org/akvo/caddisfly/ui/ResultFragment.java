@@ -18,7 +18,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,12 @@ import org.akvo.caddisfly.R;
 
 public class ResultFragment extends DialogFragment {
 
-    public static ResultFragment newInstance(String title, double result, Message msg, String unit) {
+    public static ResultFragment newInstance(String title, double result, int dilutionLevel, String unit) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putDouble("result", result);
+        args.putInt("dilution", dilutionLevel);
         //args.putBundle("message", msg.getData());
         args.putString("unit", unit);
         fragment.setArguments(args);
@@ -74,6 +74,22 @@ public class ResultFragment extends DialogFragment {
             resultView.setText(String.format("%.2f", result));
         }
 
+        TextView dilutionTextView = (TextView) view.findViewById(R.id.dilutionTextView);
+        int dilutionLevel = getArguments().getInt("dilution", -1);
+        switch (dilutionLevel) {
+            case 0:
+                dilutionTextView.setVisibility(View.VISIBLE);
+                dilutionTextView.setText(R.string.hundredPercentSampleWater);
+                break;
+            case 1:
+                dilutionTextView.setVisibility(View.VISIBLE);
+                dilutionTextView.setText(R.string.fiftyPercentSampleWater);
+                break;
+            case 2:
+                dilutionTextView.setVisibility(View.VISIBLE);
+                dilutionTextView.setText(R.string.twentyFivePercentSampleWater);
+                break;
+        }
 
         unitTextView.setText(getArguments().getString("unit", ""));
 

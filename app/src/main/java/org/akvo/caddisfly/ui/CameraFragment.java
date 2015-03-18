@@ -36,7 +36,6 @@ import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.IOException;
@@ -55,11 +54,9 @@ public class CameraFragment extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     public Camera.PictureCallback pictureCallback;
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private boolean mPreviewOnly;
     private int samplingCount;
     private OnFragmentInteractionListener mListener;
     private SoundPoolPlayer sound;
@@ -88,16 +85,14 @@ public class CameraFragment extends DialogFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param previewOnly if true will display preview only, otherwise start taking pictures
      * @return A new instance of fragment CameraFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CameraFragment newInstance(String param1, String param2) {
+    public static CameraFragment newInstance(boolean previewOnly) {
         CameraFragment fragment = new CameraFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putBoolean(ARG_PARAM1, previewOnly);
         fragment.setArguments(args);
         return fragment;
     }
@@ -120,8 +115,7 @@ public class CameraFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mPreviewOnly = getArguments().getBoolean(ARG_PARAM1);
         }
         sound = new SoundPoolPlayer(getActivity());
     }
@@ -131,7 +125,6 @@ public class CameraFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         //if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
-        getDialog().setTitle(R.string.analysisInProgress);
         //} else {
         //  getDialog().setTitle(R.string.clickAnalyze);
         //}
@@ -167,8 +160,13 @@ public class CameraFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
+        if (!mPreviewOnly) {
+            //if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
+            getDialog().setTitle(R.string.analysisInProgress);
             startTakingPictures();
+            //}
+        } else {
+            getDialog().setTitle(R.string.cameraPreview);
         }
     }
 
@@ -223,7 +221,7 @@ public class CameraFragment extends DialogFragment {
     }
 
     public boolean hasTestCompleted() {
-        return samplingCount > 5;
+        return samplingCount > Config.SAMPLING_COUNT_DEFAULT;
 //        int currentSamplingCount = PreferencesUtils
 //                .getInt(context, R.string.currentSamplingCountKey, 0);
 //        int samplingCount = PreferencesUtils
@@ -238,7 +236,7 @@ public class CameraFragment extends DialogFragment {
         qOpened = (mCamera != null);
 
         if (qOpened) {
-            mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+            mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera, mPreviewOnly);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
             preview.addView(mPreview);
             mPreview.startCameraPreview();
@@ -319,13 +317,17 @@ public class CameraFragment extends DialogFragment {
 
         private List<String> mSupportedFlashModes;
 
+        private boolean mPreviewOnly = false;
+
         public CameraPreview(Context context) {
             super(context);
             mHolder = getHolder();
         }
 
-        public CameraPreview(Context context, Camera camera) {
+        public CameraPreview(Context context, Camera camera, boolean previewOnly) {
             super(context);
+
+            mPreviewOnly = previewOnly;
 
             setCamera(context, camera);
 
@@ -363,12 +365,14 @@ public class CameraFragment extends DialogFragment {
                 parameters.setMeteringAreas(meteringAreas);
             }
 
-            if (!PreferencesUtils.getBoolean(context, R.string.autoAnalyzeKey, false)) {
+            //if (!PreferencesUtils.getBoolean(context, R.string.autoAnalyzeKey, false)) {
+            if (mPreviewOnly) {
                 if (mSupportedFlashModes != null && mSupportedFlashModes
                         .contains(Camera.Parameters.FLASH_MODE_ON)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 }
             }
+            //}
 
             mCamera.setDisplayOrientation(90);
             mCamera.setParameters(parameters);
@@ -469,4 +473,6 @@ public class CameraFragment extends DialogFragment {
             }
         }
     }
+
+
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="400dp"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/titleView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:textSize="30sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--tools:text="Select Dilution" />-->
+
+    <Button
+        android:id="@+id/hundredPercentButton"
+        style="@style/button_text"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/green_button"
+        android:minHeight="80dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:text="@string/hundredPercentSampleWater"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/fiftyPercentButton"
+        style="@style/button_text"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/green_button"
+        android:minHeight="80dp"
+        android:minWidth="300dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:text="@string/fiftyPercentSampleWater"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/twentyFivePercentButton"
+        style="@style/button_text"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/green_button"
+        android:minHeight="80dp"
+        android:minWidth="300dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:text="@string/twentyFivePercentSampleWater"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel" />
+
+</LinearLayout>

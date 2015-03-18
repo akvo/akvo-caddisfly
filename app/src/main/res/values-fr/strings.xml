@@ -93,4 +93,10 @@
     <string name="errorTestNotAvailable">"Ce test ne est pas disponible"</string>
     <string name="errorLoadingTestTypes">Types de tests de chargement d\'erreur. Vérifiez que fichier tests.json est valide.</string>
     <string name="errorCalibrationColor">"La couleur calibré semble incorrect. Recalibrer avec les solutions standard fournis."</string>
+    <string name="cameraPreview">Camera Preview</string>
+    <string name="temperature">Temperature</string>
+    <string name="selectDilution">Select Dilution</string>
+    <string name="hundredPercentSampleWater">100% Sample Water</string>
+    <string name="fiftyPercentSampleWater">50% Sample Water</string>
+    <string name="twentyFivePercentSampleWater">25% Sample Water</string>
 </resources>

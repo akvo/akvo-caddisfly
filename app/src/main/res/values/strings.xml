@@ -16,7 +16,7 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="appName">Akvo Caddisfly</string>
+    <string name="appName">"Akvo Caddisfly"</string>
     <string name="waterQualityTest">Water Quality Test</string>
     <string name="waterQualitySystem">Water Quality System</string>
     <string name="settings">Settings</string>
@@ -45,10 +45,10 @@
     <string name="dataConnection">Data Connection</string>
     <string name="enableInternet">Internet connection required</string>
     <string name="analysisInProgress">Analysis in progress</string>
-    <string name="waitTillCameraSound">Then wait for alert sound in about a minute</string>
+    <string name="waitTillCameraSound">and wait for test to complete</string>
     <string name="startTestConfirm">Ensure cartridge is attached correctly and press OK</string>
     <string name="testInProgress">Test in progress</string>
-    <string name="placeDeviceInStand">Place the phone face down on a flat surface to continue</string>
+    <string name="placeDeviceInStand">Place the phone face down on a flat surface</string>
     <string name="highLevelsFound">High level of contamination has been detected</string>
     <string name="placeHighRangeCartridge">
         Mix <xliff:g example="25%" id="percentage">%1$.0f%%</xliff:g> sample water and <xliff:g example="75%" id="time">%2$.0f%%</xliff:g> deionized water. Test this mixture now.
@@ -96,4 +96,10 @@
     <string name="errorCalibrationColor">The calibrated color seems to be incorrect. Recalibrate with the provided standard solutions.</string>
     <string name="watchVideo">Watch</string>
     <string name="demonstration">Demo</string>
+    <string name="cameraPreview">Camera Preview</string>
+    <string name="temperature">Temperature</string>
+    <string name="selectDilution">Select Dilution</string>
+    <string name="hundredPercentSampleWater" formatted="false">No Dilution</string>
+    <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
+    <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
 </resources>

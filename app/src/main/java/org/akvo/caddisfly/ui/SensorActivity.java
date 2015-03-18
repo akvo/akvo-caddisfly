@@ -29,7 +29,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ftdi.j2xx.D2xxManager;
@@ -49,9 +48,15 @@ public class SensorActivity extends ActionBarActivity {
     private final Handler mHandler = new Handler();
     private final StringBuilder mReadData = new StringBuilder();
     private FtdiSerial mConnection;
-    private String ec25Value = "";
+    private String mEcValue = "";
+    private String mTemperature = "";
     private boolean mRunLoop = false;
-
+    private TextView mResultTextView;
+    private TextView mTemperatureTextView;
+    private Button mOkButton;
+    private LinearLayout mConnectionLayout;
+    private LinearLayout mResultLayout;
+    private ProgressWheel mProgressBar;
     private final Runnable mCommunicate = new Runnable() {
         @Override
         public void run() {
@@ -117,12 +122,6 @@ public class SensorActivity extends ActionBarActivity {
             }
         }
     };
-    private TextView mResultTextView;
-    //private TextView mTemperatureTextView;
-    private Button mOkButton;
-    private LinearLayout mConnectionLayout;
-    private RelativeLayout mResultLayout;
-    private ProgressWheel mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,10 +133,10 @@ public class SensorActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
 
         mResultTextView = (TextView) findViewById(R.id.resultTextView);
-        //mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
+        mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         mProgressBar = (ProgressWheel) findViewById(R.id.progress_wheel);
 
-        MainApp mainApp = (MainApp) getApplicationContext();
+        final MainApp mainApp = (MainApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
 
         Button backButton = (Button) findViewById(R.id.backButton);
@@ -157,14 +156,19 @@ public class SensorActivity extends ActionBarActivity {
                 Intent intent = new Intent(getIntent());
                 //intent.putExtra("result", finalResult);
                 //intent.putExtra("questionId", mQuestionId);
-                intent.putExtra("response", ec25Value);
+
+                if (mainApp.currentTestInfo.getCode().equals("TEMPE")) {
+                    intent.putExtra("response", mTemperature);
+                } else {
+                    intent.putExtra("response", mEcValue);
+                }
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
 
         mConnectionLayout = (LinearLayout) findViewById(R.id.connectionLayout);
-        mResultLayout = (RelativeLayout) findViewById(R.id.resultLayout);
+        mResultLayout = (LinearLayout) findViewById(R.id.resultLayout);
 
         ((TextView) findViewById(R.id.titleTextView)).setText(
                 mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
@@ -213,19 +217,18 @@ public class SensorActivity extends ActionBarActivity {
         if (!result.equals("")) {
             String[] resultArray = result.trim().split(",");
 
-            if (resultArray.length == 3) {
-                //String temperature = resultArray[0];
-                //String ecValue = resultArray[1];
-                ec25Value = resultArray[2];
+            if (resultArray.length > 2) {
+                mTemperature = resultArray[0];
+                mEcValue = resultArray[1];
+                //ec25Value = resultArray[2];
 
 //                CRC32 crc32 = new CRC32();
 //                crc32.update((temperature + "," + ecValue + "," + ec25Value).getBytes());
 //                crc32.getValue();
 //                result += "," + Long.toHexString(crc32.getValue());
 
-                mResultTextView.setText(ec25Value);
-                //mTemperatureTextView.setText("EC at " + temperature + " centigrade is " + ecValue);
-
+                mResultTextView.setText(mEcValue);
+                mTemperatureTextView.setText(getResources().getText(R.string.temperature) + ": " + mTemperature + "\u00B0C");
                 mProgressBar.setVisibility(View.GONE);
                 mResultLayout.setVisibility(View.VISIBLE);
                 mConnectionLayout.setVisibility(View.GONE);

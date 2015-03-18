@@ -18,13 +18,14 @@ package org.akvo.caddisfly.util;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataHelper {
 
@@ -76,69 +77,70 @@ public class DataHelper {
         }
         text += finalResult + "," + resultColor + separator;
         FileUtils.saveText(folderName + "result.txt", text);
-
     }
 
-/*    public static void saveResult(Context context, int testType, int id, int position, double resultValue, int resultColor, int quality) {
+    public static double[] convertDoubles(List<Double> doubles) {
+        double[] ret = new double[doubles.size()];
+        for (int i = 0; i < ret.length; i++) ret[i] = doubles.get(i);
+        return ret;
+    }
 
-        PreferencesUtils.setDouble(context,
-                String.format(context.getString(R.string.resultValueKey), testType, id, position),
-                resultValue);
 
-        PreferencesUtils.setInt(context,
-                String.format(context.getString(R.string.resultColorKey), testType, id, position),
-                resultColor);
-
-        PreferencesUtils.setInt(context,
-                String.format(context.getString(R.string.resultQualityKey), testType, id, position),
-                quality);
-    }*/
-
-    public static void getAverageResult(Context context, Bundle bundle) {
-
-        double result = 0;
-
-        int samplingCount = PreferencesUtils
-                .getInt(context, R.string.samplingCountKey, Config.SAMPLING_COUNT_DEFAULT);
+    public static int getAverageColor(Context context, ArrayList<Integer> colors) {
         int counter = 0;
-        double commonResult = 0;
-        double[] results = new double[samplingCount];
-        int[] colors = new int[samplingCount];
-        for (int i = 1; i < samplingCount; i++) {
-            String key = String.format(context.getString(R.string.samplingIndexKey), i);
-            results[i] = PreferencesUtils.getDouble(context, key);
-            key = String.format(context.getString(R.string.samplingColorIndexKey), i);
-            colors[i] = PreferencesUtils.getInt(context, key, -1);
-            commonResult = ColorUtils.mostFrequent(results);
-        }
 
         int red = 0;
         int green = 0;
         int blue = 0;
         //Ignore the first result
-        for (int i = 1; i < results.length; i++) {
-            if (results[i] >= 0 && colors[i] != -1) {
-                if (Math.abs(results[i] - commonResult) < 0.3) {
+        for (int i = 1; i < colors.size(); i++) {
+            int color = colors.get(i);
+            if (color != -1) {
+                counter++;
+                red += Color.red(color);
+                green += Color.green(color);
+                blue += Color.blue(color);
+            }
+        }
+
+        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+            return Color.rgb(red / counter, green / counter, blue / counter);
+        } else {
+            return -1;
+        }
+    }
+
+
+    public static double getAverageResult(Context context, ArrayList<Double> results) {
+
+        double result = 0;
+
+        int counter = 0;
+        double commonResult = 0;
+
+        commonResult = ColorUtils.mostFrequent(convertDoubles(results));
+
+        //Ignore the first result
+        for (int i = 1; i < results.size(); i++) {
+            if (results.get(i) >= 0) {
+                if (Math.abs(results.get(i) - commonResult) < 0.2) {
                     counter++;
-                    result += results[i];
-                    red += Color.red(colors[i]);
-                    green += Color.green(colors[i]);
-                    blue += Color.blue(colors[i]);
+                    result += results.get(i);
                 }
             }
         }
 
-        //Ignore the first result
-        if (counter == (Config.SAMPLING_COUNT_DEFAULT - 1)) {
-            result = round(result / counter, 2);
-            bundle.putInt(Config.RESULT_COLOR_KEY,
-                    Color.rgb(red / counter, green / counter, blue / counter));
+        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+            try {
+                result = round(result / counter, 2);
+            } catch (Exception ex) {
+                result = -1;
+            }
         } else {
             result = -1;
         }
-        bundle.putDouble(Config.RESULT_VALUE_KEY, result);
 
-//        return result;
+        return result;
     }
 
     //Ref: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
@@ -161,6 +163,4 @@ public class DataHelper {
         key = String.format(context.getString(R.string.samplingQualityIndexKey), samplingCount);
         PreferencesUtils.setInt(context, key, quality);
     }
-
-
 }

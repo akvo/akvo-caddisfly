@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.ui;
 
 import android.annotation.TargetApi;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -203,6 +204,19 @@ public class SettingsActivity extends PreferenceActivity
                 }
             });
         }
+
+        Preference cameraPreviewPreference = findPreference("cameraPreview");
+        if (cameraPreviewPreference != null) {
+            cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    CameraFragment cameraFragment = CameraFragment.newInstance(true);
+                    cameraFragment.show(ft, "cameraFragment");
+                    return true;
+                }
+            });
+        }
+
 
         return super.onCreateView(name, context, attrs);
     }

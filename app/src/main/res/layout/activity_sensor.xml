@@ -91,47 +91,54 @@
         wheel:matProg_barColor="#ffd8cd23"
         wheel:matProg_progressIndeterminate="true" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/resultLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTextView"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:visibility="visible">
 
         <TextView
             android:id="@+id/resultTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:paddingTop="30dp"
+            android:layout_marginBottom="-10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#fff"
             android:textSize="70sp"
             tools:text="20000" />
 
-        <!--<TextView-->
-        <!--android:id="@+id/temperatureTextView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/resultTextView"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--android:textColor="#ccc"-->
-        <!--tools:text="EC at 22 is 34000" />-->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="μS/cm"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ddd" />
+
+        <TextView
+            android:id="@+id/temperatureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#eee"
+            android:textSize="24sp"
+            tools:text="Temperature: 24°C" />
 
         <Button
             android:id="@+id/okButton"
             style="@style/button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/resultTextView"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:background="@drawable/start_button"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:text="@string/acceptResult" />
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
