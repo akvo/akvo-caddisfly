@@ -86,6 +86,6 @@ public class UsbConnectionActivity extends ActionBarActivity {
                 //Toast.makeText(getBaseContext(), "EC Sensor Device Connected", Toast.LENGTH_LONG).show();
                 finish();
             }
-        }, 5000);
+        }, 4000);
     }
 }

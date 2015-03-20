@@ -124,9 +124,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#eee"
+            android:textColor="#fff"
             android:textSize="24sp"
+            android:textStyle="bold"
             tools:text="Temperature: 24°C" />
+
+        <TextView
+            android:id="@+id/ecValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ddd"
+            android:textSize="17sp"
+            tools:text="EC at 25°C is 12000 μS/cm" />
 
         <Button
             android:id="@+id/okButton"

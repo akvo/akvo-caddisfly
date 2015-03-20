@@ -213,7 +213,7 @@ public class FileUtils {
                 BufferedReader in = new BufferedReader(filereader);
                 String line;
                 while ((line = in.readLine()) != null) {
-                    if (line.length() > 20) {
+                    if (line.length() > 20 || line.contains("[")) {
                         oldVersion = true;
                         arrayList = new ArrayList<>(Arrays.asList(line.substring(1, line.length() - 1).split(",\\s*")));
                         break;

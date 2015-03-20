@@ -96,10 +96,14 @@
     <string name="errorCalibrationColor">The calibrated color seems to be incorrect. Recalibrate with the provided standard solutions.</string>
     <string name="watchVideo">Watch</string>
     <string name="demonstration">Demo</string>
-    <string name="cameraPreview">Camera Preview</string>
+    <string name="cameraPreview">Check camera view</string>
     <string name="temperature">Temperature</string>
     <string name="selectDilution">Select Dilution</string>
     <string name="hundredPercentSampleWater" formatted="false">No Dilution</string>
     <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
     <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
+    <string name="ecValueAt25Celcius">EC at 25°C is %s μS/cm</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -91,13 +91,14 @@
     <string name="calibrateAttachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
     <string name="saveOriginalPhoto">"सेव मूल फोटो"</string>
     <string name="saveOriginalPhotoConfirm">"चेतावनी: सहेजा जा रहा मूल फोटो अपने फोन पर अंतरिक्ष के एक बहुत का उपयोग करेगा."</string>
-    <string name="watchVideo">Watch</string>
-    <string name="demonstration">Demo</string>
-    <string name="cameraPreview">Camera Preview</string>
+    <string name="watchVideo">देखो</string>
+    <string name="demonstration">डेमो</string>
+    <string name="cameraPreview">कैमरे के दृश्य की जाँच करें</string>
     <string name="temperature">Temperature</string>
     <string name="selectDilution">Select Dilution</string>
     <string name="hundredPercentSampleWater">100% Sample Water</string>
     <string name="fiftyPercentSampleWater">50% Sample Water</string>
     <string name="twentyFivePercentSampleWater">25% Sample Water</string>
+    <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
 
 </resources>

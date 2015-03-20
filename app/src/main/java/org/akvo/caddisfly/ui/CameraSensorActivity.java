@@ -48,6 +48,7 @@ import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
+import org.akvo.caddisfly.util.DialogGridError;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
@@ -57,7 +58,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class CameraSensorActivity extends ActionBarActivity
-        implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener {
+        implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
+        DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
     DilutionFragment mDilutionFragment;
     int mDilutionLevel = 0;
@@ -77,8 +79,9 @@ public class CameraSensorActivity extends ActionBarActivity
     private CameraFragment mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
-    private ArrayList<Double> results;
-    private ArrayList<Integer> colors;
+    private ArrayList<Double> mResults;
+    private ArrayList<Integer> mColors;
+    private ArrayList<Bitmap> mBitmaps;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -198,6 +201,7 @@ public class CameraSensorActivity extends ActionBarActivity
     private void showError(String message, final Bitmap bitmap) {
         releaseResources();
         sound.playShortResource(R.raw.err);
+
         AlertUtils.showError(this, R.string.error, message, bitmap, R.string.retry,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -216,6 +220,18 @@ public class CameraSensorActivity extends ActionBarActivity
                     }
                 }
         );
+    }
+
+    private void ShowVerboseError(boolean testFailed) {
+        DialogGridError mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed);
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        mResultFragment.setCancelable(false);
+        mResultFragment.show(ft, "gridDialog");
     }
 
     @Override
@@ -278,11 +294,13 @@ public class CameraSensorActivity extends ActionBarActivity
 
         croppedData = bos.toByteArray();
 
-        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
-                Config.SAMPLE_CROP_LENGTH_DEFAULT);
+//        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
+//                Config.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
-        Bundle bundle = ColorUtils.getPpmValue(croppedData, ranges, sampleLength);
+
+        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
+        Bundle bundle = ColorUtils.getPpmValue(croppedBitmap, ranges, Config.SAMPLE_CROP_LENGTH_DEFAULT);
         bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
@@ -297,13 +315,15 @@ public class CameraSensorActivity extends ActionBarActivity
                 break;
         }
 
-        colors.add(color);
-        results.add(result);
+        mColors.add(color);
+        mResults.add(result);
+        mBitmaps.add(croppedBitmap);
     }
 
     void startTest() {
-        results = new ArrayList<>();
-        colors = new ArrayList<>();
+        mResults = new ArrayList<>();
+        mColors = new ArrayList<>();
+        mBitmaps = new ArrayList<>();
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
@@ -336,8 +356,8 @@ public class CameraSensorActivity extends ActionBarActivity
 
                             if (mCameraFragment.hasTestCompleted()) {
 
-                                double result = DataHelper.getAverageResult(getBaseContext(), results);
-                                int color = DataHelper.getAverageColor(getBaseContext(), colors);
+                                double result = DataHelper.getAverageResult(getBaseContext(), mResults);
+                                int color = DataHelper.getAverageColor(getBaseContext(), mColors);
                                 boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                                 releaseResources();
                                 Intent intent = new Intent(getIntent());
@@ -352,23 +372,25 @@ public class CameraSensorActivity extends ActionBarActivity
                                     finish();
                                 } else {
                                     if (result < 0 || color == -1) {
-                                        showError(message, getBitmap(data));
+                                        //showError(message, getBitmap(data));
+                                        ShowVerboseError(true);
                                     } else {
                                         sound.playShortResource(R.raw.done);
-                                        Resources res = getResources();
-                                        Configuration conf = res.getConfiguration();
-                                        String title = ((MainApp) getApplicationContext()).currentTestInfo.getName(conf.locale.getLanguage());
-                                        MainApp mainApp = (MainApp) getApplicationContext();
-                                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
-                                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
-                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                        ShowVerboseError(false);
 
-                                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                                        if (prev != null) {
-                                            ft.remove(prev);
-                                        }
-                                        mResultFragment.setCancelable(false);
-                                        mResultFragment.show(ft, "resultDialog");
+//                                        MainApp mainApp = (MainApp) getApplicationContext();
+//                                        Configuration conf = getResources().getConfiguration();
+//                                        String title = mainApp.currentTestInfo.getName(conf.locale.getLanguage());
+//                                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
+//                                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
+//                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//
+//                                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+//                                        if (prev != null) {
+//                                            ft.remove(prev);
+//                                        }
+//                                        mResultFragment.setCancelable(false);
+//                                        mResultFragment.show(ft, "resultDialog");
                                     }
                                 }
                                 mCameraFragment.dismiss();
@@ -433,6 +455,7 @@ public class CameraSensorActivity extends ActionBarActivity
         return bitmap;
     }
 
+
     @Override
     public void onFinishDialog(Bundle bundle) {
         finish();
@@ -484,6 +507,22 @@ public class CameraSensorActivity extends ActionBarActivity
             }
 
             InitializeTest();
+        }
+    }
+
+    @Override
+    public void onFinishErrorListDialog(boolean retry, boolean cancelled) {
+        if (retry) {
+            mCameraFragment.dismiss();
+            InitializeTest();
+        } else {
+            if (cancelled) {
+                Intent intent = new Intent(getIntent());
+                this.setResult(Activity.RESULT_CANCELED, intent);
+            }
+            releaseResources();
+            finish();
+
         }
     }
 }

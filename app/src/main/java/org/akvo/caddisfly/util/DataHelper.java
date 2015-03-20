@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -87,27 +86,30 @@ public class DataHelper {
 
 
     public static int getAverageColor(Context context, ArrayList<Integer> colors) {
-        int counter = 0;
 
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        //Ignore the first result
-        for (int i = 1; i < colors.size(); i++) {
-            int color = colors.get(i);
-            if (color != -1) {
-                counter++;
-                red += Color.red(color);
-                green += Color.green(color);
-                blue += Color.blue(color);
-            }
-        }
+        return colors.get(colors.size() - 1);
 
-        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
-            return Color.rgb(red / counter, green / counter, blue / counter);
-        } else {
-            return -1;
-        }
+//        int counter = 0;
+//
+//        int red = 0;
+//        int green = 0;
+//        int blue = 0;
+//        //Ignore the first result
+//        for (int i = 1; i < colors.size(); i++) {
+//            int color = colors.get(i);
+//            if (color != -1) {
+//                counter++;
+//                red += Color.red(color);
+//                green += Color.green(color);
+//                blue += Color.blue(color);
+//            }
+//        }
+//
+//        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+//            return Color.rgb(red / counter, green / counter, blue / counter);
+//        } else {
+//            return -1;
+//        }
     }
 
 

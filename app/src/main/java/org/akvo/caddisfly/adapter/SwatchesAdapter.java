@@ -71,8 +71,7 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
             int g = Color.green(color);
             int b = Color.blue(color);
 
-            rgbText.setText(
-                    String.format("d:%.0f  %s: %d  %d  %d", 0.0, "rgb", r, g, b));
+            rgbText.setText(String.format("d:%.0f  %s: %d  %d  %d", 0.0, "rgb", r, g, b));
         }
         return rowView;
     }

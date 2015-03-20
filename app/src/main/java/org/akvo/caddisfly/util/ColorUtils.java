@@ -18,7 +18,6 @@ package org.akvo.caddisfly.util;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.SparseIntArray;
@@ -41,14 +40,14 @@ public class ColorUtils {
 
     private static final double MAX_COLOR_DISTANCE = 70.0;
 
-    public static Bundle getPpmValue(byte[] data, ArrayList<ResultRange> colorRange, int length) {
-        ColorInfo photoColor = getColorFromByteArray(data, length);
+    public static Bundle getPpmValue(Bitmap bitmap, ArrayList<ResultRange> colorRange, int length) {
+        ColorInfo photoColor = getColorFromByteArray(bitmap, length);
         return analyzeColor(photoColor, colorRange);
     }
 
-    private static ColorInfo getColorFromByteArray(byte[] data, int length) {
+    private static ColorInfo getColorFromByteArray(Bitmap bitmap, int length) {
         //byte[] imageData = resizeImage(data, length);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+        //Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
         return getColorFromBitmap(bitmap, length);
     }
 
@@ -88,7 +87,7 @@ public class ColorUtils {
                 }
             }
 
-            bitmap.recycle();
+            //bitmap.recycle();
 
             colorsFound = m.size();
             int goodColors = 0;

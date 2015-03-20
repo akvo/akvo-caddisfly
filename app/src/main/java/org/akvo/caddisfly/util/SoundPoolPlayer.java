@@ -40,7 +40,7 @@ public class SoundPoolPlayer {
 
     public void playShortResource(int piResource) {
         int iSoundId = mSounds.get(piResource);
-        this.mShortPlayer.play(iSoundId, 0.09f, 0.09f, 0, 0, 1);
+        this.mShortPlayer.play(iSoundId, 0.04f, 0.04f, 0, 0, 1);
     }
 
     public void release() {

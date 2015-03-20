@@ -89,6 +89,10 @@ public class MainApp extends Application {
             //Look for external json config file otherwise use the internal default one
             if (file.exists()) {
                 text = FileUtils.loadTextFromFile(path);
+                //ignore file if it is old version
+                if (!text.contains("ranges")) {
+                    text = FileUtils.readRawTextFile(this, R.raw.tests_json);
+                }
             } else {
                 text = FileUtils.readRawTextFile(this, R.raw.tests_json);
             }

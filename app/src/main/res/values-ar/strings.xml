@@ -91,13 +91,14 @@
     <string name="calibrateAttachStandardCartridge">"إرفاق خرطوشة حل القياسية لهذه القيمة ثم اضغط معايرة"</string>
     <string name="saveOriginalPhoto">حفظ الصورة الأصلية</string>
     <string name="saveOriginalPhotoConfirm">تحذير: سيؤدي حفظ الصور الأصلية استخدام الكثير من الفضاء على هاتفك.</string>
-    <string name="watchVideo">Watch</string>
-    <string name="demonstration">Demo</string>
-    <string name="cameraPreview">Camera Preview</string>
+    <string name="watchVideo">ووتش</string>
+    <string name="demonstration">عرض</string>
+    <string name="cameraPreview">تحقق من عرض الكاميرا</string>
     <string name="temperature">Temperature</string>
     <string name="selectDilution">Select Dilution</string>
     <string name="hundredPercentSampleWater">No Dilution</string>
     <string name="fiftyPercentSampleWater">50% Sample Water</string>
     <string name="twentyFivePercentSampleWater">25% Sample Water</string>
+    <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
 
 </resources>

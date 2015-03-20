@@ -48,15 +48,55 @@ public class SensorActivity extends ActionBarActivity {
     private final Handler mHandler = new Handler();
     private final StringBuilder mReadData = new StringBuilder();
     private FtdiSerial mConnection;
+    private String mEc25Value = "";
     private String mEcValue = "";
     private String mTemperature = "";
     private boolean mRunLoop = false;
     private TextView mResultTextView;
     private TextView mTemperatureTextView;
+    private TextView mEcValueTextView;
     private Button mOkButton;
     private LinearLayout mConnectionLayout;
     private LinearLayout mResultLayout;
     private ProgressWheel mProgressBar;
+    //http://developer.android.com/guide/topics/connectivity/usb/host.html
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            switch (action) {
+                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
+                    if (!mConnection.isOpen()) {
+                        Connect();
+                    }
+                    if (!mRunLoop) {
+                        startCommunication();
+                    }
+                    break;
+                case UsbManager.ACTION_USB_DEVICE_DETACHED:
+                    mRunLoop = false;
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mResultLayout.setVisibility(View.GONE);
+                            mProgressBar.setVisibility(View.GONE);
+                            mConnectionLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    mConnection.close();
+                    break;
+                case ACTION_USB_PERMISSION:
+                    if (!mConnection.isOpen()) {
+                        Connect();
+                    }
+                    if (!mRunLoop) {
+                        startCommunication();
+                    }
+                    break;
+            }
+        }
+    };
+    private boolean firstResultIgnored = false;
     private final Runnable mCommunicate = new Runnable() {
         @Override
         public void run() {
@@ -78,47 +118,14 @@ public class SensorActivity extends ActionBarActivity {
 
                     mHandler.post(new Runnable() {
                         public void run() {
-                            displayResult(mReadData.toString());
+                            if (firstResultIgnored) {
+                                displayResult(mReadData.toString());
+                            }
+                            firstResultIgnored = true;
                             mReadData.setLength(0);
                         }
                     });
                 }
-            }
-        }
-    };
-    //http://developer.android.com/guide/topics/connectivity/usb/host.html
-    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            switch (action) {
-                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
-                    break;
-                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-                    mRunLoop = false;
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            mResultLayout.setVisibility(View.GONE);
-                            mConnectionLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
-
-                    mConnection.close();
-                    break;
-                case ACTION_USB_PERMISSION:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
-                    break;
             }
         }
     };
@@ -134,6 +141,7 @@ public class SensorActivity extends ActionBarActivity {
 
         mResultTextView = (TextView) findViewById(R.id.resultTextView);
         mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
+        mEcValueTextView = (TextView) findViewById(R.id.ecValueTextView);
         mProgressBar = (ProgressWheel) findViewById(R.id.progress_wheel);
 
         final MainApp mainApp = (MainApp) getApplicationContext();
@@ -199,6 +207,7 @@ public class SensorActivity extends ActionBarActivity {
                 startCommunication();
             } else {
                 mResultLayout.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
                 mConnectionLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -218,23 +227,33 @@ public class SensorActivity extends ActionBarActivity {
             String[] resultArray = result.trim().split(",");
 
             if (resultArray.length > 2) {
-                mTemperature = resultArray[0];
-                mEcValue = resultArray[1];
-                //ec25Value = resultArray[2];
 
 //                CRC32 crc32 = new CRC32();
 //                crc32.update((temperature + "," + ecValue + "," + ec25Value).getBytes());
 //                crc32.getValue();
 //                result += "," + Long.toHexString(crc32.getValue());
 
-                mResultTextView.setText(mEcValue);
-                mTemperatureTextView.setText(getResources().getText(R.string.temperature) + ": " + mTemperature + "\u00B0C");
-                mProgressBar.setVisibility(View.GONE);
-                mResultLayout.setVisibility(View.VISIBLE);
-                mConnectionLayout.setVisibility(View.GONE);
-                mOkButton.setVisibility(View.VISIBLE);
+                if (validDouble(resultArray[0]) && validDouble(resultArray[1]) && validDouble(resultArray[2])) {
+                    mTemperature = resultArray[0];
+                    mEcValue = resultArray[1];
+                    mEc25Value = resultArray[2];
+
+                    mResultTextView.setText(mEcValue);
+                    mTemperatureTextView.setText(getResources().getText(R.string.temperature) + ": " + mTemperature + "\u00B0C");
+                    mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEc25Value));
+                    mProgressBar.setVisibility(View.GONE);
+                    mResultLayout.setVisibility(View.VISIBLE);
+                    mConnectionLayout.setVisibility(View.GONE);
+                    mOkButton.setVisibility(View.VISIBLE);
+                }
             }
         }
+    }
+
+    private boolean validDouble(String doubleString) {
+        return (doubleString.contains(".") && !doubleString.startsWith(".")) &&
+                doubleString.indexOf(".") == doubleString.length() - 3;
+
     }
 
     @Override

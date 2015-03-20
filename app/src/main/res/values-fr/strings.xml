@@ -46,10 +46,10 @@
     <string name="dataConnection">"Connexion de données"</string>
     <string name="enableInternet">"Connexion Internet requise"</string>
     <string name="analysisInProgress">"Analyse en cours"</string>
-    <string name="waitTillCameraSound">"Puis attendre son d'alerte en environ une minute"</string>
+    <string name="waitTillCameraSound">"et attendre pour le test pour terminer"</string>
     <string name="startTestConfirm">"Assurer cartouche est fixée correctement et appuyez sur OK"</string>
     <string name="testInProgress">"Test en cours"</string>
-    <string name="placeDeviceInStand">"Placez la face du téléphone vers le bas sur une surface plane pour continuer"</string>
+    <string name="placeDeviceInStand">"Placez le téléphone sur une surface plane avec face vers le bas"</string>
     <string name="highLevelsFound">"Haut niveau de contamination a été détectée"</string>
     <string name="placeHighRangeCartridge">Mélanger %1$.0f%% d\'eau de l\'échantillon et %2$.0f%% d\'eau déminéralisée. Testez ce mélange maintenant.</string>
     <string name="watchTrainingVideo">"Regarder Vidéo de formation"</string>
@@ -93,10 +93,11 @@
     <string name="errorTestNotAvailable">"Ce test ne est pas disponible"</string>
     <string name="errorLoadingTestTypes">Types de tests de chargement d\'erreur. Vérifiez que fichier tests.json est valide.</string>
     <string name="errorCalibrationColor">"La couleur calibré semble incorrect. Recalibrer avec les solutions standard fournis."</string>
-    <string name="cameraPreview">Camera Preview</string>
-    <string name="temperature">Temperature</string>
-    <string name="selectDilution">Select Dilution</string>
-    <string name="hundredPercentSampleWater">100% Sample Water</string>
-    <string name="fiftyPercentSampleWater">50% Sample Water</string>
-    <string name="twentyFivePercentSampleWater">25% Sample Water</string>
+    <string name="cameraPreview">Vérifiez vue de la caméra</string>
+    <string name="temperature">Température</string>
+    <string name="selectDilution">Sélectionnez dilution</string>
+    <string name="hundredPercentSampleWater">Aucune dilution</string>
+    <string name="fiftyPercentSampleWater">50% de l\'eau de l\'échantillon</string>
+    <string name="twentyFivePercentSampleWater">25% de l\'eau de l\'échantillon</string>
+    <string name="ecValueAt25Celcius">CE à 25°C est %s</string>
 </resources>

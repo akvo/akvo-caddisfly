@@ -93,13 +93,14 @@
     <string name="calibrateAttachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
     <string name="saveOriginalPhoto">"ಉಳಿಸಿ ಮೂಲ ಫೋಟೋ"</string>
     <string name="saveOriginalPhotoConfirm">"ಎಚ್ಚರಿಕೆ: ಉಳಿಸಲಾಗುತ್ತಿದೆ ಮೂಲ ಫೋಟೋಗಳನ್ನು ನಿಮ್ಮ ಫೋನ್ನಲ್ಲಿ ಜಾಗವನ್ನು ಸಾಕಷ್ಟು ಬಳಸುತ್ತದೆ."</string>
-    <string name="watchVideo">Watch</string>
-    <string name="demonstration">Demo</string>
-    <string name="cameraPreview">Camera Preview</string>
+    <string name="watchVideo">ನೋಡಿ</string>
+    <string name="demonstration">ಡೆಮೊ</string>
+    <string name="cameraPreview">ಕ್ಯಾಮೆರಾ ವೀಕ್ಷಿಸಿ ಪರಿಶೀಲಿಸಿ</string>
     <string name="temperature">Temperature</string>
     <string name="selectDilution">Select Dilution</string>
     <string name="hundredPercentSampleWater">100% Sample Water</string>
     <string name="fiftyPercentSampleWater">50% Sample Water</string>
     <string name="twentyFivePercentSampleWater">25% Sample Water</string>
+    <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
 
 </resources>
