@@ -55,6 +55,7 @@ import org.akvo.caddisfly.util.ShakeDetector;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 public class CameraSensorActivity extends ActionBarActivity
@@ -82,6 +83,7 @@ public class CameraSensorActivity extends ActionBarActivity
     private ArrayList<Double> mResults;
     private ArrayList<Integer> mColors;
     private ArrayList<Bitmap> mBitmaps;
+    private boolean mTestCompleted;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -154,6 +156,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
     private void InitializeTest() {
 
+        mTestCompleted = false;
         MainApp mainApp = (MainApp) getApplicationContext();
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
@@ -222,8 +225,8 @@ public class CameraSensorActivity extends ActionBarActivity
         );
     }
 
-    private void ShowVerboseError(boolean testFailed) {
-        DialogGridError mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed);
+    private void ShowVerboseError(boolean testFailed, double result) {
+        DialogGridError mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result);
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
@@ -253,8 +256,7 @@ public class CameraSensorActivity extends ActionBarActivity
     protected void onStart() {
         super.onStart();
         MainApp mainApp = (MainApp) getApplicationContext();
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
+        //Configuration conf = getResources().getConfiguration();
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
@@ -266,7 +268,8 @@ public class CameraSensorActivity extends ActionBarActivity
                         }
                     }, null);
 
-        } else if (!isCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
+        } else if (!isCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")
+                && !mTestCompleted) {
             mDilutionFragment = DilutionFragment.newInstance();
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
@@ -279,7 +282,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
             mDilutionTextView.setVisibility(View.VISIBLE);
 
-        } else {
+        } else if (!mTestCompleted) {
             InitializeTest();
         }
     }
@@ -315,9 +318,17 @@ public class CameraSensorActivity extends ActionBarActivity
                 break;
         }
 
+
         mColors.add(color);
         mResults.add(result);
         mBitmaps.add(croppedBitmap);
+
+        if (mResults.size() > 3) {
+            if (DataHelper.getAverageResult(getBaseContext(), mResults) == -1) {
+                //mCameraFragment.samplingCount--;
+            }
+        }
+
     }
 
     void startTest() {
@@ -371,26 +382,33 @@ public class CameraSensorActivity extends ActionBarActivity
                                     sound.playShortResource(R.raw.done);
                                     finish();
                                 } else {
+                                    boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
                                     if (result < 0 || color == -1) {
-                                        //showError(message, getBitmap(data));
-                                        ShowVerboseError(true);
+                                        if (developerMode) {
+                                            ShowVerboseError(true, 0);
+                                        } else {
+                                            showError(message, getBitmap(data));
+                                        }
                                     } else {
                                         sound.playShortResource(R.raw.done);
-                                        ShowVerboseError(false);
+                                        mTestCompleted = true;
+                                        if (developerMode) {
+                                            ShowVerboseError(false, result);
+                                        } else {
+                                            MainApp mainApp = (MainApp) getApplicationContext();
+                                            Configuration conf = getResources().getConfiguration();
+                                            String title = mainApp.currentTestInfo.getName(conf.locale.getLanguage());
+                                            ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
+                                                    mDilutionLevel, mainApp.currentTestInfo.getUnit());
+                                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-//                                        MainApp mainApp = (MainApp) getApplicationContext();
-//                                        Configuration conf = getResources().getConfiguration();
-//                                        String title = mainApp.currentTestInfo.getName(conf.locale.getLanguage());
-//                                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
-//                                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
-//                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//
-//                                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-//                                        if (prev != null) {
-//                                            ft.remove(prev);
-//                                        }
-//                                        mResultFragment.setCancelable(false);
-//                                        mResultFragment.show(ft, "resultDialog");
+                                            Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                                            if (prev != null) {
+                                                ft.remove(prev);
+                                            }
+                                            mResultFragment.setCancelable(false);
+                                            mResultFragment.show(ft, "resultDialog");
+                                        }
                                     }
                                 }
                                 mCameraFragment.dismiss();
@@ -434,10 +452,20 @@ public class CameraSensorActivity extends ActionBarActivity
     }
 
     private Bitmap getBitmap(byte[] bytes) {
-        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
-                Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        int sampleLength = Config.SAMPLE_CROP_LENGTH_DEFAULT;
         int[] pixels = new int[sampleLength * sampleLength];
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        //File external = Environment.getExternalStorageDirectory();
+        //final String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
+
+        File path = this.getExternalFilesDir(null);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+
+        ImageUtils.saveBitmap(bitmap, path.getAbsolutePath() + "/" + mResults.size() + ".jpg");
+
         bitmap.getPixels(pixels, 0, sampleLength,
                 (bitmap.getWidth() - sampleLength) / 2,
                 (bitmap.getHeight() - sampleLength) / 2,

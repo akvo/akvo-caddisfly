@@ -40,12 +40,13 @@ public class DialogGridError extends DialogFragment {
     }
 
     public static DialogGridError newInstance(ArrayList<Integer> colors, ArrayList<Double> results,
-                                              ArrayList<Bitmap> bitmaps, boolean allowRetry) {
+                                              ArrayList<Bitmap> bitmaps, boolean allowRetry, double result) {
         DialogGridError fragment = new DialogGridError();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
         args.putIntegerArrayList("colors", colors);
         args.putDoubleArray("results", convertDoubles(results));
+        args.putDouble("result", result);
         fragment.mBitmaps = bitmaps;
         fragment.setArguments(args);
         return fragment;
@@ -60,7 +61,6 @@ public class DialogGridError extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().setTitle(R.string.error);
 
         final View view = inflater.inflate(R.layout.dialog_grid_error, container, false);
 
@@ -73,11 +73,13 @@ public class DialogGridError extends DialogFragment {
         mResults = getArguments().getDoubleArray("results");
         mAllowRetry = getArguments().getBoolean("retry");
 
+
         Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
         Button retryButton = (Button) view.findViewById(R.id.retryButton);
         Button okButton = (Button) view.findViewById(R.id.okButton);
 
         if (mAllowRetry) {
+            getDialog().setTitle(R.string.error);
             cancelButton.setVisibility(View.VISIBLE);
             retryButton.setVisibility(View.VISIBLE);
             okButton.setVisibility(View.GONE);
@@ -101,6 +103,8 @@ public class DialogGridError extends DialogFragment {
                 }
             });
         } else {
+            double result = getArguments().getDouble("result");
+            getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
             cancelButton.setVisibility(View.GONE);
             retryButton.setVisibility(View.GONE);
             okButton.setVisibility(View.VISIBLE);

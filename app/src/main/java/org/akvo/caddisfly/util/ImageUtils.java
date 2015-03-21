@@ -28,7 +28,9 @@ import org.akvo.caddisfly.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class ImageUtils {
 
@@ -100,7 +102,7 @@ public class ImageUtils {
         return null;
     }
 
- /*   public static void saveBitmap(Bitmap bitmap, String filename) {
+    public static void saveBitmap(Bitmap bitmap, String filename) {
 
         if (bitmap == null) {
             return;
@@ -116,7 +118,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     public static Bitmap getRoundedShape(Bitmap scaleBitmapImage, int diameter) {
 

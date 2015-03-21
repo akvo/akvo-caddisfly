@@ -35,4 +35,6 @@
 
     // width and height of sampled image
     <string name="photoSampleDimensionKey">photoSampleDimension</string>
+
+    <string name="developerModeKey">photoSampleDimension</string>
 </resources>

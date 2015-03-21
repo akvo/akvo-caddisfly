@@ -48,6 +48,7 @@
             tools:ignore="UnusedAttribute" />
 
         <ImageView
+            android:id="@+id/logoImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -87,6 +88,16 @@
             android:textSize="15sp"
             android:textStyle="bold"
             tools:ignore="UnusedAttribute" />
+
+        <Button
+            android:id="@+id/disableDeveloperButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:alpha="0.5"
+            android:text="Disable developer mode"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -113,6 +124,7 @@
             android:contentDescription="@null"
             android:src="@drawable/akvo" />
     </LinearLayout>
+
 </FrameLayout>
 
 

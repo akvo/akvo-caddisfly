@@ -21,10 +21,6 @@
         android:summary="@string/calibrateSummary"
         android:title="@string/calibrate" />
 
-    <Preference
-        android:key="cameraPreview"
-        android:title="@string/cameraPreview" />
-
     <ListPreference
         android:defaultValue="en"
         android:dialogTitle="@string/language"

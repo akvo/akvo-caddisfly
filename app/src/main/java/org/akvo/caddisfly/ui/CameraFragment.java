@@ -55,9 +55,9 @@ public class CameraFragment extends DialogFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     public Camera.PictureCallback pictureCallback;
+    public int samplingCount;
     // TODO: Rename and change types of parameters
     private boolean mPreviewOnly;
-    private int samplingCount;
     private OnFragmentInteractionListener mListener;
     private SoundPoolPlayer sound;
     private boolean mCancelled = false;

@@ -120,19 +120,22 @@ public class DataHelper {
         int counter = 0;
         double commonResult = 0;
 
-        commonResult = ColorUtils.mostFrequent(convertDoubles(results));
+        double[] resultArray = convertDoubles(results);
+        //ignore first value;
+        resultArray[0] = -1;
+        commonResult = ColorUtils.mostFrequent(resultArray);
 
         //Ignore the first result
         for (int i = 1; i < results.size(); i++) {
             if (results.get(i) >= 0) {
-                if (Math.abs(results.get(i) - commonResult) < 0.2) {
+                if (Math.abs(results.get(i) - commonResult) < 0.21) {
                     counter++;
                     result += results.get(i);
                 }
             }
         }
 
-        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+        if (counter >= Math.min(results.size() - 1, Config.SAMPLING_COUNT_DEFAULT - 1)) {
             try {
                 result = round(result / counter, 2);
             } catch (Exception ex) {

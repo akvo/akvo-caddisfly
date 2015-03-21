@@ -14,23 +14,10 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context="org.akvo.caddisfly.ui.CameraFragment">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <Preference
+        android:key="cameraPreview"
+        android:title="@string/cameraPreview" />
 
-    <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/border"
-        android:gravity="center" />
-
-</RelativeLayout>
+</PreferenceScreen>

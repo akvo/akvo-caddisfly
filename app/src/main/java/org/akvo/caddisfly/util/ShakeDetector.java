@@ -78,7 +78,7 @@ public class ShakeDetector implements SensorEventListener {
         int inclination = (int) Math.round(Math.toDegrees(Math.acos(g[2])));
         //Log.i("Sensor", String.valueOf(inclination));
         // check inclination to detect if the phone is placed on a flat surface with screen below
-        if (inclination > 169) {
+        // if (inclination > 169) {
             synchronized (this) {
                 long nowNoShake = System.currentTimeMillis();
                 if (Math.abs(maxLinearAcceleration) < MAX_SHAKE_ACCELERATION) {
@@ -97,7 +97,7 @@ public class ShakeDetector implements SensorEventListener {
                     noShakeStartTime = nowNoShake;
                 }
             }
-        }
+        //}
 
         synchronized (this) {
 

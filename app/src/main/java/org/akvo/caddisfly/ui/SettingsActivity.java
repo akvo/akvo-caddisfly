@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
 import java.util.List;
@@ -151,6 +152,11 @@ public class SettingsActivity extends PreferenceActivity
 
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
+
+        boolean developerMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
+        if (developerMode) {
+            addPreferencesFromResource(R.xml.pref_developer);
+        }
 
     }
 

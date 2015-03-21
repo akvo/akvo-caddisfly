@@ -20,24 +20,61 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.NetworkUtils;
+import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class AboutActivity extends ActionBarActivity {
+
+    boolean mDeveloperMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        mDeveloperMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
+
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
         ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
+        ImageView logoView = (ImageView) findViewById(R.id.logoImageView);
+        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDeveloperButton);
+
+        if (mDeveloperMode) {
+            disableDeveloperButton.setVisibility(View.VISIBLE);
+        }
+
+        disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                disableDeveloperButton.setVisibility(View.GONE);
+                Toast.makeText(getBaseContext(), "Developer mode disabled", Toast.LENGTH_LONG).show();
+                PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, false);
+            }
+        });
+
+        logoView.setOnClickListener(new View.OnClickListener() {
+            int clickCount = 0;
+
+            @Override
+            public void onClick(View view) {
+                clickCount++;
+                if (clickCount > 9) {
+                    clickCount = 0;
+                    Toast.makeText(getBaseContext(), "Developer mode enabled", Toast.LENGTH_LONG).show();
+                    disableDeveloperButton.setVisibility(View.VISIBLE);
+                    PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, true);
+                }
+            }
+        });
 
         final Context context = this;
         productView.setOnClickListener(new View.OnClickListener() {

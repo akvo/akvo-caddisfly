@@ -48,8 +48,6 @@ public class Config {
 
     public static final String TRAINING_VIDEO_LINK = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
 
-    public static final String CADDISFLY_PACKAGE_NAME = "com.ternup.caddisfly";
-
     public static final String CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
 
     // Tag for debug log filtering
@@ -57,12 +55,6 @@ public class Config {
 
     // new folder name using date
     public static final String FOLDER_NAME_DATE_FORMAT = "yyyyMMddHHmmss";
-
-    // Index of screens that gets displayed in the app
-    public static final int HOME_SCREEN_INDEX = 0;
-    public static final int SETTINGS_SCREEN_INDEX = 1;
-    public static final int CALIBRATE_SCREEN_INDEX = 2;
-    public static final int SWATCH_SCREEN_INDEX = 3;
 
     // width and height of cropped image
     public static final int IMAGE_CROP_LENGTH = 300;
