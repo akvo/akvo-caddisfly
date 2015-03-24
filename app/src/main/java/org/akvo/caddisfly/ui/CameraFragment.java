@@ -47,13 +47,10 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CameraFragment extends DialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;
     public int samplingCount;
     private int picturesTaken;
-    // TODO: Rename and change types of parameters
     private boolean mPreviewOnly;
     //private OnFragmentInteractionListener mListener;
     private SoundPoolPlayer sound;
@@ -79,7 +76,7 @@ public class CameraFragment extends DialogFragment {
     public static CameraFragment newInstance(boolean previewOnly) {
         CameraFragment fragment = new CameraFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_PARAM1, previewOnly);
+        args.putBoolean(ARG_PREVIEW_ONLY, previewOnly);
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,7 +99,7 @@ public class CameraFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPreviewOnly = getArguments().getBoolean(ARG_PARAM1);
+            mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
         }
         sound = new SoundPoolPlayer(getActivity());
     }
@@ -307,8 +304,8 @@ public class CameraFragment extends DialogFragment {
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
 
             List<String> supportedSceneModes = mCamera.getParameters().getSupportedSceneModes();
-            if (supportedSceneModes != null && supportedSceneModes.contains(Camera.Parameters.SCENE_MODE_FIREWORKS)) {
-                parameters.setSceneMode(Camera.Parameters.SCENE_MODE_FIREWORKS);
+            if (supportedSceneModes != null && supportedSceneModes.contains(Camera.Parameters.SCENE_MODE_AUTO)) {
+                parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
             }
 
             parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
@@ -323,18 +320,18 @@ public class CameraFragment extends DialogFragment {
                 parameters.setMeteringAreas(meteringAreas);
             }
 
-            if (mPreviewOnly) {
-                if (mSupportedFlashModes != null && mSupportedFlashModes
-                        .contains(Camera.Parameters.FLASH_MODE_ON)) {
-                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                }
-            }
-
             List<String> focusModes = parameters.getSupportedFocusModes();
             if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
             } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+            }
+
+            if (mPreviewOnly) {
+                if (mSupportedFlashModes != null && mSupportedFlashModes
+                        .contains(Camera.Parameters.FLASH_MODE_ON)) {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                }
             }
 
             mCamera.setDisplayOrientation(90);

@@ -16,59 +16,82 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
 public class MessageFragment extends DialogFragment {
 
-    public static MessageFragment newInstance(String title, String message) {
+    public static MessageFragment newInstance(String title, String message, int dilutionLevel) {
         MessageFragment fragment = new MessageFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("message", message);
+        args.putInt("dilution", dilutionLevel);
         fragment.setArguments(args);
         return fragment;
     }
 
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        Dialog dialog = super.onCreateDialog(savedInstanceState);
-//
-//        // request a window without the title
-//        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-//        return dialog;
-//    }
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // request a window without the title
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final String title = getArguments().getString("title");
-        getDialog().setTitle(title);
+        //getDialog().setTitle(title);
 
         final View view = inflater.inflate(R.layout.fragment_message, container, false);
 
-        //TextView messageTextView = (TextView) view.findViewById(R.id.messageTextView1);
-        //TextView titleView = (TextView) view.findViewById(R.id.titleView);
+        TextView titleView = (TextView) view.findViewById(R.id.title);
+        final String title = getArguments().getString("title");
+        titleView.setText(title);
+
+        TextView messageTextView1 = (TextView) view.findViewById(R.id.messageTextView1);
+        messageTextView1.setText(String.format(getString(R.string.highLevelsFound), title));
+
+        TextView messageTextView2 = (TextView) view.findViewById(R.id.messageTextView2);
+        final String message = getArguments().getString("message");
+        messageTextView2.setText(message);
+
+//        TextView dilutionTextView = (TextView) view.findViewById(R.id.dilutionTextView);
+//        int dilutionLevel = getArguments().getInt("dilution", -1);
+//        switch (dilutionLevel) {
+//            case 0:
+//                dilutionTextView.setVisibility(View.VISIBLE);
+//                dilutionTextView.setText(R.string.hundredPercentSampleWater);
+//                break;
+//            case 1:
+//                dilutionTextView.setVisibility(View.VISIBLE);
+//                dilutionTextView.setText(R.string.fiftyPercentSampleWater);
+//                break;
+//            case 2:
+//                dilutionTextView.setVisibility(View.VISIBLE);
+//                dilutionTextView.setText(R.string.twentyFivePercentSampleWater);
+//                break;
+//        }
+
         Button button = (Button) view.findViewById(R.id.endSurveyButton);
-
-        //final String message = getArguments().getString("message");
-        //messageTextView.setText(message);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 MessageDialogListener listener = (MessageDialogListener) getActivity();
                 dismiss();
                 listener.onFinishDialog();
-
             }
         });
 

@@ -183,7 +183,7 @@ public class EspressoTest
         onView(withId(android.R.id.button1)).perform(click());
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

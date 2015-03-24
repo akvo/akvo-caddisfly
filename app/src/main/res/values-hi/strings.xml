@@ -21,12 +21,8 @@
     <string name="updateFetching">"Caddisfly अद्यतन हो रही है …"</string>
     <string name="errorCalibrationIncomplete">"Caddisfly अंशांकन अधूरा है. एक परीक्षण शुरू करने से पहले अंशांकन ठीक कर लें."</string>
     <string name="enableInternet">"इंटरनेट कनेक्शन की आवश्यकता"</string>
-    <string name="errorPhotoQuality">"फोटो गुणवत्ता भी कम"</string>
-    <string name="errorNotCalibrated">"Calibrated नहीं"</string>
     <string name="errorAkvoFlowRequired">"स्थापित करें Akvo फ्लो अनुप्रयोग"</string>
     <string name="analysisInProgress">"प्रगति में विश्लेषण"</string>
-    <string name="errorOutOfSequence">"अनुक्रम से बाहर"</string>
-    <string name="errorDuplicateSwatch">"नकली या इसी तरह के रंग"</string>
     <string name="about">"के बारे में"</string>
     <string name="swatches">"नमूने"</string>
     <string name="delete">"हटाएं"</string>
@@ -71,21 +67,16 @@
     <string name="updateRequest">"एक अद्यतन संस्करण उपलब्ध है, आप अब अद्यतन करना चाहते हैं?"</string>
     <string name="updateCheck">"चेक अद्यतन"</string>
     <string name="dataConnection">"डेटा कनेक्शन"</string>
-    <string name="testInProgress">"प्रगति में टेस्ट"</string>
     <string name="updatedAlready">"आप पहले से ही Caddisfly का नवीनतम संस्करण स्थापित"</string>
-    <string name="remaining">"शेष"</string>
     <string name="result">"परिणाम "</string>
     <string name="updateCheckingFor">"अपडेटों के लिए जाँच की जा रही है…"</string>
-    <string name="starting">"शुरू …"</string>
     <string name="error">"त्रुटि"</string>
     <string name="retry">"पुनः प्रयास करें"</string>
-    <string name="errorOutOfRange">"सीमा से बाहर रंग"</string>
     <string name="placeDeviceInStand">"जारी रखने के लिए एक फ्लैट सतह पर फोन प्लेस"</string>
     <string name="updateSummary">"एक अद्यतन Akvo Caddisfly के लिए उपलब्ध है की जाँच"</string>
     <string name="startSurvey">"प्रारंभ सर्वेक्षण"</string>
     <string name="backToSurvey">"पीछे सर्वेक्षण के"</string>
-    <string name="errorCalibrationColor">"calibrated रंग गलत हो रहा है. प्रदान की मानक समाधान के साथ recalibrate."</string>
-    <string name="waterQualityTest">"जल गुणवत्ता परीक्षण"</string>
+    <string name="waterQuality">"जल गुणवत्ता परीक्षण"</string>
     <string name="calibrateAttachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
     <string name="watchVideo">देखो</string>
     <string name="demonstration">डेमो</string>
@@ -99,6 +90,8 @@
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>
     <string name="developerModeDisabled">Developer mode disabled</string>
-    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
+    <string name="tryWith50PercentSample">Try again with a dilution of 50% sample water</string>
+    <string name="tryWith25PercentSample">Try again with a dilution of 25% sample water</string>
+
 
 </resources>

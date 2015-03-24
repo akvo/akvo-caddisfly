@@ -128,13 +128,6 @@
                 android:textStyle="bold"
                 android:visibility="invisible" />
 
-            <TextView
-                android:id="@+id/errorSummaryTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/errorCalibrationColor"
-                android:textSize="20sp"
-                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -59,11 +59,11 @@ import java.util.ArrayList;
 
 public class CameraSensorActivity extends ActionBarActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
-        DialogGridError.ErrorListDialogListener {
+        MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
     DilutionFragment mDilutionFragment;
     int mDilutionLevel = 0;
-    private TextView mTitleText;
+    //private TextView mTitleText;
     private TextView mTestTypeTextView;
     private TextView mDilutionTextView;
     private SoundPoolPlayer sound;
@@ -83,6 +83,7 @@ public class CameraSensorActivity extends ActionBarActivity
     private ArrayList<Integer> mColors;
     private ArrayList<Bitmap> mBitmaps;
     private boolean mTestCompleted;
+    private boolean mHighLevelsFound;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -105,7 +106,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
         sound = new SoundPoolPlayer(this);
 
-        mTitleText = (TextView) findViewById(R.id.titleText);
+        //mTitleText = (TextView) findViewById(R.id.titleText);
         mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
 
         mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
@@ -156,11 +157,12 @@ public class CameraSensorActivity extends ActionBarActivity
     private void InitializeTest() {
 
         mTestCompleted = false;
+        mHighLevelsFound = false;
         MainApp mainApp = (MainApp) getApplicationContext();
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
-        mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        //mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (wakeLock == null || !wakeLock.isHeld()) {
@@ -392,18 +394,31 @@ public class CameraSensorActivity extends ActionBarActivity
                                     } else {
 
                                         mTestCompleted = true;
+                                        MainApp mainApp = (MainApp) getApplicationContext();
+
+                                        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
+                                            mHighLevelsFound = true;
+                                        }
+
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
                                             ShowVerboseError(false, result);
                                         } else {
-                                            MainApp mainApp = (MainApp) getApplicationContext();
                                             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
-                                            if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
-
+                                            if (mHighLevelsFound && mDilutionLevel < 2) {
                                                 sound.playShortResource(R.raw.beep_long);
+                                                mHighLevelsFound = true;
+                                                switch (mDilutionLevel) {
+                                                    case 0:
+                                                        message = getString(R.string.tryWith50PercentSample);
+                                                        break;
+                                                    case 1:
+                                                        message = getString(R.string.tryWith25PercentSample);
+                                                        break;
+                                                }
 
-                                                MessageFragment mMessageFragment = MessageFragment.newInstance(title, getString(R.string.highLevelsFound));
+                                                MessageFragment mMessageFragment = MessageFragment.newInstance(title, message, mDilutionLevel);
                                                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                                                 Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
@@ -412,7 +427,6 @@ public class CameraSensorActivity extends ActionBarActivity
                                                 }
                                                 mMessageFragment.setCancelable(false);
                                                 mMessageFragment.show(ft, "resultDialog");
-
 
                                             } else {
                                                 sound.playShortResource(R.raw.done);
@@ -548,14 +562,29 @@ public class CameraSensorActivity extends ActionBarActivity
                     mDilutionTextView.setText(R.string.twentyFivePercentSampleWater);
                     break;
             }
-
             InitializeTest();
         }
     }
 
     @Override
     public void onFinishErrorListDialog(boolean retry, boolean cancelled) {
-        if (retry) {
+        if (mHighLevelsFound) {
+            mCameraFragment.dismiss();
+            sound.playShortResource(R.raw.beep_long);
+            MainApp mainApp = (MainApp) getApplicationContext();
+            String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+            MessageFragment mMessageFragment = MessageFragment.newInstance(title,
+                    getString(R.string.highLevelsFound), mDilutionLevel);
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+            Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            mMessageFragment.setCancelable(false);
+            mMessageFragment.show(ft, "resultDialog");
+
+        } else if (retry) {
             mCameraFragment.dismiss();
             InitializeTest();
         } else {
@@ -567,5 +596,14 @@ public class CameraSensorActivity extends ActionBarActivity
             finish();
 
         }
+    }
+
+    @Override
+    public void onFinishDialog() {
+        Intent intent = new Intent(getIntent());
+        this.setResult(Activity.RESULT_CANCELED, intent);
+        releaseResources();
+        finish();
+
     }
 }

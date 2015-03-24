@@ -20,23 +20,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#eef3791a"
+    android:background="#eef3740b"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:ignore="Overdraw">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:textColor="#fff"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        tools:text="Fluoride" />
+
+
+    <TextView
+        android:id="@+id/dilutionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@color/fab_material_amber_900"
+        android:gravity="center"
+        android:padding="7dp"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -48,9 +72,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="@string/highLevelsFound"
                 android:textColor="#fff"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:text="@string/highLevelsFound" />
 
             <TextView
                 android:id="@+id/messageTextView2"
@@ -59,7 +83,7 @@
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:textColor="#fff"
                 android:textSize="20sp"
-                tools:text="@string/runTestAgain" />
+                tools:text="@string/tryWith25PercentSample" />
 
         </LinearLayout>
 
@@ -71,8 +95,9 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blue_button"
-            android:text="@string/start"
+            android:text="@string/ok"
             android:textColor="#fff" />
     </LinearLayout>
 

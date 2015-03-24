@@ -21,12 +21,8 @@
     <string name="updateFetching">"الحصول على Caddisfly تحديث …"</string>
     <string name="errorCalibrationIncomplete">"معايرة Caddisfly غير مكتملة. تصحيح المعايرة قبل البدء في الاختبار."</string>
     <string name="enableInternet">"اتصال إنترنت المطلوبة"</string>
-    <string name="errorPhotoQuality">"جودة الصورة منخفضة جدا"</string>
-    <string name="errorNotCalibrated">"لا معايرة"</string>
     <string name="errorAkvoFlowRequired">"الرجاء تثبيت Akvo تدفق التطبيق"</string>
     <string name="analysisInProgress">"التحليل في التقدم"</string>
-    <string name="errorOutOfSequence">"من تسلسل"</string>
-    <string name="errorDuplicateSwatch">"مكررة أو لون مماثل"</string>
     <string name="about">"نبذة "</string>
     <string name="swatches">"حوامل"</string>
     <string name="delete">"حذف"</string>
@@ -71,21 +67,16 @@
     <string name="updateRequest">"نسخة محدثة هو متاح، هل تريد تحديث الآن؟"</string>
     <string name="updateCheck">"الاختيار تحديث"</string>
     <string name="dataConnection">"اتصال البيانات"</string>
-    <string name="testInProgress">"اختبار في التقدم"</string>
     <string name="updatedAlready">"لديك بالفعل أحدث نسخة من Caddisfly تثبيت"</string>
-    <string name="remaining">"المتبقي"</string>
     <string name="result">"ا نتيجة"</string>
     <string name="updateCheckingFor">"التحقق من وجود تحديثات …"</string>
-    <string name="starting">"بدءا …"</string>
     <string name="error">"خطأ"</string>
     <string name="retry">"أعد المحاولة"</string>
-    <string name="errorOutOfRange">"لون خارج النطاق"</string>
     <string name="placeDeviceInStand">"ضع الهاتف على سطح مستو لمواصلة"</string>
     <string name="updateSummary">"تحقق إذا كان يتوفر تحديث لAkvo Caddisfly"</string>
     <string name="startSurvey">"مسح البداية"</string>
     <string name="backToSurvey">"العودة الى في خضم"</string>
-    <string name="errorCalibrationColor">"لون معايرة يبدو غير صحيحة. إعادة تقويم مع حلول القياسية المقدمة."</string>
-    <string name="waterQualityTest">"اختبار جودة المياه"</string>
+    <string name="waterQuality">"اختبار جودة المياه"</string>
     <string name="calibrateAttachStandardCartridge">"إرفاق خرطوشة حل القياسية لهذه القيمة ثم اضغط معايرة"</string>
     <string name="watchVideo">ووتش</string>
     <string name="demonstration">عرض</string>
@@ -99,6 +90,8 @@
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>
     <string name="developerModeDisabled">Developer mode disabled</string>
-    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
+    <string name="tryWith50PercentSample">Try again with a dilution of 50% sample water</string>
+    <string name="tryWith25PercentSample">Try again with a dilution of 25% sample water</string>
+
 
 </resources>

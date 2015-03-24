@@ -90,7 +90,7 @@ public class CalibrateDetailFragment extends Fragment {
 
         mErrorLayout = (LinearLayout) view.findViewById(R.id.errorLayout);
         mErrorTextView = (TextView) view.findViewById(R.id.errorTextView);
-        mErrorSummaryTextView = (TextView) view.findViewById(R.id.errorSummaryTextView);
+        //mErrorSummaryTextView = (TextView) view.findViewById(R.id.errorSummaryTextView);
 
         final int position = getArguments().getInt(getString(R.string.swatchIndex));
         startButton.setOnClickListener(new View.OnClickListener() {

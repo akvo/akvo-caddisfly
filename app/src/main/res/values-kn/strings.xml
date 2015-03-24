@@ -21,12 +21,8 @@
     <string name="updateFetching">"Caddisfly ಅಪ್ಡೇಟ್ ಪಡೆಯಲಾಗುತ್ತಿದೆ …"</string>
     <string name="errorCalibrationIncomplete">"Caddisfly ಮಾಪನಾಂಕ ಅಪೂರ್ಣ. ಪರೀಕ್ಷಾ ಪ್ರಾರಂಭಿಸುವ ಮೊದಲು ಮಾಪನಾಂಕ ಸರಿಪಡಿಸಿ."</string>
     <string name="enableInternet">"ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕ ಅಗತ್ಯವಿದೆ"</string>
-    <string name="errorPhotoQuality">"ಫೋಟೋ ಗುಣಮಟ್ಟದ ತುಂಬಾ ಕಡಿಮೆ"</string>
-    <string name="errorNotCalibrated">"ಮಾಪನಾಂಕ"</string>
     <string name="errorAkvoFlowRequired">"ಅನುಸ್ಥಾಪಿಸಲು ದಯವಿಟ್ಟು Akvo ಫ್ಲೋ ಅಪ್ಲಿಕೇಶನ್"</string>
     <string name="analysisInProgress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ ವಿಶ್ಲೇಷಣೆ"</string>
-    <string name="errorOutOfSequence">"ಅನುಕ್ರಮದ ಔಟ್"</string>
-    <string name="errorDuplicateSwatch">"ನಕಲು ಅಥವಾ ಇದೇ ರೀತಿಯ ವರ್ಣ"</string>
     <string name="about">"ಕುರಿತಾಗಿ"</string>
     <string name="swatches">"Swatches"</string>
     <string name="delete">"ಅಳಿಸು"</string>
@@ -71,21 +67,16 @@
     <string name="updateRequest">"ಒಂದು ಅಪ್ಡೇಟೆಡ್ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ, ನೀವು ಈಗ ನವೀಕರಿಸಲು ಬಯಸುತ್ತೀರಾ?"</string>
     <string name="updateCheck">"ಚೆಕ್ ಅಪ್ಡೇಟ್"</string>
     <string name="dataConnection">"ಡೇಟಾ ಸಂಪರ್ಕ"</string>
-    <string name="testInProgress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ ಟೆಸ್ಟ್"</string>
     <string name="updatedAlready">"ನೀವು ಈಗಾಗಲೇ Caddisfly ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿದ"</string>
-    <string name="remaining">"ಉಳಿದ"</string>
     <string name="result">"ಫಲಿತಾಂಶ"</string>
     <string name="updateCheckingFor">"ಅಪ್ಡೇಟ್ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ …"</string>
-    <string name="starting">"ಪ್ರಾರಂಭಿಸಿ …"</string>
     <string name="error">"ದೋಷ"</string>
     <string name="retry">"ಮತ್ತೆ ಪ್ರಯತ್ನಿಸು"</string>
-    <string name="errorOutOfRange">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಬಣ್ಣ"</string>
     <string name="placeDeviceInStand">"ಮುಂದುವರಿಸಲು ಒಂದು ಚಪ್ಪಟೆಯಾದ ಮೇಲ್ಮೈ ಮೇಲೆ ಫೋನ್ ಇರಿಸಿ"</string>
     <string name="updateSummary">"ಒಂದು ಅಪ್ಡೇಟ್ Akvo Caddisfly ಲಭ್ಯವಿದೆ ಪರೀಕ್ಷಿಸಲು"</string>
     <string name="startSurvey">"ಪ್ರಾರಂಭ ಸಮೀಕ್ಷೆ"</string>
     <string name="backToSurvey">"ಬ್ಯಾಕ್ ಸಮೀಕ್ಷೆಯ"</string>
-    <string name="errorCalibrationColor">"ಮಾಪನಾಂಕ ಬಣ್ಣದ ತಪ್ಪು ತೋರುತ್ತದೆ. ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಪರಿಹಾರಗಳನ್ನು recalibrate."</string>
-    <string name="waterQualityTest">"ಜಲ ಗುಣಮಟ್ಟ ಟೆಸ್ಟ್"</string>
+    <string name="waterQuality">"ಜಲ ಗುಣಮಟ್ಟ "</string>
     <string name="calibrateAttachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
     <string name="watchVideo">ನೋಡಿ</string>
     <string name="demonstration">ಡೆಮೊ</string>
@@ -99,6 +90,8 @@
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>
     <string name="developerModeDisabled">Developer mode disabled</string>
-    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
+    <string name="tryWith50PercentSample">Try again with a dilution of 50% sample water</string>
+    <string name="tryWith25PercentSample">Try again with a dilution of 25% sample water</string>
+
 
 </resources>
