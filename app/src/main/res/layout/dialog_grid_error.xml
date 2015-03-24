@@ -40,14 +40,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/okButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ok"
-            android:visibility="gone" />
-
-        <Button
             android:id="@+id/cancelButton"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
@@ -64,6 +56,15 @@
             android:layout_weight="1"
             android:text="@string/retry"
             android:visibility="visible" />
+
+        <Button
+            android:id="@+id/okButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>

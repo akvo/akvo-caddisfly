@@ -56,8 +56,9 @@ public class AboutActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 disableDeveloperButton.setVisibility(View.GONE);
-                Toast.makeText(getBaseContext(), "Developer mode disabled", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), getString(R.string.developerModeDisabled), Toast.LENGTH_LONG).show();
                 PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, false);
+                mDeveloperMode = false;
             }
         });
 
@@ -66,12 +67,15 @@ public class AboutActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View view) {
-                clickCount++;
-                if (clickCount > 9) {
-                    clickCount = 0;
-                    Toast.makeText(getBaseContext(), "Developer mode enabled", Toast.LENGTH_LONG).show();
-                    disableDeveloperButton.setVisibility(View.VISIBLE);
-                    PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, true);
+                if (!mDeveloperMode) {
+                    clickCount++;
+                    if (clickCount > 9) {
+                        clickCount = 0;
+                        Toast.makeText(getBaseContext(), getString(R.string.developerModeEnabled), Toast.LENGTH_LONG).show();
+                        disableDeveloperButton.setVisibility(View.VISIBLE);
+                        PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, true);
+                        mDeveloperMode = true;
+                    }
                 }
             }
         });

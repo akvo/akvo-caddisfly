@@ -19,6 +19,10 @@ package org.akvo.caddisfly;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import org.akvo.caddisfly.util.DataHelper;
+
+import java.util.ArrayList;
+
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
@@ -26,4 +30,114 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public ApplicationTest() {
         super(Application.class);
     }
+
+    public void testAverage1() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.5);
+        results.add(0.0);
+        results.add(1.7);
+        results.add(0.0);
+        results.add(1.8);
+        results.add(0.0);
+        results.add(1.7);
+        results.add(1.5);
+        results.add(1.5);
+        results.add(1.5);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(1.54, result, 0);
+    }
+
+    public void testAverage2() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(0.0);
+        results.add(1.5);
+        results.add(1.7);
+        results.add(0.0);
+        results.add(1.8);
+        results.add(0.0);
+        results.add(1.7);
+        results.add(1.5);
+        results.add(1.5);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(1.58, result, 0);
+    }
+
+    public void testAverage3() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.5);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(-1.0, result, 0);
+    }
+
+    public void testAverage4() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.5);
+        results.add(1.5);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(-1.0, result, 0);
+    }
+
+    public void testAverage5() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.5);
+        results.add(1.5);
+        results.add(1.7);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(-1.0, result, 0);
+    }
+
+    public void testAverage6() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.5);
+        results.add(1.5);
+        results.add(1.7);
+        results.add(1.7);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(1.64, result, 0);
+    }
+
+    public void testAverage7() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.7);
+        results.add(1.7);
+        results.add(1.5);
+        results.add(1.5);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(-1, result, 0);
+    }
+
+    public void testAverage8() {
+        ArrayList<Double> results = new ArrayList<>();
+        results.add(1.6);
+        results.add(1.8);
+        results.add(1.7);
+        results.add(1.7);
+        results.add(1.5);
+        results.add(1.5);
+        results.add(1.6);
+
+        double result = DataHelper.getAverageResult(getApplication(), results);
+        assertEquals(1.6, result, 0);
+    }
+
+
 }

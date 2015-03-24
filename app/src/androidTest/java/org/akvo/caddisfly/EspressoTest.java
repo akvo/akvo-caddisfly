@@ -94,7 +94,7 @@ public class EspressoTest
 
         onView(withText("Free Chlorine")).perform(click());
 
-        onView(withText("10.0")).perform(click());
+        onView(withText("2.0")).perform(click());
 
         Espresso.pressBack();
 

@@ -409,6 +409,7 @@ public class ColorUtils {
         );
     }
 
+
     /*@SuppressWarnings("SameParameterValue")
     public static void autoGenerateColorCurve(String testCode, ArrayList<ColorInfo> colorList,
                                               int startColor, int size,

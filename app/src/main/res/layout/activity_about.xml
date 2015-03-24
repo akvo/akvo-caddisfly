@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:alpha="0.5"
-            android:text="Disable developer mode"
+            android:text="@string/enableUserMode"
             android:visibility="gone" />
 
     </LinearLayout>

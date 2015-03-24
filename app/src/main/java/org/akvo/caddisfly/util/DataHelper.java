@@ -112,6 +112,19 @@ public class DataHelper {
 //        }
     }
 
+    public static int getClosestMatchIndex(ArrayList<Double> resultArray, double commonResult) {
+        double difference = 9999999;
+        int index = -1;
+
+        for (int i = 0; i < resultArray.size(); i++) {
+            double value = resultArray.get(i);
+            if (value != -1 && Math.abs(commonResult - value) < difference) {
+                difference = Math.abs(commonResult - value);
+                index = i;
+            }
+        }
+        return index;
+    }
 
     public static double getAverageResult(Context context, ArrayList<Double> results) {
 
@@ -125,17 +138,25 @@ public class DataHelper {
         resultArray[0] = -1;
         commonResult = ColorUtils.mostFrequent(resultArray);
 
+        ArrayList<Double> tempResults = new ArrayList<>();
+
         //Ignore the first result
         for (int i = 1; i < results.size(); i++) {
-            if (results.get(i) >= 0) {
-                if (Math.abs(results.get(i) - commonResult) < 0.21) {
-                    counter++;
-                    result += results.get(i);
-                }
+            double value = results.get(i);
+            if (value > -1 && Math.abs(value - commonResult) < 0.21) {
+                tempResults.add(value);
             }
         }
 
-        if (counter >= Math.min(results.size() - 1, Config.SAMPLING_COUNT_DEFAULT - 1)) {
+        int totalCount = tempResults.size();
+        while (tempResults.size() > 0 && counter < Math.min(totalCount, Config.SAMPLING_COUNT_DEFAULT)) {
+            int index = getClosestMatchIndex(tempResults, commonResult);
+            result += tempResults.get(index);
+            counter++;
+            tempResults.remove(index);
+        }
+
+        if (counter >= Math.min(results.size() - 1, Config.SAMPLING_COUNT_DEFAULT)) {
             try {
                 result = round(result / counter, 2);
             } catch (Exception ex) {

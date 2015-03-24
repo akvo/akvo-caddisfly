@@ -23,7 +23,6 @@ import android.content.DialogInterface;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -44,9 +43,6 @@ import java.util.List;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link org.akvo.caddisfly.ui.CameraFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link org.akvo.caddisfly.ui.CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -56,24 +52,15 @@ public class CameraFragment extends DialogFragment {
     private static final String ARG_PARAM1 = "param1";
     public Camera.PictureCallback pictureCallback;
     public int samplingCount;
+    private int picturesTaken;
     // TODO: Rename and change types of parameters
     private boolean mPreviewOnly;
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
     private SoundPoolPlayer sound;
     private boolean mCancelled = false;
     private AlertDialog progressDialog;
     private Camera mCamera;
 
-    //    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
     // View to display the camera output.
     private CameraPreview mPreview;
 
@@ -124,11 +111,6 @@ public class CameraFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
-        //} else {
-        //  getDialog().setTitle(R.string.clickAnalyze);
-        //}
-
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         // Create preview and set it as the content
@@ -137,34 +119,15 @@ public class CameraFragment extends DialogFragment {
         if (!opened) {
             return view;
         }
-
-//        Button captureButton = (Button) view.findViewById(R.id.button_capture);
-//        captureButton.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        startTakingPictures();
-//                    }
-//                }
-//        );
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         if (!mPreviewOnly) {
-            //if (PreferencesUtils.getBoolean(getActivity(), R.string.autoAnalyzeKey, true)) {
             getDialog().setTitle(R.string.analysisInProgress);
             startTakingPictures();
-            //}
         } else {
             getDialog().setTitle(R.string.cameraPreview);
         }
@@ -173,19 +136,14 @@ public class CameraFragment extends DialogFragment {
     private void startTakingPictures() {
 
         samplingCount = 0;
+        picturesTaken = 0;
         Context context = getActivity();
         progressDialog = new AlertDialog.Builder(context).create();
         progressDialog.setMessage(getString(R.string.analyzingWait));
         progressDialog.setCancelable(false);
 
-        //ProgressDialog.Builder builder = new ProgressDialog.Builder(context);
-        //builder.setTitle(R.string.working);
-        //builder.setMessage(R.string.analyzingWait);
-
-        //progressDialog = builder.create();
         progressDialog.getWindow().setGravity(Gravity.BOTTOM);
         progressDialog.show();
-        //progressDialog.setCancelable(false);
 
         Camera.Parameters parameters = mCamera.getParameters();
 
@@ -221,12 +179,7 @@ public class CameraFragment extends DialogFragment {
     }
 
     public boolean hasTestCompleted() {
-        return samplingCount > Config.SAMPLING_COUNT_DEFAULT;
-//        int currentSamplingCount = PreferencesUtils
-//                .getInt(context, R.string.currentSamplingCountKey, 0);
-//        int samplingCount = PreferencesUtils
-//                .getInt(context, R.string.samplingCountKey, Config.SAMPLING_COUNT_DEFAULT);
-//        return currentSamplingCount >= (samplingCount - 1);
+        return samplingCount > Config.SAMPLING_COUNT_DEFAULT || picturesTaken > 10;
     }
 
     private boolean safeCameraOpenInView(View view) {
@@ -296,13 +249,13 @@ public class CameraFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
+//    }
 
     public interface Cancelled {
-        public void dialogCancelled();
+        void dialogCancelled();
     }
 
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -329,7 +282,7 @@ public class CameraFragment extends DialogFragment {
 
             mPreviewOnly = previewOnly;
 
-            setCamera(context, camera);
+            setCamera(camera);
 
             mHolder = getHolder();
             mHolder.addCallback(this);
@@ -345,14 +298,19 @@ public class CameraFragment extends DialogFragment {
             }
         }
 
-        private void setCamera(Context context, Camera camera) {
+        private void setCamera(Camera camera) {
             mCamera = camera;
             mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.Parameters parameters = mCamera.getParameters();
 
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
-            parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+
+            List<String> supportedSceneModes = mCamera.getParameters().getSupportedSceneModes();
+            if (supportedSceneModes != null && supportedSceneModes.contains(Camera.Parameters.SCENE_MODE_FIREWORKS)) {
+                parameters.setSceneMode(Camera.Parameters.SCENE_MODE_FIREWORKS);
+            }
+
             parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
             parameters.setPictureFormat(ImageFormat.JPEG);
             parameters.setJpegQuality(100);
@@ -365,14 +323,19 @@ public class CameraFragment extends DialogFragment {
                 parameters.setMeteringAreas(meteringAreas);
             }
 
-            //if (!PreferencesUtils.getBoolean(context, R.string.autoAnalyzeKey, false)) {
             if (mPreviewOnly) {
                 if (mSupportedFlashModes != null && mSupportedFlashModes
                         .contains(Camera.Parameters.FLASH_MODE_ON)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 }
             }
-            //}
+
+            List<String> focusModes = parameters.getSupportedFocusModes();
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+            } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+            }
 
             mCamera.setDisplayOrientation(90);
             mCamera.setParameters(parameters);
@@ -424,10 +387,6 @@ public class CameraFragment extends DialogFragment {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 
-            //final int width = Globals.IMAGE_SAMPLE_LENGTH;
-            //final int height = Globals.IMAGE_SAMPLE_LENGTH;
-            //final int length = Math.min(width, height);
-
             setMeasuredDimension(width, height);
 
             if (mSupportedPreviewSizes != null) {
@@ -462,6 +421,7 @@ public class CameraFragment extends DialogFragment {
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
             samplingCount++;
+            picturesTaken++;
             if (!mCancelled) {
                 if (!hasTestCompleted()) {
                     pictureCallback.onPictureTaken(bytes, camera);

@@ -14,7 +14,7 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 
     <!--java-->
     <string name="errorTestFailed">"सीमा से बाहर समाधान के लिए रंग. कारतूस नियुक्ति की जाँच करें."</string>
@@ -45,7 +45,6 @@
     <string name="start">"शुरू करें"</string>
     <string name="errorCameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
-    <string name="placeHighRangeCartridge"><xliff:g example="25%" id="time">%1$.0f%%</xliff:g> नमूना पानी और <xliff:g example="75%" id="time">%2$.0f%%</xliff:g> विआयनीकृत पानी मिलाएं। अब इस मिश्रण का परीक्षण करें।</string>
     <string name="errorTestNotAvailable">इस परीक्षण के लिए उपलब्ध नहीं है</string>
     <string name="saveCalibration">Save Calibration</string>
     <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
@@ -53,11 +52,11 @@
     <string name="saveNameAlreadyExists">Name already exists. Overwrite file?</string>
     <string name="saveInvalidFileName">Invalid name</string>
     <string name="save">Save</string>
-    <string name="errorLoadingTestTypes">Error loading test types. Verify that tests.json file is valid.</string>
-    <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
-    <string name="acceptResult">Accept Result</string>
-    <string name="deviceConnecting">Connecting to Device</string>
-    <string name="deviceConnected">Device Connected</string>
+    <string name="errorLoadingTestTypes">लोड करने में त्रुटि परीक्षण लिखें। यही tests.json फाइल वैध है की जाँच करें।</string>
+    <string name="deviceConnectSensor">Akvo चुनाव आयोग सेंसर कनेक्ट</string>
+    <string name="acceptResult">रिजल्ट स्वीकारें</string>
+    <string name="deviceConnecting">उपकरण से जुड़ रहा है</string>
+    <string name="deviceConnected">कनेक्टेड डिवाइस</string>
 
     <!--xml-->
     <string name="appName">"Akvo Caddisfly"</string>
@@ -83,22 +82,23 @@
     <string name="errorOutOfRange">"सीमा से बाहर रंग"</string>
     <string name="placeDeviceInStand">"जारी रखने के लिए एक फ्लैट सतह पर फोन प्लेस"</string>
     <string name="updateSummary">"एक अद्यतन Akvo Caddisfly के लिए उपलब्ध है की जाँच"</string>
-    <string name="watchTrainingVideo">"घड़ी प्रशिक्षण वीडियो"</string>
     <string name="startSurvey">"प्रारंभ सर्वेक्षण"</string>
     <string name="backToSurvey">"पीछे सर्वेक्षण के"</string>
     <string name="errorCalibrationColor">"calibrated रंग गलत हो रहा है. प्रदान की मानक समाधान के साथ recalibrate."</string>
     <string name="waterQualityTest">"जल गुणवत्ता परीक्षण"</string>
     <string name="calibrateAttachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
-    <string name="saveOriginalPhoto">"सेव मूल फोटो"</string>
-    <string name="saveOriginalPhotoConfirm">"चेतावनी: सहेजा जा रहा मूल फोटो अपने फोन पर अंतरिक्ष के एक बहुत का उपयोग करेगा."</string>
     <string name="watchVideo">देखो</string>
     <string name="demonstration">डेमो</string>
     <string name="cameraPreview">कैमरे के दृश्य की जाँच करें</string>
-    <string name="temperature">Temperature</string>
-    <string name="selectDilution">Select Dilution</string>
-    <string name="hundredPercentSampleWater">100% Sample Water</string>
-    <string name="fiftyPercentSampleWater">50% Sample Water</string>
-    <string name="twentyFivePercentSampleWater">25% Sample Water</string>
-    <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
+    <string name="temperature">तापमान</string>
+    <string name="selectDilution">का चयन कमजोर पड़ने</string>
+    <string name="hundredPercentSampleWater">कोई कमजोर पड़ने</string>
+    <string name="fiftyPercentSampleWater">50% पानी के नमूने</string>
+    <string name="twentyFivePercentSampleWater">25% पानी के नमूने</string>
+    <string name="ecValueAt25Celcius">25°C पर चुनाव आयोग %s μS/cm है</string>
+    <string name="enableUserMode">Enable User Mode</string>
+    <string name="developerModeEnabled">Developer mode enabled</string>
+    <string name="developerModeDisabled">Developer mode disabled</string>
+    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
 
 </resources>

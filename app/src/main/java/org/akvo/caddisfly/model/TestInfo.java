@@ -72,6 +72,11 @@ public class TestInfo {
         return mRanges;
     }
 
+    public double getDilutionRequiredLevel() {
+        ResultRange resultRange = mRanges.get(mRanges.size() - 1);
+        return resultRange.getValue() - 0.2;
+    }
+
     public void addRange(ResultRange value) {
         mRanges.add(value);
     }

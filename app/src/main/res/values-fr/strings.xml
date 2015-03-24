@@ -51,8 +51,6 @@
     <string name="testInProgress">"Test en cours"</string>
     <string name="placeDeviceInStand">"Placez le téléphone sur une surface plane avec face vers le bas"</string>
     <string name="highLevelsFound">"Haut niveau de contamination a été détectée"</string>
-    <string name="placeHighRangeCartridge">Mélanger %1$.0f%% d\'eau de l\'échantillon et %2$.0f%% d\'eau déminéralisée. Testez ce mélange maintenant.</string>
-    <string name="watchTrainingVideo">"Regarder Vidéo de formation"</string>
     <string name="calibrateAttachStandardCartridge">"Fixez une cartouche de solution standard pour cette valeur et appuyez sur Calibrer"</string>
     <string name="calibrateSummary">"Utilisez les mélanges de couleurs standard fournis dans le kit de calibrer ce téléphone"</string>
     <string name="displaysVersionNumber">"Affiche le numéro de version"</string>
@@ -73,8 +71,6 @@
     <string name="saveConfirmOverwriteFile">"Écraser le fichier"</string>
     <string name="saveNameAlreadyExists">"Nom existe déjà. Ecraser le fichier?"</string>
     <string name="saveInvalidFileName">"Nom invalide"</string>
-    <string name="saveOriginalPhoto">"Sauvegarder Photo originale"</string>
-    <string name="saveOriginalPhotoConfirm">"Attention: Enregistrement de photos originales utilisera beaucoup d'espace sur votre téléphone."</string>
 
     <string name="deviceConnectSensor">"Connectez EC capteur Akvo"</string>
     <string name="deviceConnecting">"Branchement à un périphérique"</string>
@@ -99,5 +95,9 @@
     <string name="hundredPercentSampleWater">Aucune dilution</string>
     <string name="fiftyPercentSampleWater">50% de l\'eau de l\'échantillon</string>
     <string name="twentyFivePercentSampleWater">25% de l\'eau de l\'échantillon</string>
-    <string name="ecValueAt25Celcius">CE à 25°C est %s</string>
+    <string name="ecValueAt25Celcius">CE à 25°C est %s μS/cm</string>
+    <string name="enableUserMode">Mode utilisateur</string>
+    <string name="developerModeEnabled">Mode développeur activé</string>
+    <string name="developerModeDisabled">Mode développeur désactivée</string>
+    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
 </resources>

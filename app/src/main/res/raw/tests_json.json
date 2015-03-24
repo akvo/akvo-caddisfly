@@ -13,9 +13,6 @@
                 "code": "fluor",
                 "unit": "ppm",
                 "ranges": "0,.5,1,1.5,2",
-                "step":"0.5",
-                "rangeStart":"0",
-                "rangeEnd":"2",
                 "dilutions":"0,50,75"
             },
             {
@@ -25,10 +22,7 @@
                 "type": "0",
                 "code": "phydr",
                 "unit": "pH",
-                "ranges": "3,4,5,6,7,8,9",
-                "step":"1",
-                "rangeStart":"3",
-                "rangeEnd":"9"
+              "ranges": "3,4,5,6,7,8,9"
             },
             {
                 "name": [
@@ -41,10 +35,7 @@
                 "type": "0",
                 "code": "nitra",
                 "unit": "ppm",
-                "ranges": "0,10,20,30,40,50",
-                "step":"10",
-                "rangeStart":"0",
-                "rangeEnd":"50"
+              "ranges": "0,10,20,30,40,50"
             },
             {
                 "name":[
@@ -57,10 +48,7 @@
                 "type": "0",
                 "code":"nitri",
                 "unit":"ppm",
-                "ranges": "0,0.5,1,1.5,2,2.5,3",
-                "step":"0.5",
-                "rangeStart":"0",
-                "rangeEnd":"3"
+              "ranges": "0,0.5,1,1.5,2,2.5,3"
             },
             {
                 "name":[
@@ -73,10 +61,7 @@
                 "type": "0",
                 "code":"totfe",
                 "unit":"ppm",
-                "ranges": "0,0.2,0.4,0.6,0.8,1",
-                "step":"0.2",
-                "rangeStart":"0",
-                "rangeEnd":"1"
+              "ranges": "0,0.2,0.4,0.6,0.8,1"
             },
             {
                 "name":[
@@ -89,10 +74,7 @@
                 "type": "0",
                 "code":"totcl",
                 "unit":"ppm",
-                "ranges": "0,0.5,1,1.5,2",
-                "step":"0.5",
-                "rangeStart":"0",
-                "rangeEnd":"2"
+              "ranges": "0,0.5,1,1.5,2"
             },
             {
                 "name":[
@@ -105,10 +87,7 @@
                 "type": "0",
                 "code":"frecl",
                 "unit":"ppm",
-                "ranges": "0,0.5,1,1.5,2",
-                "step":"0.5",
-                "rangeStart":"0",
-                "rangeEnd":"2"
+              "ranges": "0,0.5,1,1.5,2"
             },
             {
                 "name": [
@@ -134,7 +113,7 @@
             "type": "1",
             "code": "tempe",
             "unit": "°C",
-                "ranges": "0"
+            "ranges": "0"
             }
         ]
     }

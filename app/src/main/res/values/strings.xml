@@ -50,10 +50,6 @@
     <string name="testInProgress">Test in progress</string>
     <string name="placeDeviceInStand">Place the phone face down on a flat surface</string>
     <string name="highLevelsFound">High level of contamination has been detected</string>
-    <string name="placeHighRangeCartridge">
-        Mix <xliff:g example="25%" id="percentage">%1$.0f%%</xliff:g> sample water and <xliff:g example="75%" id="time">%2$.0f%%</xliff:g> deionized water. Test this mixture now.
-    </string>
-    <string name="watchTrainingVideo">Watch Training Video</string>
     <string name="calibrateAttachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
     <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
     <string name="displaysVersionNumber">Displays version number</string>
@@ -74,8 +70,6 @@
     <string name="saveConfirmOverwriteFile">Overwrite File</string>
     <string name="saveNameAlreadyExists">Name already exists. Overwrite file?</string>
     <string name="saveInvalidFileName">Invalid name</string>
-    <string name="saveOriginalPhoto">Save Original Photo</string>
-    <string name="saveOriginalPhotoConfirm">Warning: Saving original photos will use a lot of space on your phone.</string>
 
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
     <string name="deviceConnecting">Connecting to Device</string>
@@ -103,7 +97,8 @@
     <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
     <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
     <string name="ecValueAt25Celcius">EC at 25°C is %s μS/cm</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enableUserMode">Enable User Mode</string>
+    <string name="developerModeEnabled">Developer mode enabled</string>
+    <string name="developerModeDisabled">Developer mode disabled</string>
+    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
 </resources>

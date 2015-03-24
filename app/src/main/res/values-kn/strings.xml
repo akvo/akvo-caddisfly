@@ -14,7 +14,7 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 
     <!--java-->
     <string name="errorTestFailed">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಪರಿಹಾರ ಬಣ್ಣ. ಕಾರ್ಟ್ರಿಡ್ಜ್ ಉದ್ಯೊಗ ಪರಿಶೀಲಿಸಿ."</string>
@@ -45,9 +45,6 @@
     <string name="start">"ಪ್ರಾರಂಭ"</string>
     <string name="errorCameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
     <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
-    <string name="placeHighRangeCartridge">
-        <xliff:g example="25%" id="time">%1$.0f%%</xliff:g> ಮಾದರಿ ನೀರು ಮತ್ತು <xliff:g example="75%" id="time">%2$.0f%%</xliff:g> ಡೀಐಯಾನೈಸ್ಡ್ ನೀರು ಮಿಶ್ರಣ. ಈಗ ಈ ಮಿಶ್ರಣವನ್ನು ಪರೀಕ್ಷಿಸಿ
-    </string>
     <string name="errorTestNotAvailable">ಈ ಪರೀಕ್ಷೆ ಲಭ್ಯವಿಲ್ಲ</string>
     <string name="saveCalibration">Save Calibration</string>
     <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
@@ -85,22 +82,23 @@
     <string name="errorOutOfRange">"ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ ಬಣ್ಣ"</string>
     <string name="placeDeviceInStand">"ಮುಂದುವರಿಸಲು ಒಂದು ಚಪ್ಪಟೆಯಾದ ಮೇಲ್ಮೈ ಮೇಲೆ ಫೋನ್ ಇರಿಸಿ"</string>
     <string name="updateSummary">"ಒಂದು ಅಪ್ಡೇಟ್ Akvo Caddisfly ಲಭ್ಯವಿದೆ ಪರೀಕ್ಷಿಸಲು"</string>
-    <string name="watchTrainingVideo">"ತರಬೇತಿ ವಿಡಿಯೋ ವೀಕ್ಷಿಸಿ"</string>
     <string name="startSurvey">"ಪ್ರಾರಂಭ ಸಮೀಕ್ಷೆ"</string>
     <string name="backToSurvey">"ಬ್ಯಾಕ್ ಸಮೀಕ್ಷೆಯ"</string>
     <string name="errorCalibrationColor">"ಮಾಪನಾಂಕ ಬಣ್ಣದ ತಪ್ಪು ತೋರುತ್ತದೆ. ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಪರಿಹಾರಗಳನ್ನು recalibrate."</string>
     <string name="waterQualityTest">"ಜಲ ಗುಣಮಟ್ಟ ಟೆಸ್ಟ್"</string>
     <string name="calibrateAttachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
-    <string name="saveOriginalPhoto">"ಉಳಿಸಿ ಮೂಲ ಫೋಟೋ"</string>
-    <string name="saveOriginalPhotoConfirm">"ಎಚ್ಚರಿಕೆ: ಉಳಿಸಲಾಗುತ್ತಿದೆ ಮೂಲ ಫೋಟೋಗಳನ್ನು ನಿಮ್ಮ ಫೋನ್ನಲ್ಲಿ ಜಾಗವನ್ನು ಸಾಕಷ್ಟು ಬಳಸುತ್ತದೆ."</string>
     <string name="watchVideo">ನೋಡಿ</string>
     <string name="demonstration">ಡೆಮೊ</string>
     <string name="cameraPreview">ಕ್ಯಾಮೆರಾ ವೀಕ್ಷಿಸಿ ಪರಿಶೀಲಿಸಿ</string>
-    <string name="temperature">Temperature</string>
+    <string name="temperature">ತಾಪಮಾನ</string>
     <string name="selectDilution">Select Dilution</string>
-    <string name="hundredPercentSampleWater">100% Sample Water</string>
-    <string name="fiftyPercentSampleWater">50% Sample Water</string>
-    <string name="twentyFivePercentSampleWater">25% Sample Water</string>
+    <string name="hundredPercentSampleWater" formatted="false">No Dilution</string>
+    <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
+    <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
     <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
+    <string name="enableUserMode">Enable User Mode</string>
+    <string name="developerModeEnabled">Developer mode enabled</string>
+    <string name="developerModeDisabled">Developer mode disabled</string>
+    <string name="runTestAgain">Conduct the test again with a diluted sample</string>
 
 </resources>
