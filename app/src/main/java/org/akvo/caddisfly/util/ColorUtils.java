@@ -154,7 +154,7 @@ public class ColorUtils {
         return bundle;
     }
 
-    private static double getDistance(int color, int tempColor) {
+    public static double getDistance(int color, int tempColor) {
         double red, green, blue;
 
         red = Math.pow(Color.red(tempColor) - Color.red(color), 2.0);

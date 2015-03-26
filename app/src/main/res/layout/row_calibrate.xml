@@ -58,23 +58,28 @@
                 tools:text="2.5" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/rgbText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="false"
-            android:textSize="14sp"
-            android:visibility="gone"
-            tools:text="rgb: 234 56 120" />
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/brightnessText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="false"
-            android:textSize="14sp"
-            android:visibility="gone"
-            tools:text="B: 233" />
+            <TextView
+                android:id="@+id/rgbText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="c: 234 156 120" />
+
+            <TextView
+                android:id="@+id/brightnessText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="d: 233  b: 233" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/error"

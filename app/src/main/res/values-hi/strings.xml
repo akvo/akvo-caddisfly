@@ -92,6 +92,9 @@
     <string name="developerModeDisabled">Developer mode disabled</string>
     <string name="tryWith50PercentSample">Try again with a dilution of 50% sample water</string>
     <string name="tryWith25PercentSample">Try again with a dilution of 25% sample water</string>
+    <string name="general">General</string>
+    <string name="other">Other</string>
+    <string name="developer">Developer</string>
 
 
 </resources>

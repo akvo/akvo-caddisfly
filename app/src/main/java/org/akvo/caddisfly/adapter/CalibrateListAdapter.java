@@ -30,6 +30,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.ArrayList;
 
@@ -66,10 +67,6 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         // display ppm value
         ppmText.setText(mainApp.doubleFormat.format(range.getValue()));
 
-//        int r = Color.red(color);
-//        int g = Color.green(color);
-//        int b = Color.blue(color);
-
 //        if (ranges.get(index).getErrorCode() > 0) {
 //            errorImage.setVisibility(View.VISIBLE);
 //        } else {
@@ -79,14 +76,27 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         if (color != -1) {
             button.setBackgroundColor(color);
             button.setText("");
-            //rgbText.setText(String.format("D:%.0f  %s: %d  %d  %d", ranges.get(index).getIncrementDistance(), mainApp.getString(R.string.rgb), r, g, b));
+            boolean developerMode = PreferencesUtils.getBoolean(getContext(), R.string.developerModeKey, false);
+            if (developerMode) {
+                int r = Color.red(color);
+                int g = Color.green(color);
+                int b = Color.blue(color);
+                double distance = 0;
+                if (position > 0) {
+                    int previousColor = ranges.get(position - 1).getColor();
+                    distance = ColorUtils.getDistance(previousColor, color);
+                }
+                rgbText.setText(String.format("c: %d  %d  %d", r, g, b));
+                brightnessText.setText(String.format("d:%.0f  b: %d", distance, ColorUtils.getBrightness(color)));
+                rgbText.setVisibility(View.VISIBLE);
+                brightnessText.setVisibility(View.VISIBLE);
+            }
         } else {
             button.setBackgroundColor(Color.argb(0, 10, 10, 10));
             button.setText("?");
             rgbText.setText("");
         }
 
-        brightnessText.setText(String.format("B: %d", ColorUtils.getBrightness(color)));
 
         return rowView;
     }

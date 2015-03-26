@@ -310,16 +310,6 @@ public class CameraSensorActivity extends ActionBarActivity
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
         int color = bundle.getInt(Config.RESULT_COLOR_KEY, -1);
 
-        switch (mDilutionLevel) {
-            case 1:
-                result = result * 2;
-                break;
-            case 2:
-                result = result * 4;
-                break;
-        }
-
-
         mColors.add(color);
         mResults.add(result);
         mBitmaps.add(croppedBitmap);
@@ -370,6 +360,21 @@ public class CameraSensorActivity extends ActionBarActivity
                             if (mCameraFragment.hasTestCompleted()) {
 
                                 double result = DataHelper.getAverageResult(getBaseContext(), mResults);
+
+                                MainApp mainApp = (MainApp) getApplicationContext();
+                                if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
+                                    mHighLevelsFound = true;
+                                }
+
+                                switch (mDilutionLevel) {
+                                    case 1:
+                                        result = result * 2;
+                                        break;
+                                    case 2:
+                                        result = result * 4;
+                                        break;
+                                }
+
                                 int color = DataHelper.getAverageColor(getBaseContext(), mColors);
                                 boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                                 releaseResources();
@@ -394,12 +399,6 @@ public class CameraSensorActivity extends ActionBarActivity
                                     } else {
 
                                         mTestCompleted = true;
-                                        MainApp mainApp = (MainApp) getApplicationContext();
-
-                                        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
-                                            mHighLevelsFound = true;
-                                        }
-
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
                                             ShowVerboseError(false, result);
@@ -601,7 +600,8 @@ public class CameraSensorActivity extends ActionBarActivity
     @Override
     public void onFinishDialog() {
         Intent intent = new Intent(getIntent());
-        this.setResult(Activity.RESULT_CANCELED, intent);
+        intent.putExtra("response", String.valueOf(""));
+        this.setResult(Activity.RESULT_OK, intent);
         releaseResources();
         finish();
 

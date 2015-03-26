@@ -224,6 +224,8 @@ public class MainActivity extends ActionBarActivity {
 
         if (id == R.id.action_settings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
+//            intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesGeneralFragment.class.getName() );
+//            intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, false );
             startActivityForResult(intent, REQUEST_LANGUAGE);
             return true;
         }
@@ -297,6 +299,7 @@ public class MainActivity extends ActionBarActivity {
                                     DialogInterface dialogInterface,
                                     int i) {
                                 final Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                                intent.putExtra("calibrate", true);
                                 startActivity(intent);
                             }
                         }, new DialogInterface.OnClickListener() {

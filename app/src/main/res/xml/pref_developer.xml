@@ -15,9 +15,9 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <Preference
-        android:key="cameraPreview"
-        android:title="@string/cameraPreview" />
-
+    <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/developer">
+        <Preference
+            android:key="cameraPreview"
+            android:title="@string/cameraPreview" />
+    </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

@@ -18,6 +18,8 @@
 
     <!-- These settings headers are only used on tablets. -->
 
-    <header android:fragment="org.akvo.caddisfly.ui.SettingsActivity$GeneralPreferenceFragment" />
+    <header
+        android:fragment="org.akvo.caddisfly.ui.PreferencesGeneralFragment"
+        android:title="Preferences" />
 
 </preference-headers>

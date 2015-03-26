@@ -29,6 +29,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.util.ColorUtils;
 
 import java.text.DecimalFormat;
 
@@ -71,7 +72,13 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
             int g = Color.green(color);
             int b = Color.blue(color);
 
-            rgbText.setText(String.format("d:%.0f  %s: %d  %d  %d", 0.0, "rgb", r, g, b));
+            double distance = 0;
+            if (position > 0) {
+                int previousColor = colorArray[position - 1].getColor();
+                distance = ColorUtils.getDistance(previousColor, color);
+            }
+
+            rgbText.setText(String.format("d:%.0f  %s: %d  %d  %d", distance, "c", r, g, b));
         }
         return rowView;
     }

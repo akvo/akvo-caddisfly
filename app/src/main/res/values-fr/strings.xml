@@ -110,4 +110,7 @@
     <string name="hundredPercentSampleWater">Aucune dilution</string>
     <string name="fiftyPercentSampleWater">50% de l\'eau de l\'échantillon</string>
     <string name="twentyFivePercentSampleWater">25% de l\'eau de l\'échantillon</string>
+    <string name="general">General</string>
+    <string name="other">Other</string>
+    <string name="developer">Developer</string>
 </resources>

@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="18dp"
         android:layout_marginTop="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ccc"
@@ -114,9 +114,11 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:shadowColor="#444"
+            android:shadowRadius="3"
             android:text="μS/cm"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ddd" />
+            android:textColor="#ff08c079" />
 
         <TextView
             android:id="@+id/temperatureTextView"

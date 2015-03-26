@@ -1,7 +1,12 @@
+v0.51 alpha
+-----------
+1. Fix dilution warning calculation bug
+2. Grouping of preferences in settings screen
+
 v0.50 alpha
 -----------
-Dilution message if Fluoride level is above 1.8 ppm
-Attempt to focus camera at infinity
+1. Dilution message if Fluoride level is above 1.8 ppm
+2. Attempt to focus camera at infinity
 
 v0.49 alpha
 -----------
