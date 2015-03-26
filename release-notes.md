@@ -13,22 +13,23 @@ v0.48 alpha
 2. 'Select Dilution' dialog on start of Fluoride test (hard coded for now but will work with json file in future)
 3. No fixed interval required for swatch ranges. Sample json file attached.
 example:
-"ranges": "0, 10, 20, 30, 50",
+`"ranges": "0, 10, 20, 30, 50",`
 4. The calibration swatch file to load can be created manually like below
 example:
-0.0 = 255  88  177
-0.5 = 255  110  157
-1.0 = 255  139  137
-1.5 = 253  174  74
-2.0 = 244  180  86
-2.5 = 236  172  81
-3.0 = 254  169  61
-5. Small circle on camera preview screen as requested by Saurabh
+    0.0 = 255  88  177
+    0.5 = 255  110  157
+    1.0 = 255  139  137
+    1.5 = 253  174  74
+    2.0 = 244  180  86
+    2.5 = 236  172  81
+    3.0 = 254  169  61
+5. Small circle on camera preview screen for aligning cartridge
 6. Longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. Swatch validation disabled
 8. Removed reliance on separate developer app for enabling controls 
 9. Link to demo video on vimeo
 10. For now EC and EC temperature are two separate tests and thereby two questions in survey
+
 **Known Issues**
 1. Warning if dilution is required is currently not working. To be fixed
 
