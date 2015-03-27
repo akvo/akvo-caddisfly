@@ -76,6 +76,7 @@ public class SettingsActivity extends Activity
         }
     }
 
+
     @Nullable
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -84,6 +85,7 @@ public class SettingsActivity extends Activity
             final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
             startActivity(intent);
         }
+
         return super.onCreateView(name, context, attrs);
     }
 

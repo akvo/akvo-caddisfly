@@ -10,13 +10,17 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ListViewUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PreferencesDeveloperFragment extends PreferenceFragment {
+
+    ListView list;
 
     public PreferencesDeveloperFragment() {
         // Required empty public constructor
@@ -46,4 +50,17 @@ public class PreferencesDeveloperFragment extends PreferenceFragment {
         }
         return rootView;
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        list = (ListView) view.findViewById(android.R.id.list);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListViewUtils.setListViewHeightBasedOnChildren(list, 0);
+    }
+
 }

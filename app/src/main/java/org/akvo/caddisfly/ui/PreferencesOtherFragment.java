@@ -9,9 +9,11 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.ListViewUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
 /**
@@ -19,6 +21,8 @@ import org.akvo.caddisfly.util.UpdateCheckTask;
  */
 public class PreferencesOtherFragment extends PreferenceFragment {
 
+
+    ListView list;
 
     public PreferencesOtherFragment() {
         // Required empty public constructor
@@ -51,5 +55,18 @@ public class PreferencesOtherFragment extends PreferenceFragment {
         UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), background, MainApp.getVersion(getActivity()));
         updateCheckTask.execute();
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        list = (ListView) view.findViewById(android.R.id.list);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListViewUtils.setListViewHeightBasedOnChildren(list, 0);
+    }
+
 
 }

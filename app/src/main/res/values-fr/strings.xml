@@ -33,9 +33,9 @@
     <string name="swatches">"Nuancier"</string>
 
     <!--Main Screen-->
-    <string name="watchVideo">Regarder </string>
+    <string name="watchVideo">Voir</string>
     <string name="demonstration">Démo</string>
-    <string name="startSurvey">"Enquête sur Démarrer"</string>
+    <string name="startSurvey">"Commencer enquête"</string>
     <string name="errorCalibrationIncomplete">"L'étalonnage est incomplète. Voulez-vous pour calibrer maintenant?"</string>
     <string name="errorAkvoFlowRequired">"Se il vous plaît installer Akvo Flow app"</string>
     <string name="errorCameraFlashRequired">"Ce téléphone n'a pas de flash d'appareil photo qui est requis par Caddisfly"</string>
@@ -47,7 +47,7 @@
     <string name="calibrateSummary">"Utilisez les mélanges de couleurs standard fournis dans le kit de calibrer ce téléphone"</string>
     <string name="language">"Langue"</string>
     <string name="updateCheck">"Vérifier la mise à jour"</string>
-    <string name="updateSummary">"Vérifier si une mise à jour est disponible pour Akvo Caddisfly"</string>
+    <string name="updateSummary">"Vérifiez si une nouvelle version est disponible"</string>
     <string name="dataConnection">"Connexion de données"</string>
     <string name="enableInternet">"Connexion Internet requise"</string>
     <string name="about">"Sur"</string>

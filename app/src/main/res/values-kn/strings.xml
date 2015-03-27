@@ -82,10 +82,10 @@
     <string name="demonstration">ಡೆಮೊ</string>
     <string name="cameraPreview">ಕ್ಯಾಮೆರಾ ವೀಕ್ಷಿಸಿ ಪರಿಶೀಲಿಸಿ</string>
     <string name="temperature">ತಾಪಮಾನ</string>
-    <string name="selectDilution">Select Dilution</string>
-    <string name="hundredPercentSampleWater" formatted="false">No Dilution</string>
-    <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
-    <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
+    <string name="selectDilution">ಆಯ್ಕೆ ಮಾಡಿ</string>
+    <string name="hundredPercentSampleWater" formatted="false">100% ಮಾದರಿ ವಾಟರ್</string>
+    <string name="fiftyPercentSampleWater" formatted="false">50% ಮಾದರಿ ವಾಟರ್</string>
+    <string name="twentyFivePercentSampleWater" formatted="false">25% ಮಾದರಿ ವಾಟರ್</string>
     <string name="ecValueAt25Celcius">EC at 25°C is %s</string>
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>

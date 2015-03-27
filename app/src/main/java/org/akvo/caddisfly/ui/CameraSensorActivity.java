@@ -384,6 +384,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                 //intent.putExtra("questionId", mQuestionId);
                                 intent.putExtra("response", String.valueOf(result));
                                 setResult(Activity.RESULT_OK, intent);
+                                mTestCompleted = true;
 
                                 if (isCalibration) {
                                     sound.playShortResource(R.raw.done);
@@ -392,13 +393,13 @@ public class CameraSensorActivity extends ActionBarActivity
                                     boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
                                     if (result < 0 || color == -1) {
                                         if (developerMode) {
+                                            sound.playShortResource(R.raw.err);
                                             ShowVerboseError(true, 0);
                                         } else {
                                             showError(message, getBitmap(data));
                                         }
                                     } else {
 
-                                        mTestCompleted = true;
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
                                             ShowVerboseError(false, result);

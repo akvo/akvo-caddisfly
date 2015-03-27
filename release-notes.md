@@ -1,3 +1,7 @@
+v0.52 alpha
+-----------
+1. Minor UI changes and bug fixes
+
 v0.51 alpha
 -----------
 1. Fix dilution warning calculation bug
@@ -16,9 +20,7 @@ v0.48 alpha
 -----------
 1. EC Sensor connectivity
 2. 'Select Dilution' dialog on start of Fluoride test (hard coded for now but will work with json file in future)
-3. No fixed interval required for swatch ranges. Sample json file attached.
-example:
-`"ranges": "0, 10, 20, 30, 50",`
+3. No fixed interval required for swatch ranges. Sample json file attached. example:`"ranges": "0, 10, 20, 30, 50",`
 4. The calibration swatch file to load can be created manually like below
 example:
     0.0 = 255  88  177

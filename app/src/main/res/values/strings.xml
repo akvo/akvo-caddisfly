@@ -48,7 +48,7 @@
     <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
     <string name="language">Language</string>
     <string name="updateCheck">Check update</string>
-    <string name="updateSummary">Check if an update is available for Akvo Caddisfly</string>
+    <string name="updateSummary">Check if a new version is available</string>
     <string name="dataConnection">Data Connection</string>
     <string name="enableInternet">Internet connection required</string>
     <string name="about">About</string>

@@ -28,8 +28,7 @@ import org.akvo.caddisfly.R;
 public class DilutionFragment extends DialogFragment {
 
     public static DilutionFragment newInstance() {
-        DilutionFragment fragment = new DilutionFragment();
-        return fragment;
+        return new DilutionFragment();
     }
 
     @Override

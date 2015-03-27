@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -59,44 +60,9 @@ public class SensorActivity extends ActionBarActivity {
     private LinearLayout mConnectionLayout;
     private LinearLayout mResultLayout;
     private ProgressWheel mProgressBar;
-    //http://developer.android.com/guide/topics/connectivity/usb/host.html
-    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            switch (action) {
-                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
-                    break;
-                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-                    mRunLoop = false;
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            mResultLayout.setVisibility(View.GONE);
-                            mProgressBar.setVisibility(View.GONE);
-                            mConnectionLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
-
-                    mConnection.close();
-                    break;
-                case ACTION_USB_PERMISSION:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
-                    break;
-            }
-        }
-    };
     private boolean firstResultIgnored = false;
+    private ImageView mTemperatureImageView;
+    private TextView mUnitsTextView;
     private final Runnable mCommunicate = new Runnable() {
         @Override
         public void run() {
@@ -129,6 +95,46 @@ public class SensorActivity extends ActionBarActivity {
             }
         }
     };
+    //http://developer.android.com/guide/topics/connectivity/usb/host.html
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            switch (action) {
+                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
+                    if (!mConnection.isOpen()) {
+                        Connect();
+                    }
+                    if (!mRunLoop) {
+                        startCommunication();
+                    }
+                    break;
+                case UsbManager.ACTION_USB_DEVICE_DETACHED:
+                    mRunLoop = false;
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mResultLayout.setVisibility(View.GONE);
+                            mProgressBar.setVisibility(View.GONE);
+                            mTemperatureImageView.setVisibility(View.GONE);
+                            mUnitsTextView.setVisibility(View.GONE);
+
+                            mConnectionLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    mConnection.close();
+                    break;
+                case ACTION_USB_PERMISSION:
+                    if (!mConnection.isOpen()) {
+                        Connect();
+                    }
+                    if (!mRunLoop) {
+                        startCommunication();
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +149,8 @@ public class SensorActivity extends ActionBarActivity {
         mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         mEcValueTextView = (TextView) findViewById(R.id.ecValueTextView);
         mProgressBar = (ProgressWheel) findViewById(R.id.progress_wheel);
+        mTemperatureImageView = (ImageView) findViewById(R.id.temperatureImageView);
+        mUnitsTextView = (TextView) findViewById(R.id.unitsTextView);
 
         final MainApp mainApp = (MainApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
@@ -155,6 +163,9 @@ public class SensorActivity extends ActionBarActivity {
                 finish();
             }
         });
+
+        mTemperatureImageView.setVisibility(View.GONE);
+        mUnitsTextView.setVisibility(View.GONE);
 
         mOkButton = (Button) findViewById(R.id.okButton);
         mOkButton.setVisibility(View.INVISIBLE);
@@ -208,12 +219,17 @@ public class SensorActivity extends ActionBarActivity {
             } else {
                 mResultLayout.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.GONE);
+                mTemperatureImageView.setVisibility(View.GONE);
+                mUnitsTextView.setVisibility(View.GONE);
                 mConnectionLayout.setVisibility(View.VISIBLE);
             }
         }
     }
 
     private void startCommunication() {
+        mTemperatureImageView.setVisibility(View.GONE);
+        mUnitsTextView.setVisibility(View.GONE);
+
         mResultLayout.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mConnectionLayout.setVisibility(View.GONE);
@@ -239,12 +255,15 @@ public class SensorActivity extends ActionBarActivity {
                     mEc25Value = resultArray[2];
 
                     mResultTextView.setText(mEcValue);
-                    mTemperatureTextView.setText(getResources().getText(R.string.temperature) + ": " + mTemperature + "\u00B0C");
+                    mTemperatureTextView.setText(mTemperature + "\u00B0C");
                     mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEc25Value));
                     mProgressBar.setVisibility(View.GONE);
                     mResultLayout.setVisibility(View.VISIBLE);
                     mConnectionLayout.setVisibility(View.GONE);
                     mOkButton.setVisibility(View.VISIBLE);
+                    mTemperatureImageView.setVisibility(View.VISIBLE);
+                    mUnitsTextView.setVisibility(View.VISIBLE);
+
                 }
             }
         }

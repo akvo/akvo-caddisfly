@@ -27,14 +27,12 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -49,6 +47,7 @@ import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -59,6 +58,9 @@ public class MainActivity extends ActionBarActivity {
     private static final int REQUEST_LANGUAGE = 2;
     TextView mWatchTextView;
     TextView mDemoTextView;
+    Boolean external = false;
+    ;
+    private WeakRefHandler handler = new WeakRefHandler(this);
     private boolean mShouldFinish = false;
 
     private static Camera getCameraInstance() {
@@ -75,7 +77,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (!checkCameraFlash()) {
             AlertUtils.showError(this, R.string.error,
                     getString(R.string.errorCameraFlashRequired),
@@ -102,12 +103,6 @@ public class MainActivity extends ActionBarActivity {
             if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
                 checkUpdate(true);
             }
-        }
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
         }
 
         final Context context = this;
@@ -155,6 +150,37 @@ public class MainActivity extends ActionBarActivity {
         float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
         mDemoTextView.setWidth((int) width);
 
+        CheckLocale();
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    private void CheckLocale() {
+        assert getApplicationContext() != null;
+
+        Locale locale = new Locale(
+                PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
+//        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration config = res.getConfiguration();
+
+        if (!config.locale.equals(locale)) {
+            config.locale = locale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLayoutDirection(locale);
+            }
+            res.updateConfiguration(config, dm);
+
+            if (!external) {
+                Message msg = handler.obtainMessage();
+                handler.sendMessage(msg);
+            }
+        }
     }
 
     public void startSurvey() {
@@ -180,31 +206,6 @@ public class MainActivity extends ActionBarActivity {
      * Load user preferences
      */
     private void loadSavedPreferences() {
-        assert getApplicationContext() != null;
-
-        // Set the locale according to preference
-        Locale myLocale = new Locale(
-                PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        if (!conf.locale.equals(myLocale)) {
-            conf.locale = myLocale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                conf.setLayoutDirection(myLocale);
-            }
-            res.updateConfiguration(conf, dm);
-            final Activity context = this;
-            context.recreate();
-
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    context.recreate();
-//                }
-//            }, 0);
-        }
 
     }
 
@@ -243,11 +244,10 @@ public class MainActivity extends ActionBarActivity {
         String type = intent.getType();
         String mQuestionTitle;
         MainApp mainApp = (MainApp) getApplicationContext();
-        //Boolean external = false;
 
         if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
-                //external = true;
+                external = true;
                 mQuestionTitle = getIntent().getStringExtra("questionTitle");
                 String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
                 mainApp.setSwatches(code);
@@ -378,18 +378,17 @@ public class MainActivity extends ActionBarActivity {
         return hasFlash;
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    private static class WeakRefHandler extends Handler {
+        private WeakReference<Activity> ref;
 
-        public PlaceholderFragment() {
+        public WeakRefHandler(Activity ref) {
+            this.ref = new WeakReference<>(ref);
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_main, container, false);
+        public void handleMessage(Message msg) {
+            Activity f = ref.get();
+            f.recreate();
         }
     }
 

@@ -18,7 +18,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22"
+    buildToolsVersion "22.0.1"
 
     packagingOptions {
         exclude 'LICENSE.txt'
@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 16
         targetSdkVersion 22
-        versionName "prototype 0.51 alpha"
-        versionCode 51
+        versionName "prototype 0.52 alpha"
+        versionCode 52
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

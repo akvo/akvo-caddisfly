@@ -200,9 +200,9 @@ public class EspressoTest
 
         //onView(withId(R.id.placeInStandText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.endSurveyButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.backButton)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.endSurveyButton)).perform(click());
+        onView(withId(R.id.backButton)).perform(click());
     }
 
 //    public void tearDown() throws Exception {
