@@ -50,7 +50,6 @@ public class SensorActivity extends ActionBarActivity {
     private final StringBuilder mReadData = new StringBuilder();
     private FtdiSerial mConnection;
     private String mEc25Value = "";
-    private String mEcValue = "";
     private String mTemperature = "";
     private boolean mRunLoop = false;
     private TextView mResultTextView;
@@ -95,6 +94,7 @@ public class SensorActivity extends ActionBarActivity {
             }
         }
     };
+
     //http://developer.android.com/guide/topics/connectivity/usb/host.html
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -179,7 +179,7 @@ public class SensorActivity extends ActionBarActivity {
                 if (mainApp.currentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
-                    intent.putExtra("response", mEcValue);
+                    intent.putExtra("response", mEc25Value);
                 }
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -251,12 +251,12 @@ public class SensorActivity extends ActionBarActivity {
 
                 if (validDouble(resultArray[0]) && validDouble(resultArray[1]) && validDouble(resultArray[2])) {
                     mTemperature = resultArray[0];
-                    mEcValue = resultArray[1];
+                    String mEcValue = resultArray[1];
                     mEc25Value = resultArray[2];
 
-                    mResultTextView.setText(mEcValue);
+                    mResultTextView.setText(mEc25Value);
                     mTemperatureTextView.setText(mTemperature + "\u00B0C");
-                    mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEc25Value));
+                    mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEcValue));
                     mProgressBar.setVisibility(View.GONE);
                     mResultLayout.setVisibility(View.VISIBLE);
                     mConnectionLayout.setVisibility(View.GONE);

@@ -28,7 +28,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-public class JsonUtils {
+public final class JsonUtils {
+
+    private JsonUtils() {
+    }
 
     public static TestInfo loadJson(String jsonText, String testCode) throws JSONException {
         ArrayList<TestInfo> tests = loadTests(jsonText);

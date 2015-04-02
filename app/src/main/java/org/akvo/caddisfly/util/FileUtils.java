@@ -26,7 +26,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,43 +34,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FileUtils {
+public final class FileUtils {
 
     private FileUtils() {
-    }
-
-    public static String getStoragePath(Context context, long locationId, String folderName,
-                                        boolean create) {
-
-        if (folderName != null && folderName.startsWith(File.separator)) {
-            return folderName;
-        }
-
-        if (locationId > -1) {
-            assert folderName != null;
-            if (!folderName.isEmpty()) {
-                folderName = locationId + File.separator + folderName;
-            } else {
-                folderName = String.valueOf(locationId);
-            }
-        }
-
-        //File sdDir = Environment.getExternalStorageDirectory();
-
-        File sdDir = context.getExternalFilesDir(null);
-
-        File appDir = new File(sdDir, folderName != null ? folderName : "");
-
-        if (!appDir.exists()) {
-            if (!create) {
-                return "";
-            }
-            if (!appDir.mkdirs()) {
-                return "";
-            }
-        }
-
-        return appDir.getPath() + File.separator;
     }
 
     public static void deleteFile(String folder, String fileName) {
@@ -80,76 +45,6 @@ public class FileUtils {
         File file = new File(path + fileName);
         //noinspection ResultOfMethodCallIgnored
         file.delete();
-    }
-
-/*    public static void deleteFiles(ArrayList<String> files) {
-
-        if (files != null) {
-            for (String file1 : files) {
-                File file = new File(file1);
-                file.delete();
-            }
-        }
-    }*/
-
-/*    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void deleteFolder(Context context, long locationId, String folderName) {
-
-        File file = new File(getStoragePath(context, locationId, folderName, false));
-        deleteFolder(file);
-
-    }*/
-
-    public static void deleteFolder(File folder) {
-
-        if (folder.exists()) {
-            Runtime runtime = Runtime.getRuntime();
-            try {
-                runtime.exec("rm -r " + folder.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    // Reading file paths from SDCard
-/*    public static ArrayList<String> getFilePaths(Context context, String folderName,
-                                                 long locationId) {
-        return getFilePaths(context, folderName, "", locationId);
-    }*/
-
-    // Reading file paths from SDCard
-    @SuppressWarnings("SameParameterValue")
-    public static ArrayList<String> getFilePaths(Context context, String folderName,
-                                                 String subFolder, long locationId) {
-
-        ArrayList<String> filePaths = new ArrayList<>();
-
-        String folderPath = getStoragePath(context, locationId, folderName, false);
-
-        folderPath += subFolder;
-
-        File directory = new File(folderPath);
-
-        if (directory.isDirectory()) {
-            File[] listFiles = directory.listFiles();
-
-            if (listFiles != null && listFiles.length > 0) {
-
-                for (File listFile : listFiles) {
-
-                    if (listFile.isFile()) {
-                        String filePath = listFile.getAbsolutePath();
-
-                        //if (IsSupportedFile(filePath)) {
-                        filePaths.add(filePath);
-                    }
-                }
-            }
-        }
-
-        return filePaths;
     }
 
     public static void saveToFile(String path, String name, String data) {
@@ -244,29 +139,6 @@ public class FileUtils {
         return null;
     }
 
-    public static void saveText(String fileName, String content) {
-        FileOutputStream outputStream;
-
-        File file = new File(fileName);
-        try {
-            if (file.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                file.delete();
-            }
-            if (file.createNewFile()) {
-                try {
-                    outputStream = new FileOutputStream(file);
-                    outputStream.write(content.getBytes());
-                    outputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @SuppressWarnings("SameParameterValue")
     public static String readRawTextFile(Context ctx, int resId) {
         InputStream inputStream = ctx.getResources().openRawResource(resId);
@@ -286,19 +158,4 @@ public class FileUtils {
         }
         return text.toString();
     }
-
-    public static void trimFolders(Context context) {
-        File directory = context.getExternalFilesDir(null);
-        if (directory != null && directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null && files.length > 20) {
-                for (int i = files.length - 1; i > 4; i--) {
-                    if (files[i].isDirectory()) {
-                        deleteFolder(files[i]);
-                    }
-                }
-            }
-        }
-    }
-
 }

@@ -21,6 +21,84 @@
     android:layout_height="match_parent"
     tools:context="org.akvo.caddisfly.ui.CameraSensorActivity">
 
+
+    <LinearLayout
+        android:id="@+id/instructionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/testTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="40sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/dilution1TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/fab_material_amber_900"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="@string/fiftyPercentSampleWater"
+            android:textColor="#fff"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Fill the testing chamber with the sample water and insert a reagent capsule"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Close the testing chamber lid and attach it to the phone"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="When ready press start button below to begin the analysis"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/startButton"
+            style="@style/button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/start_button"
+            android:minWidth="200dp"
+            android:text="@string/start"
+            android:textAllCaps="true"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/stillnessLayout"
         android:layout_width="match_parent"

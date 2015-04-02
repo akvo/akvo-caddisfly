@@ -86,7 +86,7 @@
     <string name="hundredPercentSampleWater">कोई कमजोर पड़ने</string>
     <string name="fiftyPercentSampleWater">50% पानी के नमूने</string>
     <string name="twentyFivePercentSampleWater">25% पानी के नमूने</string>
-    <string name="ecValueAt25Celcius">25°C पर चुनाव आयोग %s μS/cm है</string>
+    <string name="ecValueAt25Celcius">EC %s μS/cm</string>
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>
     <string name="developerModeDisabled">Developer mode disabled</string>
@@ -95,6 +95,15 @@
     <string name="general">General</string>
     <string name="other">Other</string>
     <string name="developer">Developer</string>
+    <string name="calibrateSensor">Calibrate EC Sensor</string>
+    <string name="calibrateSensorSummary">Calibrate Akvo EC Sensor</string>
+    <string name="next">Next</string>
+    <string name="notConnected">Sensor not Connected</string>
+    <string name="calibrating">Calibrating</string>
+    <string name="pleaseWait">Please wait...</string>
+    <string name="calibrateColors">Calibrate Colors</string>
+    <string name="notSupported">Not Supported</string>
+    <string name="phoneDoesNotSupport">This phone does not support this feature</string>
 
 
 </resources>

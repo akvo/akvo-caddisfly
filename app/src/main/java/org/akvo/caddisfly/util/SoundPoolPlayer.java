@@ -21,6 +21,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.SparseIntArray;
 
+import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 
 public class SoundPoolPlayer {
@@ -40,7 +41,7 @@ public class SoundPoolPlayer {
 
     public void playShortResource(int piResource) {
         int iSoundId = mSounds.get(piResource);
-        this.mShortPlayer.play(iSoundId, 0.9f, 0.9f, 0, 0, 1);
+        this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
     }
 
     public void release() {

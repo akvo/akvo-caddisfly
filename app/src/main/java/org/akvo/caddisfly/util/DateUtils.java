@@ -18,7 +18,7 @@ package org.akvo.caddisfly.util;
 
 import java.util.Calendar;
 
-public class DateUtils {
+public final class DateUtils {
 
     private DateUtils() {
     }
@@ -28,28 +28,7 @@ public class DateUtils {
             return 0;
         }
 
-        return (int) ((calendar2.getTimeInMillis() - calendar1.getTimeInMillis()) / (1000 * 60 * 60
-                * 24));
+        return (int) ((calendar2.getTimeInMillis() -
+                calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
-
-   /* public static long getDateFromFilename(String file) {
-        Pattern pattern = Pattern
-                .compile("pic-(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})");
-        Matcher matcher = pattern.matcher(file);
-        if (matcher.find()) {
-            int year = Integer.parseInt(matcher.group(1));
-            int month = Integer.parseInt(matcher.group(2)) - 1;
-            int day = Integer.parseInt(matcher.group(3));
-            int hour = Integer.parseInt(matcher.group(4));
-            int minute = Integer.parseInt(matcher.group(5));
-            int second = Integer.parseInt(matcher.group(6));
-
-            Calendar cal = Calendar.getInstance();
-            //noinspection MagicConstant
-            cal.set(year, month, day, hour, minute, second);
-            return cal.getTimeInMillis();
-        }
-        return 0;
-    }
-*/
 }

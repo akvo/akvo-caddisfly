@@ -16,66 +16,20 @@
 
 package org.akvo.caddisfly.util;
 
-import android.content.Context;
+import android.graphics.Color;
 
 import org.akvo.caddisfly.Config;
-import org.akvo.caddisfly.R;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class DataHelper {
+public final class DataHelper {
 
-//    public static String getSwatchError(Context context, int errorCode) {
-//        switch (errorCode) {
-//            case Config.ERROR_NOT_YET_CALIBRATED:
-//                return context.getString(R.string.errorNotCalibrated);
-//            case Config.ERROR_DUPLICATE_SWATCH:
-//                return context.getString(R.string.errorDuplicateSwatch);
-//            case Config.ERROR_SWATCH_OUT_OF_PLACE:
-//                return context.getString(R.string.errorOutOfSequence);
-//            case Config.ERROR_OUT_OF_RANGE:
-//                return context.getString(R.string.errorOutOfRange);
-//            case Config.ERROR_COLOR_IS_GRAY:
-//                return context.getString(R.string.errorOutOfRange);
-//            case Config.ERROR_LOW_QUALITY:
-//                return context.getString(R.string.errorPhotoQuality);
-//            default:
-//                return context.getString(R.string.error);
-//        }
-//    }
-
-    public static void saveResultToPreferences(Context context, String testType, long id, String folderName,
-                                               double finalResult, int resultColor) {
-        int samplingCount = PreferencesUtils
-                .getInt(context, R.string.samplingCountKey, Config.SAMPLING_COUNT_DEFAULT);
-        String text = "";
-        String separator = System.getProperty("line.separator");
-        for (int i = 0; i < samplingCount; i++) {
-            String key = String.format(context.getString(R.string.samplingIndexKey), i);
-            double tempResult = PreferencesUtils.getDouble(context, key);
-            PreferencesUtils.setDouble(context,
-                    String.format(context.getString(R.string.resultValueKey), testType, id, i),
-                    tempResult);
-
-            key = String.format(context.getString(R.string.samplingColorIndexKey), i);
-            int tempColor = PreferencesUtils.getInt(context, key, -1);
-            PreferencesUtils.setInt(context,
-                    String.format(context.getString(R.string.resultColorKey), testType, id, i),
-                    tempColor);
-
-            key = String.format(context.getString(R.string.samplingQualityIndexKey), i);
-            int tempQuality = PreferencesUtils.getInt(context, key, -1);
-            PreferencesUtils.setInt(context,
-                    String.format(context.getString(R.string.resultQualityKey), testType, id, i),
-                    tempQuality);
-
-            text += tempResult + "," + tempColor + "," + tempQuality + separator;
-        }
-        text += finalResult + "," + resultColor + separator;
-        FileUtils.saveText(folderName + "result.txt", text);
+    private DataHelper() {
     }
 
     public static double[] convertDoubles(List<Double> doubles) {
@@ -84,32 +38,43 @@ public class DataHelper {
         return ret;
     }
 
+    public static int getAverageColor(ArrayList<Integer> colors) {
 
-    public static int getAverageColor(Context context, ArrayList<Integer> colors) {
+//      return colors.get(colors.size() - 1);
+        int counter = 0;
 
-        return colors.get(colors.size() - 1);
+        int red = 0;
+        int green = 0;
+        int blue = 0;
 
-//        int counter = 0;
-//
-//        int red = 0;
-//        int green = 0;
-//        int blue = 0;
-//        //Ignore the first result
-//        for (int i = 1; i < colors.size(); i++) {
-//            int color = colors.get(i);
-//            if (color != -1) {
-//                counter++;
-//                red += Color.red(color);
-//                green += Color.green(color);
-//                blue += Color.blue(color);
-//            }
-//        }
-//
-//        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
-//            return Color.rgb(red / counter, green / counter, blue / counter);
-//        } else {
-//            return -1;
-//        }
+        ArrayList<Double> distances = new ArrayList<>();
+
+        for (int i = 1; i < colors.size() - 1; i++) {
+            distances.add(ColorUtils.getDistance(colors.get(i), colors.get(i + 1)));
+        }
+
+        for (int i = 0; i < distances.size(); i++) {
+            if (distances.get(i) > 20) {
+                return -1;
+            }
+        }
+
+        //Ignore the first result
+        for (int i = 1; i < colors.size(); i++) {
+            int color = colors.get(i);
+            if (color != -1) {
+                counter++;
+                red += Color.red(color);
+                green += Color.green(color);
+                blue += Color.blue(color);
+            }
+        }
+
+        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+            return Color.rgb(red / counter, green / counter, blue / counter);
+        } else {
+            return -1;
+        }
     }
 
     public static int getClosestMatchIndex(ArrayList<Double> resultArray, double commonResult) {
@@ -126,7 +91,30 @@ public class DataHelper {
         return index;
     }
 
-    public static double getAverageResult(Context context, ArrayList<Double> results) {
+    public static double mostFrequent(double[] array) {
+        Map<Double, Integer> map = new HashMap<>();
+
+        for (double a : array) {
+            if (a >= 0) {
+                Integer freq = map.get(a);
+                map.put(a, (freq == null) ? 1 : freq + 1);
+            }
+        }
+
+        int max = -1;
+        double mostFrequent = -1;
+
+        for (Map.Entry<Double, Integer> e : map.entrySet()) {
+            if (e.getValue() > max) {
+                mostFrequent = e.getKey();
+                max = e.getValue();
+            }
+        }
+
+        return mostFrequent;
+    }
+
+    public static double getAverageResult(ArrayList<Double> results) {
 
         double result = 0;
 
@@ -136,7 +124,7 @@ public class DataHelper {
         double[] resultArray = convertDoubles(results);
         //ignore first value;
         resultArray[0] = -1;
-        commonResult = ColorUtils.mostFrequent(resultArray);
+        commonResult = mostFrequent(resultArray);
 
         ArrayList<Double> tempResults = new ArrayList<>();
 
@@ -177,16 +165,5 @@ public class DataHelper {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
-    }
-
-    public static void saveTempResult(Context context, double resultValue, int resultColor, int quality) {
-
-        int samplingCount = PreferencesUtils.getInt(context, R.string.currentSamplingCountKey, 0);
-        String key = String.format(context.getString(R.string.samplingIndexKey), samplingCount);
-        PreferencesUtils.setDouble(context, key, resultValue);
-        key = String.format(context.getString(R.string.samplingColorIndexKey), samplingCount);
-        PreferencesUtils.setInt(context, key, resultColor);
-        key = String.format(context.getString(R.string.samplingQualityIndexKey), samplingCount);
-        PreferencesUtils.setInt(context, key, quality);
     }
 }

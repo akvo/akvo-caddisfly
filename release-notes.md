@@ -1,3 +1,10 @@
+v0.53 alpha
+-----------
+1. EC Reference value displayed in bolder font
+2. Start screen for colorimetric tests added
+3. Calibrate EC sensor option in settings
+4. Minor UI changes
+
 v0.52 alpha
 -----------
 1. Minor UI changes and bug fixes

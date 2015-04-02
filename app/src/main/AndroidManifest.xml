@@ -12,8 +12,7 @@
   ~ See the GNU Affero General Public License included below for more details.
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -41,11 +40,14 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
@@ -70,6 +72,7 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
@@ -100,5 +103,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.CalibrateListActivity" />
         </activity>
+        <activity
+            android:name=".ui.CalibrateSensorActivity"
+            android:label="@string/calibrateSensor"
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="portrait" />
     </application>
+
 </manifest>

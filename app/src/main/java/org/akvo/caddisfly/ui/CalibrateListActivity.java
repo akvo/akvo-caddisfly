@@ -61,6 +61,7 @@ import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
+import org.akvo.caddisfly.util.PreferencesUtils;
 import org.json.JSONException;
 
 import java.io.File;
@@ -95,8 +96,12 @@ public class CalibrateListActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calibrate, menu);
+        boolean developerMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
+        if (developerMode) {
+            getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_calibrate, menu);
+        }
         return true;
     }
 

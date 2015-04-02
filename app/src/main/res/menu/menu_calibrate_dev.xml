@@ -36,4 +36,10 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
+    <item
+        android:id="@+id/action_swatches"
+        android:icon="@drawable/ic_menu_swatch_dark"
+        android:orderInCategory="100"
+        android:title="@string/swatches"
+        app:showAsAction="always" />
 </menu>

@@ -1,4 +1,4 @@
-package org.akvo.caddisfly.util;
+package org.akvo.caddisfly.ui;
 
 
 import android.annotation.SuppressLint;
@@ -64,8 +64,6 @@ public class DialogGridError extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.dialog_grid_error, container, false);
 
-        //TextView resultView = (TextView) view.findViewById(R.id.result);
-
         ListView resultList = (ListView) view.findViewById(R.id.resultList);
         resultList.setAdapter(new ImageAdapter(this.getActivity()));
 
@@ -118,10 +116,7 @@ public class DialogGridError extends DialogFragment {
 
                 }
             });
-
         }
-
-
         return view;
     }
 
@@ -157,8 +152,6 @@ public class DialogGridError extends DialogFragment {
             MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
 
             if (mainApp != null && rowView != null) {
-                //ArrayList<ResultRange> colorRange = mainApp.currentTestInfo.getRanges();
-
                 TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
                 TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
@@ -181,24 +174,5 @@ public class DialogGridError extends DialogFragment {
             }
             return rowView;
         }
-
-
-        // create a new ImageView for each item referenced by the Adapter
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            ImageView imageView;
-//            if (convertView == null) {  // if it's not recycled, initialize some attributes
-//                imageView = new ImageView(mContext);
-//                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                imageView.setPadding(8, 8, 8, 8);
-//            } else {
-//                imageView = (ImageView) convertView;
-//            }
-//
-//            imageView.setImageResource(mThumbIds[position]);
-//            return imageView;
-//        }
-
     }
-
 }

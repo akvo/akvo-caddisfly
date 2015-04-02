@@ -18,7 +18,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
-import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 
@@ -97,17 +95,19 @@ public class CalibrateDetailFragment extends Fragment {
             @Override
             public void onClick(final View v) {
 
-                AlertUtils.askQuestion(getActivity(), R.string.calibrate,
-                        R.string.startTestConfirm,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface,
-                                    int i) {
-                                calibrate(position);
-                            }
-                        }
-                );
+                calibrate(position);
+
+//                AlertUtils.askQuestion(getActivity(), R.string.calibrate,
+//                        R.string.startTestConfirm,
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(
+//                                    DialogInterface dialogInterface,
+//                                    int i) {
+//                                calibrate(position);
+//                            }
+//                        }
+//                );
             }
         });
         displayInfo();

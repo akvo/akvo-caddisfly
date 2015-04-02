@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -48,7 +49,6 @@ import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
-import org.akvo.caddisfly.util.DialogGridError;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
@@ -108,7 +108,6 @@ public class CameraSensorActivity extends ActionBarActivity
 
         //mTitleText = (TextView) findViewById(R.id.titleText);
         mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
-
         mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
@@ -142,7 +141,6 @@ public class CameraSensorActivity extends ActionBarActivity
         }, new ShakeDetector.OnNoShakeListener() {
             @Override
             public void onNoShake() {
-
                 if (mWaitingForStillness) {
                     mWaitingForStillness = false;
                     sound.playShortResource(R.raw.beep);
@@ -162,8 +160,8 @@ public class CameraSensorActivity extends ActionBarActivity
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
-        //mTitleText.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (wakeLock == null || !wakeLock.isHeld()) {
             PowerManager pm = (PowerManager) getApplicationContext()
@@ -187,8 +185,15 @@ public class CameraSensorActivity extends ActionBarActivity
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
 
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                SensorManager.SENSOR_DELAY_UI);
+        ((Button) findViewById(R.id.startButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                        SensorManager.SENSOR_DELAY_UI);
+                mViewAnimator.showNext();
+            }
+        });
+
     }
 
     /**
@@ -316,7 +321,7 @@ public class CameraSensorActivity extends ActionBarActivity
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
         if (mResults.size() > 3 && !isCalibration) {
-            if (DataHelper.getAverageResult(getBaseContext(), mResults) == -1) {
+            if (DataHelper.getAverageResult(mResults) == -1) {
                 mCameraFragment.samplingCount--;
             }
         }
@@ -359,7 +364,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
                             if (mCameraFragment.hasTestCompleted()) {
 
-                                double result = DataHelper.getAverageResult(getBaseContext(), mResults);
+                                double result = DataHelper.getAverageResult(mResults);
 
                                 MainApp mainApp = (MainApp) getApplicationContext();
                                 if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
@@ -375,7 +380,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                         break;
                                 }
 
-                                int color = DataHelper.getAverageColor(getBaseContext(), mColors);
+                                int color = DataHelper.getAverageColor(mColors);
                                 boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                                 releaseResources();
                                 Intent intent = new Intent(getIntent());

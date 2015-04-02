@@ -45,7 +45,7 @@
     <!--Settings Screen-->
     <string name="settings">Settings</string>
     <string name="calibrate">Calibrate</string>
-    <string name="calibrateSummary">Use the standard color mixtures provided in the kit to calibrate this phone</string>
+    <string name="calibrateSummary">Calibrate colorimeter using the standard color mixtures provided in the kit</string>
     <string name="language">Language</string>
     <string name="updateCheck">Check update</string>
     <string name="updateSummary">Check if a new version is available</string>
@@ -80,7 +80,7 @@
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
     <string name="temperature">Temperature</string>
-    <string name="ecValueAt25Celcius">EC at 25°C is %s μS/cm</string>
+    <string name="ecValueAt25Celcius">EC %s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
     <!--About Screen-->
@@ -117,4 +117,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_calibrate_sensor">CalibrateSensorActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="calibrateSensor">Calibrate EC Sensor</string>
+    <string name="calibrateSensorSummary">Calibrate Akvo Electrical Conductivity Sensor</string>
+    <string name="next">Next</string>
+    <string name="notConnected">Sensor not Connected</string>
+    <string name="calibrating">Calibrating</string>
+    <string name="pleaseWait">Please wait...</string>
+    <string name="calibrateColors">Calibrate Colors</string>
+    <string name="notSupported">Not Supported</string>
+    <string name="phoneDoesNotSupport">This phone does not support this feature</string>
 </resources>
