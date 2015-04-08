@@ -25,20 +25,6 @@
     android:paddingStart="@dimen/activity_horizontal_margin"
     tools:context="org.akvo.caddisfly.ui.CalibrateDetailFragment">
 
-    <TextView
-        android:id="@+id/infoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="3dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="10dp"
-        android:lineSpacingExtra="5sp"
-        android:text="@string/calibrateAttachStandardCartridge"
-        android:textSize="19sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,11 +42,11 @@
                 android:id="@+id/valueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
                 android:clickable="false"
                 android:gravity="center"
                 android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textSize="27sp"
+                android:textSize="37sp"
                 tools:text="1.0" />
 
             <Button
@@ -78,33 +64,25 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <Button
+            android:id="@+id/startButton"
+            style="@style/button_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <Button
-                android:id="@+id/startButton"
-                style="@style/button_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/blue_button"
-                android:minWidth="200dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:paddingTop="10dp"
-                android:text="@string/calibrate"
-                android:textAllCaps="true"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/blue_button"
+            android:minWidth="200dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingTop="10dp"
+            android:text="@string/calibrate"
+            android:textAllCaps="true"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/errorLayout"

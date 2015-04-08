@@ -122,4 +122,8 @@
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>
+    <string name="pleaseEnterValue">Enter a value</string>
+    <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
+    <string name="calibrationSucceeded">Calibration was successful</string>
+    <string name="calibrated">Calibrated</string>
 </resources>

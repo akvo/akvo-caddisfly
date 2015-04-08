@@ -38,7 +38,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -63,6 +62,7 @@ public class CameraSensorActivity extends ActionBarActivity
     private final Handler delayHandler = new Handler();
     DilutionFragment mDilutionFragment;
     int mDilutionLevel = 0;
+    DialogGridError mResultFragment;
     //private TextView mTitleText;
     private TextView mTestTypeTextView;
     private TextView mDilutionTextView;
@@ -185,7 +185,7 @@ public class CameraSensorActivity extends ActionBarActivity
         mViewAnimator.setInAnimation(mSlideInRight);
         mViewAnimator.setOutAnimation(mSlideOutLeft);
 
-        ((Button) findViewById(R.id.startButton)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -231,8 +231,8 @@ public class CameraSensorActivity extends ActionBarActivity
         );
     }
 
-    private void ShowVerboseError(boolean testFailed, double result) {
-        DialogGridError mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result);
+    private void ShowVerboseError(boolean testFailed, double result, int color) {
+        mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result, color);
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
@@ -313,7 +313,7 @@ public class CameraSensorActivity extends ActionBarActivity
         bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
-        int color = bundle.getInt(Config.RESULT_COLOR_KEY, -1);
+        int color = bundle.getInt(Config.RESULT_COLOR_KEY, 0);
 
         mColors.add(color);
         mResults.add(result);
@@ -390,16 +390,18 @@ public class CameraSensorActivity extends ActionBarActivity
                                 intent.putExtra("response", String.valueOf(result));
                                 setResult(Activity.RESULT_OK, intent);
                                 mTestCompleted = true;
+                                boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
 
-                                if (isCalibration) {
+                                if (isCalibration && color != 0) {
                                     sound.playShortResource(R.raw.done);
-                                    finish();
+                                    if (developerMode) {
+                                        ShowVerboseError(false, result, color);
+                                    }
                                 } else {
-                                    boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
-                                    if (result < 0 || color == -1) {
+                                    if (result < 0 || color == 0) {
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.err);
-                                            ShowVerboseError(true, 0);
+                                            ShowVerboseError(true, 0, color);
                                         } else {
                                             showError(message, getBitmap(data));
                                         }
@@ -407,7 +409,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
-                                            ShowVerboseError(false, result);
+                                            ShowVerboseError(false, result, color);
                                         } else {
                                             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
@@ -573,6 +575,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
     @Override
     public void onFinishErrorListDialog(boolean retry, boolean cancelled) {
+        mResultFragment.dismiss();
         if (mHighLevelsFound) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);

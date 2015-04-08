@@ -3,6 +3,7 @@ package org.akvo.caddisfly.ui;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
@@ -67,12 +68,10 @@ public class CalibrateSensorActivity extends ActionBarActivity {
             mHandler.post(new Runnable() {
                 public void run() {
                     Toast.makeText(getBaseContext(), mReadData.toString(), Toast.LENGTH_LONG).show();
-
                     mReadData.setLength(0);
                 }
             });
         }
-
     }
 
     @Override
@@ -93,6 +92,9 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!mConnection.isOpen()) {
+                    Connect();
+                }
                 if (mConnection.isOpen()) {
 
                     final ProgressDialog dialog = ProgressDialog.show(context, getString(R.string.deviceConnecting),
@@ -133,16 +135,14 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            dialog.dismiss();
                             //read();
+                            dialog.dismiss();
                             viewAnimator.showNext();
                         }
                     }, 3000);
-
                 } else {
-                    lowValueEditText.setError(getString(R.string.enableInternet));
+                    lowValueEditText.setError(getString(R.string.pleaseEnterValue));
                 }
-
             }
         });
 
@@ -154,7 +154,6 @@ public class CalibrateSensorActivity extends ActionBarActivity {
                     String requestCommand = "H," + highValueEditText.getText();
                     //String requestCommand = "R";
                     mConnection.write(requestCommand.getBytes(), requestCommand.length());
-
                     final ProgressDialog dialog = ProgressDialog.show(context, getString(R.string.calibrating),
                             getString(R.string.pleaseWait), true);
                     dialog.setCancelable(false);
@@ -165,22 +164,26 @@ public class CalibrateSensorActivity extends ActionBarActivity {
                         @Override
                         public void run() {
                             //read();
+                            //String requestCommand = "R";
+                            String requestCommand = "C";
+                            mConnection.write(requestCommand.getBytes(), requestCommand.length());
                             (new Handler()).postDelayed(new Runnable() {
                                 public void run() {
-                                    String requestCommand = "C";
-                                    //String requestCommand = "R";
-                                    mConnection.write(requestCommand.getBytes(), requestCommand.length());
                                     //read();
                                     dialog.dismiss();
-                                    viewAnimator.showNext();
+                                    AlertUtils.showAlert(context, R.string.calibrated, R.string.calibrationSucceeded, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }, null);
                                 }
                             }, 3000);
                         }
                     }, 3000);
 
-
                 } else {
-                    highValueEditText.setError(getString(R.string.enableInternet));
+                    highValueEditText.setError(getString(R.string.pleaseEnterValue));
                 }
             }
         });
@@ -202,77 +205,6 @@ public class CalibrateSensorActivity extends ActionBarActivity {
                     D2xxManager.FT_STOP_BITS_1, D2xxManager.FT_PARITY_NONE);
         }
     }
-
-//    public void editCalibration(final int position) {
-//        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        final EditText input = new EditText(this);
-//        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-//
-//        alertDialogBuilder.setView(input);
-//        alertDialogBuilder.setCancelable(false);
-//
-//        alertDialogBuilder.setTitle(R.string.enableInternet);
-//
-//
-//        alertDialogBuilder.setMessage(getString(R.string.enableInternet));
-//        alertDialogBuilder.setPositiveButton(R.string.ok, null);
-//        alertDialogBuilder
-//                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int i) {
-//                        closeKeyboard(input);
-//                        dialog.cancel();
-//                    }
-//                });
-//        final AlertDialog alertDialog = alertDialogBuilder.create(); //create the box
-//
-//        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//
-//            @Override
-//            public void onShow(DialogInterface dialog) {
-//
-//                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-//                b.setOnClickListener(new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (validInput(input.getText().toString(), position)) {
-//                            closeKeyboard(input);
-//                            alertDialog.dismiss();
-//                        } else {
-//                            input.setError(getString(R.string.enableInternet));
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//
-//        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
-//                        == EditorInfo.IME_ACTION_DONE)) {
-//
-//                    if (validInput(input.getText().toString(), position)) {
-//                        closeKeyboard(input);
-//                        alertDialog.cancel();
-//                    } else {
-//                        input.setError(getString(R.string.enableInternet));
-//                        input.requestFocus();
-//                        InputMethodManager imm = (InputMethodManager) getBaseContext()
-//                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-//
-//        alertDialog.show();
-//        input.requestFocus();
-//        InputMethodManager imm = (InputMethodManager) this.getSystemService(
-//                Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//    }
 
     private boolean validInput(String input) {
 

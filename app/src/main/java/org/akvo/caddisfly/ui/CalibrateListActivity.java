@@ -93,6 +93,7 @@ public class CalibrateListActivity extends ActionBarActivity
      * device.
      */
     private boolean mTwoPane;
+    private int mPosition;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,6 +181,7 @@ public class CalibrateListActivity extends ActionBarActivity
      */
     @Override
     public void onItemSelected(int id) {
+        mPosition = id;
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
@@ -193,11 +195,20 @@ public class CalibrateListActivity extends ActionBarActivity
                     .commit();
 
         } else {
+            final MainApp mainApp = ((MainApp) getApplicationContext());
+            //mRange = mainApp.currentTestInfo.getRange(id);
+            final Intent intent = new Intent();
+            intent.setClass(this, CameraSensorActivity.class);
+            intent.putExtra("isCalibration", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivityForResult(intent, REQUEST_CALIBRATE);
+
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            Intent detailIntent = new Intent(this, CalibrateDetailActivity.class);
-            detailIntent.putExtra(CalibrateDetailFragment.ARG_ITEM_ID, id);
-            startActivityForResult(detailIntent, REQUEST_CALIBRATE);
+//            Intent detailIntent = new Intent(this, CalibrateDetailActivity.class);
+//            detailIntent.putExtra(CalibrateDetailFragment.ARG_ITEM_ID, id);
+//            startActivityForResult(detailIntent, REQUEST_CALIBRATE);
         }
     }
 
@@ -206,10 +217,18 @@ public class CalibrateListActivity extends ActionBarActivity
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CALIBRATE:
+
+                final MainApp mainApp = ((MainApp) getApplicationContext());
+                ResultRange mRange = mainApp.currentTestInfo.getRange(mPosition);
+
                 if (resultCode == Activity.RESULT_OK) {
-                    ((CalibrateListFragment) getSupportFragmentManager()
-                            .findFragmentById(R.id.calibrate_list)).setAdapter();
+                    mainApp.storeCalibratedData(mRange, data.getIntExtra("color", 0));
+                } else {
+                    mainApp.storeCalibratedData(mRange, 0);
                 }
+
+                ((CalibrateListFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.calibrate_list)).setAdapter();
                 break;
         }
     }
@@ -434,26 +453,40 @@ public class CalibrateListActivity extends ActionBarActivity
                                 String fileName = listFiles[which].getName();
                                 final ArrayList<ResultRange> swatchList = new ArrayList<>();
 
-                                final ArrayList<String> rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
-                                if (rgbList != null) {
-                                    for (String rgb : rgbList) {
-                                        String[] values = rgb.split("=");
-                                        ResultRange range = new ResultRange(Double.valueOf(values[0]), ColorUtils.getColorFromRgb(values[1]));
-                                        swatchList.add(range);
-                                    }
-                                    (new AsyncTask<Void, Void, Void>() {
-                                        @Override
-                                        protected Void doInBackground(Void... params) {
-                                            mainApp.saveCalibratedSwatches(swatchList);
-                                            return null;
-                                        }
+                                ArrayList<String> rgbList = null;
+                                try {
+                                    rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
 
-                                        @Override
-                                        protected void onPostExecute(Void result) {
-                                            super.onPostExecute(result);
-                                            callback.handleMessage(null);
+                                    if (rgbList != null) {
+                                        for (String rgb : rgbList) {
+                                            String[] values = rgb.split("=");
+                                            ResultRange range = new ResultRange(Double.valueOf(values[0]), ColorUtils.getColorFromRgb(values[1]));
+                                            swatchList.add(range);
                                         }
-                                    }).execute();
+                                        (new AsyncTask<Void, Void, Void>() {
+                                            @Override
+                                            protected Void doInBackground(Void... params) {
+                                                mainApp.saveCalibratedSwatches(swatchList);
+                                                return null;
+                                            }
+
+                                            @Override
+                                            protected void onPostExecute(Void result) {
+                                                super.onPostExecute(result);
+                                                callback.handleMessage(null);
+                                            }
+                                        }).execute();
+                                    }
+                                } catch (Exception ex) {
+                                    AlertUtils.showError(context, R.string.error, getString(R.string.errorLoadingFile),
+                                            null, R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            }, null);
+
                                 }
                             }
                         }
@@ -477,6 +510,7 @@ public class CalibrateListActivity extends ActionBarActivity
                                         FileUtils.deleteFile(folderName, fileName);
                                         ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                         listAdapter.remove(listAdapter.getItem(position));
+                                        alert.dismiss();
                                     }
                                 });
                                 return true;

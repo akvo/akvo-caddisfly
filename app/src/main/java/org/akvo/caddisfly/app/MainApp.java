@@ -122,7 +122,7 @@ public class MainApp extends Application {
         for (ResultRange range : testInfo.getRanges()) {
             //if (PreferencesUtils.contains(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()))) {
 
-            int color = PreferencesUtils.getInt(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()), -1);
+            int color = PreferencesUtils.getInt(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()), 0);
 
 //                int r = Color.red(color);
 //                int g = Color.green(color);
@@ -147,7 +147,7 @@ public class MainApp extends Application {
             for (int i = startValue; i <= endValue; i += 1) {
                 String key = String.format("%s-%.2f", currentTestInfo.getCode(), (i / 10f));
                 ResultRange range = new ResultRange((double) i / 10,
-                        PreferencesUtils.getInt(context, key, -1));
+                        PreferencesUtils.getInt(context, key, 0));
                 currentTestInfo.getSwatches().add(range);
             }
         }
@@ -164,7 +164,7 @@ public class MainApp extends Application {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String colorKey = String.format("%s-%.2f", currentTestInfo.getCode(), range.getValue());
 
-        if (resultColor == -1) {
+        if (resultColor == 0) {
             editor.remove(colorKey);
         } else {
             range.setColor(resultColor);
@@ -206,7 +206,7 @@ public class MainApp extends Application {
     public int getCalibrationErrorCount() {
         int count = 0;
         for (int i = 0; i < currentTestInfo.getRanges().size(); i++) {
-            if (currentTestInfo.getRange(i).getColor() == -1) {
+            if (currentTestInfo.getRange(i).getColor() == 0) {
                 count++;
             }
         }

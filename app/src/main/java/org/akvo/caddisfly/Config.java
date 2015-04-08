@@ -89,5 +89,5 @@ public class Config {
     public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
     public static final String CONFIG_FILE = "tests.json";
 
-    public static final float SOUND_VOLUME = 0.09f;
+    public static final float SOUND_VOLUME = 0.03f;
 }

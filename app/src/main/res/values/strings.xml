@@ -115,19 +115,18 @@
     <string name="other">Other</string>
     <string name="developer">Developer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_calibrate_sensor">CalibrateSensorActivity</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="calibrateSensor">Calibrate EC Sensor</string>
     <string name="calibrateSensorSummary">Calibrate Akvo Electrical Conductivity Sensor</string>
     <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
-    <string name="pleaseWait">Please wait...</string>
+    <string name="pleaseWait">Please wait…</string>
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>
+    <string name="pleaseEnterValue">Enter a value</string>
+    <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
+    <string name="calibrationSucceeded">Calibration was successful</string>
+    <string name="calibrated">Calibrated</string>
 </resources>

@@ -31,5 +31,5 @@
     <string name="resultColorKey">resultColor_%1$s_%2$d_%3$d</string>
     <string name="resultQualityKey">resultQuality_%1$s_%2$d_%3$d</string>
 
-    <string name="developerModeKey">photoSampleDimension</string>
+    <string name="developerModeKey">developerMode</string>
 </resources>

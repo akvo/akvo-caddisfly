@@ -55,14 +55,14 @@ public final class DataHelper {
 
         for (int i = 0; i < distances.size(); i++) {
             if (distances.get(i) > 20) {
-                return -1;
+                return 0;
             }
         }
 
         //Ignore the first result
         for (int i = 1; i < colors.size(); i++) {
             int color = colors.get(i);
-            if (color != -1) {
+            if (color != 0) {
                 counter++;
                 red += Color.red(color);
                 green += Color.green(color);
@@ -73,7 +73,7 @@ public final class DataHelper {
         if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
             return Color.rgb(red / counter, green / counter, blue / counter);
         } else {
-            return -1;
+            return 0;
         }
     }
 
@@ -119,7 +119,7 @@ public final class DataHelper {
         double result = 0;
 
         int counter = 0;
-        double commonResult = 0;
+        double commonResult;
 
         double[] resultArray = convertDoubles(results);
         //ignore first value;

@@ -73,7 +73,7 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 //            errorImage.setVisibility(View.GONE);
 //        }
 
-        if (color != -1) {
+        if (color != 0 && color != -16777216) {
             button.setBackgroundColor(color);
             button.setText("");
             boolean developerMode = PreferencesUtils.getBoolean(getContext(), R.string.developerModeKey, false);

@@ -68,7 +68,7 @@ public class SwatchFragment extends ListFragment {
                     for (int i = startValue; i <= endValue; i += 1) {
                         String key = String.format("%s-%.2f", mainApp.currentTestInfo.getCode(), (i / 10f));
                         ResultRange range = new ResultRange((double) i / 10,
-                                PreferencesUtils.getInt(activity, key, -1));
+                                PreferencesUtils.getInt(activity, key, 0));
                         swatchList.add(range);
                     }
                     ResultRange[] colorArray = swatchList.toArray(new ResultRange[swatchList.size()]);

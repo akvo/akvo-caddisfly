@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.ColorUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -34,19 +35,21 @@ public class DialogGridError extends DialogFragment {
     ArrayList<Bitmap> mBitmaps;
     double[] mResults;
     boolean mAllowRetry;
+    private int mColor;
 
     public DialogGridError() {
         // Required empty public constructor
     }
 
     public static DialogGridError newInstance(ArrayList<Integer> colors, ArrayList<Double> results,
-                                              ArrayList<Bitmap> bitmaps, boolean allowRetry, double result) {
+                                              ArrayList<Bitmap> bitmaps, boolean allowRetry, double result, int color) {
         DialogGridError fragment = new DialogGridError();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
         args.putIntegerArrayList("colors", colors);
         args.putDoubleArray("results", convertDoubles(results));
         args.putDouble("result", result);
+        args.putInt("color", color);
         fragment.mBitmaps = bitmaps;
         fragment.setArguments(args);
         return fragment;
@@ -70,6 +73,7 @@ public class DialogGridError extends DialogFragment {
         mColors = getArguments().getIntegerArrayList("colors");
         mResults = getArguments().getDoubleArray("results");
         mAllowRetry = getArguments().getBoolean("retry");
+        mColor = getArguments().getInt("color");
 
 
         Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
@@ -102,7 +106,12 @@ public class DialogGridError extends DialogFragment {
             });
         } else {
             double result = getArguments().getDouble("result");
-            getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
+            if (result == -1) {
+                getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtils.getColorRgbString(mColor)));
+            } else {
+                getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
+            }
+
             cancelButton.setVisibility(View.GONE);
             retryButton.setVisibility(View.GONE);
             okButton.setVisibility(View.VISIBLE);
