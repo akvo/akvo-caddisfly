@@ -49,6 +49,7 @@ public class NetworkUtils {
             });
             Dialog alertDialog = builder.create();
             alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.setCancelable(true);
             alertDialog.show();
         }
 

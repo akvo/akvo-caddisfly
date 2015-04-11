@@ -1,3 +1,10 @@
+v0.54 alpha
+-----------
+1. White is a valid swatch color
+2. Cancel button removed from dilution dialog
+3. Dilution label in start screen
+4. Minor bug fixes
+
 v0.53 alpha
 -----------
 1. EC Reference value displayed in bolder font

@@ -28,7 +28,6 @@ public class TestInfo {
     private final ArrayList<ResultRange> mRanges;
     private final ArrayList<ResultRange> mSwatches;
     private final int mType;
-    private int mIncrement;
 
     public TestInfo(Hashtable names, String code, String unit, int type) {
         mNames = names;
@@ -85,9 +84,9 @@ public class TestInfo {
         return mRanges.get(position);
     }
 
-    public void setColor(ResultRange range, int resultColor) {
-        range.setColor(resultColor);
-    }
+//    public void setColor(ResultRange range, int resultColor) {
+//        range.setColor(resultColor);
+//    }
 
     public ArrayList<ResultRange> getSwatches() {
         return mSwatches;

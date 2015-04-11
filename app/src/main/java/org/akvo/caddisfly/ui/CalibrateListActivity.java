@@ -195,7 +195,7 @@ public class CalibrateListActivity extends ActionBarActivity
                     .commit();
 
         } else {
-            final MainApp mainApp = ((MainApp) getApplicationContext());
+            //final MainApp mainApp = ((MainApp) getApplicationContext());
             //mRange = mainApp.currentTestInfo.getRange(id);
             final Intent intent = new Intent();
             intent.setClass(this, CameraSensorActivity.class);
@@ -223,8 +223,6 @@ public class CalibrateListActivity extends ActionBarActivity
 
                 if (resultCode == Activity.RESULT_OK) {
                     mainApp.storeCalibratedData(mRange, data.getIntExtra("color", 0));
-                } else {
-                    mainApp.storeCalibratedData(mRange, 0);
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()
@@ -364,7 +362,7 @@ public class CalibrateListActivity extends ActionBarActivity
                             final StringBuilder exportList = new StringBuilder();
 
                             for (ResultRange range : mainApp.currentTestInfo.getRanges()) {
-                                exportList.append(range.getValue() + "=" + ColorUtils.getColorRgbString(range.getColor()));
+                                exportList.append(range.getValue()).append("=").append(ColorUtils.getColorRgbString(range.getColor()));
                                 exportList.append('\n');
                             }
 
@@ -453,7 +451,7 @@ public class CalibrateListActivity extends ActionBarActivity
                                 String fileName = listFiles[which].getName();
                                 final ArrayList<ResultRange> swatchList = new ArrayList<>();
 
-                                ArrayList<String> rgbList = null;
+                                ArrayList<String> rgbList;
                                 try {
                                     rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
 

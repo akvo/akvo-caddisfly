@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -64,17 +65,28 @@ public class DilutionFragment extends DialogFragment {
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(-1);
-            }
-        });
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(-1);
+//            }
+//        });
 
         return view;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()) {
+            @Override
+            public void onBackPressed() {
+                ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(-1);
+            }
+        };
     }
 
     public interface DilutionDialogListener {
         void onFinishDilutionDialog(int index);
     }
+
 }

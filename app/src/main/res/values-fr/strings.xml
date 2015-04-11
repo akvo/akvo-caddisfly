@@ -118,7 +118,7 @@
     <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
-    <string name="pleaseWait">Please wait...</string>
+    <string name="pleaseWait">Please wait…</string>
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>

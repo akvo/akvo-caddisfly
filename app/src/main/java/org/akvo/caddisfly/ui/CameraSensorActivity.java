@@ -66,6 +66,8 @@ public class CameraSensorActivity extends ActionBarActivity
     //private TextView mTitleText;
     private TextView mTestTypeTextView;
     private TextView mDilutionTextView;
+    private TextView mDilutionTextView1;
+
     private SoundPoolPlayer sound;
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
@@ -109,6 +111,7 @@ public class CameraSensorActivity extends ActionBarActivity
         //mTitleText = (TextView) findViewById(R.id.titleText);
         mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
         mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
+        mDilutionTextView1 = (TextView) findViewById(R.id.dilution1TextView);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
@@ -287,6 +290,7 @@ public class CameraSensorActivity extends ActionBarActivity
             mDilutionFragment.show(ft, "dilutionFragment");
 
             mDilutionTextView.setVisibility(View.VISIBLE);
+            mDilutionTextView1.setVisibility(View.VISIBLE);
 
         } else if (!mTestCompleted) {
             InitializeTest();
@@ -396,6 +400,8 @@ public class CameraSensorActivity extends ActionBarActivity
                                     sound.playShortResource(R.raw.done);
                                     if (developerMode) {
                                         ShowVerboseError(false, result, color);
+                                    } else {
+                                        finish();
                                     }
                                 } else {
                                     if (result < 0 || color == 0) {
@@ -561,12 +567,15 @@ public class CameraSensorActivity extends ActionBarActivity
             switch (mDilutionLevel) {
                 case 0:
                     mDilutionTextView.setText(R.string.hundredPercentSampleWater);
+                    mDilutionTextView1.setText(R.string.hundredPercentSampleWater);
                     break;
                 case 1:
                     mDilutionTextView.setText(R.string.fiftyPercentSampleWater);
+                    mDilutionTextView1.setText(R.string.fiftyPercentSampleWater);
                     break;
                 case 2:
                     mDilutionTextView.setText(R.string.twentyFivePercentSampleWater);
+                    mDilutionTextView1.setText(R.string.twentyFivePercentSampleWater);
                     break;
             }
             InitializeTest();

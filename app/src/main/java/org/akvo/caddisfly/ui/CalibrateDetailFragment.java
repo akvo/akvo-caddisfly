@@ -175,7 +175,7 @@ public class CalibrateDetailFragment extends Fragment {
         final int position = getArguments().getInt(ARG_ITEM_ID);
         int color = mainApp.currentTestInfo.getRanges().get(position).getColor();
 
-        if (color != -1) {
+        if (color != 0) {
             mColorButton.setBackgroundColor(color);
             mColorButton.setText("");
         } else {

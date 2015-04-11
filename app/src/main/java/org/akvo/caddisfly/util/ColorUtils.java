@@ -16,10 +16,10 @@
 
 package org.akvo.caddisfly.util;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.Config;
@@ -28,6 +28,7 @@ import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Set of utility functions for color calculations and analysis
@@ -132,7 +133,7 @@ public final class ColorUtils {
                         Color.blue(photoColor.getColor()))
         );
 
-        bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
+        //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
 
         return bundle;
     }
@@ -215,21 +216,23 @@ public final class ColorUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void autoGenerateColors(TestInfo testInfo, SharedPreferences.Editor editor) {
+    public static List<Pair<String, Integer>> autoGenerateColors(TestInfo testInfo) {
+
+        List<Pair<String, Integer>> list = new ArrayList<>();
 
         for (int i = 0; i < testInfo.getRanges().size() - 1; i++) {
 
             int startColor = testInfo.getRange(i).getColor();
             int endColor = testInfo.getRange(i + 1).getColor();
             double startValue = testInfo.getRange(i).getValue();
-
             int steps = (int) ((testInfo.getRange(i + 1).getValue() - startValue) / 0.1);
 
             for (int j = 0; j < steps; j++) {
                 int color = ColorUtils.getGradientColor(startColor, endColor, steps, j);
-                editor.putInt(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * 0.1)), color);
+                list.add(new Pair(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * 0.1)), color));
             }
         }
+        return list;
     }
 
     public static Integer getColorFromRgb(String rgb) {

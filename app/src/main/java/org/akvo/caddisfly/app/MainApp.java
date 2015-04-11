@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Pair;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class MainApp extends Application {
 
@@ -169,7 +171,12 @@ public class MainApp extends Application {
         } else {
             range.setColor(resultColor);
             editor.putInt(colorKey, resultColor);
-            ColorUtils.autoGenerateColors(currentTestInfo, editor);
+            List list = ColorUtils.autoGenerateColors(currentTestInfo);
+
+            for (int i = 0; i < list.size(); i++) {
+                editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+            }
+
         }
         editor.apply();
     }
@@ -195,7 +202,11 @@ public class MainApp extends Application {
                 .getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        ColorUtils.autoGenerateColors(currentTestInfo, editor);
+        List list = ColorUtils.autoGenerateColors(currentTestInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+        }
 
         editor.apply();
     }

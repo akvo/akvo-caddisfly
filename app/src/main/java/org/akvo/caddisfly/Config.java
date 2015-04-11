@@ -54,40 +54,37 @@ public class Config {
     public static final String DEBUG_TAG = "Caddisfly";
 
     // new folder name using date
-    public static final String FOLDER_NAME_DATE_FORMAT = "yyyyMMddHHmmss";
+    //public static final String FOLDER_NAME_DATE_FORMAT = "yyyyMMddHHmmss";
 
     // width and height of cropped image
-    public static final int IMAGE_CROP_LENGTH = 300;
+    //public static final int IMAGE_CROP_LENGTH = 300;
 
     // folder for calibration photos
-    public static final String CALIBRATE_FOLDER = "calibrate";
+    //public static final String CALIBRATE_FOLDER = "calibrate";
 
     public static final int INITIAL_DELAY = 6000;
-
-    public static final int MINIMUM_PHOTO_QUALITY = 50;
-
-    public static final int SAMPLING_COUNT_DEFAULT = 5;
-
-    // width and height of cropped image
-    public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
+    //public static final int MINIMUM_PHOTO_QUALITY = 50;
 
     public static final String RESULT_VALUE_KEY = "resultValue";
-
     public static final String RESULT_COLOR_KEY = "resultColor";
 
-    public static final String QUALITY_KEY = "accuracy";
-    public static final int ERROR_NOT_YET_CALIBRATED = 1;
-    public static final int ERROR_LOW_QUALITY = 2;
-    public static final int ERROR_DUPLICATE_SWATCH = 3;
-    public static final int ERROR_SWATCH_OUT_OF_PLACE = 4;
-    public static final int ERROR_OUT_OF_RANGE = 5;
-    public static final int ERROR_COLOR_IS_GRAY = 6;
-
-    public static final boolean CAMERA_TORCH_MODE_DEFAULT = false;
-    public static final boolean REQUIRE_SHAKE_DEFAULT = false;
-    public static final boolean CAMERA_SOUND_DEFAULT = true;
+    //    public static final String QUALITY_KEY = "accuracy";
+//    public static final int ERROR_NOT_YET_CALIBRATED = 1;
+//    public static final int ERROR_LOW_QUALITY = 2;
+//    public static final int ERROR_DUPLICATE_SWATCH = 3;
+//    public static final int ERROR_SWATCH_OUT_OF_PLACE = 4;
+//    public static final int ERROR_OUT_OF_RANGE = 5;
+//    public static final int ERROR_COLOR_IS_GRAY = 6;
+//
+//    public static final boolean CAMERA_TORCH_MODE_DEFAULT = false;
+//    public static final boolean REQUIRE_SHAKE_DEFAULT = false;
+//    public static final boolean CAMERA_SOUND_DEFAULT = true;
     public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
     public static final String CONFIG_FILE = "tests.json";
 
+    // width and height of cropped image
+    public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
+    public static final int SAMPLING_COUNT_DEFAULT = 5;
     public static final float SOUND_VOLUME = 0.03f;
+
 }
