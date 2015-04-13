@@ -371,7 +371,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                 double result = DataHelper.getAverageResult(mResults);
 
                                 MainApp mainApp = (MainApp) getApplicationContext();
-                                if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel()) {
+                                if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
                                     mHighLevelsFound = true;
                                 }
 
