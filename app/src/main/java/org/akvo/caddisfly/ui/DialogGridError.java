@@ -4,7 +4,6 @@ package org.akvo.caddisfly.ui;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,19 +29,20 @@ import java.util.List;
  */
 public class DialogGridError extends DialogFragment {
 
-    private final DecimalFormat doubleFormat = new DecimalFormat("0.0");
+    private final DecimalFormat doubleFormat = new DecimalFormat("0.00");
     ArrayList<Integer> mColors;
     ArrayList<Bitmap> mBitmaps;
     double[] mResults;
     boolean mAllowRetry;
-    private int mColor;
+    boolean mIsCalibration;
 
     public DialogGridError() {
         // Required empty public constructor
     }
 
     public static DialogGridError newInstance(ArrayList<Integer> colors, ArrayList<Double> results,
-                                              ArrayList<Bitmap> bitmaps, boolean allowRetry, double result, int color) {
+                                              ArrayList<Bitmap> bitmaps, boolean allowRetry,
+                                              double result, int color, boolean isCalibration) {
         DialogGridError fragment = new DialogGridError();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
@@ -50,6 +50,7 @@ public class DialogGridError extends DialogFragment {
         args.putDoubleArray("results", convertDoubles(results));
         args.putDouble("result", result);
         args.putInt("color", color);
+        args.putBoolean("calibration", isCalibration);
         fragment.mBitmaps = bitmaps;
         fragment.setArguments(args);
         return fragment;
@@ -68,13 +69,14 @@ public class DialogGridError extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_grid_error, container, false);
 
         ListView resultList = (ListView) view.findViewById(R.id.resultList);
-        resultList.setAdapter(new ImageAdapter(this.getActivity()));
+        resultList.setAdapter(new ImageAdapter());
 
         mColors = getArguments().getIntegerArrayList("colors");
         mResults = getArguments().getDoubleArray("results");
         mAllowRetry = getArguments().getBoolean("retry");
-        mColor = getArguments().getInt("color");
+        int mColor = getArguments().getInt("color");
 
+        mIsCalibration = getArguments().getBoolean("calibration");
 
         Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
         Button retryButton = (Button) view.findViewById(R.id.retryButton);
@@ -106,7 +108,7 @@ public class DialogGridError extends DialogFragment {
             });
         } else {
             double result = getArguments().getDouble("result");
-            if (result == -1) {
+            if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtils.getColorRgbString(mColor)));
             } else {
                 getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
@@ -134,11 +136,11 @@ public class DialogGridError extends DialogFragment {
     }
 
     public class ImageAdapter extends BaseAdapter {
-        private Context mContext;
+        //private Context mContext;
 
-        public ImageAdapter(Context c) {
-            mContext = c;
-        }
+        //public ImageAdapter(Context c) {
+        //mContext = c;
+        //}
 
         public int getCount() {
             return mBitmaps.size();
@@ -171,8 +173,11 @@ public class DialogGridError extends DialogFragment {
 
                 button.setBackgroundColor(color);
 
-                //display ppm value
-                ppmText.setText(doubleFormat.format(mResults[position]));
+                if (mIsCalibration) {
+                    ppmText.setVisibility(View.INVISIBLE);
+                } else if (mResults[position] > -1) {
+                    ppmText.setText(doubleFormat.format(mResults[position]));
+                }
 
                 //display rgb value
                 int r = Color.red(color);

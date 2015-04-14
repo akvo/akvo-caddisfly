@@ -66,6 +66,8 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * An activity representing a list of Calibrate items. This activity
@@ -100,9 +102,10 @@ public class CalibrateListActivity extends ActionBarActivity
         boolean developerMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
         if (developerMode) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
-        } else {
-            getMenuInflater().inflate(R.menu.menu_calibrate, menu);
         }
+//        } else {
+//            getMenuInflater().inflate(R.menu.menu_calibrate, menu);
+//        }
         return true;
     }
 
@@ -326,7 +329,8 @@ public class CalibrateListActivity extends ActionBarActivity
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        //input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
 
         alertDialogBuilder.setView(input);
@@ -431,9 +435,20 @@ public class CalibrateListActivity extends ActionBarActivity
             File folder = new File(path);
             if (folder.exists()) {
                 final File[] listFiles = folder.listFiles();
+                Arrays.sort(listFiles);
+
+                List<String> list = new ArrayList<>();
+
                 for (File listFile : listFiles) {
+                    //list.add(TextUtils.toTitleCase(listFile.getName()));
                     arrayAdapter.add(listFile.getName());
                 }
+
+                //Collections.sort(list);
+
+                //for (String file : list) {
+                //arrayAdapter.add(file);
+                //}
 
                 builderSingle.setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {

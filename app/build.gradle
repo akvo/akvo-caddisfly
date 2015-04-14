@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 16
         targetSdkVersion 22
-        versionName "prototype 0.54 alpha"
-        versionCode 54
+        versionName "prototype 0.55 alpha"
+        versionCode 55
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -66,9 +66,7 @@ android {
         // inner classes of this class)
         keep = [
                 "android.graphics.Color",
-                "android.graphics.Bitmap",
-                "android.os.BaseBundle",
-                "android.util.Pair"
+                "android.graphics.Bitmap"
         ]
     }
 }

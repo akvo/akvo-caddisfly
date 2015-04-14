@@ -163,6 +163,6 @@ public class CalibrateListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(int id);
+        void onItemSelected(int id);
     }
 }

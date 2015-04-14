@@ -1,3 +1,11 @@
+v0.55 alpha
+-----------
+1. Increased number of interpolated color swatches
+2. Moved load/save buttons to dev mode
+3. Removed result values in calibration message
+4. Fixed: Settings not opening on first click
+5. Load file names sorted
+
 v0.54 alpha
 -----------
 1. White is a valid swatch color

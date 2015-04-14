@@ -144,11 +144,11 @@ public class MainApp extends Application {
         }
 
         if (currentTestInfo.getRanges().size() > 0) {
-            int startValue = (int) currentTestInfo.getRange(0).getValue() * 10;
-            int endValue = (int) currentTestInfo.getRange(currentTestInfo.getRanges().size() - 1).getValue() * 10;
+            int startValue = (int) currentTestInfo.getRange(0).getValue() * 100;
+            int endValue = (int) currentTestInfo.getRange(currentTestInfo.getRanges().size() - 1).getValue() * 100;
             for (int i = startValue; i <= endValue; i += 1) {
-                String key = String.format("%s-%.2f", currentTestInfo.getCode(), (i / 10f));
-                ResultRange range = new ResultRange((double) i / 10,
+                String key = String.format("%s-%.2f", currentTestInfo.getCode(), (i / 100f));
+                ResultRange range = new ResultRange((double) i / 100,
                         PreferencesUtils.getInt(context, key, 0));
                 currentTestInfo.getSwatches().add(range);
             }

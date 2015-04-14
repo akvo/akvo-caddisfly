@@ -18,7 +18,6 @@ package org.akvo.caddisfly.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
@@ -35,7 +34,7 @@ import org.akvo.caddisfly.R;
  */
 public class CalibrateDetailActivity extends ActionBarActivity {
 
-    private PowerManager.WakeLock wakeLock;
+    //private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

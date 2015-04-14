@@ -15,12 +15,23 @@ package org.akvo.caddisfly;
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoActivityResumedException;
+import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.test.internal.util.Checks;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.widget.Button;
 
-import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -30,9 +41,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
 import static org.hamcrest.text.StringStartsWith.startsWith;
-import static org.hamcrest.Matchers.not;
 
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -40,10 +54,41 @@ public class EspressoTest
         super(MainActivity.class);
     }
 
+    public static Matcher<View> withBackgroundColor(final int color) {
+        Checks.checkNotNull(color);
+        return new BoundedMatcher<View, Button>(Button.class) {
+            @Override
+            public boolean matchesSafely(Button button) {
+                int buttonColor = ((ColorDrawable) button.getBackground()).getColor();
+                return Color.red(color) == Color.red(buttonColor) &&
+                        Color.green(color) == Color.green(buttonColor) &&
+                        Color.blue(color) == Color.blue(buttonColor);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with background color: " + color);
+            }
+        };
+    }
+
+    public static Matcher<String> isEmpty() {
+        return new TypeSafeMatcher<String>() {
+            @Override
+            public boolean matchesSafely(String target) {
+                return target.length() == 0;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("is empty");
+            }
+        };
+    }
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
-
         getActivity();
     }
 
@@ -60,19 +105,25 @@ public class EspressoTest
         Espresso.pressBack();
     }
 
-    public void testCalibrateSwatches() {
+    public void testCalibrateSwatches(boolean devMode) {
+        calibrateSwatches(false);
+    }
+
+    public void calibrateSwatches(boolean devMode) {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
         onView(withText(R.string.calibrateColors))
                 .perform(click());
 
-        onView(withId(R.id.action_swatches))
-                .perform(click());
+        if (devMode) {
+            onView(withId(R.id.action_swatches))
+                    .perform(click());
 
-        Espresso.pressBack();
+            Espresso.pressBack();
 
-        onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
+            onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
+        }
 
         Espresso.pressBack();
 
@@ -154,10 +205,20 @@ public class EspressoTest
         onView(withText(R.string.language))
                 .perform(click());
 
-        onData(hasToString(startsWith("Français"))).perform(click());
+        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
     }
 
     public void testLanguage4() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("Français"))).perform(click());
+    }
+
+    public void testLanguage5() {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
@@ -168,12 +229,29 @@ public class EspressoTest
     }
 
     public void testStartASurvey() {
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.calibrateColors)).perform(click());
+
+        onView(withId(R.id.actionbar_spinner)).perform(click());
+
+        onView(withText("Fluoride")).perform(click());
+
+        onView(withId(R.id.menu_load)).perform(click());
+
+        onView(withText("b")).perform(click());
+
+        Espresso.pressBack();
+
+        Espresso.pressBack();
+
         onView(withId(R.id.surveyButton)).check(matches(isClickable()));
 
         onView(withId(R.id.surveyButton)).perform(click());
 
         try {
-            Thread.sleep(8000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -196,7 +274,7 @@ public class EspressoTest
         }
     }
 
-    public void testCalibrateSensor(){
+    public void testCalibrateSensor() {
         onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.calibrateSensorSummary)).check(matches(isDisplayed()));
@@ -217,7 +295,7 @@ public class EspressoTest
         Espresso.pressBack();
     }
 
-    public void testUpdate(){
+    public void testCheckUpdate() {
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -240,7 +318,7 @@ public class EspressoTest
 
     }
 
-    public void testDeveloperMode(){
+    public void testDeveloperMode() {
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -273,7 +351,16 @@ public class EspressoTest
     }
 
     public void testStartCalibrate() {
+        startCalibrate(false);
+    }
+
+    public void startCalibrate(boolean devMode) {
+
         onView(withId(R.id.action_settings)).perform(click());
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().commit();
 
         onView(withText(R.string.calibrateColors)).perform(click());
 
@@ -281,11 +368,14 @@ public class EspressoTest
 
         onView(withText("pH")).perform(click());
 
+        onData(is(instanceOf(ResultRange.class)))
+                .inAdapterView(withId(android.R.id.list))
+                .atPosition(6).onChildView(withId(R.id.button))
+                .check(matches(allOf(isDisplayed(), withText("?"))));
+
         onView(withText("9.0")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
-
-        //onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
 
         try {
             Thread.sleep(70000);
@@ -293,11 +383,23 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withId(R.id.okButton)).perform(click());
+        if (devMode) {
+            onView(withId(R.id.okButton)).perform(click());
+        }
+
+        onData(is(instanceOf(ResultRange.class)))
+                .inAdapterView(withId(android.R.id.list))
+                .atPosition(6).onChildView(withId(R.id.button))
+                .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
+
 
         Espresso.pressBack();
 
         Espresso.pressBack();
+
+//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
+//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
+
     }
 
 

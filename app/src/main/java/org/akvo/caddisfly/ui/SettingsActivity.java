@@ -57,9 +57,6 @@ public class SettingsActivity extends Activity
 
         setContentView(R.layout.activity_settings);
 
-        PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
-                .registerOnSharedPreferenceChangeListener(this);
-
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new PreferencesGeneralFragment())
                 .commit();

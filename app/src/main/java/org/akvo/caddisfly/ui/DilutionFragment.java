@@ -42,7 +42,6 @@ public class DilutionFragment extends DialogFragment {
         Button hundredPercentButton = (Button) view.findViewById(R.id.hundredPercentButton);
         Button fiftyPercentButton = (Button) view.findViewById(R.id.fiftyPercentButton);
         Button twentyFivePercentButton = (Button) view.findViewById(R.id.twentyFivePercentButton);
-        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
         hundredPercentButton.setOnClickListener(new View.OnClickListener() {
             @Override

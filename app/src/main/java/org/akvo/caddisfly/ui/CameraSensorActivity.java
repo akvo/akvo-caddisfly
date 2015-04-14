@@ -234,8 +234,8 @@ public class CameraSensorActivity extends ActionBarActivity
         );
     }
 
-    private void ShowVerboseError(boolean testFailed, double result, int color) {
-        mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result, color);
+    private void ShowVerboseError(boolean testFailed, double result, int color, boolean isCalibration) {
+        mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result, color, isCalibration);
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
@@ -399,7 +399,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                 if (isCalibration && color != 0) {
                                     sound.playShortResource(R.raw.done);
                                     if (developerMode) {
-                                        ShowVerboseError(false, result, color);
+                                        ShowVerboseError(false, result, color, isCalibration);
                                     } else {
                                         finish();
                                     }
@@ -407,7 +407,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                     if (result < 0 || color == 0) {
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.err);
-                                            ShowVerboseError(true, 0, color);
+                                            ShowVerboseError(true, 0, color, isCalibration);
                                         } else {
                                             showError(message, getBitmap(data));
                                         }
@@ -415,7 +415,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
-                                            ShowVerboseError(false, result, color);
+                                            ShowVerboseError(false, result, color, isCalibration);
                                         } else {
                                             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 

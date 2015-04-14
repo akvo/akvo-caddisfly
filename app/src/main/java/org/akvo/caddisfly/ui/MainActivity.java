@@ -91,8 +91,6 @@ public class MainActivity extends ActionBarActivity {
                     null);
         } else {
 
-            //loadSavedPreferences();
-
             long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
 
             // last update check date
@@ -142,8 +140,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        loadSavedPreferences();
 
         mWatchTextView.measure(0, 0);
         mDemoTextView.measure(0, 0);
@@ -202,12 +198,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /**
-     * Load user preferences
-     */
-    private void loadSavedPreferences() {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

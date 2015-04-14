@@ -185,12 +185,12 @@ public class ShakeDetector implements SensorEventListener {
 
     public interface OnShakeListener {
 
-        public void onShake();
+        void onShake();
     }
 
     public interface OnNoShakeListener {
 
-        public void onNoShake();
+        void onNoShake();
     }
 
 }

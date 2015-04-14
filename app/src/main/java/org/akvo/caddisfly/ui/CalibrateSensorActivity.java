@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import com.ftdi.j2xx.D2xxManager;
@@ -27,9 +26,9 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
     private static final int DEFAULT_BAUD_RATE = 9600;
-    private static final int DEFAULT_BUFFER_SIZE = 1028;
+    //private static final int DEFAULT_BUFFER_SIZE = 1028;
     //private static final int REQUEST_DELAY = 2000;
-    private final Handler mHandler = new Handler();
+    //private final Handler mHandler = new Handler();
     private FtdiSerial mConnection;
     //http://developer.android.com/guide/topics/connectivity/usb/host.html
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
@@ -54,25 +53,24 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         }
     };
 
-
-    private void read() {
-        byte[] dataBuffer = new byte[DEFAULT_BUFFER_SIZE];
-        final StringBuilder mReadData = new StringBuilder();
-
-        int length = mConnection.read(dataBuffer);
-        if (length > 0) {
-            for (int i = 0; i < length; ++i) {
-                mReadData.append((char) dataBuffer[i]);
-            }
-
-            mHandler.post(new Runnable() {
-                public void run() {
-                    Toast.makeText(getBaseContext(), mReadData.toString(), Toast.LENGTH_LONG).show();
-                    mReadData.setLength(0);
-                }
-            });
-        }
-    }
+//    private void read() {
+//        byte[] dataBuffer = new byte[DEFAULT_BUFFER_SIZE];
+//        final StringBuilder mReadData = new StringBuilder();
+//
+//        int length = mConnection.read(dataBuffer);
+//        if (length > 0) {
+//            for (int i = 0; i < length; ++i) {
+//                mReadData.append((char) dataBuffer[i]);
+//            }
+//
+//            mHandler.post(new Runnable() {
+//                public void run() {
+//                    Toast.makeText(getBaseContext(), mReadData.toString(), Toast.LENGTH_LONG).show();
+//                    mReadData.setLength(0);
+//                }
+//            });
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,12 +205,7 @@ public class CalibrateSensorActivity extends ActionBarActivity {
     }
 
     private boolean validInput(String input) {
-
-        if (input.trim().length() > 0) {
-            return true;
-        }
-        return false;
-
+        return input.trim().length() > 0;
     }
 
     void closeKeyboard(EditText input) {
