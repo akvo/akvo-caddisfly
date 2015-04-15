@@ -108,6 +108,7 @@
     <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
     <string name="calibrationSucceeded">Calibration was successful</string>
     <string name="calibrated">Calibrated</string>
+    <string name="testSensor">Test EC Sensor</string>
 
 
 </resources>

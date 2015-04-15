@@ -46,6 +46,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.ImageUtils;
@@ -101,6 +102,9 @@ public class CameraSensorActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ApiUtils.lockScreenOrientation(this);
+
         setContentView(R.layout.activity_camera_sensor);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -20,6 +20,7 @@ import com.ftdi.j2xx.D2xxManager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.FtdiSerial;
 
 public class CalibrateSensorActivity extends ActionBarActivity {
@@ -76,6 +77,8 @@ public class CalibrateSensorActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_sensor);
+
+        ApiUtils.lockScreenOrientation(this);
 
         final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 

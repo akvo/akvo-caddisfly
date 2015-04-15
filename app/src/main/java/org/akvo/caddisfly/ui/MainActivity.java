@@ -20,10 +20,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +40,7 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -59,48 +58,27 @@ public class MainActivity extends ActionBarActivity {
     TextView mWatchTextView;
     TextView mDemoTextView;
     Boolean external = false;
-    ;
     private WeakRefHandler handler = new WeakRefHandler(this);
     private boolean mShouldFinish = false;
-
-    private static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!checkCameraFlash()) {
-            AlertUtils.showError(this, R.string.error,
-                    getString(R.string.errorCameraFlashRequired),
-                    null,
-                    R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    },
-                    null);
-        } else {
 
-            long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
+        ApiUtils.lockScreenOrientation(this);
 
-            // last update check date
-            Calendar lastCheckDate = Calendar.getInstance();
-            lastCheckDate.setTimeInMillis(updateLastCheck);
+        MainApp.hasCameraFlash = ApiUtils.checkCameraFlash(this);
 
-            Calendar currentDate = Calendar.getInstance();
-            if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-                checkUpdate(true);
-            }
+        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
+
+        // last update check date
+        Calendar lastCheckDate = Calendar.getInstance();
+        lastCheckDate.setTimeInMillis(updateLastCheck);
+
+        Calendar currentDate = Calendar.getInstance();
+        if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
+            checkUpdate(true);
         }
 
         final Context context = this;
@@ -266,7 +244,21 @@ public class MainActivity extends ActionBarActivity {
                             }, null
                     );
                 } else {
-                    startTest();
+                    if (!MainApp.hasCameraFlash) {
+                        AlertUtils.showError(this, R.string.error,
+                                getString(R.string.errorCameraFlashRequired),
+                                null,
+                                R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                },
+                                null);
+                    } else {
+                        startTest();
+                    }
                 }
             }
         }
@@ -340,32 +332,6 @@ public class MainActivity extends ActionBarActivity {
                 break;
             default:
         }
-    }
-
-    private boolean checkCameraFlash() {
-        boolean hasFlash = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        Camera camera = getCameraInstance();
-        try {
-            Camera.Parameters p;
-
-            if (hasFlash) {
-                p = camera.getParameters();
-                if (p.getSupportedFlashModes() == null) {
-                    hasFlash = false;
-                } else {
-                    if (p.getSupportedFlashModes().size() == 1) {
-                        if (p.getSupportedFlashModes().get(0).equals("off")) {
-                            hasFlash = false;
-                        }
-                    }
-                }
-            }
-        } finally {
-            if (camera != null) {
-                camera.release();
-            }
-        }
-        return hasFlash;
     }
 
     private static class WeakRefHandler extends Handler {

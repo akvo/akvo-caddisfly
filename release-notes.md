@@ -1,3 +1,10 @@
+v0.56 alpha
+-----------
+1. Camera flash detection only for colorimetric tests
+2. Allow landscape mode for tablets
+3. UI changes for tablet
+4. Fixed: Update did not give option to launch app after install
+
 v0.55 alpha
 -----------
 1. Increased number of interpolated color swatches

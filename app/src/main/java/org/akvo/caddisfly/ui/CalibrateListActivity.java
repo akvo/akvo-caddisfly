@@ -58,6 +58,7 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
@@ -67,7 +68,6 @@ import org.json.JSONException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * An activity representing a list of Calibrate items. This activity
@@ -149,6 +149,8 @@ public class CalibrateListActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
+
+        ApiUtils.lockScreenOrientation(this);
 
         if (findViewById(R.id.calibrate_detail_container) != null) {
             // The detail container view will be present only in the
@@ -437,7 +439,7 @@ public class CalibrateListActivity extends ActionBarActivity
                 final File[] listFiles = folder.listFiles();
                 Arrays.sort(listFiles);
 
-                List<String> list = new ArrayList<>();
+                //List<String> list = new ArrayList<>();
 
                 for (File listFile : listFiles) {
                     //list.add(TextUtils.toTitleCase(listFile.getName()));

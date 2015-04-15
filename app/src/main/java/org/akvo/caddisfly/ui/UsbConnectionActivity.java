@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ApiUtils;
 
 
 public class UsbConnectionActivity extends ActionBarActivity {
@@ -56,6 +57,8 @@ public class UsbConnectionActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usb_connection);
+
+        ApiUtils.lockScreenOrientation(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);

@@ -28,6 +28,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
@@ -39,6 +40,8 @@ public class AboutActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        ApiUtils.lockScreenOrientation(this);
 
         mDeveloperMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
 

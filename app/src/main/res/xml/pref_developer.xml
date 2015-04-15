@@ -19,5 +19,12 @@
         <Preference
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
+        <Preference
+            android:key="ecSensor"
+            android:title="@string/testSensor">
+            <intent
+                android:targetClass="org.akvo.caddisfly.ui.SensorActivity"
+                android:targetPackage="org.akvo.caddisfly" />
+        </Preference>
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

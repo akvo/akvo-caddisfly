@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ApiUtils;
 
 /**
  * An activity representing a single Calibrate detail screen. This
@@ -40,6 +41,8 @@ public class CalibrateDetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_detail);
+
+        ApiUtils.lockScreenOrientation(this);
 
         // Show the Up button in the action bar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

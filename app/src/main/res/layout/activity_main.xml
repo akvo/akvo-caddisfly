@@ -75,7 +75,7 @@
             android:text="@string/watchVideo"
             android:textAlignment="textEnd"
             android:textAllCaps="true"
-            android:textColor="#eef3d441"
+            android:textColor="#eefddd44"
             android:textSize="15sp" />
 
         <com.software.shell.fab.ActionButton
@@ -89,7 +89,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginStart="6dp"
             android:alpha="0.9"
-            fab:button_color="?attr/colorPrimary"
+            fab:button_color="@color/primary"
             fab:button_colorPressed="@color/primary_dark"
             fab:image="@drawable/ic_action_play"
             fab:shadow_color="#ff096f14"
@@ -105,7 +105,7 @@
             android:alpha="0.7"
             android:text="@string/demonstration"
             android:textAllCaps="true"
-            android:textColor="#eef3d441"
+            android:textColor="#eefddd44"
             android:textSize="15sp" />
 
     </LinearLayout>

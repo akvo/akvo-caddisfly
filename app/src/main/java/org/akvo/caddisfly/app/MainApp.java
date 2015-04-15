@@ -42,6 +42,7 @@ import java.util.List;
 
 public class MainApp extends Application {
 
+    public static boolean hasCameraFlash = true;
     public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
     public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
 

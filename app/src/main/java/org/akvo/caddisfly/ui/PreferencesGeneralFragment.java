@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ListViewUtils;
 
@@ -40,6 +41,26 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.card_row, container, false);
+
+
+        Preference calibrateColorsPreference = findPreference("calibrate");
+        if (calibrateColorsPreference != null) {
+            calibrateColorsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    if (!MainApp.hasCameraFlash) {
+                        AlertUtils.showError(getActivity(), R.string.error,
+                                getString(R.string.errorCameraFlashRequired),
+                                null,
+                                R.string.ok, null, null);
+                    } else {
+                        final Intent intent = new Intent(getActivity(), CalibrateListActivity.class);
+                        startActivity(intent);
+                    }
+                    return true;
+                }
+            });
+        }
+
 
         Preference calibratePreference = findPreference("calibrateSensor");
         if (calibratePreference != null) {

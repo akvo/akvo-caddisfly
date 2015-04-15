@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ApiUtils;
 
 public class SwatchActivity extends ActionBarActivity {
 
@@ -27,6 +28,7 @@ public class SwatchActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swatch);
+        ApiUtils.lockScreenOrientation(this);
         if (savedInstanceState == null) {
 
             SwatchFragment fragment = new SwatchFragment();

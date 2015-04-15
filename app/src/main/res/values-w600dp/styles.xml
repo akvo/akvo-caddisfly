@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="width_match_parent_max_tablet">
+        <item name="android:layout_width">510dp</item>
+    </style>
+</resources>

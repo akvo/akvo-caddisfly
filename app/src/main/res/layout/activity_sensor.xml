@@ -44,16 +44,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTextView"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingBottom="20dp"
         android:visibility="gone">
 
         <TextView
             android:id="@+id/errorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:paddingBottom="10dp"
             android:text="@string/deviceConnectSensor"
-            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#fff"
             android:textSize="22sp"
@@ -71,12 +73,12 @@
         <Button
             android:id="@+id/backButton"
             style="@style/button_text"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="3dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginStart="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@drawable/start_button"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:text="@string/backToSurvey" />
 
     </LinearLayout>
@@ -98,6 +100,7 @@
         android:layout_below="@+id/titleTextView"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingBottom="20dp"
         android:visibility="visible">
 
         <TextView

@@ -213,6 +213,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
             Uri fileLoc = Uri.fromFile(new File(filePath));
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(fileLoc, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         }
     }

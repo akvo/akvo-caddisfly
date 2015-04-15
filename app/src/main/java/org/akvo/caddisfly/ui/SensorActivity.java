@@ -37,6 +37,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.FtdiSerial;
 
 public class SensorActivity extends ActionBarActivity {
@@ -141,6 +142,8 @@ public class SensorActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sensor);
+
+        ApiUtils.lockScreenOrientation(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);

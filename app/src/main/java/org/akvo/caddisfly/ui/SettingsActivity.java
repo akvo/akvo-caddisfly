@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class SettingsActivity extends Activity
@@ -54,6 +55,8 @@ public class SettingsActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ApiUtils.lockScreenOrientation(this);
 
         setContentView(R.layout.activity_settings);
 
