@@ -1,3 +1,9 @@
+v0.57 alpha
+-----------
+1. DevMode: Toast messages for ec sensor readings
+2. Refresh settings screen when dev mode is selected
+3. UI changes
+
 v0.56 alpha
 -----------
 1. Camera flash detection only for colorimetric tests

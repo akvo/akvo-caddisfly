@@ -36,6 +36,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/appName"
+            android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,17 +54,21 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.SettingsActivity" />
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.SensorActivity"
-            android:label="@string/appName" />
+            android:label="@string/appName"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.UsbConnectionActivity"
-            android:label="@string/appName">
+            android:label="@string/appName"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
@@ -74,22 +79,26 @@
         </activity>
         <activity
             android:name=".ui.CameraSensorActivity"
-            android:label="@string/appName" />
+            android:label="@string/appName"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateListActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.SettingsActivity" />
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateDetailActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.CalibrateListActivity">
+            android:parentActivityName=".ui.CalibrateListActivity"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.CalibrateListActivity" />
         </activity>
         <activity
             android:name=".ui.SwatchActivity"
-            android:label="@string/swatches">
+            android:label="@string/swatches"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.CalibrateListActivity" />
@@ -97,7 +106,8 @@
         <activity
             android:name=".ui.CalibrateSensorActivity"
             android:label="@string/calibrateSensor"
-            android:parentActivityName=".ui.SettingsActivity" />
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor" />
     </application>
 
 </manifest>

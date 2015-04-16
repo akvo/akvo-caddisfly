@@ -131,7 +131,7 @@ public class FtdiSerial {
             }
             //Wait for a read to complete before stopping read
             try {
-                Thread.sleep(250);
+                Thread.sleep(750);
             } catch (InterruptedException ignored) {
             }
             mReadAgain = false;

@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -38,7 +39,9 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
+import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.FtdiSerial;
+import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class SensorActivity extends ActionBarActivity {
 
@@ -46,9 +49,11 @@ public class SensorActivity extends ActionBarActivity {
 
     private static final int DEFAULT_BAUD_RATE = 9600;
     private static final int DEFAULT_BUFFER_SIZE = 1028;
-    private static final int REQUEST_DELAY = 2000;
+    private static final int REQUEST_DELAY = 5000;
+    private static final int INITIAL_DELAY = 1000;
     private final Handler mHandler = new Handler();
     private final StringBuilder mReadData = new StringBuilder();
+    Toast debugToast;
     private FtdiSerial mConnection;
     private String mEc25Value = "";
     private String mTemperature = "";
@@ -63,39 +68,6 @@ public class SensorActivity extends ActionBarActivity {
     private boolean firstResultIgnored = false;
     private ImageView mTemperatureImageView;
     private TextView mUnitsTextView;
-    private final Runnable mCommunicate = new Runnable() {
-        @Override
-        public void run() {
-            byte[] dataBuffer = new byte[DEFAULT_BUFFER_SIZE];
-            while (mRunLoop) {
-                try {
-                    Thread.sleep(REQUEST_DELAY);
-                    String requestCommand = "r";
-                    mConnection.write(requestCommand.getBytes(), requestCommand.length());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                int length = mConnection.read(dataBuffer);
-                if (length > 0) {
-                    for (int i = 0; i < length; ++i) {
-                        mReadData.append((char) dataBuffer[i]);
-                    }
-
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            if (firstResultIgnored) {
-                                displayResult(mReadData.toString());
-                            }
-                            firstResultIgnored = true;
-                            mReadData.setLength(0);
-                        }
-                    });
-                }
-            }
-        }
-    };
-
     //http://developer.android.com/guide/topics/connectivity/usb/host.html
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -114,12 +86,11 @@ public class SensorActivity extends ActionBarActivity {
                     mRunLoop = false;
                     mHandler.post(new Runnable() {
                         public void run() {
-                            mResultLayout.setVisibility(View.GONE);
-                            mProgressBar.setVisibility(View.GONE);
-                            mTemperatureImageView.setVisibility(View.GONE);
-                            mUnitsTextView.setVisibility(View.GONE);
-
-                            mConnectionLayout.setVisibility(View.VISIBLE);
+                            (new Handler()).postDelayed(new Runnable() {
+                                public void run() {
+                                    displayNotConnectedView();
+                                }
+                            }, 500);
                         }
                     });
 
@@ -136,6 +107,60 @@ public class SensorActivity extends ActionBarActivity {
             }
         }
     };
+    private int delay = INITIAL_DELAY;
+    private final Runnable mCommunicate = new Runnable() {
+        @Override
+        public void run() {
+            byte[] dataBuffer = new byte[DEFAULT_BUFFER_SIZE];
+
+            while (mRunLoop) {
+
+                try {
+                    Thread.sleep(delay);
+                    String requestCommand = "r";
+                    mConnection.write(requestCommand.getBytes(), requestCommand.length());
+                } catch (final InterruptedException e) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getBaseContext(), "write error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                try {
+                    Thread.sleep(50);
+                    final int length = mConnection.read(dataBuffer);
+                    if (length > 0) {
+                        for (int i = 0; i < length; ++i) {
+                            mReadData.append((char) dataBuffer[i]);
+                        }
+
+                        mHandler.post(new Runnable() {
+                            public void run() {
+                                if (firstResultIgnored) {
+                                    displayResult(mReadData.toString());
+                                }
+                                firstResultIgnored = true;
+                                delay = REQUEST_DELAY;
+                                mReadData.setLength(0);
+                            }
+                        });
+                    }
+                } catch (final InterruptedException ignored) {
+                }
+
+            }
+        }
+    };
+
+    private void displayNotConnectedView() {
+        mReadData.setLength(0);
+        mResultLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mTemperatureImageView.setVisibility(View.GONE);
+        mUnitsTextView.setVisibility(View.GONE);
+        mConnectionLayout.setVisibility(View.VISIBLE);
+        mOkButton.setVisibility(View.GONE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +187,7 @@ public class SensorActivity extends ActionBarActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mRunLoop = false;
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }
@@ -192,9 +218,10 @@ public class SensorActivity extends ActionBarActivity {
         mConnectionLayout = (LinearLayout) findViewById(R.id.connectionLayout);
         mResultLayout = (LinearLayout) findViewById(R.id.resultLayout);
 
-        ((TextView) findViewById(R.id.titleTextView)).setText(
-                mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-
+        if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+            ((TextView) findViewById(R.id.titleTextView)).setText(
+                    mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        }
 
         mConnection = new FtdiSerial(this);
 
@@ -220,11 +247,7 @@ public class SensorActivity extends ActionBarActivity {
             if (mConnection.isOpen() && !mRunLoop) {
                 startCommunication();
             } else {
-                mResultLayout.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.GONE);
-                mTemperatureImageView.setVisibility(View.GONE);
-                mUnitsTextView.setVisibility(View.GONE);
-                mConnectionLayout.setVisibility(View.VISIBLE);
+                displayNotConnectedView();
             }
         }
     }
@@ -233,31 +256,54 @@ public class SensorActivity extends ActionBarActivity {
         mTemperatureImageView.setVisibility(View.GONE);
         mUnitsTextView.setVisibility(View.GONE);
 
-        mResultLayout.setVisibility(View.VISIBLE);
+        //mResultLayout.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mConnectionLayout.setVisibility(View.GONE);
         mRunLoop = true;
         new Thread(mCommunicate).start();
     }
 
-    private void displayResult(String result) {
+    private void displayResult(final String result) {
 
-        if (!result.equals("")) {
+        if (!result.isEmpty()) {
+
             String[] resultArray = result.trim().split(",");
+
+            boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
+            if (developerMode) {
+                if (PreferencesUtils.getBoolean(this, R.string.showDebugMessages, false)) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (debugToast == null) {
+                                debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
+
+                            }
+                            debugToast.setText(result.trim());
+                            debugToast.show();
+                        }
+                    });
+                }
+            }
 
             if (resultArray.length > 2) {
 
+                for (int i = 0; i < resultArray.length; i++) {
+                    resultArray[i] = resultArray[i].trim();
+                }
 //                CRC32 crc32 = new CRC32();
 //                crc32.update((temperature + "," + ecValue + "," + ec25Value).getBytes());
 //                crc32.getValue();
 //                result += "," + Long.toHexString(crc32.getValue());
 
-                if (validDouble(resultArray[0]) && validDouble(resultArray[1]) && validDouble(resultArray[2])) {
+                if (DataHelper.validDouble(resultArray[0]) && DataHelper.validDouble(resultArray[1])
+                        && DataHelper.validDouble(resultArray[2])) {
                     mTemperature = resultArray[0];
                     String mEcValue = resultArray[1];
                     mEc25Value = resultArray[2];
 
                     mResultTextView.setText(mEc25Value);
+                    mTemperature = mTemperature.replace(".00", "");
+
                     mTemperatureTextView.setText(mTemperature + "\u00B0C");
                     mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEcValue));
                     mProgressBar.setVisibility(View.GONE);
@@ -270,12 +316,6 @@ public class SensorActivity extends ActionBarActivity {
                 }
             }
         }
-    }
-
-    private boolean validDouble(String doubleString) {
-        return (doubleString.contains(".") && !doubleString.startsWith(".")) &&
-                doubleString.indexOf(".") == doubleString.length() - 3;
-
     }
 
     @Override

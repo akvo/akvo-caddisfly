@@ -109,6 +109,7 @@
     <string name="calibrationSucceeded">Calibration was successful</string>
     <string name="calibrated">Calibrated</string>
     <string name="testSensor">Test EC Sensor</string>
+    <string name="debuggingOn">Show debug messages</string>
 
 
 </resources>

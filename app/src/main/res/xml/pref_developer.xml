@@ -26,5 +26,8 @@
                 android:targetClass="org.akvo.caddisfly.ui.SensorActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
+        <CheckBoxPreference
+            android:key="showDebugMessages"
+            android:title="@string/debuggingOn" />
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

@@ -166,4 +166,10 @@ public final class DataHelper {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static boolean validDouble(String doubleString) {
+        return (doubleString.contains(".") && !doubleString.startsWith(".")) &&
+                doubleString.indexOf(".") == doubleString.length() - 3;
+
+    }
 }

@@ -156,5 +156,16 @@ public class DataHelperTest extends TestCase {
         assertEquals(0, color);
     }
 
+    //temporary check to be replaced with crc check
+    public void testValidDouble(){
+        assertEquals(DataHelper.validDouble("23.56"), true);
+        assertEquals(DataHelper.validDouble("1723.56"), true);
+        assertEquals(DataHelper.validDouble("23.5"), false);
+        assertEquals(DataHelper.validDouble("12323.567"), false);
+        assertEquals(DataHelper.validDouble("34423.00"), true);
+        assertEquals(DataHelper.validDouble(".56"), false);
+        assertEquals(DataHelper.validDouble("56"), false);
+        assertEquals(DataHelper.validDouble("56334"), false);
+    }
 
 }
