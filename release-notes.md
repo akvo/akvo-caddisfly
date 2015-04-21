@@ -1,3 +1,8 @@
+v0.58 - v0.60 alpha
+-----------
+1. Fixes for EC Sensor
+2. Avoid displaying a -1 EC value
+
 v0.57 alpha
 -----------
 1. DevMode: Toast messages for ec sensor readings

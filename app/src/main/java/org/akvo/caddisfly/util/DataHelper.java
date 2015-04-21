@@ -171,5 +171,6 @@ public final class DataHelper {
         return (doubleString.contains(".") && !doubleString.startsWith(".")) &&
                 doubleString.indexOf(".") == doubleString.length() - 3;
 
+
     }
 }

@@ -25,8 +25,11 @@ import android.content.res.Configuration;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,30 +37,52 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftdi.j2xx.D2xxManager;
+import com.ftdi.j2xx.FT_Device;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.DataHelper;
-import org.akvo.caddisfly.util.FtdiSerial;
 import org.akvo.caddisfly.util.PreferencesUtils;
+
+import java.util.ArrayList;
+import java.util.zip.CRC32;
 
 public class SensorActivity extends ActionBarActivity {
 
+    public static final int readLength = 512;
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-
     private static final int DEFAULT_BAUD_RATE = 9600;
     private static final int DEFAULT_BUFFER_SIZE = 1028;
-    private static final int REQUEST_DELAY = 5000;
+    private static final int REQUEST_DELAY = 4000;
     private static final int INITIAL_DELAY = 1000;
-    private final Handler mHandler = new Handler();
+    // original ///////////////////////////////
     private final StringBuilder mReadData = new StringBuilder();
+    public int iavailable = 0;
+    public boolean bReadThreadGoing = false;
+    public readThread read_thread;
     Toast debugToast;
-    private FtdiSerial mConnection;
+    D2xxManager ftdid2xx;
+    FT_Device ftDev = null;
+    int DevCount = -1;
+    int currentIndex = -1;
+    int openIndex = 0;
+    /*graphical objects*/
+    ArrayAdapter<CharSequence> portAdapter;
+    /*local variables*/
+    int baudRate; /*baud rate*/
+    byte stopBit; /*1:1stop bits, 2:2 stop bits*/
+    byte dataBit; /*8:8bit, 7: 7bit*/
+    byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
+    byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
+    int portNumber; /*port number*/
+    ArrayList<CharSequence> portNumberList;
+    byte[] readData;
+    char[] readDataToText;
+    boolean uart_configured = false;
     private String mEc25Value = "";
     private String mTemperature = "";
-    private boolean mRunLoop = false;
     private TextView mResultTextView;
     private TextView mTemperatureTextView;
     private TextView mEcValueTextView;
@@ -65,7 +90,7 @@ public class SensorActivity extends ActionBarActivity {
     private LinearLayout mConnectionLayout;
     private LinearLayout mResultLayout;
     private ProgressWheel mProgressBar;
-    private boolean firstResultIgnored = false;
+    //private boolean firstResultIgnored = false;
     private ImageView mTemperatureImageView;
     private TextView mUnitsTextView;
     //http://developer.android.com/guide/topics/connectivity/usb/host.html
@@ -75,96 +100,60 @@ public class SensorActivity extends ActionBarActivity {
 
             switch (action) {
                 case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
+                    notifyUSBDeviceAttach();
                     break;
                 case UsbManager.ACTION_USB_DEVICE_DETACHED:
-                    mRunLoop = false;
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            (new Handler()).postDelayed(new Runnable() {
-                                public void run() {
-                                    displayNotConnectedView();
-                                }
-                            }, 500);
-                        }
-                    });
-
-                    mConnection.close();
+                    notifyUSBDeviceDetach();
                     break;
                 case ACTION_USB_PERMISSION:
-                    if (!mConnection.isOpen()) {
-                        Connect();
-                    }
-                    if (!mRunLoop) {
-                        startCommunication();
-                    }
                     break;
             }
         }
     };
+    private Context mContext;
+
+    private String mResult = "";
     private int delay = INITIAL_DELAY;
+    private boolean mRunLoop;
     private final Runnable mCommunicate = new Runnable() {
         @Override
         public void run() {
-            byte[] dataBuffer = new byte[DEFAULT_BUFFER_SIZE];
-
             while (mRunLoop) {
-
                 try {
                     Thread.sleep(delay);
-                    String requestCommand = "r";
-                    mConnection.write(requestCommand.getBytes(), requestCommand.length());
-                } catch (final InterruptedException e) {
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(getBaseContext(), "write error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                try {
-                    Thread.sleep(50);
-                    final int length = mConnection.read(dataBuffer);
-                    if (length > 0) {
-                        for (int i = 0; i < length; ++i) {
-                            mReadData.append((char) dataBuffer[i]);
-                        }
-
-                        mHandler.post(new Runnable() {
-                            public void run() {
-                                if (firstResultIgnored) {
-                                    displayResult(mReadData.toString());
-                                }
-                                firstResultIgnored = true;
-                                delay = REQUEST_DELAY;
-                                mReadData.setLength(0);
-                            }
-                        });
-                    }
-                } catch (final InterruptedException ignored) {
+                } catch (final Exception e) {
                 }
 
+                SendMessage();
+                delay = REQUEST_DELAY;
             }
         }
     };
-
-    private void displayNotConnectedView() {
-        mReadData.setLength(0);
-        mResultLayout.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
-        mTemperatureImageView.setVisibility(View.GONE);
-        mUnitsTextView.setVisibility(View.GONE);
-        mConnectionLayout.setVisibility(View.VISIBLE);
-        mOkButton.setVisibility(View.GONE);
-    }
+    private double mPreviousEcValue = 0;
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (iavailable > 0) {
+                mResult += String.copyValueOf(readDataToText, 0, iavailable);
+                if (mResult.split(",").length > 3) {
+                    displayResult(mResult);
+                }
+                //Toast.makeext(mContext, String.copyValueOf(readDataToText, 0, iavailable), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
+
+        try {
+            ftdid2xx = D2xxManager.getInstance(this);
+        } catch (D2xxManager.D2xxException ex) {
+            ex.printStackTrace();
+        }
 
         setContentView(R.layout.activity_sensor);
 
@@ -187,7 +176,6 @@ public class SensorActivity extends ActionBarActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRunLoop = false;
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }
@@ -223,52 +211,286 @@ public class SensorActivity extends ActionBarActivity {
                     mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         }
 
-        mConnection = new FtdiSerial(this);
-
         //http://developer.android.com/guide/topics/connectivity/usb/host.html
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(mUsbReceiver, filter);
 
-        Connect();
+        readData = new byte[readLength];
+        readDataToText = new char[readLength];
+
+        /* by default it is 9600 */
+        baudRate = 9600;
+
+        stopBit = 1;
+
+        dataBit = 8;
+
+        parity = 0;
+
+        flowControl = 0;
+
+        portNumber = 1;
+
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Connect();
+    public void onStart() {
+        super.onStart();
+        createDeviceList();
     }
 
-    private void Connect() {
-        if (mConnection != null) {
-            mConnection.initialize(DEFAULT_BAUD_RATE, D2xxManager.FT_DATA_BITS_8,
-                    D2xxManager.FT_STOP_BITS_1, D2xxManager.FT_PARITY_NONE);
-            if (mConnection.isOpen() && !mRunLoop) {
-                startCommunication();
-            } else {
-                displayNotConnectedView();
+    @Override
+    public void onStop() {
+        disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        mRunLoop = false;
+        unregisterReceiver(mUsbReceiver);
+        super.onDestroy();
+    }
+
+
+    public void notifyUSBDeviceAttach() {
+        createDeviceList();
+    }
+
+    public void notifyUSBDeviceDetach() {
+        disconnect();
+        displayNotConnectedView();
+    }
+
+    public void createDeviceList() {
+        int tempDevCount = ftdid2xx.createDeviceInfoList(this);
+        if (tempDevCount > 0) {
+            displayNotConnectedView();
+            if (DevCount != tempDevCount) {
+                DevCount = tempDevCount;
+                displayConnectedView();
+            }
+        } else {
+            displayNotConnectedView();
+            DevCount = -1;
+            currentIndex = -1;
+        }
+    }
+
+    public void disconnect() {
+        DevCount = -1;
+        currentIndex = -1;
+        bReadThreadGoing = false;
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (ftDev != null) {
+            synchronized (ftDev) {
+                if (ftDev.isOpen()) {
+                    ftDev.close();
+                }
             }
         }
     }
 
-    private void startCommunication() {
+    public void connect() {
+        int tmpProtNumber = openIndex + 1;
+
+        if (currentIndex != openIndex) {
+            if (null == ftDev) {
+                ftDev = ftdid2xx.openByIndex(this, openIndex);
+            } else {
+                synchronized (ftDev) {
+                    ftDev = ftdid2xx.openByIndex(this, openIndex);
+                }
+            }
+            uart_configured = false;
+        } else {
+            //Toast.makeText(this, "Device port " + tmpProtNumber + " is already opened", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (ftDev == null) {
+            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG, ftDev == null", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (ftDev.isOpen()) {
+            currentIndex = openIndex;
+            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") OK", Toast.LENGTH_SHORT).show();
+
+            if (!bReadThreadGoing) {
+                read_thread = new readThread(handler);
+                read_thread.start();
+                bReadThreadGoing = true;
+            }
+        } else {
+            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
+        if (ftDev == null || !ftDev.isOpen()) {
+            Log.e("j2xx", "SetConfig: device not open");
+            return;
+        }
+
+        // configure our port
+        // reset to UART mode for 232 devices
+        ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
+
+        ftDev.setBaudRate(baud);
+
+        switch (dataBits) {
+            case 7:
+                dataBits = D2xxManager.FT_DATA_BITS_7;
+                break;
+            case 8:
+                dataBits = D2xxManager.FT_DATA_BITS_8;
+                break;
+            default:
+                dataBits = D2xxManager.FT_DATA_BITS_8;
+                break;
+        }
+
+        switch (stopBits) {
+            case 1:
+                stopBits = D2xxManager.FT_STOP_BITS_1;
+                break;
+            case 2:
+                stopBits = D2xxManager.FT_STOP_BITS_2;
+                break;
+            default:
+                stopBits = D2xxManager.FT_STOP_BITS_1;
+                break;
+        }
+
+        switch (parity) {
+            case 0:
+                parity = D2xxManager.FT_PARITY_NONE;
+                break;
+            case 1:
+                parity = D2xxManager.FT_PARITY_ODD;
+                break;
+            case 2:
+                parity = D2xxManager.FT_PARITY_EVEN;
+                break;
+            case 3:
+                parity = D2xxManager.FT_PARITY_MARK;
+                break;
+            case 4:
+                parity = D2xxManager.FT_PARITY_SPACE;
+                break;
+            default:
+                parity = D2xxManager.FT_PARITY_NONE;
+                break;
+        }
+
+        ftDev.setDataCharacteristics(dataBits, stopBits, parity);
+
+        short flowCtrlSetting;
+        switch (flowControl) {
+            case 0:
+                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
+                break;
+            case 1:
+                flowCtrlSetting = D2xxManager.FT_FLOW_RTS_CTS;
+                break;
+            case 2:
+                flowCtrlSetting = D2xxManager.FT_FLOW_DTR_DSR;
+                break;
+            case 3:
+                flowCtrlSetting = D2xxManager.FT_FLOW_XON_XOFF;
+                break;
+            default:
+                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
+                break;
+        }
+
+        // TODO : flow ctrl: XOFF/XOM
+        // TODO : flow ctrl: XOFF/XOM
+        ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
+
+        uart_configured = true;
+        //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
+    }
+
+    public void SendMessage() {
+        if (ftDev == null || !ftDev.isOpen()) {
+            Log.e("j2xx", "SendMessage: device not open");
+            return;
+        }
+
+        ftDev.setLatencyTimer((byte) 16);
+//		ftDev.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
+
+        String writeData = "r";
+        byte[] OutData = writeData.getBytes();
+        ftDev.write(OutData, writeData.length());
+    }
+
+    /**
+     * Hot plug for plug in solution
+     * This is workaround before android 4.2 . Because BroadcastReceiver can not
+     * receive ACTION_USB_DEVICE_ATTACHED broadcast
+     */
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DevCount = 0;
+        createDeviceList();
+        if (DevCount > 0) {
+            connect();
+            SetConfig(baudRate, dataBit, stopBit, parity, flowControl);
+        }
+        mRunLoop = true;
+        new Thread(mCommunicate).start();
+    }
+
+    private void displayNotConnectedView() {
+        mReadData.setLength(0);
+        mResultLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mTemperatureImageView.setVisibility(View.GONE);
+        mUnitsTextView.setVisibility(View.GONE);
+        mConnectionLayout.setVisibility(View.VISIBLE);
+        mOkButton.setVisibility(View.GONE);
+    }
+
+    private void displayConnectedView() {
+
         mTemperatureImageView.setVisibility(View.GONE);
         mUnitsTextView.setVisibility(View.GONE);
 
         //mResultLayout.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mConnectionLayout.setVisibility(View.GONE);
-        mRunLoop = true;
-        new Thread(mCommunicate).start();
     }
 
-    private void displayResult(final String result) {
+    private void displayResult(String value) {
 
+        //Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG).show();
+        String newline = System.getProperty("line.separator");
+
+        value = value.trim();
+        if (value.contains(newline)) {
+            String[] values = value.split(newline);
+            if (values.length > 0) {
+                value = values[1];
+            }
+        }
+
+        final String result = value;
         if (!result.isEmpty()) {
 
-            String[] resultArray = result.trim().split(",");
-
+            String[] resultArray = result.split(",");
             boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
             if (developerMode) {
                 if (PreferencesUtils.getBoolean(this, R.string.showDebugMessages, false)) {
@@ -276,7 +498,6 @@ public class SensorActivity extends ActionBarActivity {
                         public void run() {
                             if (debugToast == null) {
                                 debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
-
                             }
                             debugToast.setText(result.trim());
                             debugToast.show();
@@ -290,39 +511,87 @@ public class SensorActivity extends ActionBarActivity {
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
                 }
-//                CRC32 crc32 = new CRC32();
-//                crc32.update((temperature + "," + ecValue + "," + ec25Value).getBytes());
-//                crc32.getValue();
-//                result += "," + Long.toHexString(crc32.getValue());
 
                 if (DataHelper.validDouble(resultArray[0]) && DataHelper.validDouble(resultArray[1])
                         && DataHelper.validDouble(resultArray[2])) {
                     mTemperature = resultArray[0];
                     String mEcValue = resultArray[1];
                     mEc25Value = resultArray[2];
+                    String crc = resultArray[3].trim();
 
-                    mResultTextView.setText(mEc25Value);
-                    mTemperature = mTemperature.replace(".00", "");
+                    CRC32 crc32 = new CRC32();
+                    crc32.update((mTemperature + "," + mEcValue + "," + mEc25Value).getBytes());
+                    String crcValue = Long.toHexString(crc32.getValue());
 
-                    mTemperatureTextView.setText(mTemperature + "\u00B0C");
-                    mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEcValue));
-                    mProgressBar.setVisibility(View.GONE);
-                    mResultLayout.setVisibility(View.VISIBLE);
-                    mConnectionLayout.setVisibility(View.GONE);
-                    mOkButton.setVisibility(View.VISIBLE);
-                    mTemperatureImageView.setVisibility(View.VISIBLE);
-                    mUnitsTextView.setVisibility(View.VISIBLE);
+                    if (crc.equals(crcValue)) {
 
+                        mTemperature = mTemperature.replace(".00", "");
+
+                        double ecValue = Double.parseDouble(mEc25Value);
+
+                        mTemperatureTextView.setText(mTemperature + "\u00B0C");
+                        if (!mEcValue.equals("-1.00") &&
+                                (mPreviousEcValue == 0 || (Math.abs(ecValue - mPreviousEcValue) < 1000))) {
+                            mResultTextView.setText(mEc25Value);
+                            mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEcValue));
+                            mProgressBar.setVisibility(View.GONE);
+                        } else {
+                            mEcValueTextView.setText("");
+                            mResultTextView.setText("");
+                            mProgressBar.setVisibility(View.VISIBLE);
+                        }
+
+                        mPreviousEcValue = ecValue;
+                        mEc25Value = "";
+                        mTemperature = "";
+                        mResultLayout.setVisibility(View.VISIBLE);
+                        mConnectionLayout.setVisibility(View.GONE);
+                        mOkButton.setVisibility(View.VISIBLE);
+                        mTemperatureImageView.setVisibility(View.VISIBLE);
+                        mUnitsTextView.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }
+        mResult = "";
+
     }
 
-    @Override
-    public void onDestroy() {
-        mConnection.close();
-        mRunLoop = false;
-        unregisterReceiver(mUsbReceiver);
-        super.onDestroy();
+    private class readThread extends Thread {
+        Handler mHandler;
+
+        readThread(Handler h) {
+            mHandler = h;
+            this.setPriority(Thread.MIN_PRIORITY);
+        }
+
+        @Override
+        public void run() {
+            int i;
+
+            while (bReadThreadGoing) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                }
+
+                synchronized (ftDev) {
+                    iavailable = ftDev.getQueueStatus();
+                    if (iavailable > 0) {
+
+                        if (iavailable > readLength) {
+                            iavailable = readLength;
+                        }
+
+                        ftDev.read(readData, iavailable);
+                        for (i = 0; i < iavailable; i++) {
+                            readDataToText[i] = (char) readData[i];
+                        }
+                        Message msg = mHandler.obtainMessage();
+                        mHandler.sendMessage(msg);
+                    }
+                }
+            }
+        }
     }
 }

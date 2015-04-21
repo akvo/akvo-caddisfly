@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 15
         targetSdkVersion 22
-        versionName "prototype 0.57 alpha"
-        versionCode 57
+        versionName "prototype 0.60 alpha"
+        versionCode 60
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

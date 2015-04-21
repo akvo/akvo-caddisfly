@@ -82,7 +82,7 @@ public class UsbConnectionActivity extends ActionBarActivity {
                 mConnectedTextView.setVisibility(View.VISIBLE);
                 mProgressLayout.setVisibility(View.GONE);
             }
-        }, 3000);
+        }, 2000);
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
