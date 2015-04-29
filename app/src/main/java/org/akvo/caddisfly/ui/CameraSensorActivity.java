@@ -87,6 +87,7 @@ public class CameraSensorActivity extends ActionBarActivity
     private ArrayList<Bitmap> mBitmaps;
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
+    private boolean mIgnoreShake;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -131,7 +132,7 @@ public class CameraSensorActivity extends ActionBarActivity
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake() {
-                if (!mWaitingForStillness && mCameraFragment != null) {
+                if (!mIgnoreShake && !mWaitingForStillness && mCameraFragment != null) {
                     mWaitingForStillness = true;
                     mViewAnimator.showNext();
                     if (mCameraFragment != null) {
@@ -161,6 +162,7 @@ public class CameraSensorActivity extends ActionBarActivity
 
     private void InitializeTest() {
 
+        mIgnoreShake = PreferencesUtils.getBoolean(this, R.string.ignoreShakeKey, false);
         mTestCompleted = false;
         mHighLevelsFound = false;
         MainApp mainApp = (MainApp) getApplicationContext();

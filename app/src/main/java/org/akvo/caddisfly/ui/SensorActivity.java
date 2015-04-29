@@ -43,7 +43,6 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.ArrayList;
@@ -113,6 +112,18 @@ public class SensorActivity extends ActionBarActivity {
     private Context mContext;
 
     private String mResult = "";
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (iavailable > 0) {
+                mResult += String.copyValueOf(readDataToText, 0, iavailable);
+                if (mResult.split(",").length > 3) {
+                    displayResult(mResult);
+                }
+                //Toast.makeext(mContext, String.copyValueOf(readDataToText, 0, iavailable), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
     private int delay = INITIAL_DELAY;
     private boolean mRunLoop;
     private final Runnable mCommunicate = new Runnable() {
@@ -126,19 +137,6 @@ public class SensorActivity extends ActionBarActivity {
 
                 SendMessage();
                 delay = REQUEST_DELAY;
-            }
-        }
-    };
-    private double mPreviousEcValue = 0;
-    final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (iavailable > 0) {
-                mResult += String.copyValueOf(readDataToText, 0, iavailable);
-                if (mResult.split(",").length > 3) {
-                    displayResult(mResult);
-                }
-                //Toast.makeext(mContext, String.copyValueOf(readDataToText, 0, iavailable), Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -506,51 +504,50 @@ public class SensorActivity extends ActionBarActivity {
                 }
             }
 
-            if (resultArray.length > 2) {
+            if (resultArray.length > 3) {
 
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
                 }
 
-                if (DataHelper.validDouble(resultArray[0]) && DataHelper.validDouble(resultArray[1])
-                        && DataHelper.validDouble(resultArray[2])) {
-                    mTemperature = resultArray[0];
-                    String mEcValue = resultArray[1];
-                    mEc25Value = resultArray[2];
-                    String crc = resultArray[3].trim();
+                mTemperature = resultArray[0];
+                String mEcValue = resultArray[1];
+                mEc25Value = resultArray[2];
+                String crc = resultArray[3].trim();
 
-                    CRC32 crc32 = new CRC32();
-                    crc32.update((mTemperature + "," + mEcValue + "," + mEc25Value).getBytes());
-                    String crcValue = Long.toHexString(crc32.getValue());
+                CRC32 crc32 = new CRC32();
+                crc32.update((mTemperature + "," + mEcValue + "," + mEc25Value).getBytes());
+                String crcValue = Long.toHexString(crc32.getValue());
 
-                    if (crc.equals(crcValue)) {
+                if (crc.equals(crcValue)) {
 
-                        mTemperature = mTemperature.replace(".00", "");
 
-                        double ecValue = Double.parseDouble(mEc25Value);
+                    double temperature = Double.parseDouble(mTemperature);
+                    mTemperature = String.format("%.1f\u00B0C", temperature);
+                    mTemperature = mTemperature.replace(".0", "");
+                    double ec25Value = Math.round(Double.parseDouble(mEc25Value));
+                    double ecValue = Math.round(Double.parseDouble(mEcValue));
 
-                        mTemperatureTextView.setText(mTemperature + "\u00B0C");
-                        if (!mEcValue.equals("-1.00") &&
-                                (mPreviousEcValue == 0 || (Math.abs(ecValue - mPreviousEcValue) < 1000))) {
-                            mResultTextView.setText(mEc25Value);
-                            mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), mEcValue));
-                            mProgressBar.setVisibility(View.GONE);
-                        } else {
-                            mEcValueTextView.setText("");
-                            mResultTextView.setText("");
-                            mProgressBar.setVisibility(View.VISIBLE);
-                        }
-
-                        mPreviousEcValue = ecValue;
-                        mEc25Value = "";
-                        mTemperature = "";
-                        mResultLayout.setVisibility(View.VISIBLE);
-                        mConnectionLayout.setVisibility(View.GONE);
-                        mOkButton.setVisibility(View.VISIBLE);
-                        mTemperatureImageView.setVisibility(View.VISIBLE);
-                        mUnitsTextView.setVisibility(View.VISIBLE);
+                    mTemperatureTextView.setText(mTemperature);
+                    if (!mEcValue.equals("-1.00")) {
+                        mResultTextView.setText(String.format("%.0f", ec25Value));
+                        mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), String.format("%.0f", ecValue)));
+                        mProgressBar.setVisibility(View.GONE);
+                    } else {
+                        mEcValueTextView.setText("");
+                        mResultTextView.setText("");
+                        mProgressBar.setVisibility(View.VISIBLE);
                     }
+
+                    mEc25Value = "";
+                    mTemperature = "";
+                    mResultLayout.setVisibility(View.VISIBLE);
+                    mConnectionLayout.setVisibility(View.GONE);
+                    mOkButton.setVisibility(View.VISIBLE);
+                    mTemperatureImageView.setVisibility(View.VISIBLE);
+                    mUnitsTextView.setVisibility(View.VISIBLE);
                 }
+
             }
         }
         mResult = "";

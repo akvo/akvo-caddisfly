@@ -19,6 +19,9 @@
         <Preference
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
+        <CheckBoxPreference
+            android:key="@string/ignoreShakeKey"
+            android:title="@string/ignoreShakeDuringAnalysis" />
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">

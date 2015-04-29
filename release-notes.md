@@ -1,3 +1,8 @@
+v0.61 alpha
+-----------
+1. Added option to disable interrupting test if device is shaken
+2. EC Sensor: Round off EC and Temperature values
+
 v0.58 - v0.60 alpha
 -----------
 1. Fixes for EC Sensor

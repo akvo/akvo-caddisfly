@@ -128,4 +128,5 @@
     <string name="calibrated">Calibrated</string>
     <string name="testSensor">Test EC Sensor</string>
     <string name="debuggingOn">Show debug messages</string>
+    <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
 </resources>
