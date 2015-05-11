@@ -19,6 +19,7 @@ package org.akvo.caddisfly.util;
 import android.graphics.Color;
 
 import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.model.Result;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,7 +39,7 @@ public final class DataHelper {
         return ret;
     }
 
-    public static int getAverageColor(ArrayList<Integer> colors) {
+    public static int getAverageColor(ArrayList<Result> colors) {
 
 //      return colors.get(colors.size() - 1);
         int counter = 0;
@@ -50,7 +51,7 @@ public final class DataHelper {
         ArrayList<Double> distances = new ArrayList<>();
 
         for (int i = 1; i < colors.size() - 1; i++) {
-            distances.add(ColorUtils.getDistance(colors.get(i), colors.get(i + 1)));
+            distances.add(ColorUtils.getDistance(colors.get(i).getColor(), colors.get(i + 1).getColor()));
         }
 
         for (int i = 0; i < distances.size(); i++) {
@@ -61,7 +62,7 @@ public final class DataHelper {
 
         //Ignore the first result
         for (int i = 1; i < colors.size(); i++) {
-            int color = colors.get(i);
+            int color = colors.get(i).getColor();
             if (color != 0) {
                 counter++;
                 red += Color.red(color);
@@ -114,14 +115,20 @@ public final class DataHelper {
         return mostFrequent;
     }
 
-    public static double getAverageResult(ArrayList<Double> results) {
+    public static double getAverageResult(ArrayList<Result> results) {
 
         double result = 0;
 
         int counter = 0;
+        ArrayList<Double> resultValues = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+            resultValues.add(results.get(i).getValue());
+        }
+
         double commonResult;
 
-        double[] resultArray = convertDoubles(results);
+        double[] resultArray = convertDoubles(resultValues);
         //ignore first value;
         resultArray[0] = -1;
         commonResult = mostFrequent(resultArray);
@@ -130,7 +137,7 @@ public final class DataHelper {
 
         //Ignore the first result
         for (int i = 1; i < results.size(); i++) {
-            double value = results.get(i);
+            double value = results.get(i).getValue();
             if (value > -1 && Math.abs(value - commonResult) < 0.21) {
                 tempResults.add(value);
             }

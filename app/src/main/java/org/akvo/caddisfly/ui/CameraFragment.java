@@ -276,11 +276,8 @@ public class CameraFragment extends DialogFragment {
 
         public CameraPreview(Context context, Camera camera, boolean previewOnly) {
             super(context);
-
-            mPreviewOnly = previewOnly;
-
             setCamera(camera);
-
+            mPreviewOnly = previewOnly;
             mHolder = getHolder();
             mHolder.addCallback(this);
             mHolder.setKeepScreenOn(true);
@@ -288,6 +285,8 @@ public class CameraFragment extends DialogFragment {
 
         public void startCameraPreview() {
             try {
+                //setCamera(mCamera);
+
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
             } catch (Exception e) {

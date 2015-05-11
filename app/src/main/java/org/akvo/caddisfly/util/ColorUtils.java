@@ -44,7 +44,24 @@ public final class ColorUtils {
 
     public static Bundle getPpmValue(Bitmap bitmap, ArrayList<ResultRange> colorRange, int length) {
         ColorInfo photoColor = getColorFromBitmap(bitmap, length);
-        return analyzeColor(photoColor, colorRange);
+        Bundle bundle = new Bundle();
+
+        ArrayList<ResultRange> tempColorRange = new ArrayList<>();
+
+        tempColorRange.add(colorRange.get(0));
+        analyzeColorHsv(photoColor, tempColorRange, bundle);
+
+        tempColorRange.add(colorRange.get(colorRange.size() - 1));
+        analyzeColorHsv(photoColor, tempColorRange, bundle);
+
+        tempColorRange.add(1, colorRange.get((colorRange.size() / 2) - 1));
+        analyzeColorHsv(photoColor, tempColorRange, bundle);
+
+        analyzeColorHsv(photoColor, colorRange, bundle);
+
+        analyzeColor(photoColor, colorRange, bundle);
+
+        return bundle;
     }
 
     private static ColorInfo getColorFromBitmap(Bitmap bitmap, int sampleLength) {
@@ -114,9 +131,8 @@ public final class ColorUtils {
      * @param colorRange The range of colors to compare against
      * @return A bundle with the results
      */
-    private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange) {
+    private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 
-        Bundle bundle = new Bundle();
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
         double value = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange);
@@ -252,4 +268,84 @@ public final class ColorUtils {
                         b * b * .068
         );
     }
+
+    private static Bundle analyzeColorHsv(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
+
+        double a = 0, b, c, d, e, f;
+        double xSum = 0, xSquaredSum = 0, ySum = 0;
+        double slope, yIntercept;
+
+        float[] pixelHSV = new float[3];
+
+        float[] hValue = new float[colorRange.size()];
+
+        for (int i = 0; i < colorRange.size(); i++) {
+            Color.colorToHSV(colorRange.get(i).getColor(), pixelHSV);
+            hValue[i] = pixelHSV[0];
+            if (hValue[i] < 100) {
+                hValue[i] += 360;
+            }
+            a += colorRange.get(i).getValue() * hValue[i];
+            xSum += colorRange.get(i).getValue();
+            xSquaredSum += Math.pow(colorRange.get(i).getValue(), 2);
+            ySum += hValue[i];
+
+        }
+
+        a *= colorRange.size();
+        b = xSum * ySum;
+        c = xSquaredSum * colorRange.size();
+        d = Math.pow(xSum, 2);
+        slope = (a - b) / (c - d);
+
+        if (Double.isNaN(slope)) {
+            slope = 32;
+        }
+
+        e = ySum;
+        f = slope * xSum;
+        yIntercept = (e - f) / colorRange.size();
+
+        Color.colorToHSV(photoColor.getColor(), pixelHSV);
+
+        bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
+        bundle.putDouble("a", a); //NON-NLS
+        bundle.putDouble("b", b); //NON-NLS
+        bundle.putDouble("c", c); //NON-NLS
+        bundle.putDouble("d", d); //NON-NLS
+        bundle.putDouble("e", e); //NON-NLS
+        bundle.putDouble("f", f); //NON-NLS
+
+        bundle.putDouble("slope", slope); //NON-NLS
+        bundle.putDouble("intercept", yIntercept); //NON-NLS
+
+        float h = pixelHSV[0];
+        if (h < yIntercept) {
+            h += 360;
+        }
+
+        bundle.putDouble("h", h); //NON-NLS
+
+        double value = (h - yIntercept) / slope;
+
+        String resultKey = Config.RESULT_VALUE_KEY + "_" + colorRange.size();
+
+        if (value < 0) {
+            bundle.putDouble(resultKey, -1); //NON-NLS
+        } else {
+            bundle.putDouble(resultKey, value);
+        }
+
+        bundle.putString("color",
+                String.format("%d  %d  %d", Color.red(photoColor.getColor()),
+                        Color.green(photoColor.getColor()),
+                        Color.blue(photoColor.getColor()))
+        );
+
+        //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
+
+        return bundle;
+    }
+
+
 }

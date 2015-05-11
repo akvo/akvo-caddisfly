@@ -4,9 +4,9 @@ package org.akvo.caddisfly.ui;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.util.ColorUtils;
 
 import java.text.DecimalFormat;
@@ -30,9 +31,9 @@ import java.util.List;
 public class DialogGridError extends DialogFragment {
 
     private final DecimalFormat doubleFormat = new DecimalFormat("0.00");
-    ArrayList<Integer> mColors;
-    ArrayList<Bitmap> mBitmaps;
-    double[] mResults;
+    //ArrayList<Integer> mColors;
+    ArrayList<Result> mResults;
+    //double[] mResults;
     boolean mAllowRetry;
     boolean mIsCalibration;
 
@@ -40,18 +41,17 @@ public class DialogGridError extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static DialogGridError newInstance(ArrayList<Integer> colors, ArrayList<Double> results,
-                                              ArrayList<Bitmap> bitmaps, boolean allowRetry,
+    public static DialogGridError newInstance(ArrayList<Result> results, boolean allowRetry,
                                               double result, int color, boolean isCalibration) {
         DialogGridError fragment = new DialogGridError();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
-        args.putIntegerArrayList("colors", colors);
-        args.putDoubleArray("results", convertDoubles(results));
+        //args.putIntegerArrayList("colors", colors);
+        //args.putDoubleArray("results", convertDoubles(results));
         args.putDouble("result", result);
         args.putInt("color", color);
         args.putBoolean("calibration", isCalibration);
-        fragment.mBitmaps = bitmaps;
+        fragment.mResults = results;
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,8 +71,8 @@ public class DialogGridError extends DialogFragment {
         ListView resultList = (ListView) view.findViewById(R.id.resultList);
         resultList.setAdapter(new ImageAdapter());
 
-        mColors = getArguments().getIntegerArrayList("colors");
-        mResults = getArguments().getDoubleArray("results");
+        //mColors = getArguments().getIntegerArrayList("colors");
+        //mResults = getArguments().getDoubleArray("results");
         mAllowRetry = getArguments().getBoolean("retry");
         int mColor = getArguments().getInt("color");
 
@@ -92,7 +92,7 @@ public class DialogGridError extends DialogFragment {
                 public void onClick(View view) {
 
                     ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(false, true);
+                    listener.onFinishErrorListDialog(false, true, mIsCalibration);
 
                 }
             });
@@ -102,7 +102,7 @@ public class DialogGridError extends DialogFragment {
                 public void onClick(View view) {
 
                     ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(true, false);
+                    listener.onFinishErrorListDialog(true, false, mIsCalibration);
 
                 }
             });
@@ -123,7 +123,7 @@ public class DialogGridError extends DialogFragment {
                 public void onClick(View view) {
 
                     ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(false, false);
+                    listener.onFinishErrorListDialog(false, false, mIsCalibration);
 
                 }
             });
@@ -132,18 +132,12 @@ public class DialogGridError extends DialogFragment {
     }
 
     public interface ErrorListDialogListener {
-        void onFinishErrorListDialog(boolean retry, boolean cancelled);
+        void onFinishErrorListDialog(boolean retry, boolean cancelled, boolean isCalibration);
     }
 
     public class ImageAdapter extends BaseAdapter {
-        //private Context mContext;
-
-        //public ImageAdapter(Context c) {
-        //mContext = c;
-        //}
-
         public int getCount() {
-            return mBitmaps.size();
+            return mResults.size();
         }
 
         public Object getItem(int position) {
@@ -163,21 +157,23 @@ public class DialogGridError extends DialogFragment {
             MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
 
             if (mainApp != null && rowView != null) {
-                TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
+                //TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
                 TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
                 Button button = (Button) rowView.findViewById(R.id.button);
 
-                imageView.setImageBitmap(mBitmaps.get(position));
-                int color = mColors.get(position);
+                Result result = mResults.get(position);
+
+                imageView.setImageBitmap(result.getBitmap());
+                int color = result.getColor();
 
                 button.setBackgroundColor(color);
 
-                if (mIsCalibration) {
-                    ppmText.setVisibility(View.INVISIBLE);
-                } else if (mResults[position] > -1) {
-                    ppmText.setText(doubleFormat.format(mResults[position]));
-                }
+//                if (mIsCalibration) {
+//                    ppmText.setVisibility(View.INVISIBLE);
+//                } else if (mResults[position] > -1) {
+//                    ppmText.setText(doubleFormat.format(mResults[position]));
+//                }
 
                 //display rgb value
                 int r = Color.red(color);
@@ -185,6 +181,52 @@ public class DialogGridError extends DialogFragment {
                 int b = Color.blue(color);
 
                 rgbText.setText(String.format("%d  %d  %d", r, g, b));
+
+                if (!mIsCalibration) {
+                    ListView resultList = (ListView) rowView.findViewById(R.id.resultList);
+                    resultList.setAdapter(new ResultsAdapter(result.getResults()));
+                }
+
+
+            }
+            return rowView;
+        }
+    }
+
+    public class ResultsAdapter extends BaseAdapter {
+
+        ArrayList<Pair<String, Double>> mResults;
+
+        public ResultsAdapter(ArrayList<Pair<String, Double>> results) {
+            mResults = results;
+        }
+
+        public int getCount() {
+            return mResults.size();
+        }
+
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View view, ViewGroup parent) {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            @SuppressLint("ViewHolder")
+            View rowView = inflater.inflate(R.layout.row_result, parent, false);
+
+            MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
+
+            if (mainApp != null && rowView != null) {
+                TextView descriptionText = (TextView) rowView.findViewById(R.id.descriptionText);
+                TextView resultText = (TextView) rowView.findViewById(R.id.resultText);
+                descriptionText.setText(mResults.get(position).first);
+                resultText.setText(mResults.get(position).second.toString());
+
             }
             return rowView;
         }

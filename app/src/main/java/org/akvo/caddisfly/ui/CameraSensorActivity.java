@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -44,6 +45,7 @@ import android.widget.ViewAnimator;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
@@ -82,9 +84,9 @@ public class CameraSensorActivity extends ActionBarActivity
     private CameraFragment mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
-    private ArrayList<Double> mResults;
-    private ArrayList<Integer> mColors;
-    private ArrayList<Bitmap> mBitmaps;
+    private ArrayList<Result> mResults;
+    //private ArrayList<Integer> mColors;
+    //private ArrayList<Bitmap> mBitmaps;
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
     private boolean mIgnoreShake;
@@ -241,7 +243,7 @@ public class CameraSensorActivity extends ActionBarActivity
     }
 
     private void ShowVerboseError(boolean testFailed, double result, int color, boolean isCalibration) {
-        mResultFragment = DialogGridError.newInstance(mColors, mResults, mBitmaps, testFailed, result, color, isCalibration);
+        mResultFragment = DialogGridError.newInstance(mResults, testFailed, result, color, isCalibration);
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
@@ -325,23 +327,30 @@ public class CameraSensorActivity extends ActionBarActivity
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
         int color = bundle.getInt(Config.RESULT_COLOR_KEY, 0);
 
-        mColors.add(color);
-        mResults.add(result);
-        mBitmaps.add(croppedBitmap);
+        ArrayList<Pair<String, Double>> results = new ArrayList<>();
+        results.add(new Pair<>("HSV 1 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_1", -1)));
+        results.add(new Pair<>("HSV 2 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_2", -1)));
+        results.add(new Pair<>("HSV 3 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_3", -1)));
+        results.add(new Pair<>("HSV 5 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_5", -1)));
+
+        results.add(new Pair<>("RGB 5 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY, -1)));
+
+        Result resultInfo = new Result(result, color, croppedBitmap, results);
+
+        //mColors.add(color);
+        mResults.add(resultInfo);
+        //mBitmaps.add(croppedBitmap);
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
-        if (mResults.size() > 3 && !isCalibration) {
-            if (DataHelper.getAverageResult(mResults) == -1) {
-                mCameraFragment.samplingCount--;
-            }
-        }
-
+//        if (mResults.size() > 3 && !isCalibration) {
+//            if (DataHelper.getAverageResult(mResults) == -1) {
+//                mCameraFragment.samplingCount--;
+//            }
+//        }
     }
 
     void startTest() {
         mResults = new ArrayList<>();
-        mColors = new ArrayList<>();
-        mBitmaps = new ArrayList<>();
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
@@ -390,7 +399,7 @@ public class CameraSensorActivity extends ActionBarActivity
                                         break;
                                 }
 
-                                int color = DataHelper.getAverageColor(mColors);
+                                int color = DataHelper.getAverageColor(mResults);
                                 boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
                                 releaseResources();
                                 Intent intent = new Intent(getIntent());
@@ -427,7 +436,6 @@ public class CameraSensorActivity extends ActionBarActivity
 
                                             if (mHighLevelsFound && mDilutionLevel < 2) {
                                                 sound.playShortResource(R.raw.beep_long);
-                                                mHighLevelsFound = true;
                                                 switch (mDilutionLevel) {
                                                     case 0:
                                                         message = getString(R.string.tryWith50PercentSample);
@@ -589,15 +597,25 @@ public class CameraSensorActivity extends ActionBarActivity
     }
 
     @Override
-    public void onFinishErrorListDialog(boolean retry, boolean cancelled) {
+    public void onFinishErrorListDialog(boolean retry, boolean cancelled, boolean isCalibration) {
         mResultFragment.dismiss();
-        if (mHighLevelsFound) {
+        if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);
             MainApp mainApp = (MainApp) getApplicationContext();
             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
-            MessageFragment mMessageFragment = MessageFragment.newInstance(title,
-                    getString(R.string.highLevelsFound), mDilutionLevel);
+
+            String message = "";
+            switch (mDilutionLevel) {
+                case 0:
+                    message = getString(R.string.tryWith50PercentSample);
+                    break;
+                case 1:
+                    message = getString(R.string.tryWith25PercentSample);
+                    break;
+            }
+
+            MessageFragment mMessageFragment = MessageFragment.newInstance(title, message, mDilutionLevel);
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
             Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
