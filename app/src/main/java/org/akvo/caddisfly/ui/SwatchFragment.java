@@ -63,8 +63,8 @@ public class SwatchFragment extends ListFragment {
 
 
                 if (mainApp.currentTestInfo.getRanges().size() > 0) {
-                    int startValue = (int) mainApp.currentTestInfo.getRange(0).getValue() * 10;
-                    int endValue = (int) mainApp.currentTestInfo.getRange(mainApp.currentTestInfo.getRanges().size() - 1).getValue() * 10;
+                    int startValue = (int) (mainApp.currentTestInfo.getRange(0).getValue() * 10);
+                    int endValue = (int) (mainApp.currentTestInfo.getRange(mainApp.currentTestInfo.getRanges().size() - 1).getValue() * 10);
                     for (int i = startValue; i <= endValue; i += 1) {
                         String key = String.format("%s-%.2f", mainApp.currentTestInfo.getCode(), (i / 10f));
                         ResultRange range = new ResultRange((double) i / 10,

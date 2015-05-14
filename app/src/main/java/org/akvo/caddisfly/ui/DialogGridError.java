@@ -225,8 +225,7 @@ public class DialogGridError extends DialogFragment {
                 TextView descriptionText = (TextView) rowView.findViewById(R.id.descriptionText);
                 TextView resultText = (TextView) rowView.findViewById(R.id.resultText);
                 descriptionText.setText(mResults.get(position).first);
-                resultText.setText(mResults.get(position).second.toString());
-
+                resultText.setText(String.format("%.2f", mResults.get(position).second));
             }
             return rowView;
         }

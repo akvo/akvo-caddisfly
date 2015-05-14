@@ -46,7 +46,6 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.Result;
-import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
@@ -318,10 +317,10 @@ public class CameraSensorActivity extends ActionBarActivity
 //        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
 //                Config.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
+        //ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
 
         Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
-        Bundle bundle = ColorUtils.getPpmValue(croppedBitmap, ranges, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        Bundle bundle = ColorUtils.getPpmValue(croppedBitmap, ((MainApp) getApplicationContext()).currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
         bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);

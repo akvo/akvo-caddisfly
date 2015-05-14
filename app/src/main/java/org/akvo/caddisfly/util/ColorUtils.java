@@ -42,24 +42,25 @@ public final class ColorUtils {
     private ColorUtils() {
     }
 
-    public static Bundle getPpmValue(Bitmap bitmap, ArrayList<ResultRange> colorRange, int length) {
+    public static Bundle getPpmValue(Bitmap bitmap, TestInfo testInfo, int length) {
         ColorInfo photoColor = getColorFromBitmap(bitmap, length);
         Bundle bundle = new Bundle();
 
+
         ArrayList<ResultRange> tempColorRange = new ArrayList<>();
 
-        tempColorRange.add(colorRange.get(0));
+        tempColorRange.add(testInfo.getRanges().get(0));
         analyzeColorHsv(photoColor, tempColorRange, bundle);
 
-        tempColorRange.add(colorRange.get(colorRange.size() - 1));
+        tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
         analyzeColorHsv(photoColor, tempColorRange, bundle);
 
-        tempColorRange.add(1, colorRange.get((colorRange.size() / 2) - 1));
+        tempColorRange.add(1, testInfo.getRanges().get((testInfo.getRanges().size() / 2) - 1));
         analyzeColorHsv(photoColor, tempColorRange, bundle);
 
-        analyzeColorHsv(photoColor, colorRange, bundle);
+        analyzeColorHsv(photoColor, testInfo.getRanges(), bundle);
 
-        analyzeColor(photoColor, colorRange, bundle);
+        analyzeColor(photoColor, testInfo.getSwatches(), bundle);
 
         return bundle;
     }

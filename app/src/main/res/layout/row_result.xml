@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:focusable="false"
+            android:paddingLeft="20dp"
             android:textIsSelectable="false"
             android:textSize="23sp"
             android:textStyle="bold"
