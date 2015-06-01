@@ -18,7 +18,7 @@ package org.akvo.caddisfly.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,9 +32,9 @@ import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
-public class AboutActivity extends ActionBarActivity {
+public class AboutActivity extends AppCompatActivity {
 
-    boolean mDeveloperMode;
+    private boolean mDeveloperMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,7 +45,8 @@
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#eee"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            tools:ignore="UnusedAttribute" />
 
         <com.pnikosis.materialishprogress.ProgressWheel
             android:id="@+id/progress_wheel"
@@ -67,6 +68,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#fff"
         android:textSize="30sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
 
 </LinearLayout>

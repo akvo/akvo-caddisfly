@@ -37,7 +37,6 @@
     <string name="waitTillCameraSound">ನಂತರ ಸುಮಾರು ಒಂದು ನಿಮಿಷದಲ್ಲಿ ಎಚ್ಚರಿಕೆ ಧ್ವನಿ ನಿರೀಕ್ಷಿಸಿ</string>
     <string name="calibrateSummary">"ಈ ಫೋನ್ ಮಾಪನಾಂಕ ಕಿಟ್ ಒದಗಿಸಿದ ಗುಣಮಟ್ಟದ ಬಣ್ಣ ಮಿಶ್ರಣಗಳನ್ನು ಬಳಸಿ"</string>
     <string name="displaysVersionNumber">"ಆವೃತ್ತಿ ಸಂಖ್ಯೆ ಪ್ರದರ್ಶಿಸುತ್ತದೆ"</string>
-    <string name="back">"ಹಿಂದಕ್ಕೆ"</string>
     <string name="start">"ಪ್ರಾರಂಭ"</string>
     <string name="errorCameraFlashRequired">ಫೋನ್ ಕ್ಯಾಮೆರಾ ಫ್ಲಾಶ್ ಇರಬೇಕು</string>
     <string name="highLevelsFound">ಫ್ಲೋರೈಡ್ ಉನ್ನತ ಮಟ್ಟದ ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</string>
@@ -62,7 +61,6 @@
     <string name="cancel">"ರದ್ದುಮಾಡು "</string>
     <string name="calibrate">"ಮಾಪನಾಂಕ"</string>
     <string name="analyzingWait">"ವಿಶ್ಲೇಷಿಸುವ …"</string>
-    <string name="startTestConfirm">"ಕಾರ್ಟ್ರಿಡ್ಜ್ ಸರಿಯಾಗಿ ಜೋಡಿಸಲಾದ ಮತ್ತು ಪತ್ರಿಕಾ ಸರಿ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ"</string>
     <string name="updateApp">"Caddisfly ಅಪ್ಡೇಟ್"</string>
     <string name="updateRequest">"ಒಂದು ಅಪ್ಡೇಟೆಡ್ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ, ನೀವು ಈಗ ನವೀಕರಿಸಲು ಬಯಸುತ್ತೀರಾ?"</string>
     <string name="updateCheck">"ಚೆಕ್ ಅಪ್ಡೇಟ್"</string>
@@ -77,11 +75,9 @@
     <string name="startSurvey">"ಪ್ರಾರಂಭ ಸಮೀಕ್ಷೆ"</string>
     <string name="backToSurvey">"ಬ್ಯಾಕ್ ಸಮೀಕ್ಷೆಯ"</string>
     <string name="waterQuality">"ಜಲ ಗುಣಮಟ್ಟ "</string>
-    <string name="calibrateAttachStandardCartridge">"ಈ ಕೆಳಗಿನ ಮತ್ತು ಪತ್ರಿಕಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒಂದು ನಿಗದಿತ ಪರಿಹಾರ ಕಾರ್ಟ್ರಿಡ್ಜ್ ಲಗತ್ತಿಸಿ"</string>
     <string name="watchVideo">ನೋಡಿ</string>
     <string name="demonstration">ಡೆಮೊ</string>
     <string name="cameraPreview">ಕ್ಯಾಮೆರಾ ವೀಕ್ಷಿಸಿ ಪರಿಶೀಲಿಸಿ</string>
-    <string name="temperature">ತಾಪಮಾನ</string>
     <string name="selectDilution">ಆಯ್ಕೆ ಮಾಡಿ</string>
     <string name="hundredPercentSampleWater" formatted="false">100% ಮಾದರಿ ವಾಟರ್</string>
     <string name="fiftyPercentSampleWater" formatted="false">50% ಮಾದರಿ ವಾಟರ್</string>
@@ -97,10 +93,9 @@
     <string name="developer">Developer</string>
     <string name="calibrateSensor">Calibrate EC Sensor</string>
     <string name="calibrateSensorSummary">Calibrate Akvo EC Sensor</string>
-    <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
-    <string name="pleaseWait">Please wait...</string>
+    <string name="pleaseWait">Please wait…</string>
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>

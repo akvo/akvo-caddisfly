@@ -20,49 +20,12 @@ public class ColorInfo {
 
     private final int mColor;
 
-    private final int mQuality;
-//
-//    private double mDistance;
-//
-//    private double mIncrementDistance;
-//
-//    private int mErrorCode = 0;
-
-    public ColorInfo(int color, int quality) {
+    public ColorInfo(int color) {
         mColor = color;
-        mQuality = quality;
     }
 
     public int getColor() {
         return mColor;
     }
-
-//    public int getQuality() {
-//        return mQuality;
-//    }
-//
-//    public double getDistance() {
-//        return mDistance;
-//    }
-//
-//    public void setDistance(double value) {
-//        mDistance = value;
-//    }
-//
-//    public double getIncrementDistance() {
-//        return mIncrementDistance;
-//    }
-//
-//    public void setIncrementDistance(double value) {
-//        mIncrementDistance = value;
-//    }
-//
-//    public int getErrorCode() {
-//        return mErrorCode;
-//    }
-//
-//    public void setErrorCode(int value) {
-//        mErrorCode = value;
-//    }
 
 }

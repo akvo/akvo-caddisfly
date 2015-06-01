@@ -18,7 +18,7 @@ package org.akvo.caddisfly.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +27,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ApiUtils;
 
 
-public class UsbConnectionActivity extends ActionBarActivity {
+public class UsbConnectionActivity extends AppCompatActivity {
     private TextView mConnectedTextView;
     private LinearLayout mProgressLayout;
 

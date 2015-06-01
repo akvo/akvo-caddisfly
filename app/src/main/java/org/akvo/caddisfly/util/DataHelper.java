@@ -33,7 +33,7 @@ public final class DataHelper {
     private DataHelper() {
     }
 
-    public static double[] convertDoubles(List<Double> doubles) {
+    private static double[] convertDoubles(List<Double> doubles) {
         double[] ret = new double[doubles.size()];
         for (int i = 0; i < ret.length; i++) ret[i] = doubles.get(i);
         return ret;
@@ -78,7 +78,7 @@ public final class DataHelper {
         }
     }
 
-    public static int getClosestMatchIndex(ArrayList<Double> resultArray, double commonResult) {
+    private static int getClosestMatchIndex(ArrayList<Double> resultArray, double commonResult) {
         double difference = 9999999;
         int index = -1;
 
@@ -92,7 +92,7 @@ public final class DataHelper {
         return index;
     }
 
-    public static double mostFrequent(double[] array) {
+    private static double mostFrequent(double[] array) {
         Map<Double, Integer> map = new HashMap<>();
 
         for (double a : array) {

@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:clickable="false"
         android:divider="#ff37c0b6"
-        android:dividerHeight="2px"
+        android:dividerHeight="1dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="2"

@@ -26,7 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +51,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
@@ -128,11 +128,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
-
     private void CheckLocale() {
         assert getApplicationContext() != null;
 
@@ -174,6 +169,10 @@ public class MainActivity extends ActionBarActivity {
                 }
             }, 6000);
         }
+
+//        Tracker t =  AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+//        t.setScreenName("main screen");
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 

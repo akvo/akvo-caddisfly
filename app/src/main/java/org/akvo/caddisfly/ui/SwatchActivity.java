@@ -17,12 +17,12 @@
 package org.akvo.caddisfly.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ApiUtils;
 
-public class SwatchActivity extends ActionBarActivity {
+public class SwatchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

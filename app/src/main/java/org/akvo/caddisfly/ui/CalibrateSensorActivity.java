@@ -5,15 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import com.ftdi.j2xx.D2xxManager;
@@ -23,69 +20,50 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 
-import java.util.ArrayList;
+public class CalibrateSensorActivity extends AppCompatActivity {
 
-public class CalibrateSensorActivity extends ActionBarActivity {
-
-    public static final int readLength = 512;
-    private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-    private static final int DEFAULT_BAUD_RATE = 9600;
-    private static final int DEFAULT_BUFFER_SIZE = 1028;
-    private static final int REQUEST_DELAY = 4000;
-    private static final int INITIAL_DELAY = 1000;
+    //private static final int readLength = 512;
+    //    private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
+//    private static final int DEFAULT_BAUD_RATE = 9600;
+//    private static final int DEFAULT_BUFFER_SIZE = 1028;
+//    private static final int REQUEST_DELAY = 4000;
+    //private static final int INITIAL_DELAY = 1000;
     // original ///////////////////////////////
-    private final StringBuilder mReadData = new StringBuilder();
-    public int iavailable = 0;
-    public boolean bReadThreadGoing = false;
-    public readThread read_thread;
-    Toast debugToast;
-    D2xxManager ftdid2xx;
-    FT_Device ftDev = null;
-    int DevCount = -1;
-    int currentIndex = -1;
-    //    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//
-//            switch (action) {
-//                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-//                    notifyUSBDeviceAttach();
-//                    break;
-//                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-//                    notifyUSBDeviceDetach();
-//                    break;
-//                case ACTION_USB_PERMISSION:
-//                    break;
-//            }
-//        }
-//    };
-    int openIndex = 0;
+    //private final StringBuilder mReadData = new StringBuilder();
+    //public readThread read_thread;
+    //Toast debugToast;
     /*graphical objects*/
-    ArrayAdapter<CharSequence> portAdapter;
+    //ArrayAdapter<CharSequence> portAdapter;
+    //ArrayList<CharSequence> portNumberList;
+    //private boolean bReadThreadGoing = false;
+
+    private D2xxManager ftdid2xx;
+    private FT_Device ftDev = null;
+    private int DevCount = -1;
+    private int currentIndex = -1;
     /*local variables*/
-    int baudRate; /*baud rate*/
-    byte stopBit; /*1:1stop bits, 2:2 stop bits*/
-    byte dataBit; /*8:8bit, 7: 7bit*/
-    byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
-    byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
-    int portNumber; /*port number*/
-    ArrayList<CharSequence> portNumberList;
-    byte[] readData;
-    char[] readDataToText;
-    boolean uart_configured = false;
-    private String mEc25Value = "";
-    private String mTemperature = "";
+    private int baudRate; /*baud rate*/
+    private byte stopBit; /*1:1stop bits, 2:2 stop bits*/
+    private byte dataBit; /*8:8bit, 7: 7bit*/
+    private byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
+    private byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
+    //private int portNumber; /*port number*/
+//    private byte[] readData;
+//    private char[] readDataToText;
+    //private boolean uart_configured;
+    //private String mEc25Value = "";
+    //private String mTemperature = "";
     private Context mContext;
     //    final Handler handler = new Handler() {
 //        @Override
 //        public void handleMessage(Message msg) {
-//            if (iavailable > 0) {
-//                Toast.makeText(mContext, String.copyValueOf(readDataToText, 0, iavailable), Toast.LENGTH_LONG).show();
+//            if (byteCount > 0) {
+//                Toast.makeText(mContext, String.copyValueOf(readDataToText, 0, byteCount), Toast.LENGTH_LONG).show();
 //            }
 //        }
 //    };
-    private String mResult = "";
-    private int delay = INITIAL_DELAY;
+    //private String mResult = "";
+    //private int delay = INITIAL_DELAY;
 
     @Override
     public void onStart() {
@@ -112,7 +90,7 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 //        disconnect();
 //    }
 
-    public void createDeviceList() {
+    private void createDeviceList() {
         int tempDevCount = ftdid2xx.createDeviceInfoList(this);
         if (tempDevCount > 0) {
             if (DevCount != tempDevCount) {
@@ -124,10 +102,10 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         }
     }
 
-    public void disconnect() {
+    private void disconnect() {
         DevCount = -1;
         currentIndex = -1;
-        bReadThreadGoing = false;
+        //bReadThreadGoing = false;
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
@@ -135,7 +113,7 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         }
 
         if (ftDev != null) {
-            synchronized (ftDev) {
+            synchronized (this) {
                 if (ftDev.isOpen()) {
                     ftDev.close();
                 }
@@ -143,7 +121,7 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         }
     }
 
-    public void connect() {
+    private void connect() {
 
         createDeviceList();
 
@@ -151,19 +129,18 @@ public class CalibrateSensorActivity extends ActionBarActivity {
             return;
         }
 
+        //Toast.makeText(this, "Device port " + tmpProtNumber + " is already opened", Toast.LENGTH_LONG).show();
+        int openIndex = 0;
         if (currentIndex != openIndex) {
             if (null == ftDev) {
                 ftDev = ftdid2xx.openByIndex(this, openIndex);
             } else {
-                synchronized (ftDev) {
+                synchronized (this) {
                     ftDev = ftdid2xx.openByIndex(this, openIndex);
                 }
             }
-            uart_configured = false;
-        } else {
-            //Toast.makeText(this, "Device port " + tmpProtNumber + " is already opened", Toast.LENGTH_LONG).show();
-            return;
-        }
+            //uart_configured = false;
+        } else return;
 
         if (ftDev == null) {
             //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG, ftDev == null", Toast.LENGTH_LONG).show();
@@ -179,16 +156,17 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 //                read_thread.start();
 //                bReadThreadGoing = true;
 //            }
-        } else {
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
         }
+        //else {
+        //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
+        //}
 
         SetConfig(baudRate, dataBit, stopBit, parity, flowControl);
 
     }
 
-    public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
+    private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         if (ftDev == null || !ftDev.isOpen()) {
             Log.e("j2xx", "SetConfig: device not open");
             return;
@@ -266,15 +244,13 @@ public class CalibrateSensorActivity extends ActionBarActivity {
                 break;
         }
 
-        // TODO : flow ctrl: XOFF/XOM
-        // TODO : flow ctrl: XOFF/XOM
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
 
-        uart_configured = true;
+        //uart_configured = true;
         //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
     }
 
-    public void SendMessage(String data) {
+    private void SendMessage(String data) {
         if (ftDev == null || !ftDev.isOpen()) {
             Log.e("j2xx", "SendMessage: device not open");
             return;
@@ -333,8 +309,8 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 //        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 //        registerReceiver(mUsbReceiver, filter);
 
-        readData = new byte[readLength];
-        readDataToText = new char[readLength];
+        //readData = new byte[readLength];
+        //readDataToText = new char[readLength];
 
         /* by default it is 9600 */
         baudRate = 9600;
@@ -347,7 +323,7 @@ public class CalibrateSensorActivity extends ActionBarActivity {
 
         flowControl = 0;
 
-        portNumber = 1;
+        //portNumber = 1;
 
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -453,48 +429,48 @@ public class CalibrateSensorActivity extends ActionBarActivity {
         return input.trim().length() > 0;
     }
 
-    void closeKeyboard(EditText input) {
+    private void closeKeyboard(EditText input) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
     }
 
-    private class readThread extends Thread {
-        Handler mHandler;
-
-        readThread(Handler h) {
-            mHandler = h;
-            this.setPriority(Thread.MIN_PRIORITY);
-        }
-
-        @Override
-        public void run() {
-            int i;
-
-            while (bReadThreadGoing) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ignored) {
-                }
-
-                synchronized (ftDev) {
-                    iavailable = ftDev.getQueueStatus();
-                    if (iavailable > 0) {
-
-                        if (iavailable > readLength) {
-                            iavailable = readLength;
-                        }
-
-                        ftDev.read(readData, iavailable);
-                        for (i = 0; i < iavailable; i++) {
-                            readDataToText[i] = (char) readData[i];
-                        }
-                        Message msg = mHandler.obtainMessage();
-                        mHandler.sendMessage(msg);
-                    }
-                }
-            }
-        }
-    }
+//    private class readThread extends Thread {
+//        Handler mHandler;
+//
+//        readThread(Handler h) {
+//            mHandler = h;
+//            this.setPriority(Thread.MIN_PRIORITY);
+//        }
+//
+//        @Override
+//        public void run() {
+//            int i;
+//
+//            while (bReadThreadGoing) {
+//                try {
+//                    Thread.sleep(50);
+//                } catch (InterruptedException ignored) {
+//                }
+//
+//                synchronized (ftDev) {
+//                    int byteCount = ftDev.getQueueStatus();
+//                    if (byteCount > 0) {
+//
+//                        if (byteCount > readLength) {
+//                            byteCount = readLength;
+//                        }
+//
+//                        ftDev.read(readData, byteCount);
+//                        for (i = 0; i < byteCount; i++) {
+//                            readDataToText[i] = (char) readData[i];
+//                        }
+//                        Message msg = mHandler.obtainMessage();
+//                        mHandler.sendMessage(msg);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

@@ -2,8 +2,6 @@ package org.akvo.caddisfly.util;
 
 import junit.framework.TestCase;
 
-import org.akvo.caddisfly.model.TestInfo;
-
 public class JsonUtilsTest extends TestCase {
 
     public void setUp() throws Exception {

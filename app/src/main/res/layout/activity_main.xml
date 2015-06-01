@@ -33,18 +33,6 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/back"
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:visibility="gone"
-            tools:ignore="ButtonStyle" />
-
-        <Button
             android:id="@+id/surveyButton"
             style="@style/button_text"
             android:layout_width="wrap_content"
@@ -76,7 +64,8 @@
             android:textAlignment="textEnd"
             android:textAllCaps="true"
             android:textColor="#eefddd44"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            tools:ignore="UnusedAttribute" />
 
         <com.software.shell.fab.ActionButton
             android:id="@+id/trainingVideoLink"

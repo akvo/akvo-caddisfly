@@ -32,7 +32,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -85,7 +85,7 @@ import java.util.Arrays;
  * {@link CalibrateListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class CalibrateListActivity extends ActionBarActivity
+public class CalibrateListActivity extends AppCompatActivity
         implements CalibrateListFragment.Callbacks {
 
     private final ExploreSpinnerAdapter mTopLevelSpinnerAdapter = new ExploreSpinnerAdapter();
@@ -319,13 +319,13 @@ public class CalibrateListActivity extends ActionBarActivity
         ab.setDisplayUseLogoEnabled(false);
     }
 
-    void closeKeyboard(EditText input) {
+    private void closeKeyboard(EditText input) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
     }
 
-    public void saveCalibration() {
+    private void saveCalibration() {
         final Context context = this;
         final MainApp mainApp = (MainApp) this.getApplicationContext();
 
@@ -419,7 +419,7 @@ public class CalibrateListActivity extends ActionBarActivity
     }
 
 
-    public void loadCalibration(final Handler.Callback callback) {
+    private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
         final MainApp mainApp = (MainApp) this.getApplicationContext();
 
@@ -544,115 +544,6 @@ public class CalibrateListActivity extends ActionBarActivity
         callback.handleMessage(null);
 
     }
-
-//        public void loadCalibration(final Handler.Callback callback) {
-//        final Context context = this;
-//        final MainApp mainApp = (MainApp) this.getApplicationContext();
-//
-//        try {
-//            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-//            builderSingle.setIcon(R.mipmap.ic_launcher);
-//            builderSingle.setTitle(R.string.loadCalibration);
-//
-//            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-//                    android.R.layout.select_dialog_singlechoice);
-//
-//            File external = Environment.getExternalStorageDirectory();
-//            final String folderName = Config.CALIBRATE_FOLDER_NAME;
-//            String path = external.getPath() + folderName;
-//            File folder = new File(path);
-//            if (folder.exists()) {
-//                final File[] listFiles = folder.listFiles();
-//                for (File listFile : listFiles) {
-//                    arrayAdapter.add(listFile.getName());
-//                }
-//
-//                builderSingle.setNegativeButton(R.string.cancel,
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        }
-//                );
-//
-//                builderSingle.setAdapter(arrayAdapter,
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                String fileName = listFiles[which].getName();
-//                                final ArrayList<Integer> swatchList = new ArrayList<>();
-//
-//                                final ArrayList<String> rgbList = FileUtils.loadFromFile(fileName);
-//                                if (rgbList != null) {
-//
-//                                    for (String rgb : rgbList) {
-//                                        swatchList.add(ColorUtils.getColorFromRgb(rgb));
-//                                    }
-//                                    (new AsyncTask<Void, Void, Void>() {
-//                                        @Override
-//                                        protected Void doInBackground(Void... params) {
-//                                            mainApp.saveCalibratedSwatches(mainApp.currentTestInfo.getCode(), swatchList);
-//
-//                                            mainApp.setSwatches(mainApp.currentTestInfo.getCode());
-//
-//                                            SharedPreferences sharedPreferences = PreferenceManager
-//                                                    .getDefaultSharedPreferences(context);
-//                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//                                            for (int i = 0; i < mainApp.currentTestInfo.getRanges().size(); i++) {
-//                                                ColorUtils.autoGenerateColors(mainApp.currentTestInfo, editor);
-//                                            }
-//                                            editor.apply();
-//                                            return null;
-//                                        }
-//
-//                                        @Override
-//                                        protected void onPostExecute(Void result) {
-//                                            super.onPostExecute(result);
-//                                            callback.handleMessage(null);
-//                                        }
-//                                    }).execute();
-//                                }
-//                            }
-//                        }
-//                );
-//
-//                final AlertDialog alert = builderSingle.create();
-//                alert.setOnShowListener(new DialogInterface.OnShowListener() {
-//                    @Override
-//                    public void onShow(DialogInterface dialogInterface) {
-//                        final ListView listView = alert.getListView();
-//                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//                            @Override
-//                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                                final int position = i;
-//
-//                                AlertUtils.askQuestion(context, R.string.delete, R.string.deleteConfirm, new DialogInterface.OnClickListener() {
-//                                    @SuppressWarnings("unchecked")
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                        String fileName = listFiles[position].getName();
-//                                        FileUtils.deleteFile(folderName, fileName);
-//                                        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
-//                                        listAdapter.remove(listAdapter.getItem(position));
-//                                    }
-//                                });
-//                                return true;
-//                            }
-//                        });
-//
-//                    }
-//                });
-//                alert.show();
-//            } else {
-//                AlertUtils.showMessage(context, R.string.notFound, R.string.loadFilesNotAvailable);
-//            }
-//        } catch (ActivityNotFoundException ignored) {
-//        }
-//
-//        callback.handleMessage(null);
-//    }
 
     /**
      * Adapter that provides views for our top-level Action Bar spinner.

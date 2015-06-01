@@ -25,7 +25,6 @@
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
     <string name="start">Start</string>
-    <string name="back">Back</string>
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
     <string name="error">Error</string>
@@ -56,7 +55,6 @@
     <string name="cameraPreview">Check camera view</string>
 
     <!--Calibration Screen-->
-    <string name="calibrateAttachStandardCartridge">Attach a standard solution cartridge for this value and press Calibrate</string>
     <string name="startTestConfirm">Ensure cartridge is attached correctly and press OK</string>
     <string name="errorLoadingTestTypes">Error loading test types. Verify that <xliff:g id="filename">tests.json</xliff:g> file is valid.</string>
 

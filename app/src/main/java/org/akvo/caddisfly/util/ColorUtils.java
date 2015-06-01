@@ -122,7 +122,7 @@ public final class ColorUtils {
             e.printStackTrace();
         }
 
-        return new ColorInfo(commonColor, (int) quality);
+        return new ColorInfo(commonColor);
     }
 
     /**
@@ -247,7 +247,7 @@ public final class ColorUtils {
 
             for (int j = 0; j < steps; j++) {
                 int color = ColorUtils.getGradientColor(startColor, endColor, steps, j);
-                list.add(new Pair(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * increment)), color));
+                list.add(new Pair<>(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * increment)), color));
             }
         }
         return list;

@@ -53,6 +53,7 @@
             android:clickable="false"
             android:focusable="false"
             android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:textIsSelectable="false"
             android:textSize="23sp"
             android:textStyle="bold"

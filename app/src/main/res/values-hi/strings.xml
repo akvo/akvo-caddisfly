@@ -77,11 +77,9 @@
     <string name="startSurvey">"प्रारंभ सर्वेक्षण"</string>
     <string name="backToSurvey">"पीछे सर्वेक्षण के"</string>
     <string name="waterQuality">"जल गुणवत्ता परीक्षण"</string>
-    <string name="calibrateAttachStandardCartridge">"इस मूल्य और प्रेस जांचना के लिए एक मानक समाधान कारतूस अटैच"</string>
     <string name="watchVideo">देखो</string>
     <string name="demonstration">डेमो</string>
     <string name="cameraPreview">कैमरे के दृश्य की जाँच करें</string>
-    <string name="temperature">तापमान</string>
     <string name="selectDilution">का चयन कमजोर पड़ने</string>
     <string name="hundredPercentSampleWater">कोई कमजोर पड़ने</string>
     <string name="fiftyPercentSampleWater">50% पानी के नमूने</string>
@@ -100,7 +98,7 @@
     <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
-    <string name="pleaseWait">Please wait...</string>
+    <string name="pleaseWait">Please wait…</string>
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>

@@ -24,7 +24,6 @@
     <string name="retry">"Refaire"</string>
     <string name="cancel">"Annuler"</string>
     <string name="start">"Début"</string>
-    <string name="back">"Arrière"</string>
     <string name="delete">"Effacer"</string>
     <string name="reset">"Remettre"</string>
     <string name="error">"Erreur"</string>
@@ -55,7 +54,6 @@
     <string name="displaysVersionNumber">"Affiche le numéro de version"</string>
 
     <!--Calibration Screen-->
-    <string name="calibrateAttachStandardCartridge">"Fixez une cartouche de solution standard pour cette valeur et appuyez sur Calibrer"</string>
     <string name="startTestConfirm">"Assurer cartouche est fixée correctement et appuyez sur OK"</string>
     <string name="errorLoadingTestTypes">Types de tests de chargement d\'erreur. Vérifiez que fichier tests.json est valide.</string>
 
@@ -78,7 +76,6 @@
     <string name="deviceConnectSensor">"Connectez EC capteur Akvo"</string>
     <string name="deviceConnecting">"Branchement à un périphérique"</string>
     <string name="deviceConnected">"Périphérique connecté avec succès"</string>
-    <string name="temperature">Température</string>
     <string name="ecValueAt25Celcius">CE %s μS/cm</string>
     <string name="acceptResult">"Accepter Résultat"</string>
 

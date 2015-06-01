@@ -33,7 +33,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -58,13 +58,13 @@ import org.akvo.caddisfly.util.SoundPoolPlayer;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class CameraSensorActivity extends ActionBarActivity
+public class CameraSensorActivity extends AppCompatActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
         MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
-    DilutionFragment mDilutionFragment;
-    int mDilutionLevel = 0;
-    DialogGridError mResultFragment;
+    private DilutionFragment mDilutionFragment;
+    private int mDilutionLevel = 0;
+    private DialogGridError mResultFragment;
     //private TextView mTitleText;
     private TextView mTestTypeTextView;
     private TextView mDilutionTextView;
@@ -348,7 +348,7 @@ public class CameraSensorActivity extends ActionBarActivity
 //        }
     }
 
-    void startTest() {
+    private void startTest() {
         mResults = new ArrayList<>();
 
         //mWaitingForShake = false;

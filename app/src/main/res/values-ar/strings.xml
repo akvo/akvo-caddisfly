@@ -37,7 +37,6 @@
     <string name="waitTillCameraSound">ثم الانتظار للحصول على الصوت في حالة تأهب في حوالي دقيقة واحدة</string>
     <string name="calibrateSummary">"استخدام خليط الألوان القياسية المنصوص عليها في عدة لمعايرة هذا الهاتف"</string>
     <string name="displaysVersionNumber">"يعرض رقم الإصدار"</string>
-    <string name="back">"رجوع"</string>
     <string name="start">"البداية"</string>
     <string name="errorCameraFlashRequired">لم يكن هذا الهاتف فلاش الكاميرا الذي مطلوب من قبل Caddisfly</string>
     <string name="highLevelsFound">تم الكشف عن مستويات عالية من الفلوريد</string>
@@ -77,7 +76,6 @@
     <string name="startSurvey">"مسح البداية"</string>
     <string name="backToSurvey">"العودة الى في خضم"</string>
     <string name="waterQuality">"اختبار جودة المياه"</string>
-    <string name="calibrateAttachStandardCartridge">"إرفاق خرطوشة حل القياسية لهذه القيمة ثم اضغط معايرة"</string>
     <string name="watchVideo">ووتش</string>
     <string name="demonstration">عرض</string>
     <string name="cameraPreview">تحقق من عرض الكاميرا</string>
@@ -100,7 +98,7 @@
     <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
-    <string name="pleaseWait">Please wait...</string>
+    <string name="pleaseWait">Please wait…</string>
     <string name="calibrateColors">Calibrate Colors</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>

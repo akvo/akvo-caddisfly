@@ -26,10 +26,9 @@ import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,20 +44,19 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
-import java.util.ArrayList;
 import java.util.zip.CRC32;
 
-public class SensorActivity extends ActionBarActivity {
+public class SensorActivity extends AppCompatActivity {
 
     public static final int readLength = 512;
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-    private static final int DEFAULT_BAUD_RATE = 9600;
-    private static final int DEFAULT_BUFFER_SIZE = 1028;
+    //private static final int DEFAULT_BAUD_RATE = 9600;
+    //private static final int DEFAULT_BUFFER_SIZE = 1028;
     private static final int REQUEST_DELAY = 4000;
     private static final int INITIAL_DELAY = 1000;
     // original ///////////////////////////////
     private final StringBuilder mReadData = new StringBuilder();
-    public int iavailable = 0;
+    public int byteCount = 0;
     public boolean bReadThreadGoing = false;
     public readThread read_thread;
     Toast debugToast;
@@ -68,7 +66,7 @@ public class SensorActivity extends ActionBarActivity {
     int currentIndex = -1;
     int openIndex = 0;
     /*graphical objects*/
-    ArrayAdapter<CharSequence> portAdapter;
+    //ArrayAdapter<CharSequence> portAdapter;
     /*local variables*/
     int baudRate; /*baud rate*/
     byte stopBit; /*1:1stop bits, 2:2 stop bits*/
@@ -76,7 +74,7 @@ public class SensorActivity extends ActionBarActivity {
     byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
     byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
     int portNumber; /*port number*/
-    ArrayList<CharSequence> portNumberList;
+    //ArrayList<CharSequence> portNumberList;
     byte[] readData;
     char[] readDataToText;
     boolean uart_configured = false;
@@ -109,18 +107,17 @@ public class SensorActivity extends ActionBarActivity {
             }
         }
     };
-    private Context mContext;
 
     private String mResult = "";
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (iavailable > 0) {
-                mResult += String.copyValueOf(readDataToText, 0, iavailable);
+            if (byteCount > 0) {
+                mResult += String.copyValueOf(readDataToText, 0, byteCount);
                 if (mResult.split(",").length > 3) {
                     displayResult(mResult);
                 }
-                //Toast.makeext(mContext, String.copyValueOf(readDataToText, 0, iavailable), Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, String.copyValueOf(readDataToText, 0, byteCount), Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -132,7 +129,7 @@ public class SensorActivity extends ActionBarActivity {
             while (mRunLoop) {
                 try {
                     Thread.sleep(delay);
-                } catch (final Exception e) {
+                } catch (final Exception ignored) {
                 }
 
                 SendMessage();
@@ -145,7 +142,7 @@ public class SensorActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
+        //Context context = this;
 
         try {
             ftdid2xx = D2xxManager.getInstance(this);
@@ -288,7 +285,7 @@ public class SensorActivity extends ActionBarActivity {
         }
 
         if (ftDev != null) {
-            synchronized (ftDev) {
+            synchronized (this) {
                 if (ftDev.isOpen()) {
                     ftDev.close();
                 }
@@ -297,13 +294,13 @@ public class SensorActivity extends ActionBarActivity {
     }
 
     public void connect() {
-        int tmpProtNumber = openIndex + 1;
+        //int tmpProtNumber = openIndex + 1;
 
         if (currentIndex != openIndex) {
             if (null == ftDev) {
                 ftDev = ftdid2xx.openByIndex(this, openIndex);
             } else {
-                synchronized (ftDev) {
+                synchronized (this) {
                     ftDev = ftdid2xx.openByIndex(this, openIndex);
                 }
             }
@@ -327,10 +324,11 @@ public class SensorActivity extends ActionBarActivity {
                 read_thread.start();
                 bReadThreadGoing = true;
             }
-        } else {
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
         }
+        //else {
+        //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
+        //}
     }
 
     public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
@@ -411,8 +409,6 @@ public class SensorActivity extends ActionBarActivity {
                 break;
         }
 
-        // TODO : flow ctrl: XOFF/XOM
-        // TODO : flow ctrl: XOFF/XOM
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
 
         uart_configured = true;
@@ -569,19 +565,19 @@ public class SensorActivity extends ActionBarActivity {
             while (bReadThreadGoing) {
                 try {
                     Thread.sleep(50);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
 
-                synchronized (ftDev) {
-                    iavailable = ftDev.getQueueStatus();
-                    if (iavailable > 0) {
+                synchronized (this) {
+                    byteCount = ftDev.getQueueStatus();
+                    if (byteCount > 0) {
 
-                        if (iavailable > readLength) {
-                            iavailable = readLength;
+                        if (byteCount > readLength) {
+                            byteCount = readLength;
                         }
 
-                        ftDev.read(readData, iavailable);
-                        for (i = 0; i < iavailable; i++) {
+                        ftDev.read(readData, byteCount);
+                        for (i = 0; i < byteCount; i++) {
                             readDataToText[i] = (char) readData[i];
                         }
                         Message msg = mHandler.obtainMessage();

@@ -47,7 +47,7 @@ public class ColorUtilsTest extends TestCase {
         TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", 0);
 
         for (int i = 0; i < 5; i++) {
-            ResultRange resultRange = new ResultRange(((int) (Double.valueOf(i) * 10)) / 10f, Color.TRANSPARENT);
+            ResultRange resultRange = new ResultRange(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);
             testInfo.addRange(resultRange);
         }
 

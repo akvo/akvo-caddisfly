@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 //http://stackoverflow.com/questions/4520216/how-to-add-test-coverage-to-a-private-constructor
-public final class ClassUtils {
+final class ClassUtils {
 
     private ClassUtils() {
     }

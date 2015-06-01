@@ -49,7 +49,7 @@ import java.util.List;
 public class CameraFragment extends DialogFragment {
     private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;
-    public int samplingCount;
+    private int samplingCount;
     private int picturesTaken;
     private boolean mPreviewOnly;
     //private OnFragmentInteractionListener mListener;

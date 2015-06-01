@@ -18,7 +18,7 @@ package org.akvo.caddisfly.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
@@ -33,7 +33,7 @@ import org.akvo.caddisfly.util.ApiUtils;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link CalibrateDetailFragment}.
  */
-public class CalibrateDetailActivity extends ActionBarActivity {
+public class CalibrateDetailActivity extends AppCompatActivity {
 
     //private PowerManager.WakeLock wakeLock;
 

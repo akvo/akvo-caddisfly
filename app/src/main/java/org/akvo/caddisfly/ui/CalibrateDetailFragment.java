@@ -47,7 +47,7 @@ public class CalibrateDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
-    ResultRange mRange;
+    private ResultRange mRange;
     private PowerManager.WakeLock wakeLock;
     //private SoundPoolPlayer sound;
     private TextView mValueTextView;
@@ -129,7 +129,7 @@ public class CalibrateDetailFragment extends Fragment {
         startCalibration();
     }
 
-    public void startCalibration() {
+    private void startCalibration() {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
 
@@ -168,7 +168,7 @@ public class CalibrateDetailFragment extends Fragment {
         }
     }
 
-    void displayInfo() {
+    private void displayInfo() {
 
         final MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
         //mainApp.setSwatches(mainApp.currentTestType);
