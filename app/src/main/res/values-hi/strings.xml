@@ -37,7 +37,6 @@
     <string name="waitTillCameraSound">फिर एक मिनट के बारे में चेतावनी ध्वनि के लिए इंतजार</string>
     <string name="calibrateSummary">"इस फोन को ठीक करना किट में दिए गए मानक रंग के मिश्रण का प्रयोग करें"</string>
     <string name="displaysVersionNumber">"संस्करण संख्या प्रदर्शित करता है"</string>
-    <string name="back">"वापस जाएं"</string>
     <string name="start">"शुरू करें"</string>
     <string name="errorCameraFlashRequired">यह फोन Caddisfly के लिए आवश्यक है, जो एक कैमरा फ्लैश नहीं है</string>
     <string name="highLevelsFound">फ्लोराइड के उच्च स्तर पाया गया है</string>
@@ -62,7 +61,6 @@
     <string name="cancel">"रद्द करें "</string>
     <string name="calibrate">"जांचना"</string>
     <string name="analyzingWait">"विश्लेषण …"</string>
-    <string name="startTestConfirm">"कारतूस सही ढंग से जुड़ा हुआ है और प्रेस ठीक सुनिश्चित करें"</string>
     <string name="updateApp">"Caddisfly अद्यतन"</string>
     <string name="updateRequest">"एक अद्यतन संस्करण उपलब्ध है, आप अब अद्यतन करना चाहते हैं?"</string>
     <string name="updateCheck">"चेक अद्यतन"</string>
@@ -109,6 +107,21 @@
     <string name="testSensor">Test EC Sensor</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
+    <string name="ecSensorCalibration">EC Sensor Calibration</string>
+    <string name="prepareTwoSolutions">1. Prepare two solutions. One with Low EC and another with high EC.</string>
+    <string name="measureTheseSolutions">2. Measure these solutions with a professional grade EC Meter and note down their values.</string>
+    <string name="connectEcSensor">3. Connect EC Sensor to phone and press start.</string>
+    <string name="lowEcSolution">Step 1: Low EC Solution</string>
+    <string name="suspendEcSensorInLow">Suspend EC Sensor in the LOW EC solution</string>
+    <string name="enterItsMeasuredLow">Enter its pre-measured LOW EC value below</string>
+    <string name="highEcSolution">Step 2: High EC Solution</string>
+    <string name="suspendEcSensorInHigh">Suspend EC Sensor in the HIGH EC solution</string>
+    <string name="enterItsMeasuredHigh">Enter its pre-measured HIGH EC value below</string>
+    <string name="fillTheTestingChamber">Fill the testing chamber with the sample water and insert a reagent capsule</string>
+    <string name="closeTheTestingChamber">Close the testing chamber lid and attach it to the phone</string>
+    <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
+    <string name="electricalConductivity">Electrical Conductivity</string>
+    <string name="ecUnit">μS/cm</string>
 
 
 </resources>

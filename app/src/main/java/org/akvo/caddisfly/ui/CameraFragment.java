@@ -46,6 +46,7 @@ import java.util.List;
  * Use the {@link org.akvo.caddisfly.ui.CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("deprecation")
 public class CameraFragment extends DialogFragment {
     private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;

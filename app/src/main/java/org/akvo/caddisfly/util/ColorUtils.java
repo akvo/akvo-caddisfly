@@ -72,7 +72,7 @@ public final class ColorUtils {
         int commonColor = -1;
         int totalPixels = 0;
         int counter;
-        double quality = 0;
+        //double quality = 0;
         int colorsFound;
 
         try {
@@ -114,9 +114,9 @@ public final class ColorUtils {
             }
 
             m.clear();
-            double quality1 = ((double) goodPixelCount / totalPixels) * 100d;
-            double quality2 = ((double) (colorsFound - goodColors) / colorsFound) * 100d;
-            quality = Math.min(quality1, (100 - quality2));
+            //double quality1 = ((double) goodPixelCount / totalPixels) * 100d;
+            //double quality2 = ((double) (colorsFound - goodColors) / colorsFound) * 100d;
+            //quality = Math.min(quality1, (100 - quality2));
 
         } catch (Exception e) {
             e.printStackTrace();

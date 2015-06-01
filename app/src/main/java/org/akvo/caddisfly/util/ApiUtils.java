@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
 
+@SuppressWarnings("deprecation")
 public final class ApiUtils {
 
     private ApiUtils() {

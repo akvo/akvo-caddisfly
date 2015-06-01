@@ -87,15 +87,6 @@
             android:parentActivityName=".ui.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.CalibrateDetailActivity"
-            android:label="@string/calibrate"
-            android:parentActivityName=".ui.CalibrateListActivity"
-            android:screenOrientation="nosensor">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.CalibrateListActivity" />
-        </activity>
-        <activity
             android:name=".ui.SwatchActivity"
             android:label="@string/swatches"
             android:screenOrientation="nosensor">

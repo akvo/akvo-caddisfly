@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Fill the testing chamber with the sample water and insert a reagent capsule"
+                android:text="@string/fillTheTestingChamber"
                 android:textSize="18sp" />
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Close the testing chamber lid and attach it to the phone"
+                android:text="@string/closeTheTestingChamber"
                 android:textSize="18sp" />
 
             <TextView
@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="When ready press start button below to begin the analysis"
+                android:text="@string/whenReadyPressStart"
                 android:textSize="18sp" />
 
             <Button

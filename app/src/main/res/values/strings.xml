@@ -55,7 +55,6 @@
     <string name="cameraPreview">Check camera view</string>
 
     <!--Calibration Screen-->
-    <string name="startTestConfirm">Ensure cartridge is attached correctly and press OK</string>
     <string name="errorLoadingTestTypes">Error loading test types. Verify that <xliff:g id="filename">tests.json</xliff:g> file is valid.</string>
 
     <!--Test Progress Screen-->
@@ -77,7 +76,6 @@
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
-    <string name="temperature">Temperature</string>
     <string name="ecValueAt25Celcius">EC %s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
@@ -129,4 +127,19 @@
     <string name="testSensor">Test EC Sensor</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
+    <string name="ecSensorCalibration">EC Sensor Calibration</string>
+    <string name="prepareTwoSolutions">1. Prepare two solutions. One with Low EC and another with high EC.</string>
+    <string name="measureTheseSolutions">2. Measure these solutions with a professional grade EC Meter and note down their values.</string>
+    <string name="connectEcSensor">3. Connect EC Sensor to phone and press start.</string>
+    <string name="lowEcSolution">Step 1: Low EC Solution</string>
+    <string name="suspendEcSensorInLow">Suspend EC Sensor in the LOW EC solution</string>
+    <string name="enterItsMeasuredLow">Enter its pre-measured LOW EC value below</string>
+    <string name="highEcSolution">Step 2: High EC Solution</string>
+    <string name="suspendEcSensorInHigh">Suspend EC Sensor in the HIGH EC solution</string>
+    <string name="enterItsMeasuredHigh">Enter its pre-measured HIGH EC value below</string>
+    <string name="fillTheTestingChamber">Fill the testing chamber with the sample water and insert a reagent capsule</string>
+    <string name="closeTheTestingChamber">Close the testing chamber lid and attach it to the phone</string>
+    <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
+    <string name="electricalConductivity">Electrical Conductivity</string>
+    <string name="ecUnit">μS/cm</string>
 </resources>

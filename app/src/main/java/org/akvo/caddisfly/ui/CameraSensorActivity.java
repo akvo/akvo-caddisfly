@@ -58,6 +58,7 @@ import org.akvo.caddisfly.util.SoundPoolPlayer;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation")
 public class CameraSensorActivity extends AppCompatActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
         MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
@@ -339,7 +340,7 @@ public class CameraSensorActivity extends AppCompatActivity
         //mColors.add(color);
         mResults.add(resultInfo);
         //mBitmaps.add(croppedBitmap);
-        boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+        //boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
 //        if (mResults.size() > 3 && !isCalibration) {
 //            if (DataHelper.getAverageResult(mResults) == -1) {
@@ -413,7 +414,7 @@ public class CameraSensorActivity extends AppCompatActivity
                                 if (isCalibration && color != 0) {
                                     sound.playShortResource(R.raw.done);
                                     if (developerMode) {
-                                        ShowVerboseError(false, result, color, isCalibration);
+                                        ShowVerboseError(false, result, color, true);
                                     } else {
                                         finish();
                                     }
@@ -429,7 +430,7 @@ public class CameraSensorActivity extends AppCompatActivity
 
                                         if (developerMode) {
                                             sound.playShortResource(R.raw.done);
-                                            ShowVerboseError(false, result, color, isCalibration);
+                                            ShowVerboseError(false, result, color, false);
                                         } else {
                                             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 

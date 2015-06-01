@@ -30,7 +30,7 @@ import org.akvo.caddisfly.model.ResultRange;
  * A list fragment representing a list of Calibrate items. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link CalibrateDetailFragment}.
+ * currently being viewed.
  * <p/>
  * Activities containing this fragment MUST implement the {@link org.akvo.caddisfly.ui.CalibrateListFragment.Callbacks}
  * interface.

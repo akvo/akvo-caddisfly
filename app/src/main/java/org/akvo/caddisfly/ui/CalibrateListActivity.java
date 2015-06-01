@@ -70,16 +70,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * An activity representing a list of Calibrate items. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link CalibrateDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- * <p/>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link CalibrateListFragment} and the item details
- * (if present) is a {@link CalibrateDetailFragment}.
+ * An activity representing a list of Calibrate items.
  * <p/>
  * This activity also implements the required
  * {@link CalibrateListFragment.Callbacks} interface
@@ -90,11 +81,6 @@ public class CalibrateListActivity extends AppCompatActivity
 
     private final ExploreSpinnerAdapter mTopLevelSpinnerAdapter = new ExploreSpinnerAdapter();
     private final int REQUEST_CALIBRATE = 100;
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
     private int mPosition;
 
     @Override
@@ -103,9 +89,6 @@ public class CalibrateListActivity extends AppCompatActivity
         if (developerMode) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
-//        } else {
-//            getMenuInflater().inflate(R.menu.menu_calibrate, menu);
-//        }
         return true;
     }
 
@@ -157,7 +140,11 @@ public class CalibrateListActivity extends AppCompatActivity
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            /*
+      Whether or not the activity is in two-pane mode, i.e. running on a tablet
+      device.
+     */
+            //boolean mTwoPane = true;
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
@@ -187,19 +174,19 @@ public class CalibrateListActivity extends AppCompatActivity
     @Override
     public void onItemSelected(int id) {
         mPosition = id;
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putInt(CalibrateDetailFragment.ARG_ITEM_ID, id);
-            CalibrateDetailFragment fragment = new CalibrateDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.calibrate_detail_container, fragment)
-                    .commit();
-
-        } else {
+//        if (mTwoPane) {
+//            // In two-pane mode, show the detail view in this activity by
+//            // adding or replacing the detail fragment using a
+//            // fragment transaction.
+//            Bundle arguments = new Bundle();
+//            arguments.putInt(CalibrateDetailFragment.ARG_ITEM_ID, id);
+//            CalibrateDetailFragment fragment = new CalibrateDetailFragment();
+//            fragment.setArguments(arguments);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.calibrate_detail_container, fragment)
+//                    .commit();
+//
+//        } else {
             //final MainApp mainApp = ((MainApp) getApplicationContext());
             //mRange = mainApp.currentTestInfo.getRange(id);
             final Intent intent = new Intent();
@@ -214,7 +201,7 @@ public class CalibrateListActivity extends AppCompatActivity
 //            Intent detailIntent = new Intent(this, CalibrateDetailActivity.class);
 //            detailIntent.putExtra(CalibrateDetailFragment.ARG_ITEM_ID, id);
 //            startActivityForResult(detailIntent, REQUEST_CALIBRATE);
-        }
+        // }
     }
 
     @Override

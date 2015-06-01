@@ -15,8 +15,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
@@ -47,7 +45,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        ArrayList<ResultRange> arrayList = new ArrayList<>();
+        //ArrayList<ResultRange> arrayList = new ArrayList<>();
         TestInfo testInfo = new TestInfo(null, "" , "" , 0);
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
         assertEquals(-1.0, bundle.getDouble("resultValue"));
