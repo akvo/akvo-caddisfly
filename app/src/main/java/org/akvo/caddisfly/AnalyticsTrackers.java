@@ -18,6 +18,7 @@ import java.util.Map;
  * TODO: Call {@link #initialize(Context)} from an entry point in your app
  * before using this!
  */
+@SuppressWarnings("unused")
 public final class AnalyticsTrackers {
 
     private static AnalyticsTrackers sInstance;

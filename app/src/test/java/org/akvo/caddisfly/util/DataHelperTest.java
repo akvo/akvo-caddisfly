@@ -8,6 +8,7 @@ import org.akvo.caddisfly.model.Result;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class DataHelperTest extends TestCase {
 
     public void setUp() throws Exception {

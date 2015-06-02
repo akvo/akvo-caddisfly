@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.Calendar;
 
+@SuppressWarnings("unused")
 public class DateUtilsTest extends TestCase {
 
     public void setUp() throws Exception {

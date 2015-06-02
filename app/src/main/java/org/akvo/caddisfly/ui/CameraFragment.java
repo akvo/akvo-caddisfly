@@ -73,7 +73,7 @@ public class CameraFragment extends DialogFragment {
      * @param previewOnly if true will display preview only, otherwise start taking pictures
      * @return A new instance of fragment CameraFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    @SuppressWarnings("SameParameterValue")
     public static CameraFragment newInstance(boolean previewOnly) {
         CameraFragment fragment = new CameraFragment();
         Bundle args = new Bundle();

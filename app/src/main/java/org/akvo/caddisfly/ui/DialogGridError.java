@@ -21,21 +21,16 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.util.ColorUtils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DialogGridError extends DialogFragment {
 
-    private final DecimalFormat doubleFormat = new DecimalFormat("0.00");
     //ArrayList<Integer> mColors;
-    ArrayList<Result> mResults;
-    //double[] mResults;
-    boolean mAllowRetry;
-    boolean mIsCalibration;
+    private ArrayList<Result> mResults;
+    private boolean mIsCalibration;
 
     public DialogGridError() {
         // Required empty public constructor
@@ -56,12 +51,6 @@ public class DialogGridError extends DialogFragment {
         return fragment;
     }
 
-    public static double[] convertDoubles(List<Double> doubles) {
-        double[] ret = new double[doubles.size()];
-        for (int i = 0; i < ret.length; i++) ret[i] = doubles.get(i);
-        return ret;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,7 +62,7 @@ public class DialogGridError extends DialogFragment {
 
         //mColors = getArguments().getIntegerArrayList("colors");
         //mResults = getArguments().getDoubleArray("results");
-        mAllowRetry = getArguments().getBoolean("retry");
+        boolean allowRetry = getArguments().getBoolean("retry");
         int mColor = getArguments().getInt("color");
 
         mIsCalibration = getArguments().getBoolean("calibration");
@@ -82,7 +71,7 @@ public class DialogGridError extends DialogFragment {
         Button retryButton = (Button) view.findViewById(R.id.retryButton);
         Button okButton = (Button) view.findViewById(R.id.okButton);
 
-        if (mAllowRetry) {
+        if (allowRetry) {
             getDialog().setTitle(R.string.error);
             cancelButton.setVisibility(View.VISIBLE);
             retryButton.setVisibility(View.VISIBLE);
@@ -135,7 +124,7 @@ public class DialogGridError extends DialogFragment {
         void onFinishErrorListDialog(boolean retry, boolean cancelled, boolean isCalibration);
     }
 
-    public class ImageAdapter extends BaseAdapter {
+    private class ImageAdapter extends BaseAdapter {
         public int getCount() {
             return mResults.size();
         }
@@ -195,7 +184,7 @@ public class DialogGridError extends DialogFragment {
 
     public class ResultsAdapter extends BaseAdapter {
 
-        ArrayList<Pair<String, Double>> mResults;
+        final ArrayList<Pair<String, Double>> mResults;
 
         public ResultsAdapter(ArrayList<Pair<String, Double>> results) {
             mResults = results;

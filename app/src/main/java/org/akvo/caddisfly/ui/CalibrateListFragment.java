@@ -46,7 +46,7 @@ public class CalibrateListFragment extends ListFragment {
      * A dummy implementation of the {@link org.akvo.caddisfly.ui.CalibrateListFragment.Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
      */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
+    private static final Callbacks sDummyCallbacks = new Callbacks() {
         @Override
         public void onItemSelected(int id) {
         }
@@ -136,6 +136,7 @@ public class CalibrateListFragment extends ListFragment {
      * Turns on activate-on-click mode. When this mode is on, list items will be
      * given the 'activated' state when touched.
      */
+    @SuppressWarnings("SameParameterValue")
     public void setActivateOnItemClick(boolean activateOnItemClick) {
         // When setting CHOICE_MODE_SINGLE, ListView will automatically
         // give items the 'activated' state when touched.

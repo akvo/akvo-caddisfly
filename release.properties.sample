@@ -1,4 +1,4 @@
 keyStore=c:/projects/path/to/key/store/file
-keyStorePassword=mysecretpassword
+keyStorePassword=mySecretPassword
 keyAlias=myapp
-keyAliasPassword=mysecretpassword
+keyAliasPassword=mySecretPassword

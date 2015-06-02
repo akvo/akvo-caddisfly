@@ -11,6 +11,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import java.util.Hashtable;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ColorUtilsTest extends TestCase {
 
     public void setUp() throws Exception {

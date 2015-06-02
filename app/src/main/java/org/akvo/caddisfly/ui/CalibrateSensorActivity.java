@@ -37,7 +37,7 @@ public class CalibrateSensorActivity extends AppCompatActivity {
     //ArrayList<CharSequence> portNumberList;
     //private boolean bReadThreadGoing = false;
 
-    private D2xxManager ftdid2xx;
+    private D2xxManager ftManager;
     private FT_Device ftDev = null;
     private int DevCount = -1;
     private int currentIndex = -1;
@@ -50,7 +50,6 @@ public class CalibrateSensorActivity extends AppCompatActivity {
     //private int portNumber; /*port number*/
 //    private byte[] readData;
 //    private char[] readDataToText;
-    //private boolean uart_configured;
     //private String mEc25Value = "";
     //private String mTemperature = "";
     private Context mContext;
@@ -91,7 +90,7 @@ public class CalibrateSensorActivity extends AppCompatActivity {
 //    }
 
     private void createDeviceList() {
-        int tempDevCount = ftdid2xx.createDeviceInfoList(this);
+        int tempDevCount = ftManager.createDeviceInfoList(this);
         if (tempDevCount > 0) {
             if (DevCount != tempDevCount) {
                 DevCount = tempDevCount;
@@ -129,27 +128,23 @@ public class CalibrateSensorActivity extends AppCompatActivity {
             return;
         }
 
-        //Toast.makeText(this, "Device port " + tmpProtNumber + " is already opened", Toast.LENGTH_LONG).show();
         int openIndex = 0;
         if (currentIndex != openIndex) {
             if (null == ftDev) {
-                ftDev = ftdid2xx.openByIndex(this, openIndex);
+                ftDev = ftManager.openByIndex(this, openIndex);
             } else {
                 synchronized (this) {
-                    ftDev = ftdid2xx.openByIndex(this, openIndex);
+                    ftDev = ftManager.openByIndex(this, openIndex);
                 }
             }
-            //uart_configured = false;
         } else return;
 
         if (ftDev == null) {
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG, ftDev == null", Toast.LENGTH_LONG).show();
             return;
         }
 
         if (ftDev.isOpen()) {
             currentIndex = openIndex;
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") OK", Toast.LENGTH_SHORT).show();
 
 //            if (!bReadThreadGoing) {
 //                read_thread = new readThread(handler);
@@ -158,7 +153,6 @@ public class CalibrateSensorActivity extends AppCompatActivity {
 //            }
         }
         //else {
-        //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
         //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
         //}
 
@@ -173,7 +167,7 @@ public class CalibrateSensorActivity extends AppCompatActivity {
         }
 
         // configure our port
-        // reset to UART mode for 232 devices
+        // reset to mode for 232 devices
         ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
 
         ftDev.setBaudRate(baud);
@@ -246,7 +240,6 @@ public class CalibrateSensorActivity extends AppCompatActivity {
 
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
 
-        //uart_configured = true;
         //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
     }
 
@@ -288,7 +281,7 @@ public class CalibrateSensorActivity extends AppCompatActivity {
         mContext = this;
 
         try {
-            ftdid2xx = D2xxManager.getInstance(this);
+            ftManager = D2xxManager.getInstance(this);
         } catch (D2xxManager.D2xxException ex) {
             ex.printStackTrace();
         }

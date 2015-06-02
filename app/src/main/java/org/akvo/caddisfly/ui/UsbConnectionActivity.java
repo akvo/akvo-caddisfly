@@ -60,8 +60,10 @@ public class UsbConnectionActivity extends AppCompatActivity {
 
         ApiUtils.lockScreenOrientation(this);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        }
 
         mConnectedTextView = (TextView) findViewById(R.id.connectedTextView);
         mProgressLayout = (LinearLayout) findViewById(R.id.progressLayout);

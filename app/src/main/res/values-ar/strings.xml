@@ -14,7 +14,7 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--java-->
     <string name="errorTestFailed">"اللون حل خارج النطاق. تحقق من وضع خرطوشة."</string>
@@ -86,8 +86,8 @@
     <string name="enableUserMode">Enable User Mode</string>
     <string name="developerModeEnabled">Developer mode enabled</string>
     <string name="developerModeDisabled">Developer mode disabled</string>
-    <string name="tryWith50PercentSample">Try again with a dilution of 50% sample water</string>
-    <string name="tryWith25PercentSample">Try again with a dilution of 25% sample water</string>
+    <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 50% sample water</string>
+    <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 25% sample water</string>
     <string name="general">General</string>
     <string name="other">Other</string>
     <string name="developer">Developer</string>

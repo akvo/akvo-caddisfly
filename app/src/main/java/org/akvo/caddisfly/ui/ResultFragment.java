@@ -53,13 +53,13 @@ public class ResultFragment extends DialogFragment {
         TextView unitTextView = (TextView) view.findViewById(R.id.ppmText);
         Button button = (Button) view.findViewById(R.id.endSurveyButton);
 
-        final Bundle bundle = getArguments().getBundle("message");
+        //final Bundle bundle = getArguments().getBundle("message");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ResultDialogListener listener = (ResultDialogListener) getActivity();
-                listener.onFinishDialog(bundle);
+                listener.onSuccessFinishDialog();
 
             }
         });
@@ -97,6 +97,6 @@ public class ResultFragment extends DialogFragment {
     }
 
     public interface ResultDialogListener {
-        void onFinishDialog(Bundle bundle);
+        void onSuccessFinishDialog();
     }
 }

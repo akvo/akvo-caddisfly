@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
-    TextView mWatchTextView;
-    TextView mDemoTextView;
-    Boolean external = false;
-    private WeakRefHandler handler = new WeakRefHandler(this);
+    private final WeakRefHandler handler = new WeakRefHandler(this);
+    private TextView mWatchTextView;
+    private TextView mDemoTextView;
+    private Boolean external = false;
     private boolean mShouldFinish = false;
 
     @Override
@@ -78,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar currentDate = Calendar.getInstance();
         if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-            checkUpdate(true);
+            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, MainApp.getVersion(this));
+            updateCheckTask.execute();
+
         }
 
         final Context context = this;
@@ -99,20 +101,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        }
 
         mWatchTextView = (TextView) findViewById(R.id.watchTextView);
         mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
-    }
-
-    /**
-     * @param background true: check for update silently, false: show messages to user
-     */
-    void checkUpdate(boolean background) {
-        UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, background, MainApp.getVersion(this));
-        updateCheckTask.execute();
     }
 
     @Override
@@ -152,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void startSurvey() {
+    private void startSurvey() {
         Intent LaunchIntent = getPackageManager()
                 .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
         if (LaunchIntent == null) {
@@ -263,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void startTest() {
+    private void startTest() {
         Context context = this;
         MainApp mainApp = (MainApp) context.getApplicationContext();
         if (mainApp.currentTestInfo.getType() == 0) {
@@ -334,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class WeakRefHandler extends Handler {
-        private WeakReference<Activity> ref;
+        private final WeakReference<Activity> ref;
 
         public WeakRefHandler(Activity ref) {
             this.ref = new WeakReference<>(ref);

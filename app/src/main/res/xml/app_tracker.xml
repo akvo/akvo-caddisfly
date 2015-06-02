@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- End current session if app sleeps for a period of time -->
-    <integer name="ga_sessionTimeout">300</integer>
+    <integer
+        name="ga_sessionTimeout"
+        tools:ignore="UnusedResources">300
+    </integer>
 
 
     <!-- Enable automatic Activity measurement -->
-    <bool name="ga_autoActivityTracking">true</bool>
+    <bool
+        name="ga_autoActivityTracking"
+        tools:ignore="UnusedResources">true
+    </bool>
 
     <!--  The property id associated with this analytics tracker -->
-    <string name="ga_trackingId">UA-63602533-1</string>
+    <string
+        name="ga_trackingId"
+        tools:ignore="UnusedResources">UA-63602533-1
+    </string>
 
     <!--
       See Project Structure -> Analytics -> Google Analytics -> Learn More

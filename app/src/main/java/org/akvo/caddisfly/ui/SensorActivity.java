@@ -44,40 +44,38 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.zip.CRC32;
 
 public class SensorActivity extends AppCompatActivity {
 
-    public static final int readLength = 512;
+    private static final int readLength = 512;
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-    //private static final int DEFAULT_BAUD_RATE = 9600;
+    private static final int DEFAULT_BAUD_RATE = 9600;
     //private static final int DEFAULT_BUFFER_SIZE = 1028;
     private static final int REQUEST_DELAY = 4000;
     private static final int INITIAL_DELAY = 1000;
     // original ///////////////////////////////
     private final StringBuilder mReadData = new StringBuilder();
-    public int byteCount = 0;
-    public boolean bReadThreadGoing = false;
-    public readThread read_thread;
-    Toast debugToast;
-    D2xxManager ftdid2xx;
-    FT_Device ftDev = null;
-    int DevCount = -1;
-    int currentIndex = -1;
-    int openIndex = 0;
+    private final WeakRefHandler handler = new WeakRefHandler(this);
+    private int byteCount = 0;
+    private boolean bReadThreadGoing = false;
+    private Toast debugToast;
+    private D2xxManager ftManager;
+    private FT_Device ftDev = null;
+    private int DevCount = -1;
+    private int currentIndex = -1;
     /*graphical objects*/
     //ArrayAdapter<CharSequence> portAdapter;
     /*local variables*/
-    int baudRate; /*baud rate*/
-    byte stopBit; /*1:1stop bits, 2:2 stop bits*/
-    byte dataBit; /*8:8bit, 7: 7bit*/
-    byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
-    byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
-    int portNumber; /*port number*/
+    private byte stopBit; /*1:1stop bits, 2:2 stop bits*/
+    private byte dataBit; /*8:8bit, 7: 7bit*/
+    private byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
+    private byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
+    //private int portNumber; /*port number*/
     //ArrayList<CharSequence> portNumberList;
-    byte[] readData;
-    char[] readDataToText;
-    boolean uart_configured = false;
+    private byte[] readData;
+    private char[] readDataToText;
     private String mEc25Value = "";
     private String mTemperature = "";
     private TextView mResultTextView;
@@ -107,20 +105,7 @@ public class SensorActivity extends AppCompatActivity {
             }
         }
     };
-
     private String mResult = "";
-    final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (byteCount > 0) {
-                mResult += String.copyValueOf(readDataToText, 0, byteCount);
-                if (mResult.split(",").length > 3) {
-                    displayResult(mResult);
-                }
-                //Toast.makeText(mContext, String.copyValueOf(readDataToText, 0, byteCount), Toast.LENGTH_LONG).show();
-            }
-        }
-    };
     private int delay = INITIAL_DELAY;
     private boolean mRunLoop;
     private final Runnable mCommunicate = new Runnable() {
@@ -142,10 +127,8 @@ public class SensorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Context context = this;
-
         try {
-            ftdid2xx = D2xxManager.getInstance(this);
+            ftManager = D2xxManager.getInstance(this);
         } catch (D2xxManager.D2xxException ex) {
             ex.printStackTrace();
         }
@@ -154,8 +137,10 @@ public class SensorActivity extends AppCompatActivity {
 
         ApiUtils.lockScreenOrientation(this);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        }
 
         mResultTextView = (TextView) findViewById(R.id.resultTextView);
         mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
@@ -215,19 +200,10 @@ public class SensorActivity extends AppCompatActivity {
         readData = new byte[readLength];
         readDataToText = new char[readLength];
 
-        /* by default it is 9600 */
-        baudRate = 9600;
-
         stopBit = 1;
-
         dataBit = 8;
-
         parity = 0;
-
         flowControl = 0;
-
-        portNumber = 1;
-
     }
 
     @Override
@@ -249,18 +225,17 @@ public class SensorActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
-    public void notifyUSBDeviceAttach() {
+    private void notifyUSBDeviceAttach() {
         createDeviceList();
     }
 
-    public void notifyUSBDeviceDetach() {
+    private void notifyUSBDeviceDetach() {
         disconnect();
         displayNotConnectedView();
     }
 
-    public void createDeviceList() {
-        int tempDevCount = ftdid2xx.createDeviceInfoList(this);
+    private void createDeviceList() {
+        int tempDevCount = ftManager.createDeviceInfoList(this);
         if (tempDevCount > 0) {
             displayNotConnectedView();
             if (DevCount != tempDevCount) {
@@ -274,7 +249,7 @@ public class SensorActivity extends AppCompatActivity {
         }
     }
 
-    public void disconnect() {
+    private void disconnect() {
         DevCount = -1;
         currentIndex = -1;
         bReadThreadGoing = false;
@@ -293,52 +268,49 @@ public class SensorActivity extends AppCompatActivity {
         }
     }
 
-    public void connect() {
-        //int tmpProtNumber = openIndex + 1;
+    private void connect() {
+        //int tmpNumber = openIndex + 1;
 
+        int openIndex = 0;
         if (currentIndex != openIndex) {
             if (null == ftDev) {
-                ftDev = ftdid2xx.openByIndex(this, openIndex);
+                ftDev = ftManager.openByIndex(this, openIndex);
             } else {
                 synchronized (this) {
-                    ftDev = ftdid2xx.openByIndex(this, openIndex);
+                    ftDev = ftManager.openByIndex(this, openIndex);
                 }
             }
-            uart_configured = false;
         } else {
-            //Toast.makeText(this, "Device port " + tmpProtNumber + " is already opened", Toast.LENGTH_LONG).show();
             return;
         }
 
         if (ftDev == null) {
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG, ftDev == null", Toast.LENGTH_LONG).show();
             return;
         }
 
         if (ftDev.isOpen()) {
             currentIndex = openIndex;
-            //Toast.makeText(this, "open device port(" + tmpProtNumber + ") OK", Toast.LENGTH_SHORT).show();
 
             if (!bReadThreadGoing) {
-                read_thread = new readThread(handler);
+                readThread read_thread = new readThread(handler);
                 read_thread.start();
                 bReadThreadGoing = true;
             }
         }
         //else {
-        //Toast.makeText(this, "open device port(" + tmpProtNumber + ") NG", Toast.LENGTH_LONG).show();
         //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
         //}
     }
 
-    public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
+    @SuppressWarnings("SameParameterValue")
+    private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         if (ftDev == null || !ftDev.isOpen()) {
             Log.e("j2xx", "SetConfig: device not open");
             return;
         }
 
         // configure our port
-        // reset to UART mode for 232 devices
+        // reset mode for 232 devices
         ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
 
         ftDev.setBaudRate(baud);
@@ -411,11 +383,10 @@ public class SensorActivity extends AppCompatActivity {
 
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
 
-        uart_configured = true;
         //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
     }
 
-    public void SendMessage() {
+    private void SendMessage() {
         if (ftDev == null || !ftDev.isOpen()) {
             Log.e("j2xx", "SendMessage: device not open");
             return;
@@ -442,7 +413,7 @@ public class SensorActivity extends AppCompatActivity {
         createDeviceList();
         if (DevCount > 0) {
             connect();
-            SetConfig(baudRate, dataBit, stopBit, parity, flowControl);
+            SetConfig(DEFAULT_BAUD_RATE, dataBit, stopBit, parity, flowControl);
         }
         mRunLoop = true;
         new Thread(mCommunicate).start();
@@ -550,8 +521,27 @@ public class SensorActivity extends AppCompatActivity {
 
     }
 
+    private static class WeakRefHandler extends Handler {
+        private final WeakReference<SensorActivity> ref;
+
+        public WeakRefHandler(SensorActivity ref) {
+            this.ref = new WeakReference<>(ref);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            SensorActivity f = ref.get();
+            if (f.byteCount > 0) {
+                f.mResult += String.copyValueOf(f.readDataToText, 0, f.byteCount);
+                if (f.mResult.split(",").length > 3) {
+                    f.displayResult(f.mResult);
+                }
+            }
+        }
+    }
+
     private class readThread extends Thread {
-        Handler mHandler;
+        final Handler mHandler;
 
         readThread(Handler h) {
             mHandler = h;

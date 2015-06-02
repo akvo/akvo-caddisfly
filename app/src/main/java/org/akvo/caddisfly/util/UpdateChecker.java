@@ -114,7 +114,7 @@ class UpdateChecker {
      * @return The version code if successful, -1 if not
      * @since API 1
      */
-    int getVersionCode() {
+    private int getVersionCode() {
         int code;
         try {
             code = mContext.getPackageManager()
@@ -165,7 +165,7 @@ class UpdateChecker {
      * @since API 2
      */
     @SuppressLint("ShowToast")
-    Toast makeToastFromString(String text) {
+    private Toast makeToastFromString(String text) {
         return Toast.makeText(mContext, text, Toast.LENGTH_SHORT);
     }
 
@@ -178,7 +178,7 @@ class UpdateChecker {
      */
 
     //http://developer.android.com/reference/java/net/URLConnection.html#setConnectTimeout(int)
-    String readFile(String url) {
+    private String readFile(String url) {
         String result;
         InputStream inputStream;
         try {

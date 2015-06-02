@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 public class Result {
     private final double mValue;
-    private int mColor;
-    private Bitmap mBitmap;
-    private ArrayList<Pair<String, Double>> mResults;
+    private final int mColor;
+    private final Bitmap mBitmap;
+    private final ArrayList<Pair<String, Double>> mResults;
 
     public Result(double value, int color, Bitmap bitmap, ArrayList<Pair<String, Double>> results) {
         mValue = value;

@@ -67,13 +67,13 @@ public final class ColorUtils {
 
     private static ColorInfo getColorFromBitmap(Bitmap bitmap, int sampleLength) {
         int highestCount = 0;
-        int goodPixelCount = 0;
+        //int goodPixelCount = 0;
 
         int commonColor = -1;
-        int totalPixels = 0;
+        //int totalPixels = 0;
         int counter;
         //double quality = 0;
-        int colorsFound;
+        //int colorsFound;
 
         try {
 
@@ -87,7 +87,7 @@ public final class ColorUtils {
                     int[] rgbArr = ColorUtils.getRGB(rgb);
 
                     if (ColorUtils.isNotGray(rgbArr)) {
-                        totalPixels++;
+                        //totalPixels++;
 
                         counter = m.get(rgb);
                         counter++;
@@ -101,17 +101,17 @@ public final class ColorUtils {
                 }
             }
 
-            colorsFound = m.size();
-            int goodColors = 0;
+//            colorsFound = m.size();
+            //int goodColors = 0;
 
-            for (int i = 0; i < colorsFound; i++) {
-                double distance = getDistance(commonColor, m.keyAt(i));
-
-                if (distance < 10) {
-                    goodColors++;
-                    goodPixelCount += m.valueAt(i);
-                }
-            }
+//            for (int i = 0; i < colorsFound; i++) {
+//                double distance = getDistance(commonColor, m.keyAt(i));
+//
+//                if (distance < 10) {
+//                    goodColors++;
+//                    goodPixelCount += m.valueAt(i);
+//                }
+//            }
 
             m.clear();
             //double quality1 = ((double) goodPixelCount / totalPixels) * 100d;
@@ -130,9 +130,8 @@ public final class ColorUtils {
      *
      * @param photoColor The color to compare
      * @param colorRange The range of colors to compare against
-     * @return A bundle with the results
      */
-    private static Bundle analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
+    private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
@@ -152,7 +151,7 @@ public final class ColorUtils {
 
         //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
 
-        return bundle;
+        //return bundle;
     }
 
     public static double getDistance(int color, int tempColor) {
@@ -270,7 +269,7 @@ public final class ColorUtils {
         );
     }
 
-    private static Bundle analyzeColorHsv(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
+    private static void analyzeColorHsv(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 
         double a = 0, b, c, d, e, f;
         double xSum = 0, xSquaredSum = 0, ySum = 0;
@@ -281,6 +280,7 @@ public final class ColorUtils {
         float[] hValue = new float[colorRange.size()];
 
         for (int i = 0; i < colorRange.size(); i++) {
+            //noinspection ResourceType
             Color.colorToHSV(colorRange.get(i).getColor(), pixelHSV);
             hValue[i] = pixelHSV[0];
             if (hValue[i] < 100) {
@@ -307,6 +307,7 @@ public final class ColorUtils {
         f = slope * xSum;
         yIntercept = (e - f) / colorRange.size();
 
+        //noinspection ResourceType
         Color.colorToHSV(photoColor.getColor(), pixelHSV);
 
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
@@ -345,7 +346,7 @@ public final class ColorUtils {
 
         //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
 
-        return bundle;
+        //return bundle;
     }
 
 

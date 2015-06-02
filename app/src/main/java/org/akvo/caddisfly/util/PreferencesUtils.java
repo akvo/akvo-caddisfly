@@ -43,6 +43,7 @@ public class PreferencesUtils {
      * @param keyId        the key id
      * @param defaultValue the default value
      */
+    @SuppressWarnings("SameParameterValue")
     public static boolean getBoolean(Context context, int keyId, boolean defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -66,7 +67,6 @@ public class PreferencesUtils {
 
     }
 
-
     /**
      * Gets an integer value from preferences
      *
@@ -74,33 +74,11 @@ public class PreferencesUtils {
      * @param keyId        the key id
      * @param defaultValue the default value
      */
-    public static int getInt(Context context, int keyId, int defaultValue) {
-        return PreferencesUtils.getInt(context, getKey(context, keyId), defaultValue);
-    }
-
-    /**
-     * Gets an integer value from preferences
-     *
-     * @param context      the context
-     * @param keyId        the key id
-     * @param defaultValue the default value
-     */
+    @SuppressWarnings("SameParameterValue")
     public static int getInt(Context context, String keyId, int defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(keyId, defaultValue);
-    }
-
-    /**
-     * Sets an integer value from preferences
-     *
-     * @param context the context
-     * @param keyId   the key id
-     * @param value   the value
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static void setInt(Context context, int keyId, int value) {
-        setInt(context, getKey(context, keyId), value);
     }
 
     public static void setInt(Context context, String keyId, int value) {
@@ -111,42 +89,6 @@ public class PreferencesUtils {
         editor.apply();
     }
 
-/*    public static float getFloat(Context context, int keyId, float defaultValue) {
-        return PreferencesUtils.getFloat(context, getKey(context, keyId), defaultValue);
-    }*/
-
-
-/*
-    public static float getFloat(Context context, String keyId, float defaultValue) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        return sharedPreferences.getFloat(keyId, defaultValue);
-    }
-*/
-
-
-    public static void setDouble(Context context, String keyId, double value) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        Editor editor = sharedPreferences.edit();
-        editor.putLong(keyId, Double.doubleToRawLongBits(value));
-        editor.apply();
-    }
-
-/*
-    */
-
-    /**
-     * Sets a float value from preferences
-     *
-     * @param context the context
-     * @param keyId   the key id
-     *//*
-
-    public static void setDouble(Context context, int keyId, double value) {
-        setDouble(context, getKey(context, keyId), value);
-    }
-*/
     @SuppressWarnings("SameParameterValue")
     public static long getLong(Context context, int keyId) {
         return PreferencesUtils.getLong(context, getKey(context, keyId));
@@ -158,7 +100,7 @@ public class PreferencesUtils {
      * @param context the context
      * @param keyId   the key id
      */
-    public static long getLong(Context context, String keyId) {
+    private static long getLong(Context context, String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(keyId, -1L);
@@ -191,27 +133,13 @@ public class PreferencesUtils {
      * @param keyId        the key id
      * @param defaultValue default value
      */
+    @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, int keyId, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getString(getKey(context, keyId), defaultValue);
     }
 
-    /**
-     * Sets a string value from preferences
-     *
-     * @param context the context
-     * @param keyId   the key id
-     */
-/*
-    public static void setString(Context context, int keyId, String value) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        Editor editor = sharedPreferences.edit();
-        editor.putString(getKey(context, keyId), value);
-        editor.apply();
-    }
-*/
     @SuppressWarnings("SameParameterValue")
     public static void removeKey(Context context, int keyId) {
         PreferencesUtils.removeKey(context, getKey(context, keyId));
@@ -223,25 +151,6 @@ public class PreferencesUtils {
         Editor editor = sharedPreferences.edit();
         editor.remove(keyId);
         editor.apply();
-    }
-
-    public static boolean contains(Context context, String keyId) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        return sharedPreferences.contains(keyId);
-    }
-
-/*
-    public static boolean contains(Context context, int keyId) {
-        return contains(context, getKey(context, keyId));
-    }
-*/
-
-    public static double getDouble(Context context, String keyId) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        return Double
-                .longBitsToDouble(sharedPreferences.getLong(keyId, Double.doubleToRawLongBits(0)));
     }
 
 }

@@ -122,7 +122,7 @@ public class MainApp extends Application {
      *
      * @param testInfo The type of test
      */
-    void loadCalibratedSwatches(TestInfo testInfo) {
+    private void loadCalibratedSwatches(TestInfo testInfo) {
 
         MainApp context = ((MainApp) this.getApplicationContext());
 

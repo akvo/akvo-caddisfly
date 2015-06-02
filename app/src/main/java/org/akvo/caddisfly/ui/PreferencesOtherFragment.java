@@ -22,7 +22,7 @@ import org.akvo.caddisfly.util.UpdateCheckTask;
 public class PreferencesOtherFragment extends PreferenceFragment {
 
 
-    ListView list;
+    private ListView list;
 
     public PreferencesOtherFragment() {
         // Required empty public constructor
@@ -42,7 +42,8 @@ public class PreferencesOtherFragment extends PreferenceFragment {
         if (updatePreference != null) {
             updatePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    checkUpdate(false);
+                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false, MainApp.getVersion(getActivity()));
+                    updateCheckTask.execute();
                     return true;
                 }
             });
@@ -51,10 +52,6 @@ public class PreferencesOtherFragment extends PreferenceFragment {
         return rootView;
     }
 
-    void checkUpdate(boolean background) {
-        UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), background, MainApp.getVersion(getActivity()));
-        updateCheckTask.execute();
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

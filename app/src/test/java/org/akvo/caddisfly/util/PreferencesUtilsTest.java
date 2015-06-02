@@ -2,6 +2,7 @@ package org.akvo.caddisfly.util;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings({"unused", "EmptyMethod"})
 public class PreferencesUtilsTest extends TestCase {
 
     public void setUp() throws Exception {

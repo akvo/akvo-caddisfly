@@ -18,12 +18,13 @@ import org.robolectric.annotation.Config;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
+@SuppressWarnings("unused")
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class MainActivityTest {
 
     @Test
-    public void titleIsCorrect() throws Exception {
+    public void titleIsCorrect() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
         assertTrue(activity.getTitle().toString().equals("Akvo Caddisfly"));
     }

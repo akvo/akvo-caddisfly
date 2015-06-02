@@ -110,8 +110,10 @@ public class CameraSensorActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_camera_sensor);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
+        }
 
         sound = new SoundPoolPlayer(this);
 
@@ -541,7 +543,7 @@ public class CameraSensorActivity extends AppCompatActivity
 
 
     @Override
-    public void onFinishDialog(Bundle bundle) {
+    public void onSuccessFinishDialog() {
         finish();
     }
 

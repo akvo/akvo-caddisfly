@@ -80,7 +80,7 @@ example:
 6. Longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. Swatch validation disabled
 8. Removed reliance on separate developer app for enabling controls 
-9. Link to demo video on vimeo
+9. Link to demo video on Vimeo
 10. For now EC and EC temperature are two separate tests and thereby two questions in survey
 
 **Known Issues**

@@ -20,7 +20,7 @@ import org.akvo.caddisfly.util.ListViewUtils;
  */
 public class PreferencesDeveloperFragment extends PreferenceFragment {
 
-    ListView list;
+    private ListView list;
 
     public PreferencesDeveloperFragment() {
         // Required empty public constructor

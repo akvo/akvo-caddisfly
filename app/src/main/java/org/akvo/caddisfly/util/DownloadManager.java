@@ -119,6 +119,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                         new FileOutputStream(String.format("%s/%s", Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                                 .getPath(), Config.UPDATE_FILE_NAME));
+                //noinspection TryFinallyCanBeTryWithResources
                 try {
                     byte[] data = new byte[BYTE_ARRAY_LENGTH];
                     //long total = 0;
@@ -204,7 +205,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      *
      * @since API 2
      */
-    void install() {
+    private void install() {
         if (downloaded) {
             String filePath =
                     String.format("%s/%s", Environment
