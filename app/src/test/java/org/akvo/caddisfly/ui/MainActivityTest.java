@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.model.ResultRange;
@@ -14,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -46,8 +49,13 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        //ArrayList<ResultRange> arrayList = new ArrayList<>();
-        TestInfo testInfo = new TestInfo(null, "" , "" , 0);
+        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
         assertEquals(-1.0, bundle.getDouble("resultValue"));
     }
@@ -57,16 +65,23 @@ public class MainActivityTest {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1500) {
-                colors[i] = 16742460;
+                colors[i] = Color.rgb(255, 146, 139);
             } else {
                 colors[i] = -1;
             }
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "" , "" , 0);
+        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        assertEquals(-1, bundle.getInt("resultColor"));
+        assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
+        assertEquals(1.0, bundle.getDouble("resultValue"));
     }
 
     @Test
@@ -74,16 +89,23 @@ public class MainActivityTest {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1000) {
-                colors[i] = 16742460;
+                colors[i] = Color.rgb(255, 146, 139);
             } else {
                 colors[i] = -1;
             }
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "" , "" , 0);
+        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        assertEquals(16742460, bundle.getInt("resultColor"));
+        assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
+        assertEquals(1.0, bundle.getDouble("resultValue"));
     }
 
     @Test
@@ -94,37 +116,47 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "" , "" , 0);
+        TestInfo testInfo = new TestInfo(null, "", "", 0);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
         testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
         testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
 
-
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        //assertEquals(16742460, bundle.getInt("resultColor"));
-        assertEquals(null, bundle);
+        assertEquals(Color.rgb(250, 171, 130), bundle.getInt("resultColor"));
+        //assertEquals(null, bundle);
+        assertEquals(1.5, bundle.getDouble("resultValue"));
     }
 
     @Test
     public void testGetPpmValue5() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
-            colors[i] = Color.rgb(255, 0, 38);
+            colors[i] = Color.rgb(254, 115, 138);
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "" , "" , 0);
+        TestInfo testInfo = new TestInfo(null, "", "", 0);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(254, 101, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(254, 115, 138)));
         testInfo.addRange(new ResultRange(1.5, Color.rgb(254, 128, 119)));
         testInfo.addRange(new ResultRange(2, Color.rgb(254, 142, 99)));
 
+        List list = ColorUtils.autoGenerateColors(testInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            testInfo.addSwatch(new ResultRange(
+                    Double.parseDouble(((Pair) list.get(i)).first.toString()),
+                    (int) ((Pair) list.get(i)).second));
+        }
+
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
         //assertEquals(16742460, bundle.getInt("resultColor"));
-        assertEquals(null, bundle);
+        //assertEquals(null, testInfo.getSwatches().get(10).getValue());
+        assertEquals(null, ((Pair) list.get(20)).second.toString());
     }
 
 

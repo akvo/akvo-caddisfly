@@ -46,7 +46,6 @@ public final class ColorUtils {
         ColorInfo photoColor = getColorFromBitmap(bitmap, length);
         Bundle bundle = new Bundle();
 
-
         ArrayList<ResultRange> tempColorRange = new ArrayList<>();
 
         tempColorRange.add(testInfo.getRanges().get(0));
@@ -130,6 +129,7 @@ public final class ColorUtils {
      *
      * @param photoColor The color to compare
      * @param colorRange The range of colors to compare against
+     * @param bundle Result information
      */
     private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 

@@ -72,7 +72,7 @@ public class NetworkUtils {
 
     /**
      * Open a web Browser and navigate to given url
-     *
+     * @param context the context
      * @param url The url to navigate to
      */
     public static void openWebBrowser(Context context, String url) {

@@ -71,7 +71,7 @@ import java.util.Arrays;
 
 /**
  * An activity representing a list of Calibrate items.
- * <p/>
+ *
  * This activity also implements the required
  * {@link CalibrateListFragment.Callbacks} interface
  * to listen for item selections.

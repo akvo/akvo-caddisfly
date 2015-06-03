@@ -31,7 +31,7 @@ import org.akvo.caddisfly.model.ResultRange;
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
  * currently being viewed.
- * <p/>
+ *
  * Activities containing this fragment MUST implement the {@link org.akvo.caddisfly.ui.CalibrateListFragment.Callbacks}
  * interface.
  */
@@ -135,6 +135,7 @@ public class CalibrateListFragment extends ListFragment {
     /**
      * Turns on activate-on-click mode. When this mode is on, list items will be
      * given the 'activated' state when touched.
+     * @param activateOnItemClick activated state of list item
      */
     @SuppressWarnings("SameParameterValue")
     public void setActivateOnItemClick(boolean activateOnItemClick) {
@@ -163,6 +164,7 @@ public class CalibrateListFragment extends ListFragment {
     public interface Callbacks {
         /**
          * Callback for when an item has been selected.
+         * @param id selected item id
          */
         void onItemSelected(int id);
     }

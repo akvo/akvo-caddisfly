@@ -48,7 +48,7 @@ class UpdateChecker {
 
     /**
      * Constructor for UpdateChecker
-     * <p/>
+     *
      * Example call:
      * UpdateChecker updateChecker = new UpdateChecker(this, false);
      *
@@ -67,10 +67,10 @@ class UpdateChecker {
 
     /**
      * Checks for app update by version code.
-     * <p/>
+     *
      * Example call:
      * updateChecker.checkForUpdateByVersionCode("http://www.example.com/version.txt");
-     *
+     * @return true if update exists otherwise false
      * @param url URL at which the text file containing your latest version code is located.
      * @since API 1
      */

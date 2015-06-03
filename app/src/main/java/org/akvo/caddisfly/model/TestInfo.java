@@ -91,4 +91,8 @@ public class TestInfo {
     public ArrayList<ResultRange> getSwatches() {
         return mSwatches;
     }
+
+    public void addSwatch(ResultRange value) {
+        mSwatches.add(value);
+    }
 }

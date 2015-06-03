@@ -28,7 +28,7 @@ public class PreferencesUtils {
 
     /**
      * Gets a preference key from strings
-     *
+     * @return the string key
      * @param context the context
      * @param keyId   the key id
      */
@@ -38,7 +38,7 @@ public class PreferencesUtils {
 
     /**
      * Gets a boolean value from preferences
-     *
+     * @return the stored boolean value
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue the default value
@@ -69,7 +69,7 @@ public class PreferencesUtils {
 
     /**
      * Gets an integer value from preferences
-     *
+     * @return stored int value
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue the default value
@@ -96,7 +96,7 @@ public class PreferencesUtils {
 
     /**
      * Gets a long value from preferences
-     *
+     * @return the stored long value
      * @param context the context
      * @param keyId   the key id
      */
@@ -128,7 +128,7 @@ public class PreferencesUtils {
 
     /**
      * Gets a string value from preferences
-     *
+     * @return the stored string value
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue default value

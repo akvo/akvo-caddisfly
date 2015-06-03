@@ -136,7 +136,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.6, Color.rgb(230, 230, 230), null, null));
 
         int color = DataHelper.getAverageColor(results);
-        assertEquals(Color.rgb(240, 240, 240), color);
+        assertEquals(Color.rgb(239, 239, 239), color);
     }
 
     public void testGetAverageColor2() {
