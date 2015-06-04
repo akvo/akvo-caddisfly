@@ -232,9 +232,9 @@ public final class ColorUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static List<Pair<String, Integer>> autoGenerateColors(TestInfo testInfo) {
+    public static List<Pair<Double, Integer>> autoGenerateColors(TestInfo testInfo) {
 
-        List<Pair<String, Integer>> list = new ArrayList<>();
+        List<Pair<Double, Integer>> list = new ArrayList<>();
         double increment = 0.01;
 
         for (int i = 0; i < testInfo.getRanges().size() - 1; i++) {
@@ -246,7 +246,7 @@ public final class ColorUtils {
 
             for (int j = 0; j < steps; j++) {
                 int color = ColorUtils.getGradientColor(startColor, endColor, steps, j);
-                list.add(new Pair<>(String.format("%s-%.2f", testInfo.getCode(), startValue + (j * increment)), color));
+                list.add(new Pair<>(startValue + (j * increment), color));
             }
         }
         return list;

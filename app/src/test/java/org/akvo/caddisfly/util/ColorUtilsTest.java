@@ -57,7 +57,7 @@ public class ColorUtilsTest extends TestCase {
         assertEquals(400, list.size());
 
         for (int i = 0; i < list.size(); i++) {
-            assertEquals(String.format("FLUOR-%.2f", i * 0.01), ((Pair) list.get(i)).first);
+            assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f",(double)((Pair) list.get(i)).first));
             assertEquals(-16777216, ((Pair) list.get(i)).second);
         }
     }

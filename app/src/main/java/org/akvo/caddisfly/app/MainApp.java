@@ -179,7 +179,12 @@ public class MainApp extends Application {
             List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
             for (int i = 0; i < list.size(); i++) {
-                editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+                //editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+
+                editor.putInt(
+                        String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
+                        (int) ((Pair) list.get(i)).second);
+
             }
 
         }
@@ -210,7 +215,12 @@ public class MainApp extends Application {
         List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
         for (int i = 0; i < list.size(); i++) {
-            editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+            //editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
+
+            editor.putInt(
+                    String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
+                    (int) ((Pair) list.get(i)).second);
+
         }
 
         editor.apply();

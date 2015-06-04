@@ -10,6 +10,7 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.JsonUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -56,6 +57,14 @@ public class MainActivityTest {
         testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
         testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
 
+        List list = ColorUtils.autoGenerateColors(testInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            testInfo.addSwatch(new ResultRange(
+                    Double.parseDouble(((Pair) list.get(i)).first.toString()),
+                    (int) ((Pair) list.get(i)).second));
+        }
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
         assertEquals(-1.0, bundle.getDouble("resultValue"));
     }
@@ -65,7 +74,7 @@ public class MainActivityTest {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1500) {
-                colors[i] = Color.rgb(255, 146, 139);
+                colors[i] = Color.rgb(255, 156, 149);
             } else {
                 colors[i] = -1;
             }
@@ -79,9 +88,17 @@ public class MainActivityTest {
         testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
         testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
 
+        List list = ColorUtils.autoGenerateColors(testInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            testInfo.addSwatch(new ResultRange(
+                    Double.parseDouble(((Pair) list.get(i)).first.toString()),
+                    (int) ((Pair) list.get(i)).second));
+        }
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
-        assertEquals(1.0, bundle.getDouble("resultValue"));
+        assertEquals(Color.rgb(255, 156, 149), bundle.getInt("resultColor"));
+        assertEquals(1.1, bundle.getDouble("resultValue"));
     }
 
     @Test
@@ -103,6 +120,14 @@ public class MainActivityTest {
         testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
         testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
 
+        List list = ColorUtils.autoGenerateColors(testInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            testInfo.addSwatch(new ResultRange(
+                    Double.parseDouble(((Pair) list.get(i)).first.toString()),
+                    (int) ((Pair) list.get(i)).second));
+        }
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
         assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
         assertEquals(1.0, bundle.getDouble("resultValue"));
@@ -123,9 +148,15 @@ public class MainActivityTest {
         testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
         testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
 
+        List list = ColorUtils.autoGenerateColors(testInfo);
+
+        for (int i = 0; i < list.size(); i++) {
+            testInfo.addSwatch(new ResultRange(
+                    Double.parseDouble(((Pair) list.get(i)).first.toString()),
+                    (int) ((Pair) list.get(i)).second));
+        }
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        assertEquals(Color.rgb(250, 171, 130), bundle.getInt("resultColor"));
-        //assertEquals(null, bundle);
         assertEquals(1.5, bundle.getDouble("resultValue"));
     }
 
@@ -152,12 +183,42 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
-        //assertEquals(16742460, bundle.getInt("resultColor"));
-        //assertEquals(null, testInfo.getSwatches().get(10).getValue());
-        assertEquals(null, ((Pair) list.get(20)).second.toString());
+        assertEquals(1.0, bundle.getDouble("resultValue"));
     }
 
-
+    @Test
+    public void testLoadJson() throws Exception {
+        String jsonText = "{\n" +
+                "    \"tests\": {\n" +
+                "        \"test\": [\n" +
+                "            {\n" +
+                "                \"name\":[\n" +
+                "                            { \"en\": \"Fluoride\"},\n" +
+                "                            { \"fr\": \"Fluorure\"},\n" +
+                "                            { \"ar\": \"??????\"},\n" +
+                "                            { \"hi\": \"????????\"},\n" +
+                "                  {\"kn\": \"????????\"}\n" +
+                "                        ],\n" +
+                "                \"type\": \"0\",\n" +
+                "                \"code\": \"fluor\",\n" +
+                "                \"unit\": \"ppm\",\n" +
+                "                \"ranges\": \"0,.5,1,1.5,2\",\n" +
+                "                \"dilutions\":\"0,50,75\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"name\": [\n" +
+                "                            { \"en\": \"pH\"}\n" +
+                "                        ],\n" +
+                "                \"type\": \"0\",\n" +
+                "                \"code\": \"phydr\",\n" +
+                "                \"unit\": \"pH\",\n" +
+                "              \"ranges\": \"3,4,5,6,7,8,9\"\n" +
+                "            }\n" +
+                "        ]\n" +
+                "    }\n" +
+                "}";
+        TestInfo testInfo= JsonUtils.loadJson(jsonText, "fluor");
+        assertEquals("FLUOR", testInfo.getCode());
+    }
 }

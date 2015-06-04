@@ -2,6 +2,8 @@ package org.akvo.caddisfly.util;
 
 import junit.framework.TestCase;
 
+import org.akvo.caddisfly.model.TestInfo;
+
 @SuppressWarnings({"unused", "EmptyMethod"})
 public class JsonUtilsTest extends TestCase {
 
