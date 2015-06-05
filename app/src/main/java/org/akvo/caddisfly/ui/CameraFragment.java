@@ -53,7 +53,6 @@ public class CameraFragment extends DialogFragment {
     private int samplingCount;
     private int picturesTaken;
     private boolean mPreviewOnly;
-    //private OnFragmentInteractionListener mListener;
     private SoundPoolPlayer sound;
     private boolean mCancelled = false;
     private AlertDialog progressDialog;
@@ -176,6 +175,11 @@ public class CameraFragment extends DialogFragment {
         releaseCameraAndPreview();
     }
 
+    /**
+     * Checks if requested number of pictures were taken
+     *
+     * @return true if completed, false if not
+     */
     public boolean hasTestCompleted() {
         return samplingCount > Config.SAMPLING_COUNT_DEFAULT || picturesTaken > 10;
     }
@@ -234,23 +238,7 @@ public class CameraFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         sound.release();
-        //mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 
     public interface Cancelled {
         void dialogCancelled();
@@ -277,8 +265,8 @@ public class CameraFragment extends DialogFragment {
 
         public CameraPreview(Context context, Camera camera, boolean previewOnly) {
             super(context);
-            setCamera(camera);
             mPreviewOnly = previewOnly;
+            setCamera(camera);
             mHolder = getHolder();
             mHolder.addCallback(this);
             mHolder.setKeepScreenOn(true);
@@ -286,8 +274,6 @@ public class CameraFragment extends DialogFragment {
 
         public void startCameraPreview() {
             try {
-                //setCamera(mCamera);
-
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
             } catch (Exception e) {
@@ -430,6 +416,4 @@ public class CameraFragment extends DialogFragment {
             }
         }
     }
-
-
 }

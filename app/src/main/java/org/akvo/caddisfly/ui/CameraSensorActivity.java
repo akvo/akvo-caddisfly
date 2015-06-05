@@ -339,8 +339,8 @@ public class CameraSensorActivity extends AppCompatActivity
 
         Result resultInfo = new Result(result, color, croppedBitmap, results);
 
-        //mColors.add(color);
         mResults.add(resultInfo);
+
         //mBitmaps.add(croppedBitmap);
         //boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
@@ -518,12 +518,6 @@ public class CameraSensorActivity extends AppCompatActivity
         int[] pixels = new int[sampleLength * sampleLength];
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-//        File path = this.getExternalFilesDir(null);
-//        if (!path.exists()) {
-//            path.mkdirs();
-//        }
-        //ImageUtils.saveBitmap(bitmap, path.getAbsolutePath() + "/" + mResults.size() + ".jpg");
-
         bitmap.getPixels(pixels, 0, sampleLength,
                 (bitmap.getWidth() - sampleLength) / 2,
                 (bitmap.getHeight() - sampleLength) / 2,
@@ -533,14 +527,10 @@ public class CameraSensorActivity extends AppCompatActivity
                 sampleLength,
                 sampleLength,
                 Bitmap.Config.ARGB_8888);
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//                            croppedData = bos.toByteArray();
-
         bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
         bitmap.setHasAlpha(true);
         return bitmap;
     }
-
 
     @Override
     public void onSuccessFinishDialog() {
