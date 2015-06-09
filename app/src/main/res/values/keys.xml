@@ -21,6 +21,7 @@
     <string name="updateAvailable">updateAvailable</string>
 
     <string name="ignoreShakeKey">ignoreShake</string>
+    <string name="autoFocusKey">autoFocus</string>
     <string name="developerModeKey">developerMode</string>
     <string name="showDebugMessages">showDebugMessages</string>
 </resources>

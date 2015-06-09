@@ -35,6 +35,7 @@ import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.IOException;
@@ -307,10 +308,20 @@ public class CameraFragment extends DialogFragment {
             }
 
             List<String> focusModes = parameters.getSupportedFocusModes();
-            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-            } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+            if (!PreferencesUtils.getBoolean(getContext(), R.string.autoFocusKey, false)) {
+
+                // Attempt to set focus to infinity if supported
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+                } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+                }
+            } else {
+
+                // Force auto focus as per preference
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
             }
 
             if (mPreviewOnly) {

@@ -155,7 +155,6 @@ public class CameraSensorActivity extends AppCompatActivity
             public void onNoShake() {
                 if (mWaitingForStillness) {
                     mWaitingForStillness = false;
-                    sound.playShortResource(R.raw.beep);
                     dismissShakeAndStartTest();
                 }
             }
@@ -354,11 +353,19 @@ public class CameraSensorActivity extends AppCompatActivity
     private void startTest() {
         mResults = new ArrayList<>();
 
+        try {
+            Thread.sleep(Config.INITIAL_DELAY, 0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        sound.playShortResource(R.raw.beep);
+
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
         mWaitingForStillness = false;
 
-        mShakeDetector.minShakeAcceleration = 0.5;
+        mShakeDetector.minShakeAcceleration = 1;
         mShakeDetector.maxShakeDuration = 3000;
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                 SensorManager.SENSOR_DELAY_UI);

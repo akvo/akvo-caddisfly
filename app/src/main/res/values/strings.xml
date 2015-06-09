@@ -142,4 +142,5 @@
     <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
     <string name="electricalConductivity">Electrical Conductivity</string>
     <string name="ecUnit">μS/cm</string>
+    <string name="autofocus">Auto Focus</string>
 </resources>

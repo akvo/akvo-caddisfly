@@ -1,3 +1,15 @@
+v0.63 alpha
+-----------
+1. Fixed flash not working on preview
+2. Increased test start initial delay
+3. Added option to turn on auto focus under dev settings
+4. Decreased shake interruption sensitivity
+5. Fixed checkbox style and settings title style
+
+v0.62 alpha
+-----------
+1. Fixed range rounding issue
+
 v0.61 alpha
 -----------
 1. Added option to disable interrupting test if device is shaken

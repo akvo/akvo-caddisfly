@@ -20,6 +20,9 @@
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
         <CheckBoxPreference
+            android:key="@string/autoFocusKey"
+            android:title="@string/autofocus" />
+        <CheckBoxPreference
             android:key="@string/ignoreShakeKey"
             android:title="@string/ignoreShakeDuringAnalysis" />
         <Preference

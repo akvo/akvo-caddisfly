@@ -171,12 +171,15 @@ public class DialogGridError extends DialogFragment {
 
                 rgbText.setText(String.format("%d  %d  %d", r, g, b));
 
-                if (!mIsCalibration) {
-                    ListView resultList = (ListView) rowView.findViewById(R.id.resultList);
+                ListView resultList = (ListView) rowView.findViewById(R.id.resultList);
+
+                if (mIsCalibration) {
+                    // Hide the results table and show only the color
+                    resultList.setVisibility(View.GONE);
+                } else {
+                    // Show the results table
                     resultList.setAdapter(new ResultsAdapter(result.getResults()));
                 }
-
-
             }
             return rowView;
         }
