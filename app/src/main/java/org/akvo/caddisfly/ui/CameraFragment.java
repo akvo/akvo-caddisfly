@@ -1,40 +1,47 @@
 /*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ *  This file is part of Akvo Caddisfly
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.ui;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
@@ -48,7 +55,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraFragment extends DialogFragment {
+public class CameraFragment extends DialogFragment implements VerboseResultFragment.ResultDialogListener {
     private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;
     private int samplingCount;
@@ -58,6 +65,7 @@ public class CameraFragment extends DialogFragment {
     private boolean mCancelled = false;
     private AlertDialog progressDialog;
     private Camera mCamera;
+    private Fragment mFragment;
 
     // View to display the camera output.
     private CameraPreview mPreview;
@@ -102,6 +110,8 @@ public class CameraFragment extends DialogFragment {
         if (getArguments() != null) {
             mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
         }
+        mFragment = this;
+
         sound = new SoundPoolPlayer(getActivity());
     }
 
@@ -120,14 +130,26 @@ public class CameraFragment extends DialogFragment {
         return view;
     }
 
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+//        if (!mPreviewOnly) {
+//            dialog.setTitle(R.string.analysisInProgress);
+//        } else {
+//            dialog.setTitle(R.string.cameraPreview);
+//        }
+        return dialog;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         if (!mPreviewOnly) {
-            getDialog().setTitle(R.string.analysisInProgress);
             startTakingPictures();
-        } else {
-            getDialog().setTitle(R.string.cameraPreview);
         }
     }
 
@@ -149,26 +171,28 @@ public class CameraFragment extends DialogFragment {
 
         mCamera.setParameters(parameters);
 
-        takePicture();
-    }
-
-    private void takePicture() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                if (getActivity() != null) {
-                    mPreview.startCameraPreview();
-                    PictureCallback localCallback = new PictureCallback();
-                    try {
-                        mCamera.takePicture(null, null, localCallback);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                takePicture();
             }
         }, Config.INITIAL_DELAY);
+
+    }
+
+    private void takePicture() {
+
+        if (getActivity() != null) {
+            mPreview.startCameraPreview();
+            PictureCallback localCallback = new PictureCallback();
+            try {
+                mCamera.takePicture(null, null, localCallback);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void stopCamera() {
@@ -195,6 +219,17 @@ public class CameraFragment extends DialogFragment {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera, mPreviewOnly);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
             preview.addView(mPreview);
+
+            if (mPreviewOnly) {
+                preview.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        takePicture();
+                        return false;
+                    }
+                });
+            }
+
             mPreview.startCameraPreview();
         }
         return qOpened;
@@ -239,6 +274,11 @@ public class CameraFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         sound.release();
+    }
+
+    @Override
+    public void onSuccessFinishDialog() {
+        this.dismiss();
     }
 
     public interface Cancelled {
@@ -321,6 +361,18 @@ public class CameraFragment extends DialogFragment {
                 // Force auto focus as per preference
                 if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
+            }
+
+            List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
+
+            Camera.Size mSize;
+            for (Camera.Size size : sizes) {
+                Log.i("Caddisfly", "Available resolution: " + size.width + " " + size.height);
+                if (size.width > 800 && size.width < 1400) {
+                    mSize = size;
+                    parameters.setPictureSize(mSize.width, mSize.height);
+                    break;
                 }
             }
 
@@ -418,9 +470,39 @@ public class CameraFragment extends DialogFragment {
             picturesTaken++;
             if (!mCancelled) {
                 if (!hasTestCompleted()) {
-                    pictureCallback.onPictureTaken(bytes, camera);
-                    sound.playShortResource(R.raw.beep);
-                    takePicture();
+                    sound.playShortResource(getActivity(), R.raw.beep);
+                    if (pictureCallback == null) {
+                        stopCamera();
+                        Bitmap bitmap = ImageUtils.getBitmap(bytes);
+
+                        VerboseResultFragment verboseResultFragment =
+                                VerboseResultFragment.newInstance(
+                                        ImageUtils.getCroppedBitmap(bitmap,
+                                                Config.SAMPLE_CROP_LENGTH_DEFAULT),
+                                        bitmap, bitmap.getWidth() + " x " + bitmap.getHeight(), mFragment);
+
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+
+                        verboseResultFragment.setCancelable(true);
+                        verboseResultFragment.show(ft, "resultDialog");
+
+                        //AlertUtils.showError(getActivity(), R.string.app_name, "Result", ImageUtils.getBitmap(bytes), R.string.ok, null, null);
+                    } else {
+                        pictureCallback.onPictureTaken(bytes, camera);
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                takePicture();
+                            }
+                        }, Config.INITIAL_DELAY);
+
+                    }
                 } else {
                     pictureCallback.onPictureTaken(bytes, camera);
                 }

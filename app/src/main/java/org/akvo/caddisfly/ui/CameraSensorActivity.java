@@ -1,22 +1,23 @@
 /*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ *  This file is part of Akvo Caddisfly
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +48,8 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.usb.DeviceFilter;
+import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
@@ -56,7 +60,9 @@ import org.akvo.caddisfly.util.ShakeDetector;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class CameraSensorActivity extends AppCompatActivity
@@ -81,7 +87,7 @@ public class CameraSensorActivity extends AppCompatActivity
     private ViewAnimator mViewAnimator;
     private Animation mSlideInRight;
     private Animation mSlideOutLeft;
-    private CameraFragment mCameraFragment;
+    private DialogFragment mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
     private ArrayList<Result> mResults;
@@ -90,6 +96,7 @@ public class CameraSensorActivity extends AppCompatActivity
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
     private boolean mIgnoreShake;
+    private USBMonitor mUSBMonitor;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -141,7 +148,7 @@ public class CameraSensorActivity extends AppCompatActivity
                     mViewAnimator.showNext();
                     if (mCameraFragment != null) {
                         try {
-                            mCameraFragment.stopCamera();
+                            ((CameraFragment) mCameraFragment).stopCamera();
                             mCameraFragment.dismiss();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -161,6 +168,9 @@ public class CameraSensorActivity extends AppCompatActivity
         });
         mShakeDetector.minShakeAcceleration = 5;
         mShakeDetector.maxShakeDuration = 2000;
+
+        mUSBMonitor = new USBMonitor(this, null);
+
     }
 
     private void InitializeTest() {
@@ -200,12 +210,18 @@ public class CameraSensorActivity extends AppCompatActivity
         findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-                mViewAnimator.showNext();
+
+                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
+                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+                if (usbDeviceList.size() > 0) {
+                    startExternalTest();
+                } else {
+                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                            SensorManager.SENSOR_DELAY_UI);
+                    mViewAnimator.showNext();
+                }
             }
         });
-
     }
 
     /**
@@ -216,12 +232,19 @@ public class CameraSensorActivity extends AppCompatActivity
             mMediaPlayer.release();
         }*/
         mSensorManager.unregisterListener(mShakeDetector);
-        startTest();
+
+        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
+        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        if (usbDeviceList.size() > 0) {
+            startExternalTest();
+        } else {
+            startTest();
+        }
     }
 
     private void showError(String message, final Bitmap bitmap) {
         releaseResources();
-        sound.playShortResource(R.raw.err);
+        sound.playShortResource(this, R.raw.err);
 
         AlertUtils.showError(this, R.string.error, message, bitmap, R.string.retry,
                 new DialogInterface.OnClickListener() {
@@ -306,9 +329,8 @@ public class CameraSensorActivity extends AppCompatActivity
         }
     }
 
-    private void getResult(byte[] bytes) {
+    private void getResult(Bitmap bitmap) {
 
-        Bitmap bitmap = getBitmap(bytes);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
@@ -316,14 +338,9 @@ public class CameraSensorActivity extends AppCompatActivity
 
         croppedData = bos.toByteArray();
 
-//        int sampleLength = PreferencesUtils.getInt(this, R.string.photoSampleDimensionKey,
-//                Config.SAMPLE_CROP_LENGTH_DEFAULT);
-
-        //ArrayList<ResultRange> ranges = ((MainApp) getApplicationContext()).currentTestInfo.getSwatches();
-
         Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
         Bundle bundle = ColorUtils.getPpmValue(croppedBitmap, ((MainApp) getApplicationContext()).currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
-        bitmap.recycle();
+//        bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
         int color = bundle.getInt(Config.RESULT_COLOR_KEY, 0);
@@ -340,14 +357,79 @@ public class CameraSensorActivity extends AppCompatActivity
 
         mResults.add(resultInfo);
 
-        //mBitmaps.add(croppedBitmap);
-        //boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+    }
 
-//        if (mResults.size() > 3 && !isCalibration) {
-//            if (DataHelper.getAverageResult(mResults) == -1) {
-//                mCameraFragment.samplingCount--;
-//            }
-//        }
+    private void startExternalTest() {
+        mResults = new ArrayList<>();
+        sound.playShortResource(this, R.raw.beep);
+        (new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+                mCameraFragment = ExternalCameraFragment.newInstance();
+                if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
+
+                    ((ExternalCameraFragment) mCameraFragment).pictureCallback = new ExternalCameraFragment.PictureCallback() {
+                        @Override
+                        public void onPictureTaken(Bitmap bitmap) {
+
+                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                            getResult(croppedBitmap);
+                            //bitmap.recycle();
+
+                            if (((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
+                                ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
+                                croppedBitmap.copyPixelsToBuffer(buffer);
+                                byte[] data = buffer.array();
+                                AnalyzeResult(data);
+                                mCameraFragment.dismiss();
+                            }
+                        }
+                    };
+                }
+
+                if (wakeLock == null || !wakeLock.isHeld()) {
+                    PowerManager pm = (PowerManager) getApplicationContext()
+                            .getSystemService(Context.POWER_SERVICE);
+                    //noinspection deprecation
+                    wakeLock = pm
+                            .newWakeLock(PowerManager.FULL_WAKE_LOCK
+                                    | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                                    | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
+                    wakeLock.acquire();
+                }
+
+                delayRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        Fragment prev = getFragmentManager().findFragmentByTag("externalCameraDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        ft.addToBackStack(null);
+                        try {
+                            mCameraFragment.show(ft, "externalCameraDialog");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            finish();
+                        }
+                    }
+                };
+
+                delayHandler.postDelayed(delayRunnable, 0);
+            }
+        }).execute();
+
+
     }
 
     private void startTest() {
@@ -359,7 +441,7 @@ public class CameraSensorActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        sound.playShortResource(R.raw.beep);
+        sound.playShortResource(this, R.raw.beep);
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
@@ -381,105 +463,19 @@ public class CameraSensorActivity extends AppCompatActivity
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
                 mCameraFragment = CameraFragment.newInstance();
-                if (!mCameraFragment.hasTestCompleted()) {
-                    mCameraFragment.pictureCallback = new Camera.PictureCallback() {
+                if (!((CameraFragment) mCameraFragment).hasTestCompleted()) {
+                    ((CameraFragment) mCameraFragment).pictureCallback = new Camera.PictureCallback() {
                         @Override
                         public void onPictureTaken(byte[] data, Camera camera) {
 
-                            String message = getString(R.string.errorTestFailed);
+                            Bitmap bitmap = ImageUtils.getBitmap(data);
+                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, Config.SAMPLE_CROP_LENGTH_DEFAULT);
 
-                            getResult(data);
+                            getResult(croppedBitmap);
 
-                            if (mCameraFragment.hasTestCompleted()) {
+                            if (((CameraFragment) mCameraFragment).hasTestCompleted()) {
 
-                                double result = DataHelper.getAverageResult(mResults);
-
-                                MainApp mainApp = (MainApp) getApplicationContext();
-                                if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
-                                    mHighLevelsFound = true;
-                                }
-
-                                switch (mDilutionLevel) {
-                                    case 1:
-                                        result = result * 2;
-                                        break;
-                                    case 2:
-                                        result = result * 4;
-                                        break;
-                                }
-
-                                int color = DataHelper.getAverageColor(mResults);
-                                boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
-                                releaseResources();
-                                Intent intent = new Intent(getIntent());
-                                intent.putExtra("result", result);
-                                intent.putExtra("color", color);
-                                //intent.putExtra("questionId", mQuestionId);
-                                intent.putExtra("response", String.valueOf(result));
-                                setResult(Activity.RESULT_OK, intent);
-                                mTestCompleted = true;
-                                boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
-
-                                if (isCalibration && color != 0) {
-                                    sound.playShortResource(R.raw.done);
-                                    if (developerMode) {
-                                        ShowVerboseError(false, result, color, true);
-                                    } else {
-                                        finish();
-                                    }
-                                } else {
-                                    if (result < 0 || color == 0) {
-                                        if (developerMode) {
-                                            sound.playShortResource(R.raw.err);
-                                            ShowVerboseError(true, 0, color, isCalibration);
-                                        } else {
-                                            showError(message, getBitmap(data));
-                                        }
-                                    } else {
-
-                                        if (developerMode) {
-                                            sound.playShortResource(R.raw.done);
-                                            ShowVerboseError(false, result, color, false);
-                                        } else {
-                                            String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
-
-                                            if (mHighLevelsFound && mDilutionLevel < 2) {
-                                                sound.playShortResource(R.raw.beep_long);
-                                                switch (mDilutionLevel) {
-                                                    case 0:
-                                                        message = getString(R.string.tryWith50PercentSample);
-                                                        break;
-                                                    case 1:
-                                                        message = getString(R.string.tryWith25PercentSample);
-                                                        break;
-                                                }
-
-                                                MessageFragment mMessageFragment = MessageFragment.newInstance(title, message, mDilutionLevel);
-                                                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                                                Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                                                if (prev != null) {
-                                                    ft.remove(prev);
-                                                }
-                                                mMessageFragment.setCancelable(false);
-                                                mMessageFragment.show(ft, "resultDialog");
-
-                                            } else {
-                                                sound.playShortResource(R.raw.done);
-                                                ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
-                                                        mDilutionLevel, mainApp.currentTestInfo.getUnit());
-                                                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                                                Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                                                if (prev != null) {
-                                                    ft.remove(prev);
-                                                }
-                                                mResultFragment.setCancelable(false);
-                                                mResultFragment.show(ft, "resultDialog");
-                                            }
-                                        }
-                                    }
-                                }
+                                AnalyzeResult(data);
                                 mCameraFragment.dismiss();
                             }
                         }
@@ -520,23 +516,96 @@ public class CameraSensorActivity extends AppCompatActivity
         }).execute();
     }
 
-    private Bitmap getBitmap(byte[] bytes) {
-        int sampleLength = Config.SAMPLE_CROP_LENGTH_DEFAULT;
-        int[] pixels = new int[sampleLength * sampleLength];
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    private void AnalyzeResult(byte[] data) {
+        String message = getString(R.string.errorTestFailed);
+        double result = DataHelper.getAverageResult(mResults);
 
-        bitmap.getPixels(pixels, 0, sampleLength,
-                (bitmap.getWidth() - sampleLength) / 2,
-                (bitmap.getHeight() - sampleLength) / 2,
-                sampleLength,
-                sampleLength);
-        bitmap = Bitmap.createBitmap(pixels, 0, sampleLength,
-                sampleLength,
-                sampleLength,
-                Bitmap.Config.ARGB_8888);
-        bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
-        bitmap.setHasAlpha(true);
-        return bitmap;
+        MainApp mainApp = (MainApp) getApplicationContext();
+        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
+            mHighLevelsFound = true;
+        }
+
+        switch (mDilutionLevel) {
+            case 1:
+                result = result * 2;
+                break;
+            case 2:
+                result = result * 4;
+                break;
+        }
+
+        int color = DataHelper.getAverageColor(mResults);
+        boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+        releaseResources();
+        Intent intent = new Intent(getIntent());
+        intent.putExtra("result", result);
+        intent.putExtra("color", color);
+        //intent.putExtra("questionId", mQuestionId);
+        intent.putExtra("response", String.valueOf(result));
+        setResult(Activity.RESULT_OK, intent);
+        mTestCompleted = true;
+        boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
+
+        if (isCalibration && color != 0) {
+            sound.playShortResource(this, R.raw.done);
+            if (developerMode) {
+                ShowVerboseError(false, result, color, true);
+            } else {
+                finish();
+            }
+        } else {
+            if (result < 0 || color == 0) {
+                if (developerMode) {
+                    sound.playShortResource(this, R.raw.err);
+                    ShowVerboseError(true, 0, color, isCalibration);
+                } else {
+                    showError(message, ImageUtils.getBitmap(data));
+                }
+            } else {
+
+                if (developerMode) {
+                    sound.playShortResource(this, R.raw.done);
+                    ShowVerboseError(false, result, color, false);
+                } else {
+                    String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+
+                    if (mHighLevelsFound && mDilutionLevel < 2) {
+                        sound.playShortResource(this, R.raw.beep_long);
+                        switch (mDilutionLevel) {
+                            case 0:
+                                message = getString(R.string.tryWith50PercentSample);
+                                break;
+                            case 1:
+                                message = getString(R.string.tryWith25PercentSample);
+                                break;
+                        }
+
+                        MessageFragment mMessageFragment = MessageFragment.newInstance(title, message, mDilutionLevel);
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        mMessageFragment.setCancelable(false);
+                        mMessageFragment.show(ft, "resultDialog");
+
+                    } else {
+                        sound.playShortResource(this, R.raw.done);
+                        ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
+                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        mResultFragment.setCancelable(false);
+                        mResultFragment.show(ft, "resultDialog");
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -548,8 +617,8 @@ public class CameraSensorActivity extends AppCompatActivity
         mSensorManager.unregisterListener(mShakeDetector);
 
         delayHandler.removeCallbacks(delayRunnable);
-        if (mCameraFragment != null) {
-            mCameraFragment.stopCamera();
+        if (mCameraFragment != null && mCameraFragment instanceof CameraFragment) {
+            ((CameraFragment) mCameraFragment).stopCamera();
         }
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
@@ -600,7 +669,7 @@ public class CameraSensorActivity extends AppCompatActivity
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
-            sound.playShortResource(R.raw.beep_long);
+            sound.playShortResource(this, R.raw.beep_long);
             MainApp mainApp = (MainApp) getApplicationContext();
             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 

@@ -1,22 +1,21 @@
 <!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~  This file is part of Akvo Caddisfly
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~  either version 3 of the License or any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~  See the GNU Affero General Public License included below for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 <resources>
 
     <string name="appName">"Akvo Caddisfly"</string>
-    <string name="waterQuality">"Qualité de l'eau"</string>
     <string name="waterQualitySystem">"Système de qualité de l'eau"</string>
 
     <!--Common-->
@@ -60,7 +59,6 @@
     <string name="analyzingWait">"Analyse …"</string>
     <string name="placeDeviceInStand">"Placez le téléphone sur une surface plane avec face vers le bas"</string>
     <string name="waitTillCameraSound">"et attendre pour le test pour terminer"</string>
-    <string name="analysisInProgress">"Analyse en cours"</string>
     <string name="errorTestInterrupted">"Le test a été interrompu. Ne déplacez pas le téléphone pendant le test."</string>
     <string name="errorTestFailed">"Couleur de la solution hors de portée. Vérifiez l'emplacement de la cartouche."</string>
 
@@ -140,5 +138,10 @@
     <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
     <string name="electricalConductivity">Electrical Conductivity</string>
     <string name="ecUnit">μS/cm</string>
-    <string name="autofocus">Auto Focus</string>
+    <string name="autoFocus">Auto Focus</string>
+    <string name="externalCamera">External Camera</string>
+    <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>
+    <string name="noSound">No Sound</string>
+    <string name="companyOtherName">Akvo Foundation</string>
+    <string name="copyrightMessage">Copyright © Stichting Akvo</string>
 </resources>

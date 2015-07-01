@@ -1,3 +1,19 @@
+/*
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ *  This file is part of Akvo Caddisfly
+ *
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
+ *
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
+ *
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
@@ -32,15 +48,6 @@ public class MainActivityTest {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
         assertTrue(activity.getTitle().toString().equals("Akvo Caddisfly"));
     }
-
-//    @Test
-//    public void startSettingsActivity() throws Exception {
-//        Activity activity = Robolectric.setupActivity(MainActivity.class);
-//        shadowOf(activity).clickMenuItem(R.id.action_settings);
-//
-//        Intent expectedIntent = new Intent(activity, SettingsActivity.class);
-//        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
-//    }
 
     @Test
     public void testGetPpmValue() throws Exception {
@@ -219,6 +226,7 @@ public class MainActivityTest {
                 "    }\n" +
                 "}";
         TestInfo testInfo= JsonUtils.loadJson(jsonText, "fluor");
+        assert testInfo != null;
         assertEquals("FLUOR", testInfo.getCode());
     }
 }

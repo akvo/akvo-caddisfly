@@ -1,19 +1,20 @@
-package org.akvo.caddisfly;
 /*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ *  This file is part of Akvo Caddisfly
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
+
+package org.akvo.caddisfly;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -41,12 +42,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
-import static org.hamcrest.text.StringStartsWith.startsWith;
 
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -139,7 +140,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrateColors)).perform(click());
 
-        onView(withText("0.0")).perform(click());
+        onView(withText("0.00 ppm")).perform(click());
 
         Espresso.pressBack();
 
@@ -147,7 +148,7 @@ public class EspressoTest
 
         onView(withText("Free Chlorine")).perform(click());
 
-        onView(withText("2.0")).perform(click());
+        onView(withText("2.00 ppm")).perform(click());
 
         Espresso.pressBack();
 
@@ -155,7 +156,7 @@ public class EspressoTest
 
         onView(withText("Nitrite")).perform(click());
 
-        onView(withText("3.0")).perform(click());
+        onView(withText("3.00 ppm")).perform(click());
 
         Espresso.pressBack();
 
@@ -163,7 +164,7 @@ public class EspressoTest
 
         onView(withText("pH")).perform(click());
 
-        onView(withText("9.0")).perform(click());
+        onView(withText("9.00 pH")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 
@@ -229,6 +230,20 @@ public class EspressoTest
     }
 
     public void testStartASurvey() {
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        for (int i = 0; i < 10; i++) {
+            onView(withId(R.id.textVersion)).perform(click());
+        }
+
+        onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
+
+        Espresso.pressBack();
+
+        Espresso.pressBack();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -325,7 +340,7 @@ public class EspressoTest
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
         for (int i = 0; i < 10; i++) {
-            onView(withId(R.id.logoImageView)).perform(click());
+            onView(withId(R.id.textVersion)).perform(click());
         }
 
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
@@ -373,7 +388,7 @@ public class EspressoTest
                 .atPosition(6).onChildView(withId(R.id.button))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
-        onView(withText("9.0")).perform(click());
+        onView(withText("9.00 pH")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 

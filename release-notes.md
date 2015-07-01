@@ -1,3 +1,22 @@
+v0.66 alpha
+-----------
+1. Changed logo for launcher icon
+2. Changed background and logo on action bar
+3. Removed background and logo from About screen
+4. Added copyright message on About screen
+5. Fixed Settings title text color
+
+v0.65 alpha
+-----------
+1. LG Low Res Issue: Width parameter of picture taken set to be at least between 800 and 1400
+2. UI: Display units along with range values on calibrate screen
+3. DevMode: added take picture for testing
+4. DevMode: no sound option
+
+v0.64 alpha
+-----------
+1. Added ability to use external USB camera
+
 v0.63 alpha
 -----------
 1. Fixed flash not working on preview

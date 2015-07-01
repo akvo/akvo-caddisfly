@@ -1,3 +1,19 @@
+/*
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ *  This file is part of Akvo Caddisfly
+ *
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
+ *
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
+ *
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
@@ -49,7 +65,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
 
         double result = DataHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.58, result, 0);
     }
 
     public void testAverage3() {
@@ -95,7 +111,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.7, 0, null, null));
 
         double result = DataHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.64, result, 0);
     }
 
     public void testAverage7() {
@@ -108,7 +124,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
 
         double result = DataHelper.getAverageResult(results);
-        assertEquals(1.64, result, 0);
+        assertEquals(-1, result, 0);
     }
 
     public void testAverage8() {
@@ -122,7 +138,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.6, 0, null, null));
 
         double result = DataHelper.getAverageResult(results);
-        assertEquals(1.66, result, 0);
+        assertEquals(1.6, result, 0);
     }
 
     public void testGetAverageColor1() {

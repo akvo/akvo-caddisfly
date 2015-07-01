@@ -1,17 +1,17 @@
 <!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~  This file is part of Akvo Caddisfly
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~  either version 3 of the License or any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~  See the GNU Affero General Public License included below for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
@@ -19,29 +19,33 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_tertiary</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="actionBarStyle">@style/Theme.MyApp.ActionBar</item>
+        <item name="actionBarStyle">@style/Flow.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlNormal">#deffffff</item>
+        <item name="android:actionBarSize">48dp</item>
+        <item name="actionBarSize">48dp</item>
     </style>
 
     <!--http://stackoverflow.com/questions/27960435/change-elevation-of-actionbar-by-theme-->
     <style name="Theme.MyApp.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="elevation">0dp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="button_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">#fff</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowColor">#666</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowRadius">1</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">40dp</item>
         <item name="android:paddingRight">40dp</item>
@@ -62,4 +66,18 @@
     <style name="width_match_parent_max_tablet">
         <item name="android:layout_width">match_parent</item>
     </style>
+
+    <style name="Flow.ActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_flow</item>
+        <item name="background">@drawable/ab_solid_flow</item>
+        <item name="titleTextStyle">@style/Flow.ActionBar.Text</item>
+        <item name="logo">@drawable/action_logo</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="Flow.ActionBar.Text" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/text_tertiary</item>
+    </style>
+
 </resources>

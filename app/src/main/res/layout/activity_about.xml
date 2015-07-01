@@ -1,17 +1,17 @@
 <!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~  This file is part of Akvo Caddisfly
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~  either version 3 of the License or any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~  See the GNU Affero General Public License included below for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,13 +19,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.3"
-        android:background="@drawable/home_logo"
-        android:contentDescription="@null" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,34 +31,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:alpha="0.9"
+            android:alpha="0.8"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/appName"
             android:textAllCaps="true"
-            android:textSize="25sp"
-            android:textStyle="normal"
+            android:textSize="28sp"
+            android:textStyle="bold"
             tools:ignore="UnusedAttribute" />
-
-        <ImageView
-            android:id="@+id/logoImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="6dp"
-            android:clickable="true"
-            android:contentDescription="@null"
-            android:gravity="center"
-            android:singleLine="false"
-            android:src="@drawable/logo"
-            android:textIsSelectable="false" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:alpha="0.7"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:paddingBottom="20dp"
             android:text="@string/waterQualitySystem"
             android:textAllCaps="true"
             android:textSize="15sp"
@@ -85,9 +66,41 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             tools:ignore="UnusedAttribute" />
+
+        <View
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:background="#dd746e64" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="@string/companyOtherName"
+            android:textSize="15sp"
+            android:textStyle="normal"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/copyrightMessage"
+            android:textSize="15sp"
+            android:textStyle="normal"
+            tools:ignore="UnusedAttribute" />
+
 
         <Button
             android:id="@+id/disableDeveloperButton"
@@ -97,7 +110,6 @@
             android:alpha="0.5"
             android:text="@string/enableUserMode"
             android:visibility="gone" />
-
     </LinearLayout>
 
     <LinearLayout

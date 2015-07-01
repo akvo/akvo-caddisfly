@@ -1,17 +1,17 @@
 <!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~  This file is part of Akvo Caddisfly
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~  either version 3 of the License or any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~  See the GNU Affero General Public License included below for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -22,7 +22,6 @@
     <string name="errorCalibrationIncomplete">"Caddisfly अंशांकन अधूरा है. एक परीक्षण शुरू करने से पहले अंशांकन ठीक कर लें."</string>
     <string name="enableInternet">"इंटरनेट कनेक्शन की आवश्यकता"</string>
     <string name="errorAkvoFlowRequired">"स्थापित करें Akvo फ्लो अनुप्रयोग"</string>
-    <string name="analysisInProgress">"प्रगति में विश्लेषण"</string>
     <string name="about">"के बारे में"</string>
     <string name="swatches">"नमूने"</string>
     <string name="delete">"हटाएं"</string>
@@ -74,7 +73,6 @@
     <string name="updateSummary">"एक अद्यतन Akvo Caddisfly के लिए उपलब्ध है की जाँच"</string>
     <string name="startSurvey">"प्रारंभ सर्वेक्षण"</string>
     <string name="backToSurvey">"पीछे सर्वेक्षण के"</string>
-    <string name="waterQuality">"जल गुणवत्ता परीक्षण"</string>
     <string name="watchVideo">देखो</string>
     <string name="demonstration">डेमो</string>
     <string name="cameraPreview">कैमरे के दृश्य की जाँच करें</string>
@@ -122,7 +120,12 @@
     <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
     <string name="electricalConductivity">Electrical Conductivity</string>
     <string name="ecUnit">μS/cm</string>
-    <string name="autofocus">Auto Focus</string>
+    <string name="autoFocus">Auto Focus</string>
+    <string name="externalCamera">External Camera</string>
+    <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>
+    <string name="noSound">No Sound</string>
+    <string name="companyOtherName">Akvo Foundation</string>
+    <string name="copyrightMessage">Copyright © Stichting Akvo</string>
 
 
 </resources>

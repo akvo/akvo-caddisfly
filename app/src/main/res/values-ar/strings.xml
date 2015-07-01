@@ -1,17 +1,17 @@
 <!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~  This file is part of Akvo Caddisfly
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~  either version 3 of the License or any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~  See the GNU Affero General Public License included below for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -22,7 +22,6 @@
     <string name="errorCalibrationIncomplete">"معايرة Caddisfly غير مكتملة. تصحيح المعايرة قبل البدء في الاختبار."</string>
     <string name="enableInternet">"اتصال إنترنت المطلوبة"</string>
     <string name="errorAkvoFlowRequired">"الرجاء تثبيت Akvo تدفق التطبيق"</string>
-    <string name="analysisInProgress">"التحليل في التقدم"</string>
     <string name="about">"نبذة "</string>
     <string name="swatches">"حوامل"</string>
     <string name="delete">"حذف"</string>
@@ -74,7 +73,6 @@
     <string name="updateSummary">"تحقق إذا كان يتوفر تحديث لAkvo Caddisfly"</string>
     <string name="startSurvey">"مسح البداية"</string>
     <string name="backToSurvey">"العودة الى في خضم"</string>
-    <string name="waterQuality">"اختبار جودة المياه"</string>
     <string name="watchVideo">ووتش</string>
     <string name="demonstration">عرض</string>
     <string name="cameraPreview">تحقق من عرض الكاميرا</string>
@@ -122,7 +120,12 @@
     <string name="whenReadyPressStart">When ready press start button below to begin the analysis</string>
     <string name="electricalConductivity">Electrical Conductivity</string>
     <string name="ecUnit">μS/cm</string>
-    <string name="autofocus">Auto Focus</string>
+    <string name="autoFocus">Auto Focus</string>
+    <string name="externalCamera">External Camera</string>
+    <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>
+    <string name="noSound">No Sound</string>
+    <string name="companyOtherName">Akvo Foundation</string>
+    <string name="copyrightMessage">Copyright © Stichting Akvo</string>
 
 
 </resources>

@@ -1,17 +1,17 @@
 /*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *  Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ *  This file is part of Akvo Caddisfly
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ *  either version 3 of the License or any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License included below for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.ui;
@@ -48,7 +48,6 @@ public class AboutActivity extends AppCompatActivity {
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
         ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
-        ImageView logoView = (ImageView) findViewById(R.id.logoImageView);
         final Button disableDeveloperButton = (Button) findViewById(R.id.disableDeveloperButton);
 
         if (mDeveloperMode) {
@@ -65,7 +64,7 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        logoView.setOnClickListener(new View.OnClickListener() {
+        productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
 
             @Override
@@ -84,13 +83,13 @@ public class AboutActivity extends AppCompatActivity {
         });
 
         final Context context = this;
-        productView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                NetworkUtils.openWebBrowser(context, Config.PRODUCT_WEBSITE);
-            }
-        });
+//        productView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                NetworkUtils.openWebBrowser(context, Config.PRODUCT_WEBSITE);
+//            }
+//        });
 
         organizationView.setOnClickListener(new View.OnClickListener() {
 
@@ -101,5 +100,7 @@ public class AboutActivity extends AppCompatActivity {
         });
 
         setTitle(R.string.about);
+
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
     }
 }
