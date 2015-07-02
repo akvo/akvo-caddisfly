@@ -19,8 +19,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -31,8 +29,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ListViewUtils;
 
 /**
@@ -63,38 +59,13 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
         if (calibrateColorsPreference != null) {
             calibrateColorsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    if (!MainApp.hasCameraFlash) {
-                        AlertUtils.showError(getActivity(), R.string.error,
-                                getString(R.string.errorCameraFlashRequired),
-                                null,
-                                R.string.ok, null, null);
-                    } else {
-                        final Intent intent = new Intent(getActivity(), CalibrateListActivity.class);
-                        startActivity(intent);
-                    }
+                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
+                    startActivity(intent);
                     return true;
                 }
             });
         }
 
-
-        Preference calibratePreference = findPreference("calibrateSensor");
-        if (calibratePreference != null) {
-            calibratePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-
-                    boolean hasOtg = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-                    if (hasOtg) {
-                        final Intent intent = new Intent(getActivity(), CalibrateSensorActivity.class);
-                        startActivity(intent);
-                    } else {
-                        AlertUtils.showMessage(getActivity(), R.string.notSupported, R.string.phoneDoesNotSupport);
-                    }
-                    return true;
-
-                }
-            });
-        }
 
         return rootView;
     }
@@ -110,10 +81,10 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            ListViewUtils.setListViewHeightBasedOnChildren(list, 33);
-        } else {
-            ListViewUtils.setListViewHeightBasedOnChildren(list, 0);
-        }
+        //if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+        //  ListViewUtils.setListViewHeightBasedOnChildren(list, 33);
+        //} else {
+        ListViewUtils.setListViewHeightBasedOnChildren(list, 0);
+        //}
     }
 }

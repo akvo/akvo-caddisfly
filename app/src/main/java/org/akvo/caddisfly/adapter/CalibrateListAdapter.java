@@ -54,8 +54,13 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
         final MainApp mainApp = ((MainApp) activity.getApplicationContext());
 
-        rowView.setBackgroundResource(position % 2 == 0 ?
-                R.drawable.listitem_row_2 : R.drawable.listitem_row_1);
+//        rowView.setBackgroundResource(position % 2 == 0 ?
+//                R.drawable.listitem_row_2 : R.drawable.listitem_row_1);
+
+//        if (position % 2 == 0) {
+//            rowView.setBackgroundResource(R.drawable.listitem_row_1);
+//        }
+
 
         ArrayList<ResultRange> ranges = mainApp.currentTestInfo.getRanges();
         ResultRange range = ranges.get(position);

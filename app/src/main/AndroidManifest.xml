@@ -82,12 +82,13 @@
         </activity>
         <activity
             android:name=".ui.CameraSensorActivity"
-            android:label="@string/appName"
+            android:label="@string/calibrate"
+            android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateListActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.SwatchActivity"
@@ -100,12 +101,16 @@
         <activity
             android:name=".ui.CalibrateSensorActivity"
             android:label="@string/calibrateSensor"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.ExternalCameraActivity"
-            android:label="@string/appName"></activity>
-
+            android:label="@string/appName" />
+        <activity
+            android:name=".ui.TypeListActivity"
+            android:label="@string/calibrate"
+            android:parentActivityName=".ui.SettingsActivity"
+            android:screenOrientation="nosensor" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

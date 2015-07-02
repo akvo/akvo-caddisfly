@@ -21,11 +21,10 @@
         <item name="colorPrimary">@color/primary</item>
         <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/text_tertiary</item>
+        <item name="android:textColorPrimary">@color/text_secondary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="actionBarStyle">@style/Flow.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorControlNormal">#deffffff</item>
         <item name="android:actionBarSize">48dp</item>
         <item name="actionBarSize">48dp</item>
     </style>
@@ -52,17 +51,6 @@
         <item name="android:paddingTop">10dp</item>
     </style>
 
-    <style name="FrameworkRoot.Widget.Spinner" parent="android:Widget.Holo.Light.Spinner" />
-
-    <style name="Widget.HeaderBar.Spinner.Base" parent="FrameworkRoot.Widget.Spinner">
-        <item name="android:background">?android:selectableItemBackground</item>
-        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0dp</item>
-    </style>
-
-    <style name="Widget.HeaderBar.Spinner" parent="Widget.HeaderBar.Spinner.Base" />
-
     <style name="width_match_parent_max_tablet">
         <item name="android:layout_width">match_parent</item>
     </style>
@@ -70,14 +58,12 @@
     <style name="Flow.ActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="backgroundStacked">@drawable/ab_stacked_solid_flow</item>
         <item name="background">@drawable/ab_solid_flow</item>
-        <item name="titleTextStyle">@style/Flow.ActionBar.Text</item>
         <item name="logo">@drawable/action_logo</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>
         <item name="contentInsetStart">0dp</item>
     </style>
 
-    <style name="Flow.ActionBar.Text" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">@color/text_tertiary</item>
     </style>
-
 </resources>

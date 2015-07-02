@@ -16,54 +16,40 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
-import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
-import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,7 +57,7 @@ import java.util.Arrays;
 
 /**
  * An activity representing a list of Calibrate items.
- *
+ * <p/>
  * This activity also implements the required
  * {@link CalibrateListFragment.Callbacks} interface
  * to listen for item selections.
@@ -79,7 +65,6 @@ import java.util.Arrays;
 public class CalibrateListActivity extends AppCompatActivity
         implements CalibrateListFragment.Callbacks {
 
-    private final ExploreSpinnerAdapter mTopLevelSpinnerAdapter = new ExploreSpinnerAdapter();
     private final int REQUEST_CALIBRATE = 100;
     private int mPosition;
 
@@ -135,17 +120,14 @@ public class CalibrateListActivity extends AppCompatActivity
 
         ApiUtils.lockScreenOrientation(this);
 
-        if (findViewById(R.id.calibrate_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            /*
-      Whether or not the activity is in two-pane mode, i.e. running on a tablet
-      device.
-     */
-            //boolean mTwoPane = true;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
+        }
 
+        final MainApp mainApp = ((MainApp) getApplicationContext());
+        setTitle(mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage()));
+
+        if (findViewById(R.id.calibrate_detail_container) != null) {
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((CalibrateListFragment) getSupportFragmentManager()
@@ -153,18 +135,6 @@ public class CalibrateListActivity extends AppCompatActivity
                     .setActivateOnItemClick(true);
         }
 
-        try {
-            setupActionBarSpinner();
-        } catch (Exception ex) {
-            AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    }, null);
-
-        }
     }
 
     /**
@@ -174,34 +144,16 @@ public class CalibrateListActivity extends AppCompatActivity
     @Override
     public void onItemSelected(int id) {
         mPosition = id;
-//        if (mTwoPane) {
-//            // In two-pane mode, show the detail view in this activity by
-//            // adding or replacing the detail fragment using a
-//            // fragment transaction.
-//            Bundle arguments = new Bundle();
-//            arguments.putInt(CalibrateDetailFragment.ARG_ITEM_ID, id);
-//            CalibrateDetailFragment fragment = new CalibrateDetailFragment();
-//            fragment.setArguments(arguments);
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.calibrate_detail_container, fragment)
-//                    .commit();
-//
-//        } else {
-            //final MainApp mainApp = ((MainApp) getApplicationContext());
-            //mRange = mainApp.currentTestInfo.getRange(id);
-            final Intent intent = new Intent();
-            intent.setClass(this, CameraSensorActivity.class);
-            intent.putExtra("isCalibration", true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivityForResult(intent, REQUEST_CALIBRATE);
+        final MainApp mainApp = ((MainApp) getApplicationContext());
+        ResultRange mRange = mainApp.currentTestInfo.getRange(mPosition);
 
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-//            Intent detailIntent = new Intent(this, CalibrateDetailActivity.class);
-//            detailIntent.putExtra(CalibrateDetailFragment.ARG_ITEM_ID, id);
-//            startActivityForResult(detailIntent, REQUEST_CALIBRATE);
-        // }
+        final Intent intent = new Intent();
+        intent.setClass(this, CameraSensorActivity.class);
+        intent.putExtra("isCalibration", true);
+        intent.putExtra("rangeValue", mRange.getValue());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivityForResult(intent, REQUEST_CALIBRATE);
     }
 
     @Override
@@ -223,89 +175,6 @@ public class CalibrateListActivity extends AppCompatActivity
         }
     }
 
-    private void setupActionBarSpinner() {
-        ActionBar ab = getSupportActionBar();
-
-        ArrayList<TestInfo> tests = null;
-        try {
-            //final String path = getExternalFilesDir(null) + Config.CONFIG_FILE_PATH;
-            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
-
-            File file = new File(path);
-            String text;
-
-            //Look for external json config file otherwise use the internal default one
-            if (file.exists()) {
-                text = FileUtils.loadTextFromFile(path);
-                //ignore file if it is old version
-                if (!text.contains("ranges")) {
-                    text = FileUtils.readRawTextFile(this, R.raw.tests_json);
-                }
-            } else {
-                text = FileUtils.readRawTextFile(this, R.raw.tests_json);
-            }
-            tests = JsonUtils.loadTests(text);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mTopLevelSpinnerAdapter.clear();
-        MainApp mainApp = (MainApp) getApplicationContext();
-
-        int selectedIndex = 0;
-        int index = 0;
-        assert tests != null;
-
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-
-        for (TestInfo test : tests) {
-            if (test.getType() == 0) {
-                mTopLevelSpinnerAdapter.addItem(test.getCode(), test.getName(conf.locale.getLanguage()));
-                if (test.getCode().equalsIgnoreCase(mainApp.currentTestInfo.getCode())) {
-                    selectedIndex = index;
-                }
-                index++;
-            }
-        }
-
-        @SuppressLint("InflateParams") View spinnerContainer = LayoutInflater.from(this)
-                .inflate(R.layout.actionbar_spinner, null);
-        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        assert ab != null;
-        ab.setCustomView(spinnerContainer, lp);
-
-        Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.actionbar_spinner);
-        spinner.setAdapter(mTopLevelSpinnerAdapter);
-
-        spinner.setSelection(selectedIndex);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> spinner, View view, int position, long itemId) {
-                MainApp mainApp = (MainApp) getApplicationContext();
-                String testType = mTopLevelSpinnerAdapter.getTag(position);
-                mainApp.setSwatches(testType);
-                ((CalibrateListFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.calibrate_list)).setAdapter();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-        updateActionBarNavigation();
-    }
-
-    private void updateActionBarNavigation() {
-        ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setDisplayShowCustomEnabled(true);
-        ab.setDisplayShowTitleEnabled(false);
-        ab.setDisplayUseLogoEnabled(false);
-    }
-
     private void closeKeyboard(EditText input) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
@@ -319,7 +188,6 @@ public class CalibrateListActivity extends AppCompatActivity
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        //input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
 
         alertDialogBuilder.setView(input);
@@ -388,16 +256,6 @@ public class CalibrateListActivity extends AppCompatActivity
             }
         });
 
-        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId
-//                        == EditorInfo.IME_ACTION_DONE)) {
-//
-//                }
-                return false;
-            }
-        });
-
         alertDialog.show();
         input.requestFocus();
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
@@ -426,18 +284,9 @@ public class CalibrateListActivity extends AppCompatActivity
                 final File[] listFiles = folder.listFiles();
                 Arrays.sort(listFiles);
 
-                //List<String> list = new ArrayList<>();
-
                 for (File listFile : listFiles) {
-                    //list.add(TextUtils.toTitleCase(listFile.getName()));
                     arrayAdapter.add(listFile.getName());
                 }
-
-                //Collections.sort(list);
-
-                //for (String file : list) {
-                //arrayAdapter.add(file);
-                //}
 
                 builderSingle.setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
@@ -530,108 +379,6 @@ public class CalibrateListActivity extends AppCompatActivity
 
         callback.handleMessage(null);
 
-    }
-
-    /**
-     * Adapter that provides views for our top-level Action Bar spinner.
-     */
-    private class ExploreSpinnerAdapter extends BaseAdapter {
-        private final ArrayList<ExploreSpinnerItem> mItems = new ArrayList<>();
-
-        private ExploreSpinnerAdapter() {
-        }
-
-        public void clear() {
-            mItems.clear();
-        }
-
-        public void addItem(String tag, String title) {
-            mItems.add(new ExploreSpinnerItem(tag, title));
-        }
-
-        @Override
-        public int getCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getDropDownView(int position, View view, ViewGroup parent) {
-            if (view == null || !view.getTag().toString().equals("DROPDOWN")) {
-                view = getLayoutInflater().inflate(R.layout.actionbar_spinner_item_dropdown,
-                        parent, false);
-                view.setTag("DROPDOWN");
-            }
-
-            TextView normalTextView = (TextView) view.findViewById(R.id.normal_text);
-
-            normalTextView.setVisibility(View.VISIBLE);
-            setUpNormalDropdownView(position, normalTextView);
-
-            return view;
-        }
-
-        @Override
-        public View getView(int position, View view, ViewGroup parent) {
-            if (view == null || !view.getTag().toString().equals("NON_DROPDOWN")) {
-                view = getLayoutInflater().inflate(R.layout.actionbar_spinner_item,
-                        parent, false);
-                view.setTag("NON_DROPDOWN");
-            }
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
-            textView.setText(getTitle(position));
-            return view;
-        }
-
-        private String getTitle(int position) {
-            return position >= 0 && position < mItems.size() ? mItems.get(position).title : "";
-        }
-
-        private String getTag(int position) {
-            return position >= 0 && position < mItems.size() ? mItems.get(position).tag : "";
-        }
-
-        private void setUpNormalDropdownView(int position, TextView textView) {
-            textView.setText(getTitle(position));
-            ShapeDrawable colorDrawable = (ShapeDrawable) textView.getCompoundDrawables()[2];
-            if (colorDrawable != null) {
-                textView.setCompoundDrawables(null, null, null, null);
-            }
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return 0;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 1;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return false;
-        }
-    }
-
-    private class ExploreSpinnerItem {
-        final String tag;
-        final String title;
-
-        ExploreSpinnerItem(String tag, String title) {
-            this.tag = tag;
-            this.title = title;
-        }
     }
 
 }

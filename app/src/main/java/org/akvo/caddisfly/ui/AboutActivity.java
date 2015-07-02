@@ -83,13 +83,6 @@ public class AboutActivity extends AppCompatActivity {
         });
 
         final Context context = this;
-//        productView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                NetworkUtils.openWebBrowser(context, Config.PRODUCT_WEBSITE);
-//            }
-//        });
 
         organizationView.setOnClickListener(new View.OnClickListener() {
 
@@ -101,6 +94,8 @@ public class AboutActivity extends AppCompatActivity {
 
         setTitle(R.string.about);
 
-        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
+        }
     }
 }

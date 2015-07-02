@@ -138,13 +138,15 @@ public class EspressoTest
     public void testChangeTestType() {
         onView(withId(R.id.action_settings)).perform(click());
 
-        onView(withText(R.string.calibrateColors)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText("Fluoride")).perform(click());
 
         onView(withText("0.00 ppm")).perform(click());
 
         Espresso.pressBack();
 
-        onView(withId(R.id.actionbar_spinner)).perform(click());
+        Espresso.pressBack();
 
         onView(withText("Free Chlorine")).perform(click());
 
@@ -152,7 +154,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.actionbar_spinner)).perform(click());
+        Espresso.pressBack();
 
         onView(withText("Nitrite")).perform(click());
 
@@ -160,7 +162,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.actionbar_spinner)).perform(click());
+        Espresso.pressBack();
 
         onView(withText("pH")).perform(click());
 
@@ -247,15 +249,15 @@ public class EspressoTest
 
         onView(withId(R.id.action_settings)).perform(click());
 
-        onView(withText(R.string.calibrateColors)).perform(click());
-
-        onView(withId(R.id.actionbar_spinner)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText("Fluoride")).perform(click());
 
         onView(withId(R.id.menu_load)).perform(click());
 
         onView(withText("b")).perform(click());
+
+        Espresso.pressBack();
 
         Espresso.pressBack();
 
@@ -292,9 +294,11 @@ public class EspressoTest
     public void testCalibrateSensor() {
         onView(withId(R.id.action_settings)).perform(click());
 
-        onView(withText(R.string.calibrateSensorSummary)).check(matches(isDisplayed()));
+        onView(withText(R.string.calibrateSummary)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.calibrateSensor)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText("Electrical Conductivity")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 
@@ -305,7 +309,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withText(R.string.calibrateSensorSummary)).check(matches(isDisplayed()));
+        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
     }
@@ -347,9 +351,13 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withText(R.string.calibrateColors)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText("Fluoride")).perform(click());
 
         onView(withId(R.id.action_swatches)).perform(click());
+
+        Espresso.pressBack();
 
         Espresso.pressBack();
 
@@ -377,9 +385,7 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().commit();
 
-        onView(withText(R.string.calibrateColors)).perform(click());
-
-        onView(withId(R.id.actionbar_spinner)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText("pH")).perform(click());
 

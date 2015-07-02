@@ -43,7 +43,7 @@
     <!--Settings Screen-->
     <string name="settings">Settings</string>
     <string name="calibrate">Calibrate</string>
-    <string name="calibrateSummary">Calibrate colorimeter using the standard color mixtures provided in the kit</string>
+    <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
     <string name="language">Language</string>
     <string name="updateCheck">Check update</string>
     <string name="updateSummary">Check if a new version is available</string>

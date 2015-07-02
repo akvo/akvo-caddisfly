@@ -43,7 +43,7 @@ public class UVCCamera {
         }
     }
 
-    private long mNativePtr;    // this field is accessed from native code and do not change name and remove
+    protected long mNativePtr; // this field is accessed from native code do not change
     private UsbControlBlock mCtrlBlock;
 
     /**

@@ -170,9 +170,6 @@ public class SensorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getIntent());
-                //intent.putExtra("result", finalResult);
-                //intent.putExtra("questionId", mQuestionId);
-
                 if (mainApp.currentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
@@ -269,7 +266,6 @@ public class SensorActivity extends AppCompatActivity {
     }
 
     private void connect() {
-        //int tmpNumber = openIndex + 1;
 
         int openIndex = 0;
         if (currentIndex != openIndex) {
@@ -297,9 +293,6 @@ public class SensorActivity extends AppCompatActivity {
                 bReadThreadGoing = true;
             }
         }
-        //else {
-        //Toast.makeText(this, "Need to get permission!", Toast.LENGTH_SHORT).show();
-        //}
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -506,8 +499,6 @@ public class SensorActivity extends AppCompatActivity {
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
 
-                    mEc25Value = "";
-                    mTemperature = "";
                     mResultLayout.setVisibility(View.VISIBLE);
                     mConnectionLayout.setVisibility(View.GONE);
                     mOkButton.setVisibility(View.VISIBLE);

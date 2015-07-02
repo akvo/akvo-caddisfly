@@ -72,8 +72,6 @@ public class CameraSensorActivity extends AppCompatActivity
     private DilutionFragment mDilutionFragment;
     private int mDilutionLevel = 0;
     private DialogGridError mResultFragment;
-    //private TextView mTitleText;
-    private TextView mTestTypeTextView;
     private TextView mDilutionTextView;
     private TextView mDilutionTextView1;
 
@@ -118,14 +116,12 @@ public class CameraSensorActivity extends AppCompatActivity
         setContentView(R.layout.activity_camera_sensor);
 
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
         }
 
         sound = new SoundPoolPlayer(this);
 
-        //mTitleText = (TextView) findViewById(R.id.titleText);
-        mTestTypeTextView = (TextView) findViewById(R.id.testTypeTextView);
         mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
         mDilutionTextView1 = (TextView) findViewById(R.id.dilution1TextView);
 
@@ -182,8 +178,8 @@ public class CameraSensorActivity extends AppCompatActivity
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
-        mTestTypeTextView.setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (wakeLock == null || !wakeLock.isHeld()) {
             PowerManager pm = (PowerManager) getApplicationContext()
@@ -299,6 +295,9 @@ public class CameraSensorActivity extends AppCompatActivity
         MainApp mainApp = (MainApp) getApplicationContext();
         //Configuration conf = getResources().getConfiguration();
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+        double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
+
+        ((TextView) findViewById(R.id.ppmTextView)).setText(String.format("%.2f %s", rangeValue, mainApp.currentTestInfo.getUnit()));
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
             AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,

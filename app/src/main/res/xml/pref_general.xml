@@ -19,16 +19,10 @@
         <Preference
             android:key="calibrate"
             android:summary="@string/calibrateSummary"
-            android:title="@string/calibrateColors">
+            android:title="@string/calibrate">
             <intent
-                android:targetClass="org.akvo.caddisfly.ui.CalibrateListActivity"
+                android:targetClass="org.akvo.caddisfly.ui.TypeListActivity"
                 android:targetPackage="org.akvo.caddisfly" />
-        </Preference>
-
-        <Preference
-            android:key="calibrateSensor"
-            android:summary="@string/calibrateSensorSummary"
-            android:title="@string/calibrateSensor">
         </Preference>
 
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>

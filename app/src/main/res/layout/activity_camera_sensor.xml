@@ -24,7 +24,7 @@
     <LinearLayout
         android:id="@+id/instructionsLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -39,6 +39,18 @@
             android:textStyle="normal"
             android:visibility="visible"
             tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/ppmTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="0.00 ppm" />
 
         <TextView
             android:id="@+id/dilution1TextView"
@@ -58,36 +70,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
+            android:paddingBottom="70dp"
             android:visibility="visible">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="@string/fillTheTestingChamber"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="@string/closeTheTestingChamber"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="@string/whenReadyPressStart"
-                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/startButton"
@@ -95,7 +84,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
                 android:background="@drawable/start_button"
                 android:minWidth="200dp"
                 android:text="@string/start"
