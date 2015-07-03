@@ -241,11 +241,11 @@ public class EspressoTest
             onView(withId(R.id.textVersion)).perform(click());
         }
 
+        Espresso.pressBack();
+
+        Espresso.pressBack();
+
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -255,7 +255,7 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
-        onView(withText("b")).perform(click());
+        onView(withText("Test")).perform(click());
 
         Espresso.pressBack();
 
@@ -347,9 +347,13 @@ public class EspressoTest
             onView(withId(R.id.textVersion)).perform(click());
         }
 
-        onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
+        Espresso.pressBack();
 
         Espresso.pressBack();
+
+        onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -363,13 +367,11 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+        Espresso.pressBack();
 
         onView(withId(R.id.disableDeveloperButton)).perform(click());
 
         onView(withId(R.id.disableDeveloperButton)).check(matches(not(isDisplayed())));
-
-        Espresso.pressBack();
 
     }
 

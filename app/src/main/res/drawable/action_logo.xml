@@ -19,6 +19,5 @@
 
     <item
         android:drawable="@drawable/ic_actionbar_logo"
-        android:left="13dp"
         android:right="1dp" />
 </layer-list>

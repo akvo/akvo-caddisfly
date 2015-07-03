@@ -60,7 +60,7 @@
         <item name="background">@drawable/ab_solid_flow</item>
         <item name="logo">@drawable/action_logo</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>
-        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStart">13dp</item>
     </style>
 
     <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

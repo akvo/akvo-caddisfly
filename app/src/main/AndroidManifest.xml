@@ -83,7 +83,6 @@
         <activity
             android:name=".ui.CameraSensorActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateListActivity"
@@ -100,7 +99,7 @@
         </activity>
         <activity
             android:name=".ui.CalibrateSensorActivity"
-            android:label="@string/calibrateSensor"
+            android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity

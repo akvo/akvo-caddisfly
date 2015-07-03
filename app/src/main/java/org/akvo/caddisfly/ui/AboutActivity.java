@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,21 +47,6 @@ public class AboutActivity extends AppCompatActivity {
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
         ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
-        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDeveloperButton);
-
-        if (mDeveloperMode) {
-            disableDeveloperButton.setVisibility(View.VISIBLE);
-        }
-
-        disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disableDeveloperButton.setVisibility(View.GONE);
-                Toast.makeText(getBaseContext(), getString(R.string.developerModeDisabled), Toast.LENGTH_LONG).show();
-                PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, false);
-                mDeveloperMode = false;
-            }
-        });
 
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
@@ -74,7 +58,6 @@ public class AboutActivity extends AppCompatActivity {
                     if (clickCount > 9) {
                         clickCount = 0;
                         Toast.makeText(getBaseContext(), getString(R.string.developerModeEnabled), Toast.LENGTH_LONG).show();
-                        disableDeveloperButton.setVisibility(View.VISIBLE);
                         PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, true);
                         mDeveloperMode = true;
                     }

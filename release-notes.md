@@ -1,9 +1,14 @@
+v0.68 alpha
+-----------
+1. Dev mode indication and button on start screen
+2. Some UI mods and bug fixes
+
 v0.67 alpha
 -----------
 1. Test type list moved from dropdown to list screen
+4. Selected range value displayed on Test Start screen
 2. Instructions removed
 3. Calibrate option merged in settings screen
-4. Selected range value displayed on Test Start screen
 
 v0.66 alpha
 -----------

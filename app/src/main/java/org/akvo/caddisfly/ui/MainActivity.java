@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.software.shell.fab.ActionButton;
 
@@ -104,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
         mWatchTextView = (TextView) findViewById(R.id.watchTextView);
         mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
+        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDeveloperButton);
+
+        disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), getString(R.string.developerModeDisabled), Toast.LENGTH_LONG).show();
+                PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, false);
+                checkDeveloperMode();
+            }
+        });
+
     }
 
     @Override
@@ -115,8 +127,19 @@ public class MainActivity extends AppCompatActivity {
         float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
         mDemoTextView.setWidth((int) width);
 
+        checkDeveloperMode();
+
         CheckLocale();
 
+    }
+
+    private void checkDeveloperMode() {
+        boolean devMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
+        if (devMode) {
+            findViewById(R.id.devModeLayout).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.devModeLayout).setVisibility(View.GONE);
+        }
     }
 
     private void CheckLocale() {

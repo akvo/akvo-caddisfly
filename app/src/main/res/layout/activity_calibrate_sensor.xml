@@ -34,21 +34,42 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="org.akvo.caddisfly.ui.CalibrateSensorActivity">
 
-
-        <Button
-            android:id="@+id/startButton"
-            style="@style/button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+        <TextView
+            android:id="@+id/testTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/start_button"
-            android:minWidth="200dp"
-            android:text="@string/start"
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textSize="40sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="Contaminant" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="70dp"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/startButton"
+                style="@style/button_text"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/start_button"
+                android:minWidth="200dp"
+                android:text="@string/start"
+                android:textAllCaps="true"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

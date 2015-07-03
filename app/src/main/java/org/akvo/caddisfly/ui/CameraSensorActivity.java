@@ -69,12 +69,12 @@ public class CameraSensorActivity extends AppCompatActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
         MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
+    boolean mIsCalibration;
     private DilutionFragment mDilutionFragment;
     private int mDilutionLevel = 0;
     private DialogGridError mResultFragment;
     private TextView mDilutionTextView;
     private TextView mDilutionTextView1;
-
     private SoundPoolPlayer sound;
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
@@ -125,6 +125,9 @@ public class CameraSensorActivity extends AppCompatActivity
         mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
         mDilutionTextView1 = (TextView) findViewById(R.id.dilution1TextView);
 
+        mDilutionTextView.setVisibility(View.GONE);
+        mDilutionTextView1.setVisibility(View.GONE);
+
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
         mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
@@ -174,12 +177,6 @@ public class CameraSensorActivity extends AppCompatActivity
         mIgnoreShake = PreferencesUtils.getBoolean(this, R.string.ignoreShakeKey, false);
         mTestCompleted = false;
         mHighLevelsFound = false;
-        MainApp mainApp = (MainApp) getApplicationContext();
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-
-        ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (wakeLock == null || !wakeLock.isHeld()) {
             PowerManager pm = (PowerManager) getApplicationContext()
@@ -293,11 +290,25 @@ public class CameraSensorActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         MainApp mainApp = (MainApp) getApplicationContext();
-        //Configuration conf = getResources().getConfiguration();
-        boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+        mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
 
-        ((TextView) findViewById(R.id.ppmTextView)).setText(String.format("%.2f %s", rangeValue, mainApp.currentTestInfo.getUnit()));
+        TextView ppmTextView = ((TextView) findViewById(R.id.ppmTextView));
+        if (mIsCalibration) {
+            ppmTextView.setText(String.format("%.2f %s", rangeValue, mainApp.currentTestInfo.getUnit()));
+            ppmTextView.setVisibility(View.VISIBLE);
+        } else {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+            ppmTextView.setVisibility(View.GONE);
+        }
+
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+
+        ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
             AlertUtils.showError(this, R.string.error, getString(R.string.errorLoadingTestTypes), null, R.string.ok,
@@ -308,7 +319,7 @@ public class CameraSensorActivity extends AppCompatActivity
                         }
                     }, null);
 
-        } else if (!isCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")
+        } else if (!mIsCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")
                 && !mTestCompleted) {
             mDilutionFragment = DilutionFragment.newInstance();
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -319,9 +330,6 @@ public class CameraSensorActivity extends AppCompatActivity
             }
             mDilutionFragment.setCancelable(false);
             mDilutionFragment.show(ft, "dilutionFragment");
-
-            mDilutionTextView.setVisibility(View.VISIBLE);
-            mDilutionTextView1.setVisibility(View.VISIBLE);
 
         } else if (!mTestCompleted) {
             InitializeTest();
@@ -658,6 +666,11 @@ public class CameraSensorActivity extends AppCompatActivity
                     mDilutionTextView.setText(R.string.twentyFivePercentSampleWater);
                     mDilutionTextView1.setText(R.string.twentyFivePercentSampleWater);
                     break;
+            }
+
+            if (!mIsCalibration) {
+                mDilutionTextView.setVisibility(View.VISIBLE);
+                mDilutionTextView1.setVisibility(View.VISIBLE);
             }
             InitializeTest();
         }

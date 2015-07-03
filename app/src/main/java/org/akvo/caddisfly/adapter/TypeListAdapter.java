@@ -46,10 +46,13 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
 
         TestInfo testInfo = mTestInfoArray[position];
 
-        TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
-
-        ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
-
+        //todo: review this code
+        if (testInfo.getCode().equals("TEMPE")) {
+            rowView.setVisibility(View.GONE);
+        } else {
+            TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
+            ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
+        }
         return rowView;
     }
 }

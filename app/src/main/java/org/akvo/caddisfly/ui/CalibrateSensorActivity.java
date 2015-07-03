@@ -19,6 +19,7 @@ package org.akvo.caddisfly.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -27,12 +28,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 
@@ -313,6 +316,14 @@ public class CalibrateSensorActivity extends AppCompatActivity {
         Button highConductivityButton = (Button) findViewById(R.id.highButton);
         final EditText lowValueEditText = (EditText) findViewById(R.id.lowValueEditText);
         final EditText highValueEditText = (EditText) findViewById(R.id.highValueEditText);
+
+        final MainApp mainApp = (MainApp) getApplicationContext();
+        Configuration conf = getResources().getConfiguration();
+        if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+            ((TextView) findViewById(R.id.testTitleTextView)).setText(
+                    mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        }
+
 
         //http://developer.android.com/guide/topics/connectivity/usb/host.html
 //        IntentFilter filter = new IntentFilter();
