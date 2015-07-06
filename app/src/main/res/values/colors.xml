@@ -23,10 +23,5 @@
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
     <color name="text_tertiary">#ffffffff</color>
-    <color name="background_main">#f8ebf6ff</color>
-    <color name="background_alternate">#ffdef1e9</color>
-
-    <color name="dropdown_item_normal">#ff333333</color>
-    <color name="item_selected">#ff066b72</color>
 
 </resources>

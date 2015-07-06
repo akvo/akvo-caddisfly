@@ -35,7 +35,6 @@ import org.akvo.caddisfly.util.PreferencesUtils;
 import org.json.JSONException;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -43,7 +42,6 @@ import java.util.List;
 public class MainApp extends Application {
 
     public static boolean hasCameraFlash = true;
-    public final DecimalFormat doubleFormat = new DecimalFormat("0.0");
     public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
 
     /**
@@ -127,25 +125,9 @@ public class MainApp extends Application {
         MainApp context = ((MainApp) this.getApplicationContext());
 
         for (ResultRange range : testInfo.getRanges()) {
-            //if (PreferencesUtils.contains(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()))) {
-
             int color = PreferencesUtils.getInt(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()), 0);
 
-//                int r = Color.red(color);
-//                int g = Color.green(color);
-//                int b = Color.blue(color);
-//
-//                // eliminate white and black colors
-//                if (r == 255 && g == 255 && b == 255) {
-//                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testInfo.getCode(), range.getValue()), -1);
-//                    color = -1;
-//                }
-//                if (r == 0 && g == 0 && b == 0) {
-//                    PreferencesUtils.setInt(this, String.format("%s-a-%d", testInfo.getCode(), range.getValue()), -1);
-//                    color = -1;
-//                }
             range.setColor(color);
-            //}
         }
 
         if (currentTestInfo.getRanges().size() > 0) {
@@ -158,11 +140,6 @@ public class MainApp extends Application {
                 currentTestInfo.getSwatches().add(range);
             }
         }
-
-        //int minQuality = PreferencesUtils.getInt(this, R.string.minPhotoQualityKey,  Config.MINIMUM_PHOTO_QUALITY);
-
-        //ColorUtils.validateGradient(colorList, minQuality);
-
     }
 
     public void storeCalibratedData(ResultRange range, final int resultColor) {
@@ -179,8 +156,6 @@ public class MainApp extends Application {
             List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
             for (int i = 0; i < list.size(); i++) {
-                //editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
-
                 editor.putInt(
                         String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
                         (int) ((Pair) list.get(i)).second);
@@ -215,8 +190,6 @@ public class MainApp extends Application {
         List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
         for (int i = 0; i < list.size(); i++) {
-            //editor.putInt(((Pair) list.get(i)).first.toString(), (int) ((Pair) list.get(i)).second);
-
             editor.putInt(
                     String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
                     (int) ((Pair) list.get(i)).second);

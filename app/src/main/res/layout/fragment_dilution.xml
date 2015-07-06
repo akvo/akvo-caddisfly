@@ -36,10 +36,13 @@
 
     <Button
         android:id="@+id/hundredPercentButton"
-        style="@style/button_text"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/green_button"
         android:minHeight="80dp"
+        android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
         android:text="@string/hundredPercentSampleWater"
@@ -47,7 +50,9 @@
 
     <Button
         android:id="@+id/fiftyPercentButton"
-        style="@style/button_text"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/green_button"
         android:minHeight="80dp"
@@ -59,7 +64,9 @@
 
     <Button
         android:id="@+id/twentyFivePercentButton"
-        style="@style/button_text"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/green_button"
         android:minHeight="80dp"

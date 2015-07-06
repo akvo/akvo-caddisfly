@@ -165,12 +165,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
         progressDialog.getWindow().setGravity(Gravity.BOTTOM);
         progressDialog.show();
 
-        Camera.Parameters parameters = mCamera.getParameters();
-
-        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-
-        mCamera.setParameters(parameters);
-
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -375,13 +369,15 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                     break;
                 }
             }
-
-            if (mPreviewOnly) {
-                if (mSupportedFlashModes != null && mSupportedFlashModes
-                        .contains(Camera.Parameters.FLASH_MODE_ON)) {
+            if (mSupportedFlashModes != null && mSupportedFlashModes
+                    .contains(Camera.Parameters.FLASH_MODE_ON)) {
+                if (mPreviewOnly || PreferencesUtils.getBoolean(getContext(), R.string.useTorchModeKey, false)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                } else {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                 }
             }
+
 
             mCamera.setDisplayOrientation(90);
             mCamera.setParameters(parameters);

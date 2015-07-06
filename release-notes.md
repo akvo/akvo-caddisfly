@@ -1,5 +1,12 @@
 v0.68 alpha
 -----------
+1. Dev mode: Option to use torch mode for camera
+2. Dev mode: Additional info on long click on camera preview
+3. Some UI style changes
+4. Revised default contaminant test types in json file
+
+v0.68 alpha
+-----------
 1. Dev mode indication and button on start screen
 2. Some UI mods and bug fixes
 

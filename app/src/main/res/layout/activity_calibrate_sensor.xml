@@ -58,12 +58,10 @@
 
             <Button
                 android:id="@+id/startButton"
-                style="@style/button_text"
+                style="@style/Button"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/start_button"
-                android:minWidth="200dp"
                 android:text="@string/start"
                 android:textAllCaps="true"
                 android:textColor="#fff"
@@ -119,13 +117,11 @@
 
         <Button
             android:id="@+id/lowButton"
-            style="@style/button_text"
+            style="@style/Button"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:background="@drawable/start_button"
-            android:minWidth="200dp"
             android:text="@string/next"
             android:textAllCaps="true"
             android:textColor="#fff"
@@ -181,13 +177,11 @@
 
         <Button
             android:id="@+id/highButton"
-            style="@style/button_text"
+            style="@style/Button"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:background="@drawable/start_button"
-            android:minWidth="200dp"
             android:text="@string/calibrate"
             android:textAllCaps="true"
             android:textColor="#fff"

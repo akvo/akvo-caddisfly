@@ -231,7 +231,7 @@ public class DialogGridError extends DialogFragment {
 
             if (mainApp != null && rowView != null) {
                 TextView descriptionText = (TextView) rowView.findViewById(R.id.descriptionText);
-                TextView resultText = (TextView) rowView.findViewById(R.id.resultText);
+                TextView resultText = (TextView) rowView.findViewById(R.id.textResult);
                 descriptionText.setText(mResults.get(position).first);
                 resultText.setText(String.format("%.2f", mResults.get(position).second));
             }

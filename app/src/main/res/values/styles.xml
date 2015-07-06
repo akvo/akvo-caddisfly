@@ -21,7 +21,7 @@
         <item name="colorPrimary">@color/primary</item>
         <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/text_secondary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="actionBarStyle">@style/Flow.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -35,20 +35,13 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="button_text">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="Button">
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:shadowColor">#666</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">40dp</item>
-        <item name="android:paddingRight">40dp</item>
-        <item name="android:paddingTop">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:background">@drawable/start_button</item>
     </style>
 
     <style name="width_match_parent_max_tablet">

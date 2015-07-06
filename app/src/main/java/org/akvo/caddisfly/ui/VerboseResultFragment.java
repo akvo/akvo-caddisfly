@@ -26,10 +26,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.util.ColorUtils;
 
 public class VerboseResultFragment extends DialogFragment {
 
@@ -59,12 +63,32 @@ public class VerboseResultFragment extends DialogFragment {
         ImageView imageExtract = (ImageView) view.findViewById(R.id.imageExtract);
         ImageView imagePhoto = (ImageView) view.findViewById(R.id.imagePhoto);
 
+        TextView textResult = (TextView) view.findViewById(R.id.textResult);
+        Button buttonColorExtract = (Button) view.findViewById(R.id.buttonColorExtract);
+        TextView textColorRgb = (TextView) view.findViewById(R.id.rgbValue);
         TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
 
         imageExtract.setImageBitmap(mExtractBitmap);
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
+        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+
+        //todo: remove hard coding of fluor
+        if (mainApp.currentTestInfo.getCode().isEmpty() || mainApp.currentTestInfo.getType() != 0) {
+            mainApp.setSwatches("FLUOR");
+        }
+
+        Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap, mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        double result = resultValue.getDouble(Config.RESULT_VALUE_KEY, -1);
+        int color = resultValue.getInt(Config.RESULT_COLOR_KEY, 0);
+
+        if (result > -1) {
+            textResult.setText(String.format("%s : %.2f %s", mainApp.currentTestInfo.getName("en"), result, mainApp.currentTestInfo.getUnit()));
+        }
+        buttonColorExtract.setBackgroundColor(color);
+
+        textColorRgb.setText(String.format("rgb: %s", ColorUtils.getColorRgbString(color)));
         return view;
     }
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~  This file is part of Akvo Caddisfly
@@ -22,20 +21,56 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/imageExtract"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@null"
-        android:scaleType="fitXY" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imageExtract"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:scaleType="fitXY" />
+
+        <Button
+            android:id="@+id/buttonColorExtract"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:background="#ffffff"
+            android:clickable="false"
+            android:focusable="false" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        tools:text="Fluoride : 1.0" />
+
+    <TextView
+        android:id="@+id/rgbValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        tools:text="rgb: 255 255 255" />
 
     <TextView
         android:id="@+id/textDimension"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.10"
         android:gravity="center"
+        android:paddingBottom="10dp"
         tools:text="10000 x 2000" />
 
     <ImageView
@@ -43,6 +78,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.90"
         android:contentDescription="@null" />
 </LinearLayout>

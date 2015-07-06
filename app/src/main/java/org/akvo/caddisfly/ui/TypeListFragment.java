@@ -59,7 +59,7 @@ public class TypeListFragment extends ListFragment {
         return new TypeListFragment();
     }
 
-    void setAdapter() {
+    private void setAdapter() {
 
         Activity activity = getActivity();
         MainApp mainApp = (MainApp) activity.getApplicationContext();

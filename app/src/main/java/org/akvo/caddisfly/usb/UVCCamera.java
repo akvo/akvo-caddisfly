@@ -43,6 +43,7 @@ public class UVCCamera {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected long mNativePtr; // this field is accessed from native code do not change
     private UsbControlBlock mCtrlBlock;
 

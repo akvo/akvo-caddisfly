@@ -129,7 +129,7 @@ public final class ColorUtils {
      *
      * @param photoColor The color to compare
      * @param colorRange The range of colors to compare against
-     * @param bundle Result information
+     * @param bundle     Result information
      */
     private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 
@@ -149,9 +149,6 @@ public final class ColorUtils {
                         Color.blue(photoColor.getColor()))
         );
 
-        //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
-
-        //return bundle;
     }
 
     public static double getDistance(int color, int tempColor) {
@@ -343,10 +340,6 @@ public final class ColorUtils {
                         Color.green(photoColor.getColor()),
                         Color.blue(photoColor.getColor()))
         );
-
-        //bundle.putInt(Config.QUALITY_KEY, photoColor.getQuality());
-
-        //return bundle;
     }
 
 

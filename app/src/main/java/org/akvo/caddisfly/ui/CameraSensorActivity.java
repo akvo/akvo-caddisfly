@@ -69,7 +69,7 @@ public class CameraSensorActivity extends AppCompatActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
         MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
-    boolean mIsCalibration;
+    private boolean mIsCalibration;
     private DilutionFragment mDilutionFragment;
     private int mDilutionLevel = 0;
     private DialogGridError mResultFragment;

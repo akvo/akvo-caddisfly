@@ -47,7 +47,7 @@
             tools:text="1 Calibration : " />
 
         <TextView
-            android:id="@+id/resultText"
+            android:id="@+id/textResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"

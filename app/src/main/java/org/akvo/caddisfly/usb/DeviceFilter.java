@@ -156,7 +156,7 @@ public final class DeviceFilter {
      * @return
      */
     private static String getAttributeString(final Context context, final XmlPullParser parser, final String namespace, final String name, final String defaultValue) {
-        String result = defaultValue;
+        String result;
         try {
             result = parser.getAttributeValue(namespace, name);
             if (result == null)

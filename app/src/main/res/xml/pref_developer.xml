@@ -21,7 +21,7 @@
             android:title="@string/cameraPreview" />
         <Preference
             android:key="externalCamera"
-            android:title="@string/externalCamera"></Preference>
+            android:title="@string/externalCamera" />
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">
@@ -32,6 +32,9 @@
         <CheckBoxPreference
             android:key="@string/autoFocusKey"
             android:title="@string/autoFocus" />
+        <CheckBoxPreference
+            android:key="@string/useTorchModeKey"
+            android:title="@string/useTorchMode" />
         <CheckBoxPreference
             android:key="@string/ignoreShakeKey"
             android:title="@string/ignoreShakeDuringAnalysis" />

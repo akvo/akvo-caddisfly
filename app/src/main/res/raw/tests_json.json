@@ -16,54 +16,6 @@
                 "dilutions":"0,50,75"
             },
             {
-                "name": [
-                            { "en": "pH"}
-                        ],
-                "type": "0",
-                "code": "phydr",
-                "unit": "pH",
-              "ranges": "3,4,5,6,7,8,9"
-            },
-            {
-                "name": [
-                            { "en": "Nitrate"},
-                            { "fr": "Nitrate"},
-                            { "ar": "نترات"},
-                            { "hi": "नाइट्रट"},
-                  {"kn": "ನೈಟ್ರೇಟ್"}
-                        ],
-                "type": "0",
-                "code": "nitra",
-                "unit": "ppm",
-              "ranges": "0,10,20,30,40,50"
-            },
-            {
-                "name":[
-                            { "en": "Nitrite"},
-                            { "fr": "Nitrite"},
-                            { "ar": "نتريت"},
-                            { "hi": "नाइट्राइट"},
-                  {"kn": "ನೈಟ್ರೈಟ್"}
-                ],
-                "type": "0",
-                "code":"nitri",
-                "unit":"ppm",
-              "ranges": "0,0.5,1,1.5,2,2.5,3"
-            },
-            {
-                "name":[
-                            { "en": "Total Iron"},
-                            { "fr": "Total de Fer"},
-                            { "ar": "مجموع الحديد"},
-                            { "hi": "कुल आयरन"},
-                  {"kn": "ಒಟ್ಟು ಐರನ್"}
-                ],
-                "type": "0",
-                "code":"totfe",
-                "unit":"ppm",
-              "ranges": "0,0.2,0.4,0.6,0.8,1"
-            },
-            {
                 "name":[
                             { "en":"Total Chlorine" },
                             { "fr": "Chlore Total"},
@@ -74,7 +26,7 @@
                 "type": "0",
                 "code":"totcl",
                 "unit":"ppm",
-              "ranges": "0,0.5,1,1.5,2"
+              "ranges": "0,0.1,0.5,0.8,1.0"
             },
             {
                 "name":[
@@ -87,7 +39,7 @@
                 "type": "0",
                 "code":"frecl",
                 "unit":"ppm",
-              "ranges": "0,0.5,1,1.5,2"
+              "ranges": "0,0.1,0.5,0.8,1.0"
             },
             {
                 "name": [
@@ -114,7 +66,7 @@
             "code": "tempe",
             "unit": "°C",
             "ranges": "0"
-            }
+          }
         ]
     }
 }

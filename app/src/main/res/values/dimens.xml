@@ -18,10 +18,4 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="explore_spinner_width">200dp</dimen>
-    <dimen name="spinner_left_padding">4dp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
-    <dimen name="explore_dropdown_item_height">48dp</dimen>
-
 </resources>

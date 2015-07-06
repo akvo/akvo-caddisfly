@@ -114,7 +114,7 @@ public class EspressoTest
         onView(withId(R.id.action_settings))
                 .perform(click());
 
-        onView(withText(R.string.calibrateColors))
+        onView(withText(R.string.calibrate))
                 .perform(click());
 
         if (devMode) {
@@ -128,7 +128,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withText(R.string.calibrateColors)).check(matches(isDisplayed()));
+        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -150,33 +150,33 @@ public class EspressoTest
 
         onView(withText("Free Chlorine")).perform(click());
 
-        onView(withText("2.00 ppm")).perform(click());
+        onView(withText("0.50 ppm")).perform(click());
 
         Espresso.pressBack();
 
         Espresso.pressBack();
 
-        onView(withText("Nitrite")).perform(click());
-
-        onView(withText("3.00 ppm")).perform(click());
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        onView(withText("pH")).perform(click());
-
-        onView(withText("9.00 pH")).perform(click());
-
-        onView(withId(R.id.startButton)).perform(click());
+//        onView(withText("Nitrite")).perform(click());
+//
+//        onView(withText("3.00 ppm")).perform(click());
+//
+//        Espresso.pressBack();
+//
+//        Espresso.pressBack();
+//
+//        onView(withText("pH")).perform(click());
+//
+//        onView(withText("9.00 pH")).perform(click());
+//
+//        onView(withId(R.id.startButton)).perform(click());
 
         //onView(withText(R.string.selectDilution)).check(matches(isDisplayed()));
 
         //onView(withId(android.R.id.button2)).perform(click());
 
-        Espresso.pressBack();
-
-        Espresso.pressBack();
+//        Espresso.pressBack();
+//
+//        Espresso.pressBack();
 
         Espresso.pressBack();
     }
@@ -389,14 +389,14 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText("pH")).perform(click());
+        onView(withText("Fluoride")).perform(click());
 
         onData(is(instanceOf(ResultRange.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(6).onChildView(withId(R.id.button))
+                .atPosition(4).onChildView(withId(R.id.button))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
-        onView(withText("9.00 pH")).perform(click());
+        onView(withText("2.00 ppm")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 
@@ -412,7 +412,7 @@ public class EspressoTest
 
         onData(is(instanceOf(ResultRange.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(6).onChildView(withId(R.id.button))
+                .atPosition(4).onChildView(withId(R.id.button))
                 .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
 
 
