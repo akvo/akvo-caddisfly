@@ -25,5 +25,5 @@
     <string name="developerModeKey">developerMode</string>
     <string name="showDebugMessages">showDebugMessages</string>
     <string name="noSoundKey">noSoundKey</string>
-    <string name="useTorchModeKey">useTorchModeKey</string>
+    <string name="useFlashModeKey">useFlashModeKey</string>
 </resources>

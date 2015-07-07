@@ -43,15 +43,14 @@ public class Config {
     // Link to company web site for about information
     public static final String ORG_WEBSITE = "http://akvo.org";
 
-    public static final String TRAINING_VIDEO_LINK = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
+    public static final String TRAINING_VIDEO_LINK
+            = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
 
     public static final String CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
-    //public static final String CALIBRATE_FOLDER_NAME = "/com.akvo.caddisfly/saved/";
+    //public static final String CALIBRATE_FOLDER_NAME = "/org.akvo.caddisfly/saved/";
 
     // Tag for debug log filtering
     public static final String DEBUG_TAG = "Caddisfly";
-
-    public static final int INITIAL_DELAY = 6000;
 
     public static final String RESULT_VALUE_KEY = "resultValue";
     public static final String RESULT_COLOR_KEY = "resultColor";
@@ -62,6 +61,7 @@ public class Config {
     // width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     public static final int SAMPLING_COUNT_DEFAULT = 5;
-    public static final float SOUND_VOLUME = 0.9f;
+    public static final float SOUND_VOLUME = 0.99f;
+    public static final int INITIAL_DELAY = 6000;
 
 }

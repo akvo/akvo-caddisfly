@@ -137,5 +137,5 @@
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <string name="developerAbbreviated">Dev</string>
-    <string name="useTorchMode">Use Torch Mode</string>
+    <string name="useFlashMode">Use Flash Mode</string>
 </resources>

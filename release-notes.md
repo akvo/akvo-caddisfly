@@ -1,4 +1,14 @@
-v0.68 alpha
+v0.70 alpha
+-----------
+1. Default to Torch Mode (Experimental)
+2. Reduced color matching tolerance down to 30 (Experimental)
+3. Dev mode: torch mode option changed to Use Flash Mode
+4. Dev mode: More info on long click on camera preview
+5. Bug Fix: Saving and loading of calibration files
+6. Bug Fix: Reduced camera photo resolution to accomodate Asus phones
+7. Revised json file
+
+v0.69 alpha
 -----------
 1. Dev mode: Option to use torch mode for camera
 2. Dev mode: Additional info on long click on camera preview

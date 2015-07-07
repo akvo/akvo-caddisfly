@@ -135,5 +135,5 @@
     <string name="companyOtherName">"Fondation Akvo"</string>
     <string name="copyrightMessage">"Copyright © Stichting Akvo"</string>
     <string name="developerAbbreviated">"Dév"</string>
-    <string name="useTorchMode">Use Torch Mode</string>
+    <string name="useFlashMode">Utilisez le mode Flash</string>
 </resources>

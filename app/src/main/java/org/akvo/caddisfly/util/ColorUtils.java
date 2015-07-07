@@ -23,6 +23,7 @@ import android.util.Pair;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
@@ -37,7 +38,7 @@ public final class ColorUtils {
 
     private static final int GRAY_TOLERANCE = 10;
 
-    private static final double MAX_COLOR_DISTANCE = 70.0;
+    private static final double MAX_COLOR_DISTANCE = 30.0;
 
     private ColorUtils() {
     }
@@ -64,6 +65,13 @@ public final class ColorUtils {
         return bundle;
     }
 
+    /**
+     * Get the most common color from the bitmap
+     *
+     * @param bitmap       The bitmap from which to extract the color
+     * @param sampleLength The max length of the image to traverse
+     * @return The extracted color information
+     */
     private static ColorInfo getColorFromBitmap(Bitmap bitmap, int sampleLength) {
         int highestCount = 0;
         //int goodPixelCount = 0;
@@ -82,18 +90,17 @@ public final class ColorUtils {
 
                 for (int j = 0; j < Math.min(bitmap.getHeight(), sampleLength); j++) {
 
-                    int rgb = bitmap.getPixel(i, j);
-                    int[] rgbArr = ColorUtils.getRGB(rgb);
+                    int color = bitmap.getPixel(i, j);
 
-                    if (ColorUtils.isNotGray(rgbArr)) {
+                    if (ColorUtils.isNotGray(color)) {
                         //totalPixels++;
 
-                        counter = m.get(rgb);
+                        counter = m.get(color);
                         counter++;
-                        m.put(rgb, counter);
+                        m.put(color, counter);
 
                         if (counter > highestCount) {
-                            commonColor = rgb;
+                            commonColor = color;
                             highestCount = counter;
                         }
                     }
@@ -135,12 +142,14 @@ public final class ColorUtils {
 
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
-        double value = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange);
+        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange);
 
-        if (value < 0) {
+        if (colorCompareInfo.getResult() < 0) {
             bundle.putDouble(Config.RESULT_VALUE_KEY, -1); //NON-NLS
         } else {
-            bundle.putDouble(Config.RESULT_VALUE_KEY, value);
+            bundle.putDouble(Config.RESULT_VALUE_KEY, colorCompareInfo.getResult());
+            bundle.putInt("MatchedColor", colorCompareInfo.getMatchedColor());
+            bundle.putDouble("Distance", colorCompareInfo.getDistance());
         }
 
         bundle.putString("color",
@@ -148,9 +157,15 @@ public final class ColorUtils {
                         Color.green(photoColor.getColor()),
                         Color.blue(photoColor.getColor()))
         );
-
     }
 
+    /**
+     * Computes the Euclidean distance between the two colors
+     *
+     * @param color     the first color
+     * @param tempColor the color to compare with
+     * @return the distance between the two colors
+     */
     public static double getDistance(int color, int tempColor) {
         double red, green, blue;
 
@@ -162,39 +177,46 @@ public final class ColorUtils {
     }
 
     /**
-     * Compares the color to all colors in the color range and finds the nearest matching color
+     * Compares the colorToFind to all colors in the colorToFind range and finds the nearest matching colorToFind
      *
-     * @param color      The color to compare
-     * @param colorRange The range of colors from which to return the nearest color
-     * @return A parts per million (ppm) value (color index multiplied by a step unit)
+     * @param colorToFind The colorToFind to compare
+     * @param colorRange  The range of colors from which to return the nearest colorToFind
+     * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
-    private static double getNearestColorFromSwatchRange(int color, ArrayList<ResultRange> colorRange) {
+    private static ColorCompareInfo getNearestColorFromSwatchRange(int colorToFind,
+                                                                   ArrayList<ResultRange> colorRange) {
         double distance = MAX_COLOR_DISTANCE;
-        double nearest = -1;
+        double resultValue = -1;
+        int matchedColor = -1;
 
-        double red, green, blue;
         for (int i = 0; i < colorRange.size(); i++) {
             int tempColor = colorRange.get(i).getColor();
 
-            // compute the Euclidean distance between the two colors
-            red = Math.pow(Color.red(tempColor) - Color.red(color), 2.0);
-            green = Math.pow(Color.green(tempColor) - Color.green(color), 2.0);
-            blue = Math.pow(Color.blue(tempColor) - Color.blue(color), 2.0);
-
-            double temp = Math.sqrt(blue + green + red);
+            double temp = getDistance(tempColor, colorToFind);
 
             if (temp == 0.0) {
-                nearest = colorRange.get(i).getValue();
+                resultValue = colorRange.get(i).getValue();
+                matchedColor = colorRange.get(i).getColor();
                 break;
             } else if (temp < distance) {
                 distance = temp;
-                nearest = colorRange.get(i).getValue();
+                resultValue = colorRange.get(i).getValue();
+                matchedColor = colorRange.get(i).getColor();
             }
         }
 
-        return nearest;
+        return new ColorCompareInfo(resultValue, colorToFind, matchedColor, distance);
     }
 
+    /**
+     * Get the color that lies in between two colors
+     *
+     * @param startColor    The first color
+     * @param endColor      The last color
+     * @param incrementStep Number of expected incremental steps in between the two colors
+     * @param i             The step number at which the color is to be calculated
+     * @return The newly generated color
+     */
     private static int getGradientColor(int startColor, int endColor, int incrementStep, int i) {
         int r = interpolate(Color.red(startColor), Color.red(endColor), incrementStep, i),
                 g = interpolate(Color.green(startColor), Color.green(endColor), incrementStep, i),
@@ -209,25 +231,51 @@ public final class ColorUtils {
         return (int) result;
     }
 
+    /**
+     * Convert color value to RGB string
+     *
+     * @param color The color to convert
+     * @return The rgb value as string
+     */
     public static String getColorRgbString(int color) {
         return String.format("%d  %d  %d",
                 Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    private static int[] getRGB(int pixel) {
+    /**
+     * Get RGB array for a given color
+     *
+     * @param color The color
+     * @return The RGB array for the given color
+     */
+    private static int[] getRGB(int color) {
 
-        int red = (pixel >> 16) & 0xff;
-        int green = (pixel >> 8) & 0xff;
-        int blue = (pixel) & 0xff;
+        int red = (color >> 16) & 0xff;
+        int green = (color >> 8) & 0xff;
+        int blue = (color) & 0xff;
 
         return new int[]{red, green, blue};
     }
 
-    private static boolean isNotGray(int[] rgb) {
+    /**
+     * Checks if a given color is not close to gray color
+     *
+     * @param color The color to evaluate
+     * @return True if the color is not gray else False
+     */
+    private static boolean isNotGray(int color) {
+        int[] rgb = ColorUtils.getRGB(color);
+
         return Math.abs(rgb[0] - rgb[1]) > GRAY_TOLERANCE
                 || Math.abs(rgb[0] - rgb[2]) > GRAY_TOLERANCE;
     }
 
+    /**
+     * Auto generate the color swatches for the ranges of the given test type
+     *
+     * @param testInfo The test object
+     * @return The list of generated color swatches
+     */
     @SuppressWarnings("SameParameterValue")
     public static List<Pair<Double, Integer>> autoGenerateColors(TestInfo testInfo) {
 
@@ -249,11 +297,23 @@ public final class ColorUtils {
         return list;
     }
 
+    /**
+     * Convert rgb string color to color
+     *
+     * @param rgb The rgb string representation of the color
+     * @return An Integer color value
+     */
     public static Integer getColorFromRgb(String rgb) {
         String[] rgbArray = rgb.split("\\s+");
         return Color.rgb(Integer.valueOf(rgbArray[0]), Integer.valueOf(rgbArray[1]), Integer.valueOf(rgbArray[2]));
     }
 
+    /**
+     * Get the brightness of a given color
+     *
+     * @param color The color
+     * @return The brightness value
+     */
     public static int getBrightness(int color) {
         int r = Color.red(color);
         int g = Color.green(color);

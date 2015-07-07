@@ -39,23 +39,23 @@
             android:id="@+id/buttonColorExtract"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:background="#ffffff"
             android:clickable="false"
             android:focusable="false" />
 
+        <Button
+            android:id="@+id/buttonSwatchColor"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:background="#00000000"
+            android:clickable="false"
+            android:focusable="false" />
+
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/textResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        tools:text="Fluoride : 1.0" />
 
     <TextView
         android:id="@+id/rgbValue"
@@ -63,7 +63,24 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         tools:text="rgb: 255 255 255" />
+
+    <TextView
+        android:id="@+id/textDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        tools:text="Distance : 10" />
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        tools:text="Fluoride : 1.0" />
 
     <TextView
         android:id="@+id/textDimension"

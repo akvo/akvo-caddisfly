@@ -33,8 +33,8 @@
             android:key="@string/autoFocusKey"
             android:title="@string/autoFocus" />
         <CheckBoxPreference
-            android:key="@string/useTorchModeKey"
-            android:title="@string/useTorchMode" />
+            android:key="@string/useFlashModeKey"
+            android:title="@string/useFlashMode" />
         <CheckBoxPreference
             android:key="@string/ignoreShakeKey"
             android:title="@string/ignoreShakeDuringAnalysis" />

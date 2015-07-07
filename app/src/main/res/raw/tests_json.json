@@ -1,72 +1,59 @@
 {
-    "tests": {
-        "test": [
-            {
-                "name":[
-                            { "en": "Fluoride"},
-                            { "fr": "Fluorure"},
-                            { "ar": "فلوريد"},
-                            { "hi": "फ्लोराइड"},
-                  {"kn": "ಫ್ಲೋರೈಡ್"}
-                        ],
-                "type": "0",
-                "code": "fluor",
-                "unit": "ppm",
-              "ranges": "0,0.5,1,1.5,2",
-                "dilutions":"0,50,75"
-            },
-            {
-                "name":[
-                            { "en":"Total Chlorine" },
-                            { "fr": "Chlore Total"},
-                            { "kn": "ಒಟ್ಟು ಕ್ಲೋರಿನ್"},
-                            { "hi": "कुल क्लोरीन"},
-                            { "ar": "إجمالي الكلور"}
-                ],
-                "type": "0",
-                "code":"totcl",
-                "unit":"ppm",
-              "ranges": "0,0.1,0.5,0.8,1.0"
-            },
-            {
-                "name":[
-                            { "en":"Free Chlorine" },
-                            { "fr": "Chlore Libre"},
-                            { "kn": "ಉಚಿತ ಕ್ಲೋರಿನ್" },
-                            { "hi": "मुक्त क्लोरीन" },
-                            { "ar": "الكلور الحر" }
-                ],
-                "type": "0",
-                "code":"frecl",
-                "unit":"ppm",
-              "ranges": "0,0.1,0.5,0.8,1.0"
-            },
-            {
-                "name": [
-                            { "en": "Electrical Conductivity"},
-                            { "fr": "Conductivité électrique"},
-                            { "ar": "الموصلية الكهربائية"},
-                            { "hi": "विद्युत चालकता"},
-                            { "kn": "ವಿದ್ಯುತ್ ವಾಹಕ"}
-                ],
-                "type": "1",
-                "code": "econd",
-                "unit": "μS/cm",
-              "ranges": "0"
-            },
-          {
-            "name": [
-              {"en": "EC Temperature"},
-              {"fr": "CE Température"},
-              {"ar": "EC درجة الحرارة"},
-              {"hi": "EC तापमान"},
-              {"kn": "EC ತಾಪಮಾನ"}
-            ],
-            "type": "1",
-            "code": "tempe",
-            "unit": "°C",
-            "ranges": "0"
-          }
-        ]
-    }
+  "tests": {
+    "test": [
+      {
+        "name": [
+          {"en": "Fluoride"},
+          {"fr": "Fluorure"},
+          {"ar": "فلوريد"},
+          {"hi": "फ्लोराइड"},
+          {"kn": "ಫ್ಲೋರೈಡ್"}
+        ],
+        "type": "0",
+        "code": "fluor",
+        "unit": "ppm",
+        "ranges": "0,0.5,1,1.5,2",
+        "dilutions": "0,50,75"
+      },
+      {
+        "name": [
+          {"en": "Free Chlorine"},
+          {"fr": "Chlore Libre"},
+          {"kn": "ಉಚಿತ ಕ್ಲೋರಿನ್"},
+          {"hi": "मुक्त क्लोरीन"},
+          {"ar": "الكلور الحر"}
+        ],
+        "type": "0",
+        "code": "chlor",
+        "unit": "ppm",
+        "ranges": "0,0.1,0.5,0.8,1.0"
+      },
+      {
+        "name": [
+          {"en": "Electrical Conductivity"},
+          {"fr": "Conductivité électrique"},
+          {"ar": "الموصلية الكهربائية"},
+          {"hi": "विद्युत चालकता"},
+          {"kn": "ವಿದ್ಯುತ್ ವಾಹಕ"}
+        ],
+        "type": "1",
+        "code": "econd",
+        "unit": "μS/cm",
+        "ranges": "0"
+      },
+      {
+        "name": [
+          {"en": "EC Temperature"},
+          {"fr": "CE Température"},
+          {"ar": "EC درجة الحرارة"},
+          {"hi": "EC तापमान"},
+          {"kn": "EC ತಾಪಮಾನ"}
+        ],
+        "type": "1",
+        "code": "tempe",
+        "unit": "°C",
+        "ranges": "0"
+      }
+    ]
+  }
 }

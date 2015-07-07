@@ -42,7 +42,8 @@ public class VerboseResultFragment extends DialogFragment {
     private String mDimension;
     private Fragment mParentFragment;
 
-    public static VerboseResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap, String dimension, Fragment parentFragment) {
+    public static VerboseResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
+                                                    String dimension, Fragment parentFragment) {
         VerboseResultFragment fragment = new VerboseResultFragment();
         fragment.mExtractBitmap = extractBitmap;
         fragment.mPhotoBitmap = photoBitmap;
@@ -65,8 +66,11 @@ public class VerboseResultFragment extends DialogFragment {
 
         TextView textResult = (TextView) view.findViewById(R.id.textResult);
         Button buttonColorExtract = (Button) view.findViewById(R.id.buttonColorExtract);
+        Button buttonSwatchColor = (Button) view.findViewById(R.id.buttonSwatchColor);
+
         TextView textColorRgb = (TextView) view.findViewById(R.id.rgbValue);
         TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
+        TextView textDistance = (TextView) view.findViewById(R.id.textDistance);
 
         imageExtract.setImageBitmap(mExtractBitmap);
         imagePhoto.setImageBitmap(mPhotoBitmap);
@@ -85,10 +89,13 @@ public class VerboseResultFragment extends DialogFragment {
 
         if (result > -1) {
             textResult.setText(String.format("%s : %.2f %s", mainApp.currentTestInfo.getName("en"), result, mainApp.currentTestInfo.getUnit()));
+            textDistance.setText(String.format("distance: %.2f", resultValue.getDouble("Distance")));
+            buttonSwatchColor.setBackgroundColor(resultValue.getInt("MatchedColor", 0));
         }
         buttonColorExtract.setBackgroundColor(color);
 
         textColorRgb.setText(String.format("rgb: %s", ColorUtils.getColorRgbString(color)));
+
         return view;
     }
 

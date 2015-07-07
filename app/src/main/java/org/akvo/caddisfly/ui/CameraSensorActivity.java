@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -59,7 +58,6 @@ import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -338,15 +336,17 @@ public class CameraSensorActivity extends AppCompatActivity
 
     private void getResult(Bitmap bitmap) {
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+//        byte[] croppedData;
+//
+//        croppedData = bos.toByteArray();
+//
+//        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        byte[] croppedData;
-
-        croppedData = bos.toByteArray();
-
-        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
-        Bundle bundle = ColorUtils.getPpmValue(croppedBitmap, ((MainApp) getApplicationContext()).currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap,
+                ((MainApp) getApplicationContext()).currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
 //        bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
@@ -360,7 +360,7 @@ public class CameraSensorActivity extends AppCompatActivity
 
         results.add(new Pair<>("RGB 5 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY, -1)));
 
-        Result resultInfo = new Result(result, color, croppedBitmap, results);
+        Result resultInfo = new Result(result, color, bitmap, results);
 
         mResults.add(resultInfo);
 

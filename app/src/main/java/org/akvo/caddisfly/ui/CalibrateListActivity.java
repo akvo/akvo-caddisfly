@@ -223,7 +223,9 @@ public class CalibrateListActivity extends AppCompatActivity
                             final StringBuilder exportList = new StringBuilder();
 
                             for (ResultRange range : mainApp.currentTestInfo.getRanges()) {
-                                exportList.append(range.getValue()).append("=").append(ColorUtils.getColorRgbString(range.getColor()));
+                                exportList.append(String.format("%.2f", range.getValue()))
+                                        .append("=")
+                                        .append(ColorUtils.getColorRgbString(range.getColor()));
                                 exportList.append('\n');
                             }
 

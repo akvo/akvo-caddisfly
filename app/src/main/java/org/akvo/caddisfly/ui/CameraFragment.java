@@ -136,12 +136,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-//        if (!mPreviewOnly) {
-//            dialog.setTitle(R.string.analysisInProgress);
-//        } else {
-//            dialog.setTitle(R.string.cameraPreview);
-//        }
         return dialog;
     }
 
@@ -285,8 +279,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
         private Camera mCamera;
 
-        private Camera.Size mPreviewSize;
-
         private List<Camera.Size> mSupportedPreviewSizes;
 
         private List<String> mSupportedFlashModes;
@@ -344,12 +336,13 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
             List<String> focusModes = parameters.getSupportedFocusModes();
             if (!PreferencesUtils.getBoolean(getContext(), R.string.autoFocusKey, false)) {
 
-                // Attempt to set focus to infinity if supported
-                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
-                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-                } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
-                }
+                } else
+                    // Attempt to set focus to infinity if supported
+                    if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+                        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+                    }
             } else {
 
                 // Force auto focus as per preference
@@ -363,21 +356,23 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
             Camera.Size mSize;
             for (Camera.Size size : sizes) {
                 Log.i("Caddisfly", "Available resolution: " + size.width + " " + size.height);
-                if (size.width > 800 && size.width < 1400) {
+                if (size.width > 400 && size.width < 1000) {
                     mSize = size;
                     parameters.setPictureSize(mSize.width, mSize.height);
                     break;
                 }
             }
-            if (mSupportedFlashModes != null && mSupportedFlashModes
-                    .contains(Camera.Parameters.FLASH_MODE_ON)) {
-                if (mPreviewOnly || PreferencesUtils.getBoolean(getContext(), R.string.useTorchModeKey, false)) {
-                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            if (mSupportedFlashModes != null) {
+                if (mPreviewOnly || !PreferencesUtils.getBoolean(getContext(), R.string.useFlashModeKey, false)) {
+                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    }
                 } else {
-                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                    }
                 }
             }
-
 
             mCamera.setDisplayOrientation(90);
             mCamera.setParameters(parameters);
@@ -412,9 +407,15 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
-                if (mPreviewSize != null) {
-                    Camera.Size previewSize = mPreviewSize;
-                    parameters.setPreviewSize(previewSize.width, previewSize.height);
+                List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+
+                Camera.Size mSize;
+                for (Camera.Size size : sizes) {
+                    if (size.width > 400 && size.width < 1000) {
+                        mSize = size;
+                        parameters.setPictureSize(mSize.width, mSize.height);
+                        break;
+                    }
                 }
 
                 mCamera.setParameters(parameters);
@@ -422,39 +423,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-            final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-
-            setMeasuredDimension(width, height);
-
-            if (mSupportedPreviewSizes != null) {
-                mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-            }
-        }
-
-        private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int width, int height) {
-            Camera.Size optimalSize = null;
-
-            final double ASPECT_TOLERANCE = 0.1;
-            double targetRatio = (double) height / width;
-
-            for (Camera.Size size : sizes) {
-
-                if (size.height != width) {
-                    continue;
-                }
-                double ratio = (double) size.width / size.height;
-                if (ratio <= targetRatio + ASPECT_TOLERANCE
-                        && ratio >= targetRatio - ASPECT_TOLERANCE) {
-                    optimalSize = size;
-                }
-            }
-
-            return optimalSize;
         }
     }
 
@@ -487,7 +455,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                         verboseResultFragment.setCancelable(true);
                         verboseResultFragment.show(ft, "resultDialog");
 
-                        //AlertUtils.showError(getActivity(), R.string.app_name, "Result", ImageUtils.getBitmap(bytes), R.string.ok, null, null);
                     } else {
                         pictureCallback.onPictureTaken(bytes, camera);
                         final Handler handler = new Handler();
