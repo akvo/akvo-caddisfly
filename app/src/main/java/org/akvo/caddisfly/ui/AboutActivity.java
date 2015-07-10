@@ -33,7 +33,7 @@ import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private boolean mDeveloperMode;
+    private boolean mDiagnosticMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class AboutActivity extends AppCompatActivity {
 
         ApiUtils.lockScreenOrientation(this);
 
-        mDeveloperMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
+        mDiagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
@@ -53,13 +53,13 @@ public class AboutActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if (!mDeveloperMode) {
+                if (!mDiagnosticMode) {
                     clickCount++;
                     if (clickCount > 9) {
                         clickCount = 0;
-                        Toast.makeText(getBaseContext(), getString(R.string.developerModeEnabled), Toast.LENGTH_LONG).show();
-                        PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, true);
-                        mDeveloperMode = true;
+                        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeEnabled), Toast.LENGTH_LONG).show();
+                        PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, true);
+                        mDiagnosticMode = true;
                     }
                 }
             }

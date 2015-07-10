@@ -137,21 +137,24 @@ public class CameraSensorActivity extends AppCompatActivity
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        final boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
+
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake() {
-                if (!mIgnoreShake && !mWaitingForStillness && mCameraFragment != null) {
-                    mWaitingForStillness = true;
-                    mViewAnimator.showNext();
-                    if (mCameraFragment != null) {
-                        try {
-                            ((CameraFragment) mCameraFragment).stopCamera();
-                            mCameraFragment.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        showError(getString(R.string.errorTestInterrupted), null);
+                if ((diagnosticMode && mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
+                    return;
+                }
+                mWaitingForStillness = true;
+                mViewAnimator.showNext();
+                if (mCameraFragment != null) {
+                    try {
+                        ((CameraFragment) mCameraFragment).stopCamera();
+                        mCameraFragment.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                    showError(getString(R.string.errorTestInterrupted), null);
                 }
             }
         }, new ShakeDetector.OnNoShakeListener() {
@@ -551,18 +554,18 @@ public class CameraSensorActivity extends AppCompatActivity
         intent.putExtra("response", String.valueOf(result));
         setResult(Activity.RESULT_OK, intent);
         mTestCompleted = true;
-        boolean developerMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.developerModeKey, false);
+        boolean diagnosticMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
 
         if (isCalibration && color != 0) {
             sound.playShortResource(this, R.raw.done);
-            if (developerMode) {
+            if (diagnosticMode) {
                 ShowVerboseError(false, result, color, true);
             } else {
                 finish();
             }
         } else {
             if (result < 0 || color == 0) {
-                if (developerMode) {
+                if (diagnosticMode) {
                     sound.playShortResource(this, R.raw.err);
                     ShowVerboseError(true, 0, color, isCalibration);
                 } else {
@@ -570,7 +573,7 @@ public class CameraSensorActivity extends AppCompatActivity
                 }
             } else {
 
-                if (developerMode) {
+                if (diagnosticMode) {
                     sound.playShortResource(this, R.raw.done);
                     ShowVerboseError(false, result, color, false);
                 } else {

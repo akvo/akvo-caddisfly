@@ -82,10 +82,10 @@ public class SettingsActivity extends Activity
                 .replace(R.id.content2, new PreferencesOtherFragment())
                 .commit();
 
-        boolean developerMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
-        if (developerMode) {
+        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
+        if (diagnosticMode) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.content3, new PreferencesDeveloperFragment())
+                    .add(R.id.content3, new PreferencesDiagnosticFragment())
                     .commit();
         }
     }

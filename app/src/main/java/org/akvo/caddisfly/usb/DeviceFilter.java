@@ -349,6 +349,7 @@ public final class DeviceFilter {
                     || (filter.mSerialNumber == null && mSerialNumber != null)) {
                 return (false);
             }
+            //noinspection RedundantIfStatement
             if ((filter.mManufacturerName != null && !mManufacturerName
                     .equals(filter.mManufacturerName)) || (filter.mProductName != null && !mProductName
                     .equals(filter.mProductName)) || (filter.mSerialNumber != null && !mSerialNumber

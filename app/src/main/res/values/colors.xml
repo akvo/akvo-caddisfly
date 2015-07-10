@@ -23,5 +23,6 @@
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
     <color name="text_tertiary">#ffffffff</color>
+    <color name="diagnostic">#ff0000</color>
 
 </resources>

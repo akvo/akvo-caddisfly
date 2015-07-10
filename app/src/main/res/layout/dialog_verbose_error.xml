@@ -21,50 +21,86 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            android:id="@+id/imageExtract"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@null"
-            android:scaleType="fitXY" />
-
-        <Button
-            android:id="@+id/buttonColorExtract"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:background="#ffffff"
-            android:clickable="false"
-            android:focusable="false" />
-
-        <Button
-            android:id="@+id/buttonSwatchColor"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:background="#00000000"
-            android:clickable="false"
-            android:focusable="false" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/rgbValue"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        tools:text="rgb: 255 255 255" />
+        android:layout_marginTop="15dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:clickable="false"
+            android:columnCount="3"
+            android:focusable="false"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:id="@+id/imageExtract"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo" />
+
+            <Button
+                android:id="@+id/buttonColorExtract"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="#ffffff"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <Button
+                android:id="@+id/buttonSwatchColor"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="#00000000"
+                android:clickable="false"
+                android:focusable="false" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:clickable="false"
+            android:columnCount="3"
+            android:focusable="false"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <TextView android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/rgbValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                tools:text="255 255 255" />
+
+            <TextView
+                android:id="@+id/swatchRgbValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                tools:text="255 255 255" />
+
+        </TableRow>
+    </TableLayout>
+
 
     <TextView
         android:id="@+id/textDistance"

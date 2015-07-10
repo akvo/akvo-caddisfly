@@ -74,13 +74,13 @@ public final class ColorUtils {
      */
     private static ColorInfo getColorFromBitmap(Bitmap bitmap, int sampleLength) {
         int highestCount = 0;
-        //int goodPixelCount = 0;
-
         int commonColor = -1;
-        //int totalPixels = 0;
         int counter;
-        //double quality = 0;
-        //int colorsFound;
+
+        int goodPixelCount = 0;
+        int totalPixels = 0;
+        double quality = 0;
+        int colorsFound;
 
         try {
 
@@ -107,28 +107,33 @@ public final class ColorUtils {
                 }
             }
 
-//            colorsFound = m.size();
-            //int goodColors = 0;
 
-//            for (int i = 0; i < colorsFound; i++) {
-//                double distance = getDistance(commonColor, m.keyAt(i));
-//
-//                if (distance < 10) {
-//                    goodColors++;
-//                    goodPixelCount += m.valueAt(i);
-//                }
-//            }
+            // check the quality of the photo
+            colorsFound = m.size();
+            int goodColors = 0;
+
+            for (int i = 0; i < colorsFound; i++) {
+                double distance = getDistance(commonColor, m.keyAt(i));
+
+                if (distance < 10) {
+                    goodColors++;
+                    goodPixelCount += m.valueAt(i);
+                }
+            }
+
+            double quality1 = ((double) goodPixelCount / totalPixels) * 100d;
+            double quality2 = ((double) (colorsFound - goodColors) / colorsFound) * 100d;
+            quality = Math.min(quality1, (100 - quality2));
+
 
             m.clear();
-            //double quality1 = ((double) goodPixelCount / totalPixels) * 100d;
-            //double quality2 = ((double) (colorsFound - goodColors) / colorsFound) * 100d;
-            //quality = Math.min(quality1, (100 - quality2));
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new ColorInfo(commonColor);
+        return new ColorInfo(commonColor, quality);
     }
 
     /**
@@ -174,6 +179,17 @@ public final class ColorUtils {
         blue = Math.pow(Color.blue(tempColor) - Color.blue(color), 2.0);
 
         return Math.sqrt(blue + green + red);
+    }
+
+    /**
+     * Check if the two colors are the same
+     *
+     * @param color1 The first Color
+     * @param color2 The second Color
+     * @return True if duplicates otherwise False
+     */
+    public static boolean areColorsSimilar(int color1, int color2) {
+        return getDistance(color1, color2) <= MAX_COLOR_DISTANCE;
     }
 
     /**

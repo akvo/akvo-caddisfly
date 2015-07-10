@@ -1,3 +1,12 @@
+v0.71 alpha
+-----------
+1. Change in camera take picture to fix issue with Xiaomi phone
+2. Changed Developer mode title to Diagnostic mode
+3. Change App language based on Akvo Flow app language
+4. Moved language option in settings to Diagnostic settings
+5. Diagnostic mode: Changed action bar color in diagnostic mode
+6. Diagnostic mode: Further additions to diagnostic camera preview information
+
 v0.70 alpha
 -----------
 1. Default to Torch Mode (Experimental)
@@ -5,7 +14,7 @@ v0.70 alpha
 3. Dev mode: torch mode option changed to Use Flash Mode
 4. Dev mode: More info on long click on camera preview
 5. Bug Fix: Saving and loading of calibration files
-6. Bug Fix: Reduced camera photo resolution to accomodate Asus phones
+6. Bug Fix: Reduced camera photo resolution to accommodate Asus phones
 7. Revised json file
 
 v0.69 alpha

@@ -40,19 +40,19 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreferencesDeveloperFragment extends PreferenceFragment {
+public class PreferencesDiagnosticFragment extends PreferenceFragment {
 
     private ListView list;
     private USBMonitor mUSBMonitor;
 
-    public PreferencesDeveloperFragment() {
+    public PreferencesDiagnosticFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_developer);
+        addPreferencesFromResource(R.xml.pref_diagnostic);
     }
 
     @Override
@@ -73,7 +73,6 @@ public class PreferencesDeveloperFragment extends PreferenceFragment {
                 }
             });
         }
-
 
         Preference externalCameraPreviewPreference = findPreference("externalCamera");
         if (externalCameraPreviewPreference != null) {

@@ -46,6 +46,7 @@ public class Config {
     public static final String TRAINING_VIDEO_LINK
             = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
 
+    //todo: remove ternup folder
     public static final String CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
     //public static final String CALIBRATE_FOLDER_NAME = "/org.akvo.caddisfly/saved/";
 

@@ -69,6 +69,7 @@ public class VerboseResultFragment extends DialogFragment {
         Button buttonSwatchColor = (Button) view.findViewById(R.id.buttonSwatchColor);
 
         TextView textColorRgb = (TextView) view.findViewById(R.id.rgbValue);
+        TextView swatchRgbValue = (TextView) view.findViewById(R.id.swatchRgbValue);
         TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
         TextView textDistance = (TextView) view.findViewById(R.id.textDistance);
 
@@ -86,15 +87,18 @@ public class VerboseResultFragment extends DialogFragment {
         Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap, mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
         double result = resultValue.getDouble(Config.RESULT_VALUE_KEY, -1);
         int color = resultValue.getInt(Config.RESULT_COLOR_KEY, 0);
+        int swatchColor = resultValue.getInt("matchedColor", 0);
 
         if (result > -1) {
-            textResult.setText(String.format("%s : %.2f %s", mainApp.currentTestInfo.getName("en"), result, mainApp.currentTestInfo.getUnit()));
+            textResult.setText(String.format("%s : %.2f %s", mainApp.currentTestInfo.getName("en"),
+                    result, mainApp.currentTestInfo.getUnit()));
             textDistance.setText(String.format("distance: %.2f", resultValue.getDouble("Distance")));
             buttonSwatchColor.setBackgroundColor(resultValue.getInt("MatchedColor", 0));
         }
         buttonColorExtract.setBackgroundColor(color);
 
         textColorRgb.setText(String.format("rgb: %s", ColorUtils.getColorRgbString(color)));
+        swatchRgbValue.setText(String.format("rgb: %s", ColorUtils.getColorRgbString(swatchColor)));
 
         return view;
     }

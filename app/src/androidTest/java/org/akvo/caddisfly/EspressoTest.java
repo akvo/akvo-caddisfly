@@ -37,6 +37,7 @@ import org.hamcrest.TypeSafeMatcher;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -181,56 +182,6 @@ public class EspressoTest
         Espresso.pressBack();
     }
 
-    public void testLanguage() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("العربية"))).perform(click());
-    }
-
-    public void testLanguage2() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("हिंदी"))).perform(click());
-    }
-
-    public void testLanguage3() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
-    }
-
-    public void testLanguage4() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("Français"))).perform(click());
-    }
-
-    public void testLanguage5() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("English"))).perform(click());
-    }
-
     public void testStartASurvey() {
 
         onView(withId(R.id.action_settings)).perform(click());
@@ -337,7 +288,7 @@ public class EspressoTest
 
     }
 
-    public void testDeveloperMode() {
+    public void testDiagnosticMode() {
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -369,9 +320,94 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.disableDeveloperButton)).perform(click());
 
-        onView(withId(R.id.disableDeveloperButton)).check(matches(not(isDisplayed())));
+    }
+
+    public void testLanguage() {
+
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .check(matches(not(isDisplayed())))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+                .perform(scrollTo());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("العربية"))).perform(click());
+    }
+
+    public void testLanguage2() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .check(matches(not(isDisplayed())))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+                .perform(scrollTo());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("हिंदी"))).perform(click());
+    }
+
+    public void testLanguage3() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .check(matches(not(isDisplayed())))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+                .perform(scrollTo());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
+    }
+
+    public void testLanguage4() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .check(matches(not(isDisplayed())))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+                .perform(scrollTo());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("Français"))).perform(click());
+    }
+
+    public void testLanguage5() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .check(matches(not(isDisplayed())))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+                .perform(scrollTo());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("English"))).perform(click());
+    }
+
+    public void testLeaveDiagnosticMode(){
+        onView(withId(R.id.disableDiagnosticButton)).perform(click());
+
+        onView(withId(R.id.disableDiagnosticButton)).check(matches(not(isDisplayed())));
 
     }
 

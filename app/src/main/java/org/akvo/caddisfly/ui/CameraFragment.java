@@ -159,23 +159,30 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
         progressDialog.getWindow().setGravity(Gravity.BOTTOM);
         progressDialog.show();
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                takePicture();
-            }
-        }, Config.INITIAL_DELAY);
-
+        takePicture(mPreviewOnly);
     }
 
-    private void takePicture() {
+    private void takePicture(boolean isPreview) {
 
+        mPreview.setCamera(mCamera);
         if (getActivity() != null) {
             mPreview.startCameraPreview();
-            PictureCallback localCallback = new PictureCallback();
             try {
-                mCamera.takePicture(null, null, localCallback);
+
+                if (isPreview) {
+                    PictureCallback localCallback = new PictureCallback();
+                    mCamera.takePicture(null, null, localCallback);
+                } else {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            PictureCallback localCallback = new PictureCallback();
+                            mCamera.takePicture(null, null, localCallback);
+                        }
+                    }, Config.INITIAL_DELAY);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -212,7 +219,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                 preview.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        takePicture();
+                        takePicture(mPreviewOnly);
                         return false;
                     }
                 });
@@ -334,7 +341,14 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
             }
 
             List<String> focusModes = parameters.getSupportedFocusModes();
-            if (!PreferencesUtils.getBoolean(getContext(), R.string.autoFocusKey, false)) {
+            boolean diagnosticMode = PreferencesUtils.getBoolean(getContext(), R.string.diagnosticModeKey, false);
+            if (diagnosticMode && PreferencesUtils.getBoolean(getContext(), R.string.autoFocusKey, false)) {
+
+                // Force auto focus as per preference
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
+            } else {
 
                 if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
@@ -343,12 +357,6 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                     if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
                         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
                     }
-            } else {
-
-                // Force auto focus as per preference
-                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-                }
             }
 
             List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
@@ -363,13 +371,13 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                 }
             }
             if (mSupportedFlashModes != null) {
-                if (mPreviewOnly || !PreferencesUtils.getBoolean(getContext(), R.string.useFlashModeKey, false)) {
-                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    }
-                } else {
+                if (diagnosticMode && PreferencesUtils.getBoolean(getContext(), R.string.useFlashModeKey, false)) {
                     if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                    }
+                } else {
+                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     }
                 }
             }
@@ -457,14 +465,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
                     } else {
                         pictureCallback.onPictureTaken(bytes, camera);
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                takePicture();
-                            }
-                        }, Config.INITIAL_DELAY);
-
+                        takePicture(mPreviewOnly);
                     }
                 } else {
                     pictureCallback.onPictureTaken(bytes, camera);

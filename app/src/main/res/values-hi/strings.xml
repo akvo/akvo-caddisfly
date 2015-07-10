@@ -82,13 +82,13 @@
     <string name="twentyFivePercentSampleWater">25% पानी के नमूने</string>
     <string name="ecValueAt25Celcius">EC %s μS/cm</string>
     <string name="enableUserMode">Enable User Mode</string>
-    <string name="developerModeEnabled">Developer mode enabled</string>
-    <string name="developerModeDisabled">Developer mode disabled</string>
+    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
+    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
     <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 50% sample water</string>
     <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 25% sample water</string>
     <string name="general">General</string>
     <string name="other">Other</string>
-    <string name="developer">Developer</string>
+    <string name="diagnostics">Diagnostics</string>
     <string name="next">Next</string>
     <string name="notConnected">Sensor not Connected</string>
     <string name="calibrating">Calibrating</string>
@@ -116,7 +116,7 @@
     <string name="noSound">No Sound</string>
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-    <string name="developerAbbreviated">Dev</string>
+    <string name="diagnosticAbbreviated">Diag</string>
     <string name="useFlashMode">Use Flash Mode</string>
 
 

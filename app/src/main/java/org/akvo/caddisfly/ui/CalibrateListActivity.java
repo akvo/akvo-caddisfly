@@ -70,8 +70,8 @@ public class CalibrateListActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        boolean developerMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
-        if (developerMode) {
+        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
+        if (diagnosticMode) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;

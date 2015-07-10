@@ -78,8 +78,8 @@
 
     <!--About Screen-->
     <string name="enableUserMode">Mode utilisateur</string>
-    <string name="developerModeEnabled">Mode développeur activé</string>
-    <string name="developerModeDisabled">Mode développeur désactivée</string>
+    <string name="diagnosticModeEnabled">Mode de diagnostic activé</string>
+    <string name="diagnosticModeDisabled">Mode diagnostic désactivée</string>
 
     <!--App update-->
     <string name="updateApp">"Mise à jour Akvo Caddisfly"</string>
@@ -106,7 +106,7 @@
     <string name="twentyFivePercentSampleWater">25% de l\'eau de l\'échantillon</string>
     <string name="general">"Général"</string>
     <string name="other">"Autre"</string>
-    <string name="developer">"Développeur"</string>
+    <string name="diagnostics">"Diagnostics"</string>
     <string name="next">"Suivant"</string>
     <string name="notConnected">"Capteur non raccordé"</string>
     <string name="calibrating">"Calibrage"</string>
@@ -134,6 +134,6 @@
     <string name="noSound">"Pas De Son"</string>
     <string name="companyOtherName">"Fondation Akvo"</string>
     <string name="copyrightMessage">"Copyright © Stichting Akvo"</string>
-    <string name="developerAbbreviated">"Dév"</string>
+    <string name="diagnosticAbbreviated">"Diag"</string>
     <string name="useFlashMode">Utilisez le mode Flash</string>
 </resources>

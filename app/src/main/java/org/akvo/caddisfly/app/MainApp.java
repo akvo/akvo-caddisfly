@@ -76,10 +76,6 @@ public class MainApp extends Application {
         }
     }
 
-    public void onCreate() {
-        //AnalyticsTrackers.initialize(this);
-    }
-
     public void setSwatches(String testCode) {
         testCode = testCode.toUpperCase();
 

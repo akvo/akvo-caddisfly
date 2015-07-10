@@ -41,9 +41,12 @@ public class SoundPoolPlayer {
 
     public void playShortResource(Context context, int piResource) {
         int iSoundId = mSounds.get(piResource);
-        if (!PreferencesUtils.getBoolean(context, R.string.noSoundKey, false)) {
-            this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
+        boolean diagnosticMode = PreferencesUtils.getBoolean(context, R.string.diagnosticModeKey, false);
+
+        if (diagnosticMode && PreferencesUtils.getBoolean(context, R.string.noSoundKey, false)) {
+            return;
         }
+        this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
     }
 
     public void release() {

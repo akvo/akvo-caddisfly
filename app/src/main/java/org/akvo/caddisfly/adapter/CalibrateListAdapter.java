@@ -86,8 +86,8 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         if (color != 0 && color != -16777216) {
             button.setBackgroundColor(color);
             button.setText("");
-            boolean developerMode = PreferencesUtils.getBoolean(getContext(), R.string.developerModeKey, false);
-            if (developerMode) {
+            boolean diagnosticMode = PreferencesUtils.getBoolean(getContext(), R.string.diagnosticModeKey, false);
+            if (diagnosticMode) {
                 int r = Color.red(color);
                 int g = Color.green(color);
                 int b = Color.blue(color);

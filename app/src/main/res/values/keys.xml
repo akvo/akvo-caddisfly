@@ -22,8 +22,8 @@
 
     <string name="ignoreShakeKey">ignoreShake</string>
     <string name="autoFocusKey">autoFocus</string>
-    <string name="developerModeKey">developerMode</string>
+    <string name="diagnosticModeKey">diagnosticMode</string>
     <string name="showDebugMessages">showDebugMessages</string>
-    <string name="noSoundKey">noSoundKey</string>
-    <string name="useFlashModeKey">useFlashModeKey</string>
+    <string name="noSoundKey">noSound</string>
+    <string name="useFlashModeKey">useFlashMode</string>
 </resources>

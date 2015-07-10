@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mDemoTextView;
     private Boolean external = false;
     private boolean mShouldFinish = false;
+    private String mLanguageCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,17 +107,16 @@ public class MainActivity extends AppCompatActivity {
         mWatchTextView = (TextView) findViewById(R.id.watchTextView);
         mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
-        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDeveloperButton);
+        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDiagnosticButton);
 
         disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), getString(R.string.developerModeDisabled), Toast.LENGTH_LONG).show();
-                PreferencesUtils.setBoolean(getBaseContext(), R.string.developerModeKey, false);
-                checkDeveloperMode();
+                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
+                PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
+                checkDiagnosticMode();
             }
         });
-
     }
 
     @Override
@@ -127,26 +128,39 @@ public class MainActivity extends AppCompatActivity {
         float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
         mDemoTextView.setWidth((int) width);
 
-        checkDeveloperMode();
+        checkDiagnosticMode();
 
-        CheckLocale();
+        CheckLocale(mLanguageCode);
 
     }
 
-    private void checkDeveloperMode() {
-        boolean devMode = PreferencesUtils.getBoolean(this, R.string.developerModeKey, false);
-        if (devMode) {
-            findViewById(R.id.devModeLayout).setVisibility(View.VISIBLE);
+    private void checkDiagnosticMode() {
+        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
+        if (diagnosticMode) {
+            findViewById(R.id.diagnosticModeLayout).setVisibility(View.VISIBLE);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.diagnostic)));
+            }
+
         } else {
-            findViewById(R.id.devModeLayout).setVisibility(View.GONE);
+            if (findViewById(R.id.diagnosticModeLayout).getVisibility() == View.VISIBLE) {
+                Message msg = handler.obtainMessage();
+                handler.sendMessage(msg);
+            }
         }
     }
 
-    private void CheckLocale() {
+    private void CheckLocale(String languageCode) {
         assert getApplicationContext() != null;
 
-        Locale locale = new Locale(
-                PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
+        Locale locale;
+        if (languageCode != null && !languageCode.isEmpty()) {
+            locale = new Locale(languageCode);
+        } else {
+            locale = new Locale(
+                    PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
+        }
+
 //        Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -230,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
             if ("text/plain".equals(type)) { //NON-NLS
                 external = true;
                 mQuestionTitle = getIntent().getStringExtra("questionTitle");
+                mLanguageCode = getIntent().getStringExtra("language");
+
                 String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
                 mainApp.setSwatches(code);
 
@@ -275,6 +291,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        CheckLocale(mLanguageCode);
     }
 
     private void startTest() {
