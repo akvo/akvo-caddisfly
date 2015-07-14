@@ -16,7 +16,6 @@
 
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -80,69 +79,11 @@
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp"
-                    android:text="@string/startSurvey"
-                    android:textAllCaps="true"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:backgroundTint="@color/button_orange"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="@string/startSurvey" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    android:id="@+id/watchTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:alpha="0.7"
-                    android:gravity="end"
-                    android:text="@string/watchVideo"
-                    android:textAlignment="textEnd"
-                    android:textAllCaps="true"
-                    android:textColor="#eefddd44"
-                    android:textSize="15sp"
-                    tools:ignore="UnusedAttribute" />
-
-                <com.software.shell.fab.ActionButton
-                    android:id="@+id/trainingVideoLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginStart="6dp"
-                    android:alpha="0.9"
-                    fab:button_color="@color/button_primary"
-                    fab:button_colorPressed="@color/primary_dark"
-                    fab:image="@drawable/ic_action_play"
-                    fab:shadow_color="#ff096f14"
-                    fab:shadow_xOffset="-.5dp"
-                    fab:shadow_yOffset=".5dp"
-                    fab:show_animation="@anim/fab_roll_from_down" />
-
-                <TextView
-                    android:id="@+id/demoTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:alpha="0.7"
-                    android:text="@string/demonstration"
-                    android:textAllCaps="true"
-                    android:textColor="#eefddd44"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

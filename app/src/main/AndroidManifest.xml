@@ -83,6 +83,7 @@
         <activity
             android:name=".ui.CameraSensorActivity"
             android:label="@string/calibrate"
+            android:parentActivityName=".ui.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.CalibrateListActivity"
@@ -110,9 +111,6 @@
             android:label="@string/calibrate"
             android:parentActivityName=".ui.SettingsActivity"
             android:screenOrientation="nosensor" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

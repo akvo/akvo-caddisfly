@@ -42,14 +42,17 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = mActivity.getLayoutInflater();
-        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_type, parent, false);
+        @SuppressLint("ViewHolder")
 
         TestInfo testInfo = mTestInfoArray[position];
+        View rowView;
 
         //todo: review this code
         if (testInfo.getCode().equals("TEMPE")) {
+            rowView = inflater.inflate(R.layout.row_blank, parent, false);
             rowView.setVisibility(View.GONE);
         } else {
+            rowView = inflater.inflate(R.layout.row_type, parent, false);
             TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
             ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
         }

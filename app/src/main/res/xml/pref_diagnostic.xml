@@ -45,15 +45,5 @@
             android:key="@string/noSoundKey"
             android:title="@string/noSound" />
 
-        <ListPreference
-            android:defaultValue="en"
-            android:dialogTitle="@string/language"
-            android:entries="@array/languages"
-            android:entryValues="@array/language_codes"
-            android:key="@string/languageKey"
-            android:negativeButtonText="@string/cancel"
-            android:summary="%s"
-            android:title="@string/language" />
-
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

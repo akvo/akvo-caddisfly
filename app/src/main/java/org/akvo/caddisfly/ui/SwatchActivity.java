@@ -38,5 +38,9 @@ public class SwatchActivity extends AppCompatActivity {
                     .commit();
 
         }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
+        }
     }
 }

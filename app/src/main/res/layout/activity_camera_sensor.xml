@@ -59,7 +59,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/fab_material_amber_900"
+            android:background="@color/amber"
             android:gravity="center"
             android:padding="7dp"
             android:text="@string/fiftyPercentSampleWater"
@@ -75,20 +75,14 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="70dp"
-            android:visibility="visible">
-
+            android:paddingBottom="70dp">
             <Button
                 android:id="@+id/startButton"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/start"
-                android:textAllCaps="true"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:visibility="visible" />
+                android:backgroundTint="@color/button_orange"
+                android:text="@string/start" />
         </LinearLayout>
     </LinearLayout>
 
@@ -118,7 +112,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/fab_material_amber_900"
+            android:background="@color/amber"
             android:gravity="center"
             android:padding="7dp"
             android:text="@string/fiftyPercentSampleWater"

@@ -52,8 +52,11 @@ import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.io.File;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * An activity representing a list of Calibrate items.
@@ -265,6 +268,17 @@ public class CalibrateListActivity extends AppCompatActivity
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
+    public double stringToDouble(String s) {
+
+        s = s.replaceAll(",", ".");
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        try {
+            return nf.parse(s).doubleValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
 
     private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
@@ -311,9 +325,10 @@ public class CalibrateListActivity extends AppCompatActivity
                                     rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
 
                                     if (rgbList != null) {
+
                                         for (String rgb : rgbList) {
                                             String[] values = rgb.split("=");
-                                            ResultRange range = new ResultRange(Double.valueOf(values[0]), ColorUtils.getColorFromRgb(values[1]));
+                                            ResultRange range = new ResultRange(stringToDouble(values[0]), ColorUtils.getColorFromRgb(values[1]));
                                             swatchList.add(range);
                                         }
                                         (new AsyncTask<Void, Void, Void>() {

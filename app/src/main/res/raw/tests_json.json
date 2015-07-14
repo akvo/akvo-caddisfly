@@ -31,7 +31,9 @@
       {
         "name": [
           {"en": "Electrical Conductivity"},
-          {"fr": "Conductivité électrique"},
+          {
+            "fr": "Conductivité Électrique"
+          },
           {"ar": "الموصلية الكهربائية"},
           {"hi": "विद्युत चालकता"},
           {"kn": "ವಿದ್ಯುತ್ ವಾಹಕ"}

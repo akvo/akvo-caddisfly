@@ -33,10 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.software.shell.fab.ActionButton;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
@@ -44,11 +41,11 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.DateUtils;
-import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -58,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    private TextView mWatchTextView;
-    private TextView mDemoTextView;
+    //    private TextView mWatchTextView;
+//    private TextView mDemoTextView;
     private Boolean external = false;
     private boolean mShouldFinish = false;
     private String mLanguageCode;
@@ -86,16 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        final Context context = this;
-        final ActionButton trainingLinkButton = (ActionButton) findViewById(R.id.trainingVideoLink);
-        trainingLinkButton.playShowAnimation();
-        trainingLinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NetworkUtils.openWebBrowser(context, Config.TRAINING_VIDEO_LINK);
-            }
-        });
-
         Button startSurveyButton = (Button) findViewById(R.id.surveyButton);
         startSurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +91,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mWatchTextView = (TextView) findViewById(R.id.watchTextView);
-        mDemoTextView = (TextView) findViewById(R.id.demoTextView);
+//        final Context context = this;
+//        final ActionButton trainingLinkButton = (ActionButton) findViewById(R.id.trainingVideoLink);
+//        trainingLinkButton.playShowAnimation();
+//        trainingLinkButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NetworkUtils.openWebBrowser(context, Config.TRAINING_VIDEO_LINK);
+//            }
+//        });
+//
+//        mWatchTextView = (TextView) findViewById(R.id.watchTextView);
+//        mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
         final Button disableDeveloperButton = (Button) findViewById(R.id.disableDiagnosticButton);
 
@@ -114,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
                 PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
+
                 checkDiagnosticMode();
             }
         });
@@ -123,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        mWatchTextView.measure(0, 0);
-        mDemoTextView.measure(0, 0);
-        float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
-        mDemoTextView.setWidth((int) width);
+//        mWatchTextView.measure(0, 0);
+//        mDemoTextView.measure(0, 0);
+//        float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
+//        mDemoTextView.setWidth((int) width);
 
         checkDiagnosticMode();
 
@@ -144,8 +142,12 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             if (findViewById(R.id.diagnosticModeLayout).getVisibility() == View.VISIBLE) {
-                Message msg = handler.obtainMessage();
-                handler.sendMessage(msg);
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
+                    findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
+                }
+                //Message msg = handler.obtainMessage();
+                //handler.sendMessage(msg);
             }
         }
     }
@@ -154,14 +156,37 @@ public class MainActivity extends AppCompatActivity {
         assert getApplicationContext() != null;
 
         Locale locale;
-        if (languageCode != null && !languageCode.isEmpty()) {
+        String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
+
+        if (languageCode != null && !languageCode.isEmpty() &&
+                Arrays.asList(supportedLanguages).contains(languageCode)) {
             locale = new Locale(languageCode);
         } else {
-            locale = new Locale(
-                    PreferencesUtils.getString(this, R.string.languageKey, Config.DEFAULT_LOCALE));
+
+            String previousSystemLanguage = PreferencesUtils.getString(this, R.string.systemLanguageKey, "");
+            Locale currentSystemLocale = Locale.getDefault();
+
+            if (!previousSystemLanguage.equals(currentSystemLocale.getLanguage())
+                    && Arrays.asList(supportedLanguages).contains(currentSystemLocale.getLanguage())) {
+                locale = Locale.getDefault();
+                PreferencesUtils.setString(this, R.string.systemLanguageKey, locale.getLanguage());
+                PreferencesUtils.setString(this, R.string.languageKey, locale.getLanguage());
+            } else {
+                languageCode = PreferencesUtils.getString(this, R.string.languageKey, "");
+                if (languageCode.isEmpty()) {
+                    //no language was selected in the settings so use the device language
+                    locale = Locale.getDefault();
+                    Locale currentLocale = getResources().getConfiguration().locale;
+                    if (currentLocale.getLanguage().equals(locale.getLanguage())) {
+                        return;
+                    }
+
+                } else {
+                    locale = new Locale(languageCode);
+                }
+            }
         }
 
-//        Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
@@ -197,10 +222,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 6000);
         }
-
-//        Tracker t =  AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
-//        t.setScreenName("main screen");
-//        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 
@@ -311,8 +332,9 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(
                                     DialogInterface dialogInterface,
                                     int i) {
-                                final Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
-                                intent.putExtra("calibrate", true);
+                                //final Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                                final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
+                                //intent.putExtra("calibrate", true);
                                 startActivity(intent);
                             }
                         }, new DialogInterface.OnClickListener() {
@@ -365,6 +387,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PreferencesUtils.setString(this, R.string.systemLanguageKey, Locale.getDefault().getLanguage());
+    }
+
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;
 
@@ -378,6 +406,4 @@ public class MainActivity extends AppCompatActivity {
             f.recreate();
         }
     }
-
-
 }

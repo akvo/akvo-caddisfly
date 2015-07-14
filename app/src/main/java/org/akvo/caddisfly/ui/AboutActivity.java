@@ -31,6 +31,8 @@ import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
+import java.util.Locale;
+
 public class AboutActivity extends AppCompatActivity {
 
     private boolean mDiagnosticMode;
@@ -59,6 +61,11 @@ public class AboutActivity extends AppCompatActivity {
                         clickCount = 0;
                         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeEnabled), Toast.LENGTH_LONG).show();
                         PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, true);
+
+                        //set the language preference to the current language
+                        Locale currentLocale = getResources().getConfiguration().locale;
+                        PreferencesUtils.setString(getBaseContext(), R.string.languageKey, currentLocale.getLanguage());
+
                         mDiagnosticMode = true;
                     }
                 }

@@ -426,8 +426,6 @@ public class SensorActivity extends AppCompatActivity {
 
         mTemperatureImageView.setVisibility(View.GONE);
         mUnitsTextView.setVisibility(View.GONE);
-
-        //mResultLayout.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mConnectionLayout.setVisibility(View.GONE);
     }

@@ -35,13 +35,20 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="Button">
-        <item name="android:textColor">#fff</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:minWidth">200dp</item>
-        <item name="android:minHeight">50dp</item>
+    <style name="Button" parent="@android:style/Widget.Button">
+        <item name="colorButtonNormal">@color/button_orange</item>
+        <item name="android:colorBackground">@color/button_orange</item>
         <item name="android:background">@drawable/start_button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:minHeight">50dp</item>
     </style>
 
     <style name="width_match_parent_max_tablet">
@@ -49,8 +56,8 @@
     </style>
 
     <style name="Flow.ActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_flow</item>
-        <item name="background">@drawable/ab_solid_flow</item>
+        <item name="elevation">0dp</item>
+        <item name="background">@color/action_bar</item>
         <item name="logo">@drawable/action_logo</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>
         <item name="contentInsetStart">13dp</item>

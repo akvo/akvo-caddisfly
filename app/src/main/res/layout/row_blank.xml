@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
   ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~  This file is part of Akvo Caddisfly
@@ -14,17 +16,7 @@
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="languageKey">language</string>
-    <string name="systemLanguageKey">systemLanguage</string>
-
-    <string name="lastUpdateCheckKey">lastUpdateCheck</string>
-    <string name="updateAvailable">updateAvailable</string>
-
-    <string name="ignoreShakeKey">ignoreShake</string>
-    <string name="autoFocusKey">autoFocus</string>
-    <string name="diagnosticModeKey">diagnosticMode</string>
-    <string name="showDebugMessages">showDebugMessages</string>
-    <string name="noSoundKey">noSound</string>
-    <string name="useFlashModeKey">useFlashMode</string>
-</resources>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"></LinearLayout>

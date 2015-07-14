@@ -38,6 +38,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 
 public class MainApp extends Application {
 
@@ -121,7 +122,10 @@ public class MainApp extends Application {
         MainApp context = ((MainApp) this.getApplicationContext());
 
         for (ResultRange range : testInfo.getRanges()) {
-            int color = PreferencesUtils.getInt(context, String.format("%s-%.2f", testInfo.getCode(), range.getValue()), 0);
+            String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), range.getValue());
+
+            int color = PreferencesUtils.getInt(context, key, 0);
+
 
             range.setColor(color);
         }
@@ -130,7 +134,7 @@ public class MainApp extends Application {
             int startValue = (int) (currentTestInfo.getRange(0).getValue() * 100);
             int endValue = (int) (currentTestInfo.getRange(currentTestInfo.getRanges().size() - 1).getValue() * 100);
             for (int i = startValue; i <= endValue; i += 1) {
-                String key = String.format("%s-%.2f", currentTestInfo.getCode(), (i / 100f));
+                String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (i / 100f));
                 ResultRange range = new ResultRange((double) i / 100,
                         PreferencesUtils.getInt(context, key, 0));
                 currentTestInfo.getSwatches().add(range);
@@ -142,7 +146,8 @@ public class MainApp extends Application {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String colorKey = String.format("%s-%.2f", currentTestInfo.getCode(), range.getValue());
+
+        String colorKey = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), range.getValue());
 
         if (resultColor == 0) {
             editor.remove(colorKey);
@@ -152,9 +157,9 @@ public class MainApp extends Application {
             List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
             for (int i = 0; i < list.size(); i++) {
-                editor.putInt(
-                        String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
-                        (int) ((Pair) list.get(i)).second);
+                String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first);
+
+                editor.putInt(key, (int) ((Pair) list.get(i)).second);
 
             }
 
@@ -168,14 +173,10 @@ public class MainApp extends Application {
      */
     public void saveCalibratedSwatches(ArrayList<ResultRange> rangeList) {
 
-        MainApp context = ((MainApp) this.getApplicationContext());
-        assert context != null;
-
         for (ResultRange range : rangeList) {
-            PreferencesUtils
-                    .setInt(context.getApplicationContext(),
-                            String.format("%s-%.2f", currentTestInfo.getCode(), range.getValue()),
-                            range.getColor());
+            String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), range.getValue());
+
+            PreferencesUtils.setInt(this, key, range.getColor());
         }
         loadCalibratedSwatches(currentTestInfo);
 
@@ -186,9 +187,8 @@ public class MainApp extends Application {
         List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
         for (int i = 0; i < list.size(); i++) {
-            editor.putInt(
-                    String.format("%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first),
-                    (int) ((Pair) list.get(i)).second);
+            String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first);
+            editor.putInt(key, (int) ((Pair) list.get(i)).second);
 
         }
 

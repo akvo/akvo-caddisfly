@@ -33,7 +33,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="18dp"
         android:layout_marginTop="10dp"
-        android:text="@string/electricalConductivity"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ccc"
         android:textSize="28sp" />
@@ -74,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/button_orange"
             android:text="@string/backToSurvey" />
 
     </LinearLayout>
@@ -115,7 +115,6 @@
             android:alpha="0.7"
             android:shadowColor="#ff67d295"
             android:shadowRadius="1"
-            android:text="@string/ecUnit"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff37c0b6" />
 

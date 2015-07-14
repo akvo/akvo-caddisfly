@@ -34,10 +34,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.text.DecimalFormatSymbols;
+
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -143,7 +144,8 @@ public class EspressoTest
 
         onView(withText("Fluoride")).perform(click());
 
-        onView(withText("0.00 ppm")).perform(click());
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
         Espresso.pressBack();
 
@@ -151,7 +153,7 @@ public class EspressoTest
 
         onView(withText("Free Chlorine")).perform(click());
 
-        onView(withText("0.50 ppm")).perform(click());
+        onView(withText("0" + dfs.getDecimalSeparator() + "50 ppm")).perform(click());
 
         Espresso.pressBack();
 
@@ -323,64 +325,64 @@ public class EspressoTest
 
     }
 
-    public void testLanguage() {
-
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .check(matches(not(isDisplayed())))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-                .perform(scrollTo());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("العربية"))).perform(click());
-    }
-
-    public void testLanguage2() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .check(matches(not(isDisplayed())))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-                .perform(scrollTo());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("हिंदी"))).perform(click());
-    }
-
-    public void testLanguage3() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
-
-        onView(withText(R.string.language))
-                .check(matches(not(isDisplayed())))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-                .perform(scrollTo());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
-    }
+//    public void testLanguage() {
+//
+//        onView(withId(R.id.action_settings))
+//                .perform(click());
+//
+//        onView(withText(R.string.language))
+//                .check(matches(not(isDisplayed())))
+//                .perform(scrollTo())
+//                .check(matches(isDisplayed()))
+//                .perform(scrollTo());
+//
+//        onView(withText(R.string.language))
+//                .perform(click());
+//
+//        onData(hasToString(startsWith("العربية"))).perform(click());
+//    }
+//
+//    public void testLanguage2() {
+//        onView(withId(R.id.action_settings))
+//                .perform(click());
+//
+//        onView(withText(R.string.language))
+//                .check(matches(not(isDisplayed())))
+//                .perform(scrollTo())
+//                .check(matches(isDisplayed()))
+//                .perform(scrollTo());
+//
+//        onView(withText(R.string.language))
+//                .perform(click());
+//
+//        onData(hasToString(startsWith("हिंदी"))).perform(click());
+//    }
+//
+//    public void testLanguage3() {
+//        onView(withId(R.id.action_settings))
+//                .perform(click());
+//
+//        onView(withText(R.string.language))
+//                .check(matches(not(isDisplayed())))
+//                .perform(scrollTo())
+//                .check(matches(isDisplayed()))
+//                .perform(scrollTo());
+//
+//        onView(withText(R.string.language))
+//                .perform(click());
+//
+//        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
+//    }
 
     public void testLanguage4() {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
-        onView(withText(R.string.language))
-                .check(matches(not(isDisplayed())))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-                .perform(scrollTo());
+//        onView(withText(R.string.language))
+//                .check(matches(not(isDisplayed())))
+//                .perform(scrollTo())
+//                .check(matches(isDisplayed()))
+//                .perform(scrollTo());
 
         onView(withText(R.string.language))
                 .perform(click());
@@ -392,11 +394,11 @@ public class EspressoTest
         onView(withId(R.id.action_settings))
                 .perform(click());
 
-        onView(withText(R.string.language))
-                .check(matches(not(isDisplayed())))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-                .perform(scrollTo());
+//        onView(withText(R.string.language))
+//                .check(matches(not(isDisplayed())))
+//                .perform(scrollTo())
+//                .check(matches(isDisplayed()))
+//                .perform(scrollTo());
 
         onView(withText(R.string.language))
                 .perform(click());
@@ -404,7 +406,7 @@ public class EspressoTest
         onData(hasToString(startsWith("English"))).perform(click());
     }
 
-    public void testLeaveDiagnosticMode(){
+    public void testLeaveDiagnosticMode() {
         onView(withId(R.id.disableDiagnosticButton)).perform(click());
 
         onView(withId(R.id.disableDiagnosticButton)).check(matches(not(isDisplayed())));
@@ -432,7 +434,8 @@ public class EspressoTest
                 .atPosition(4).onChildView(withId(R.id.button))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
-        onView(withText("2.00 ppm")).perform(click());
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 

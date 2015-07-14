@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:background="@color/fab_material_amber_900"
+        android:background="@color/amber"
         android:gravity="center"
         android:padding="7dp"
         android:text="@string/fiftyPercentSampleWater"

@@ -198,12 +198,26 @@ public class CameraSensorActivity extends AppCompatActivity
 
         mViewAnimator.setInAnimation(null);
         mViewAnimator.setOutAnimation(null);
-        mViewAnimator.setInAnimation(mSlideInRight);
-        mViewAnimator.setOutAnimation(mSlideOutLeft);
+        //mViewAnimator.setInAnimation(mSlideInRight);
+        //mViewAnimator.setOutAnimation(mSlideOutLeft);
 
         findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().hide();
+                }
+                // disable the key guard when device wakes up and shake alert is displayed
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                );
 
                 final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
                 List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
@@ -275,16 +289,6 @@ public class CameraSensorActivity extends AppCompatActivity
     @Override
     public void onAttachedToWindow() {
 
-        // disable the key guard when device wakes up and shake alert is displayed
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-        );
     }
 
     @Override
@@ -299,10 +303,22 @@ public class CameraSensorActivity extends AppCompatActivity
             ppmTextView.setText(String.format("%.2f %s", rangeValue, mainApp.currentTestInfo.getUnit()));
             ppmTextView.setVisibility(View.VISIBLE);
         } else {
+            ppmTextView.setVisibility(View.GONE);
+
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
-            ppmTextView.setVisibility(View.GONE);
+            // disable the key guard when device wakes up and shake alert is displayed
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            );
+
         }
 
         Resources res = getResources();

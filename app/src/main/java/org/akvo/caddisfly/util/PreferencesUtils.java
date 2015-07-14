@@ -140,6 +140,14 @@ public class PreferencesUtils {
         return sharedPreferences.getString(getKey(context, keyId), defaultValue);
     }
 
+    public static void setString(Context context, int keyId, String value) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        Editor editor = sharedPreferences.edit();
+        editor.putString(getKey(context, keyId), value);
+        editor.apply();
+    }
+
     @SuppressWarnings("SameParameterValue")
     public static void removeKey(Context context, int keyId) {
         PreferencesUtils.removeKey(context, getKey(context, keyId));

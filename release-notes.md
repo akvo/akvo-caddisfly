@@ -1,3 +1,16 @@
+v0.72 alpha
+-----------
+1. Start app with default user language
+2. Fix: French decimal comma issue in calibration
+3. Fix: Back button not working issue on start test
+4. Revised French translations
+5. Language selection for English and French in settings
+6. Removed demo link
+7. Removed extra blank line in Test types list
+8. Added Back Home button on Calibrate Start screen
+9. Diagnostic mode: Added quality value to camera preview
+10. Some minor UI enhancements
+
 v0.71 alpha
 -----------
 1. Change in camera take picture to fix issue with Xiaomi phone

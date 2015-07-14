@@ -21,10 +21,20 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <TableLayout
+    <TextView
+        android:id="@+id/textResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        tools:text="Fluoride : 1.0" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TableRow
             android:layout_width="match_parent"
@@ -34,21 +44,22 @@
             android:clickable="false"
             android:columnCount="3"
             android:focusable="false"
+            android:gravity="center_horizontal"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
             <ImageView
                 android:id="@+id/imageExtract"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/logo" />
 
             <Button
                 android:id="@+id/buttonColorExtract"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:background="#ffffff"
@@ -57,8 +68,8 @@
 
             <Button
                 android:id="@+id/buttonSwatchColor"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:background="#00000000"
@@ -78,7 +89,7 @@
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <TextView android:layout_height="wrap_content" />
+            <TextView android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/rgbValue"
@@ -111,12 +122,12 @@
         tools:text="Distance : 10" />
 
     <TextView
-        android:id="@+id/textResult"
+        android:id="@+id/textQuality"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="10dp"
-        tools:text="Fluoride : 1.0" />
+        tools:text="Quality : 60" />
 
     <TextView
         android:id="@+id/textDimension"

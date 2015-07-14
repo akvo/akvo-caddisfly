@@ -79,19 +79,5 @@
                 tools:text="rgb: 243 23 156" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/revertColor"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="#691212"
-            android:clickable="false"
-            android:contentDescription="@null"
-            android:focusable="false"
-            android:text="@string/reset"
-            android:textColor="#808080"
-            android:visibility="gone" />
     </TableRow>
 </TableLayout>

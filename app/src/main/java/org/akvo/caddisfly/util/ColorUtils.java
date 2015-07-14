@@ -47,6 +47,14 @@ public final class ColorUtils {
         ColorInfo photoColor = getColorFromBitmap(bitmap, length);
         Bundle bundle = new Bundle();
 
+        bundle.putString("color",
+                String.format("%d  %d  %d", Color.red(photoColor.getColor()),
+                        Color.green(photoColor.getColor()),
+                        Color.blue(photoColor.getColor()))
+        );
+
+        bundle.putDouble("quality", photoColor.getQuality());
+
         ArrayList<ResultRange> tempColorRange = new ArrayList<>();
 
         tempColorRange.add(testInfo.getRanges().get(0));
@@ -156,12 +164,6 @@ public final class ColorUtils {
             bundle.putInt("MatchedColor", colorCompareInfo.getMatchedColor());
             bundle.putDouble("Distance", colorCompareInfo.getDistance());
         }
-
-        bundle.putString("color",
-                String.format("%d  %d  %d", Color.red(photoColor.getColor()),
-                        Color.green(photoColor.getColor()),
-                        Color.blue(photoColor.getColor()))
-        );
     }
 
     /**

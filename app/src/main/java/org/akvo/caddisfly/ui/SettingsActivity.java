@@ -18,7 +18,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -93,12 +92,6 @@ public class SettingsActivity extends Activity
     @Nullable
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-
-        if (getIntent().getBooleanExtra("calibrate", false)) {
-            final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-            startActivity(intent);
-        }
-
         return super.onCreateView(name, context, attrs);
     }
 

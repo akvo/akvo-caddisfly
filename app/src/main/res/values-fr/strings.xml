@@ -13,73 +13,98 @@
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="appName">"Akvo Caddisfly"</string>
-    <string name="waterQualitySystem">"Système de qualité de l'eau"</string>
 
     <!--Common-->
-    <string name="ok">"D'accord"</string>
-    <string name="retry">"Refaire"</string>
+    <string name="ok">"OK"</string>
+    <string name="retry">"Réessayer"</string>
     <string name="cancel">"Annuler"</string>
-    <string name="start">"Début"</string>
-    <string name="delete">"Effacer"</string>
-    <string name="reset">"Remettre"</string>
+    <string name="start">"Commencer"</string>
+    <string name="next">"Suivant"</string>
+    <string name="reset">"Réinitialiser"</string>
+    <string name="delete">"Supprimer"</string>
     <string name="error">"Erreur"</string>
-    <string name="load">"Charge"</string>
+    <string name="general">"Général"</string>
+    <string name="other">"Autre"</string>
+    <string name="diagnostics">"Diagnostics"</string>
     <string name="save">"Enregistrer"</string>
+    <string name="load">"Charge"</string>
     <string name="swatches">"Nuancier"</string>
+    <string name="calibrated">"Calibré"</string>
+    <string name="calibrating">"Calibrage"</string>
+
+    <!--Messages-->
+    <string name="pleaseWait">"Veuillez attendre…"</string>
+    <string name="enableInternet">"Connexion Internet requise"</string>
+    <string name="notSupported">"Non Supporté"</string>
+    <string name="phoneDoesNotSupport">"Ce téléphone ne supporte pas cette fonctionnalité"</string>
+    <string name="pleaseEnterValue">"Entrez une valeur"</string>
+    <string name="calibrationSucceeded">"Le calibrage est réussi"</string>
+    <string name="diagnosticModeEnabled">"Mode de diagnostic activé"</string>
+    <string name="diagnosticModeDisabled">"Mode diagnostic désactivée"</string>
 
     <!--Main Screen-->
-    <string name="watchVideo">Voir</string>
-    <string name="demonstration">Démo</string>
-    <string name="startSurvey">"Commencer enquête"</string>
+    <string name="watchVideo">"Voir"</string>
+    <string name="demonstration">"Démo"</string>
+    <string name="startSurvey">"Commencer L'Enquête"</string>
+    <string name="errorAkvoFlowRequired">"S'il vous plaît installer Akvo Flow app"</string>
+    <string name="errorCameraFlashRequired">"Ce téléphone ne dispose pas d'un flash d'appareil photo qui est requis par Caddisfly"</string>
+    <string name="errorTestNotAvailable">"Ce test ne sont pas disponibles"</string>
     <string name="errorCalibrationIncomplete">"L'étalonnage est incomplète. Voulez-vous pour calibrer maintenant?"</string>
-    <string name="errorAkvoFlowRequired">"Se il vous plaît installer Akvo Flow app"</string>
-    <string name="errorCameraFlashRequired">"Ce téléphone n'a pas de flash d'appareil photo qui est requis par Caddisfly"</string>
-    <string name="errorTestNotAvailable">"Ce test ne est pas disponible"</string>
+    <string name="diagnosticAbbreviated">"Diag"</string>
+    <string name="enableUserMode">"Mode utilisateur"</string>
 
     <!--Settings Screen-->
     <string name="settings">"Paramètres"</string>
     <string name="calibrate">"Étalonner"</string>
-    <string name="calibrateSummary">"Utilisez les mélanges de couleurs standard fournis dans le kit de calibrer ce téléphone"</string>
-    <string name="language">"Langue"</string>
+    <string name="calibrateSummary">"Calibrer colorimètre ou externes capteurs"</string>
     <string name="updateCheck">"Vérifier la mise à jour"</string>
     <string name="updateSummary">"Vérifiez si une nouvelle version est disponible"</string>
     <string name="dataConnection">"Connexion de données"</string>
-    <string name="enableInternet">"Connexion Internet requise"</string>
-    <string name="about">"Sur"</string>
-    <string name="cameraPreview">Vérifiez vue de la caméra</string>
+    <string name="about">"A propos"</string>
     <string name="displaysVersionNumber">"Affiche le numéro de version"</string>
+    <string name="language">"Langue"</string>
 
     <!--Calibration Screen-->
-    <string name="errorLoadingTestTypes">Types de tests de chargement d\'erreur. Vérifiez que fichier tests.json est valide.</string>
+    <string name="errorLoadingTestTypes">"Types de tests de chargement d'erreur. Vérifiez que tests.json fichier est valide."</string>
 
     <!--Test Progress Screen-->
     <string name="analyzingWait">"Analyse …"</string>
-    <string name="placeDeviceInStand">"Placez le téléphone sur une surface plane avec face vers le bas"</string>
-    <string name="waitTillCameraSound">"et attendre pour le test pour terminer"</string>
+    <string name="placeDeviceInStand">"Placez la face du téléphone vers le bas sur une surface plane"</string>
+    <string name="waitTillCameraSound">"et attendre pour le test à compléter"</string>
     <string name="errorTestInterrupted">"Le test a été interrompu. Ne déplacez pas le téléphone pendant le test."</string>
-    <string name="errorTestFailed">"Couleur de la solution hors de portée. Vérifiez l'emplacement de la cartouche."</string>
+    <string name="errorTestFailed">"couleur de la solution hors de portée. Vérifiez l'emplacement de la cartouche."</string>
 
     <!--Result Screen-->
     <string name="result">"Résultat"</string>
-    <string name="backToSurvey">"Retour à l'aperçu"</string>
-    <string name="highLevelsFound">"Haut niveau de contamination a été détectée"</string>
-    <string name="tryWith50PercentSample">Essayez de nouveau avec une dilution de l\'eau de l\'échantillon de 50%</string>
-    <string name="tryWith25PercentSample">Essayez de nouveau avec une dilution de l\'eau de l\'échantillon de 25%</string>
+    <string name="backToSurvey">"Retour à l'enquête"</string>
+    <string name="highLevelsFound">"%s la contamination est très élevé"</string>
+    <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de 50%"</string>
+    <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de 25%"</string>
 
     <!--Sensor Details Screen-->
-    <string name="deviceConnectSensor">"Connectez EC capteur Akvo"</string>
+    <string name="deviceConnectSensor">"Connectez Akvo Sensor CE"</string>
     <string name="deviceConnecting">"Branchement à un périphérique"</string>
-    <string name="deviceConnected">"Périphérique connecté avec succès"</string>
-    <string name="ecValueAt25Celcius">CE %s μS/cm</string>
+    <string name="deviceConnected">"Connected Device"</string>
+    <string name="ecValueAt25Celcius">"CE %s uS/cm de"</string>
     <string name="acceptResult">"Accepter Résultat"</string>
 
-    <!--About Screen-->
-    <string name="enableUserMode">Mode utilisateur</string>
-    <string name="diagnosticModeEnabled">Mode de diagnostic activé</string>
-    <string name="diagnosticModeDisabled">Mode diagnostic désactivée</string>
+    <!--Dilution Selection Dialog-->
+    <string name="selectDilution">"Sélectionnez Dilution"</string>
+    <string name="hundredPercentSampleWater" formatted="false">"Aucune dilution"</string>
+    <string name="fiftyPercentSampleWater" formatted="false">"50% de l'eau de l'échantillon"</string>
+    <string name="twentyFivePercentSampleWater" formatted="false">"25% de l'eau de l'échantillon"</string>
+
+    <!--EC Sensor Calibration-->
+    <string name="notConnected">"Capteur non raccordé"</string>
+    <string name="lowEcSolution">"Étape 1: Solution CE Low"</string>
+    <string name="suspendEcSensorInLow">"Suspendre Sensor CE dans la solution LOW CE"</string>
+    <string name="enterItsMeasuredLow">"Entrez sa valeur CE basse pré-mesurée ci-dessous"</string>
+    <string name="highEcSolution">"Étape 2: Solution Haute CE"</string>
+    <string name="suspendEcSensorInHigh">"Suspendre Sensor CE dans la solution HAUT CE"</string>
+    <string name="enterItsMeasuredHigh">"Entrez sa valeur CE HAUTE pré-mesurée ci-dessous"</string>
 
     <!--App update-->
     <string name="updateApp">"Mise à jour Akvo Caddisfly"</string>
@@ -88,52 +113,31 @@
     <string name="updateFetching">"Obtenir la mise à jour Akvo Caddisfly …"</string>
     <string name="updatedAlready">"Vous avez déjà la dernière version de Akvo Caddisfly installé"</string>
 
+    <!--About Screen-->
+    <string name="waterQualitySystem">"Système de qualité de l'eau"</string>
+    <string name="companyOtherName">"Akvo Foundation"</string>
+    <string name="copyrightMessage">"Copyright © Stichting Akvo"</string>
+
     <!--Save / Load Calibration-->
-    <string name="saveCalibration">"Enregistrer calibration"</string>
+    <string name="saveCalibration">"Sauvegarder Calibration"</string>
     <string name="saveProvideFileName">"Donnez un nom descriptif pour cet étalonnage"</string>
-    <string name="saveInvalidFileName">"Nom invalide"</string>
-    <string name="saveNameAlreadyExists">"Nom existe déjà. Ecraser le fichier?"</string>
-    <string name="saveConfirmOverwriteFile">"Écraser le fichier"</string>
+    <string name="saveInvalidFileName">"Nom de fichier invalide"</string>
+    <string name="saveNameAlreadyExists">"Nom existe déjà. Écraser le fichier?"</string>
+    <string name="saveConfirmOverwriteFile">"Écraser Le Fichier"</string>
     <string name="loadCalibration">"Calibration de charge"</string>
     <string name="notFound">"Pas Trouvé"</string>
-    <string name="loadFilesNotAvailable">"Il n'y a pas étalonnages précédemment enregistrés"</string>
+    <string name="loadFilesNotAvailable">"Il n'y a pas calibrations précédemment enregistrés"</string>
     <string name="deleteConfirm">"Les éléments sélectionnés seront supprimés"</string>
-
-    <!--Dilution Selection Dialog-->
-    <string name="selectDilution">Sélectionnez dilution</string>
-    <string name="hundredPercentSampleWater">Aucune dilution</string>
-    <string name="fiftyPercentSampleWater">50% de l\'eau de l\'échantillon</string>
-    <string name="twentyFivePercentSampleWater">25% de l\'eau de l\'échantillon</string>
-    <string name="general">"Général"</string>
-    <string name="other">"Autre"</string>
-    <string name="diagnostics">"Diagnostics"</string>
-    <string name="next">"Suivant"</string>
-    <string name="notConnected">"Capteur non raccordé"</string>
-    <string name="calibrating">"Calibrage"</string>
-    <string name="pleaseWait">"S'il vous plaît, attendez …"</string>
-    <string name="notSupported">"Non Supporté"</string>
-    <string name="phoneDoesNotSupport">"Ce téléphone ne supporte pas cette fonctionnalité"</string>
-    <string name="pleaseEnterValue">"Entrez une valeur"</string>
     <string name="errorLoadingFile">"Impossible de charger le fichier. Vérifiez le fichier d'erreurs."</string>
-    <string name="calibrationSucceeded">"Le calibrage est réussi"</string>
-    <string name="calibrated">"Calibré"</string>
-    <string name="testSensor">"Capteur CE test"</string>
-    <string name="debuggingOn">"Afficher des messages de débogage"</string>
-    <string name="ignoreShakeDuringAnalysis">"Ignorer bougé lors de l'analyse"</string>
-    <string name="lowEcSolution">"Étape 1: Solution CE Low"</string>
-    <string name="suspendEcSensorInLow">"Suspendre Sensor CE dans la solution LOW CE"</string>
-    <string name="enterItsMeasuredLow">"Entrez sa valeur CE basse pré-mesurée ci-dessous"</string>
-    <string name="highEcSolution">"Étape 2: Solution Haute CE"</string>
-    <string name="suspendEcSensorInHigh">"Suspendre Sensor CE dans la solution HAUT CE"</string>
-    <string name="enterItsMeasuredHigh">"Entrez sa valeur CE HAUTE pré-mesurée ci-dessous"</string>
-    <string name="electricalConductivity">"Conductivité Électrique"</string>
-    <string name="ecUnit">"uS / cm"</string>
+
+    <!--Diagnostic Settings-->
+    <string name="cameraPreview">"Colorimètre caméra"</string>
+    <string name="externalCamera">"Caméra externe colorimètre"</string>
+    <string name="testSensor">"Capteur CE"</string>
     <string name="autoFocus">"Mise au point automatique"</string>
-    <string name="externalCamera">"Caméra externe"</string>
-    <string name="deviceConnectExternalCamera">"Connectez capteur externe Caddisfly"</string>
+    <string name="useFlashMode">"Utilisez le mode Flash"</string>
+    <string name="ignoreShakeDuringAnalysis">"Ignorer bougé lors de l'analyse"</string>
+    <string name="debuggingOn">"Afficher des messages de débogage"</string>
     <string name="noSound">"Pas De Son"</string>
-    <string name="companyOtherName">"Fondation Akvo"</string>
-    <string name="copyrightMessage">"Copyright © Stichting Akvo"</string>
-    <string name="diagnosticAbbreviated">"Diag"</string>
-    <string name="useFlashMode">Utilisez le mode Flash</string>
+    <string name="deviceConnectExternalCamera">"Connectez capteur externe Caddisfly"</string>
 </resources>
