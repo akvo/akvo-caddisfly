@@ -99,6 +99,16 @@ public class EspressoTest
     public void testA() {
     }
 
+    public void testAlterLanguageToEnglish() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith("English"))).perform(click());
+    }
+
     public void testAbout() {
         onView(withId(R.id.action_settings))
                 .perform(click());

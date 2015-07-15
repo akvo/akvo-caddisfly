@@ -89,7 +89,7 @@
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
-    <string name="ecValueAt25Celcius">EC %s μS/cm</string>
+    <string name="electricalConductivityResult">EC %s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
     <!--Dilution Selection Dialog-->

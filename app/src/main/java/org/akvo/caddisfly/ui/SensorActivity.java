@@ -186,6 +186,8 @@ public class SensorActivity extends AppCompatActivity {
         if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.titleTextView)).setText(
                     mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+
+            mUnitsTextView.setText(mainApp.currentTestInfo.getUnit());
         }
 
         //http://developer.android.com/guide/topics/connectivity/usb/host.html
@@ -483,13 +485,14 @@ public class SensorActivity extends AppCompatActivity {
                     double temperature = Double.parseDouble(mTemperature);
                     mTemperature = String.format("%.1f\u00B0C", temperature);
                     mTemperature = mTemperature.replace(".0", "");
-                    double ec25Value = Math.round(Double.parseDouble(mEc25Value));
+                    long ec25Value = Math.round(Double.parseDouble(mEc25Value));
+                    mEc25Value = Long.toString(ec25Value);
                     double ecValue = Math.round(Double.parseDouble(mEcValue));
 
                     mTemperatureTextView.setText(mTemperature);
                     if (!mEcValue.equals("-1.00")) {
-                        mResultTextView.setText(String.format("%.0f", ec25Value));
-                        mEcValueTextView.setText(String.format(getString(R.string.ecValueAt25Celcius), String.format("%.0f", ecValue)));
+                        mResultTextView.setText(String.format("%d", ec25Value));
+                        mEcValueTextView.setText(String.format(getString(R.string.electricalConductivityResult), String.format("%.0f", ecValue)));
                         mProgressBar.setVisibility(View.GONE);
                     } else {
                         mEcValueTextView.setText("");

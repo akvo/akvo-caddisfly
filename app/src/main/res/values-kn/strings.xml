@@ -80,7 +80,7 @@
     <string name="hundredPercentSampleWater" formatted="false">100% ಮಾದರಿ ವಾಟರ್</string>
     <string name="fiftyPercentSampleWater" formatted="false">50% ಮಾದರಿ ವಾಟರ್</string>
     <string name="twentyFivePercentSampleWater" formatted="false">25% ಮಾದರಿ ವಾಟರ್</string>
-    <string name="ecValueAt25Celcius">EC %s μS/cm</string>
+    <string name="electricalConductivityResult">EC %s μS/cm</string>
     <string name="enableUserMode">Enable User Mode</string>
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
     <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
@@ -108,8 +108,6 @@
     <string name="highEcSolution">Step 2: High EC Solution</string>
     <string name="suspendEcSensorInHigh">Suspend EC Sensor in the HIGH EC solution</string>
     <string name="enterItsMeasuredHigh">Enter its pre-measured HIGH EC value below</string>
-    <string name="electricalConductivity">Electrical Conductivity</string>
-    <string name="ecUnit">μS/cm</string>
     <string name="autoFocus">Auto Focus</string>
     <string name="externalCamera">External Camera</string>
     <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>

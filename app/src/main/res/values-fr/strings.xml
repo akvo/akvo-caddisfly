@@ -87,8 +87,8 @@
     <!--Sensor Details Screen-->
     <string name="deviceConnectSensor">"Connectez Akvo Sensor CE"</string>
     <string name="deviceConnecting">"Branchement à un périphérique"</string>
-    <string name="deviceConnected">"Connected Device"</string>
-    <string name="ecValueAt25Celcius">"CE %s uS/cm de"</string>
+    <string name="deviceConnected">"Périphérique connecté"</string>
+    <string name="electricalConductivityResult">"CE %s μS/cm"</string>
     <string name="acceptResult">"Accepter Résultat"</string>
 
     <!--Dilution Selection Dialog-->

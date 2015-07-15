@@ -89,7 +89,13 @@
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <TextView android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textQuality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                tools:text="Q: 60" />
 
             <TextView
                 android:id="@+id/rgbValue"
@@ -120,14 +126,6 @@
         android:gravity="center"
         android:paddingBottom="10dp"
         tools:text="Distance : 10" />
-
-    <TextView
-        android:id="@+id/textQuality"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        tools:text="Quality : 60" />
 
     <TextView
         android:id="@+id/textDimension"

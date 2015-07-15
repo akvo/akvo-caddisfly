@@ -25,9 +25,6 @@
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">
-            <intent
-                android:targetClass="org.akvo.caddisfly.ui.SensorActivity"
-                android:targetPackage="org.akvo.caddisfly" />
         </Preference>
         <CheckBoxPreference
             android:key="@string/autoFocusKey"

@@ -19,6 +19,7 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
@@ -93,6 +95,21 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                 }
             });
         }
+
+        Preference sensorPreference = findPreference("ecSensor");
+        if (sensorPreference != null) {
+            sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+                    mainApp.setSwatches("ECOND");
+
+                    final Intent intent = new Intent(getActivity(), SensorActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+
 
         return rootView;
     }

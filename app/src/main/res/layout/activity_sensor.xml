@@ -34,8 +34,9 @@
         android:layout_marginBottom="18dp"
         android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ccc"
-        android:textSize="28sp" />
+        android:textColor="#eaeaea"
+        android:textSize="28sp"
+        tools:text="Contaminant" />
 
     <LinearLayout
         android:id="@+id/connectionLayout"
@@ -74,6 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/button_orange"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="@string/backToSurvey" />
 
     </LinearLayout>
