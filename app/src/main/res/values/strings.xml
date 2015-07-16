@@ -81,7 +81,7 @@
     <!--Result Screen-->
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
-    <string name="highLevelsFound">%s contamination is very high</string>
+    <string name="highLevelsFound">%1$s contamination is very high</string>
     <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 50% sample water</string>
     <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 25% sample water</string>
 
@@ -89,7 +89,7 @@
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
-    <string name="electricalConductivityResult">EC %s μS/cm</string>
+    <string name="electricalConductivityResult">EC %1$s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
     <!--Dilution Selection Dialog-->

@@ -16,25 +16,29 @@
 
 package org.akvo.caddisfly;
 
-import android.content.SharedPreferences;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoActivityResumedException;
+import android.support.test.espresso.core.deps.guava.collect.Iterables;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.internal.util.Checks;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.Button;
 
-import org.akvo.caddisfly.model.ResultRange;
+import com.squareup.spoon.Spoon;
+
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -45,19 +49,25 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
 
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
+
+    static final String mCurrentLanguage = "en";
+    static boolean mTakeScreenshots = true;
+    static int mCounter = 0;
+
+    HashMap<String, String> stringHashMapEN = new HashMap<>();
+    HashMap<String, String> stringHashMapFR = new HashMap<>();
+    HashMap<String, String> currentHashMap;
+
     public EspressoTest() {
         super(MainActivity.class);
     }
 
-    public static Matcher<View> withBackgroundColor(final int color) {
+    private static Matcher<View> withBackgroundColor(final int color) {
         Checks.checkNotNull(color);
         return new BoundedMatcher<View, Button>(Button.class) {
             @Override
@@ -92,37 +102,65 @@ public class EspressoTest
     @Override
     public void setUp() throws Exception {
         super.setUp();
+
+        stringHashMapEN.put("language", "English");
+        stringHashMapEN.put("fluoride", "Fluoride");
+        stringHashMapEN.put("chlorine", "Free Chlorine");
+        stringHashMapEN.put("electricalConductivity", "Electrical Conductivity");
+
+        stringHashMapFR.put("language", "Français");
+        stringHashMapFR.put("fluoride", "Fluorure");
+        stringHashMapFR.put("chlorine", "Chlore Libre");
+        stringHashMapFR.put("electricalConductivity", "Conductivité Électrique");
+
+        if (mCurrentLanguage.equals("en")) {
+            currentHashMap = stringHashMapEN;
+        } else {
+            currentHashMap = stringHashMapFR;
+        }
+
         getActivity();
     }
 
     @SuppressWarnings("EmptyMethod")
-    public void testA() {
+    public void test000() {
     }
 
-    public void testAlterLanguageToEnglish() {
+    public void test001_Language() {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
         onView(withText(R.string.language))
                 .perform(click());
 
-        onData(hasToString(startsWith("English"))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
     }
 
-    public void testAbout() {
+    public void test002_About() {
+
+        final Button button = (Button) getActivity().findViewById(R.id.surveyButton);
+        assertNotNull(button);
+
+        takeScreenshot();
+
         onView(withId(R.id.action_settings))
                 .perform(click());
 
+        takeScreenshot();
+
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
+        takeScreenshot();
+
         Espresso.pressBack();
+
     }
 
-    public void testCalibrateSwatches(boolean devMode) {
+    public void testCalibrateSwatches() {
         calibrateSwatches(false);
     }
 
-    public void calibrateSwatches(boolean devMode) {
+    private void calibrateSwatches(boolean devMode) {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
@@ -152,16 +190,22 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText("Fluoride")).perform(click());
+        takeScreenshot();
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        takeScreenshot();
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        Espresso.pressBack();
+        takeScreenshot();
 
         Espresso.pressBack();
 
-        onView(withText("Free Chlorine")).perform(click());
+        Espresso.pressBack();
+
+        onView(withText(currentHashMap.get("chlorine"))).perform(click());
 
         onView(withText("0" + dfs.getDecimalSeparator() + "50 ppm")).perform(click());
 
@@ -214,7 +258,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText("Fluoride")).perform(click());
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.menu_load)).perform(click());
 
@@ -261,7 +305,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText("Electrical Conductivity")).perform(click());
+        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 
@@ -320,7 +364,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText("Fluoride")).perform(click());
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.action_swatches)).perform(click());
 
@@ -416,6 +460,17 @@ public class EspressoTest
         onData(hasToString(startsWith("English"))).perform(click());
     }
 
+    public void testLanguageReset() {
+        onView(withId(R.id.action_settings))
+                .perform(click());
+
+        onView(withText(R.string.language))
+                .perform(click());
+
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+    }
+
+
     public void testLeaveDiagnosticMode() {
         onView(withId(R.id.disableDiagnosticButton)).perform(click());
 
@@ -423,55 +478,91 @@ public class EspressoTest
 
     }
 
-    public void testStartCalibrate() {
-        startCalibrate(false);
+//    public void testStartCalibrate() {
+//        startCalibrate(false);
+//    }
+
+//    public void startCalibrate(boolean devMode) {
+//
+//        onView(withId(R.id.action_settings)).perform(click());
+//
+//        SharedPreferences prefs =
+//                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+//        prefs.edit().clear().apply();
+//
+//        onView(withText(R.string.calibrate)).perform(click());
+//
+//        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+//
+//        onData(is(instanceOf(ResultRange.class)))
+//                .inAdapterView(withId(android.R.id.list))
+//                .atPosition(4).onChildView(withId(R.id.button))
+//                .check(matches(allOf(isDisplayed(), withText("?"))));
+//
+//        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+//        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+//
+//        onView(withId(R.id.startButton)).perform(click());
+//
+//        try {
+//            Thread.sleep(70000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (devMode) {
+//            onView(withId(R.id.okButton)).perform(click());
+//        }
+//
+//        onData(is(instanceOf(ResultRange.class)))
+//                .inAdapterView(withId(android.R.id.list))
+//                .atPosition(4).onChildView(withId(R.id.button))
+//                .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
+//
+//
+//        Espresso.pressBack();
+//
+//        Espresso.pressBack();
+//
+////        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
+////        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
+//
+//    }
+//
+
+    private Activity getCurrentActivity() {
+        getInstrumentation().waitForIdleSync();
+        final Activity[] activity = new Activity[1];
+        try {
+            runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    java.util.Collection activities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                    activity[0] = (Activity) Iterables.getOnlyElement(activities);
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        return activity[0];
     }
 
-    public void startCalibrate(boolean devMode) {
+    private void takeScreenshot() {
+        if (mTakeScreenshots) {
+            //int SDK_VERSION = android.os.Build.VERSION.SDK_INT;
+            //if (SDK_VERSION >= 17) {
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
-        onView(withId(R.id.action_settings)).perform(click());
+//            File path = new File(Environment.getExternalStorageDirectory().getPath() +
+//                    "/org.akvo.caddisfly/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().commit();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText("Fluoride")).perform(click());
-
-        onData(is(instanceOf(ResultRange.class)))
-                .inAdapterView(withId(android.R.id.list))
-                .atPosition(4).onChildView(withId(R.id.button))
-                .check(matches(allOf(isDisplayed(), withText("?"))));
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
-
-        onView(withId(R.id.startButton)).perform(click());
-
-        try {
-            Thread.sleep(70000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            Spoon.screenshot(getCurrentActivity(), "screen-" + mCounter++ + "-" + mCurrentLanguage);
+            //}
         }
-
-        if (devMode) {
-            onView(withId(R.id.okButton)).perform(click());
-        }
-
-        onData(is(instanceOf(ResultRange.class)))
-                .inAdapterView(withId(android.R.id.list))
-                .atPosition(4).onChildView(withId(R.id.button))
-                .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
-
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
-//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
-
     }
 
 

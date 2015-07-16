@@ -15,16 +15,16 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="languageKey">language</string>
-    <string name="systemLanguageKey">systemLanguage</string>
+    <string name="languageKey" translatable="false">language</string>
+    <string name="systemLanguageKey" translatable="false">systemLanguage</string>
 
-    <string name="lastUpdateCheckKey">lastUpdateCheck</string>
-    <string name="updateAvailable">updateAvailable</string>
+    <string name="lastUpdateCheckKey" translatable="false">lastUpdateCheck</string>
+    <string name="updateAvailable" translatable="false">updateAvailable</string>
 
-    <string name="ignoreShakeKey">ignoreShake</string>
-    <string name="autoFocusKey">autoFocus</string>
-    <string name="diagnosticModeKey">diagnosticMode</string>
-    <string name="showDebugMessages">showDebugMessages</string>
-    <string name="noSoundKey">noSound</string>
-    <string name="useFlashModeKey">useFlashMode</string>
+    <string name="ignoreShakeKey" translatable="false">ignoreShake</string>
+    <string name="autoFocusKey" translatable="false">autoFocus</string>
+    <string name="diagnosticModeKey" translatable="false">diagnosticMode</string>
+    <string name="showDebugMessages" translatable="false">showDebugMessages</string>
+    <string name="noSoundKey" translatable="false">noSound</string>
+    <string name="useFlashModeKey" translatable="false">useFlashMode</string>
 </resources>
