@@ -1,3 +1,13 @@
+v0.73 alpha
+-----------
+1. Get dilution levels from json config
+2. Removed org logo and link from About screen
+3. Fix: High contamination level message box width issue
+4. Removed ternup external folder
+5. Moved calibrate saved files to akvo external folder
+6. Some minor UI enhancements
+7. Added UIAutomator to automated tests
+
 v0.72 alpha
 -----------
 1. Start app with default user language

@@ -39,15 +39,15 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="500dp"
+            android:layout_width="560dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-66dp"
-            android:layout_marginStart="-66dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginLeft="-90dp"
+            android:layout_marginStart="-90dp"
+            android:layout_marginTop="80dp"
             android:ellipsize="none"
             android:rotation="-40"
             android:singleLine="true"
-            android:text="@string/diagnosticAbbreviated"
+            android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#3f052e2a"
             android:textSize="230sp" />

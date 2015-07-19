@@ -39,37 +39,33 @@ public class DilutionFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.fragment_dilution, container, false);
         getDialog().setTitle(R.string.selectDilution);
 
-        Button hundredPercentButton = (Button) view.findViewById(R.id.hundredPercentButton);
-        Button fiftyPercentButton = (Button) view.findViewById(R.id.fiftyPercentButton);
-        Button twentyFivePercentButton = (Button) view.findViewById(R.id.twentyFivePercentButton);
+        Button noDilutionButton = (Button) view.findViewById(R.id.noDilutionButton);
+        Button percentButton1 = (Button) view.findViewById(R.id.percentButton1);
+        Button percentButton2 = (Button) view.findViewById(R.id.percentButton2);
 
-        hundredPercentButton.setOnClickListener(new View.OnClickListener() {
+        percentButton1.setText(String.format(getString(R.string.percentSampleWater), 50));
+        percentButton2.setText(String.format(getString(R.string.percentSampleWater), 25));
+
+        noDilutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(0);
             }
         });
 
-        fiftyPercentButton.setOnClickListener(new View.OnClickListener() {
+        percentButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(1);
             }
         });
 
-        twentyFivePercentButton.setOnClickListener(new View.OnClickListener() {
+        percentButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(2);
             }
         });
-
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ((DilutionDialogListener) DilutionFragment.this.getActivity()).onFinishDilutionDialog(-1);
-//            }
-//        });
 
         return view;
     }

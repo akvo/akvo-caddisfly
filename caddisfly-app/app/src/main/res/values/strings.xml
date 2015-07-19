@@ -13,8 +13,7 @@
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="appName">"Akvo Caddisfly"</string>
 
@@ -29,12 +28,14 @@
     <string name="error">Error</string>
     <string name="general">General</string>
     <string name="other">Other</string>
-    <string name="diagnostics">Diagnostics</string>
     <string name="save">Save</string>
     <string name="load">Load</string>
     <string name="swatches">Swatches</string>
+    <string name="calibrate">Calibrate</string>
     <string name="calibrated">Calibrated</string>
     <string name="calibrating">Calibrating</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
@@ -43,28 +44,19 @@
     <string name="phoneDoesNotSupport">This phone does not support this feature</string>
     <string name="pleaseEnterValue">Enter a value</string>
     <string name="calibrationSucceeded">Calibration was successful</string>
-    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
-    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
 
     <!--Main Screen-->
-    <string name="watchVideo">Watch</string>
-    <string name="demonstration">Demo</string>
     <string name="startSurvey">Start Survey</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
     <string name="errorCameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
     <string name="errorTestNotAvailable">This test is not available</string>
     <string name="errorCalibrationIncomplete">Calibration is incomplete. Do you want to calibrate now?</string>
-    <string name="diagnosticAbbreviated">Diag</string>
-    <string name="enableUserMode">Enable User Mode</string>
 
     <!--Settings Screen-->
-    <string name="settings">Settings</string>
-    <string name="calibrate">Calibrate</string>
     <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
     <string name="updateCheck">Check update</string>
     <string name="updateSummary">Check if a new version is available</string>
     <string name="dataConnection">Data Connection</string>
-    <string name="about">About</string>
     <string name="displaysVersionNumber">Displays version number</string>
     <string name="language">Language</string>
 
@@ -82,8 +74,7 @@
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
     <string name="highLevelsFound">%1$s contamination is very high</string>
-    <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 50% sample water</string>
-    <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">Try again with a dilution of 25% sample water</string>
+    <string name="tryWithDilutedSample">Try again with a dilution of %1$d%% sample water</string>
 
     <!--Sensor Details Screen-->
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
@@ -94,16 +85,15 @@
 
     <!--Dilution Selection Dialog-->
     <string name="selectDilution">Select Dilution</string>
-    <string name="hundredPercentSampleWater" formatted="false">No Dilution</string>
-    <string name="fiftyPercentSampleWater" formatted="false">50% Sample Water</string>
-    <string name="twentyFivePercentSampleWater" formatted="false">25% Sample Water</string>
+    <string name="noDilution">No Dilution</string>
+    <string name="percentSampleWater" formatted="false">%1$d%% Sample Water</string>
 
     <!--EC Sensor Calibration-->
     <string name="notConnected">Sensor not Connected</string>
-    <string name="lowEcSolution">Step 1: Low EC Solution</string>
+    <string name="lowEcSolution">Low EC Solution</string>
     <string name="suspendEcSensorInLow">Suspend EC Sensor in the LOW EC solution</string>
     <string name="enterItsMeasuredLow">Enter its pre-measured LOW EC value below</string>
-    <string name="highEcSolution">Step 2: High EC Solution</string>
+    <string name="highEcSolution">High EC Solution</string>
     <string name="suspendEcSensorInHigh">Suspend EC Sensor in the HIGH EC solution</string>
     <string name="enterItsMeasuredHigh">Enter its pre-measured HIGH EC value below</string>
 
@@ -119,7 +109,14 @@
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
 
-    <!--Save / Load Calibration-->
+    <!--Diagnostic Mode: Main Screen -->
+    <string name="enableUserMode">Enable User Mode</string>
+
+    <!--Diagnostic Mode: Messages -->
+    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
+    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
+
+    <!--Diagnostic Mode: Save / Load Calibration-->
     <string name="saveCalibration">Save Calibration</string>
     <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
     <string name="saveInvalidFileName">Invalid file name</string>
@@ -131,7 +128,8 @@
     <string name="deleteConfirm">Selected items will be deleted</string>
     <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
 
-    <!--Diagnostic Settings-->
+    <!--Diagnostic Mode: Settings-->
+    <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera</string>
     <string name="externalCamera">Colorimeter external camera</string>
     <string name="testSensor">EC Sensor</string>

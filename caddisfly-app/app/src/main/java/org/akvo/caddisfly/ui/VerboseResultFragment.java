@@ -80,9 +80,8 @@ public class VerboseResultFragment extends DialogFragment {
 
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
 
-        //todo: remove hard coding of fluor
         if (mainApp.currentTestInfo.getCode().isEmpty() || mainApp.currentTestInfo.getType() != 0) {
-            mainApp.setSwatches("FLUOR");
+            mainApp.setDefaultTest();
         }
 
         Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap, mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);

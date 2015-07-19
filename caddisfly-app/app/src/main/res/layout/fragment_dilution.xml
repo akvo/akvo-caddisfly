@@ -25,7 +25,7 @@
     android:padding="10dp">
 
     <Button
-        android:id="@+id/hundredPercentButton"
+        android:id="@+id/noDilutionButton"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,11 +35,11 @@
         android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-        android:text="@string/hundredPercentSampleWater"
+        android:text="@string/noDilution"
         android:textAllCaps="true" />
 
     <Button
-        android:id="@+id/fiftyPercentButton"
+        android:id="@+id/percentButton1"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,11 +49,11 @@
         android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-        android:text="@string/fiftyPercentSampleWater"
+        android:text="@string/percentSampleWater"
         android:textAllCaps="true" />
 
     <Button
-        android:id="@+id/twentyFivePercentButton"
+        android:id="@+id/percentButton2"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
         android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-        android:text="@string/twentyFivePercentSampleWater"
+        android:text="@string/percentSampleWater"
         android:textAllCaps="true" />
 
 </LinearLayout>

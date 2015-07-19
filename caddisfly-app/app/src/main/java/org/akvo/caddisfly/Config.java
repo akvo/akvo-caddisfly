@@ -38,17 +38,12 @@ public class Config {
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
 
-    public static final String DEFAULT_LOCALE = "en";
-
     // Link to company web site for about information
     public static final String ORG_WEBSITE = "http://akvo.org";
 
-    public static final String TRAINING_VIDEO_LINK
-            = "http://caddisfly.ternup.com/akvoapp/caddisfly-training.php";
-
-    //todo: remove ternup folder
-    public static final String CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
-    //public static final String CALIBRATE_FOLDER_NAME = "/org.akvo.caddisfly/saved/";
+    public static final String OLD_CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
+    public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
+    public static final String CALIBRATE_FOLDER_NAME = "/org.akvo.caddisfly/calibration/";
 
     // Tag for debug log filtering
     public static final String DEBUG_TAG = "Caddisfly";

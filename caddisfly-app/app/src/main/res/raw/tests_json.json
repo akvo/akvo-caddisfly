@@ -13,7 +13,7 @@
         "code": "fluor",
         "unit": "ppm",
         "ranges": "0,0.5,1,1.5,2",
-        "dilutions": "0,50,75"
+        "dilutions": "0,50,25"
       },
       {
         "name": [

@@ -82,18 +82,16 @@ public final class JsonUtils {
                         type);
 
                 //Load the dilution percentages
-//                String dilutions = "0";
-//                if (item.has("dilutions")) {
-//                    dilutions = item.getString("dilutions");
-//                }
-//
-//                String[] dilutionsArray = dilutions.split(",");
-//
-//                for (String dilution : dilutionsArray) {
-//                    ResultRange resultRange = new ResultRange(
-//                            Double.valueOf(dilution));
-//                    testInfo.addRange(resultRange);
-//                }
+                String dilutions = "0";
+                if (item.has("dilutions")) {
+                    dilutions = item.getString("dilutions");
+                }
+
+                String[] dilutionsArray = dilutions.split(",");
+
+                for (String dilution : dilutionsArray) {
+                    testInfo.addDilution(Integer.parseInt(dilution));
+                }
 
                 String ranges = "0";
                 if (item.has("ranges")) {

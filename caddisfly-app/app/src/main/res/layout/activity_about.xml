@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
         <ImageView
@@ -112,30 +112,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutAboutCompany"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#bb437e41"
-        android:clickable="true"
-        android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="#ff7700" />
-
-        <ImageView
-            android:id="@+id/organizationImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/akvo" />
-    </LinearLayout>
 
 </FrameLayout>
 

@@ -39,7 +39,6 @@ import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -81,8 +80,6 @@ public class CameraSensorActivity extends AppCompatActivity
     //private boolean mWaitingForShake = true;
     private boolean mWaitingForStillness = false;
     private ViewAnimator mViewAnimator;
-    private Animation mSlideInRight;
-    private Animation mSlideOutLeft;
     private DialogFragment mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
@@ -116,6 +113,7 @@ public class CameraSensorActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getResources().getString(R.string.calibrate));
         }
 
         sound = new SoundPoolPlayer(this);
@@ -127,11 +125,11 @@ public class CameraSensorActivity extends AppCompatActivity
         mDilutionTextView1.setVisibility(View.GONE);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-        mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
-        mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
+        //Animation mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
+        //Animation mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
 
-        mViewAnimator.setInAnimation(mSlideInRight);
-        mViewAnimator.setOutAnimation(mSlideOutLeft);
+        //mViewAnimator.setInAnimation(mSlideInRight);
+        //mViewAnimator.setOutAnimation(mSlideOutLeft);
 
         //Set up the shake detector
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -196,8 +194,8 @@ public class CameraSensorActivity extends AppCompatActivity
         //mWaitingForFirstShake = false;
         setAnimatorDisplayedChild(mViewAnimator, 0);
 
-        mViewAnimator.setInAnimation(null);
-        mViewAnimator.setOutAnimation(null);
+        //mViewAnimator.setInAnimation(null);
+        //mViewAnimator.setOutAnimation(null);
         //mViewAnimator.setInAnimation(mSlideInRight);
         //mViewAnimator.setOutAnimation(mSlideOutLeft);
 
@@ -336,7 +334,7 @@ public class CameraSensorActivity extends AppCompatActivity
                         }
                     }, null);
 
-        } else if (!mIsCalibration && mainApp.currentTestInfo.getCode().equals("FLUOR")
+        } else if (!mIsCalibration && mainApp.currentTestInfo.hasDilution()
                 && !mTestCompleted) {
             mDilutionFragment = DilutionFragment.newInstance();
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -547,7 +545,7 @@ public class CameraSensorActivity extends AppCompatActivity
         double result = DataHelper.getAverageResult(mResults);
 
         MainApp mainApp = (MainApp) getApplicationContext();
-        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.getCode().equals("FLUOR")) {
+        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.hasDilution()) {
             mHighLevelsFound = true;
         }
 
@@ -599,10 +597,10 @@ public class CameraSensorActivity extends AppCompatActivity
                         sound.playShortResource(this, R.raw.beep_long);
                         switch (mDilutionLevel) {
                             case 0:
-                                message = getString(R.string.tryWith50PercentSample);
+                                message = String.format(getString(R.string.tryWithDilutedSample), 50);
                                 break;
                             case 1:
-                                message = getString(R.string.tryWith25PercentSample);
+                                message = String.format(getString(R.string.tryWithDilutedSample), 25);
                                 break;
                         }
 
@@ -674,16 +672,16 @@ public class CameraSensorActivity extends AppCompatActivity
 
             switch (mDilutionLevel) {
                 case 0:
-                    mDilutionTextView.setText(R.string.hundredPercentSampleWater);
-                    mDilutionTextView1.setText(R.string.hundredPercentSampleWater);
+                    mDilutionTextView.setText(R.string.noDilution);
+                    mDilutionTextView1.setText(R.string.noDilution);
                     break;
                 case 1:
-                    mDilutionTextView.setText(R.string.fiftyPercentSampleWater);
-                    mDilutionTextView1.setText(R.string.fiftyPercentSampleWater);
+                    mDilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 50));
+                    mDilutionTextView1.setText(String.format(getString(R.string.percentSampleWater), 50));
                     break;
                 case 2:
-                    mDilutionTextView.setText(R.string.twentyFivePercentSampleWater);
-                    mDilutionTextView1.setText(R.string.twentyFivePercentSampleWater);
+                    mDilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 25));
+                    mDilutionTextView1.setText(String.format(getString(R.string.percentSampleWater), 25));
                     break;
             }
 
@@ -707,10 +705,10 @@ public class CameraSensorActivity extends AppCompatActivity
             String message = "";
             switch (mDilutionLevel) {
                 case 0:
-                    message = getString(R.string.tryWith50PercentSample);
+                    message = String.format(getString(R.string.tryWithDilutedSample), 50);
                     break;
                 case 1:
-                    message = getString(R.string.tryWith25PercentSample);
+                    message = String.format(getString(R.string.tryWithDilutedSample), 25);
                     break;
             }
 

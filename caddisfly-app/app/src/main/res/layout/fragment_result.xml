@@ -44,7 +44,7 @@
         android:background="@color/amber"
         android:gravity="center"
         android:padding="7dp"
-        android:text="@string/fiftyPercentSampleWater"
+        android:text="@string/percentSampleWater"
         android:textColor="#fff"
         android:textSize="24sp"
         android:textStyle="bold"

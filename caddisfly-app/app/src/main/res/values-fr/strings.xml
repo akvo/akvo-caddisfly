@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~  Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
@@ -13,7 +14,7 @@
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <string name="appName">"Akvo Caddisfly"</string>
 
@@ -46,14 +47,11 @@
     <string name="diagnosticModeDisabled">"Mode diagnostic désactivée"</string>
 
     <!--Main Screen-->
-    <string name="watchVideo">"Voir"</string>
-    <string name="demonstration">"Démo"</string>
     <string name="startSurvey">"Commencer L'Enquête"</string>
     <string name="errorAkvoFlowRequired">"S'il vous plaît installer Akvo Flow app"</string>
     <string name="errorCameraFlashRequired">"Ce téléphone ne dispose pas d'un flash d'appareil photo qui est requis par Caddisfly"</string>
     <string name="errorTestNotAvailable">"Ce test ne sont pas disponibles"</string>
     <string name="errorCalibrationIncomplete">"L'étalonnage est incomplète. Voulez-vous pour calibrer maintenant?"</string>
-    <string name="diagnosticAbbreviated">"Diag"</string>
     <string name="enableUserMode">"Mode utilisateur"</string>
 
     <!--Settings Screen-->
@@ -80,29 +78,27 @@
     <!--Result Screen-->
     <string name="result">"Résultat"</string>
     <string name="backToSurvey">"Retour à l'enquête"</string>
-    <string name="highLevelsFound">"%s la contamination est très élevé"</string>
-    <string name="tryWith50PercentSample" tools:ignore="StringFormatInvalid">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de 50%"</string>
-    <string name="tryWith25PercentSample" tools:ignore="StringFormatInvalid">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de 25%"</string>
+    <string name="highLevelsFound">"%1$s la contamination est très élevé"</string>
+    <string name="tryWithDilutedSample">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de %1$d%%"</string>
 
     <!--Sensor Details Screen-->
     <string name="deviceConnectSensor">"Connectez Akvo Sensor CE"</string>
     <string name="deviceConnecting">"Branchement à un périphérique"</string>
     <string name="deviceConnected">"Périphérique connecté"</string>
-    <string name="electricalConductivityResult">"CE %s μS/cm"</string>
+    <string name="electricalConductivityResult">"CE %1$s μS/cm"</string>
     <string name="acceptResult">"Accepter Résultat"</string>
 
     <!--Dilution Selection Dialog-->
     <string name="selectDilution">"Sélectionnez Dilution"</string>
-    <string name="hundredPercentSampleWater" formatted="false">"Aucune dilution"</string>
-    <string name="fiftyPercentSampleWater" formatted="false">"50% de l'eau de l'échantillon"</string>
-    <string name="twentyFivePercentSampleWater" formatted="false">"25% de l'eau de l'échantillon"</string>
+    <string name="noDilution">"Aucune dilution"</string>
+    <string name="percentSampleWater">"%1$d%% de l'eau de l'échantillon"</string>
 
     <!--EC Sensor Calibration-->
     <string name="notConnected">"Capteur non raccordé"</string>
-    <string name="lowEcSolution">"Étape 1: Solution CE Low"</string>
+    <string name="lowEcSolution">"Solution CE Low"</string>
     <string name="suspendEcSensorInLow">"Suspendre Sensor CE dans la solution LOW CE"</string>
     <string name="enterItsMeasuredLow">"Entrez sa valeur CE basse pré-mesurée ci-dessous"</string>
-    <string name="highEcSolution">"Étape 2: Solution Haute CE"</string>
+    <string name="highEcSolution">"Solution Haute CE"</string>
     <string name="suspendEcSensorInHigh">"Suspendre Sensor CE dans la solution HAUT CE"</string>
     <string name="enterItsMeasuredHigh">"Entrez sa valeur CE HAUTE pré-mesurée ci-dessous"</string>
 

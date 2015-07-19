@@ -38,9 +38,9 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(false);
+            getSupportActionBar().setTitle(getResources().getString(R.string.calibrate));
         }
     }
-
 
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {

@@ -79,15 +79,15 @@ public class ResultFragment extends DialogFragment {
         switch (dilutionLevel) {
             case 0:
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(R.string.hundredPercentSampleWater);
+                dilutionTextView.setText(R.string.noDilution);
                 break;
             case 1:
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(R.string.fiftyPercentSampleWater);
+                dilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 50));
                 break;
             case 2:
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(R.string.twentyFivePercentSampleWater);
+                dilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 25));
                 break;
         }
 

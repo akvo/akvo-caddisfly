@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,7 @@ import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -115,6 +117,18 @@ public class MainActivity extends AppCompatActivity {
                 checkDiagnosticMode();
             }
         });
+
+        File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() + Config.OLD_CALIBRATE_FOLDER_NAME);
+        if (oldFolder.exists()) {
+            File newPath = new File(Environment.getExternalStorageDirectory().getPath() + Config.CALIBRATE_FOLDER_NAME);
+            oldFolder.renameTo(newPath);
+        }
+
+        oldFolder = new File(Environment.getExternalStorageDirectory().getPath() + Config.OLD_FILES_FOLDER_NAME);
+        if (oldFolder.exists()) {
+            oldFolder.delete();
+        }
+
     }
 
     @Override

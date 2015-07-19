@@ -53,8 +53,6 @@ public class MessageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //getDialog().setTitle(title);
-
         final View view = inflater.inflate(R.layout.fragment_message, container, false);
 
         TextView titleView = (TextView) view.findViewById(R.id.title);
@@ -67,23 +65,6 @@ public class MessageFragment extends DialogFragment {
         TextView messageTextView2 = (TextView) view.findViewById(R.id.messageTextView2);
         final String message = getArguments().getString("message");
         messageTextView2.setText(message);
-
-//        TextView dilutionTextView = (TextView) view.findViewById(R.id.dilutionTextView);
-//        int dilutionLevel = getArguments().getInt("dilution", -1);
-//        switch (dilutionLevel) {
-//            case 0:
-//                dilutionTextView.setVisibility(View.VISIBLE);
-//                dilutionTextView.setText(R.string.hundredPercentSampleWater);
-//                break;
-//            case 1:
-//                dilutionTextView.setVisibility(View.VISIBLE);
-//                dilutionTextView.setText(R.string.fiftyPercentSampleWater);
-//                break;
-//            case 2:
-//                dilutionTextView.setVisibility(View.VISIBLE);
-//                dilutionTextView.setText(R.string.twentyFivePercentSampleWater);
-//                break;
-//        }
 
         Button button = (Button) view.findViewById(R.id.endSurveyButton);
         button.setOnClickListener(new View.OnClickListener() {

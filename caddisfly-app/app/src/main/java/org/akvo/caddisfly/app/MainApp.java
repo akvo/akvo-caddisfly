@@ -77,28 +77,48 @@ public class MainApp extends Application {
         }
     }
 
+
+    private String getJsonText() {
+        final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
+
+        File file = new File(path);
+        String text;
+
+        //Look for external json config file otherwise use the internal default one
+        if (file.exists()) {
+            text = FileUtils.loadTextFromFile(path);
+            //ignore file if it is old version
+            if (!text.contains("ranges")) {
+                text = FileUtils.readRawTextFile(this, R.raw.tests_json);
+            }
+        } else {
+            text = FileUtils.readRawTextFile(this, R.raw.tests_json);
+        }
+
+        return text;
+    }
+
+    public void setDefaultTest() {
+
+        ArrayList<TestInfo> tests;
+        try {
+            tests = JsonUtils.loadTests(getJsonText());
+            if (tests.size() > 0) {
+                currentTestInfo = tests.get(0);
+                if (currentTestInfo.getType() == 0) {
+                    loadCalibratedSwatches(currentTestInfo);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setSwatches(String testCode) {
         testCode = testCode.toUpperCase();
 
         try {
-
-            //final String path = getExternalFilesDir(null) + Config.CONFIG_FILE_PATH;
-            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
-
-            File file = new File(path);
-            String text;
-
-            //Look for external json config file otherwise use the internal default one
-            if (file.exists()) {
-                text = FileUtils.loadTextFromFile(path);
-                //ignore file if it is old version
-                if (!text.contains("ranges")) {
-                    text = FileUtils.readRawTextFile(this, R.raw.tests_json);
-                }
-            } else {
-                text = FileUtils.readRawTextFile(this, R.raw.tests_json);
-            }
-            currentTestInfo = JsonUtils.loadJson(text, testCode);
+            currentTestInfo = JsonUtils.loadJson(getJsonText(), testCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -207,4 +227,5 @@ public class MainApp extends Application {
         }
         return count;
     }
+
 }

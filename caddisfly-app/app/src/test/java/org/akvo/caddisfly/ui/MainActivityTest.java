@@ -211,7 +211,7 @@ public class MainActivityTest {
                 "                \"code\": \"fluor\",\n" +
                 "                \"unit\": \"ppm\",\n" +
                 "                \"ranges\": \"0,.5,1,1.5,2\",\n" +
-                "                \"dilutions\":\"0,50,75\"\n" +
+                "                \"dilutions\":\"0,50,25\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "                \"name\": [\n" +

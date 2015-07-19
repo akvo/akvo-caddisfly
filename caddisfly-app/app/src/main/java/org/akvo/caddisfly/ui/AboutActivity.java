@@ -20,15 +20,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.Locale;
@@ -48,7 +45,6 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
-        ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
 
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
@@ -74,13 +70,14 @@ public class AboutActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        organizationView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                NetworkUtils.openWebBrowser(context, Config.ORG_WEBSITE);
-            }
-        });
+//        ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
+//        organizationView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                NetworkUtils.openWebBrowser(context, Config.ORG_WEBSITE);
+//            }
+//        });
 
         setTitle(R.string.about);
 

@@ -28,6 +28,7 @@ public class TestInfo {
     private final ArrayList<ResultRange> mRanges;
     private final ArrayList<ResultRange> mSwatches;
     private final int mType;
+    private final ArrayList<Integer> mDilutions;
 
     public TestInfo(Hashtable names, String code, String unit, int type) {
         mNames = names;
@@ -36,6 +37,7 @@ public class TestInfo {
         mUnit = unit;
         mRanges = new ArrayList<>();
         mSwatches = new ArrayList<>();
+        mDilutions = new ArrayList<>();
     }
 
     public void sortRange() {
@@ -94,5 +96,13 @@ public class TestInfo {
 
     public void addSwatch(ResultRange value) {
         mSwatches.add(value);
+    }
+
+    public void addDilution(int dilution) {
+        mDilutions.add(dilution);
+    }
+
+    public boolean hasDilution() {
+        return mDilutions.size() > 0;
     }
 }
