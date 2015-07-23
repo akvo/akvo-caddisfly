@@ -13,7 +13,6 @@
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-
 <ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewAnimator"
@@ -35,7 +34,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:textAllCaps="false"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textStyle="normal"
             android:visibility="visible"
             tools:text="Contaminant" />
@@ -62,7 +61,6 @@
             android:background="@color/amber"
             android:gravity="center"
             android:padding="7dp"
-            android:text="@string/percentSampleWater"
             android:textColor="#fff"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -101,7 +99,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:textAllCaps="false"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textStyle="normal"
             android:visibility="visible"
             tools:text="Contaminant" />
@@ -116,7 +114,6 @@
             android:background="@color/amber"
             android:gravity="center"
             android:padding="7dp"
-            android:text="@string/percentSampleWater"
             android:textColor="#fff"
             android:textSize="24sp"
             android:textStyle="bold"

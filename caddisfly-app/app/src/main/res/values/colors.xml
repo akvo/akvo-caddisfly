@@ -27,5 +27,6 @@
     <color name="button_orange">#FFEF9F28</color>
     <color name="action_bar">#ff2c2e2c</color>
     <color name="amber">#ff6f00</color>
+    <color name="red">#ff0000</color>
 
 </resources>

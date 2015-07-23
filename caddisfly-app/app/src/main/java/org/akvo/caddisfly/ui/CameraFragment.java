@@ -178,7 +178,11 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                         @Override
                         public void run() {
                             PictureCallback localCallback = new PictureCallback();
-                            mCamera.takePicture(null, null, localCallback);
+                            try {
+                                mCamera.takePicture(null, null, localCallback);
+                            } catch (Exception ignored) {
+
+                            }
                         }
                     }, Config.INITIAL_DELAY);
                 }

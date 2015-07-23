@@ -43,6 +43,7 @@ import android.widget.TextView;
 
 import com.squareup.spoon.Spoon;
 
+import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -60,6 +61,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
@@ -132,15 +136,26 @@ public class EspressoTest
             currentHashMap = stringHashMapFR;
         }
 
-        getActivity();
-
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
+
+        getActivity();
 
     }
 
     @SuppressWarnings("EmptyMethod")
     public void test000() {
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
     }
 
     public void test001_Language() {
@@ -490,6 +505,17 @@ public class EspressoTest
 
     public void testStartASurvey() {
 
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+
+        startApp();
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
+
         onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
@@ -552,13 +578,11 @@ public class EspressoTest
 
         onView(withId(R.id.startButton)).perform(click());
 
-        onView(withId(R.id.placeInStandText)).check(matches(isDisplayed()));
+        mDevice.waitForWindowUpdate("", 1000);
 
-        try {
-            Espresso.pressBack();
-        } catch (NoActivityResumedException ignored) {
-        }
+        //onView(withId(R.id.placeInStandText)).check(matches(isDisplayed()));
 
+        mDevice.pressBack();
         mDevice.pressBack();
         mDevice.pressBack();
         mDevice.pressBack();
@@ -643,57 +667,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-
     }
-
-//    public void testLanguage() {
-//
-//        onView(withId(R.id.action_settings))
-//                .perform(click());
-//
-//        onView(withText(R.string.language))
-//                .check(matches(not(isDisplayed())))
-//                .perform(scrollTo())
-//                .check(matches(isDisplayed()))
-//                .perform(scrollTo());
-//
-//        onView(withText(R.string.language))
-//                .perform(click());
-//
-//        onData(hasToString(startsWith("العربية"))).perform(click());
-//    }
-//
-//    public void testLanguage2() {
-//        onView(withId(R.id.action_settings))
-//                .perform(click());
-//
-//        onView(withText(R.string.language))
-//                .check(matches(not(isDisplayed())))
-//                .perform(scrollTo())
-//                .check(matches(isDisplayed()))
-//                .perform(scrollTo());
-//
-//        onView(withText(R.string.language))
-//                .perform(click());
-//
-//        onData(hasToString(startsWith("हिंदी"))).perform(click());
-//    }
-//
-//    public void testLanguage3() {
-//        onView(withId(R.id.action_settings))
-//                .perform(click());
-//
-//        onView(withText(R.string.language))
-//                .check(matches(not(isDisplayed())))
-//                .perform(scrollTo())
-//                .check(matches(isDisplayed()))
-//                .perform(scrollTo());
-//
-//        onView(withText(R.string.language))
-//                .perform(click());
-//
-//        onData(hasToString(startsWith("ಕನ್ನಡ"))).perform(click());
-//    }
 
     public void testLanguage4() {
         onView(withId(R.id.action_settings))
@@ -743,9 +717,7 @@ public class EspressoTest
         for (int i = 0; i < 10; i++) {
             onView(withId(R.id.textVersion)).perform(click());
         }
-
     }
-
 
     private void leaveDiagnosticMode() {
         onView(withId(R.id.disableDiagnosticButton)).perform(click());
@@ -754,57 +726,193 @@ public class EspressoTest
 
     }
 
-//    public void testStartCalibrate() {
-//        startCalibrate(false);
-//    }
+    public void testStartCalibrate() {
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
 
-//    public void startCalibrate(boolean devMode) {
-//
-//        onView(withId(R.id.action_settings)).perform(click());
-//
-//        SharedPreferences prefs =
-//                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-//        prefs.edit().clear().apply();
-//
-//        onView(withText(R.string.calibrate)).perform(click());
-//
-//        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-//
-//        onData(is(instanceOf(ResultRange.class)))
-//                .inAdapterView(withId(android.R.id.list))
-//                .atPosition(4).onChildView(withId(R.id.button))
-//                .check(matches(allOf(isDisplayed(), withText("?"))));
-//
-//        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-//        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
-//
-//        onView(withId(R.id.startButton)).perform(click());
-//
-//        try {
-//            Thread.sleep(70000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (devMode) {
-//            onView(withId(R.id.okButton)).perform(click());
-//        }
-//
-//        onData(is(instanceOf(ResultRange.class)))
-//                .inAdapterView(withId(android.R.id.list))
-//                .atPosition(4).onChildView(withId(R.id.button))
-//                .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
-//
-//
-//        Espresso.pressBack();
-//
-//        Espresso.pressBack();
-//
-////        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
-////        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
-//
-//    }
-//
+        startCalibrate(false, 2, 4);
+    }
+
+    public void startCalibrate(boolean devMode, double value, int index ) {
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onData(is(instanceOf(ResultRange.class)))
+                .inAdapterView(withId(android.R.id.list))
+                .atPosition(index).onChildView(withId(R.id.button))
+                .check(matches(allOf(isDisplayed(), withText("?"))));
+
+        onView(withText(String.format("%.2f ppm",value))).perform(click());
+
+        onView(withId(R.id.startButton)).perform(click());
+
+        try {
+            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (devMode) {
+            onView(withId(R.id.okButton)).perform(click());
+        }
+
+        onData(is(instanceOf(ResultRange.class)))
+                .inAdapterView(withId(android.R.id.list))
+                .atPosition(index).onChildView(withId(R.id.button))
+                .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
+
+
+        Espresso.pressBack();
+
+        Espresso.pressBack();
+
+//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
+//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
+
+    }
+
+    public void testStartNoDilutionTest() {
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
+
+        startCalibrate(false, 2.0, 4);
+
+        goToMainScreen();
+
+        startCalibrate(false, 0.5, 1);
+
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+
+        startApp();
+
+        onView(withText(R.string.startSurvey)).perform(click());
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        clickListViewItem("Automated Tests");
+
+        clickListViewItem("CREATE NEW DATA POINT");
+
+        clickListViewItem("All Tests");
+
+        try {
+
+            mDevice.findObject(new UiSelector().text("Use External Source")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.noDilutionButton)).perform(click());
+
+        onView(withId(R.id.startButton)).perform(click());
+
+        try {
+            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        takeScreenshot();
+
+        onView(withId(R.id.endSurveyButton)).perform(click());
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
+//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
+
+    }
+
+    public void testStartHighLevelTest() {
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
+
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+
+        startApp();
+
+        startCalibrate(false, 2.0, 4);
+
+        goToMainScreen();
+
+        onView(withText(R.string.startSurvey)).perform(click());
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        clickListViewItem("Automated Tests");
+
+        clickListViewItem("CREATE NEW DATA POINT");
+
+        clickListViewItem("All Tests");
+
+        try {
+
+            mDevice.findObject(new UiSelector().text("Use External Source")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.noDilutionButton)).perform(click());
+
+        onView(withId(R.id.startButton)).perform(click());
+
+        try {
+            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.endSurveyButton)).perform(click());
+
+        takeScreenshot();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
+//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
+
+    }
 
     private Activity getCurrentActivity() {
         getInstrumentation().waitForIdleSync();

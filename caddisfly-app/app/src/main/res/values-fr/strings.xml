@@ -24,7 +24,6 @@
     <string name="cancel">"Annuler"</string>
     <string name="start">"Commencer"</string>
     <string name="next">"Suivant"</string>
-    <string name="reset">"Réinitialiser"</string>
     <string name="delete">"Supprimer"</string>
     <string name="error">"Erreur"</string>
     <string name="general">"Général"</string>
@@ -91,7 +90,8 @@
     <!--Dilution Selection Dialog-->
     <string name="selectDilution">"Sélectionnez Dilution"</string>
     <string name="noDilution">"Aucune dilution"</string>
-    <string name="percentSampleWater">"%1$d%% de l'eau de l'échantillon"</string>
+    <string name="twoTimesDilution">2 times dilution</string>
+    <string name="fiveTimesDilution">5 Times Dilution</string>
 
     <!--EC Sensor Calibration-->
     <string name="notConnected">"Capteur non raccordé"</string>
@@ -136,4 +136,6 @@
     <string name="debuggingOn">"Afficher des messages de débogage"</string>
     <string name="noSound">"Pas De Son"</string>
     <string name="deviceConnectExternalCamera">"Connectez capteur externe Caddisfly"</string>
+    <string name="update">Update</string>
+    <string name="overwrite">Overwrite</string>
 </resources>

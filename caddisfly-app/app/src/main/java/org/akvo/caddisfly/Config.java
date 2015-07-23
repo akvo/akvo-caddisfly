@@ -38,12 +38,11 @@ public class Config {
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
 
-    // Link to company web site for about information
-    public static final String ORG_WEBSITE = "http://akvo.org";
-
-    public static final String OLD_CALIBRATE_FOLDER_NAME = "/com.ternup.caddisfly/calibrate/";
+    public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
-    public static final String CALIBRATE_FOLDER_NAME = "/org.akvo.caddisfly/calibration/";
+    public static final String CALIBRATE_FOLDER_NAME = "calibration";
+
+    public static final String APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
 
     // Tag for debug log filtering
     public static final String DEBUG_TAG = "Caddisfly";

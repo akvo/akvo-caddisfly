@@ -33,9 +33,10 @@ public class AlertUtils {
         showAlert(context, title, message, null, null);
     }
 
-    public static void askQuestion(Context context, int title, int message,
+    public static void askQuestion(Context context, int title, int message, int okButtonText,
                                    DialogInterface.OnClickListener callback) {
-        showAlert(context, title, message, callback, new DialogInterface.OnClickListener() {
+        showAlert(context, context.getString(title), message, okButtonText, callback,
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -47,6 +48,12 @@ public class AlertUtils {
     public static void showAlert(Context context, String title, int message,
                                  DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
         showAlert(context, title, context.getString(message), R.string.ok, callback, cancelListener);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    public static void showAlert(Context context, String title, int message, int okButtonText,
+                                 DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
+        showAlert(context, title, context.getString(message), okButtonText, callback, cancelListener);
     }
 
     public static void showAlert(Context context, int title, int message,
@@ -61,6 +68,7 @@ public class AlertUtils {
                                   DialogInterface.OnClickListener cancelListener) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
         builder.setTitle(title)
                 .setMessage(message)
                 .setCancelable(false);

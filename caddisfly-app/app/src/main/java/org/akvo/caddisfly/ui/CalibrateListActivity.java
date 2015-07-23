@@ -200,7 +200,7 @@ public class CalibrateListActivity extends AppCompatActivity
         alertDialogBuilder.setMessage(R.string.saveProvideFileName);
 
 
-        alertDialogBuilder.setPositiveButton(R.string.ok, null);
+        alertDialogBuilder.setPositiveButton(R.string.save, null);
         alertDialogBuilder
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -233,12 +233,14 @@ public class CalibrateListActivity extends AppCompatActivity
                             }
 
                             File external = Environment.getExternalStorageDirectory();
-                            final String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
+                            final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                                    File.separator + Config.CALIBRATE_FOLDER_NAME;
 
-                            File file = new File(path + input.getText());
+                            File file = new File(path, input.getText().toString());
                             if (file.exists()) {
                                 AlertUtils.askQuestion(context, R.string.saveConfirmOverwriteFile,
-                                        R.string.saveNameAlreadyExists, new DialogInterface.OnClickListener() {
+                                        R.string.saveNameAlreadyExists, R.string.overwrite,
+                                        new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 FileUtils.saveToFile(path, input.getText().toString(),
@@ -293,9 +295,12 @@ public class CalibrateListActivity extends AppCompatActivity
                     android.R.layout.select_dialog_singlechoice);
 
             File external = Environment.getExternalStorageDirectory();
-            final String folderName = Config.CALIBRATE_FOLDER_NAME;
-            String path = external.getPath() + folderName;
+            final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                    File.separator + Config.CALIBRATE_FOLDER_NAME;
+
             File folder = new File(path);
+
+
             if (folder.exists()) {
                 final File[] listFiles = folder.listFiles();
                 Arrays.sort(listFiles);
@@ -370,12 +375,14 @@ public class CalibrateListActivity extends AppCompatActivity
                             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 final int position = i;
 
-                                AlertUtils.askQuestion(context, R.string.delete, R.string.deleteConfirm, new DialogInterface.OnClickListener() {
+                                AlertUtils.askQuestion(context, R.string.delete,
+                                        R.string.deleteConfirm, R.string.delete,
+                                        new DialogInterface.OnClickListener() {
                                     @SuppressWarnings("unchecked")
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         String fileName = listFiles[position].getName();
-                                        FileUtils.deleteFile(folderName, fileName);
+                                        FileUtils.deleteFile(path, fileName);
                                         ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                         listAdapter.remove(listAdapter.getItem(position));
                                         alert.dismiss();

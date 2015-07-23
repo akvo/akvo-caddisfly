@@ -83,11 +83,11 @@ public class ResultFragment extends DialogFragment {
                 break;
             case 1:
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 50));
+                dilutionTextView.setText(R.string.twoTimesDilution);
                 break;
             case 2:
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 25));
+                dilutionTextView.setText(R.string.fiveTimesDilution);
                 break;
         }
 

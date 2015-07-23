@@ -95,6 +95,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (checker.isUpdateAvailable()) {
             AlertUtils.askQuestion(mContext, R.string.updateApp, R.string.updateRequest,
+                    R.string.update,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

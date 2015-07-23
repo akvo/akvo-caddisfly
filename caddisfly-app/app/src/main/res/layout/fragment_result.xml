@@ -44,11 +44,11 @@
         android:background="@color/amber"
         android:gravity="center"
         android:padding="7dp"
-        android:text="@string/percentSampleWater"
         android:textColor="#fff"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:text="@string/fiveTimesDilution" />
 
     <TextView
         android:id="@+id/result"

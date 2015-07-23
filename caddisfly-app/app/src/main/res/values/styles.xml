@@ -66,4 +66,5 @@
     <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">@color/text_tertiary</item>
     </style>
+
 </resources>

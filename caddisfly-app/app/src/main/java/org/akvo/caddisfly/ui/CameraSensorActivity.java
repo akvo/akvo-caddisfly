@@ -202,6 +202,7 @@ public class CameraSensorActivity extends AppCompatActivity
         findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mViewAnimator.showNext();
 
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().hide();
@@ -217,15 +218,24 @@ public class CameraSensorActivity extends AppCompatActivity
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 );
 
-                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
-                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                if (usbDeviceList.size() > 0) {
-                    startExternalTest();
-                } else {
-                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                            SensorManager.SENSOR_DELAY_UI);
-                    mViewAnimator.showNext();
-                }
+
+                delayRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
+                        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+                        if (usbDeviceList.size() > 0) {
+                            startExternalTest();
+                        } else {
+                            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                                    SensorManager.SENSOR_DELAY_UI);
+                        }
+                    }
+                };
+
+                delayHandler.postDelayed(delayRunnable, 1000);
+
+
             }
         });
     }
@@ -237,6 +247,8 @@ public class CameraSensorActivity extends AppCompatActivity
         /*if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }*/
+
+
         mSensorManager.unregisterListener(mShakeDetector);
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
@@ -457,6 +469,7 @@ public class CameraSensorActivity extends AppCompatActivity
     }
 
     private void startTest() {
+
         mResults = new ArrayList<>();
 
         try {
@@ -554,7 +567,7 @@ public class CameraSensorActivity extends AppCompatActivity
                 result = result * 2;
                 break;
             case 2:
-                result = result * 4;
+                result = result * 5;
                 break;
         }
 
@@ -600,7 +613,7 @@ public class CameraSensorActivity extends AppCompatActivity
                                 message = String.format(getString(R.string.tryWithDilutedSample), 50);
                                 break;
                             case 1:
-                                message = String.format(getString(R.string.tryWithDilutedSample), 25);
+                                message = String.format(getString(R.string.tryWithDilutedSample), 20);
                                 break;
                         }
 
@@ -676,12 +689,12 @@ public class CameraSensorActivity extends AppCompatActivity
                     mDilutionTextView1.setText(R.string.noDilution);
                     break;
                 case 1:
-                    mDilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 50));
-                    mDilutionTextView1.setText(String.format(getString(R.string.percentSampleWater), 50));
+                    mDilutionTextView.setText(R.string.twoTimesDilution);
+                    mDilutionTextView1.setText(R.string.twoTimesDilution);
                     break;
                 case 2:
-                    mDilutionTextView.setText(String.format(getString(R.string.percentSampleWater), 25));
-                    mDilutionTextView1.setText(String.format(getString(R.string.percentSampleWater), 25));
+                    mDilutionTextView.setText(R.string.fiveTimesDilution);
+                    mDilutionTextView1.setText(R.string.fiveTimesDilution);
                     break;
             }
 
@@ -705,10 +718,10 @@ public class CameraSensorActivity extends AppCompatActivity
             String message = "";
             switch (mDilutionLevel) {
                 case 0:
-                    message = String.format(getString(R.string.tryWithDilutedSample), 50);
+                    message = String.format(getString(R.string.tryWithDilutedSample), 2);
                     break;
                 case 1:
-                    message = String.format(getString(R.string.tryWithDilutedSample), 25);
+                    message = String.format(getString(R.string.tryWithDilutedSample), 5);
                     break;
             }
 

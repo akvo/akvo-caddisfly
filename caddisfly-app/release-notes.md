@@ -1,3 +1,7 @@
+v0.74 alpha
+-----------
+1. Changed from 25% dilution to 20% (5 times) dilution
+
 v0.73 alpha
 -----------
 1. Get dilution levels from json config

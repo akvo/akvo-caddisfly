@@ -23,7 +23,6 @@
     <string name="cancel">Cancel</string>
     <string name="start">Start</string>
     <string name="next">Next</string>
-    <string name="reset">Reset</string>
     <string name="delete">Delete</string>
     <string name="error">Error</string>
     <string name="general">General</string>
@@ -74,7 +73,7 @@
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
     <string name="highLevelsFound">%1$s contamination is very high</string>
-    <string name="tryWithDilutedSample">Try again with a dilution of %1$d%% sample water</string>
+    <string name="tryWithDilutedSample">Try again with %1$d%% times dilution</string>
 
     <!--Sensor Details Screen-->
     <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
@@ -86,7 +85,8 @@
     <!--Dilution Selection Dialog-->
     <string name="selectDilution">Select Dilution</string>
     <string name="noDilution">No Dilution</string>
-    <string name="percentSampleWater" formatted="false">%1$d%% Sample Water</string>
+    <string name="twoTimesDilution">2 times dilution</string>
+    <string name="fiveTimesDilution">5 Times Dilution</string>
 
     <!--EC Sensor Calibration-->
     <string name="notConnected">Sensor not Connected</string>
@@ -139,4 +139,6 @@
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">No Sound</string>
     <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>
+    <string name="update">Update</string>
+    <string name="overwrite">Overwrite</string>
 </resources>

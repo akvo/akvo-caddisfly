@@ -40,9 +40,9 @@ public final class FileUtils {
     }
 
     public static void deleteFile(String folder, String fileName) {
-        File external = Environment.getExternalStorageDirectory();
-        String path = external.getPath() + folder;
-        File file = new File(path + fileName);
+        //File external = Environment.getExternalStorageDirectory();
+        //String path = external.getPath() + folder;
+        File file = new File(folder, fileName);
         //noinspection ResultOfMethodCallIgnored
         file.delete();
     }
@@ -56,7 +56,7 @@ public final class FileUtils {
                 folder.mkdirs();
             }
 
-            File file = new File(path + name);
+            File file = new File(path, name);
             //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
             FileWriter filewriter = new FileWriter(file);
@@ -94,14 +94,16 @@ public final class FileUtils {
     public static ArrayList<String> loadFromFile(TestInfo testInfo, String name) {
         try {
             File external = Environment.getExternalStorageDirectory();
-            String path = external.getPath() + Config.CALIBRATE_FOLDER_NAME;
+            String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                    File.separator + Config.CALIBRATE_FOLDER_NAME;
+
             ArrayList<String> arrayList = new ArrayList<>();
             boolean oldVersion = false;
 
             File folder = new File(path);
             if (folder.exists()) {
 
-                File file = new File(path + name);
+                File file = new File(path, name);
 
                 FileReader filereader = new FileReader(file);
 
@@ -158,4 +160,19 @@ public final class FileUtils {
         }
         return text.toString();
     }
+
+    public static void deleteFiles(String path) {
+
+        File file = new File(path);
+
+        if (file.exists()) {
+            String deleteCmd = "rm -r " + path;
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                runtime.exec(deleteCmd);
+            } catch (IOException e) {
+            }
+        }
+    }
+
 }

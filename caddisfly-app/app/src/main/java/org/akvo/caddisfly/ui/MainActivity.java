@@ -42,6 +42,7 @@ import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.DateUtils;
+import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
@@ -118,17 +119,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() + Config.OLD_CALIBRATE_FOLDER_NAME);
+
+        //todo: upgrade stuff. To be removed...
+        File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
+                Config.OLD_FILES_FOLDER_NAME + File.separator + Config.OLD_CALIBRATE_FOLDER_NAME);
+
         if (oldFolder.exists()) {
-            File newPath = new File(Environment.getExternalStorageDirectory().getPath() + Config.CALIBRATE_FOLDER_NAME);
-            oldFolder.renameTo(newPath);
+            File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
+                    Config.APP_EXTERNAL_PATH);
+
+            if (!newPath.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                newPath.mkdirs();
+            }
+
+            newPath = new File(Environment.getExternalStorageDirectory().getPath() +
+                    Config.APP_EXTERNAL_PATH + File.separator + Config.CALIBRATE_FOLDER_NAME);
+            if (!newPath.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                oldFolder.renameTo(newPath);
+            }
         }
 
-        oldFolder = new File(Environment.getExternalStorageDirectory().getPath() + Config.OLD_FILES_FOLDER_NAME);
+        oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
+                Config.OLD_FILES_FOLDER_NAME);
         if (oldFolder.exists()) {
-            oldFolder.delete();
+            FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
+                    + Config.OLD_FILES_FOLDER_NAME);
         }
-
     }
 
     @Override
@@ -340,15 +358,13 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertUtils.showAlert(context,
                         mainApp.currentTestInfo.getName(conf.locale.getLanguage()),
-                        R.string.errorCalibrationIncomplete,
+                        R.string.errorCalibrationIncomplete, R.string.calibrate,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(
                                     DialogInterface dialogInterface,
                                     int i) {
-                                //final Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
                                 final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-                                //intent.putExtra("calibrate", true);
                                 startActivity(intent);
                             }
                         }, new DialogInterface.OnClickListener() {
