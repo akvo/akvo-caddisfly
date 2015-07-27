@@ -344,6 +344,13 @@ public final class ColorUtils {
         );
     }
 
+    /**
+     * Experimental: Analyzes the extracted color using HSV
+     *
+     * @param photoColor The extracted color information
+     * @param colorRange The color chart to compare against
+     * @param bundle     The bundle to add results to
+     */
     private static void analyzeColorHsv(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
 
         double a = 0, b, c, d, e, f;

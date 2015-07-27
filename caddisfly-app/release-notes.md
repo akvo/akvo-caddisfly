@@ -1,3 +1,11 @@
+v0.75 beta
+----------
+1. Change alpha to Beta in version number
+2. Fix: High level showing % value instead of number of times
+3. Fix: EC Sensor recording a -1 value
+4. Fix: Use dot (.) separator for app version number in locales using commas
+5. Fix: Too many decimal places being recorded. Change to two places
+
 v0.74 alpha
 -----------
 1. Changed from 25% dilution to 20% (5 times) dilution

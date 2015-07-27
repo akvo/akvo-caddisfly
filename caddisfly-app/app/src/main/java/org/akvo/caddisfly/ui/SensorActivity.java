@@ -486,18 +486,22 @@ public class SensorActivity extends AppCompatActivity {
                     mTemperature = String.format("%.1f\u00B0C", temperature);
                     mTemperature = mTemperature.replace(".0", "");
                     long ec25Value = Math.round(Double.parseDouble(mEc25Value));
-                    mEc25Value = Long.toString(ec25Value);
+                    if (ec25Value > -1) {
+                        mEc25Value = Long.toString(ec25Value);
+                    } else {
+                        mEc25Value = "";
+                    }
                     double ecValue = Math.round(Double.parseDouble(mEcValue));
 
                     mTemperatureTextView.setText(mTemperature);
-                    if (!mEcValue.equals("-1.00")) {
-                        mResultTextView.setText(String.format("%d", ec25Value));
-                        mEcValueTextView.setText(String.format(getString(R.string.electricalConductivityResult), String.format("%.0f", ecValue)));
-                        mProgressBar.setVisibility(View.GONE);
-                    } else {
+                    if (mEc25Value.isEmpty()) {
                         mEcValueTextView.setText("");
                         mResultTextView.setText("");
                         mProgressBar.setVisibility(View.VISIBLE);
+                    } else {
+                        mResultTextView.setText(String.format("%d", ec25Value));
+                        mEcValueTextView.setText(String.format(getString(R.string.electricalConductivityResult), String.format("%.0f", ecValue)));
+                        mProgressBar.setVisibility(View.GONE);
                     }
 
                     mResultLayout.setVisibility(View.VISIBLE);

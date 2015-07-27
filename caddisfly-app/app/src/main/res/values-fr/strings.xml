@@ -78,7 +78,7 @@
     <string name="result">"Résultat"</string>
     <string name="backToSurvey">"Retour à l'enquête"</string>
     <string name="highLevelsFound">"%1$s la contamination est très élevé"</string>
-    <string name="tryWithDilutedSample">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de %1$d%%"</string>
+    <string name="tryWithDilutedSample">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de %1$d"</string>
 
     <!--Sensor Details Screen-->
     <string name="deviceConnectSensor">"Connectez Akvo Sensor CE"</string>
@@ -95,12 +95,10 @@
 
     <!--EC Sensor Calibration-->
     <string name="notConnected">"Capteur non raccordé"</string>
-    <string name="lowEcSolution">"Solution CE Low"</string>
-    <string name="suspendEcSensorInLow">"Suspendre Sensor CE dans la solution LOW CE"</string>
-    <string name="enterItsMeasuredLow">"Entrez sa valeur CE basse pré-mesurée ci-dessous"</string>
-    <string name="highEcSolution">"Solution Haute CE"</string>
-    <string name="suspendEcSensorInHigh">"Suspendre Sensor CE dans la solution HAUT CE"</string>
-    <string name="enterItsMeasuredHigh">"Entrez sa valeur CE HAUTE pré-mesurée ci-dessous"</string>
+    <string name="lowEcMeasurement">Low EC Measurement</string>
+    <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
+    <string name="highEcMeasurement">High EC Measurement</string>
+    <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
 
     <!--App update-->
     <string name="updateApp">"Mise à jour Akvo Caddisfly"</string>

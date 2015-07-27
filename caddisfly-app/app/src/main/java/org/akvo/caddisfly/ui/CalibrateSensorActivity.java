@@ -356,8 +356,8 @@ public class CalibrateSensorActivity extends AppCompatActivity {
                 }
                 if (ftDev != null && ftDev.isOpen()) {
 
-                    final ProgressDialog dialog = ProgressDialog.show(mContext, getString(R.string.deviceConnecting),
-                            getString(R.string.pleaseWait), true);
+                    final ProgressDialog dialog = ProgressDialog.show(mContext,
+                            getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true);
                     dialog.setCancelable(false);
                     dialog.show();
 

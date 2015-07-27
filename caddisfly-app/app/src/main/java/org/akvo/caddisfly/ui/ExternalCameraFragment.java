@@ -271,7 +271,13 @@ public final class ExternalCameraFragment extends DialogFragment {
     private void startTakingPictures() {
         samplingCount = 0;
         picturesTaken = 0;
-        takePicture();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                takePicture();
+            }
+        }, Config.INITIAL_DELAY);
     }
 
     private void takePicture() {

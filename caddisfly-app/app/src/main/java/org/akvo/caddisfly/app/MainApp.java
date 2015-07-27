@@ -58,7 +58,7 @@ public class MainApp extends Application {
             for (String word : words) {
                 try {
                     Double versionNumber = Double.parseDouble(word);
-                    versionString += String.format("%.2f", versionNumber);
+                    versionString += String.format(Locale.US, "%.2f", versionNumber);
                 } catch (NumberFormatException e) {
                     int id = context.getResources()
                             .getIdentifier(word, "string", context.getPackageName());

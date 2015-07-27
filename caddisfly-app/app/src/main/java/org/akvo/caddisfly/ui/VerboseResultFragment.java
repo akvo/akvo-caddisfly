@@ -89,7 +89,6 @@ public class VerboseResultFragment extends DialogFragment {
         int color = resultValue.getInt(Config.RESULT_COLOR_KEY, 0);
         int swatchColor = resultValue.getInt("MatchedColor", 0);
 
-
         textQuality.setText(String.format("quality: %.0f%%", resultValue.getDouble("quality", 0)));
 
         if (result > -1) {

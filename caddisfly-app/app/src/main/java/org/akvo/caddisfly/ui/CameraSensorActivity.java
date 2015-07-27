@@ -173,6 +173,8 @@ public class CameraSensorActivity extends AppCompatActivity
 
     private void InitializeTest() {
 
+        mSensorManager.unregisterListener(mShakeDetector);
+
         mIgnoreShake = PreferencesUtils.getBoolean(this, R.string.ignoreShakeKey, false);
         mTestCompleted = false;
         mHighLevelsFound = false;
@@ -186,8 +188,6 @@ public class CameraSensorActivity extends AppCompatActivity
                             | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
             wakeLock.acquire();
         }
-
-        mSensorManager.unregisterListener(mShakeDetector);
 
         mWaitingForStillness = true;
         //mWaitingForShake = false;
@@ -218,24 +218,14 @@ public class CameraSensorActivity extends AppCompatActivity
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 );
 
-
-                delayRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
-                        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                        if (usbDeviceList.size() > 0) {
-                            startExternalTest();
-                        } else {
-                            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                                    SensorManager.SENSOR_DELAY_UI);
-                        }
-                    }
-                };
-
-                delayHandler.postDelayed(delayRunnable, 1000);
-
-
+                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
+                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+                if (usbDeviceList.size() > 0) {
+                    startExternalTest();
+                } else {
+                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                            SensorManager.SENSOR_DELAY_UI);
+                }
             }
         });
     }
@@ -247,7 +237,6 @@ public class CameraSensorActivity extends AppCompatActivity
         /*if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }*/
-
 
         mSensorManager.unregisterListener(mShakeDetector);
 
@@ -297,11 +286,6 @@ public class CameraSensorActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAttachedToWindow() {
-
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         MainApp mainApp = (MainApp) getApplicationContext();
@@ -328,7 +312,6 @@ public class CameraSensorActivity extends AppCompatActivity
                             WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             );
-
         }
 
         Resources res = getResources();
@@ -392,7 +375,6 @@ public class CameraSensorActivity extends AppCompatActivity
         Result resultInfo = new Result(result, color, bitmap, results);
 
         mResults.add(resultInfo);
-
     }
 
     private void startExternalTest() {
@@ -472,18 +454,17 @@ public class CameraSensorActivity extends AppCompatActivity
 
         mResults = new ArrayList<>();
 
-        try {
-            Thread.sleep(Config.INITIAL_DELAY, 0);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        sound.playShortResource(this, R.raw.beep);
+//        try {
+//            Thread.sleep(Config.INITIAL_DELAY, 0);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
         mWaitingForStillness = false;
 
+        sound.playShortResource(getBaseContext(), R.raw.beep);
         mShakeDetector.minShakeAcceleration = 1;
         mShakeDetector.maxShakeDuration = 3000;
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -578,7 +559,7 @@ public class CameraSensorActivity extends AppCompatActivity
         intent.putExtra("result", result);
         intent.putExtra("color", color);
         //intent.putExtra("questionId", mQuestionId);
-        intent.putExtra("response", String.valueOf(result));
+        intent.putExtra("response", String.format("%.2f", result));
         setResult(Activity.RESULT_OK, intent);
         mTestCompleted = true;
         boolean diagnosticMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
@@ -610,10 +591,10 @@ public class CameraSensorActivity extends AppCompatActivity
                         sound.playShortResource(this, R.raw.beep_long);
                         switch (mDilutionLevel) {
                             case 0:
-                                message = String.format(getString(R.string.tryWithDilutedSample), 50);
+                                message = String.format(getString(R.string.tryWithDilutedSample), 2);
                                 break;
                             case 1:
-                                message = String.format(getString(R.string.tryWithDilutedSample), 20);
+                                message = String.format(getString(R.string.tryWithDilutedSample), 5);
                                 break;
                         }
 
@@ -664,12 +645,12 @@ public class CameraSensorActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (mWaitingForStillness) {
-            releaseResources();
-            Intent intent = new Intent(getIntent());
-            this.setResult(Activity.RESULT_CANCELED, intent);
-            finish();
-        }
+        //if (mWaitingForStillness) {
+        releaseResources();
+        Intent intent = new Intent(getIntent());
+        this.setResult(Activity.RESULT_CANCELED, intent);
+        finish();
+        //}
     }
 
     @Override
@@ -745,7 +726,6 @@ public class CameraSensorActivity extends AppCompatActivity
             }
             releaseResources();
             finish();
-
         }
     }
 
@@ -756,6 +736,5 @@ public class CameraSensorActivity extends AppCompatActivity
         this.setResult(Activity.RESULT_OK, intent);
         releaseResources();
         finish();
-
     }
 }

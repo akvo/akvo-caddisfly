@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -67,17 +66,6 @@ public class AboutActivity extends AppCompatActivity {
                 }
             }
         });
-
-        final Context context = this;
-
-//        ImageView organizationView = (ImageView) findViewById(R.id.organizationImage);
-//        organizationView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                NetworkUtils.openWebBrowser(context, Config.ORG_WEBSITE);
-//            }
-//        });
 
         setTitle(R.string.about);
 

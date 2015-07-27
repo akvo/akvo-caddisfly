@@ -23,7 +23,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.core.deps.guava.collect.Iterables;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.internal.util.Checks;
@@ -41,10 +40,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.squareup.spoon.Spoon;
-
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.NetworkUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -164,6 +163,10 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
+        String version = MainApp.getVersion(getActivity());
+
+        onView(withText(version)).check(matches(isDisplayed()));
+
         enterDiagnosticMode();
 
         goToMainScreen();
@@ -248,17 +251,19 @@ public class EspressoTest
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withText(R.string.updateCheck)).perform(click());
+        if (!NetworkUtils.isOnline(getActivity())) {
+            onView(withText(R.string.updateCheck)).perform(click());
 
-        onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
-        onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
+            onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
+            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
+            mDevice.waitForWindowUpdate("", 1000);
 
-        mDevice.waitForWindowUpdate("", 1000);
+            //Enable Internet Dialog
+            takeScreenshot();
 
-        //Enable Internet Dialog
-        takeScreenshot();
+            Espresso.pressBack();
 
-        Espresso.pressBack();
+        }
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -281,11 +286,9 @@ public class EspressoTest
         //Test Progress Screen
         takeScreenshot();
 
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
+        mDevice.pressBack();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -363,7 +366,7 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        //Connect EC Sensor Screen
+        //Calibration incomplete
         takeScreenshot();
 
         onView(withId(android.R.id.button2)).perform(click());
@@ -381,6 +384,7 @@ public class EspressoTest
             e.printStackTrace();
         }
 
+        //Connect EC Sensor Screen
         takeScreenshot();
 
         onView(withId(R.id.backButton)).perform(click());
@@ -398,6 +402,22 @@ public class EspressoTest
             e.printStackTrace();
         }
 
+        onView(withId(R.id.backButton)).perform(click());
+
+        try {
+            mDevice.findObject(new UiSelector().text("Next")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+            mDevice.findObject(new UiSelector().text("Use External Source")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Test type not available
         takeScreenshot();
 
         onView(withId(android.R.id.button1)).perform(click());
@@ -620,14 +640,16 @@ public class EspressoTest
 
         onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.updateCheck)).perform(click());
+        if (!NetworkUtils.isOnline(getActivity())) {
 
-        onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
-        onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
+            onView(withText(R.string.updateCheck)).perform(click());
 
-        //onView(withId(android.R.id.button2)).perform(click());
+            onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
+            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
 
-        Espresso.pressBack();
+            Espresso.pressBack();
+
+        }
 
         onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
 
@@ -734,7 +756,7 @@ public class EspressoTest
         startCalibrate(false, 2, 4);
     }
 
-    public void startCalibrate(boolean devMode, double value, int index ) {
+    public void startCalibrate(boolean devMode, double value, int index) {
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -747,12 +769,12 @@ public class EspressoTest
                 .atPosition(index).onChildView(withId(R.id.button))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
-        onView(withText(String.format("%.2f ppm",value))).perform(click());
+        onView(withText(String.format("%.2f ppm", value))).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 
         try {
-            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(10000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -782,6 +804,10 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
+        test001_Language();
+
+        goToMainScreen();
+
         startCalibrate(false, 2.0, 4);
 
         goToMainScreen();
@@ -795,6 +821,10 @@ public class EspressoTest
         mDevice.pressBack();
 
         startApp();
+
+        test001_Language();
+
+        goToMainScreen();
 
         onView(withText(R.string.startSurvey)).perform(click());
 
@@ -823,11 +853,12 @@ public class EspressoTest
         onView(withId(R.id.startButton)).perform(click());
 
         try {
-            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(10000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Result dialog
         takeScreenshot();
 
         onView(withId(R.id.endSurveyButton)).perform(click());
@@ -859,6 +890,10 @@ public class EspressoTest
 
         startApp();
 
+        test001_Language();
+
+        goToMainScreen();
+
         startCalibrate(false, 2.0, 4);
 
         goToMainScreen();
@@ -892,14 +927,45 @@ public class EspressoTest
         onView(withId(R.id.startButton)).perform(click());
 
         try {
-            Thread.sleep((Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2))).check(matches(isDisplayed()));
+
+        //High levels found dialog
+        takeScreenshot();
+
         onView(withId(R.id.endSurveyButton)).perform(click());
 
-        takeScreenshot();
+        try {
+
+            mDevice.findObject(new UiSelector().text("Use External Source")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withId(R.id.percentButton1)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.percentButton1)).perform(click());
+
+        onView(withId(R.id.startButton)).perform(click());
+
+        try {
+            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.endSurveyButton)).perform(click());
 
         mDevice.pressBack();
 
@@ -931,11 +997,11 @@ public class EspressoTest
         return activity[0];
     }
 
-    private void takeSpoonScreenshot() {
-        if (mTakeScreenshots) {
-            Spoon.screenshot(getCurrentActivity(), "screen-" + mCounter++ + "-" + mCurrentLanguage);
-        }
-    }
+//    private void takeSpoonScreenshot() {
+//        if (mTakeScreenshots) {
+//            Spoon.screenshot(getCurrentActivity(), "screen-" + mCounter++ + "-" + mCurrentLanguage);
+//        }
+//    }
 
     private void takeScreenshot() {
         if (mTakeScreenshots) {
