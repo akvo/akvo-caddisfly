@@ -17,6 +17,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
@@ -49,8 +50,8 @@
         android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-        android:text="@string/twoTimesDilution"
-        android:textAllCaps="true" />
+        android:textAllCaps="true"
+        tools:text="@string/timesDilution" />
 
     <Button
         android:id="@+id/percentButton2"
@@ -63,7 +64,7 @@
         android:minWidth="300dp"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-        android:text="@string/fiveTimesDilution"
-        android:textAllCaps="true" />
+        android:textAllCaps="true"
+        tools:text="@string/timesDilution" />
 
 </LinearLayout>

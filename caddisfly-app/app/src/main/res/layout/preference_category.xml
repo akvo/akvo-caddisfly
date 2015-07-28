@@ -29,7 +29,6 @@
         android:id="@+android:id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
         android:layout_marginStart="1dp"
         android:padding="8dp"
         android:textAllCaps="true"

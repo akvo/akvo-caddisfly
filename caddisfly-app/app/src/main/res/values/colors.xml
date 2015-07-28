@@ -18,7 +18,6 @@
 
     <color name="primary">#ff2c2e2c</color>
     <color name="primary_dark">#ff0a632b</color>
-    <color name="button_primary">#ff35924d</color>
     <color name="accent">#35924d</color>
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>

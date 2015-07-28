@@ -165,18 +165,18 @@ public final class USBMonitor {
         mHandler.removeCallbacks(mDeviceCheckRunnable);
     }
 
-    public synchronized boolean isRegistered() {
-        return mPermissionIntent != null;
-    }
+//    public synchronized boolean isRegistered() {
+//        return mPermissionIntent != null;
+//    }
 
-    /**
-     * set device filter
-     *
-     * @param filter
-     */
-    public void setDeviceFilter(final DeviceFilter filter) {
-        mDeviceFilter = filter;
-    }
+//    /**
+//     * set device filter
+//     *
+//     * @param filter
+//     */
+//    public void setDeviceFilter(final DeviceFilter filter) {
+//        mDeviceFilter = filter;
+//    }
 
     /**
      * return the number of connected USB devices that matched device filter
@@ -218,54 +218,54 @@ public final class USBMonitor {
         return result;
     }
 
-    /**
-     * get USB device list
-     *
-     * @return
-     */
-    public Iterator<UsbDevice> getDevices() {
-        Iterator<UsbDevice> iterator = null;
-        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
-        if (list != null)
-            iterator = list.values().iterator();
-        return iterator;
-    }
-
-    /**
-     * output device list to LogCat
-     */
-    public final void dumpDevices() {
-        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
-        if (list != null) {
-            final Set<String> keys = list.keySet();
-            if (keys.size() > 0) {
-                final StringBuilder sb = new StringBuilder();
-                for (final String key : keys) {
-                    final UsbDevice device = list.get(key);
-                    final int num_interface = device != null ? device.getInterfaceCount() : 0;
-                    sb.setLength(0);
-                    for (int i = 0; i < num_interface; i++) {
-                        sb.append(String.format("interface%d:%s", i, device.getInterface(i).toString()));
-                    }
-                    Log.i(TAG, "key=" + key + ":" + device + ":" + sb.toString());
-                }
-            } else {
-                Log.i(TAG, "no device");
-            }
-        } else {
-            Log.i(TAG, "no device");
-        }
-    }
-
-    /**
-     * return whether the specific Usb device has permission
-     *
-     * @param device
-     * @return
-     */
-    public boolean hasPermission(final UsbDevice device) {
-        return mUsbManager.hasPermission(device);
-    }
+//    /**
+//     * get USB device list
+//     *
+//     * @return
+//     */
+//    public Iterator<UsbDevice> getDevices() {
+//        Iterator<UsbDevice> iterator = null;
+//        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
+//        if (list != null)
+//            iterator = list.values().iterator();
+//        return iterator;
+//    }
+//
+//    /**
+//     * output device list to LogCat
+//     */
+//    public final void dumpDevices() {
+//        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
+//        if (list != null) {
+//            final Set<String> keys = list.keySet();
+//            if (keys.size() > 0) {
+//                final StringBuilder sb = new StringBuilder();
+//                for (final String key : keys) {
+//                    final UsbDevice device = list.get(key);
+//                    final int num_interface = device != null ? device.getInterfaceCount() : 0;
+//                    sb.setLength(0);
+//                    for (int i = 0; i < num_interface; i++) {
+//                        sb.append(String.format("interface%d:%s", i, device.getInterface(i).toString()));
+//                    }
+//                    Log.i(TAG, "key=" + key + ":" + device + ":" + sb.toString());
+//                }
+//            } else {
+//                Log.i(TAG, "no device");
+//            }
+//        } else {
+//            Log.i(TAG, "no device");
+//        }
+//    }
+//
+//    /**
+//     * return whether the specific Usb device has permission
+//     *
+//     * @param device
+//     * @return
+//     */
+//    public boolean hasPermission(final UsbDevice device) {
+//        return mUsbManager.hasPermission(device);
+//    }
 
     /**
      * request permission to access to USB device
@@ -413,17 +413,17 @@ public final class USBMonitor {
             return device != null ? device.getDeviceName() : "";
         }
 
-        public UsbDeviceConnection getUsbDeviceConnection() {
-            return mConnection;
-        }
+//        public UsbDeviceConnection getUsbDeviceConnection() {
+//            return mConnection;
+//        }
 
         public synchronized int getFileDescriptor() {
             return mConnection != null ? mConnection.getFileDescriptor() : -1;
         }
 
-        public byte[] getRawDescriptors() {
-            return mConnection != null ? mConnection.getRawDescriptors() : null;
-        }
+//        public byte[] getRawDescriptors() {
+//            return mConnection != null ? mConnection.getRawDescriptors() : null;
+//        }
 
         public int getVendorId() {
             final UsbDevice device = mWeakDevice.get();
@@ -435,9 +435,9 @@ public final class USBMonitor {
             return device != null ? device.getProductId() : 0;
         }
 
-        public synchronized String getSerial() {
-            return mConnection != null ? mConnection.getSerial() : null;
-        }
+//        public synchronized String getSerial() {
+//            return mConnection != null ? mConnection.getSerial() : null;
+//        }
 
         /**
          * open specific interface

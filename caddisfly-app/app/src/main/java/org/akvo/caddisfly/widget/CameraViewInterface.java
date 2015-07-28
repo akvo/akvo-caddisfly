@@ -22,6 +22,7 @@ import android.graphics.SurfaceTexture;
 public interface CameraViewInterface extends AspectRatioViewInterface {
     SurfaceTexture getSurfaceTexture();
 
+    @SuppressWarnings("unused")
     boolean hasSurface();
 
     Bitmap captureStillImage();

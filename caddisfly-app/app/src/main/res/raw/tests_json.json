@@ -4,10 +4,9 @@
       {
         "name": [
           {"en": "Fluoride"},
-          {"fr": "Fluorure"},
-          {"ar": "فلوريد"},
-          {"hi": "फ्लोराइड"},
-          {"kn": "ಫ್ಲೋರೈಡ್"}
+          {
+            "fr": "Fluorure"
+          }
         ],
         "type": "0",
         "code": "fluor",
@@ -18,10 +17,9 @@
       {
         "name": [
           {"en": "Free Chlorine"},
-          {"fr": "Chlore Libre"},
-          {"kn": "ಉಚಿತ ಕ್ಲೋರಿನ್"},
-          {"hi": "मुक्त क्लोरीन"},
-          {"ar": "الكلور الحر"}
+          {
+            "fr": "Chlore Libre"
+          }
         ],
         "type": "0",
         "code": "chlor",
@@ -33,10 +31,7 @@
           {"en": "Electrical Conductivity"},
           {
             "fr": "Conductivité Électrique"
-          },
-          {"ar": "الموصلية الكهربائية"},
-          {"hi": "विद्युत चालकता"},
-          {"kn": "ವಿದ್ಯುತ್ ವಾಹಕ"}
+          }
         ],
         "type": "1",
         "code": "econd",
@@ -46,10 +41,9 @@
       {
         "name": [
           {"en": "EC Temperature"},
-          {"fr": "CE Température"},
-          {"ar": "EC درجة الحرارة"},
-          {"hi": "EC तापमान"},
-          {"kn": "EC ತಾಪಮಾನ"}
+          {
+            "fr": "CE Température"
+          }
         ],
         "type": "1",
         "code": "tempe",

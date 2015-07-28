@@ -57,6 +57,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -67,18 +68,19 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
 
+@SuppressWarnings("unused")
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    static final String mCurrentLanguage = "en";
-    static boolean mTakeScreenshots = false;
-    static int mCounter = 0;
-    protected String appName = "Akvo Caddisfly";
-    HashMap<String, String> stringHashMapEN = new HashMap<>();
-    HashMap<String, String> stringHashMapFR = new HashMap<>();
-    HashMap<String, String> currentHashMap;
+    private static final String mCurrentLanguage = "en";
+    private static final boolean mTakeScreenshots = false;
+    private static int mCounter = 0;
+    private final HashMap<String, String> stringHashMapEN = new HashMap<>();
+    private final HashMap<String, String> stringHashMapFR = new HashMap<>();
+    private HashMap<String, String> currentHashMap;
     private UiDevice mDevice;
 
+    @SuppressWarnings("unused")
     public EspressoTest() {
         super(MainActivity.class);
     }
@@ -101,7 +103,7 @@ public class EspressoTest
         };
     }
 
-    public static Matcher<String> isEmpty() {
+    private static Matcher<String> isEmpty() {
         return new TypeSafeMatcher<String>() {
             @Override
             public boolean matchesSafely(String target) {
@@ -196,7 +198,7 @@ public class EspressoTest
             folder.mkdirs();
         }
 
-        testLanguageReset();
+        resetLanguage();
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -204,6 +206,12 @@ public class EspressoTest
 
         final Button button = (Button) getActivity().findViewById(R.id.surveyButton);
         assertNotNull(button);
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Main Screen
         takeScreenshot();
@@ -254,7 +262,7 @@ public class EspressoTest
         if (!NetworkUtils.isOnline(getActivity())) {
             onView(withText(R.string.updateCheck)).perform(click());
 
-            onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
+            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
             onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
             mDevice.waitForWindowUpdate("", 1000);
 
@@ -278,13 +286,7 @@ public class EspressoTest
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        //Test Start Screen
-        takeScreenshot();
-
         onView(withId(R.id.startButton)).perform(click());
-
-        //Test Progress Screen
-        takeScreenshot();
 
         mDevice.pressBack();
         mDevice.pressBack();
@@ -443,6 +445,7 @@ public class EspressoTest
 
         UiObject settingsApp = null;
         try {
+            String appName = "Akvo Caddisfly";
             settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
@@ -470,24 +473,22 @@ public class EspressoTest
     }
 
     public void testCalibrateSwatches() {
-        calibrateSwatches(false);
+        calibrateSwatches();
     }
 
-    private void calibrateSwatches(boolean devMode) {
+    private void calibrateSwatches() {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
         onView(withText(R.string.calibrate))
                 .perform(click());
 
-        if (devMode) {
-            onView(withId(R.id.action_swatches))
-                    .perform(click());
-
-            Espresso.pressBack();
-
-            onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
-        }
+//            onView(withId(R.id.action_swatches))
+//                    .perform(click());
+//
+//            Espresso.pressBack();
+//
+//            onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -620,7 +621,7 @@ public class EspressoTest
 
         onView(withId(R.id.startButton)).perform(click());
 
-        onView(withText(R.string.notConnected)).check(matches(isDisplayed()));
+        onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
         onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.button2)).perform(click());
@@ -644,7 +645,7 @@ public class EspressoTest
 
             onView(withText(R.string.updateCheck)).perform(click());
 
-            onView(withText(R.string.dataConnection)).check(matches(isDisplayed()));
+            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
             onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
 
             Espresso.pressBack();
@@ -723,7 +724,7 @@ public class EspressoTest
         onData(hasToString(startsWith("English"))).perform(click());
     }
 
-    public void testLanguageReset() {
+    private void resetLanguage() {
         onView(withId(R.id.action_settings))
                 .perform(click());
 
@@ -753,10 +754,10 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
-        startCalibrate(false, 2, 4);
+        startCalibrate(2, 4);
     }
 
-    public void startCalibrate(boolean devMode, double value, int index) {
+    private void startCalibrate(double value, int index) {
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -779,9 +780,7 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        if (devMode) {
-            onView(withId(R.id.okButton)).perform(click());
-        }
+        //onView(withId(R.id.okButton)).perform(click());
 
         onData(is(instanceOf(ResultRange.class)))
                 .inAdapterView(withId(android.R.id.list))
@@ -804,15 +803,15 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
-        test001_Language();
+        resetLanguage();
 
         goToMainScreen();
 
-        startCalibrate(false, 2.0, 4);
+        startCalibrate(2.0, 4);
 
         goToMainScreen();
 
-        startCalibrate(false, 0.5, 1);
+        startCalibrate(0.5, 1);
 
         mDevice.pressBack();
         mDevice.pressBack();
@@ -822,7 +821,7 @@ public class EspressoTest
 
         startApp();
 
-        test001_Language();
+        resetLanguage();
 
         goToMainScreen();
 
@@ -890,11 +889,11 @@ public class EspressoTest
 
         startApp();
 
-        test001_Language();
+        resetLanguage();
 
         goToMainScreen();
 
-        startCalibrate(false, 2.0, 4);
+        startCalibrate(2.0, 4);
 
         goToMainScreen();
 
@@ -924,7 +923,13 @@ public class EspressoTest
 
         onView(withId(R.id.noDilutionButton)).perform(click());
 
+        onView(allOf(withId(R.id.dilutionTextView), withText(R.string.noDilution)))
+                .check(matches(isCompletelyDisplayed()));
+
         onView(withId(R.id.startButton)).perform(click());
+
+        onView(allOf(withId(R.id.dilution1TextView), withText(R.string.noDilution)))
+                .check(matches(isCompletelyDisplayed()));
 
         try {
             Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
@@ -932,7 +937,8 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2))).check(matches(isDisplayed()));
+        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
+                .check(matches(isCompletelyDisplayed()));
 
         //High levels found dialog
         takeScreenshot();
@@ -955,7 +961,19 @@ public class EspressoTest
 
         onView(withId(R.id.percentButton1)).perform(click());
 
+        onView(allOf(withId(R.id.dilutionTextView), withText(String.format(getActivity()
+                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
+
+        //Test Start Screen
+        takeScreenshot();
+
         onView(withId(R.id.startButton)).perform(click());
+
+        //Test Progress Screen
+        takeScreenshot();
+
+        onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
+                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         try {
             Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
@@ -963,7 +981,42 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5))).check(matches(isDisplayed()));
+        onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5)))
+                .check(matches(isCompletelyDisplayed()));
+
+        onView(withId(R.id.endSurveyButton)).perform(click());
+
+        try {
+
+            mDevice.findObject(new UiSelector().text("Use External Source")).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withId(R.id.percentButton2)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.percentButton2)).perform(click());
+
+        onView(allOf(withId(R.id.dilutionTextView), withText(String.format(getActivity()
+                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
+
+        onView(withId(R.id.startButton)).perform(click());
+
+        onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
+                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
+
+        try {
+            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withText("10.00")).check(matches(isCompletelyDisplayed()));
 
         onView(withId(R.id.endSurveyButton)).perform(click());
 
@@ -987,7 +1040,8 @@ public class EspressoTest
             runTestOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    java.util.Collection activities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                    java.util.Collection activities = ActivityLifecycleMonitorRegistry.getInstance()
+                            .getActivitiesInStage(Stage.RESUMED);
                     activity[0] = (Activity) Iterables.getOnlyElement(activities);
                 }
             });
@@ -1025,7 +1079,7 @@ public class EspressoTest
         UiScrollable listView = new UiScrollable(new UiSelector());
         listView.setMaxSearchSwipes(100);
         listView.waitForExists(5000);
-        UiObject listViewItem = null;
+        UiObject listViewItem;
         try {
             listView.scrollTextIntoView(name);
             listViewItem = listView.getChildByText(new UiSelector()

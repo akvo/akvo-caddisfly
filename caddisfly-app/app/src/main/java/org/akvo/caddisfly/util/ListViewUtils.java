@@ -26,6 +26,7 @@ public final class ListViewUtils {
     private ListViewUtils() {
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void setListViewHeightBasedOnChildren(ListView listView, int extraHeight) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

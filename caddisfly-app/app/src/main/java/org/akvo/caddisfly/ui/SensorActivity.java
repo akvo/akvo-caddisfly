@@ -451,7 +451,7 @@ public class SensorActivity extends AppCompatActivity {
             String[] resultArray = result.split(",");
             boolean diagnosticMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
             if (diagnosticMode) {
-                if (PreferencesUtils.getBoolean(this, R.string.showDebugMessages, false)) {
+                if (PreferencesUtils.getBoolean(this, R.string.showDebugMessagesKey, false)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (debugToast == null) {

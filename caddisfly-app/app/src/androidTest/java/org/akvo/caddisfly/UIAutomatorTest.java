@@ -14,15 +14,16 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class UIAutomatorTest extends InstrumentationTestCase {
 
-    static final boolean mTakeScreenshots = true;
-    static final String currentLanguage = "en";
+    private static final boolean mTakeScreenshots = true;
+    private static final String currentLanguage = "en";
     private static final String APP_PACKAGE = "org.akvo.caddisfly";
-    protected String appName = "Akvo Caddisfly";
-    HashMap<String, String> stringHashMapEN = new HashMap<>();
-    HashMap<String, String> stringHashMapFR = new HashMap<>();
-    HashMap<String, String> currentHashMap;
+    private final HashMap<String, String> stringHashMapEN = new HashMap<>();
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private final HashMap<String, String> stringHashMapFR = new HashMap<>();
+    private HashMap<String, String> currentHashMap;
     private UiDevice mDevice;
     private int mCounter = 0;
 
@@ -53,6 +54,7 @@ public class UIAutomatorTest extends InstrumentationTestCase {
 
         UiObject settingsApp = null;
         try {
+            String appName = "Akvo Caddisfly";
             settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();

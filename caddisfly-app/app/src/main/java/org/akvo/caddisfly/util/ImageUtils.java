@@ -52,6 +52,7 @@ public class ImageUtils {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static Bitmap getCroppedBitmap(Bitmap bitmap, int sampleLength) {
 
         int[] pixels = new int[sampleLength * sampleLength];

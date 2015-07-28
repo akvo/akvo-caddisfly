@@ -404,7 +404,7 @@ public final class ExternalCameraFragment extends DialogFragment {
              * for accessing UVC camera
              */
             private UVCCamera mUVCCamera;
-            private boolean mCancelled;
+            //private boolean mCancelled = false;
 
             private CameraThread(final ExternalCameraFragment parent, final CameraViewInterface cameraView) {
                 super("CameraThread");
@@ -490,14 +490,14 @@ public final class ExternalCameraFragment extends DialogFragment {
 
                 parent.samplingCount++;
                 parent.picturesTaken++;
-                if (!mCancelled) {
+                //if (!mCancelled) {
                     if (!parent.hasTestCompleted()) {
                         parent.pictureCallback.onPictureTaken(bitmap);
                         parent.takePicture();
                     } else {
                         parent.pictureCallback.onPictureTaken(bitmap);
                     }
-                }
+                //}
             }
 
             public void handleRelease() {

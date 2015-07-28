@@ -177,6 +177,7 @@ public class MainApp extends Application {
             List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
             for (int i = 0; i < list.size(); i++) {
+                @SuppressWarnings("RedundantCast")
                 String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first);
 
                 editor.putInt(key, (int) ((Pair) list.get(i)).second);
@@ -207,6 +208,7 @@ public class MainApp extends Application {
         List list = ColorUtils.autoGenerateColors(currentTestInfo);
 
         for (int i = 0; i < list.size(); i++) {
+            @SuppressWarnings("RedundantCast")
             String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first);
             editor.putInt(key, (int) ((Pair) list.get(i)).second);
 

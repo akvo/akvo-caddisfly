@@ -34,8 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/camera_view"
         android:layout_alignEnd="@+id/camera_view"
-        android:layout_alignLeft="@+id/camera_view"
-        android:layout_alignRight="@+id/camera_view"
         android:layout_alignStart="@+id/camera_view"
         android:layout_alignTop="@+id/camera_view"
         android:contentDescription="@null"

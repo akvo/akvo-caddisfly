@@ -239,7 +239,7 @@ public class CalibrateListActivity extends AppCompatActivity
                             File file = new File(path, input.getText().toString());
                             if (file.exists()) {
                                 AlertUtils.askQuestion(context, R.string.saveConfirmOverwriteFile,
-                                        R.string.saveNameAlreadyExists, R.string.overwrite,
+                                        R.string.saveNameAlreadyExists, R.string.overwrite, R.string.cancel,
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -270,7 +270,7 @@ public class CalibrateListActivity extends AppCompatActivity
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public double stringToDouble(String s) {
+    private double stringToDouble(String s) {
 
         s = s.replaceAll(",", ".");
         NumberFormat nf = NumberFormat.getInstance(Locale.US);
@@ -376,7 +376,7 @@ public class CalibrateListActivity extends AppCompatActivity
                                 final int position = i;
 
                                 AlertUtils.askQuestion(context, R.string.delete,
-                                        R.string.deleteConfirm, R.string.delete,
+                                        R.string.deleteConfirm, R.string.delete, R.string.cancel,
                                         new DialogInterface.OnClickListener() {
                                     @SuppressWarnings("unchecked")
                                     @Override

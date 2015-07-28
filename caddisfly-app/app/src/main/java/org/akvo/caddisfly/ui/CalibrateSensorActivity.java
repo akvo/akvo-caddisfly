@@ -297,7 +297,9 @@ public class CalibrateSensorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_sensor);
 
-        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
+        }
 
         mContext = this;
 
@@ -370,7 +372,7 @@ public class CalibrateSensorActivity extends AppCompatActivity {
                     }, 2000);
 
                 } else {
-                    AlertUtils.showMessage(mContext, R.string.notConnected, R.string.deviceConnectSensor);
+                    AlertUtils.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
                 }
             }
         });
@@ -380,8 +382,8 @@ public class CalibrateSensorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (validInput(lowValueEditText.getText().toString())) {
                     closeKeyboard(lowValueEditText);
-                    final ProgressDialog dialog = ProgressDialog.show(mContext, getString(R.string.calibrating),
-                            getString(R.string.pleaseWait), true);
+                    final ProgressDialog dialog = ProgressDialog.show(mContext,
+                            getString(R.string.pleaseWait), getString(R.string.calibrating), true);
                     dialog.setCancelable(false);
                     dialog.show();
 
@@ -410,8 +412,9 @@ public class CalibrateSensorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (validInput(highValueEditText.getText().toString())) {
                     closeKeyboard(highValueEditText);
-                    final ProgressDialog dialog = ProgressDialog.show(mContext, getString(R.string.calibrating),
-                            getString(R.string.pleaseWait), true);
+                    final ProgressDialog dialog = ProgressDialog.show(mContext,
+                            getString(R.string.pleaseWait),
+                            getString(R.string.calibrating), true);
                     dialog.setCancelable(false);
                     dialog.show();
 

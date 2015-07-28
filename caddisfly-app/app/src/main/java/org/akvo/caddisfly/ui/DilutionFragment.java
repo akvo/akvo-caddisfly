@@ -43,8 +43,9 @@ public class DilutionFragment extends DialogFragment {
         Button percentButton1 = (Button) view.findViewById(R.id.percentButton1);
         Button percentButton2 = (Button) view.findViewById(R.id.percentButton2);
 
-        percentButton1.setText(R.string.twoTimesDilution);
-        percentButton2.setText(R.string.fiveTimesDilution);
+        // todo: remove hardcoding of dilution times
+        percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
+        percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
 
         noDilutionButton.setOnClickListener(new View.OnClickListener() {
             @Override

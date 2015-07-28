@@ -543,6 +543,7 @@ public class CameraSensorActivity extends AppCompatActivity
             mHighLevelsFound = true;
         }
 
+        //todo: remove hard coding of dilution levels
         switch (mDilutionLevel) {
             case 1:
                 result = result * 2;
@@ -589,6 +590,7 @@ public class CameraSensorActivity extends AppCompatActivity
 
                     if (mHighLevelsFound && mDilutionLevel < 2) {
                         sound.playShortResource(this, R.raw.beep_long);
+                        //todo: remove hard coding of dilution levels
                         switch (mDilutionLevel) {
                             case 0:
                                 message = String.format(getString(R.string.tryWithDilutedSample), 2);
@@ -664,18 +666,22 @@ public class CameraSensorActivity extends AppCompatActivity
             mDilutionLevel = index;
             mDilutionFragment.dismiss();
 
+            //todo: remove hard coding of dilution levels
+            String dilutionLabel;
             switch (mDilutionLevel) {
                 case 0:
                     mDilutionTextView.setText(R.string.noDilution);
                     mDilutionTextView1.setText(R.string.noDilution);
                     break;
                 case 1:
-                    mDilutionTextView.setText(R.string.twoTimesDilution);
-                    mDilutionTextView1.setText(R.string.twoTimesDilution);
+                    dilutionLabel = String.format(getString(R.string.timesDilution), 2);
+                    mDilutionTextView.setText(dilutionLabel);
+                    mDilutionTextView1.setText(dilutionLabel);
                     break;
                 case 2:
-                    mDilutionTextView.setText(R.string.fiveTimesDilution);
-                    mDilutionTextView1.setText(R.string.fiveTimesDilution);
+                    dilutionLabel = String.format(getString(R.string.timesDilution), 5);
+                    mDilutionTextView.setText(dilutionLabel);
+                    mDilutionTextView1.setText(dilutionLabel);
                     break;
             }
 
@@ -696,6 +702,7 @@ public class CameraSensorActivity extends AppCompatActivity
             MainApp mainApp = (MainApp) getApplicationContext();
             String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
+            //todo: remove hard coding of dilution levels
             String message = "";
             switch (mDilutionLevel) {
                 case 0:

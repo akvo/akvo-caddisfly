@@ -215,7 +215,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
         qOpened = (mCamera != null);
 
         if (qOpened) {
-            mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera, mPreviewOnly);
+            mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
             preview.addView(mPreview);
 
@@ -290,20 +290,21 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
         private Camera mCamera;
 
-        private List<Camera.Size> mSupportedPreviewSizes;
+        //private List<Camera.Size> mSupportedPreviewSizes;
 
+        @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
 
-        private boolean mPreviewOnly = false;
+        //private boolean mPreviewOnly = false;
 
         public CameraPreview(Context context) {
             super(context);
             mHolder = getHolder();
         }
 
-        public CameraPreview(Context context, Camera camera, boolean previewOnly) {
+        public CameraPreview(Context context, Camera camera) {
             super(context);
-            mPreviewOnly = previewOnly;
+            //mPreviewOnly = previewOnly;
             setCamera(camera);
             mHolder = getHolder();
             mHolder.addCallback(this);
@@ -321,7 +322,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
         private void setCamera(Camera camera) {
             mCamera = camera;
-            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            //mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.Parameters parameters = mCamera.getParameters();
 

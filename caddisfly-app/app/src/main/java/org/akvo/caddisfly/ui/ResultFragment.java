@@ -76,18 +76,23 @@ public class ResultFragment extends DialogFragment {
 
         TextView dilutionTextView = (TextView) view.findViewById(R.id.dilutionTextView);
         int dilutionLevel = getArguments().getInt("dilution", -1);
+
+        //todo: remove hard coding of dilution levels
+        String dilutionLabel;
         switch (dilutionLevel) {
             case 0:
                 dilutionTextView.setVisibility(View.VISIBLE);
                 dilutionTextView.setText(R.string.noDilution);
                 break;
             case 1:
+                dilutionLabel = String.format(getString(R.string.timesDilution), 2);
+                dilutionTextView.setText(dilutionLabel);
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(R.string.twoTimesDilution);
                 break;
             case 2:
+                dilutionLabel = String.format(getString(R.string.timesDilution), 5);
+                dilutionTextView.setText(dilutionLabel);
                 dilutionTextView.setVisibility(View.VISIBLE);
-                dilutionTextView.setText(R.string.fiveTimesDilution);
                 break;
         }
 

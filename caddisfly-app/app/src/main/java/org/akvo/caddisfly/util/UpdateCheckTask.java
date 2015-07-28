@@ -69,14 +69,14 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
 
         boolean updateAvailable = PreferencesUtils
-                .getBoolean(mContext, R.string.updateAvailable, false);
+                .getBoolean(mContext, R.string.updateAvailableKey, false);
 
         if (!updateAvailable) {
             if (checker.checkForUpdateByVersionCode(Config.UPDATE_CHECK_URL + "?" + mVersion)) {
                 PreferencesUtils.setLong(mContext, R.string.lastUpdateCheckKey,
                         Calendar.getInstance().getTimeInMillis());
                 if (checker.isUpdateAvailable()) {
-                    PreferencesUtils.setBoolean(mContext, R.string.updateAvailable, true);
+                    PreferencesUtils.setBoolean(mContext, R.string.updateAvailableKey, true);
                 }
             }
         } else {
@@ -95,12 +95,12 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (checker.isUpdateAvailable()) {
             AlertUtils.askQuestion(mContext, R.string.updateApp, R.string.updateRequest,
-                    R.string.update,
+                    R.string.update, R.string.notNow,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion);
-                            PreferencesUtils.removeKey(mContext, R.string.updateAvailable);
+                            PreferencesUtils.removeKey(mContext, R.string.updateAvailableKey);
                         }
                     }
             );

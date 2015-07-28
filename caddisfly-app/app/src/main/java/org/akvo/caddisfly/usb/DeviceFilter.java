@@ -66,18 +66,18 @@ public final class DeviceFilter {
             mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
     }
 
-    public DeviceFilter(final UsbDevice device) {
-        mVendorId = device.getVendorId();
-        mProductId = device.getProductId();
-        mClass = device.getDeviceClass();
-        mSubclass = device.getDeviceSubclass();
-        mProtocol = device.getDeviceProtocol();
-        mManufacturerName = null;    // device.getManufacturerName();
-        mProductName = null;        // device.getProductName();
-        mSerialNumber = null;        // device.getSerialNumber();
-/*		Log.i(TAG, String.format("vendorId=0x%04x,productId=0x%04x,class=0x%02x,subclass=0x%02x,protocol=0x%02x",
-			mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
-    }
+//    public DeviceFilter(final UsbDevice device) {
+//        mVendorId = device.getVendorId();
+//        mProductId = device.getProductId();
+//        mClass = device.getDeviceClass();
+//        mSubclass = device.getDeviceSubclass();
+//        mProtocol = device.getDeviceProtocol();
+//        mManufacturerName = null;    // device.getManufacturerName();
+//        mProductName = null;        // device.getProductName();
+//        mSerialNumber = null;        // device.getSerialNumber();
+///*		Log.i(TAG, String.format("vendorId=0x%04x,productId=0x%04x,class=0x%02x,subclass=0x%02x,protocol=0x%02x",
+//			mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
+//    }
 
     /**
      * 指定したxmlリソースからDeviceFilterリストを生成する
@@ -86,6 +86,7 @@ public final class DeviceFilter {
      * @param deviceFilterXmlId the device filter id
      * @return list of device filters
      */
+    @SuppressWarnings("SameParameterValue")
     public static List<DeviceFilter> getDeviceFilters(final Context context, final int deviceFilterXmlId) {
         final XmlPullParser parser = context.getResources().getXml(deviceFilterXmlId);
         final List<DeviceFilter> deviceFilters = new ArrayList<>();
@@ -113,12 +114,13 @@ public final class DeviceFilter {
      * read as integer values with default value from xml(w/o exception throws)
      * resource integer id is also resolved into integer
      *
-     * @param parser
-     * @param namespace
-     * @param name
-     * @param defaultValue
-     * @return
+     * @param parser The xml parser
+     * @param namespace The xml namespace
+     * @param name  The attribute name
+     * @param defaultValue The default value
+     * @return The result
      */
+    @SuppressWarnings("SameParameterValue")
     private static int getAttributeInteger(final Context context, final XmlPullParser parser, final String namespace, final String name, final int defaultValue) {
         int result = defaultValue;
         try {
@@ -149,12 +151,13 @@ public final class DeviceFilter {
      * read as String attribute with default value from xml(w/o exception throws)
      * resource string id is also resolved into string
      *
-     * @param parser
-     * @param namespace
-     * @param name
-     * @param defaultValue
-     * @return
+     * @param parser The xml parser
+     * @param namespace The xml namespace
+     * @param name  The attribute name
+     * @param defaultValue The default value
+     * @return The result
      */
+    @SuppressWarnings("SameParameterValue")
     private static String getAttributeString(final Context context, final XmlPullParser parser, final String namespace, final String name, final String defaultValue) {
         String result;
         try {
@@ -300,30 +303,30 @@ public final class DeviceFilter {
         return false;
     }
 
-    public boolean matches(final DeviceFilter f) {
-        if (mVendorId != -1 && f.mVendorId != mVendorId)
-            return false;
-        if (mProductId != -1 && f.mProductId != mProductId)
-            return false;
-        if (f.mManufacturerName != null && mManufacturerName == null)
-            return false;
-        if (f.mProductName != null && mProductName == null)
-            return false;
-        if (f.mSerialNumber != null && mSerialNumber == null)
-            return false;
-        if (mManufacturerName != null && f.mManufacturerName != null
-                && !mManufacturerName.equals(f.mManufacturerName))
-            return false;
-        if (mProductName != null && f.mProductName != null
-                && !mProductName.equals(f.mProductName))
-            return false;
-        if (mSerialNumber != null && f.mSerialNumber != null
-                && !mSerialNumber.equals(f.mSerialNumber))
-            return false;
-
-        // check device class/subclass/protocol
-        return matches(f.mClass, f.mSubclass, f.mProtocol);
-    }
+//    public boolean matches(final DeviceFilter f) {
+//        if (mVendorId != -1 && f.mVendorId != mVendorId)
+//            return false;
+//        if (mProductId != -1 && f.mProductId != mProductId)
+//            return false;
+//        if (f.mManufacturerName != null && mManufacturerName == null)
+//            return false;
+//        if (f.mProductName != null && mProductName == null)
+//            return false;
+//        if (f.mSerialNumber != null && mSerialNumber == null)
+//            return false;
+//        if (mManufacturerName != null && f.mManufacturerName != null
+//                && !mManufacturerName.equals(f.mManufacturerName))
+//            return false;
+//        if (mProductName != null && f.mProductName != null
+//                && !mProductName.equals(f.mProductName))
+//            return false;
+//        if (mSerialNumber != null && f.mSerialNumber != null
+//                && !mSerialNumber.equals(f.mSerialNumber))
+//            return false;
+//
+//        // check device class/subclass/protocol
+//        return matches(f.mClass, f.mSubclass, f.mProtocol);
+//    }
 
     @Override
     public boolean equals(final Object obj) {

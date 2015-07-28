@@ -63,7 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/button_orange"
-                android:text="@string/start" />
+                android:text="@string/start"
+                tools:ignore="UnusedAttribute" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,6 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:labelFor="@+id/lowValueEditText"
             android:lineSpacingExtra="8dp"
             android:text="@string/suspendEcSensorInLow"
             android:textSize="18sp" />
@@ -118,7 +120,8 @@
             android:textAllCaps="true"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:ignore="UnusedAttribute" />
 
     </LinearLayout>
 
@@ -147,6 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:labelFor="@+id/highValueEditText"
             android:text="@string/suspendEcSensorInHigh"
             android:textSize="18sp" />
 
@@ -172,7 +176,8 @@
             android:textAllCaps="true"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:ignore="UnusedAttribute" />
 
     </LinearLayout>
 

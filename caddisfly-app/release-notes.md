@@ -5,6 +5,7 @@ v0.75 beta
 3. Fix: EC Sensor recording a -1 value
 4. Fix: Use dot (.) separator for app version number in locales using commas
 5. Fix: Too many decimal places being recorded. Change to two places
+6. UI: Change Ok and Cancel button in update dialog to 'Update' and 'Not Now'
 
 v0.74 alpha
 -----------

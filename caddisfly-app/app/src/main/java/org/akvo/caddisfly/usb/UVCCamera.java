@@ -55,16 +55,22 @@ public class UVCCamera {
         mNativePtr = nativeCreate();
     }
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeConnect(long id_camera, int vendorId, int productId, int fileDescriptor, String usbfs);
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeRelease(long id_camera);
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeSetPreviewSize(long id_camera, int width, int height, int mode);
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeStartPreview(long id_camera);
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeStopPreview(long id_camera);
 
+    @SuppressWarnings("JniMissingFunction")
     private static native int nativeSetPreviewDisplay(long id_camera, Surface surface);
 
     //private static native int nativeSetFrameCallback(long mNativePtr, IFrameCallback callback, int pixelFormat);
@@ -104,6 +110,7 @@ public class UVCCamera {
      * @param height
      * @param mode   0:yuyv, other:MJPEG
      */
+    @SuppressWarnings("SameParameterValue")
     public void setPreviewSize(final int width, final int height, final int mode) {
         if ((width == 0) || (height == 0))
             throw new IllegalArgumentException("invalid preview size");
@@ -204,10 +211,12 @@ public class UVCCamera {
     }
 
     // #nativeCreate and #nativeDestroy are not static methods.
+    @SuppressWarnings("JniMissingFunction")
     private native long nativeCreate();
 
 //**********************************************************************
 
+    @SuppressWarnings("JniMissingFunction")
     private native void nativeDestroy(long id_camera);
 
     /**

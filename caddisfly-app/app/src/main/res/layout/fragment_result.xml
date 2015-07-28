@@ -48,7 +48,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
-        tools:text="@string/fiveTimesDilution" />
+        tools:text="@string/timesDilution" />
 
     <TextView
         android:id="@+id/result"

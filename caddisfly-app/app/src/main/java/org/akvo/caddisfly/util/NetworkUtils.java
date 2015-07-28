@@ -16,14 +16,11 @@
 
 package org.akvo.caddisfly.util;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.provider.Settings;
 
 import org.akvo.caddisfly.R;
@@ -38,19 +35,19 @@ public class NetworkUtils {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
         if (activeNetwork == null || !activeNetwork.isConnectedOrConnecting()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(R.string.dataConnection);
-            builder.setMessage(R.string.enableInternet);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                    context.startActivity(intent);
-                }
-            });
-            Dialog alertDialog = builder.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.setCancelable(true);
-            alertDialog.show();
+
+            AlertUtils.showAlert(context, R.string.noInternetConnection, R.string.enableInternet,
+                    R.string.settings,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                            context.startActivity(intent);
+                        }
+                    },
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
         }
 
         return activeNetwork != null &&
@@ -69,16 +66,4 @@ public class NetworkUtils {
         }
         return false;
     }
-
-    /**
-     * Open a web Browser and navigate to given url
-     * @param context the context
-     * @param url The url to navigate to
-     */
-    public static void openWebBrowser(Context context, String url) {
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        context.startActivity(intent);
-    }
-
 }

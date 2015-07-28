@@ -66,6 +66,7 @@ public class ExternalCameraActivity extends AppCompatActivity {
                     final File outputFile = MediaMuxerWrapper.getCaptureFile(Environment.DIRECTORY_DCIM, ".png");
                     assert outputFile != null;
                     final BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(outputFile));
+                    //noinspection TryFinallyCanBeTryWithResources
                     try {
                         try {
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);

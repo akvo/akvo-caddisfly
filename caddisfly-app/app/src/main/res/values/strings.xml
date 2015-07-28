@@ -13,7 +13,7 @@
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="appName">"Akvo Caddisfly"</string>
 
@@ -38,9 +38,10 @@
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
-    <string name="enableInternet">Internet connection required</string>
+    <string name="noInternetConnection">No Internet Connection</string>
+    <string name="enableInternet">Check your network settings and try again</string>
     <string name="notSupported">Not Supported</string>
-    <string name="phoneDoesNotSupport">This phone does not support this feature</string>
+    <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
     <string name="pleaseEnterValue">Enter a value</string>
     <string name="calibrationSucceeded">Calibration was successful</string>
 
@@ -55,8 +56,7 @@
     <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
     <string name="updateCheck">Check update</string>
     <string name="updateSummary">Check if a new version is available</string>
-    <string name="dataConnection">Data Connection</string>
-    <string name="displaysVersionNumber">Displays version number</string>
+    <string name="displaysVersionNumber">Displays version information</string>
     <string name="language">Language</string>
 
     <!--Calibration Screen-->
@@ -66,41 +66,42 @@
     <string name="analyzingWait">Analyzing…</string>
     <string name="placeDeviceInStand">Place the phone face down on a flat surface</string>
     <string name="waitTillCameraSound">and wait for test to complete</string>
-    <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test.</string>
-    <string name="errorTestFailed">Solution color out of range. Check cartridge placement.</string>
+    <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
+    <string name="errorTestFailed">Solution color out of range. Check cartridge placement</string>
 
     <!--Result Screen-->
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
     <string name="highLevelsFound">%1$s contamination is very high</string>
-    <string name="tryWithDilutedSample">Try again with %1$d times dilution</string>
+    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
+
+    <!--Dilution Selection Dialog-->
+    <string name="selectDilution">Select Dilution</string>
+    <string name="noDilution">No Dilution</string>
+    <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d Times Dilution</string>
 
     <!--Sensor Details Screen-->
-    <string name="deviceConnectSensor">Connect Akvo EC Sensor</string>
+    <string name="deviceConnectSensor">Please connect Akvo EC Sensor and try again</string>
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
     <string name="electricalConductivityResult">EC %1$s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
-    <!--Dilution Selection Dialog-->
-    <string name="selectDilution">Select Dilution</string>
-    <string name="noDilution">No Dilution</string>
-    <string name="twoTimesDilution">2 times dilution</string>
-    <string name="fiveTimesDilution">5 Times Dilution</string>
-
     <!--EC Sensor Calibration-->
-    <string name="notConnected">Sensor not Connected</string>
+    <string name="sensorNotFound">Sensor not found</string>
     <string name="lowEcMeasurement">Low EC Measurement</string>
     <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
     <string name="highEcMeasurement">High EC Measurement</string>
     <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
 
     <!--App update-->
+    <string name="update">Update</string>
     <string name="updateApp">Akvo Caddisfly update</string>
     <string name="updateCheckingFor">Checking for updates…</string>
-    <string name="updateRequest">An updated version is available, Do you want to update now?</string>
-    <string name="updateFetching">Getting Akvo Caddisfly update…</string>
+    <string name="updateRequest">A new version of Akvo Caddisfly is available. Would you like to update now?</string>
+    <string name="updateFetching">Downloading Akvo Caddisfly update…</string>
     <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
+    <string name="notNow">Now now</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>
@@ -120,6 +121,7 @@
     <string name="saveInvalidFileName">Invalid file name</string>
     <string name="saveNameAlreadyExists">Name already exists. Overwrite file?</string>
     <string name="saveConfirmOverwriteFile">Overwrite File</string>
+    <string name="overwrite">Overwrite</string>
     <string name="loadCalibration">Load Calibration</string>
     <string name="notFound">Not Found</string>
     <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
@@ -136,7 +138,5 @@
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">No Sound</string>
-    <string name="deviceConnectExternalCamera">Connect Caddisfly external sensor</string>
-    <string name="update">Update</string>
-    <string name="overwrite">Overwrite</string>
+    <string name="deviceConnectExternalCamera">Please connect Akvo Caddisfly Sensor and try again</string>
 </resources>

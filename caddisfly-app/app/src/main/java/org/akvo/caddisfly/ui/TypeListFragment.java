@@ -55,9 +55,9 @@ public class TypeListFragment extends ListFragment {
     public TypeListFragment() {
     }
 
-    public static TypeListFragment newInstance() {
-        return new TypeListFragment();
-    }
+//    public static TypeListFragment newInstance() {
+//        return new TypeListFragment();
+//    }
 
     private void setAdapter() {
 

@@ -170,7 +170,7 @@ public final class FileUtils {
             Runtime runtime = Runtime.getRuntime();
             try {
                 runtime.exec(deleteCmd);
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
     }

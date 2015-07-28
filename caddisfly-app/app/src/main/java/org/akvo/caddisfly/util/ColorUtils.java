@@ -183,16 +183,6 @@ public final class ColorUtils {
         return Math.sqrt(blue + green + red);
     }
 
-    /**
-     * Check if the two colors are the same
-     *
-     * @param color1 The first Color
-     * @param color2 The second Color
-     * @return True if duplicates otherwise False
-     */
-    public static boolean areColorsSimilar(int color1, int color2) {
-        return getDistance(color1, color2) <= MAX_COLOR_DISTANCE;
-    }
 
     /**
      * Compares the colorToFind to all colors in the colorToFind range and finds the nearest matching colorToFind

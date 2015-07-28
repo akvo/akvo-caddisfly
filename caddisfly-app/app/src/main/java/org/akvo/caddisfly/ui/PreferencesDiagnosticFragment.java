@@ -88,7 +88,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                         ExternalCameraFragment cameraFragment = ExternalCameraFragment.newInstance(true);
                         cameraFragment.show(ft, "externalCameraFragment");
                     } else {
-                        AlertUtils.showMessage(getActivity(), R.string.notConnected, R.string.deviceConnectExternalCamera);
+                        AlertUtils.showMessage(getActivity(), R.string.sensorNotFound, R.string.deviceConnectExternalCamera);
                     }
 
                     return true;
@@ -101,6 +101,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
             sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+                    //todo: fix hardcoding of econd
                     mainApp.setSwatches("ECOND");
 
                     final Intent intent = new Intent(getActivity(), SensorActivity.class);
