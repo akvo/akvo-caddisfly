@@ -67,30 +67,8 @@ public class CalibrationCard {
                 totalNum ++;
             }
         }
-        Patch patch = new Patch(totalB/totalNum, totalG/totalNum, totalR/totalNum, x, y,d);
+        Patch patch = new Patch(totalB/totalNum, totalG/totalNum, totalR/totalNum, x, y, d);
         return patch;
-    }
-
-    private class Patch
-    {
-        int x;
-        int y;
-        int d;
-        float red;
-        float green;
-        float blue;
-
-        public Patch(float blue, float green, float red,int x, int y,int d)
-        {
-            this.x = x;
-            this.y = y;
-            this.d = d;
-            this.blue = blue;
-            this.green = green;
-            this.red = red;
-
-            System.out.println("***blue: " + blue + " green: " + green + " red: " + red);
-        }
     }
 
 

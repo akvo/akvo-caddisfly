@@ -2,11 +2,13 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Handler;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.calibration.Patch;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -17,13 +19,14 @@ import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
-import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -149,14 +152,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //TODO CHECK SHADOWS
 
-            //if exposure and shadows are ok, focus camera
 
-            //CameraConfigurationUtils.setBestExposure(camera.getParameters(), true);
 
             findPossibleCenters(data);
 
 
             if (possibleCenters != null && possibleCenters.size() > 3) {
+
+                //if patterns are found, focus camera and return
+                //this is a workaround to give camera time to adjust exposure
+                //we assume that second time is immediately after first time, so patterns are found while the camera is
+                //focused correctly
+
                 if (firstTime){
                     System.out.println("*** focussing!!!!!!!");
                     while (!focused){
@@ -186,9 +193,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 System.out.println("***bgra mbgra w, h: " + mbgra.width() + " , " + mbgra.height() + CvType.typeToString(mbgra.type()) + " mbgra :" + mbgra.toString());
 
-
-                CalibrationCard calibrationCard = new CalibrationCard();
-                calibrationCard.measurePatches(mbgra);
 
                 //noOfModules: constant that holds the time estimated module size is to be multiplied by, used to 'cut out' image not showing finder patterns
                 //typical value is 3.5 as pattern is 1:1:3:1:1 which amounts to seven.
@@ -269,13 +273,27 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                Imgproc.GaussianBlur(warp_dst, dest, new Size(3, 3), 0, 0);
 //                Core.addWeighted(warp_dst, 1.5, dest, -0.5, 0, dest);
 
+
+                CalibrationCard calibrationCard = new CalibrationCard();
+                Patch[] patches = calibrationCard.measurePatches(warp_dst);
+
+                ResultActivity.colors.clear();
+
+                for(Patch patch: patches) {
+                    Point point1 = new Point(patch.x - patch.d/2, patch.y - patch.d/2);
+                    Point point2 = new Point(patch.x + patch.d/2, patch.y + patch.d/2);
+                    Core.rectangle(warp_dst, point1, point2, new Scalar(255, 0, 0, 255));
+
+                    int color = Color.rgb((int)patch.red,(int) patch.green,(int) patch.blue);
+                    ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
+                }
                 //detect strip colors
                 Mat dest = warp_dst.clone();
                 Rect rect = new Rect(0, (int)Math.round(dest.height()*0.66), dest.width(), (int)Math.round(dest.height() * 0.33));
                 Mat striparea = dest.submat(rect);
 
-                ResultActivity.colors.clear();
-                OpenCVUtils.detectColor(striparea, ResultActivity.colors);
+
+                //OpenCVUtils.detectColor(striparea, ResultActivity.colors);
 
                 //convert to 8bits 4 channels necessary to make bitmap
                 dest.convertTo(dest, CvType.CV_8UC4);

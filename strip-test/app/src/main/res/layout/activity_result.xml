@@ -9,13 +9,21 @@
         android:id="@+id/resultImage"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
+        android:layout_toRightOf="@+id/colors"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/colors">
+    <GridView
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:columnWidth="55dp"
+        android:numColumns="3"
+        android:verticalSpacing="1dp"
+        android:horizontalSpacing="1dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:id="@+id/colors"
+        android:background="@android:color/white"
+       >
 
-    </LinearLayout>
+    </GridView>
 </RelativeLayout>

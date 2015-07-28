@@ -1,5 +1,6 @@
 package org.akvo.akvoqr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,10 +11,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -70,21 +72,25 @@ public class ResultActivity extends AppCompatActivity {
 
             if(colors.size()>0)
             {
-                LinearLayout colorLayout = (LinearLayout) findViewById(R.id.colors);
+                GridView colorLayout = (GridView) findViewById(R.id.colors);
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,1);
-                params.setMargins(5,5,5,5);
+
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT,1);
+//                params.setMargins(5,5,5,5);
 
                 Collections.sort(colors, new mColorComparator());
+                MyAdapter adapter = new MyAdapter(this, 0, colors);
+                colorLayout.setAdapter(adapter);
 
-                for(int i=0;i<colors.size();i++) {
-                    TextView view = new TextView(this);
-                    view.setText("no. " + i);
-                    view.setPadding(5,5,5,5);
-                    view.setBackgroundColor(colors.get(i).color);
-                    colorLayout.addView(view, params);
-                }
+//                for(int i = 0; i < colors.size();i++) {
+//                    TextView view = new TextView(this);
+//                    view.setText("no. " + i);
+//                    view.setPadding(5, 5, 5, 5);
+//                    view.setBackgroundColor(colors.get(i).color);
+//
+//                    //colorLayout.addView(view);
+//                }
             }
         }
 
@@ -229,6 +235,43 @@ public class ResultActivity extends AppCompatActivity {
                 return -1;
 
             return 1;
+        }
+    }
+
+    private class MyAdapter extends ArrayAdapter<ColorDetected> {
+
+        List<ColorDetected> objects;
+        Context mContext;
+
+        public MyAdapter(Context context, int resource, List<ColorDetected> objects) {
+            super(context, resource, objects);
+
+            this.objects = objects;
+            this.mContext = context;
+        }
+
+        @Override
+        public int getCount() {
+            return objects.size();
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            if (convertView == null) {
+                // if it's not recycled, initialize some attributes
+                imageView = new ImageView(mContext);
+                imageView.setLayoutParams(new GridView.LayoutParams(55, 55));
+
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(1,1,1,1);
+            } else {
+                imageView = (ImageView) convertView;
+            }
+
+            imageView.setBackgroundColor(objects.get(position).color);
+
+
+            return imageView;
         }
     }
 }
