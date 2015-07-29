@@ -81,14 +81,16 @@
     <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d Times Dilution</string>
 
     <!--Sensor Details Screen-->
-    <string name="deviceConnectSensor">Please connect Akvo EC Sensor and try again</string>
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="deviceConnected">Device Connected</string>
     <string name="electricalConductivityResult">EC %1$s μS/cm</string>
     <string name="acceptResult">Accept Result</string>
 
     <!--EC Sensor Calibration-->
+    <string name="warning">Warning</string>
+    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
+    <string name="deviceConnectSensor">Please connect Akvo EC Sensor and try again</string>
     <string name="lowEcMeasurement">Low EC Measurement</string>
     <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
     <string name="highEcMeasurement">High EC Measurement</string>
@@ -102,6 +104,7 @@
     <string name="updateFetching">Downloading Akvo Caddisfly update…</string>
     <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
     <string name="notNow">Now now</string>
+    <string name="updateFailedNoInternet">Update failed. No internet connection</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>

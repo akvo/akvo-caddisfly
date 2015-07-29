@@ -33,9 +33,9 @@ public class AlertUtils {
         showAlert(context, title, message, null, null);
     }
 
-    public static void askQuestion(Context context, int title, int message, int okButtonText, int cancelButtonText,
+    public static void askQuestion(Context context, int title, int message, int okButtonText, int cancelButtonText, boolean isDestructive,
                                    DialogInterface.OnClickListener callback) {
-        showAlert(context, context.getString(title), context.getString(message), okButtonText, cancelButtonText, true, callback,
+        showAlert(context, context.getString(title), context.getString(message), okButtonText, cancelButtonText, true, isDestructive, callback,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -47,19 +47,19 @@ public class AlertUtils {
     @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, int title, int message, int okButtonText,
                                  DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, context.getString(title), context.getString(message), okButtonText, R.string.cancel, true, callback, cancelListener);
+        showAlert(context, context.getString(title), context.getString(message), okButtonText, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, String title, int message,
                                  DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, context.getString(message), R.string.ok, R.string.cancel, true, callback, cancelListener);
+        showAlert(context, title, context.getString(message), R.string.ok, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, String title, int message, int okButtonText,
                                  DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, context.getString(message), okButtonText, R.string.cancel, true, callback, cancelListener);
+        showAlert(context, title, context.getString(message), okButtonText, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -67,16 +67,22 @@ public class AlertUtils {
                                  DialogInterface.OnClickListener callback,
                                  DialogInterface.OnClickListener cancelListener) {
 
-        showAlert(context, context.getString(title), context.getString(message), R.string.ok, R.string.cancel, true, callback, cancelListener);
+        showAlert(context, context.getString(title), context.getString(message), R.string.ok, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")
     private static void showAlert(final Context context, String title, String message,
                                   int okButtonText, int cancelButtonText, boolean cancelable,
+                                  boolean isDestructive,
                                   DialogInterface.OnClickListener callback,
                                   DialogInterface.OnClickListener cancelListener) {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder;
+        if (isDestructive) {
+            builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom_Destructive);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
 
         builder.setTitle(title)
                 .setMessage(message)
@@ -108,7 +114,7 @@ public class AlertUtils {
                                  DialogInterface.OnClickListener cancelListener) {
 
         if (bitmap == null) {
-            showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, true, callback, cancelListener);
+            showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, true, false, callback, cancelListener);
             return;
         }
 

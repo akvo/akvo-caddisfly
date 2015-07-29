@@ -239,7 +239,7 @@ public class CalibrateListActivity extends AppCompatActivity
                             File file = new File(path, input.getText().toString());
                             if (file.exists()) {
                                 AlertUtils.askQuestion(context, R.string.saveConfirmOverwriteFile,
-                                        R.string.saveNameAlreadyExists, R.string.overwrite, R.string.cancel,
+                                        R.string.saveNameAlreadyExists, R.string.overwrite, R.string.cancel, true,
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -376,18 +376,18 @@ public class CalibrateListActivity extends AppCompatActivity
                                 final int position = i;
 
                                 AlertUtils.askQuestion(context, R.string.delete,
-                                        R.string.deleteConfirm, R.string.delete, R.string.cancel,
+                                        R.string.deleteConfirm, R.string.delete, R.string.cancel, true,
                                         new DialogInterface.OnClickListener() {
-                                    @SuppressWarnings("unchecked")
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        String fileName = listFiles[position].getName();
-                                        FileUtils.deleteFile(path, fileName);
-                                        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
-                                        listAdapter.remove(listAdapter.getItem(position));
-                                        alert.dismiss();
-                                    }
-                                });
+                                            @SuppressWarnings("unchecked")
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                String fileName = listFiles[position].getName();
+                                                FileUtils.deleteFile(path, fileName);
+                                                ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                                listAdapter.remove(listAdapter.getItem(position));
+                                                alert.dismiss();
+                                            }
+                                        });
                                 return true;
                             }
                         });

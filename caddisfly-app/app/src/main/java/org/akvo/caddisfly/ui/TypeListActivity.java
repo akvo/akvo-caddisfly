@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -62,8 +63,16 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
 
             boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
             if (hasOtg) {
-                final Intent intent = new Intent(this, CalibrateSensorActivity.class);
-                startActivity(intent);
+                AlertUtils.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
+                        R.string.calibrate, R.string.cancel, true,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
             } else {
                 AlertUtils.showMessage(this, R.string.notSupported, R.string.phoneDoesNotSupport);
             }

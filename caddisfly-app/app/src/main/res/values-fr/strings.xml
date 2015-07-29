@@ -136,4 +136,7 @@
     <string name="overwrite">Overwrite</string>
     <string name="notNow">Now now</string>
     <string name="noInternetConnection">No Internet Connection</string>
+    <string name="updateFailedNoInternet">Update failed. No internet connection</string>
+    <string name="warning">Warning</string>
+    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
 </resources>

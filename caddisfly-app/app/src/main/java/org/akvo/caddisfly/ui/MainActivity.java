@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    //    private TextView mWatchTextView;
-//    private TextView mDemoTextView;
     private Boolean external = false;
     private boolean mShouldFinish = false;
     private String mLanguageCode;
@@ -93,19 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 startSurvey();
             }
         });
-
-//        final Context context = this;
-//        final ActionButton trainingLinkButton = (ActionButton) findViewById(R.id.trainingVideoLink);
-//        trainingLinkButton.playShowAnimation();
-//        trainingLinkButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NetworkUtils.openWebBrowser(context, Config.TRAINING_VIDEO_LINK);
-//            }
-//        });
-//
-//        mWatchTextView = (TextView) findViewById(R.id.watchTextView);
-//        mDemoTextView = (TextView) findViewById(R.id.demoTextView);
 
         final Button disableDeveloperButton = (Button) findViewById(R.id.disableDiagnosticButton);
 
@@ -153,15 +138,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-//        mWatchTextView.measure(0, 0);
-//        mDemoTextView.measure(0, 0);
-//        float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
-//        mDemoTextView.setWidth((int) width);
-
         checkDiagnosticMode();
 
         CheckLocale(mLanguageCode);
-
     }
 
     private void checkDiagnosticMode() {
@@ -178,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
                     findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
                 }
-                //Message msg = handler.obtainMessage();
-                //handler.sendMessage(msg);
             }
         }
     }
@@ -273,8 +250,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
-//            intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesGeneralFragment.class.getName() );
-//            intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, false );
             startActivityForResult(intent, REQUEST_LANGUAGE);
             return true;
         }
@@ -296,8 +271,8 @@ public class MainActivity extends AppCompatActivity {
         if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 external = true;
-                mQuestionTitle = getIntent().getStringExtra("questionTitle");
-                mLanguageCode = getIntent().getStringExtra("language");
+                mQuestionTitle = intent.getStringExtra("questionTitle");
+                mLanguageCode = intent.getStringExtra("language");
 
                 String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
                 mainApp.setSwatches(code);
@@ -380,11 +355,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             final Intent intent = new Intent(context, CameraSensorActivity.class);
-            //intent.setClass(context, CameraSensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
         } else if (mainApp.currentTestInfo.getType() == 1) {
             final Intent intent = new Intent(context, SensorActivity.class);
-            //intent.setClass(context, SensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
         }
 
@@ -410,7 +383,6 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 } else {
                     finish();
-                    //displayView(Config.CHECKLIST_SCREEN_INDEX, true);
                 }
                 break;
             default:

@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -139,7 +140,7 @@ class UpdateChecker {
             DownloadManager downloadManager = new DownloadManager(mContext);
             downloadManager.execute(apkUrl);
         } else {
-            makeToastFromString("Update failed. No internet connection available").show();
+            makeToastFromString(mContext.getString(R.string.updateFailedNoInternet)).show();
         }
     }
 
