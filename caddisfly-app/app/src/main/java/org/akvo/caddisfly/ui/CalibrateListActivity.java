@@ -238,8 +238,8 @@ public class CalibrateListActivity extends AppCompatActivity
 
                             File file = new File(path, input.getText().toString());
                             if (file.exists()) {
-                                AlertUtils.askQuestion(context, R.string.saveConfirmOverwriteFile,
-                                        R.string.saveNameAlreadyExists, R.string.overwrite, R.string.cancel, true,
+                                AlertUtils.askQuestion(context, R.string.fileAlreadyExists,
+                                        R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {

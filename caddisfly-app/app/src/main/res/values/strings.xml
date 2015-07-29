@@ -122,8 +122,8 @@
     <string name="saveCalibration">Save Calibration</string>
     <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
     <string name="saveInvalidFileName">Invalid file name</string>
-    <string name="saveNameAlreadyExists">Name already exists. Overwrite file?</string>
-    <string name="saveConfirmOverwriteFile">Overwrite File</string>
+    <string name="fileAlreadyExists">File already exists</string>
+    <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
     <string name="overwrite">Overwrite</string>
     <string name="loadCalibration">Load Calibration</string>
     <string name="notFound">Not Found</string>
@@ -140,6 +140,6 @@
     <string name="useFlashMode">Use Flash Mode</string>
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
     <string name="debuggingOn">Show debug messages</string>
-    <string name="noSound">No Sound</string>
+    <string name="noSound">Turn sound off</string>
     <string name="deviceConnectExternalCamera">Please connect Akvo Caddisfly Sensor and try again</string>
 </resources>

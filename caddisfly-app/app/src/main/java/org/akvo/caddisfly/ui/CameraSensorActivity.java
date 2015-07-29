@@ -392,6 +392,7 @@ public class CameraSensorActivity extends AppCompatActivity
                 super.onPostExecute(result);
 
                 mCameraFragment = ExternalCameraFragment.newInstance();
+                mCameraFragment.setCancelable(false);
                 if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
 
                     ((ExternalCameraFragment) mCameraFragment).pictureCallback = new ExternalCameraFragment.PictureCallback() {

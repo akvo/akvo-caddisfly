@@ -189,17 +189,18 @@ public final class ExternalCameraFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new Dialog(getActivity(), getTheme()) {
+            @Override
+            public void onBackPressed() {
+                dismiss();
+            }
+        };
 
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-//        if (!mPreviewOnly) {
-//            dialog.setTitle(R.string.analysisInProgress);
-//        } else {
-//            dialog.setTitle(R.string.cameraPreview);
-//        }
         return dialog;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -487,16 +488,15 @@ public final class ExternalCameraFragment extends DialogFragment {
                 parent.sound.playShortResource(mWeakParent.get().getActivity(), R.raw.beep);
                 final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
 
-
                 parent.samplingCount++;
                 parent.picturesTaken++;
                 //if (!mCancelled) {
-                    if (!parent.hasTestCompleted()) {
-                        parent.pictureCallback.onPictureTaken(bitmap);
-                        parent.takePicture();
-                    } else {
-                        parent.pictureCallback.onPictureTaken(bitmap);
-                    }
+                if (parent.hasTestCompleted()) {
+                    parent.pictureCallback.onPictureTaken(bitmap);
+                } else {
+                    parent.pictureCallback.onPictureTaken(bitmap);
+                    parent.takePicture();
+                }
                 //}
             }
 

@@ -86,6 +86,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                     if (usbDeviceList.size() > 0) {
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ExternalCameraFragment cameraFragment = ExternalCameraFragment.newInstance(true);
+                        cameraFragment.setCancelable(false);
                         cameraFragment.show(ft, "externalCameraFragment");
                     } else {
                         AlertUtils.showMessage(getActivity(), R.string.sensorNotFound, R.string.deviceConnectExternalCamera);

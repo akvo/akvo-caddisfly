@@ -114,8 +114,8 @@
     <string name="saveCalibration">"Sauvegarder Calibration"</string>
     <string name="saveProvideFileName">"Donnez un nom descriptif pour cet étalonnage"</string>
     <string name="saveInvalidFileName">"Nom de fichier invalide"</string>
-    <string name="saveNameAlreadyExists">"Nom existe déjà. Écraser le fichier?"</string>
-    <string name="saveConfirmOverwriteFile">"Écraser Le Fichier"</string>
+    <string name="doYouWantToOverwrite">"Nom existe déjà. Écraser le fichier?"</string>
+    <string name="fileAlreadyExists">"Écraser Le Fichier"</string>
     <string name="loadCalibration">"Calibration de charge"</string>
     <string name="notFound">"Pas Trouvé"</string>
     <string name="loadFilesNotAvailable">"Il n'y a pas calibrations précédemment enregistrés"</string>
