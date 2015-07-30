@@ -36,6 +36,16 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="version">Version</string>
+    <string name="success">Success</string>
+    <string name="done">Done</string>
+
+    <!--External-->
+    <string name="arsenic">Arsenic</string>
+    <string name="electricalConductivity">Electrical Conductivity</string>
+    <string name="fluoride">Fluoride</string>
+    <string name="freeChlorine">Free Chlorine</string>
+    <string name="iron">Iron</string>
+    <string name="coliforms">Coliforms</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
@@ -44,14 +54,17 @@
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
     <string name="pleaseEnterValue">Enter a value</string>
-    <string name="calibrationSucceeded">Calibration was successful</string>
 
     <!--Main Screen-->
     <string name="startSurvey">Start Survey</string>
-    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
-    <string name="errorCameraFlashRequired">This phone does not have a Camera Flash which is required by Caddisfly</string>
-    <string name="errorTestNotAvailable">This test is not available</string>
-    <string name="errorCalibrationIncomplete">Calibration is incomplete. Do you want to calibrate now?</string>
+    <string name="akvoFlowNotFound">Akvo FLOW not found</string>
+    <string name="errorAkvoFlowRequired">Install Akvo FLOW app and try again</string>
+    <string name="cannotCalibrate">Cannot calibrate</string>
+    <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
+    <string name="cannotStartTest">Cannot start test</string>
+    <string name="errorTestNotAvailable">No configuration found for %1$s</string>
+    <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
+    <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
 
     <!--Settings Screen-->
     <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
@@ -74,6 +87,7 @@
     <!--Result Screen-->
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
+    <string name="highContamination">High Contamination</string>
     <string name="highLevelsFound">%1$s contamination is very high</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
@@ -97,6 +111,8 @@
     <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
     <string name="highEcMeasurement">High EC Measurement</string>
     <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
+    <string name="calibrationSuccessful">Calibration Successful</string>
+    <string name="sensorCalibrated">EC Sensor has been calibrated</string>
 
     <!--App update-->
     <string name="update">Update</string>

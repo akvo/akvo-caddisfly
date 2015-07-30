@@ -320,7 +320,7 @@ public class CameraSensorActivity extends AppCompatActivity
         ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
-        if (!mainApp.currentTestInfo.getCode().isEmpty()) {
+        if (mainApp.currentTestInfo.getCode().isEmpty()) {
 
             String message = String.format("%s\r\n\r\n%s", getString(R.string.errorLoadingConfiguration), getString(R.string.pleaseContactSupport));
             AlertUtils.showError(this, R.string.error, message, null, R.string.ok,

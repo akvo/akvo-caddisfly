@@ -51,7 +51,7 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
 
         if (testInfo.getType() == 0) {
             if (!MainApp.hasCameraFlash) {
-                AlertUtils.showError(this, R.string.error,
+                AlertUtils.showError(this, R.string.cannotCalibrate,
                         getString(R.string.errorCameraFlashRequired),
                         null,
                         R.string.ok, null, null);
@@ -74,7 +74,10 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
                         });
 
             } else {
-                AlertUtils.showMessage(this, R.string.notSupported, R.string.phoneDoesNotSupport);
+                String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+                        getString(R.string.pleaseContactSupport));
+
+                AlertUtils.showMessage(this, R.string.notSupported, message);
             }
         }
 

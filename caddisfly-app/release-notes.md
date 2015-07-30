@@ -8,6 +8,7 @@ v0.75 beta
 6. Fix: Camera Preview should dismiss only on back button
 7. UI: Change Ok and Cancel button in update dialog to 'Update' and 'Not Now'
 8. Warning message added for EC Sensor calibrate
+9. Changes to text
 
 v0.74 alpha
 -----------

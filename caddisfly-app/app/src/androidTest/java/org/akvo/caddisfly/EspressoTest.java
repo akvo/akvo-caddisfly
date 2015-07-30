@@ -125,11 +125,15 @@ public class EspressoTest
         stringHashMapEN.put("fluoride", "Fluoride");
         stringHashMapEN.put("chlorine", "Free Chlorine");
         stringHashMapEN.put("electricalConductivity", "Electrical Conductivity");
+        stringHashMapEN.put("unnamedDataPoint", "Unnamed data point");
+        stringHashMapEN.put("createNewDataPoint", "CREATE NEW DATA POINT");
 
         stringHashMapFR.put("language", "Français");
         stringHashMapFR.put("fluoride", "Fluorure");
         stringHashMapFR.put("chlorine", "Chlore Libre");
         stringHashMapFR.put("electricalConductivity", "Conductivité Électrique");
+        stringHashMapFR.put("unnamedDataPoint", "Unnamed data point");
+        stringHashMapFR.put("createNewDataPoint", "CREATE NEW DATA POINT");
 
         if (mCurrentLanguage.equals("en")) {
             currentHashMap = stringHashMapEN;
@@ -327,11 +331,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        clickListViewItem("Automated Tests");
-
-        clickListViewItem("CREATE NEW DATA POINT");
-
-        clickListViewItem("All Tests");
+        openSurveyInFlow();
 
         try {
 
@@ -362,11 +362,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        clickListViewItem("Automated Tests");
-
-        clickListViewItem("CREATE NEW DATA POINT");
-
-        clickListViewItem("All Tests");
+        openSurveyInFlow();
 
         try {
             mDevice.findObject(new UiSelector().text("Next")).click();
@@ -586,11 +582,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        clickListViewItem("Automated Tests");
-
-        clickListViewItem("CREATE NEW DATA POINT");
-
-        clickListViewItem("All Tests");
+        openSurveyInFlow();
 
         try {
 
@@ -621,6 +613,17 @@ public class EspressoTest
         mDevice.pressBack();
         mDevice.pressBack();
         mDevice.pressBack();
+    }
+
+    private void openSurveyInFlow() {
+        clickListViewItem("Automated Tests");
+        try {
+            onView(withText(currentHashMap.get("unnamedDataPoint"))).check(matches(isDisplayed()));
+            clickListViewItem(currentHashMap.get("unnamedDataPoint"));
+        } catch (Exception ignored) {
+            clickListViewItem(currentHashMap.get("createNewDataPoint"));
+        }
+        clickListViewItem("All Tests");
     }
 
     public void testCalibrateSensor() {
@@ -792,7 +795,7 @@ public class EspressoTest
         onView(withId(R.id.startButton)).perform(click());
 
         try {
-            Thread.sleep(10000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -846,11 +849,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        clickListViewItem("Automated Tests");
-
-        clickListViewItem("CREATE NEW DATA POINT");
-
-        clickListViewItem("All Tests");
+        openSurveyInFlow();
 
         try {
 
@@ -869,7 +868,7 @@ public class EspressoTest
         onView(withId(R.id.startButton)).perform(click());
 
         try {
-            Thread.sleep(10000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -918,11 +917,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        clickListViewItem("Automated Tests");
-
-        clickListViewItem("CREATE NEW DATA POINT");
-
-        clickListViewItem("All Tests");
+        openSurveyInFlow();
 
         try {
 
@@ -949,16 +944,13 @@ public class EspressoTest
                 .check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
-
-        //High levels found dialog
-        takeScreenshot();
 
         onView(withId(R.id.endSurveyButton)).perform(click());
 
@@ -986,20 +978,20 @@ public class EspressoTest
 
         onView(withId(R.id.startButton)).perform(click());
 
-        //Test Progress Screen
-        takeScreenshot();
-
         onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5)))
                 .check(matches(isCompletelyDisplayed()));
+
+        //High levels found dialog
+        takeScreenshot();
 
         onView(withId(R.id.endSurveyButton)).perform(click());
 
@@ -1027,8 +1019,11 @@ public class EspressoTest
         onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
+        //Test Progress Screen
+        takeScreenshot();
+
         try {
-            Thread.sleep(12000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

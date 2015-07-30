@@ -56,10 +56,11 @@ public class MessageFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.fragment_message, container, false);
 
         TextView titleView = (TextView) view.findViewById(R.id.title);
-        final String title = getArguments().getString("title");
-        titleView.setText(title);
+        titleView.setText(getString(R.string.highContamination));
 
         TextView messageTextView1 = (TextView) view.findViewById(R.id.messageTextView1);
+
+        final String title = getArguments().getString("title");
         messageTextView1.setText(String.format(getString(R.string.highLevelsFound), title));
 
         TextView messageTextView2 = (TextView) view.findViewById(R.id.messageTextView2);

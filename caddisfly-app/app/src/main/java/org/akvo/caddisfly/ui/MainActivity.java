@@ -218,7 +218,11 @@ public class MainActivity extends AppCompatActivity {
         Intent LaunchIntent = getPackageManager()
                 .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
         if (LaunchIntent == null) {
-            AlertUtils.showMessage(this, R.string.error, R.string.errorAkvoFlowRequired);
+
+            String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
+                    getString(R.string.pleaseContactSupport));
+
+            AlertUtils.showMessage(this, R.string.akvoFlowNotFound, message);
         } else {
             startActivity(LaunchIntent);
             mShouldFinish = true;
@@ -279,18 +283,22 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mainApp.currentTestInfo == null) {
 
-                    String errorTitle;
+                    String itemName;
                     if (mQuestionTitle.length() > 0) {
                         if (mQuestionTitle.length() > 30) {
                             mQuestionTitle = mQuestionTitle.substring(0, 30);
                         }
-                        errorTitle = mQuestionTitle;
+                        itemName = mQuestionTitle.substring(0, Math.max(0, mQuestionTitle.length() - 7)).trim();
                     } else {
-                        errorTitle = getString(R.string.error);
+                        itemName = getString(R.string.error);
                     }
 
-                    AlertUtils.showAlert(this, errorTitle,
-                            R.string.errorTestNotAvailable,
+                    String message = getString(R.string.errorTestNotAvailable, itemName);
+                    String alertMessage = String.format("%s\r\n\r\n%s", message,
+                            getString(R.string.pleaseContactSupport));
+
+                    AlertUtils.showAlert(this, R.string.cannotStartTest, alertMessage,
+                            R.string.backToSurvey,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(
@@ -302,10 +310,10 @@ public class MainActivity extends AppCompatActivity {
                     );
                 } else {
                     if (!MainApp.hasCameraFlash) {
-                        AlertUtils.showError(this, R.string.error,
+                        AlertUtils.showError(this, R.string.cannotStartTest,
                                 getString(R.string.errorCameraFlashRequired),
                                 null,
-                                R.string.ok,
+                                R.string.backToSurvey,
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -331,9 +339,14 @@ public class MainActivity extends AppCompatActivity {
             if (mainApp.getCalibrationErrorCount() > 0) {
                 Configuration conf = getResources().getConfiguration();
 
-                AlertUtils.showAlert(context,
-                        mainApp.currentTestInfo.getName(conf.locale.getLanguage()),
-                        R.string.errorCalibrationIncomplete, R.string.calibrate,
+                String message = getString(R.string.errorCalibrationIncomplete,
+                        mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+
+                String alertMessage = String.format("%s\r\n\r\n%s", message,
+                        getString(R.string.doYouWantToCalibrate));
+
+                AlertUtils.showAlert(context, R.string.cannotStartTest,
+                        alertMessage, R.string.calibrate,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(

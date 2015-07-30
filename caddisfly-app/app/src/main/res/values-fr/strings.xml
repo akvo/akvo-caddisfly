@@ -88,4 +88,7 @@
     <string name="deleteConfirm">Les éléments sélectionnés seront supprimés</string>
     <!--Diagnostic Mode: Settings-->
     <string name="useFlashMode">Utiliser le mode flash</string>
+    <string name="calibrationSuccessful">Calibration Successful</string>
+    <string name="akvoFlowNotFound">Akvo Flow not found</string>
+    <string name="cannotCalibrate">Camera flash not found</string>
 </resources>

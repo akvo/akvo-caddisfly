@@ -33,6 +33,10 @@ public class AlertUtils {
         showAlert(context, title, message, null, null);
     }
 
+    public static void showMessage(Context context, int title, String message) {
+        showAlert(context, title, message, null, null);
+    }
+
     public static void askQuestion(Context context, int title, int message, int okButtonText, int cancelButtonText, boolean isDestructive,
                                    DialogInterface.OnClickListener callback) {
         showAlert(context, context.getString(title), context.getString(message), okButtonText, cancelButtonText, true, isDestructive, callback,
@@ -42,6 +46,12 @@ public class AlertUtils {
                         dialogInterface.dismiss();
                     }
                 });
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    public static void showAlert(Context context, int title, String message, int okButtonText,
+                                 DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
+        showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -68,6 +78,14 @@ public class AlertUtils {
                                  DialogInterface.OnClickListener cancelListener) {
 
         showAlert(context, context.getString(title), context.getString(message), R.string.ok, R.string.cancel, true, false, callback, cancelListener);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    public static void showAlert(Context context, int title, String message,
+                                 DialogInterface.OnClickListener callback,
+                                 DialogInterface.OnClickListener cancelListener) {
+
+        showAlert(context, context.getString(title), message, R.string.ok, R.string.cancel, true, false, callback, cancelListener);
     }
 
     @SuppressWarnings("SameParameterValue")

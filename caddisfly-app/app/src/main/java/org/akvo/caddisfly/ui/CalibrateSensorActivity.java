@@ -431,7 +431,8 @@ public class CalibrateSensorActivity extends AppCompatActivity {
                             (new Handler()).postDelayed(new Runnable() {
                                 public void run() {
                                     dialog.dismiss();
-                                    AlertUtils.showAlert(mContext, R.string.calibrated, R.string.calibrationSucceeded, new DialogInterface.OnClickListener() {
+                                    AlertUtils.showAlert(mContext, R.string.calibrationSuccessful,
+                                            R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             finish();
