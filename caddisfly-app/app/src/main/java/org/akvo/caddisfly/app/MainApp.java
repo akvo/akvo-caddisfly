@@ -61,7 +61,7 @@ public class MainApp extends Application {
                     versionString += String.format(Locale.US, "%.2f", versionNumber);
                 } catch (NumberFormatException e) {
                     int id = context.getResources()
-                            .getIdentifier(word, "string", context.getPackageName());
+                            .getIdentifier(word.toLowerCase(), "string", context.getPackageName());
                     if (id > 0) {
                         versionString += context.getString(id);
                     } else {

@@ -296,6 +296,19 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
+        onView(withText(R.string.incorrectCalibrationCanAffect)).check(matches(isDisplayed()));
+
+        //Calibrate EC Warning
+        takeScreenshot();
+
+        onView(withText(R.string.cancel)).perform(click());
+
+        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+
+        onView(withText(R.string.warning)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.calibrate)).perform(click());
+
         //Calibrate EC
         takeScreenshot();
 
@@ -618,6 +631,10 @@ public class EspressoTest
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+
+        onView(withText(R.string.warning)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.calibrate)).perform(click());
 
         onView(withId(R.id.startButton)).perform(click());
 

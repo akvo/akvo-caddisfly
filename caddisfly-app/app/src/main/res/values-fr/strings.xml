@@ -15,128 +15,77 @@
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 <resources>
-
-    <string name="appName">"Akvo Caddisfly"</string>
-
+    <string name="appName">Akvo Caddisfly</string>
     <!--Common-->
-    <string name="ok">"OK"</string>
-    <string name="retry">"Réessayer"</string>
-    <string name="cancel">"Annuler"</string>
-    <string name="start">"Commencer"</string>
-    <string name="next">"Suivant"</string>
-    <string name="delete">"Supprimer"</string>
-    <string name="error">"Erreur"</string>
-    <string name="general">"Général"</string>
-    <string name="other">"Autre"</string>
-    <string name="diagnostics">"Diagnostics"</string>
-    <string name="save">"Enregistrer"</string>
-    <string name="load">"Charge"</string>
-    <string name="swatches">"Nuancier"</string>
-    <string name="calibrated">"Calibré"</string>
-    <string name="calibrating">"Calibrage"</string>
-
+    <string name="ok">OK</string>
+    <string name="retry">Réessayer</string>
+    <string name="cancel">Annuler</string>
+    <string name="start">Commencer</string>
+    <string name="next">Suivant</string>
+    <string name="delete">Supprimer</string>
+    <string name="error">Erreur</string>
+    <string name="other">Autre</string>
+    <string name="save">Enregistrer</string>
+    <string name="calibrate">Etalonner</string>
+    <string name="calibrated">Etalonné</string>
+    <string name="calibrating">En cours d\'étalonnage</string>
+    <string name="settings">Paramètres</string>
+    <string name="about">A propos</string>
     <!--Messages-->
-    <string name="pleaseWait">"Veuillez attendre…"</string>
-    <string name="enableInternet">"Connexion Internet requise"</string>
-    <string name="notSupported">"Non Supporté"</string>
-    <string name="phoneDoesNotSupport">"Ce téléphone ne supporte pas cette fonctionnalité"</string>
-    <string name="pleaseEnterValue">"Entrez une valeur"</string>
-    <string name="calibrationSucceeded">"Le calibrage est réussi"</string>
-    <string name="diagnosticModeEnabled">"Mode de diagnostic activé"</string>
-    <string name="diagnosticModeDisabled">"Mode diagnostic désactivée"</string>
-
+    <string name="pleaseWait">Veuillez attendre…</string>
+    <string name="noInternetConnection">Pas de connexion internet</string>
+    <string name="enableInternet">Vérifiez vos paramètres de connexion et réessayez</string>
+    <string name="pleaseEnterValue">Entrer une valeur</string>
     <!--Main Screen-->
-    <string name="startSurvey">"Commencer L'Enquête"</string>
-    <string name="errorAkvoFlowRequired">"S'il vous plaît installer Akvo Flow app"</string>
-    <string name="errorCameraFlashRequired">"Ce téléphone ne dispose pas d'un flash d'appareil photo qui est requis par Caddisfly"</string>
-    <string name="errorTestNotAvailable">"Ce test ne sont pas disponibles"</string>
-    <string name="errorCalibrationIncomplete">"L'étalonnage est incomplète. Voulez-vous pour calibrer maintenant?"</string>
-    <string name="enableUserMode">"Mode utilisateur"</string>
-
+    <string name="startSurvey">Commencer le questionnaire</string>
+    <string name="errorAkvoFlowRequired">Veuillez installer l\'application Akvo Flow</string>
+    <string name="errorCameraFlashRequired">Ce téléphone n\'a pas de flash, pourtant requis pour l\'utilisation de Caddisfly</string>
+    <string name="errorTestNotAvailable">Ce test n\'est pas disponible</string>
+    <string name="errorCalibrationIncomplete">L\'étalonnage est incomplet. Voulez-vous effectuer l\'étalonnage maintenant?</string>
     <!--Settings Screen-->
-    <string name="settings">"Paramètres"</string>
-    <string name="calibrate">"Étalonner"</string>
-    <string name="calibrateSummary">"Calibrer colorimètre ou externes capteurs"</string>
-    <string name="updateCheck">"Vérifier la mise à jour"</string>
-    <string name="updateSummary">"Vérifiez si une nouvelle version est disponible"</string>
-    <string name="about">"A propos"</string>
-    <string name="displaysVersionNumber">"Affiche le numéro de version"</string>
-    <string name="language">"Langue"</string>
-
+    <string name="updateCheck">Rechercher des mises à jour</string>
+    <string name="updateSummary">Rechercher une nouvelle version d\'Akvo Caddisfly</string>
+    <string name="displaysVersionNumber">Information sur les versions</string>
+    <string name="language">Langue</string>
     <!--Calibration Screen-->
-    <string name="errorLoadingTestTypes">"Types de tests de chargement d'erreur. Vérifiez que tests.json fichier est valide."</string>
-
     <!--Test Progress Screen-->
-    <string name="analyzingWait">"Analyse …"</string>
-    <string name="placeDeviceInStand">"Placez la face du téléphone vers le bas sur une surface plane"</string>
-    <string name="waitTillCameraSound">"et attendre pour le test à compléter"</string>
-    <string name="errorTestInterrupted">"Le test a été interrompu. Ne déplacez pas le téléphone pendant le test."</string>
-    <string name="errorTestFailed">"couleur de la solution hors de portée. Vérifiez l'emplacement de la cartouche."</string>
-
+    <string name="analyzingWait">Analyse en cours</string>
+    <string name="placeDeviceInStand">Placez le téléphone sur une surface plane, face vers le bas</string>
+    <string name="waitTillCameraSound">et attendez jusqu\'à la fin du test</string>
+    <string name="errorTestInterrupted">Le test s\'est interrompu. Ne déplacez pas le téléphone pendant la durée du test</string>
+    <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
     <!--Result Screen-->
-    <string name="result">"Résultat"</string>
-    <string name="backToSurvey">"Retour à l'enquête"</string>
-    <string name="highLevelsFound">"%1$s la contamination est très élevé"</string>
-    <string name="tryWithDilutedSample">"Essayez de nouveau avec une dilution de l'eau de l'échantillon de %1$d"</string>
-
-    <!--Sensor Details Screen-->
-    <string name="deviceConnectSensor">"Connectez Akvo Sensor CE"</string>
-    <string name="deviceConnecting">"Branchement à un périphérique"</string>
-    <string name="deviceConnected">"Périphérique connecté"</string>
-    <string name="electricalConductivityResult">"CE %1$s μS/cm"</string>
-    <string name="acceptResult">"Accepter Résultat"</string>
-
+    <string name="result">Résultat</string>
+    <string name="backToSurvey">Retour au questionnaire</string>
     <!--Dilution Selection Dialog-->
-    <string name="selectDilution">"Sélectionnez Dilution"</string>
-    <string name="noDilution">"Aucune dilution"</string>
-    <string name="timesDilution">%1$d Times Dilution</string>
-
+    <string name="selectDilution">Sélectionnez une dilution</string>
+    <string name="noDilution">Pas de dilution</string>
+    <!--Sensor Details Screen-->
+    <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
+    <string name="deviceConnected">Appareil connecté</string>
+    <string name="acceptResult">Accepter le résultat</string>
     <!--EC Sensor Calibration-->
-    <string name="sensorNotFound">"Capteur non raccordé"</string>
-    <string name="lowEcMeasurement">Low EC Measurement</string>
-    <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
-    <string name="highEcMeasurement">High EC Measurement</string>
-    <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
-
+    <string name="deviceConnectSensor">Veuillez connecter le capteur de conductivité Akvo et réessayez</string>
+    <string name="lowEcMeasurement">Mesure d\'EC faible</string>
     <!--App update-->
-    <string name="updateApp">"Mise à jour Akvo Caddisfly"</string>
-    <string name="updateCheckingFor">"Vérification des mises à jour …"</string>
-    <string name="updateRequest">"Une version mise à jour est disponible, Voulez-vous mettre à jour maintenant?"</string>
-    <string name="updateFetching">"Obtenir la mise à jour Akvo Caddisfly …"</string>
-    <string name="updatedAlready">"Vous avez déjà la dernière version de Akvo Caddisfly installé"</string>
-
+    <string name="update">Mise à jour</string>
+    <string name="updateApp">Mise à jour de Akvo Caddisfly</string>
+    <string name="updateCheckingFor">Recherche de mises à jour…</string>
+    <string name="updateRequest">Une nouvelle version d\'Akvo Caddisfly est disponible. Voulez-vous l\'installer maintenant?</string>
+    <string name="updateFetching">Téléchargement de la mise à jour…</string>
+    <string name="updatedAlready">La dernière version d\'Akvo Caddisfly est déjà installée</string>
     <!--About Screen-->
-    <string name="waterQualitySystem">"Système de qualité de l'eau"</string>
-    <string name="companyOtherName">"Akvo Foundation"</string>
-    <string name="copyrightMessage">"Copyright © Stichting Akvo"</string>
-
-    <!--Save / Load Calibration-->
-    <string name="saveCalibration">"Sauvegarder Calibration"</string>
-    <string name="saveProvideFileName">"Donnez un nom descriptif pour cet étalonnage"</string>
-    <string name="saveInvalidFileName">"Nom de fichier invalide"</string>
-    <string name="doYouWantToOverwrite">"Nom existe déjà. Écraser le fichier?"</string>
-    <string name="fileAlreadyExists">"Écraser Le Fichier"</string>
-    <string name="loadCalibration">"Calibration de charge"</string>
-    <string name="notFound">"Pas Trouvé"</string>
-    <string name="loadFilesNotAvailable">"Il n'y a pas calibrations précédemment enregistrés"</string>
-    <string name="deleteConfirm">"Les éléments sélectionnés seront supprimés"</string>
-    <string name="errorLoadingFile">"Impossible de charger le fichier. Vérifiez le fichier d'erreurs."</string>
-
-    <!--Diagnostic Settings-->
-    <string name="cameraPreview">"Colorimètre caméra"</string>
-    <string name="externalCamera">"Caméra externe colorimètre"</string>
-    <string name="testSensor">"Capteur CE"</string>
-    <string name="autoFocus">"Mise au point automatique"</string>
-    <string name="useFlashMode">"Utilisez le mode Flash"</string>
-    <string name="ignoreShakeDuringAnalysis">"Ignorer bougé lors de l'analyse"</string>
-    <string name="debuggingOn">"Afficher des messages de débogage"</string>
-    <string name="noSound">"Pas De Son"</string>
-    <string name="deviceConnectExternalCamera">"Connectez capteur externe Caddisfly"</string>
-    <string name="update">Update</string>
-    <string name="overwrite">Overwrite</string>
-    <string name="notNow">Now now</string>
-    <string name="noInternetConnection">No Internet Connection</string>
-    <string name="updateFailedNoInternet">Update failed. No internet connection</string>
-    <string name="warning">Warning</string>
-    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
+    <string name="companyOtherName">Akvo Fondation</string>
+    <!--Diagnostic Mode: Main Screen-->
+    <!--Diagnostic Mode: Messages-->
+    <!--Diagnostic Mode: Save / Load Calibration-->
+    <string name="saveCalibration">Enregistrer l\'étalonnage</string>
+    <string name="saveInvalidFileName">Nom de fichier incorrect</string>
+    <string name="overwrite">Remplacer</string>
+    <string name="loadCalibration">Charger l\'étalonnage</string>
+    <string name="notFound">Introuvable</string>
+    <string name="loadFilesNotAvailable">Aucun étalonnage déjà enregistré</string>
+    <string name="deleteConfirm">Les éléments sélectionnés seront supprimés</string>
+    <!--Diagnostic Mode: Settings-->
+    <string name="useFlashMode">Utiliser le mode flash</string>
 </resources>

@@ -114,7 +114,7 @@ public class AlertUtils {
                                  DialogInterface.OnClickListener cancelListener) {
 
         if (bitmap == null) {
-            showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, true, false, callback, cancelListener);
+            showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, false, false, callback, cancelListener);
             return;
         }
 
