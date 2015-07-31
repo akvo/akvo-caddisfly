@@ -8,8 +8,8 @@ import org.opencv.core.Mat;
 public class CalibrationCard {
 
     // myQPCard 201 measurements
-    final float P_SIZE = 9.9f; // mm
-    final float P_DIST = 2f; // mm
+    final float P_SIZE = 9.8f; // mm
+    final float P_DIST = 2.23f; // mm
     final float XOFF = 5.6f; // mm
     final float YOFF = 5.6f; // mm
     final float F_DIST_HOR = 131.8f; // mm
@@ -61,9 +61,9 @@ public class CalibrationCard {
 
         for (int i=-d;i<=d;i++) {
             for(int ii=-d;ii<=d;ii++) {
-                totalB += imgMat.get(y,x)[2];
-                totalG += imgMat.get(y,x)[1];
-                totalR += imgMat.get(y,x)[0];
+                totalB += imgMat.get(y+i,x+ii)[2];
+                totalG += imgMat.get(y+i,x+ii)[1];
+                totalR += imgMat.get(y+i,x+ii)[0];
                 totalNum ++;
             }
         }

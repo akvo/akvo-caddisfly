@@ -19,19 +19,17 @@ import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
+import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -152,10 +150,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //TODO CHECK SHADOWS
 
-
-
             findPossibleCenters(data);
-
 
             if (possibleCenters != null && possibleCenters.size() > 3) {
 
@@ -171,7 +166,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             @Override
                             public void onAutoFocus(boolean success, Camera camera) {
                                 if (success) focused = true;
-                         }
+                            }
                         });
                     }
                     firstTime = false;
@@ -191,8 +186,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 convert_mYuv.put(0, 0, data);
                 Imgproc.cvtColor(convert_mYuv, mbgra, Imgproc.COLOR_YUV2RGBA_NV21, mbgra.channels());
 
-                System.out.println("***bgra mbgra w, h: " + mbgra.width() + " , " + mbgra.height() + CvType.typeToString(mbgra.type()) + " mbgra :" + mbgra.toString());
-
 
                 //noOfModules: constant that holds the time estimated module size is to be multiplied by, used to 'cut out' image not showing finder patterns
                 //typical value is 3.5 as pattern is 1:1:3:1:1 which amounts to seven.
@@ -202,81 +195,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 final float adjustBL = noOfModules*possibleCenters.get(2).getEstimatedModuleSize();
                 final float adjustBR = noOfModules*possibleCenters.get(3).getEstimatedModuleSize();
 
-                List<Point> srcList = new ArrayList<>();
-
-                //coordinates for the rect (the finder pattern centers)
-                srcList.add(new Point(getInfo().getTopLeft().getX(),
-                        getInfo().getTopLeft().getY()));
-                srcList.add(new Point(getInfo().getTopRight().getX(),
-                        getInfo().getTopRight().getY()));
-                srcList.add(new Point(getInfo().getBottomLeft().getX(),
-                        getInfo().getBottomLeft().getY()));
-                srcList.add(new Point(getInfo().getBottomRight().getX(),
-                        getInfo().getBottomRight().getY()));
-
-                System.out.println("***before sort:");
-                System.out.println("***topleft: " + srcList.get(0).x + " ," + srcList.get(0).y);
-                System.out.println("***topright: " + srcList.get(1).x + " ," + srcList.get(1).y);
-                System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
-                System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
-
-                //Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-                // so the result will be: top-left, bottom-left, top-right, bottom-right. Because top-left always has the lowest sum of x and y
-                // and bottom-right always the highest
-                Collections.sort(srcList, new PointComparator());
-
-                System.out.println("***after sort:");
-                System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-                System.out.println("***bottomleft: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-                System.out.println("***topright: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
-                System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
-
-                //source quad
-                //here we maintain the order: top-left, top-right, bottom-left, bottom-right
-                Point[] srcQuad = new Point[4];
-                srcQuad[0]=srcList.get(0);
-                srcQuad[1]=srcList.get(2);
-                srcQuad[2]=srcList.get(1);
-                srcQuad[3]=srcList.get(3);
-                //destination quad corresponding with srcQuad
-                Point[] dstQuad = new Point[4];
-                dstQuad[0] = new Point( 0,0 );
-                dstQuad[1] = new Point( mbgra.cols() - 1, 0 );
-                dstQuad[2] = new Point( 0, mbgra.rows() - 1 );
-                dstQuad[3] = new Point(mbgra.cols()-1, mbgra.rows()-1);
-
-                //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
-                MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
-                MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
-
-                //make a destination mat for a warp
-                Mat warp_dst = Mat.zeros(mbgra.rows(), mbgra.cols(), mbgra.type());
-
-                //get a perspective transform matrix
-                Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
-
-                //do the warp
-                Imgproc.warpPerspective(mbgra, warp_dst,warp_mat, warp_dst.size());
-
-                //enhance contrast
-//                Mat equalsrc = new Mat();
-//                List<Mat> channels = new ArrayList<>();
-//                Imgproc.cvtColor(warp_dst, equalsrc, Imgproc.COLOR_RGB2YCrCb);
-//                Core.split(equalsrc, channels);
-//                Imgproc.equalizeHist(channels.get(0), channels.get(0));
-//                Core.merge(channels, equalsrc);
-//                Imgproc.cvtColor(equalsrc, dest, Imgproc.COLOR_YCrCb2RGB);
-//
-//                //sharpen image
-//                Mat kernel = Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT, new Size(3,3));
-//                Imgproc.filter2D(warp_dst, dest, -1, kernel);
-//                Imgproc.GaussianBlur(warp_dst, dest, new Size(3, 3), 0, 0);
-//                Core.addWeighted(warp_dst, 1.5, dest, -0.5, 0, dest);
-
-
+                //perspectiveTransform
+                Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
                 CalibrationCard calibrationCard = new CalibrationCard();
                 Patch[] patches = calibrationCard.measurePatches(warp_dst);
 
+                //find calibration patches
                 ResultActivity.colors.clear();
 
                 for(Patch patch: patches) {
@@ -287,21 +211,34 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     int color = Color.rgb((int)patch.red,(int) patch.green,(int) patch.blue);
                     ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
                 }
-                //detect strip colors
+
+                //detect strip
                 Mat dest = warp_dst.clone();
-                Rect rect = new Rect(0, (int)Math.round(dest.height()*0.66), dest.width(), (int)Math.round(dest.height() * 0.33));
+
+                float stripareaSize = 31; //mm
+                float vertSize = 75; //mm
+                float ratio = stripareaSize/vertSize;
+                int stripH = (int)Math.round(dest.height() * ratio);
+                Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
                 Mat striparea = dest.submat(rect);
 
+                Mat strip = OpenCVUtils.detectStrip(striparea);
 
-                //OpenCVUtils.detectColor(striparea, ResultActivity.colors);
+                if(strip!=null)
+                {
+                    //detect strip colors
+//                   ResultActivity.stripColors.clear();
+//                   Mat colors = OpenCVUtils.detectColor(striparea, ResultActivity.stripColors);
 
-                //convert to 8bits 4 channels necessary to make bitmap
-                dest.convertTo(dest, CvType.CV_8UC4);
-
-                //create a bitmap with the same size and color config as the dest
-                bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(dest, bitmap);
-
+                    //create a bitmap with the same size and color config as the dest
+                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(strip, bitmap, true);
+                }
+                else
+                {
+                    bitmap = Bitmap.createBitmap(striparea.width(), striparea.height(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(striparea, bitmap, true);
+                }
 
                 allOK = true;
 
@@ -356,25 +293,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
-    public static class PointComparator implements Comparator<Point>
-    {
 
-
-        @Override
-        public int compare(Point lhs, Point rhs) {
-
-          if(lhs.x + lhs.y < rhs.x + rhs.y)
-          {
-             return -1;
-          }
-
-          else
-          {
-              return 1;
-          }
-
-        }
-    }
 
 
 }

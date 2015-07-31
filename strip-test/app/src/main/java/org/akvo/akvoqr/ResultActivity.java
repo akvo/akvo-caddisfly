@@ -28,6 +28,7 @@ public class ResultActivity extends AppCompatActivity {
 
     Bitmap bitmap;
     public static List<ColorDetected> colors = new ArrayList<>();
+    public static List<ColorDetected> stripColors = new ArrayList<>();
 
 
     @Override
@@ -74,23 +75,19 @@ public class ResultActivity extends AppCompatActivity {
             {
                 GridView colorLayout = (GridView) findViewById(R.id.colors);
 
-
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT,1);
-//                params.setMargins(5,5,5,5);
-
                 Collections.sort(colors, new mColorComparator());
                 MyAdapter adapter = new MyAdapter(this, 0, colors);
                 colorLayout.setAdapter(adapter);
 
-//                for(int i = 0; i < colors.size();i++) {
-//                    TextView view = new TextView(this);
-//                    view.setText("no. " + i);
-//                    view.setPadding(5, 5, 5, 5);
-//                    view.setBackgroundColor(colors.get(i).color);
-//
-//                    //colorLayout.addView(view);
-//                }
+            }
+            if(stripColors.size()>0)
+            {
+                GridView colorLayout1 = (GridView) findViewById(R.id.stripcolors);
+
+                Collections.sort(stripColors, new mColorComparator());
+                MyAdapter adapter1 = new MyAdapter(this, 0, stripColors);
+                colorLayout1.setAdapter(adapter1);
+
             }
         }
 

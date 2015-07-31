@@ -3,14 +3,7 @@
     android:layout_height="match_parent"
     tools:context="org.akvo.akvoqr.ResultActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/resultImage"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        android:layout_toRightOf="@+id/colors"
-        />
+
 
     <GridView
         android:layout_width="120dp"
@@ -24,6 +17,28 @@
         android:id="@+id/colors"
         android:background="@android:color/white"
        >
-
+    </GridView>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/resultImage"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:layout_toRightOf="@+id/colors"
+        android:layout_toLeftOf="@+id/stripcolors"
+        />
+    <GridView
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:columnWidth="55dp"
+        android:numColumns="1"
+        android:verticalSpacing="1dp"
+        android:horizontalSpacing="1dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:id="@+id/stripcolors"
+        android:background="@android:color/white"
+        >
     </GridView>
 </RelativeLayout>
