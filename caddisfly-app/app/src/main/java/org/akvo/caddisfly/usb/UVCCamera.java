@@ -81,7 +81,7 @@ public class UVCCamera {
      * connect to a UVC camera
      * USB permission is necessary before this method is called
      *
-     * @param ctrlBlock
+     * @param ctrlBlock The usbControlBlock
      */
     public void open(final UsbControlBlock ctrlBlock) {
         mCtrlBlock = ctrlBlock;
@@ -106,8 +106,8 @@ public class UVCCamera {
     /**
      * Set preview size and preview mode
      *
-     * @param width
-     * @param height
+     * @param width Preview width
+     * @param height Preview height
      * @param mode   0:yuyv, other:MJPEG
      */
     @SuppressWarnings("SameParameterValue")

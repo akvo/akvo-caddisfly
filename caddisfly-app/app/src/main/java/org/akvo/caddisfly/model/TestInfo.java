@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.model;
 
+import org.akvo.caddisfly.app.MainApp;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,10 +29,10 @@ public class TestInfo {
     private final String mUnit;
     private final ArrayList<ResultRange> mRanges;
     private final ArrayList<ResultRange> mSwatches;
-    private final int mType;
+    private final MainApp.TestType mType;
     private final ArrayList<Integer> mDilutions;
 
-    public TestInfo(Hashtable names, String code, String unit, int type) {
+    public TestInfo(Hashtable names, String code, String unit, MainApp.TestType type) {
         mNames = names;
         mType = type;
         mCode = code;
@@ -57,7 +59,7 @@ public class TestInfo {
         return "";
     }
 
-    public int getType() {
+    public MainApp.TestType getType() {
         return mType;
     }
 
@@ -103,6 +105,6 @@ public class TestInfo {
     }
 
     public boolean hasDilution() {
-        return mDilutions.size() > 0;
+        return mDilutions.size() > 1;
     }
 }

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 import org.akvo.caddisfly.BuildConfig;
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
@@ -57,7 +58,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -72,7 +73,8 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
+                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
         assertEquals(-1.0, bundle.getDouble("resultValue"));
     }
 
@@ -88,7 +90,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -103,7 +105,8 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
+                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
         assertEquals(Color.rgb(255, 156, 149), bundle.getInt("resultColor"));
         assertEquals(1.1, bundle.getDouble("resultValue"));
     }
@@ -120,7 +123,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -135,7 +138,8 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
+                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
         assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
         assertEquals(1.0, bundle.getDouble("resultValue"));
     }
@@ -148,7 +152,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -163,7 +167,8 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
+                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
         assertEquals(1.5, bundle.getDouble("resultValue"));
     }
 
@@ -175,7 +180,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", 0);
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(254, 101, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(254, 115, 138)));
@@ -190,7 +195,8 @@ public class MainActivityTest {
                     (int) ((Pair) list.get(i)).second));
         }
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50);
+        Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
+                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
         assertEquals(1.0, bundle.getDouble("resultValue"));
     }
 

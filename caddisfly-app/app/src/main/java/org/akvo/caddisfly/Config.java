@@ -56,7 +56,9 @@ public class Config {
     // width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     public static final int SAMPLING_COUNT_DEFAULT = 5;
-    public static final float SOUND_VOLUME = 0.99f;
+    public static final float SOUND_VOLUME = 1f;
     public static final int INITIAL_DELAY = 6000;
+    public static final int MAX_COLOR_DISTANCE = 30;
+
 
 }

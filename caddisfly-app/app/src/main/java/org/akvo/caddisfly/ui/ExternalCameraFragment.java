@@ -35,6 +35,7 @@ import android.view.Window;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.usb.UVCCamera;
@@ -298,7 +299,7 @@ public final class ExternalCameraFragment extends DialogFragment {
     }
 
     public boolean hasTestCompleted() {
-        return samplingCount > Config.SAMPLING_COUNT_DEFAULT || picturesTaken > 10;
+        return samplingCount > AppPreferences.getSamplingTimes(getActivity()) || picturesTaken > 10;
     }
 
     public interface PictureCallback {

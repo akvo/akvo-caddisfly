@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
                 Config.OLD_FILES_FOLDER_NAME + File.separator + Config.OLD_CALIBRATE_FOLDER_NAME);
 
+        boolean folderFixed = true;
+
         if (oldFolder.exists()) {
             File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
                     Config.APP_EXTERNAL_PATH);
@@ -121,14 +123,13 @@ public class MainActivity extends AppCompatActivity {
             newPath = new File(Environment.getExternalStorageDirectory().getPath() +
                     Config.APP_EXTERNAL_PATH + File.separator + Config.CALIBRATE_FOLDER_NAME);
             if (!newPath.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                oldFolder.renameTo(newPath);
+                folderFixed = oldFolder.renameTo(newPath);
             }
         }
 
         oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
                 Config.OLD_FILES_FOLDER_NAME);
-        if (oldFolder.exists()) {
+        if (oldFolder.exists() && folderFixed) {
             FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
                     + Config.OLD_FILES_FOLDER_NAME);
         }
@@ -334,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
     private void startTest() {
         Context context = this;
         MainApp mainApp = (MainApp) context.getApplicationContext();
-        if (mainApp.currentTestInfo.getType() == 0) {
+        if (mainApp.currentTestInfo.getType() == MainApp.TestType.COLORIMETRIC) {
 
             if (mainApp.getCalibrationErrorCount() > 0) {
                 Configuration conf = getResources().getConfiguration();
@@ -369,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
             final Intent intent = new Intent(context, CameraSensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
-        } else if (mainApp.currentTestInfo.getType() == 1) {
+        } else if (mainApp.currentTestInfo.getType() == MainApp.TestType.SENSOR) {
             final Intent intent = new Intent(context, SensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
         }

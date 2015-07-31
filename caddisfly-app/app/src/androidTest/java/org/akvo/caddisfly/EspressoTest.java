@@ -617,10 +617,7 @@ public class EspressoTest
 
     private void openSurveyInFlow() {
         clickListViewItem("Automated Tests");
-        try {
-            onView(withText(currentHashMap.get("unnamedDataPoint"))).check(matches(isDisplayed()));
-            clickListViewItem(currentHashMap.get("unnamedDataPoint"));
-        } catch (Exception ignored) {
+        if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
             clickListViewItem(currentHashMap.get("createNewDataPoint"));
         }
         clickListViewItem("All Tests");
@@ -1087,9 +1084,9 @@ public class EspressoTest
     }
 
 
-    private void clickListViewItem(String name) {
+    private boolean clickListViewItem(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector());
-        listView.setMaxSearchSwipes(100);
+        listView.setMaxSearchSwipes(10);
         listView.waitForExists(5000);
         UiObject listViewItem;
         try {
@@ -1098,8 +1095,10 @@ public class EspressoTest
                     .className(android.widget.TextView.class.getName()), "" + name + "");
             listViewItem.click();
         } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
+            return false;
         }
+
         System.out.println("\"" + name + "\" ListView item was clicked.");
+        return true;
     }
 }

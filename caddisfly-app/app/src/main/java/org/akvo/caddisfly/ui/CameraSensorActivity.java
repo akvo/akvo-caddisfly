@@ -44,6 +44,7 @@ import android.widget.ViewAnimator;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.usb.DeviceFilter;
@@ -359,8 +360,16 @@ public class CameraSensorActivity extends AppCompatActivity
 //
 //        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
 
+        int maxDistance = Config.MAX_COLOR_DISTANCE;
+
+        if (PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false)) {
+            maxDistance = Integer.parseInt(PreferencesUtils.getString(this,
+                    R.string.colorDistanceToleranceKey, String.valueOf(Config.MAX_COLOR_DISTANCE)));
+        }
+
         Bundle bundle = ColorUtils.getPpmValue(bitmap,
-                ((MainApp) getApplicationContext()).currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+                ((MainApp) getApplicationContext()).currentTestInfo,
+                Config.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
 //        bitmap.recycle();
 
         double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
@@ -539,10 +548,11 @@ public class CameraSensorActivity extends AppCompatActivity
 
     private void AnalyzeResult(byte[] data) {
         String message = getString(R.string.errorTestFailed);
-        double result = DataHelper.getAverageResult(mResults);
+        double result = DataHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this));
 
         MainApp mainApp = (MainApp) getApplicationContext();
-        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() && mainApp.currentTestInfo.hasDilution()) {
+        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() &&
+                mainApp.currentTestInfo.hasDilution()) {
             mHighLevelsFound = true;
         }
 
@@ -556,7 +566,7 @@ public class CameraSensorActivity extends AppCompatActivity
                 break;
         }
 
-        int color = DataHelper.getAverageColor(mResults);
+        int color = DataHelper.getAverageColor(mResults, AppPreferences.getSamplingTimes(this));
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
         releaseResources();
         Intent intent = new Intent(getIntent());

@@ -41,6 +41,7 @@ import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
@@ -205,7 +206,8 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
      * @return true if completed, false if not
      */
     public boolean hasTestCompleted() {
-        return samplingCount > Config.SAMPLING_COUNT_DEFAULT || picturesTaken > 10;
+        return (getActivity() != null && samplingCount >
+                AppPreferences.getSamplingTimes(getActivity())) || picturesTaken > 10;
     }
 
     private boolean safeCameraOpenInView(View view) {

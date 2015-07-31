@@ -19,9 +19,11 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
@@ -30,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.usb.DeviceFilter;
@@ -64,10 +67,54 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
 
         mUSBMonitor = new USBMonitor(getActivity(), null);
 
+        final EditTextPreference sampleTimesPreference =
+                (EditTextPreference) findPreference(getString(R.string.samplingsTimeKey));
+        if (sampleTimesPreference != null) {
+
+            sampleTimesPreference.setSummary(sampleTimesPreference.getText());
+
+            sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (Integer.parseInt(String.valueOf(newValue)) > Config.SAMPLING_COUNT_DEFAULT) {
+                        newValue = Config.SAMPLING_COUNT_DEFAULT;
+                    }
+
+                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        newValue = 1;
+                    }
+
+                    sampleTimesPreference.setText(String.valueOf(newValue));
+                    sampleTimesPreference.setSummary(String.valueOf(newValue));
+                    return false;
+                }
+            });
+        }
+
+        final Preference startTestPreference = findPreference("startTest");
+        if (startTestPreference != null) {
+            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    Context context = getActivity();
+                    MainApp mainApp = (MainApp) context.getApplicationContext();
+                    mainApp.initializeCurrentTest();
+                    if (mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC) {
+                        mainApp.setDefaultTest();
+                    }
+
+                    final Intent intent = new Intent(context, CameraSensorActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+
         Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
+                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+                    mainApp.initializeCurrentTest();
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     CameraFragment cameraFragment = CameraFragment.newInstance(true);
                     cameraFragment.show(ft, "cameraFragment");
@@ -80,6 +127,8 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
         if (externalCameraPreviewPreference != null) {
             externalCameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
+                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+                    mainApp.initializeCurrentTest();
 
                     final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
                     List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
@@ -112,6 +161,28 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
             });
         }
 
+        final EditTextPreference distancePreference =
+                (EditTextPreference) findPreference(getString(R.string.colorDistanceToleranceKey));
+        if (distancePreference != null) {
+            distancePreference.setSummary(distancePreference.getText());
+
+            distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (Integer.parseInt(String.valueOf(newValue)) > 99) {
+                        newValue = 99;
+                    }
+
+                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        newValue = 1;
+                    }
+
+                    distancePreference.setText(String.valueOf(newValue));
+                    distancePreference.setSummary(String.valueOf(newValue));
+                    return false;
+                }
+            });
+        }
 
         return rootView;
     }

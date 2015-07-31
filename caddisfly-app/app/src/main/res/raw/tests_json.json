@@ -3,7 +3,9 @@
     "test": [
       {
         "name": [
-          {"en": "Fluoride"},
+          {
+            "en": "Fluoride"
+          },
           {
             "fr": "Fluorure"
           }
@@ -16,7 +18,9 @@
       },
       {
         "name": [
-          {"en": "Free Chlorine"},
+          {
+            "en": "Free Chlorine"
+          },
           {
             "fr": "Chlore Libre"
           }
@@ -28,7 +32,9 @@
       },
       {
         "name": [
-          {"en": "Electrical Conductivity"},
+          {
+            "en": "Electrical Conductivity"
+          },
           {
             "fr": "Conductivité Électrique"
           }
@@ -40,7 +46,9 @@
       },
       {
         "name": [
-          {"en": "EC Temperature"},
+          {
+            "en": "EC Temperature"
+          },
           {
             "fr": "CE Température"
           }

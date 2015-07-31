@@ -18,6 +18,7 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.json.JSONArray;
@@ -70,9 +71,15 @@ public final class JsonUtils {
                     }
                 }
 
-                int type = 0;
+                MainApp.TestType type = MainApp.TestType.COLORIMETRIC;
                 if (item.has("type")) {
-                    type = item.getInt("type");
+                    switch (item.getInt("type")) {
+                        case 0:
+                            type = MainApp.TestType.COLORIMETRIC;
+                            break;
+                        case 1:
+                            type = MainApp.TestType.SENSOR;
+                    }
                 }
 
                 testInfo = new TestInfo(

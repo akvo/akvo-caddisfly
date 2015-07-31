@@ -49,7 +49,7 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
         mainApp.setSwatches(testInfo.getCode());
 
 
-        if (testInfo.getType() == 0) {
+        if (testInfo.getType() == MainApp.TestType.COLORIMETRIC) {
             if (!MainApp.hasCameraFlash) {
                 AlertUtils.showError(this, R.string.cannotCalibrate,
                         getString(R.string.errorCameraFlashRequired),

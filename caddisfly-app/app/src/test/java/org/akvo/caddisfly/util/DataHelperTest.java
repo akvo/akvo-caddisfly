@@ -20,6 +20,7 @@ import android.graphics.Color;
 
 import junit.framework.TestCase;
 
+import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.model.Result;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.5, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.54, result, 0);
     }
 
@@ -64,7 +65,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.5, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.58, result, 0);
     }
 
@@ -74,7 +75,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.8, 0, null, null));
         results.add(new Result(1.5, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -85,7 +86,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.5, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -97,7 +98,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.7, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -110,7 +111,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.7, 0, null, null));
         results.add(new Result(1.7, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.64, result, 0);
     }
 
@@ -123,7 +124,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.5, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1, result, 0);
     }
 
@@ -137,7 +138,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, 0, null, null));
         results.add(new Result(1.6, 0, null, null));
 
-        double result = DataHelper.getAverageResult(results);
+        double result = DataHelper.getAverageResult(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.6, result, 0);
     }
 
@@ -151,7 +152,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.5, Color.rgb(235, 235, 235), null, null));
         results.add(new Result(1.6, Color.rgb(230, 230, 230), null, null));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = DataHelper.getAverageColor(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(Color.rgb(239, 239, 239), color);
     }
 
@@ -162,7 +163,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.7, Color.rgb(245, 245, 245), null, null));
         results.add(new Result(1.7, Color.rgb(240, 240, 240), null, null));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = DataHelper.getAverageColor(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(0, color);
     }
 
@@ -174,7 +175,7 @@ public class DataHelperTest extends TestCase {
         results.add(new Result(1.7, Color.rgb(240, 240, 240), null, null));
         results.add(new Result(1.5, Color.rgb(235, 235, 235), null, null));
         results.add(new Result(1.5, Color.rgb(210, 230, 210), null, null));
-        int color = DataHelper.getAverageColor(results);
+        int color = DataHelper.getAverageColor(results, Config.SAMPLING_COUNT_DEFAULT);
         assertEquals(0, color);
     }
 

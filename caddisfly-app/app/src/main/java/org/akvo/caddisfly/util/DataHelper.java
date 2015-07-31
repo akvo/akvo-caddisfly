@@ -18,7 +18,6 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
-import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.model.Result;
 
 import java.math.BigDecimal;
@@ -39,7 +38,7 @@ public final class DataHelper {
         return ret;
     }
 
-    public static int getAverageColor(ArrayList<Result> colors) {
+    public static int getAverageColor(ArrayList<Result> colors, int samplingTimes) {
 
 //      return colors.get(colors.size() - 1);
         int counter = 0;
@@ -71,7 +70,7 @@ public final class DataHelper {
             }
         }
 
-        if (counter >= Config.SAMPLING_COUNT_DEFAULT - 1) {
+        if (counter >= samplingTimes - 1) {
             return Color.rgb(red / counter, green / counter, blue / counter);
         } else {
             return 0;
@@ -115,7 +114,7 @@ public final class DataHelper {
         return mostFrequent;
     }
 
-    public static double getAverageResult(ArrayList<Result> results) {
+    public static double getAverageResult(ArrayList<Result> results, int samplingTimes) {
 
         double result = 0;
 
@@ -144,14 +143,14 @@ public final class DataHelper {
         }
 
         int totalCount = tempResults.size();
-        while (tempResults.size() > 0 && counter < Math.min(totalCount, Config.SAMPLING_COUNT_DEFAULT)) {
+        while (tempResults.size() > 0 && counter < Math.min(totalCount, samplingTimes)) {
             int index = getClosestMatchIndex(tempResults, commonResult);
             result += tempResults.get(index);
             counter++;
             tempResults.remove(index);
         }
 
-        if (counter >= Math.min(results.size() - 1, Config.SAMPLING_COUNT_DEFAULT)) {
+        if (counter >= Math.min(results.size() - 1, samplingTimes)) {
             try {
                 result = round(result / counter, 2);
             } catch (Exception ex) {

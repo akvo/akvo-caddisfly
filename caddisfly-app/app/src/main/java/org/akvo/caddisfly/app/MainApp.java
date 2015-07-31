@@ -43,7 +43,7 @@ import java.util.Locale;
 public class MainApp extends Application {
 
     public static boolean hasCameraFlash = true;
-    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", 0);
+    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", TestType.COLORIMETRIC);
 
     /**
      * @param context The context
@@ -77,7 +77,6 @@ public class MainApp extends Application {
         }
     }
 
-
     private String getJsonText() {
         final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
 
@@ -98,6 +97,14 @@ public class MainApp extends Application {
         return text;
     }
 
+    public void initializeCurrentTest() {
+        if (currentTestInfo.getCode().isEmpty()) {
+            setDefaultTest();
+        } else {
+            setSwatches(currentTestInfo.getCode());
+        }
+    }
+
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
@@ -105,7 +112,7 @@ public class MainApp extends Application {
             tests = JsonUtils.loadTests(getJsonText());
             if (tests.size() > 0) {
                 currentTestInfo = tests.get(0);
-                if (currentTestInfo.getType() == 0) {
+                if (currentTestInfo.getType() == TestType.COLORIMETRIC) {
                     loadCalibratedSwatches(currentTestInfo);
                 }
             }
@@ -127,7 +134,7 @@ public class MainApp extends Application {
             return;
         }
 
-        if (currentTestInfo.getType() == 0) {
+        if (currentTestInfo.getType() == TestType.COLORIMETRIC) {
             loadCalibratedSwatches(currentTestInfo);
         }
     }
@@ -188,7 +195,6 @@ public class MainApp extends Application {
         editor.apply();
     }
 
-
     /**
      * @param rangeList List of swatch colors to be saved
      */
@@ -229,5 +235,7 @@ public class MainApp extends Application {
         }
         return count;
     }
+
+    public enum TestType {COLORIMETRIC, SENSOR}
 
 }

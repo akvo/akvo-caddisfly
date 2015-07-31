@@ -21,6 +21,7 @@ import android.util.Pair;
 
 import junit.framework.TestCase;
 
+import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 
@@ -61,7 +62,7 @@ public class ColorUtilsTest extends TestCase {
 
     public void testAutoGenerateColors() throws Exception {
         Hashtable hashtable = new Hashtable();
-        TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", 0);
+        TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", MainApp.TestType.COLORIMETRIC);
 
         for (int i = 0; i < 5; i++) {
             ResultRange resultRange = new ResultRange(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);

@@ -38,12 +38,10 @@ public final class ColorUtils {
 
     private static final int GRAY_TOLERANCE = 10;
 
-    private static final double MAX_COLOR_DISTANCE = 30.0;
-
     private ColorUtils() {
     }
 
-    public static Bundle getPpmValue(Bitmap bitmap, TestInfo testInfo, int length) {
+    public static Bundle getPpmValue(Bitmap bitmap, TestInfo testInfo, int length, int maxColorDistance) {
         ColorInfo photoColor = getColorFromBitmap(bitmap, length);
         Bundle bundle = new Bundle();
 
@@ -68,7 +66,7 @@ public final class ColorUtils {
 
         analyzeColorHsv(photoColor, testInfo.getRanges(), bundle);
 
-        analyzeColor(photoColor, testInfo.getSwatches(), bundle);
+        analyzeColor(photoColor, testInfo.getSwatches(), maxColorDistance, bundle);
 
         return bundle;
     }
@@ -101,7 +99,7 @@ public final class ColorUtils {
                     int color = bitmap.getPixel(i, j);
 
                     if (ColorUtils.isNotGray(color)) {
-                        //totalPixels++;
+                        totalPixels++;
 
                         counter = m.get(color);
                         counter++;
@@ -114,7 +112,6 @@ public final class ColorUtils {
                     }
                 }
             }
-
 
             // check the quality of the photo
             colorsFound = m.size();
@@ -133,9 +130,7 @@ public final class ColorUtils {
             double quality2 = ((double) (colorsFound - goodColors) / colorsFound) * 100d;
             quality = Math.min(quality1, (100 - quality2));
 
-
             m.clear();
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,11 +146,13 @@ public final class ColorUtils {
      * @param colorRange The range of colors to compare against
      * @param bundle     Result information
      */
-    private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange, Bundle bundle) {
+    private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange,
+                                     int maxDistance, Bundle bundle) {
 
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
-        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(), colorRange);
+        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
+                colorRange, maxDistance);
 
         if (colorCompareInfo.getResult() < 0) {
             bundle.putDouble(Config.RESULT_VALUE_KEY, -1); //NON-NLS
@@ -185,15 +182,17 @@ public final class ColorUtils {
 
 
     /**
-     * Compares the colorToFind to all colors in the colorToFind range and finds the nearest matching colorToFind
+     * Compares the colorToFind to all colors in the color range and finds the nearest matching color
      *
      * @param colorToFind The colorToFind to compare
      * @param colorRange  The range of colors from which to return the nearest colorToFind
      * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
-    private static ColorCompareInfo getNearestColorFromSwatchRange(int colorToFind,
-                                                                   ArrayList<ResultRange> colorRange) {
-        double distance = MAX_COLOR_DISTANCE;
+    private static ColorCompareInfo getNearestColorFromSwatchRange(
+            int colorToFind, ArrayList<ResultRange> colorRange, int maxDistance) {
+
+        double distance = maxDistance;
+
         double resultValue = -1;
         int matchedColor = -1;
 

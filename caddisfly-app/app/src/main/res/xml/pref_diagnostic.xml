@@ -17,6 +17,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/diagnostics">
         <Preference
+            android:key="startTest"
+            android:title="Start Colorimetric Test" />
+        <Preference
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
         <Preference
@@ -41,6 +44,18 @@
         <CheckBoxPreference
             android:key="@string/noSoundKey"
             android:title="@string/noSound" />
+        <EditTextPreference
+            android:defaultValue="1"
+            android:dialogMessage="A number from 1 to 5"
+            android:key="@string/samplingsTimeKey"
+            android:numeric="integer"
+            android:title="Sampling times" />
+        <EditTextPreference
+            android:defaultValue="30"
+            android:dialogMessage="Enter a value below 100"
+            android:key="@string/colorDistanceToleranceKey"
+            android:numeric="integer"
+            android:title="Max color distance" />
 
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

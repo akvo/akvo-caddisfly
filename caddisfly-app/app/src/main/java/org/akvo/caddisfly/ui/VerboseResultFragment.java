@@ -34,6 +34,7 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class VerboseResultFragment extends DialogFragment {
 
@@ -80,11 +81,21 @@ public class VerboseResultFragment extends DialogFragment {
 
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
 
-        if (mainApp.currentTestInfo.getCode().isEmpty() || mainApp.currentTestInfo.getType() != 0) {
+        if (mainApp.currentTestInfo.getCode().isEmpty() ||
+                mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC) {
             mainApp.setDefaultTest();
         }
 
-        Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap, mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+        int maxDistance = Config.MAX_COLOR_DISTANCE;
+
+        if (PreferencesUtils.getBoolean(getActivity(), R.string.diagnosticModeKey, false)) {
+            maxDistance = Integer.parseInt(PreferencesUtils.getString(getActivity(),
+                    R.string.colorDistanceToleranceKey, String.valueOf(Config.MAX_COLOR_DISTANCE)));
+        }
+
+        Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap,
+                mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
+
         double result = resultValue.getDouble(Config.RESULT_VALUE_KEY, -1);
         int color = resultValue.getInt(Config.RESULT_COLOR_KEY, 0);
         int swatchColor = resultValue.getInt("MatchedColor", 0);
