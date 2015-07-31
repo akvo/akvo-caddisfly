@@ -139,7 +139,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             }
         }
 
-        CameraConfigurationUtils.setFocus(parameters, canAutoFocus, canContinuousFocus, false);
+        CameraConfigurationUtils.setFocus(parameters, canAutoFocus, false, false);
 
         // start preview with new settings
         try {
