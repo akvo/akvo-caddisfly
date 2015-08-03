@@ -235,4 +235,69 @@ public class MainActivityTest {
         assert testInfo != null;
         assertEquals("FLUOR", testInfo.getCode());
     }
+
+    @Test
+    public void testValidateCalibration() {
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
+
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+    }
+
+    @Test
+    public void testValidateCalibration1() {
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 175, 123)));
+
+        assertEquals(false, ColorUtils.validateColorRange(testInfo.getRanges()));
+    }
+
+    @Test
+    public void testRangeSlope() {
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 175, 113)));
+
+        assertEquals(31.82420654296875, ColorUtils.calculateSlope(testInfo.getRanges()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+    }
+
+    @Test
+    public void testValidateCalibration2() {
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 121)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 175, 123)));
+
+        assertEquals(22.2095458984375, ColorUtils.calculateSlope(testInfo.getRanges()));
+        assertEquals(false, ColorUtils.validateColorRange(testInfo.getRanges()));
+    }
+
+    @Test
+    public void testValidateCalibration3() {
+        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC);
+        testInfo.addRange(new ResultRange(0, Color.rgb(255, 146, 139)));
+        testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 87, 181)));
+        testInfo.addRange(new ResultRange(1, Color.rgb(255, 124, 157)));
+        testInfo.addRange(new ResultRange(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addRange(new ResultRange(2, Color.rgb(245, 185, 122)));
+
+        assertEquals(21.658697509765624, ColorUtils.calculateSlope(testInfo.getRanges()));
+        assertEquals(false, ColorUtils.validateColorRange(testInfo.getRanges()));
+    }
+
+
 }

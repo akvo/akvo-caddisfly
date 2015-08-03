@@ -37,6 +37,8 @@ public class Config {
     // Caddisfly update path
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
+    //todo: remove this temporary file size
+    public static final int UPDATE_FILE_TYPICAL_SIZE = 2500000;
 
     public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
@@ -55,10 +57,11 @@ public class Config {
 
     // width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-    public static final int SAMPLING_COUNT_DEFAULT = 5;
-    public static final float SOUND_VOLUME = 1f;
     public static final int INITIAL_DELAY = 6000;
     public static final int MAX_COLOR_DISTANCE = 30;
+    public static final double MAX_VALID_COLOR_DISTANCE = 10;
 
+    public static final int SAMPLING_COUNT_DEFAULT = 5;
+    public static final float SOUND_VOLUME = 1f;
 
 }

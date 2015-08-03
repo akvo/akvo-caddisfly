@@ -1,3 +1,8 @@
+v0.76 beta
+----------
+1. Fix: update download progress bar
+2. Calibration validation
+
 v0.75 beta
 ----------
 1. Change alpha to Beta in version number

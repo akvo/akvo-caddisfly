@@ -15,6 +15,9 @@ target
 local.properties
 release.properties
 
+#local notes
+local-release-notes
+
 # Eclipse project files
 .classpath
 .project

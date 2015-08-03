@@ -65,11 +65,6 @@ public class PreferencesOtherFragment extends PreferenceFragment {
             });
         }
 
-//        EditTextPreference colorDistancePreference = (EditTextPreference) findPreference(getString(R.string.colorDistanceToleranceKey));
-//        colorDistancePreference.setSummary(PreferencesUtils.getString(getActivity(),
-//                R.string.colorDistanceToleranceKey, maxDistance));
-
-
         return rootView;
     }
 

@@ -53,8 +53,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     private boolean installAfterDownload = true;
 
-    //private boolean mPreviousVersion = false;
-
     private boolean downloaded = false;
 
     /**
@@ -66,7 +64,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      */
     public DownloadManager(Context context) {
         mContext = context;
-        //mPreviousVersion = previousVersion;
         this.installAfterDownload = true;
     }
 
@@ -108,10 +105,8 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                 }
 
                 URLConnection connection = url.openConnection();
+                connection.setConnectTimeout(60000);
                 connection.connect();
-                // this will be useful so that you can show a typical 0-100% progress bar
-                //int fileLength = connection.getContentLength();
-
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
@@ -119,15 +114,21 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                         new FileOutputStream(String.format("%s/%s", Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                                 .getPath(), Config.UPDATE_FILE_NAME));
+
+                // this will be useful so that you can show a typical 0-100% progress bar
+                // todo:fix content length problem
+                //int fileLength = connection.getContentLength();
+                int fileLength = Config.UPDATE_FILE_TYPICAL_SIZE;
+
                 //noinspection TryFinallyCanBeTryWithResources
                 try {
                     byte[] data = new byte[BYTE_ARRAY_LENGTH];
-                    //long total = 0;
+                    long total = 0;
                     int count;
                     while ((count = input.read(data)) != -1) {
-                        //total += count;
-                        // publishing the progress....
-                        //publishProgress((int) (total * 100 / fileLength));
+                        total += count;
+                        //publishing the progress....
+                        publishProgress((int) (total * 100 / fileLength));
                         output.write(data, 0, count);
 
                         if (isCancelled()) {
@@ -157,12 +158,10 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      *
      * @since API 1
      */
-/*
     @Override
     protected void onProgressUpdate(Integer... changed) {
         progressDialog.setProgress(changed[0]);
     }
-*/
 
     /**
      * Sets up the progress dialog to notify user of download progress
@@ -172,12 +171,8 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        //if (mPreviousVersion) {
-        //  progressDialog.setMessage(mContext.getString(R.string.revertingVersion));
-        //} else {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMessage(mContext.getString(R.string.updateFetching));
-        //}
         progressDialog.setCancelable(false);
         progressDialog.show();
     }

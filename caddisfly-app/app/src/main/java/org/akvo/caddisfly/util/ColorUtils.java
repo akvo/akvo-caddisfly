@@ -166,20 +166,19 @@ public final class ColorUtils {
     /**
      * Computes the Euclidean distance between the two colors
      *
-     * @param color     the first color
-     * @param tempColor the color to compare with
+     * @param color1 the first color
+     * @param color2 the color to compare with
      * @return the distance between the two colors
      */
-    public static double getDistance(int color, int tempColor) {
+    public static double getDistance(int color1, int color2) {
         double red, green, blue;
 
-        red = Math.pow(Color.red(tempColor) - Color.red(color), 2.0);
-        green = Math.pow(Color.green(tempColor) - Color.green(color), 2.0);
-        blue = Math.pow(Color.blue(tempColor) - Color.blue(color), 2.0);
+        red = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
+        green = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
+        blue = Math.pow(Color.blue(color2) - Color.blue(color1), 2.0);
 
         return Math.sqrt(blue + green + red);
     }
-
 
     /**
      * Compares the colorToFind to all colors in the color range and finds the nearest matching color
@@ -250,31 +249,14 @@ public final class ColorUtils {
     }
 
     /**
-     * Get RGB array for a given color
-     *
-     * @param color The color
-     * @return The RGB array for the given color
-     */
-    private static int[] getRGB(int color) {
-
-        int red = (color >> 16) & 0xff;
-        int green = (color >> 8) & 0xff;
-        int blue = (color) & 0xff;
-
-        return new int[]{red, green, blue};
-    }
-
-    /**
      * Checks if a given color is not close to gray color
      *
      * @param color The color to evaluate
      * @return True if the color is not gray else False
      */
     private static boolean isNotGray(int color) {
-        int[] rgb = ColorUtils.getRGB(color);
-
-        return Math.abs(rgb[0] - rgb[1]) > GRAY_TOLERANCE
-                || Math.abs(rgb[0] - rgb[2]) > GRAY_TOLERANCE;
+        return Math.abs(Color.red(color) - Color.green(color)) > GRAY_TOLERANCE
+                || Math.abs(Color.red(color) - Color.blue(color)) > GRAY_TOLERANCE;
     }
 
     /**
@@ -326,11 +308,64 @@ public final class ColorUtils {
         int g = Color.green(color);
         int b = Color.blue(color);
 
-        return (int) Math.sqrt(
-                r * r * .241 +
+        return (int) Math.sqrt(r * r * .241 +
                         g * g * .691 +
                         b * b * .068
         );
+    }
+
+    public static boolean validateColorRange(ArrayList<ResultRange> colorRange) {
+
+        for (ResultRange range1 : colorRange) {
+            for (ResultRange range2 : colorRange) {
+                if (range1 != range2) {
+                    if (getDistance(range1.getColor(), range2.getColor()) < Config.MAX_VALID_COLOR_DISTANCE) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return !(calculateSlope(colorRange) < 25 || calculateSlope(colorRange) > 39);
+    }
+
+
+    public static double calculateSlope(ArrayList<ResultRange> colorRange) {
+
+        double a = 0, b, c, d;
+        double xSum = 0, xSquaredSum = 0, ySum = 0;
+        double slope;
+
+        float[] colorHSV = new float[3];
+
+        float[] hValue = new float[colorRange.size()];
+
+        for (int i = 0; i < colorRange.size(); i++) {
+            //noinspection ResourceType
+            Color.colorToHSV(colorRange.get(i).getColor(), colorHSV);
+            hValue[i] = colorHSV[0];
+            if (hValue[i] < 100) {
+                hValue[i] += 360;
+            }
+            a += colorRange.get(i).getValue() * hValue[i];
+            xSum += colorRange.get(i).getValue();
+            xSquaredSum += Math.pow(colorRange.get(i).getValue(), 2);
+
+            ySum += hValue[i];
+        }
+
+        //Calculate the slope
+        a *= colorRange.size();
+        b = xSum * ySum;
+        c = xSquaredSum * colorRange.size();
+        d = Math.pow(xSum, 2);
+        slope = (a - b) / (c - d);
+
+        if (Double.isNaN(slope)) {
+            slope = 32;
+        }
+
+        return slope;
     }
 
     /**
@@ -346,24 +381,25 @@ public final class ColorUtils {
         double xSum = 0, xSquaredSum = 0, ySum = 0;
         double slope, yIntercept;
 
-        float[] pixelHSV = new float[3];
+        float[] colorHSV = new float[3];
 
         float[] hValue = new float[colorRange.size()];
 
         for (int i = 0; i < colorRange.size(); i++) {
             //noinspection ResourceType
-            Color.colorToHSV(colorRange.get(i).getColor(), pixelHSV);
-            hValue[i] = pixelHSV[0];
+            Color.colorToHSV(colorRange.get(i).getColor(), colorHSV);
+            hValue[i] = colorHSV[0];
             if (hValue[i] < 100) {
                 hValue[i] += 360;
             }
             a += colorRange.get(i).getValue() * hValue[i];
             xSum += colorRange.get(i).getValue();
             xSquaredSum += Math.pow(colorRange.get(i).getValue(), 2);
-            ySum += hValue[i];
 
+            ySum += hValue[i];
         }
 
+        //Calculate the slope
         a *= colorRange.size();
         b = xSum * ySum;
         c = xSquaredSum * colorRange.size();
@@ -374,12 +410,13 @@ public final class ColorUtils {
             slope = 32;
         }
 
+        //Calculate the y intercept
         e = ySum;
         f = slope * xSum;
         yIntercept = (e - f) / colorRange.size();
 
         //noinspection ResourceType
-        Color.colorToHSV(photoColor.getColor(), pixelHSV);
+        Color.colorToHSV(photoColor.getColor(), colorHSV);
 
         bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
         bundle.putDouble("a", a); //NON-NLS
@@ -392,7 +429,7 @@ public final class ColorUtils {
         bundle.putDouble("slope", slope); //NON-NLS
         bundle.putDouble("intercept", yIntercept); //NON-NLS
 
-        float h = pixelHSV[0];
+        float h = colorHSV[0];
         if (h < yIntercept) {
             h += 360;
         }

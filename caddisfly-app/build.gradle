@@ -34,4 +34,8 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         mavenCentral()
     }
+    //todo: remove this
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:22.2.1'
+    }
 }

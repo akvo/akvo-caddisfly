@@ -148,6 +148,13 @@ public class VerboseResultFragment extends DialogFragment {
         listener.onSuccessFinishDialog();
     }
 
+    @Override
+    public void onDestroy() {
+        mExtractBitmap.recycle();
+        mPhotoBitmap.recycle();
+        super.onDestroy();
+    }
+
     public interface ResultDialogListener {
         void onSuccessFinishDialog();
     }
