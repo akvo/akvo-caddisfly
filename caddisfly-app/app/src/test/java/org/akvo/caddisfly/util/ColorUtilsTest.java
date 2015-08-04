@@ -36,22 +36,8 @@ public class ColorUtilsTest extends TestCase {
         ClassUtils.assertUtilityClassWellDefined(ColorUtils.class);
     }
 
-//    public void testGetPpmValue() throws Exception {
-//        int[] colors = new int[2500];
-//        for (int i = 0; i < 50; i++) {
-//            for (int j = 0; j < 50; j++) {
-//                colors[i] = -1;
-//            }
-//        }
-//
-//        Bitmap bitmap = Bitmap.createBitmap(colors, 5, 5, Bitmap.Config.ARGB_8888);
-//        ArrayList<ResultRange> arrayList = new ArrayList<>();
-//        Bundle bundle = ColorUtils.getPpmValue(bitmap, arrayList, 50);
-//        assertEquals(null, bundle);
-//    }
-
     public void testGetDistance() throws Exception {
-        double distance = ColorUtils.getDistance(Color.rgb(200, 200, 200), Color.rgb(100, 100, 100));
+        double distance = ColorUtils.getColorDistance(Color.rgb(200, 200, 200), Color.rgb(100, 100, 100));
         assertEquals(173.20508075688772, distance, 0);
     }
 

@@ -43,6 +43,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -193,6 +194,8 @@ public class EspressoTest
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
+
+        saveCalibration();
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/org.akvo.caddisfly/screenshots";
 
@@ -477,6 +480,7 @@ public class EspressoTest
         Button button = (Button) getCurrentActivity().findViewById(R.id.surveyButton);
         while (button == null) {
             Espresso.pressBack();
+            mDevice.waitForWindowUpdate("", 2000);
             button = (Button) getCurrentActivity().findViewById(R.id.surveyButton);
         }
     }
@@ -546,6 +550,8 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
+        saveCalibration();
+
         onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
@@ -567,6 +573,7 @@ public class EspressoTest
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.menu_load)).perform(click());
+
 
         onView(withText("Test")).perform(click());
 
@@ -824,11 +831,6 @@ public class EspressoTest
 
         goToMainScreen();
 
-        startCalibrate(2.0, 4);
-
-        goToMainScreen();
-
-        startCalibrate(0.5, 1);
 
         mDevice.pressBack();
         mDevice.pressBack();
@@ -838,9 +840,35 @@ public class EspressoTest
 
         startApp();
 
+        saveLowLevelCalibration();
+
         resetLanguage();
 
         goToMainScreen();
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        String version = MainApp.getVersion(getActivity());
+
+        onView(withText(version)).check(matches(isDisplayed()));
+
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menu_load)).perform(click());
+
+        onView(withText("LowLevelTest")).perform(click());
+
+        goToMainScreen();
+
+        leaveDiagnosticMode();
 
         onView(withText(R.string.startSurvey)).perform(click());
 
@@ -902,13 +930,35 @@ public class EspressoTest
 
         startApp();
 
+        saveHighLevelCalibration();
+
         resetLanguage();
 
         goToMainScreen();
 
-        startCalibrate(2.0, 4);
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        String version = MainApp.getVersion(getActivity());
+
+        onView(withText(version)).check(matches(isDisplayed()));
+
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menu_load)).perform(click());
+
+        onView(withText("HighLevelTest")).perform(click());
 
         goToMainScreen();
+
+        leaveDiagnosticMode();
 
         onView(withText(R.string.startSurvey)).perform(click());
 
@@ -1041,6 +1091,54 @@ public class EspressoTest
 //        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
 
     }
+
+    private void saveCalibration() {
+        File external = Environment.getExternalStorageDirectory();
+        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                File.separator + Config.CALIBRATE_FOLDER_NAME;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("0.0=255  88  177\n");
+        sb.append("0.5=255  110  15\n");
+        sb.append("1.0=255  139  137\n");
+        sb.append("1.5=253  174  74\n");
+        sb.append("2.0=244  180  86\n");
+        sb.append("2.5=236  172  81\n");
+        sb.append("3.0=254  169  61\n");
+
+        FileUtils.saveToFile(path, "Test", sb.toString());
+    }
+
+    private void saveHighLevelCalibration() {
+        File external = Environment.getExternalStorageDirectory();
+        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                File.separator + Config.CALIBRATE_FOLDER_NAME;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("0.0=255  88  47\n");
+        sb.append("0.5=255  60  37\n");
+        sb.append("1.0=255  35  27\n");
+        sb.append("1.5=253  17  17\n");
+        sb.append("2.0=254  0  0\n");
+
+        FileUtils.saveToFile(path, "HighLevelTest", sb.toString());
+    }
+
+    private void saveLowLevelCalibration() {
+        File external = Environment.getExternalStorageDirectory();
+        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
+                File.separator + Config.CALIBRATE_FOLDER_NAME;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("0.0=255  60  37\n");
+        sb.append("0.5=255  35  27\n");
+        sb.append("1.0=253  17  17\n");
+        sb.append("1.5=254  0  0\n");
+        sb.append("2.0=224  0  0\n");
+
+        FileUtils.saveToFile(path, "LowLevelTest", sb.toString());
+    }
+
 
     private Activity getCurrentActivity() {
         getInstrumentation().waitForIdleSync();

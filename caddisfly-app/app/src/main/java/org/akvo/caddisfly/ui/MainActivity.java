@@ -38,9 +38,11 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
+import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
-                PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
+                AppPreferences.disableDiagnosticMode(getBaseContext());
 
                 checkDiagnosticMode();
             }
@@ -145,8 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDiagnosticMode() {
-        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
-        if (diagnosticMode) {
+        if (AppPreferences.isDiagnosticMode(this)) {
             findViewById(R.id.diagnosticModeLayout).setVisibility(View.VISIBLE);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.diagnostic)));
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
         MainApp mainApp = (MainApp) context.getApplicationContext();
         if (mainApp.currentTestInfo.getType() == MainApp.TestType.COLORIMETRIC) {
 
-            if (mainApp.getCalibrationErrorCount() > 0) {
+            if (!ColorUtils.validateColorRange(mainApp.currentTestInfo.getRanges())) {
                 Configuration conf = getResources().getConfiguration();
 
                 String message = getString(R.string.errorCalibrationIncomplete,
@@ -370,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
 
             final Intent intent = new Intent(context, CameraSensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
+
         } else if (mainApp.currentTestInfo.getType() == MainApp.TestType.SENSOR) {
             final Intent intent = new Intent(context, SensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);

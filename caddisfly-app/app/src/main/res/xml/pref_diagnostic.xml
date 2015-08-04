@@ -48,12 +48,14 @@
             android:defaultValue="1"
             android:dialogMessage="A number from 1 to 5"
             android:key="@string/samplingsTimeKey"
+            android:maxLength="2"
             android:numeric="integer"
             android:title="Sampling times" />
         <EditTextPreference
             android:defaultValue="30"
             android:dialogMessage="Enter a value below 100"
             android:key="@string/colorDistanceToleranceKey"
+            android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
 

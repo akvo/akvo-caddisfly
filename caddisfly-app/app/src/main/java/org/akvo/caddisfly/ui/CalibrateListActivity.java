@@ -43,13 +43,13 @@ import android.widget.ListView;
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.CalibrateListAdapter;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.io.File;
 import java.text.NumberFormat;
@@ -73,8 +73,7 @@ public class CalibrateListActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
-        if (diagnosticMode) {
+        if (AppPreferences.isDiagnosticMode(this)) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;
@@ -137,7 +136,6 @@ public class CalibrateListActivity extends AppCompatActivity
                     .findFragmentById(R.id.calibrate_list))
                     .setActivateOnItemClick(true);
         }
-
     }
 
     /**

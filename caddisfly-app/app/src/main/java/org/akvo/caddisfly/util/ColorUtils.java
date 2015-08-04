@@ -118,7 +118,7 @@ public final class ColorUtils {
             int goodColors = 0;
 
             for (int i = 0; i < colorsFound; i++) {
-                double distance = getDistance(commonColor, m.keyAt(i));
+                double distance = getColorDistance(commonColor, m.keyAt(i));
 
                 if (distance < 10) {
                     goodColors++;
@@ -164,23 +164,6 @@ public final class ColorUtils {
     }
 
     /**
-     * Computes the Euclidean distance between the two colors
-     *
-     * @param color1 the first color
-     * @param color2 the color to compare with
-     * @return the distance between the two colors
-     */
-    public static double getDistance(int color1, int color2) {
-        double red, green, blue;
-
-        red = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
-        green = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
-        blue = Math.pow(Color.blue(color2) - Color.blue(color1), 2.0);
-
-        return Math.sqrt(blue + green + red);
-    }
-
-    /**
      * Compares the colorToFind to all colors in the color range and finds the nearest matching color
      *
      * @param colorToFind The colorToFind to compare
@@ -198,7 +181,7 @@ public final class ColorUtils {
         for (int i = 0; i < colorRange.size(); i++) {
             int tempColor = colorRange.get(i).getColor();
 
-            double temp = getDistance(tempColor, colorToFind);
+            double temp = getColorDistance(tempColor, colorToFind);
 
             if (temp == 0.0) {
                 resultValue = colorRange.get(i).getValue();
@@ -259,6 +242,7 @@ public final class ColorUtils {
                 || Math.abs(Color.red(color) - Color.blue(color)) > GRAY_TOLERANCE;
     }
 
+
     /**
      * Auto generate the color swatches for the ranges of the given test type
      *
@@ -314,22 +298,142 @@ public final class ColorUtils {
         );
     }
 
+
+    private static int[] rgb2lab(int R, int G, int B) {
+        //http://www.brucelindbloom.com
+
+        float r, g, b, X, Y, Z, fx, fy, fz, xr, yr, zr;
+        float Ls, as, bs;
+        float eps = 216.f / 24389.f;
+        float k = 24389.f / 27.f;
+
+        float Xr = 0.964221f;  // reference white D50
+        float Yr = 1.0f;
+        float Zr = 0.825211f;
+
+        // RGB to XYZ
+        r = R / 255.f; //R 0..1
+        g = G / 255.f; //G 0..1
+        b = B / 255.f; //B 0..1
+
+        // assuming sRGB (D65)
+        if (r <= 0.04045)
+            r = r / 12;
+        else
+            r = (float) Math.pow((r + 0.055) / 1.055, 2.4);
+
+        if (g <= 0.04045)
+            g = g / 12;
+        else
+            g = (float) Math.pow((g + 0.055) / 1.055, 2.4);
+
+        if (b <= 0.04045)
+            b = b / 12;
+        else
+            b = (float) Math.pow((b + 0.055) / 1.055, 2.4);
+
+
+        X = 0.436052025f * r + 0.385081593f * g + 0.143087414f * b;
+        Y = 0.222491598f * r + 0.71688606f * g + 0.060621486f * b;
+        Z = 0.013929122f * r + 0.097097002f * g + 0.71418547f * b;
+
+        // XYZ to Lab
+        xr = X / Xr;
+        yr = Y / Yr;
+        zr = Z / Zr;
+
+        if (xr > eps)
+            fx = (float) Math.pow(xr, 1 / 3.);
+        else
+            fx = (float) ((k * xr + 16.) / 116.);
+
+        if (yr > eps)
+            fy = (float) Math.pow(yr, 1 / 3.);
+        else
+            fy = (float) ((k * yr + 16.) / 116.);
+
+        if (zr > eps)
+            fz = (float) Math.pow(zr, 1 / 3.);
+        else
+            fz = (float) ((k * zr + 16.) / 116);
+
+        Ls = (116 * fy) - 16;
+        as = 500 * (fx - fy);
+        bs = 200 * (fy - fz);
+
+        int[] lab = new int[3];
+        lab[0] = (int) (2.55 * Ls + .5);
+        lab[1] = (int) (as + .5);
+        lab[2] = (int) (bs + .5);
+        return lab;
+    }
+
+    /**
+     * Computes the difference between two RGB colors by converting them to the L*a*b scale and
+     * comparing them using the CIE76 algorithm { http://en.wikipedia.org/wiki/Color_difference#CIE76}
+     */
+    public static double getColorDistanceLab(int a, int b) {
+        int r1, g1, b1, r2, g2, b2;
+        r1 = Color.red(a);
+        g1 = Color.green(a);
+        b1 = Color.blue(a);
+        r2 = Color.red(b);
+        g2 = Color.green(b);
+        b2 = Color.blue(b);
+        int[] lab1 = rgb2lab(r1, g1, b1);
+        int[] lab2 = rgb2lab(r2, g2, b2);
+        return Math.sqrt(Math.pow(lab2[0] - lab1[0], 2) + Math.pow(lab2[1] - lab1[1], 2) + Math.pow(lab2[2] - lab1[2], 2));
+    }
+
+    /**
+     * Computes the Euclidean distance between the two colors
+     *
+     * @param color1 the first color
+     * @param color2 the color to compare with
+     * @return the distance between the two colors
+     */
+    public static double getColorDistance(int color1, int color2) {
+        double red, green, blue;
+
+        red = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
+        green = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
+        blue = Math.pow(Color.blue(color2) - Color.blue(color1), 2.0);
+
+        return Math.sqrt(blue + green + red);
+    }
+
+
+    /**
+     * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
+     *
+     * @param colorRange the range of colors
+     * @return True if valid otherwise false
+     */
     public static boolean validateColorRange(ArrayList<ResultRange> colorRange) {
 
         for (ResultRange range1 : colorRange) {
+            if (range1.getColor() == Color.BLACK) {
+                return false;
+            }
             for (ResultRange range2 : colorRange) {
                 if (range1 != range2) {
-                    if (getDistance(range1.getColor(), range2.getColor()) < Config.MAX_VALID_COLOR_DISTANCE) {
+                    if (getColorDistance(range1.getColor(), range2.getColor()) < Config.MIN_VALID_COLOR_DISTANCE) {
                         return false;
                     }
                 }
             }
         }
 
-        return !(calculateSlope(colorRange) < 25 || calculateSlope(colorRange) > 39);
+        return true;
+        //return !(calculateSlope(colorRange) < 20 || calculateSlope(colorRange) > 40);
     }
 
-
+    /**
+     * Calculate the slope of the linear trend for a range of colors
+     *
+     * @param colorRange the range of colors
+     * @return The slope value
+     */
     public static double calculateSlope(ArrayList<ResultRange> colorRange) {
 
         double a = 0, b, c, d;

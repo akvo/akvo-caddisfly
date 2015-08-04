@@ -75,7 +75,7 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
             double distance = 0;
             if (position > 0) {
                 int previousColor = colorArray[position - 1].getColor();
-                distance = ColorUtils.getDistance(previousColor, color);
+                distance = ColorUtils.getColorDistance(previousColor, color);
             }
 
             rgbText.setText(String.format("d:%.0f  %s: %d  %d  %d", distance, "c", r, g, b));

@@ -69,7 +69,6 @@
     <string name="lowEcMeasurement">Mesure d\'EC faible</string>
     <!--App update-->
     <string name="update">Mise à jour</string>
-    <string name="updateApp">Mise à jour de Akvo Caddisfly</string>
     <string name="updateCheckingFor">Recherche de mises à jour…</string>
     <string name="updateRequest">Une nouvelle version d\'Akvo Caddisfly est disponible. Voulez-vous l\'installer maintenant?</string>
     <string name="updateFetching">Téléchargement de la mise à jour…</string>
@@ -91,4 +90,6 @@
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="akvoFlowNotFound">Akvo Flow not found</string>
     <string name="cannotCalibrate">Camera flash not found</string>
+    <string name="noUpdate">No Update</string>
+    <string name="updateAvailable">Update Available</string>
 </resources>

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
@@ -40,7 +41,7 @@ public class AboutActivity extends AppCompatActivity {
 
         ApiUtils.lockScreenOrientation(this);
 
-        mDiagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
+        mDiagnosticMode = AppPreferences.isDiagnosticMode(this);
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(MainApp.getVersion(this));
@@ -55,7 +56,7 @@ public class AboutActivity extends AppCompatActivity {
                     if (clickCount > 9) {
                         clickCount = 0;
                         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeEnabled), Toast.LENGTH_LONG).show();
-                        PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, true);
+                        AppPreferences.enableDiagnosticMode(getBaseContext());
 
                         //set the language preference to the current language
                         Locale currentLocale = getResources().getConfiguration().locale;

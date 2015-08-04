@@ -35,17 +35,17 @@
     <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
-    <string name="version">Version</string>
+    <string name="version" tools:ignore="UnusedResources">Version</string>
     <string name="success">Success</string>
     <string name="done">Done</string>
 
     <!--External-->
-    <string name="arsenic">Arsenic</string>
-    <string name="electricalConductivity">Electrical Conductivity</string>
-    <string name="fluoride">Fluoride</string>
-    <string name="freeChlorine">Free Chlorine</string>
-    <string name="iron">Iron</string>
-    <string name="coliforms">Coliforms</string>
+    <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
+    <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
+    <string name="fluoride" tools:ignore="UnusedResources">Fluoride</string>
+    <string name="freeChlorine" tools:ignore="UnusedResources">Free Chlorine</string>
+    <string name="iron" tools:ignore="UnusedResources">Iron</string>
+    <string name="coliforms" tools:ignore="UnusedResources">Coliforms</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
@@ -76,6 +76,8 @@
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
     <string name="pleaseContactSupport">Please contact technical support</string>
+    <string name="calibrationIsInvalid">Invalid calibration</string>
+    <string name="tryRecalibrating">Try recalibrating</string>
 
     <!--Test Progress Screen-->
     <string name="analyzingWait">Analyzing…</string>
@@ -116,12 +118,13 @@
 
     <!--App update-->
     <string name="update">Update</string>
-    <string name="updateApp">Akvo Caddisfly update</string>
     <string name="updateCheckingFor">Checking for updates…</string>
+    <string name="noUpdate">No update</string>
+    <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
+    <string name="updateAvailable">Update available</string>
     <string name="updateRequest">A new version of Akvo Caddisfly is available. Would you like to update now?</string>
     <string name="updateFetching">Downloading Akvo Caddisfly update…</string>
-    <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
-    <string name="notNow">Now now</string>
+    <string name="notNow">Not now</string>
     <string name="updateFailedNoInternet">Update failed. No internet connection</string>
 
     <!--About Screen-->

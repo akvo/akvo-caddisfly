@@ -59,7 +59,7 @@ public class Config {
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     public static final int INITIAL_DELAY = 6000;
     public static final int MAX_COLOR_DISTANCE = 30;
-    public static final double MAX_VALID_COLOR_DISTANCE = 10;
+    public static final double MIN_VALID_COLOR_DISTANCE = 5;
 
     public static final int SAMPLING_COUNT_DEFAULT = 5;
     public static final float SOUND_VOLUME = 1f;

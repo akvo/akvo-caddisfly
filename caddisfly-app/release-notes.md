@@ -2,6 +2,7 @@ v0.76 beta
 ----------
 1. Fix: update download progress bar
 2. Calibration validation
+3. Refactor diagnostic preferences
 
 v0.75 beta
 ----------

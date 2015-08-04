@@ -40,9 +40,9 @@ import com.ftdi.j2xx.FT_Device;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.zip.CRC32;
@@ -449,19 +449,17 @@ public class SensorActivity extends AppCompatActivity {
         if (!result.isEmpty()) {
 
             String[] resultArray = result.split(",");
-            boolean diagnosticMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
-            if (diagnosticMode) {
-                if (PreferencesUtils.getBoolean(this, R.string.showDebugMessagesKey, false)) {
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            if (debugToast == null) {
-                                debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
-                            }
-                            debugToast.setText(result.trim());
-                            debugToast.show();
+
+            if (AppPreferences.getShowDebugMessages(this)) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (debugToast == null) {
+                            debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
                         }
-                    });
-                }
+                        debugToast.setText(result.trim());
+                        debugToast.show();
+                    }
+                });
             }
 
             if (resultArray.length > 3) {

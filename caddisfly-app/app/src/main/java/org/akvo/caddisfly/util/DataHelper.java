@@ -50,7 +50,7 @@ public final class DataHelper {
         ArrayList<Double> distances = new ArrayList<>();
 
         for (int i = 1; i < colors.size() - 1; i++) {
-            distances.add(ColorUtils.getDistance(colors.get(i).getColor(), colors.get(i + 1).getColor()));
+            distances.add(ColorUtils.getColorDistance(colors.get(i).getColor(), colors.get(i + 1).getColor()));
         }
 
         for (int i = 0; i < distances.size(); i++) {

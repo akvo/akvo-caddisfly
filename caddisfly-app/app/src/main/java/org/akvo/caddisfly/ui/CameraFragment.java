@@ -43,7 +43,6 @@ import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ImageUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
 import java.io.IOException;
@@ -348,9 +347,8 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
             }
 
             List<String> focusModes = parameters.getSupportedFocusModes();
-            boolean diagnosticMode = PreferencesUtils.getBoolean(getContext(), R.string.diagnosticModeKey, false);
-            if (diagnosticMode && PreferencesUtils.getBoolean(getContext(), R.string.autoFocusKey, false)) {
 
+            if (AppPreferences.getAutoFocus(getContext())) {
                 // Force auto focus as per preference
                 if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -378,7 +376,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                 }
             }
             if (mSupportedFlashModes != null) {
-                if (diagnosticMode && PreferencesUtils.getBoolean(getContext(), R.string.useFlashModeKey, false)) {
+                if (AppPreferences.getUseFlashMode(getContext())) {
                     if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                     }

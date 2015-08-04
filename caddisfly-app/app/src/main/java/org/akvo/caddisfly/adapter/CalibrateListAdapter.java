@@ -31,10 +31,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.ColorUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.ArrayList;
 
@@ -76,25 +76,19 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
         ppmText.append(wordTwo);
 
-
-//        if (ranges.get(index).getErrorCode() > 0) {
-//            errorImage.setVisibility(View.VISIBLE);
-//        } else {
-//            errorImage.setVisibility(View.GONE);
-//        }
-
         if (color != 0 && color != -16777216) {
             button.setBackgroundColor(color);
             button.setText("");
-            boolean diagnosticMode = PreferencesUtils.getBoolean(getContext(), R.string.diagnosticModeKey, false);
-            if (diagnosticMode) {
+
+            //Display additional information if we are in diagnostic mode
+            if (AppPreferences.isDiagnosticMode(getContext())) {
                 int r = Color.red(color);
                 int g = Color.green(color);
                 int b = Color.blue(color);
                 double distance = 0;
                 if (position > 0) {
                     int previousColor = ranges.get(position - 1).getColor();
-                    distance = ColorUtils.getDistance(previousColor, color);
+                    distance = ColorUtils.getColorDistance(previousColor, color);
                 }
                 rgbText.setText(String.format("c: %d  %d  %d", r, g, b));
                 brightnessText.setText(String.format("d:%.0f  b: %d", distance, ColorUtils.getBrightness(color)));

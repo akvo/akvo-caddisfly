@@ -54,7 +54,6 @@ import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.ImageUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
@@ -136,12 +135,10 @@ public class CameraSensorActivity extends AppCompatActivity
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        final boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
-
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake() {
-                if ((diagnosticMode && mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
+                if ((mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
                     return;
                 }
                 mWaitingForStillness = true;
@@ -176,7 +173,7 @@ public class CameraSensorActivity extends AppCompatActivity
 
         mSensorManager.unregisterListener(mShakeDetector);
 
-        mIgnoreShake = PreferencesUtils.getBoolean(this, R.string.ignoreShakeKey, false);
+        mIgnoreShake = AppPreferences.getIgnoreShake(this);
         mTestCompleted = false;
         mHighLevelsFound = false;
 
@@ -219,7 +216,8 @@ public class CameraSensorActivity extends AppCompatActivity
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 );
 
-                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(), R.xml.camera_device_filter);
+                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(),
+                        R.xml.camera_device_filter);
                 List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
                 if (usbDeviceList.size() > 0) {
                     startExternalTest();
@@ -360,12 +358,7 @@ public class CameraSensorActivity extends AppCompatActivity
 //
 //        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
 
-        int maxDistance = Config.MAX_COLOR_DISTANCE;
-
-        if (PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false)) {
-            maxDistance = Integer.parseInt(PreferencesUtils.getString(this,
-                    R.string.colorDistanceToleranceKey, String.valueOf(Config.MAX_COLOR_DISTANCE)));
-        }
+        int maxDistance = AppPreferences.getColorDistanceTolerance(this);
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap,
                 ((MainApp) getApplicationContext()).currentTestInfo,
@@ -576,18 +569,17 @@ public class CameraSensorActivity extends AppCompatActivity
         intent.putExtra("response", String.format("%.2f", result));
         setResult(Activity.RESULT_OK, intent);
         mTestCompleted = true;
-        boolean diagnosticMode = PreferencesUtils.getBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
 
         if (isCalibration && color != 0) {
             sound.playShortResource(this, R.raw.done);
-            if (diagnosticMode) {
+            if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                 ShowVerboseError(false, result, color, true);
             } else {
                 finish();
             }
         } else {
             if (result < 0 || color == 0) {
-                if (diagnosticMode) {
+                if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(this, R.raw.err);
                     ShowVerboseError(true, 0, color, isCalibration);
                 } else {
@@ -595,7 +587,7 @@ public class CameraSensorActivity extends AppCompatActivity
                 }
             } else {
 
-                if (diagnosticMode) {
+                if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(this, R.raw.done);
                     ShowVerboseError(false, result, color, false);
                 } else {

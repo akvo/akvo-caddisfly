@@ -28,9 +28,10 @@ public class PreferencesUtils {
 
     /**
      * Gets a preference key from strings
-     * @return the string key
+     *
      * @param context the context
      * @param keyId   the key id
+     * @return the string key
      */
     private static String getKey(Context context, int keyId) {
         return context.getString(keyId);
@@ -38,10 +39,11 @@ public class PreferencesUtils {
 
     /**
      * Gets a boolean value from preferences
-     * @return the stored boolean value
+     *
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue the default value
+     * @return the stored boolean value
      */
     @SuppressWarnings("SameParameterValue")
     public static boolean getBoolean(Context context, int keyId, boolean defaultValue) {
@@ -69,10 +71,11 @@ public class PreferencesUtils {
 
     /**
      * Gets an integer value from preferences
-     * @return stored int value
+     *
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue the default value
+     * @return stored int value
      */
     @SuppressWarnings("SameParameterValue")
     public static int getInt(Context context, String keyId, int defaultValue) {
@@ -84,6 +87,10 @@ public class PreferencesUtils {
     @SuppressWarnings("SameParameterValue")
     public static int getInt(Context context, int keyId, int defaultValue) {
         return getInt(context, getKey(context, keyId), defaultValue);
+    }
+
+    public static void setInt(Context context, int keyId, int value) {
+        PreferencesUtils.setInt(context, getKey(context, keyId), value);
     }
 
     public static void setInt(Context context, String keyId, int value) {
@@ -101,9 +108,10 @@ public class PreferencesUtils {
 
     /**
      * Gets a long value from preferences
-     * @return the stored long value
+     *
      * @param context the context
      * @param keyId   the key id
+     * @return the stored long value
      */
     private static long getLong(Context context, String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
@@ -133,10 +141,11 @@ public class PreferencesUtils {
 
     /**
      * Gets a string value from preferences
-     * @return the stored string value
+     *
      * @param context      the context
      * @param keyId        the key id
      * @param defaultValue default value
+     * @return the stored string value
      */
     @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, int keyId, String defaultValue) {

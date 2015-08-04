@@ -32,9 +32,9 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.ColorUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class VerboseResultFragment extends DialogFragment {
 
@@ -86,12 +86,7 @@ public class VerboseResultFragment extends DialogFragment {
             mainApp.setDefaultTest();
         }
 
-        int maxDistance = Config.MAX_COLOR_DISTANCE;
-
-        if (PreferencesUtils.getBoolean(getActivity(), R.string.diagnosticModeKey, false)) {
-            maxDistance = Integer.parseInt(PreferencesUtils.getString(getActivity(),
-                    R.string.colorDistanceToleranceKey, String.valueOf(Config.MAX_COLOR_DISTANCE)));
-        }
+        int maxDistance = AppPreferences.getColorDistanceTolerance(getActivity());
 
         Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap,
                 mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);

@@ -94,7 +94,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         }
 
         if (checker.isUpdateAvailable()) {
-            AlertUtils.askQuestion(mContext, R.string.updateApp, R.string.updateRequest,
+            AlertUtils.askQuestion(mContext, R.string.updateAvailable, R.string.updateRequest,
                     R.string.update, R.string.notNow, false,
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -107,7 +107,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         } else {
 
             if (!mBackground) {
-                AlertUtils.showMessage(mContext, R.string.appName, R.string.updatedAlready);
+                AlertUtils.showMessage(mContext, R.string.noUpdate, R.string.updatedAlready);
             }
         }
     }

@@ -27,8 +27,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
 
 public class SettingsActivity extends Activity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -79,8 +79,7 @@ public class SettingsActivity extends Activity
                 .replace(R.id.content2, new PreferencesOtherFragment())
                 .commit();
 
-        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
-        if (diagnosticMode) {
+        if (AppPreferences.isDiagnosticMode(this)) {
             getFragmentManager().beginTransaction()
                     .add(R.id.content3, new PreferencesDiagnosticFragment())
                     .commit();

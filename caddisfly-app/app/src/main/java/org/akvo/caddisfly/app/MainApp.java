@@ -223,19 +223,6 @@ public class MainApp extends Application {
         editor.apply();
     }
 
-    /**
-     * @return The number of errors found
-     */
-    public int getCalibrationErrorCount() {
-        int count = 0;
-        for (int i = 0; i < currentTestInfo.getRanges().size(); i++) {
-            if (currentTestInfo.getRange(i).getColor() == 0) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public enum TestType {COLORIMETRIC, SENSOR}
 
 }

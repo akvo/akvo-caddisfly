@@ -23,6 +23,7 @@ import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.Config;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.AppPreferences;
 
 public class SoundPoolPlayer {
     private final SparseIntArray mSounds = new SparseIntArray();
@@ -41,12 +42,10 @@ public class SoundPoolPlayer {
 
     public void playShortResource(Context context, int piResource) {
         int iSoundId = mSounds.get(piResource);
-        boolean diagnosticMode = PreferencesUtils.getBoolean(context, R.string.diagnosticModeKey, false);
 
-        if (diagnosticMode && PreferencesUtils.getBoolean(context, R.string.noSoundKey, false)) {
-            return;
+        if (!AppPreferences.isSoundOff(context)) {
+            this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
         }
-        this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
     }
 
     public void release() {
