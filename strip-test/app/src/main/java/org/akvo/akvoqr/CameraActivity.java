@@ -2,6 +2,7 @@ package org.akvo.akvoqr;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -149,12 +150,15 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void setBitmap(Bitmap bitmap) {
         mCamera.setOneShotPreviewCallback(null);
 
+        Bitmap bm = Bitmap.createScaledBitmap(bitmap,800,480,false);
+
+
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
         byte[] bitmapdata = bos.toByteArray();
 
-        sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
+        sendData(bitmapdata, ImageFormat.RGB_565, bm.getWidth(), bm.getHeight());
 
         bitmap.recycle();
 
