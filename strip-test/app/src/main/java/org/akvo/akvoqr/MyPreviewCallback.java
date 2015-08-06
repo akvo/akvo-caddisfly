@@ -78,6 +78,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             throw new ClassCastException(" must implement cameraviewhandler");
         }
 
+
         handler = new Handler();
     }
 
@@ -230,9 +231,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                   ResultActivity.stripColors.clear();
 //                   Mat colors = OpenCVUtils.detectColor(striparea, ResultActivity.stripColors);
 
+                    Mat edges = OpenCVUtils.detectStripPatchesAdaptiveTresh(strip);
+//                    Mat edges = OpenCVUtils.detectStripPatchesOTSUTresh(strip);
+                    //OpenCVUtils.detectColor(strip);
+
                     //create a bitmap with the same size and color config as the dest
                     bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(strip, bitmap, true);
+                    Utils.matToBitmap(edges, bitmap, true);
                 }
                 else
                 {

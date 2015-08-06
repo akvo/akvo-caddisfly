@@ -125,7 +125,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         System.out.println("***bestsize: " + bestResolution.x + ", " + bestResolution.y);
 
         boolean canAutoFocus = false;
-        boolean canContinuousFocus = false;
+        boolean disableContinuousFocus = true;
         List<String> modes = mCamera.getParameters().getSupportedFocusModes();
         for(String s: modes) {
             System.out.println("***supported mode: " + s);
@@ -135,11 +135,11 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             }
             if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
             {
-                canContinuousFocus = true;
+                disableContinuousFocus = false;
             }
         }
 
-        CameraConfigurationUtils.setFocus(parameters, canAutoFocus, false, false);
+        CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
 
         // start preview with new settings
         try {
