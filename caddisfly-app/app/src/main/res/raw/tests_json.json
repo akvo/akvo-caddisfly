@@ -7,7 +7,7 @@
             "en": "Fluoride"
           },
           {
-            "fr": "Fluorure"
+            "fr": "Fluor"
           }
         ],
         "type": "0",
@@ -22,7 +22,7 @@
             "en": "Free Chlorine"
           },
           {
-            "fr": "Chlore Libre"
+            "fr": "Chlore libre"
           }
         ],
         "type": "0",
@@ -36,10 +36,10 @@
             "en": "Electrical Conductivity"
           },
           {
-            "fr": "Conductivité Électrique"
+            "fr": "Conductivité électrique"
           }
         ],
-        "type": "1",
+        "type": "2",
         "code": "econd",
         "unit": "μS/cm",
         "ranges": "0"
@@ -53,7 +53,7 @@
             "fr": "CE Température"
           }
         ],
-        "type": "1",
+        "type": "2",
         "code": "tempe",
         "unit": "°C",
         "ranges": "0"

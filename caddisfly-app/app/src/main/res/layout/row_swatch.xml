@@ -19,14 +19,14 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:clickable="false"
     android:focusable="false"
     android:stretchColumns="1">
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:clickable="false"
@@ -39,7 +39,7 @@
         <Button
             android:id="@+id/button"
             android:layout_width="95dp"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
@@ -75,6 +75,16 @@
                 android:textIsSelectable="false"
                 android:textSize="14sp"
                 tools:text="rgb: 243 23 156" />
+
+            <TextView
+                android:id="@+id/hsvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                tools:text="hsv: 243 23 156" />
 
         </LinearLayout>
     </TableRow>

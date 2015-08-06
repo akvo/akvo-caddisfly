@@ -16,23 +16,17 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtils;
 
-public class SettingsActivity extends Activity
+public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +35,17 @@ public class SettingsActivity extends Activity
         ApiUtils.lockScreenOrientation(this);
 
         setupActivity();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
         setupActivity();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        //Add a tool bar on this settings screen
-        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent().getParent().getParent();
-        if (root.findViewById(R.id.toolbarId) == null) {
-            Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.preferences_toolbar, root, false);
-            bar.setId(R.id.toolbarId);
-            root.addView(bar, 0);
-            bar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
-
     }
 
     private void setupActivity() {
@@ -85,7 +65,6 @@ public class SettingsActivity extends Activity
                     .commit();
         }
     }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {

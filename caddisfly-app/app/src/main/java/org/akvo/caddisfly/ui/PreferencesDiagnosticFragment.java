@@ -98,7 +98,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                     Context context = getActivity();
                     MainApp mainApp = (MainApp) context.getApplicationContext();
                     mainApp.initializeCurrentTest();
-                    if (mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC) {
+                    if (mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC_LIQUID) {
                         mainApp.setDefaultTest();
                     }
 

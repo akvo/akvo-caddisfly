@@ -69,7 +69,16 @@
                 android:textIsSelectable="false"
                 android:textSize="14sp"
                 android:visibility="gone"
-                tools:text="c: 234 156 120" />
+                tools:text="r: 234 156 120" />
+
+            <TextView
+                android:id="@+id/hsvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="h: 234 156 120" />
 
             <TextView
                 android:id="@+id/brightnessText"

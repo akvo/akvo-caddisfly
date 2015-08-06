@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Menu;
@@ -47,7 +46,6 @@ import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 
@@ -65,7 +63,7 @@ import java.util.Locale;
  * {@link CalibrateListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class CalibrateListActivity extends AppCompatActivity
+public class CalibrateListActivity extends BaseActivity
         implements CalibrateListFragment.Callbacks {
 
     private final int REQUEST_CALIBRATE = 100;
@@ -119,8 +117,6 @@ public class CalibrateListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
-
-        ApiUtils.lockScreenOrientation(this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(false);

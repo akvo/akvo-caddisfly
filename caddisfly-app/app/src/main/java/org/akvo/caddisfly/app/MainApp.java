@@ -43,7 +43,7 @@ import java.util.Locale;
 public class MainApp extends Application {
 
     public static boolean hasCameraFlash = true;
-    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", TestType.COLORIMETRIC);
+    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", TestType.COLORIMETRIC_LIQUID);
 
     /**
      * @param context The context
@@ -112,7 +112,7 @@ public class MainApp extends Application {
             tests = JsonUtils.loadTests(getJsonText());
             if (tests.size() > 0) {
                 currentTestInfo = tests.get(0);
-                if (currentTestInfo.getType() == TestType.COLORIMETRIC) {
+                if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
                     loadCalibratedSwatches(currentTestInfo);
                 }
             }
@@ -134,7 +134,7 @@ public class MainApp extends Application {
             return;
         }
 
-        if (currentTestInfo.getType() == TestType.COLORIMETRIC) {
+        if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
             loadCalibratedSwatches(currentTestInfo);
         }
     }
@@ -223,6 +223,6 @@ public class MainApp extends Application {
         editor.apply();
     }
 
-    public enum TestType {COLORIMETRIC, SENSOR}
+    public enum TestType {COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR}
 
 }

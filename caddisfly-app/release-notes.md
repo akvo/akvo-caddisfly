@@ -3,6 +3,7 @@ v0.76 beta
 1. Fix: update download progress bar
 2. Calibration validation
 3. Refactor diagnostic preferences
+4. Color hsv value displayed with swatches
 
 v0.75 beta
 ----------

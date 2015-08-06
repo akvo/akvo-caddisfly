@@ -42,7 +42,9 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.ui.CameraSensorActivity;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
 import org.hamcrest.Description;
@@ -50,6 +52,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 
@@ -130,9 +133,9 @@ public class EspressoTest
         stringHashMapEN.put("createNewDataPoint", "CREATE NEW DATA POINT");
 
         stringHashMapFR.put("language", "Français");
-        stringHashMapFR.put("fluoride", "Fluorure");
-        stringHashMapFR.put("chlorine", "Chlore Libre");
-        stringHashMapFR.put("electricalConductivity", "Conductivité Électrique");
+        stringHashMapFR.put("fluoride", "Fluor");
+        stringHashMapFR.put("chlorine", "Chlore libre");
+        stringHashMapFR.put("electricalConductivity", "Conductivité électrique");
         stringHashMapFR.put("unnamedDataPoint", "Unnamed data point");
         stringHashMapFR.put("createNewDataPoint", "CREATE NEW DATA POINT");
 
@@ -233,29 +236,7 @@ public class EspressoTest
         //About Screen
         takeScreenshot();
 
-        enterDiagnosticMode();
-
         Espresso.pressBack();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        onView(withId(R.id.menu_load)).perform(click());
-
-        onView(withText("Test")).perform(click());
-
-        goToMainScreen();
-
-        leaveDiagnosticMode();
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.language)).perform(click());
 
@@ -280,14 +261,46 @@ public class EspressoTest
 
         }
 
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
         onView(withText(R.string.calibrate)).perform(click());
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Test Types Screen
         takeScreenshot();
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        //Ranges Screen
+        onView(withId(R.id.menu_load)).perform(click());
+
+        onView(withText("Test")).perform(click());
+
+        goToMainScreen();
+
+        leaveDiagnosticMode();
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        //Calibrate Ranges Screen
         takeScreenshot();
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
@@ -436,12 +449,6 @@ public class EspressoTest
 
         onView(withId(android.R.id.button1)).perform(click());
 
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-
-
     }
 
     private void startApp() {
@@ -485,27 +492,31 @@ public class EspressoTest
         }
     }
 
-    public void testCalibrateSwatches() {
-        calibrateSwatches();
-    }
+    public void testSwatches() {
 
-    private void calibrateSwatches() {
-        onView(withId(R.id.action_settings))
-                .perform(click());
+        onView(withId(R.id.action_settings)).perform(click());
 
-        onView(withText(R.string.calibrate))
-                .perform(click());
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-//            onView(withId(R.id.action_swatches))
-//                    .perform(click());
-//
-//            Espresso.pressBack();
-//
-//            onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.action_swatches)).perform(click());
+
+        Espresso.pressBack();
+
+        onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
         onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
+
+        Espresso.pressBack();
 
         Espresso.pressBack();
 
@@ -550,15 +561,17 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
+        resetLanguage();
+
         saveCalibration();
+
+        goToMainScreen();
 
         onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        for (int i = 0; i < 10; i++) {
-            onView(withId(R.id.textVersion)).perform(click());
-        }
+        enterDiagnosticMode();
 
         Espresso.pressBack();
 
@@ -573,7 +586,6 @@ public class EspressoTest
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.menu_load)).perform(click());
-
 
         onView(withText("Test")).perform(click());
 
@@ -1092,21 +1104,110 @@ public class EspressoTest
 
     }
 
+    public void testZErrors() {
+
+        resetLanguage();
+
+        goToMainScreen();
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = MainActivity.class.getDeclaredMethod("alertDependantAppNotFound");
+                    method.setAccessible(true);
+                    method.invoke(getActivity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Akvo flow not installed
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = MainActivity.class.getDeclaredMethod("alertCameraFlashNotAvailable");
+                    method.setAccessible(true);
+                    method.invoke(getActivity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //No flash
+        takeScreenshot();
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        startApp();
+
+        getActivity();
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        final Activity typeListActivity = getCurrentActivity();
+        typeListActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
+                    method.setAccessible(true);
+                    method.invoke(typeListActivity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Error loading config
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        final Activity activity = getCurrentActivity();
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = CameraSensorActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                    method.setAccessible(true);
+                    method.invoke(activity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Error loading config
+        takeScreenshot();
+    }
+
     private void saveCalibration() {
         File external = Environment.getExternalStorageDirectory();
         final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
                 File.separator + Config.CALIBRATE_FOLDER_NAME;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("0.0=255  88  177\n");
-        sb.append("0.5=255  110  15\n");
-        sb.append("1.0=255  139  137\n");
-        sb.append("1.5=253  174  74\n");
-        sb.append("2.0=244  180  86\n");
-        sb.append("2.5=236  172  81\n");
-        sb.append("3.0=254  169  61\n");
-
-        FileUtils.saveToFile(path, "Test", sb.toString());
+        FileUtils.saveToFile(path, "Test", "0.0=255  88  177\n"
+                + "0.5=255  110  15\n"
+                + "1.0=255  139  137\n"
+                + "1.5=253  174  74\n"
+                + "2.0=244  180  86\n"
+                + "2.5=236  172  81\n"
+                + "3.0=254  169  61\n");
     }
 
     private void saveHighLevelCalibration() {
@@ -1114,14 +1215,11 @@ public class EspressoTest
         final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
                 File.separator + Config.CALIBRATE_FOLDER_NAME;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("0.0=255  88  47\n");
-        sb.append("0.5=255  60  37\n");
-        sb.append("1.0=255  35  27\n");
-        sb.append("1.5=253  17  17\n");
-        sb.append("2.0=254  0  0\n");
-
-        FileUtils.saveToFile(path, "HighLevelTest", sb.toString());
+        FileUtils.saveToFile(path, "HighLevelTest", "0.0=255  88  47\n"
+                + "0.5=255  60  37\n"
+                + "1.0=255  35  27\n"
+                + "1.5=253  17  17\n"
+                + "2.0=254  0  0\n");
     }
 
     private void saveLowLevelCalibration() {
@@ -1129,14 +1227,11 @@ public class EspressoTest
         final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
                 File.separator + Config.CALIBRATE_FOLDER_NAME;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("0.0=255  60  37\n");
-        sb.append("0.5=255  35  27\n");
-        sb.append("1.0=253  17  17\n");
-        sb.append("1.5=254  0  0\n");
-        sb.append("2.0=224  0  0\n");
-
-        FileUtils.saveToFile(path, "LowLevelTest", sb.toString());
+        FileUtils.saveToFile(path, "LowLevelTest", "0.0=255  60  37\n"
+                + "0.5=255  35  27\n"
+                + "1.0=253  17  17\n"
+                + "1.5=254  0  0\n"
+                + "2.0=224  0  0\n");
     }
 
 

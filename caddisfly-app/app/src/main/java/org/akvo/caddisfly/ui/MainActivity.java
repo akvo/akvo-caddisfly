@@ -22,13 +22,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,8 +52,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
@@ -68,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ApiUtils.lockScreenOrientation(this);
 
         MainApp.hasCameraFlash = ApiUtils.checkCameraFlash(this);
 
@@ -103,11 +98,16 @@ public class MainActivity extends AppCompatActivity {
                 AppPreferences.disableDiagnosticMode(getBaseContext());
 
                 checkDiagnosticMode();
+
+                checkDiagnosticActionBar();
             }
         });
 
-
         //todo: upgrade stuff. To be removed...
+        upgradeOldFolderPath();
+    }
+
+    private void upgradeOldFolderPath() {
         File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
                 Config.OLD_FILES_FOLDER_NAME + File.separator + Config.OLD_CALIBRATE_FOLDER_NAME);
 
@@ -149,16 +149,9 @@ public class MainActivity extends AppCompatActivity {
     private void checkDiagnosticMode() {
         if (AppPreferences.isDiagnosticMode(this)) {
             findViewById(R.id.diagnosticModeLayout).setVisibility(View.VISIBLE);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.diagnostic)));
-            }
-
         } else {
             if (findViewById(R.id.diagnosticModeLayout).getVisibility() == View.VISIBLE) {
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
-                    findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
-                }
+                findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
             }
         }
     }
@@ -216,15 +209,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void alertDependantAppNotFound() {
+        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtils.showMessage(this, R.string.akvoFlowNotFound, message);
+    }
+
+    private void alertCameraFlashNotAvailable() {
+        AlertUtils.showError(this, R.string.cannotStartTest,
+                getString(R.string.errorCameraFlashRequired),
+                null,
+                R.string.backToSurvey,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                },
+                null);
+    }
+
+
     private void startSurvey() {
         Intent LaunchIntent = getPackageManager()
                 .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
         if (LaunchIntent == null) {
-
-            String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
-                    getString(R.string.pleaseContactSupport));
-
-            AlertUtils.showMessage(this, R.string.akvoFlowNotFound, message);
+            alertDependantAppNotFound();
         } else {
             startActivity(LaunchIntent);
             mShouldFinish = true;
@@ -238,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
             }, 6000);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,17 +322,7 @@ public class MainActivity extends AppCompatActivity {
                     );
                 } else {
                     if (!MainApp.hasCameraFlash) {
-                        AlertUtils.showError(this, R.string.cannotStartTest,
-                                getString(R.string.errorCameraFlashRequired),
-                                null,
-                                R.string.backToSurvey,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                },
-                                null);
+                        alertCameraFlashNotAvailable();
                     } else {
                         startTest();
                     }
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
     private void startTest() {
         Context context = this;
         MainApp mainApp = (MainApp) context.getApplicationContext();
-        if (mainApp.currentTestInfo.getType() == MainApp.TestType.COLORIMETRIC) {
+        if (mainApp.currentTestInfo.getType() == MainApp.TestType.COLORIMETRIC_LIQUID) {
 
             if (!ColorUtils.validateColorRange(mainApp.currentTestInfo.getRanges())) {
                 Configuration conf = getResources().getConfiguration();
@@ -392,8 +392,6 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_TEST:
                 if (resultCode == Activity.RESULT_OK) {
                     Intent intent = new Intent(getIntent());
-                    //intent.putExtra("result", data.getDoubleExtra("result", -1));
-                    //intent.putExtra("questionId", mQuestionId);
                     intent.putExtra("response", data.getStringExtra("response"));
                     this.setResult(Activity.RESULT_OK, intent);
                     finish();

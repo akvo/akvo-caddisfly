@@ -71,13 +71,16 @@ public final class JsonUtils {
                     }
                 }
 
-                MainApp.TestType type = MainApp.TestType.COLORIMETRIC;
+                MainApp.TestType type = MainApp.TestType.COLORIMETRIC_LIQUID;
                 if (item.has("type")) {
                     switch (item.getInt("type")) {
                         case 0:
-                            type = MainApp.TestType.COLORIMETRIC;
+                            type = MainApp.TestType.COLORIMETRIC_LIQUID;
                             break;
                         case 1:
+                            type = MainApp.TestType.COLORIMETRIC_STRIP;
+                            break;
+                        case 2:
                             type = MainApp.TestType.SENSOR;
                     }
                 }

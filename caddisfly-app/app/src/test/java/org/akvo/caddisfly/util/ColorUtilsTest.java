@@ -48,7 +48,7 @@ public class ColorUtilsTest extends TestCase {
 
     public void testAutoGenerateColors() throws Exception {
         Hashtable hashtable = new Hashtable();
-        TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", MainApp.TestType.COLORIMETRIC);
+        TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", MainApp.TestType.COLORIMETRIC_LIQUID);
 
         for (int i = 0; i < 5; i++) {
             ResultRange resultRange = new ResultRange(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);

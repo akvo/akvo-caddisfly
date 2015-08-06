@@ -58,6 +58,7 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
         TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
         TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
+        TextView hsvText = (TextView) rowView.findViewById(R.id.hsvText);
         TextView brightnessText = (TextView) rowView.findViewById(R.id.brightnessText);
         //ImageView errorImage = (ImageView) rowView.findViewById(R.id.error);
         Button button = (Button) rowView.findViewById(R.id.button);
@@ -70,7 +71,8 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
         Spannable wordTwo = new SpannableString(mainApp.currentTestInfo.getUnit());
 
-        wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
 
@@ -82,23 +84,26 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
             //Display additional information if we are in diagnostic mode
             if (AppPreferences.isDiagnosticMode(getContext())) {
-                int r = Color.red(color);
-                int g = Color.green(color);
-                int b = Color.blue(color);
                 double distance = 0;
                 if (position > 0) {
                     int previousColor = ranges.get(position - 1).getColor();
                     distance = ColorUtils.getColorDistance(previousColor, color);
                 }
-                rgbText.setText(String.format("c: %d  %d  %d", r, g, b));
+                rgbText.setText(String.format("r: %s", ColorUtils.getColorRgbString(color)));
+
+                float[] colorHSV = new float[3];
+                Color.colorToHSV(color, colorHSV);
+                hsvText.setText(String.format("h: %.0f %.0f %.0f", colorHSV[0], colorHSV[1], colorHSV[1]));
                 brightnessText.setText(String.format("d:%.0f  b: %d", distance, ColorUtils.getBrightness(color)));
                 rgbText.setVisibility(View.VISIBLE);
+                hsvText.setVisibility(View.VISIBLE);
                 brightnessText.setVisibility(View.VISIBLE);
             }
         } else {
             button.setBackgroundColor(Color.argb(0, 10, 10, 10));
             button.setText("?");
             rgbText.setText("");
+            hsvText.setText("");
         }
 
 

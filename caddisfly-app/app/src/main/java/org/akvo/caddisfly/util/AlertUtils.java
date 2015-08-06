@@ -150,7 +150,6 @@ public class AlertUtils {
         builder.setMessage(message);
 
         ImageView image = (ImageView) alertView.findViewById(R.id.image);
-        //image.setImageResource(R.drawable.ic_launcher);
         image.setImageBitmap(bitmap);
 
         if (callback != null) {
@@ -165,13 +164,6 @@ public class AlertUtils {
                 buttonText = okButtonText;
             }
             builder.setNegativeButton(buttonText, cancelListener);
-
-//            builder.setNegativeButton(buttonText, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    dialogInterface.dismiss();
-//                }
-//            });
         }
 
         builder.setCancelable(false);

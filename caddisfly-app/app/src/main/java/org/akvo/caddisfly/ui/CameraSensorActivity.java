@@ -34,7 +34,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -50,7 +49,6 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.ImageUtils;
@@ -62,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CameraSensorActivity extends AppCompatActivity
+public class CameraSensorActivity extends BaseActivity
         implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
         MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
@@ -105,8 +103,6 @@ public class CameraSensorActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ApiUtils.lockScreenOrientation(this);
 
         setContentView(R.layout.activity_camera_sensor);
 
@@ -320,16 +316,7 @@ public class CameraSensorActivity extends AppCompatActivity
         ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
-
-            String message = String.format("%s\r\n\r\n%s", getString(R.string.errorLoadingConfiguration), getString(R.string.pleaseContactSupport));
-            AlertUtils.showError(this, R.string.error, message, null, R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    }, null);
-
+            alertCouldNotLoadConfig();
         } else if (!mIsCalibration && mainApp.currentTestInfo.hasDilution()
                 && !mTestCompleted) {
             mDilutionFragment = DilutionFragment.newInstance();
@@ -345,6 +332,19 @@ public class CameraSensorActivity extends AppCompatActivity
         } else if (!mTestCompleted) {
             InitializeTest();
         }
+    }
+
+    private void alertCouldNotLoadConfig() {
+        String message = String.format("%s\r\n\r\n%s",
+                getString(R.string.errorLoadingConfiguration),
+                getString(R.string.pleaseContactSupport));
+        AlertUtils.showError(this, R.string.error, message, null, R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null);
     }
 
     private void getResult(Bitmap bitmap) {

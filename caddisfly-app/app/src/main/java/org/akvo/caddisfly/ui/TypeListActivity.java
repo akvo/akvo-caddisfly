@@ -20,22 +20,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ApiUtils;
 
-public class TypeListActivity extends AppCompatActivity implements TypeListFragment.OnFragmentInteractionListener {
+public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
-
-        ApiUtils.lockScreenOrientation(this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(false);
@@ -49,7 +45,7 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
         mainApp.setSwatches(testInfo.getCode());
 
 
-        if (testInfo.getType() == MainApp.TestType.COLORIMETRIC) {
+        if (testInfo.getType() == MainApp.TestType.COLORIMETRIC_LIQUID) {
             if (!MainApp.hasCameraFlash) {
                 AlertUtils.showError(this, R.string.cannotCalibrate,
                         getString(R.string.errorCameraFlashRequired),
@@ -72,14 +68,16 @@ public class TypeListActivity extends AppCompatActivity implements TypeListFragm
                                 startActivity(intent);
                             }
                         });
-
             } else {
-                String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
-                        getString(R.string.pleaseContactSupport));
-
-                AlertUtils.showMessage(this, R.string.notSupported, message);
+                alertFeatureNotSupported();
             }
         }
+    }
 
+    private void alertFeatureNotSupported() {
+        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtils.showMessage(this, R.string.notSupported, message);
     }
 }

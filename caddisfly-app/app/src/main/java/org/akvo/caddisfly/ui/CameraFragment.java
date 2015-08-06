@@ -291,12 +291,8 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
         private Camera mCamera;
 
-        //private List<Camera.Size> mSupportedPreviewSizes;
-
         @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
-
-        //private boolean mPreviewOnly = false;
 
         public CameraPreview(Context context) {
             super(context);

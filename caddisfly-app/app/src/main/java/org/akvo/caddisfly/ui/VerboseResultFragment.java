@@ -82,7 +82,7 @@ public class VerboseResultFragment extends DialogFragment {
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
 
         if (mainApp.currentTestInfo.getCode().isEmpty() ||
-                mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC) {
+                mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC_LIQUID) {
             mainApp.setDefaultTest();
         }
 

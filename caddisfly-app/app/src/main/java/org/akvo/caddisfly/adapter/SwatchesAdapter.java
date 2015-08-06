@@ -54,10 +54,9 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
         MainApp mainApp = ((MainApp) activity.getApplicationContext());
 
         if (mainApp != null && rowView != null) {
-            //ArrayList<ResultRange> colorRange = mainApp.currentTestInfo.getRanges();
-
             TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
             TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
+            TextView hsvText = (TextView) rowView.findViewById(R.id.hsvText);
             Button button = (Button) rowView.findViewById(R.id.button);
 
             int color = colorArray[position].getColor();
@@ -67,18 +66,17 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
             //display ppm value
             ppmText.setText(doubleFormat.format(colorArray[position].getValue()));
 
-            //display rgb value
-            int r = Color.red(color);
-            int g = Color.green(color);
-            int b = Color.blue(color);
-
             double distance = 0;
             if (position > 0) {
                 int previousColor = colorArray[position - 1].getColor();
                 distance = ColorUtils.getColorDistance(previousColor, color);
             }
 
-            rgbText.setText(String.format("d:%.0f  %s: %d  %d  %d", distance, "c", r, g, b));
+            float[] colorHSV = new float[3];
+            Color.colorToHSV(color, colorHSV);
+
+            rgbText.setText(String.format("d:%.0f  %s: %s", distance, "rgb", ColorUtils.getColorRgbString(color)));
+            hsvText.setText(String.format("d:%.0f  %s: %.0f %.0f %.0f", distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
         }
         return rowView;
     }

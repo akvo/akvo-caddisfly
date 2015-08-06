@@ -26,7 +26,6 @@ import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,12 +41,11 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.ApiUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.zip.CRC32;
 
-public class SensorActivity extends AppCompatActivity {
+public class SensorActivity extends BaseActivity {
 
     private static final int readLength = 512;
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
@@ -134,8 +132,6 @@ public class SensorActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_sensor);
-
-        ApiUtils.lockScreenOrientation(this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);

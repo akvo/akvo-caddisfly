@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +24,11 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.Locale;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     private boolean mDiagnosticMode;
 
@@ -38,8 +36,6 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
-        ApiUtils.lockScreenOrientation(this);
 
         mDiagnosticMode = AppPreferences.isDiagnosticMode(this);
 
@@ -63,6 +59,8 @@ public class AboutActivity extends AppCompatActivity {
                         PreferencesUtils.setString(getBaseContext(), R.string.languageKey, currentLocale.getLanguage());
 
                         mDiagnosticMode = true;
+
+                        checkDiagnosticActionBar();
                     }
                 }
             }

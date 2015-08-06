@@ -57,10 +57,6 @@ public class SwatchFragment extends ListFragment {
 
             if (mainApp != null) {
                 ArrayList<ResultRange> swatchList = new ArrayList<>();
-//                for (ResultRange range : mainApp.currentTestInfo.getRanges()) {
-//                    swatchList.add(range);
-//                }
-
 
                 if (mainApp.currentTestInfo.getRanges().size() > 0) {
                     int startValue = (int) (mainApp.currentTestInfo.getRange(0).getValue() * 10);
@@ -79,13 +75,4 @@ public class SwatchFragment extends ListFragment {
             }
         }
     }
-
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        super.onListItemClick(l, v, position, id);
-//        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-//        double startValue = mainApp.currentTestInfo.getRange(0).getValue();
-//        int color = -1;
-//        PreferencesUtils.setInt(getActivity(), String.format("%s-%.2f", mainApp.currentTestInfo.getCode(), startValue + (position * 0.1)), color);
-//    }
 }
