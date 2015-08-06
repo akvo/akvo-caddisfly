@@ -253,7 +253,7 @@ public class OpenCVUtils {
                 Mat sub = edges.submat(new Range(j - 1, edges.rows()-1), new Range(i - 3, i));
                 Scalar mean = Core.mean(sub);
                 for(double d: val) {
-                    System.out.println("*** val "+ j + " , " + i + " = " + d);
+//                    System.out.println("*** val "+ j + " , " + i + " = " + d);
                 }
 
 //                if(val[1] == 255)
@@ -278,7 +278,7 @@ public class OpenCVUtils {
 
         Imgproc.cvtColor(edges, edges, Imgproc.COLOR_RGB2HSV);
 
-        Core.inRange(edges, new Scalar(0, 0, 30), new Scalar(180, 255, 200), range);
+        Core.inRange(edges, new Scalar(0, 5, 30), new Scalar(180, 255, 255), range);
 
 //        Imgproc.Canny(edges, edges, 40, 120, 3, true);
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -335,7 +335,7 @@ public class OpenCVUtils {
         }
 
         Imgproc.cvtColor(edges, edges, Imgproc.COLOR_HSV2RGB);
-        return edges;
+        return strip;
     }
 
     public static Mat detectStripPatchesOTSUTresh(Mat strip)

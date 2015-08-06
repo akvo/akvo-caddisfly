@@ -21,10 +21,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
-import android.content.res.AssetManager;
 
 // Performs the calibration of the image
 public class CalibrationCard{
@@ -423,6 +420,7 @@ public class CalibrationCard{
         // read calibration info
         // System.out.println("*** about to read calibration file");
         CalibrationData calData = readCalibrationFile(context);
+
         calData.hsizePixel = imgMat.cols();
         calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
         calData.vsizePixel = imgMat.rows();

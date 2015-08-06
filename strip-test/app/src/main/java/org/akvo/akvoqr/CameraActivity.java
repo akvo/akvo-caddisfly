@@ -2,12 +2,14 @@ package org.akvo.akvoqr;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+
+import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -150,18 +152,34 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void setBitmap(Bitmap bitmap) {
         mCamera.setOneShotPreviewCallback(null);
 
-        Bitmap bm = Bitmap.createScaledBitmap(bitmap,800,480,false);
-
-
-
+        double ratio = (double)bitmap.getHeight()/(double)bitmap.getWidth();
+        int width = 800;
+        int height = (int) Math.round( ratio * width);
+        System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
+        System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
+        try {
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
         byte[] bitmapdata = bos.toByteArray();
 
-        sendData(bitmapdata, ImageFormat.RGB_565, bm.getWidth(), bm.getHeight());
+        sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
 
         bitmap.recycle();
 
         finish();
+    }
+
+    @Override
+    public Mat calibrateImage(Mat mat)
+    {
+        CalibrationCard calibrationCard = new CalibrationCard();
+        return calibrationCard.calibrateImage(this, mat);
+
     }
 }

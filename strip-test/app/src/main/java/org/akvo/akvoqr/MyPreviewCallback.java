@@ -2,13 +2,10 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import org.akvo.akvoqr.calibration.CalibrationCard;
-import org.akvo.akvoqr.calibration.Patch;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -21,12 +18,9 @@ import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -64,6 +58,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
         }
     };
+    private boolean testCalib = false;
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -182,7 +177,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 int pwidth = camera.getParameters().getPreviewSize().width;
 
                 //convert preview data to Mat object with highest possible quality
-                Mat mbgra = new Mat(pheight, pwidth, CvType.CV_64FC4);
+                Mat mbgra = new Mat(pheight, pwidth, CvType.CV_8UC3);
                 Mat convert_mYuv = new Mat(pheight + pheight / 2, pwidth, CvType.CV_8UC1);
                 convert_mYuv.put(0, 0, data);
                 Imgproc.cvtColor(convert_mYuv, mbgra, Imgproc.COLOR_YUV2RGBA_NV21, mbgra.channels());
@@ -198,23 +193,30 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 //perspectiveTransform
                 Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
-                CalibrationCard calibrationCard = new CalibrationCard();
-                Patch[] patches = calibrationCard.measurePatches(warp_dst);
 
                 //find calibration patches
-                ResultActivity.colors.clear();
+               Mat calMat = listener.calibrateImage(warp_dst);
+//                ResultActivity.colors.clear();
+//
+//                for(Patch patch: patches) {
+//                    Point point1 = new Point(patch.x - patch.d/2, patch.y - patch.d/2);
+//                    Point point2 = new Point(patch.x + patch.d/2, patch.y + patch.d/2);
+//                    Core.rectangle(warp_dst, point1, point2, new Scalar(255, 0, 0, 255));
+//
+//                    int color = Color.rgb((int)patch.red,(int) patch.green,(int) patch.blue);
+//                    ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
+//                }
 
-                for(Patch patch: patches) {
-                    Point point1 = new Point(patch.x - patch.d/2, patch.y - patch.d/2);
-                    Point point2 = new Point(patch.x + patch.d/2, patch.y + patch.d/2);
-                    Core.rectangle(warp_dst, point1, point2, new Scalar(255, 0, 0, 255));
+                if(testCalib)
+                {
 
-                    int color = Color.rgb((int)patch.red,(int) patch.green,(int) patch.blue);
-                    ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
+                    bitmap = Bitmap.createBitmap(calMat.width(), calMat.height(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(calMat, bitmap, true);
+                    allOK = true;
+                    return;
                 }
-
                 //detect strip
-                Mat dest = warp_dst.clone();
+                Mat dest = calMat.clone();
 
                 float stripareaSize = 31; //mm
                 float vertSize = 75; //mm
