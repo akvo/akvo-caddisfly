@@ -186,7 +186,7 @@ public class CalibrationCard{
             hls.get(i, 0, temp);
             for (int ii = 0; ii < hls.cols(); ii++){  //x
                 int val = (int) Math.round((temp[ii * 3 + 1] & 0xFF) - (a * ii + b * i + c) + Lmean);
-                val = capValue(val 0, 255);
+                val = capValue(val, 0, 255);
                 temp[ii * 3 + 1] = (byte) val;
             }
             hls.put(i, 0, temp);
