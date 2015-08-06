@@ -58,7 +58,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
         }
     };
-    private boolean testCalib = false;
+    private boolean testCalib = true;
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -229,13 +229,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 if(strip!=null)
                 {
-                    //detect strip colors
-//                   ResultActivity.stripColors.clear();
-//                   Mat colors = OpenCVUtils.detectColor(striparea, ResultActivity.stripColors);
-
+                   System.out.println("***calmat format: " + CvType.typeToString(calMat.type()));
                     Mat edges = OpenCVUtils.detectStripPatchesAdaptiveTresh(strip);
 //                    Mat edges = OpenCVUtils.detectStripPatchesOTSUTresh(strip);
-                    //OpenCVUtils.detectColor(strip);
 
                     //create a bitmap with the same size and color config as the dest
                     bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);

@@ -152,7 +152,7 @@ public class OpenCVUtils {
 
             if(mContours.get(0,x)[3] >= 0)//has parent, inner (hole) contour of a closed edge
             {
-                System.out.println("***areasize: " + areasize);
+
                 if(areasize > 10000)
                 {
 
@@ -203,7 +203,7 @@ public class OpenCVUtils {
 
         }
 
-        return dst;
+        return striparea;
     }
 
     public static Mat detectStripPatchesAdaptiveTresh(Mat strip)
@@ -229,14 +229,14 @@ public class OpenCVUtils {
         Core.MinMaxLocResult result2 = Core.minMaxLoc(channels.get(2));
         System.out.println("***channel b . min val: " + result2.minVal + " max val: " + result2.maxVal);
 
-//        Imgproc.threshold(channels.get(0), channels.get(0), result0.maxVal - 30, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(channels.get(0), channels.get(0), 0, 128, Imgproc.THRESH_BINARY);
 //        Imgproc.adaptiveThreshold(channels.get(1), channels.get(1), 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
 //                Imgproc.THRESH_BINARY, 11, 2);
 //        Imgproc.adaptiveThreshold(channels.get(2), channels.get(2), 0, Imgproc.ADAPTIVE_THRESH_MEAN_C,
 //                Imgproc.THRESH_BINARY, 11, 2);
 
-        Imgproc.threshold(channels.get(1), channels.get(1), 0, 128, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(channels.get(2), channels.get(2), 0, 0, Imgproc.THRESH_BINARY);
+//        Imgproc.threshold(channels.get(1), channels.get(1), 0, 128, Imgproc.THRESH_BINARY);
+//        Imgproc.threshold(channels.get(2), channels.get(2), 0, 0, Imgproc.THRESH_BINARY);
 
 //        Imgproc.threshold(channels.get(1), channels.get(1), 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
 //        Imgproc.threshold(channels.get(2), channels.get(2), 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
@@ -273,26 +273,26 @@ public class OpenCVUtils {
 //                }
             }
         }
-//        edges = enhanceContrast(edges);
 
+//        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_RGB2HSV);
+//        Core.split(edges, channels);
+//        Imgproc.threshold(channels.get(0), channels.get(0), 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
+//        Core.merge(channels, edges);
+//        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_HSV2RGB);
 
-        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_RGB2HSV);
+//        Core.inRange(edges, new Scalar(0, 5, 30), new Scalar(180, 255, 255), range);
 
-        Core.inRange(edges, new Scalar(0, 5, 30), new Scalar(180, 255, 255), range);
-
-//        Imgproc.Canny(edges, edges, 40, 120, 3, true);
+        Imgproc.Canny(edges, range, 40, 120, 3, true);
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
         MatOfInt4 hierarchy = new MatOfInt4();
 
         Imgproc.findContours(range, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE, new Point(0, 0));
 
-        double maxParent = -Double.MAX_VALUE;
         List<Mat> innermostContoursList = new ArrayList<>();
 
         int listno = 1;
-//        for (MatOfInt4 mContours : mContoursList)
-//        {
+
         for (int x = 0; x < contours.size(); x++)
         {
 
@@ -300,7 +300,7 @@ public class OpenCVUtils {
 
             if (hierarchy.get(0,x)!=null && hierarchy.get(0, x)[3] < 0)//has no parent, outer contour
             {
-
+                System.out.println("***areasize: " + areasize);
                 if (areasize > 250)
                 {
                     double[] d = hierarchy.get(0, x);
@@ -310,11 +310,10 @@ public class OpenCVUtils {
                         System.out.println("*** value of outer contour  " + listno + " , " + x + ":  = " + v);
                     }
                     innermostContoursList.add(contours.get(x));
-                        Imgproc.drawContours(edges, contours, x, new Scalar(255,0,0,255), 1);
+                        Imgproc.drawContours(edges, contours, x, new Scalar(255, 0, 0, 255), 1);
                 }
             }
-//            }
-            listno ++;
+
         }
         if(innermostContoursList.size()>0)
         {
@@ -328,14 +327,14 @@ public class OpenCVUtils {
                     if (Imgproc.contourArea(inner) > 200) {
                         Converters.Mat_to_vector_Point2f(inner, pts);
                         detectColor(strip, pts);
-                        Core.rectangle(strip, pts.get(0), pts.get(2), new Scalar(0,255,0,255));
+                        Core.rectangle(edges, pts.get(0), pts.get(2), new Scalar(0,255,0,255), 1);
                     }
                 }
             }
         }
 
-        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_HSV2RGB);
-        return strip;
+
+        return edges;
     }
 
     public static Mat detectStripPatchesOTSUTresh(Mat strip)
@@ -363,6 +362,7 @@ public class OpenCVUtils {
         Imgproc.threshold(channels.get(2), channels.get(2), 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
 
         Core.merge(channels, edges);
+        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfInt4 mContours = new MatOfInt4();
@@ -382,20 +382,18 @@ public class OpenCVUtils {
 
                     Converters.Mat_to_vector_Point2f(contours.get(x), pts);
                     detectColor(strip, pts);
-                    Imgproc.drawContours(strip, contours, x, new Scalar(0,0,0, 255), 1);
+                    Imgproc.drawContours(edges, contours, x, new Scalar(0,255,0, 255), 1);
                 }
             }
         }
 
-//        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
-        return strip;
+
+        return edges;
     }
-    public static void detectColor(Mat mRgba,  List<Point> pts) {
+    public static void detectColor(Mat rgb,  List<Point> pts) {
 
-//        ResultActivity.stripColors.clear();
-
-        int left = (int) Math.round(pts.get(0).x);
-        int top = (int) Math.round(pts.get(0).y);
+        int left = getMinX(pts);
+        int top = getMinY(pts);
         int maxX = getMaxX(pts);
         int maxY = getMaxY(pts);
 
@@ -404,16 +402,16 @@ public class OpenCVUtils {
         System.out.println("*** maxY: " + maxY);
         System.out.println("*** maxX: " + maxX);
 
-        Mat sub = mRgba.submat(top , top + (maxY - top), left, left + (maxX-left));
+        Mat sub = rgb.submat(top , top + (maxY - top), left, left + (maxX-left));
 
         Scalar mean = Core.mean(sub);
 
         for(double val: mean.val) {
 
-//                        System.out.println("***Scalar colors: "+ x + "  " + val);
+                        System.out.println("***Scalar colors: "+  val);
         }
 
-        int color = Color.argb((int) mean.val[3], (int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
+        int color = Color.rgb((int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
         ResultActivity.stripColors.add(new ResultActivity.ColorDetected(color, left));
 
     }
