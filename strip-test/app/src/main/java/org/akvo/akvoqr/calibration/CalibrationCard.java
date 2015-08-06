@@ -100,6 +100,10 @@ public class CalibrationCard{
         return null;
     }
 
+    private int capValue(int val, int min, int max){
+        return Math.max(Math.min(val,max),min);
+    }
+
     // computes the average luminosity around a point.
     // x and y in pixels
     // This method expects a hls file
@@ -182,6 +186,7 @@ public class CalibrationCard{
             hls.get(i, 0, temp);
             for (int ii = 0; ii < hls.cols(); ii++){  //x
                 int val = (int) Math.round((temp[ii * 3 + 1] & 0xFF) - (a * ii + b * i + c) + Lmean);
+                val = capValue(val 0, 255);
                 temp[ii * 3 + 1] = (byte) val;
             }
             hls.put(i, 0, temp);
@@ -249,25 +254,9 @@ public class CalibrationCard{
             }
 
             // cap values
-            if (B < 0){
-                B = 0;
-            } else if (B > 255) {
-                B = 255;
-            }
-
-            // cap values
-            if (G < 0){
-                G = 0;
-            } else if (G > 255) {
-                G = 255;
-            }
-
-            // cap values
-            if (R < 0){
-                R = 0;
-            } else if (R > 255) {
-                R = 255;
-            }
+            B = capValue(B,0,255);
+            G = capValue(G,0,255);
+            R = capValue(R,0,255);
 
             // put value in lut
             temp[3 * i] = (byte) B;
@@ -362,26 +351,10 @@ public class CalibrationCard{
                 Rnew = (int) Math.round(c_r * Btemp + b_r * Gtemp + a_r * Rtemp);
 
                 // cap values
-                if (Bnew < 0){
-                    Bnew = 0;
-                } else if (Bnew > 255) {
-                    Bnew = 255;
-                }
+                Bnew = capValue(Bnew,0,255);
+                Gnew = capValue(Gnew,0,255);
+                Rnew = capValue(Rnew,0,255);
 
-                // cap values
-                if (Gnew < 0){
-                    Gnew = 0;
-                } else if (Gnew > 255) {
-                    Gnew = 255;
-                }
-
-                // cap values
-                if (Rnew < 0){
-                    Rnew = 0;
-                } else if (Rnew > 255) {
-                    Rnew = 255;
-                }
-                // accidentaly puts RGB in right order for move to bitmap
                 temp[ii * 3] = (byte) Bnew;
                 temp[ii * 3 + 1] = (byte) Gnew;
                 temp[ii * 3 + 2] = (byte) Rnew;
@@ -400,6 +373,7 @@ public class CalibrationCard{
         for (int i = -dp; i <= dp; i++){
             for (int ii = -dp; ii <= dp; ii++){
                 byte[] col = new byte[3];
+                // accidentaly puts RGB in right order for move to bitmap
                 col[0] = (byte) calValue.R;
                 col[1] = (byte) calValue.G;
                 col[2] = (byte) calValue.B;
