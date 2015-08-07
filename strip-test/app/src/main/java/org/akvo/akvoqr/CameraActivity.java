@@ -25,6 +25,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     MyPreviewCallback previewCallback;
     private String TAG = "CameraActivity";
     private Intent intent;
+    private boolean testing = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,31 +149,51 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
+    private final int MAX_ITER = 100;
+    private int iter=0;
     @Override
     public void setBitmap(Bitmap bitmap) {
-        mCamera.setOneShotPreviewCallback(null);
 
-        double ratio = (double)bitmap.getHeight()/(double)bitmap.getWidth();
-        int width = 800;
-        int height = (int) Math.round( ratio * width);
-        System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
-        System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
-        try {
-            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-        }
-        catch (Exception e)
+
+        if(testing)
         {
-            e.printStackTrace();
+            if(iter<MAX_ITER && !isFinishing()) {
+
+                iter++;
+                if (ResultActivity.stripColors.size() == 2) {
+                    ResultActivity.numSuccess++;
+                }
+
+                mCamera.setOneShotPreviewCallback(previewCallback);
+                System.out.println("***TEST RESULTS: " + ResultActivity.numSuccess + "out of " + iter);
+            }
+            else {
+                ResultActivity.numSuccess = 0;
+                System.out.println("***FINAL TEST RESULTS: " + ResultActivity.numSuccess + "out of " + MAX_ITER);
+            }
         }
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
-        byte[] bitmapdata = bos.toByteArray();
+        else
+        {
+            double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+            int width = 800;
+            int height = (int) Math.round(ratio * width);
+            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
+            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
+            try {
+                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+            byte[] bitmapdata = bos.toByteArray();
 
-        sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
+            sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
 
-        bitmap.recycle();
+            bitmap.recycle();
 
-        finish();
+            finish();
+        }
     }
 
     @Override

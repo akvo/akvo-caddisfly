@@ -341,13 +341,13 @@ public class OpenCVUtils {
                         detectColor(strip, pts);
                         Point point1 = new Point(getMinX(pts), getMinY(pts));
                         Point point2 = new Point(getMaxX(pts), getMaxY(pts));
-                        Core.rectangle(edges,point1, point2, new Scalar(0,255,0,255), 1);
+                        Core.rectangle(strip,point1, point2, new Scalar(0,255,0,255), 1);
                     }
                 }
             }
         }
 
-        return edges;
+        return strip;
     }
 
     public static Mat detectStripPatchesOTSUTresh(Mat strip)
