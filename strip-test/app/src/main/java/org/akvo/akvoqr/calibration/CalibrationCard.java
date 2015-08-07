@@ -395,25 +395,27 @@ public class CalibrationCard{
         // System.out.println("*** about to read calibration file");
         CalibrationData calData = readCalibrationFile(context);
 
-        calData.hsizePixel = imgMat.cols();
-        calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
-        calData.vsizePixel = imgMat.rows();
-        calData.vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+        if(calData!=null) {
+            calData.hsizePixel = imgMat.cols();
+            calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
+            calData.vsizePixel = imgMat.rows();
+            calData.vfac = calData.vsizePixel / calData.vsize; // pixel per mm
 
-        // illumination correction
-        imgMat = doIlluminationCorrection(imgMat, calData);
+            // illumination correction
+            imgMat = doIlluminationCorrection(imgMat, calData);
 
-        // 1D LUT gray balance
-        imgMat = do1DLUTCorrection(imgMat, calData);
+            // 1D LUT gray balance
+            imgMat = do1DLUTCorrection(imgMat, calData);
 
-        // 3D LUT color balance
-        imgMat = do3DLUTCorrection(imgMat, calData);
+            // 3D LUT color balance
+            imgMat = do3DLUTCorrection(imgMat, calData);
 
-        // insert calibration colours in image
-        addCalColours(imgMat,calData);
+            // insert calibration colours in image
+            addCalColours(imgMat, calData);
 
-        System.out.println("*** end of calibration");
-        return imgMat;
-
+            System.out.println("*** end of calibration");
+            return imgMat;
+        }
+        return null;
     }
 }
