@@ -68,7 +68,6 @@ public class PreferencesOtherFragment extends PreferenceFragment {
         return rootView;
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

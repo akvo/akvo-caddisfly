@@ -16,7 +16,7 @@
 
 package org.akvo.caddisfly.model;
 
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.AppConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,10 +29,10 @@ public class TestInfo {
     private final String mUnit;
     private final ArrayList<ResultRange> mRanges;
     private final ArrayList<ResultRange> mSwatches;
-    private final MainApp.TestType mType;
+    private final AppConfig.TestType mType;
     private final ArrayList<Integer> mDilutions;
 
-    public TestInfo(Hashtable names, String code, String unit, MainApp.TestType type) {
+    public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType type) {
         mNames = names;
         mType = type;
         mCode = code;
@@ -59,7 +59,7 @@ public class TestInfo {
         return "";
     }
 
-    public MainApp.TestType getType() {
+    public AppConfig.TestType getType() {
         return mType;
     }
 
@@ -87,10 +87,6 @@ public class TestInfo {
     public ResultRange getRange(int position) {
         return mRanges.get(position);
     }
-
-//    public void setColor(ResultRange range, int resultColor) {
-//        range.setColor(resultColor);
-//    }
 
     public ArrayList<ResultRange> getSwatches() {
         return mSwatches;

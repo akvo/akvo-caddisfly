@@ -36,7 +36,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/descriptionText"
+            android:id="@+id/textDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

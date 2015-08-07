@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultRange;
@@ -149,15 +149,15 @@ public final class ColorUtils {
     private static void analyzeColor(ColorInfo photoColor, ArrayList<ResultRange> colorRange,
                                      int maxDistance, Bundle bundle) {
 
-        bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
+        bundle.putInt(AppConfig.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
 
         ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
                 colorRange, maxDistance);
 
         if (colorCompareInfo.getResult() < 0) {
-            bundle.putDouble(Config.RESULT_VALUE_KEY, -1); //NON-NLS
+            bundle.putDouble(AppConfig.RESULT_VALUE_KEY, -1); //NON-NLS
         } else {
-            bundle.putDouble(Config.RESULT_VALUE_KEY, colorCompareInfo.getResult());
+            bundle.putDouble(AppConfig.RESULT_VALUE_KEY, colorCompareInfo.getResult());
             bundle.putInt("MatchedColor", colorCompareInfo.getMatchedColor());
             bundle.putDouble("Distance", colorCompareInfo.getDistance());
         }
@@ -200,24 +200,29 @@ public final class ColorUtils {
     /**
      * Get the color that lies in between two colors
      *
-     * @param startColor    The first color
-     * @param endColor      The last color
-     * @param incrementStep Number of expected incremental steps in between the two colors
-     * @param i             The step number at which the color is to be calculated
+     * @param startColor The first color
+     * @param endColor   The last color
+     * @param n          Number of steps between the two colors
+     * @param i          The index at which the color is to be calculated
      * @return The newly generated color
      */
-    private static int getGradientColor(int startColor, int endColor, int incrementStep, int i) {
-        int r = interpolate(Color.red(startColor), Color.red(endColor), incrementStep, i),
-                g = interpolate(Color.green(startColor), Color.green(endColor), incrementStep, i),
-                b = interpolate(Color.blue(startColor), Color.blue(endColor), incrementStep, i);
-
-        return Color.rgb(r, g, b);
+    private static int getGradientColor(int startColor, int endColor, int n, int i) {
+        return Color.rgb(interpolate(Color.red(startColor), Color.red(endColor), n, i),
+                interpolate(Color.green(startColor), Color.green(endColor), n, i),
+                interpolate(Color.blue(startColor), Color.blue(endColor), n, i));
     }
 
-    private static int interpolate(int start, int end, int steps, int count) {
-        float result = (float) start
-                + ((((float) end - (float) start) / steps) * count);
-        return (int) result;
+    /**
+     * Get the color component that lies between the two color component points
+     *
+     * @param start The first color component value
+     * @param end   The last color component value
+     * @param n     Number of steps between the two colors
+     * @param i     The index at which the color is to be calculated
+     * @return The calculated color component
+     */
+    private static int interpolate(int start, int end, int n, int i) {
+        return (int) ((float) start + ((((float) end - (float) start) / n) * i));
     }
 
     /**
@@ -227,8 +232,7 @@ public final class ColorUtils {
      * @return The rgb value as string
      */
     public static String getColorRgbString(int color) {
-        return String.format("%d  %d  %d",
-                Color.red(color), Color.green(color), Color.blue(color));
+        return String.format("%d  %d  %d", Color.red(color), Color.green(color), Color.blue(color));
     }
 
     /**
@@ -241,7 +245,6 @@ public final class ColorUtils {
         return Math.abs(Color.red(color) - Color.green(color)) > GRAY_TOLERANCE
                 || Math.abs(Color.red(color) - Color.blue(color)) > GRAY_TOLERANCE;
     }
-
 
     /**
      * Auto generate the color swatches for the ranges of the given test type
@@ -278,7 +281,8 @@ public final class ColorUtils {
      */
     public static Integer getColorFromRgb(String rgb) {
         String[] rgbArray = rgb.split("\\s+");
-        return Color.rgb(Integer.valueOf(rgbArray[0]), Integer.valueOf(rgbArray[1]), Integer.valueOf(rgbArray[2]));
+        return Color.rgb(Integer.valueOf(rgbArray[0]), Integer.valueOf(rgbArray[1]),
+                Integer.valueOf(rgbArray[2]));
     }
 
     /**
@@ -306,13 +310,13 @@ public final class ColorUtils {
      * @return the distance between the two colors
      */
     public static double getColorDistance(int color1, int color2) {
-        double red, green, blue;
+        double r, g, b;
 
-        red = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
-        green = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
-        blue = Math.pow(Color.blue(color2) - Color.blue(color1), 2.0);
+        r = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
+        g = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
+        b = Math.pow(Color.blue(color2) - Color.blue(color1), 2.0);
 
-        return Math.sqrt(blue + green + red);
+        return Math.sqrt(b + g + r);
     }
 
 
@@ -330,7 +334,7 @@ public final class ColorUtils {
             }
             for (ResultRange range2 : colorRange) {
                 if (range1 != range2) {
-                    if (getColorDistance(range1.getColor(), range2.getColor()) < Config.MIN_VALID_COLOR_DISTANCE) {
+                    if (getColorDistance(range1.getColor(), range2.getColor()) < AppConfig.MIN_VALID_COLOR_DISTANCE) {
                         return false;
                     }
                 }
@@ -435,7 +439,7 @@ public final class ColorUtils {
         //noinspection ResourceType
         Color.colorToHSV(photoColor.getColor(), colorHSV);
 
-        bundle.putInt(Config.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
+        bundle.putInt(AppConfig.RESULT_COLOR_KEY, photoColor.getColor()); //NON-NLS
         bundle.putDouble("a", a); //NON-NLS
         bundle.putDouble("b", b); //NON-NLS
         bundle.putDouble("c", c); //NON-NLS
@@ -455,7 +459,7 @@ public final class ColorUtils {
 
         double value = (h - yIntercept) / slope;
 
-        String resultKey = Config.RESULT_VALUE_KEY + "_" + colorRange.size();
+        String resultKey = AppConfig.RESULT_VALUE_KEY + "_" + colorRange.size();
 
         if (value < 0) {
             bundle.putDouble(resultKey, -1); //NON-NLS

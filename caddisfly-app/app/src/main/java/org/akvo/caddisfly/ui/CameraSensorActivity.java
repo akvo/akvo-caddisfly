@@ -41,7 +41,7 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
@@ -114,18 +114,13 @@ public class CameraSensorActivity extends BaseActivity
 
         sound = new SoundPoolPlayer(this);
 
-        mDilutionTextView = (TextView) findViewById(R.id.dilutionTextView);
-        mDilutionTextView1 = (TextView) findViewById(R.id.dilution1TextView);
+        mDilutionTextView = (TextView) findViewById(R.id.textDilution);
+        mDilutionTextView1 = (TextView) findViewById(R.id.textDilution2);
 
         mDilutionTextView.setVisibility(View.GONE);
         mDilutionTextView1.setVisibility(View.GONE);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-        //Animation mSlideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
-        //Animation mSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
-
-        //mViewAnimator.setInAnimation(mSlideInRight);
-        //mViewAnimator.setOutAnimation(mSlideOutLeft);
 
         //Set up the shake detector
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -173,30 +168,18 @@ public class CameraSensorActivity extends BaseActivity
         mTestCompleted = false;
         mHighLevelsFound = false;
 
-        if (wakeLock == null || !wakeLock.isHeld()) {
-            PowerManager pm = (PowerManager) getApplicationContext()
-                    .getSystemService(Context.POWER_SERVICE);
-            //noinspection deprecation
-            wakeLock = pm
-                    .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                            | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
-            wakeLock.acquire();
-        }
-
         mWaitingForStillness = true;
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
         setAnimatorDisplayedChild(mViewAnimator, 0);
 
-        //mViewAnimator.setInAnimation(null);
-        //mViewAnimator.setOutAnimation(null);
-        //mViewAnimator.setInAnimation(mSlideInRight);
-        //mViewAnimator.setOutAnimation(mSlideOutLeft);
-
-        findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mViewAnimator.showNext();
+
+                acquireWakeLock();
 
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().hide();
@@ -223,6 +206,18 @@ public class CameraSensorActivity extends BaseActivity
                 }
             }
         });
+    }
+
+    private void acquireWakeLock() {
+        if (wakeLock == null || !wakeLock.isHeld()) {
+            PowerManager pm = (PowerManager) getApplicationContext()
+                    .getSystemService(Context.POWER_SERVICE);
+            //noinspection deprecation
+            wakeLock = pm
+                    .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                            | PowerManager.ON_AFTER_RELEASE, "CameraSensorWakeLock");
+            wakeLock.acquire();
+        }
     }
 
     /**
@@ -312,8 +307,8 @@ public class CameraSensorActivity extends BaseActivity
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
-        ((TextView) findViewById(R.id.testTitleTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.testTypeTextView)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle2)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
         if (mainApp.currentTestInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
@@ -362,19 +357,19 @@ public class CameraSensorActivity extends BaseActivity
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap,
                 ((MainApp) getApplicationContext()).currentTestInfo,
-                Config.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
+                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
 //        bitmap.recycle();
 
-        double result = bundle.getDouble(Config.RESULT_VALUE_KEY, -1);
-        int color = bundle.getInt(Config.RESULT_COLOR_KEY, 0);
+        double result = bundle.getDouble(AppConfig.RESULT_VALUE_KEY, -1);
+        int color = bundle.getInt(AppConfig.RESULT_COLOR_KEY, 0);
 
         ArrayList<Pair<String, Double>> results = new ArrayList<>();
-        results.add(new Pair<>("HSV 1 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_1", -1)));
-        results.add(new Pair<>("HSV 2 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_2", -1)));
-        results.add(new Pair<>("HSV 3 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_3", -1)));
-        results.add(new Pair<>("HSV 5 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY + "_5", -1)));
+        results.add(new Pair<>("HSV 1 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_1", -1)));
+        results.add(new Pair<>("HSV 2 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_2", -1)));
+        results.add(new Pair<>("HSV 3 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_3", -1)));
+        results.add(new Pair<>("HSV 5 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_5", -1)));
 
-        results.add(new Pair<>("RGB 5 Calibration", bundle.getDouble(Config.RESULT_VALUE_KEY, -1)));
+        results.add(new Pair<>("RGB 5 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY, -1)));
 
         Result resultInfo = new Result(result, color, bitmap, results);
 
@@ -403,7 +398,7 @@ public class CameraSensorActivity extends BaseActivity
                         @Override
                         public void onPictureTaken(Bitmap bitmap) {
 
-                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
                             getResult(croppedBitmap);
                             //bitmap.recycle();
@@ -419,16 +414,7 @@ public class CameraSensorActivity extends BaseActivity
                     };
                 }
 
-                if (wakeLock == null || !wakeLock.isHeld()) {
-                    PowerManager pm = (PowerManager) getApplicationContext()
-                            .getSystemService(Context.POWER_SERVICE);
-                    //noinspection deprecation
-                    wakeLock = pm
-                            .newWakeLock(PowerManager.FULL_WAKE_LOCK
-                                    | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                                    | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
-                    wakeLock.acquire();
-                }
+                acquireWakeLock();
 
                 delayRunnable = new Runnable() {
                     @Override
@@ -460,7 +446,7 @@ public class CameraSensorActivity extends BaseActivity
         mResults = new ArrayList<>();
 
 //        try {
-//            Thread.sleep(Config.INITIAL_DELAY, 0);
+//            Thread.sleep(AppConfig.INITIAL_DELAY, 0);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
@@ -492,7 +478,7 @@ public class CameraSensorActivity extends BaseActivity
                         public void onPictureTaken(byte[] data, Camera camera) {
 
                             Bitmap bitmap = ImageUtils.getBitmap(data);
-                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, Config.SAMPLE_CROP_LENGTH_DEFAULT);
+                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
                             getResult(croppedBitmap);
 
@@ -504,16 +490,7 @@ public class CameraSensorActivity extends BaseActivity
                         }
                     };
 
-                    if (wakeLock == null || !wakeLock.isHeld()) {
-                        PowerManager pm = (PowerManager) getApplicationContext()
-                                .getSystemService(Context.POWER_SERVICE);
-                        //noinspection deprecation
-                        wakeLock = pm
-                                .newWakeLock(PowerManager.FULL_WAKE_LOCK
-                                        | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                                        | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
-                        wakeLock.acquire();
-                    }
+                    acquireWakeLock();
 
                     delayRunnable = new Runnable() {
                         @Override
@@ -533,7 +510,7 @@ public class CameraSensorActivity extends BaseActivity
                         }
                     };
 
-                    delayHandler.postDelayed(delayRunnable, Config.INITIAL_DELAY);
+                    delayHandler.postDelayed(delayRunnable, AppConfig.INITIAL_DELAY);
                 }
             }
         }).execute();

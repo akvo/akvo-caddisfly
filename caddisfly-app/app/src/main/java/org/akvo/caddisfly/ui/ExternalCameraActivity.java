@@ -52,7 +52,7 @@ public class ExternalCameraActivity extends AppCompatActivity {
             wakeLock = pm
                     .newWakeLock(PowerManager.FULL_WAKE_LOCK
                             | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                            | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
+                            | PowerManager.ON_AFTER_RELEASE, "ExternalCameraWakeLock");
             wakeLock.acquire();
         }
 

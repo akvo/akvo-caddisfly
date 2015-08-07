@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -56,18 +57,19 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         ArrayList<ResultRange> ranges = mainApp.currentTestInfo.getRanges();
         ResultRange range = ranges.get(position);
 
-        TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
-        TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
-        TextView hsvText = (TextView) rowView.findViewById(R.id.hsvText);
-        TextView brightnessText = (TextView) rowView.findViewById(R.id.brightnessText);
+        TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
+        TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
+        TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);
+        TextView brightnessText = (TextView) rowView.findViewById(R.id.textBrightness);
+        ImageView moreArrow = (ImageView) rowView.findViewById(R.id.imageArrow);
         //ImageView errorImage = (ImageView) rowView.findViewById(R.id.error);
-        Button button = (Button) rowView.findViewById(R.id.button);
+        Button button = (Button) rowView.findViewById(R.id.buttonColor);
 
         int color = range.getColor();
 
         // display ppm value
         Spannable word = new SpannableString(String.format("%.2f ", range.getValue()));
-        ppmText.setText(word);
+        textUnit.setText(word);
 
         Spannable wordTwo = new SpannableString(mainApp.currentTestInfo.getUnit());
 
@@ -76,7 +78,7 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
         wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
 
-        ppmText.append(wordTwo);
+        textUnit.append(wordTwo);
 
         if (color != 0 && color != -16777216) {
             button.setBackgroundColor(color);
@@ -93,11 +95,12 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
-                hsvText.setText(String.format("h: %.0f %.0f %.0f", colorHSV[0], colorHSV[1], colorHSV[1]));
+                hsvText.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
                 brightnessText.setText(String.format("d:%.0f  b: %d", distance, ColorUtils.getBrightness(color)));
                 rgbText.setVisibility(View.VISIBLE);
                 hsvText.setVisibility(View.VISIBLE);
                 brightnessText.setVisibility(View.VISIBLE);
+                moreArrow.setVisibility(View.GONE);
             }
         } else {
             button.setBackgroundColor(Color.argb(0, 10, 10, 10));

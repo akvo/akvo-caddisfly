@@ -24,10 +24,11 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Pair;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
@@ -42,8 +43,18 @@ import java.util.Locale;
 
 public class MainApp extends Application {
 
-    public static boolean hasCameraFlash = true;
-    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", TestType.COLORIMETRIC_LIQUID);
+    private static boolean hasCameraFlash;
+    private static boolean checkedForFlash;
+    public TestInfo currentTestInfo = new TestInfo(new Hashtable(), "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean hasFeatureCameraFlash(Context context) {
+        if (!checkedForFlash) {
+            hasCameraFlash = ApiUtils.checkCameraFlash(context);
+            checkedForFlash = true;
+        }
+        return hasCameraFlash;
+    }
 
     /**
      * @param context The context
@@ -78,7 +89,7 @@ public class MainApp extends Application {
     }
 
     private String getJsonText() {
-        final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
+        final String path = Environment.getExternalStorageDirectory() + AppConfig.CONFIG_FOLDER + AppConfig.CONFIG_FILE;
 
         File file = new File(path);
         String text;
@@ -112,7 +123,7 @@ public class MainApp extends Application {
             tests = JsonUtils.loadTests(getJsonText());
             if (tests.size() > 0) {
                 currentTestInfo = tests.get(0);
-                if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+                if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
                     loadCalibratedSwatches(currentTestInfo);
                 }
             }
@@ -134,7 +145,7 @@ public class MainApp extends Application {
             return;
         }
 
-        if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+        if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
             loadCalibratedSwatches(currentTestInfo);
         }
     }
@@ -188,9 +199,7 @@ public class MainApp extends Application {
                 String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), (double) ((Pair) list.get(i)).first);
 
                 editor.putInt(key, (int) ((Pair) list.get(i)).second);
-
             }
-
         }
         editor.apply();
     }
@@ -222,7 +231,4 @@ public class MainApp extends Application {
 
         editor.apply();
     }
-
-    public enum TestType {COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR}
-
 }

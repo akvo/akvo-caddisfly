@@ -208,8 +208,6 @@ public class CalibrateSensorActivity extends BaseActivity {
         }
 
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
-
-        //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
     }
 
     private void SendMessage(String data) {
@@ -261,16 +259,16 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
-        Button nextButton = (Button) findViewById(R.id.startButton);
-        Button lowConductivityButton = (Button) findViewById(R.id.lowButton);
-        Button highConductivityButton = (Button) findViewById(R.id.highButton);
-        final EditText lowValueEditText = (EditText) findViewById(R.id.lowValueEditText);
-        final EditText highValueEditText = (EditText) findViewById(R.id.highValueEditText);
+        Button nextButton = (Button) findViewById(R.id.buttonStartCalibrate);
+        Button lowConductivityButton = (Button) findViewById(R.id.buttonCalibrateLow);
+        Button highConductivityButton = (Button) findViewById(R.id.buttonCalibrateHigh);
+        final EditText lowValueEditText = (EditText) findViewById(R.id.editLowValue);
+        final EditText highValueEditText = (EditText) findViewById(R.id.editHighValue);
 
         final MainApp mainApp = (MainApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
         if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
-            ((TextView) findViewById(R.id.testTitleTextView)).setText(
+            ((TextView) findViewById(R.id.textTitle)).setText(
                     mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
         }
 

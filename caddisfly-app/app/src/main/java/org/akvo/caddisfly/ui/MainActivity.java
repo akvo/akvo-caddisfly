@@ -34,12 +34,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.FileUtils;
@@ -66,22 +65,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainApp.hasCameraFlash = ApiUtils.checkCameraFlash(this);
+        checkForUpdate();
 
-        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
-
-        // last update check date
-        Calendar lastCheckDate = Calendar.getInstance();
-        lastCheckDate.setTimeInMillis(updateLastCheck);
-
-        Calendar currentDate = Calendar.getInstance();
-        if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, MainApp.getVersion(this));
-            updateCheckTask.execute();
-
-        }
-
-        Button startSurveyButton = (Button) findViewById(R.id.surveyButton);
+        Button startSurveyButton = (Button) findViewById(R.id.buttonStartSurvey);
         startSurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +75,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDiagnosticButton);
+        final Button disableDeveloperButton = (Button) findViewById(R.id.buttonDisableDiagnostics);
 
         disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,15 +93,29 @@ public class MainActivity extends BaseActivity {
         upgradeOldFolderPath();
     }
 
+    private void checkForUpdate() {
+        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
+
+        // last update check date
+        Calendar lastCheckDate = Calendar.getInstance();
+        lastCheckDate.setTimeInMillis(updateLastCheck);
+
+        Calendar currentDate = Calendar.getInstance();
+        if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
+            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, MainApp.getVersion(this));
+            updateCheckTask.execute();
+        }
+    }
+
     private void upgradeOldFolderPath() {
         File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                Config.OLD_FILES_FOLDER_NAME + File.separator + Config.OLD_CALIBRATE_FOLDER_NAME);
+                AppConfig.OLD_FILES_FOLDER_NAME + File.separator + AppConfig.OLD_CALIBRATE_FOLDER_NAME);
 
         boolean folderFixed = true;
 
         if (oldFolder.exists()) {
             File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    Config.APP_EXTERNAL_PATH);
+                    AppConfig.APP_EXTERNAL_PATH);
 
             if (!newPath.exists()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -123,17 +123,17 @@ public class MainActivity extends BaseActivity {
             }
 
             newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    Config.APP_EXTERNAL_PATH + File.separator + Config.CALIBRATE_FOLDER_NAME);
+                    AppConfig.APP_EXTERNAL_PATH + File.separator + AppConfig.CALIBRATE_FOLDER_NAME);
             if (!newPath.exists()) {
                 folderFixed = oldFolder.renameTo(newPath);
             }
         }
 
         oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                Config.OLD_FILES_FOLDER_NAME);
+                AppConfig.OLD_FILES_FOLDER_NAME);
         if (oldFolder.exists() && folderFixed) {
             FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
-                    + Config.OLD_FILES_FOLDER_NAME);
+                    + AppConfig.OLD_FILES_FOLDER_NAME);
         }
     }
 
@@ -148,10 +148,10 @@ public class MainActivity extends BaseActivity {
 
     private void checkDiagnosticMode() {
         if (AppPreferences.isDiagnosticMode(this)) {
-            findViewById(R.id.diagnosticModeLayout).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
         } else {
-            if (findViewById(R.id.diagnosticModeLayout).getVisibility() == View.VISIBLE) {
-                findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
+            if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
+                findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
             }
         }
     }
@@ -233,7 +233,7 @@ public class MainActivity extends BaseActivity {
 
     private void startSurvey() {
         Intent LaunchIntent = getPackageManager()
-                .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
+                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
         if (LaunchIntent == null) {
             alertDependantAppNotFound();
         } else {
@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity {
         String mQuestionTitle;
         MainApp mainApp = (MainApp) getApplicationContext();
 
-        if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
+        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 external = true;
                 mQuestionTitle = intent.getStringExtra("questionTitle");
@@ -321,7 +321,7 @@ public class MainActivity extends BaseActivity {
                             }, null
                     );
                 } else {
-                    if (!MainApp.hasCameraFlash) {
+                    if (!MainApp.hasFeatureCameraFlash(this)) {
                         alertCameraFlashNotAvailable();
                     } else {
                         startTest();
@@ -336,7 +336,7 @@ public class MainActivity extends BaseActivity {
     private void startTest() {
         Context context = this;
         MainApp mainApp = (MainApp) context.getApplicationContext();
-        if (mainApp.currentTestInfo.getType() == MainApp.TestType.COLORIMETRIC_LIQUID) {
+        if (mainApp.currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
 
             if (!ColorUtils.validateColorRange(mainApp.currentTestInfo.getRanges())) {
                 Configuration conf = getResources().getConfiguration();
@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity {
             final Intent intent = new Intent(context, CameraSensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
 
-        } else if (mainApp.currentTestInfo.getType() == MainApp.TestType.SENSOR) {
+        } else if (mainApp.currentTestInfo.getType() == AppConfig.TestType.SENSOR) {
             final Intent intent = new Intent(context, SensorActivity.class);
             startActivityForResult(intent, REQUEST_TEST);
         }

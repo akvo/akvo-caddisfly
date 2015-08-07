@@ -33,7 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.usb.DeviceFilter;
@@ -178,7 +178,7 @@ public final class ExternalCameraFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_external_camera, container, false);
-        final View cameraView = view.findViewById(R.id.camera_view);
+        final View cameraView = view.findViewById(R.id.uvcCameraView);
         //cameraView.setOnLongClickListener(mOnLongClickListener);
         mUVCCameraView = (CameraViewInterface) cameraView;
         mUVCCameraView.setAspectRatio(PREVIEW_WIDTH / (float) PREVIEW_HEIGHT);
@@ -279,7 +279,7 @@ public final class ExternalCameraFragment extends DialogFragment {
             public void run() {
                 takePicture();
             }
-        }, Config.INITIAL_DELAY);
+        }, AppConfig.INITIAL_DELAY);
     }
 
     private void takePicture() {
@@ -295,7 +295,7 @@ public final class ExternalCameraFragment extends DialogFragment {
                     }
                 }
             }
-        }, Config.INITIAL_DELAY);
+        }, AppConfig.INITIAL_DELAY);
     }
 
     public boolean hasTestCompleted() {

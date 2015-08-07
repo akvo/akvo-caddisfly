@@ -23,7 +23,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.TypeListAdapter;
 import org.akvo.caddisfly.app.MainApp;
@@ -66,7 +66,7 @@ public class TypeListFragment extends ListFragment {
         assert mainApp != null;
 
         try {
-            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
+            final String path = Environment.getExternalStorageDirectory() + AppConfig.CONFIG_FOLDER + AppConfig.CONFIG_FILE;
 
             File file = new File(path);
             String text;

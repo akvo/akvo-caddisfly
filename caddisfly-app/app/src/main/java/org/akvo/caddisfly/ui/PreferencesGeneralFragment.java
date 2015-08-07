@@ -54,7 +54,6 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
-
         Preference calibrateColorsPreference = findPreference("calibrate");
         if (calibrateColorsPreference != null) {
             calibrateColorsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -65,7 +64,6 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
                 }
             });
         }
-
 
         return rootView;
     }

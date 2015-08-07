@@ -32,7 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.usb.DeviceFilter;
@@ -76,8 +76,8 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
             sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > Config.SAMPLING_COUNT_DEFAULT) {
-                        newValue = Config.SAMPLING_COUNT_DEFAULT;
+                    if (Integer.parseInt(String.valueOf(newValue)) > AppConfig.SAMPLING_COUNT_DEFAULT) {
+                        newValue = AppConfig.SAMPLING_COUNT_DEFAULT;
                     }
 
                     if (Integer.parseInt(String.valueOf(newValue)) < 1) {
@@ -98,7 +98,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                     Context context = getActivity();
                     MainApp mainApp = (MainApp) context.getApplicationContext();
                     mainApp.initializeCurrentTest();
-                    if (mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC_LIQUID) {
+                    if (mainApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
                         mainApp.setDefaultTest();
                     }
 

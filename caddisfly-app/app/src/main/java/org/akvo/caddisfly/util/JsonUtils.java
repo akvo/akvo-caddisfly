@@ -18,7 +18,7 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.json.JSONArray;
@@ -71,17 +71,17 @@ public final class JsonUtils {
                     }
                 }
 
-                MainApp.TestType type = MainApp.TestType.COLORIMETRIC_LIQUID;
+                AppConfig.TestType type = AppConfig.TestType.COLORIMETRIC_LIQUID;
                 if (item.has("type")) {
                     switch (item.getInt("type")) {
                         case 0:
-                            type = MainApp.TestType.COLORIMETRIC_LIQUID;
+                            type = AppConfig.TestType.COLORIMETRIC_LIQUID;
                             break;
                         case 1:
-                            type = MainApp.TestType.COLORIMETRIC_STRIP;
+                            type = AppConfig.TestType.COLORIMETRIC_STRIP;
                             break;
                         case 2:
-                            type = MainApp.TestType.SENSOR;
+                            type = AppConfig.TestType.SENSOR;
                     }
                 }
 

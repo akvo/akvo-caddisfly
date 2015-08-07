@@ -40,7 +40,6 @@ public final class DataHelper {
 
     public static int getAverageColor(ArrayList<Result> colors, int samplingTimes) {
 
-//      return colors.get(colors.size() - 1);
         int counter = 0;
 
         int red = 0;

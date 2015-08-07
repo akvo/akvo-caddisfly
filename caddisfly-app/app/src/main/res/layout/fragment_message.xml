@@ -26,7 +26,7 @@
     tools:ignore="Overdraw">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -39,7 +39,7 @@
 
 
     <TextView
-        android:id="@+id/dilutionTextView"
+        android:id="@+id/textDilution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -70,7 +70,7 @@
             android:paddingStart="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:id="@+id/messageTextView1"
+                android:id="@+id/textMessage1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -79,7 +79,7 @@
                 tools:text="@string/highLevelsFound" />
 
             <TextView
-                android:id="@+id/messageTextView2"
+                android:id="@+id/textMessage2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -90,7 +90,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/endSurveyButton"
+            android:id="@+id/buttonOk"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

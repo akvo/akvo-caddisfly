@@ -22,7 +22,7 @@
     tools:context="org.akvo.caddisfly.ui.CameraFragment">
 
     <FrameLayout
-        android:id="@+id/camera_preview"
+        android:id="@+id/layoutCameraPreview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

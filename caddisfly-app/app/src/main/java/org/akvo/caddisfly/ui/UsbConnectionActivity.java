@@ -65,8 +65,8 @@ public class UsbConnectionActivity extends AppCompatActivity {
             getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
         }
 
-        mConnectedTextView = (TextView) findViewById(R.id.connectedTextView);
-        mProgressLayout = (LinearLayout) findViewById(R.id.progressLayout);
+        mConnectedTextView = (TextView) findViewById(R.id.textConnected);
+        mProgressLayout = (LinearLayout) findViewById(R.id.layoutProgress);
 
         //http://developer.android.com/guide/topics/connectivity/usb/host.html
 //        filter = new IntentFilter();

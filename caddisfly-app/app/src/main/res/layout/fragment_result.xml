@@ -25,7 +25,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/titleView"
+        android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -36,7 +36,7 @@
         tools:text="Electrical Conductivity" />
 
     <TextView
-        android:id="@+id/dilutionTextView"
+        android:id="@+id/textDilution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -51,7 +51,7 @@
         tools:text="@string/timesDilution" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/textResult"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_gravity="center"
@@ -61,7 +61,7 @@
         tools:text="15000" />
 
     <TextView
-        android:id="@+id/ppmText"
+        android:id="@+id/textUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -71,7 +71,7 @@
         tools:text="ppm" />
 
     <Button
-        android:id="@+id/endSurveyButton"
+        android:id="@+id/buttonOk"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

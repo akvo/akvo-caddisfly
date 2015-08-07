@@ -22,20 +22,20 @@
     tools:layout="@layout/fragment_external_camera">
 
     <org.akvo.caddisfly.widget.UVCCameraTextureView
-        android:id="@+id/camera_view"
+        android:id="@+id/uvcCameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
     <ImageView
-        android:id="@+id/frame_image"
+        android:id="@+id/imageCameraPreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/camera_view"
-        android:layout_alignEnd="@+id/camera_view"
-        android:layout_alignStart="@+id/camera_view"
-        android:layout_alignTop="@+id/camera_view"
+        android:layout_alignBottom="@+id/uvcCameraView"
+        android:layout_alignEnd="@+id/uvcCameraView"
+        android:layout_alignStart="@+id/uvcCameraView"
+        android:layout_alignTop="@+id/uvcCameraView"
         android:contentDescription="@null"
         android:src="@drawable/preview_border" />
 

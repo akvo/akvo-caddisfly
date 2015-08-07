@@ -48,10 +48,10 @@ public class ResultFragment extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.fragment_result, container, false);
 
-        TextView resultView = (TextView) view.findViewById(R.id.result);
-        TextView titleView = (TextView) view.findViewById(R.id.titleView);
-        TextView unitTextView = (TextView) view.findViewById(R.id.ppmText);
-        Button button = (Button) view.findViewById(R.id.endSurveyButton);
+        TextView resultView = (TextView) view.findViewById(R.id.textResult);
+        TextView titleView = (TextView) view.findViewById(R.id.textTitle);
+        TextView unitTextView = (TextView) view.findViewById(R.id.textUnit);
+        Button button = (Button) view.findViewById(R.id.buttonOk);
 
         //final Bundle bundle = getArguments().getBundle("message");
         button.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class ResultFragment extends DialogFragment {
             resultView.setText(String.format("%.2f", result));
         }
 
-        TextView dilutionTextView = (TextView) view.findViewById(R.id.dilutionTextView);
+        TextView dilutionTextView = (TextView) view.findViewById(R.id.textDilution);
         int dilutionLevel = getArguments().getInt("dilution", -1);
 
         //todo: remove hard coding of dilution levels

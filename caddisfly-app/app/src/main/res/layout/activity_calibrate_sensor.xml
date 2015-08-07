@@ -35,7 +35,7 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
-            android:id="@+id/testTitleTextView"
+            android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -57,7 +57,7 @@
             android:visibility="visible">
 
             <Button
-                android:id="@+id/startButton"
+                android:id="@+id/buttonStartCalibrate"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,13 +93,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:labelFor="@+id/lowValueEditText"
+            android:labelFor="@+id/editLowValue"
             android:lineSpacingExtra="8dp"
             android:text="@string/suspendEcSensorInLow"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/lowValueEditText"
+            android:id="@+id/editLowValue"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -109,7 +109,7 @@
             tools:text="1234" />
 
         <Button
-            android:id="@+id/lowButton"
+            android:id="@+id/buttonCalibrateLow"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,12 +150,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:labelFor="@+id/highValueEditText"
+            android:labelFor="@+id/editHighValue"
             android:text="@string/suspendEcSensorInHigh"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/highValueEditText"
+            android:id="@+id/editHighValue"
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -165,7 +165,7 @@
             tools:text="123456" />
 
         <Button
-            android:id="@+id/highButton"
+            android:id="@+id/buttonCalibrateHigh"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

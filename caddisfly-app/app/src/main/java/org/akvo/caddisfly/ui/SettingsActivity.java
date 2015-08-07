@@ -52,16 +52,16 @@ public class SettingsActivity extends BaseActivity
         setContentView(R.layout.activity_settings);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.content, new PreferencesGeneralFragment())
+                .replace(R.id.layoutContent, new PreferencesGeneralFragment())
                 .commit();
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.content2, new PreferencesOtherFragment())
+                .replace(R.id.layoutContent2, new PreferencesOtherFragment())
                 .commit();
 
         if (AppPreferences.isDiagnosticMode(this)) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.content3, new PreferencesDiagnosticFragment())
+                    .add(R.id.layoutContent3, new PreferencesDiagnosticFragment())
                     .commit();
         }
     }

@@ -35,7 +35,7 @@
         tools:ignore="UselessParent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonColor"
             android:layout_width="90dp"
             android:layout_height="44dp"
             android:layout_marginBottom="7dp"
@@ -50,7 +50,7 @@
         <RelativeLayout android:layout_gravity="center_vertical">
 
             <TextView
-                android:id="@+id/ppmText"
+                android:id="@+id/textUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textIsSelectable="false"
@@ -63,7 +63,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/rgbText"
+                android:id="@+id/textRgb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textIsSelectable="false"
@@ -72,7 +72,7 @@
                 tools:text="r: 234 156 120" />
 
             <TextView
-                android:id="@+id/hsvText"
+                android:id="@+id/textHsv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textIsSelectable="false"
@@ -81,7 +81,7 @@
                 tools:text="h: 234 156 120" />
 
             <TextView
-                android:id="@+id/brightnessText"
+                android:id="@+id/textBrightness"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textIsSelectable="false"
@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/error"
+            android:id="@+id/imageError"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
@@ -104,7 +104,7 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/moreArrow"
+            android:id="@+id/imageArrow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"

@@ -20,13 +20,13 @@
     android:background="@drawable/gradient">
 
     <RelativeLayout
-        android:id="@+id/diagnosticModeLayout"
+        android:id="@+id/layoutDiagnostics"
         android:layout_width="500dp"
         android:layout_height="match_parent"
         android:visibility="gone">
 
         <Button
-            android:id="@+id/disableDiagnosticButton"
+            android:id="@+id/buttonDisableDiagnostics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
@@ -36,7 +36,6 @@
             tools:ignore="RelativeOverlap" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="560dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="-90dp"
@@ -57,7 +56,7 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/surveyButton"
+            android:id="@+id/buttonStartSurvey"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

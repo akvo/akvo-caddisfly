@@ -24,7 +24,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 
 import java.io.BufferedInputStream;
@@ -97,7 +97,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
                 File oldFile = new File(String.format("%s/%s", Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        .getPath(), Config.UPDATE_FILE_NAME));
+                        .getPath(), AppConfig.UPDATE_FILE_NAME));
 
                 if (oldFile.exists()) {
                     //noinspection ResultOfMethodCallIgnored
@@ -113,12 +113,12 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                 OutputStream output =
                         new FileOutputStream(String.format("%s/%s", Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                                .getPath(), Config.UPDATE_FILE_NAME));
+                                .getPath(), AppConfig.UPDATE_FILE_NAME));
 
                 // this will be useful so that you can show a typical 0-100% progress bar
                 // todo:fix content length problem
                 //int fileLength = connection.getContentLength();
-                int fileLength = Config.UPDATE_FILE_TYPICAL_SIZE;
+                int fileLength = AppConfig.UPDATE_FILE_TYPICAL_SIZE;
 
                 //noinspection TryFinallyCanBeTryWithResources
                 try {
@@ -205,7 +205,7 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
             String filePath =
                     String.format("%s/%s", Environment
                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                            .getPath(), Config.UPDATE_FILE_NAME);
+                            .getPath(), AppConfig.UPDATE_FILE_NAME);
             Uri fileLoc = Uri.fromFile(new File(filePath));
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(fileLoc, "application/vnd.android.package-archive");
@@ -213,15 +213,4 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
             mContext.startActivity(intent);
         }
     }
-
-  /*  public void stop() {
-        if (progressDialog != null) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            progressDialog = null;
-        }
-
-    }*/
-
 }

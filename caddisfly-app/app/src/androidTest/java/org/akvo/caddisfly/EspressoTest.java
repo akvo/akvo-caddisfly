@@ -47,6 +47,7 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.NetworkUtils;
+import org.akvo.caddisfly.util.UpdateCheckTask;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -135,7 +136,7 @@ public class EspressoTest
         stringHashMapFR.put("language", "Français");
         stringHashMapFR.put("fluoride", "Fluor");
         stringHashMapFR.put("chlorine", "Chlore libre");
-        stringHashMapFR.put("electricalConductivity", "Conductivité électrique");
+        stringHashMapFR.put("electricalConductivity", "Conductivité Electrique");
         stringHashMapFR.put("unnamedDataPoint", "Unnamed data point");
         stringHashMapFR.put("createNewDataPoint", "CREATE NEW DATA POINT");
 
@@ -181,7 +182,7 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withId(R.id.disableDiagnosticButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonDisableDiagnostics)).check(matches(isDisplayed()));
 
         leaveDiagnosticMode();
 
@@ -214,7 +215,7 @@ public class EspressoTest
 
         goToMainScreen();
 
-        final Button button = (Button) getActivity().findViewById(R.id.surveyButton);
+        final Button button = (Button) getActivity().findViewById(R.id.buttonStartSurvey);
         assertNotNull(button);
 
         try {
@@ -275,9 +276,6 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        //Test Types Screen
-        takeScreenshot();
-
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.menu_load)).perform(click());
@@ -298,6 +296,9 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
+        //Test Types Screen
+        takeScreenshot();
+
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         //Calibrate Ranges Screen
@@ -306,7 +307,7 @@ public class EspressoTest
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
         mDevice.pressBack();
         mDevice.pressBack();
@@ -332,7 +333,7 @@ public class EspressoTest
         //Calibrate EC
         takeScreenshot();
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStartCalibrate)).perform(click());
 
         //EC not found dialog
         takeScreenshot();
@@ -341,9 +342,9 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withId(R.id.surveyButton)).check(matches(isClickable()));
+        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
 
-        onView(withId(R.id.surveyButton)).perform(click());
+        onView(withId(R.id.buttonStartSurvey)).perform(click());
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -359,7 +360,7 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
         //Dilution dialog
         takeScreenshot();
@@ -372,9 +373,9 @@ public class EspressoTest
 
         startApp();
 
-        onView(withId(R.id.surveyButton)).check(matches(isClickable()));
+        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
 
-        onView(withId(R.id.surveyButton)).perform(click());
+        onView(withId(R.id.buttonStartSurvey)).perform(click());
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -414,7 +415,7 @@ public class EspressoTest
         //Connect EC Sensor Screen
         takeScreenshot();
 
-        onView(withId(R.id.backButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         try {
             mDevice.findObject(new UiSelector().text("Next")).click();
@@ -429,7 +430,7 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withId(R.id.backButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         try {
             mDevice.findObject(new UiSelector().text("Next")).click();
@@ -484,11 +485,11 @@ public class EspressoTest
 
     private void goToMainScreen() {
 
-        Button button = (Button) getCurrentActivity().findViewById(R.id.surveyButton);
+        Button button = (Button) getCurrentActivity().findViewById(R.id.buttonStartSurvey);
         while (button == null) {
             Espresso.pressBack();
             mDevice.waitForWindowUpdate("", 2000);
-            button = (Button) getCurrentActivity().findViewById(R.id.surveyButton);
+            button = (Button) getCurrentActivity().findViewById(R.id.buttonStartSurvey);
         }
     }
 
@@ -595,9 +596,9 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.surveyButton)).check(matches(isClickable()));
+        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
 
-        onView(withId(R.id.surveyButton)).perform(click());
+        onView(withId(R.id.buttonStartSurvey)).perform(click());
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -613,15 +614,15 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.percentButton1)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.percentButton2)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.noDilutionButton)).perform(click());
+        onView(withId(R.id.buttonNoDilution)).perform(click());
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
         mDevice.waitForWindowUpdate("", 1000);
 
@@ -655,7 +656,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStartCalibrate)).perform(click());
 
         onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
         onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
@@ -779,9 +780,9 @@ public class EspressoTest
     }
 
     private void leaveDiagnosticMode() {
-        onView(withId(R.id.disableDiagnosticButton)).perform(click());
+        onView(withId(R.id.buttonDisableDiagnostics)).perform(click());
 
-        onView(withId(R.id.disableDiagnosticButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.buttonDisableDiagnostics)).check(matches(not(isDisplayed())));
 
     }
 
@@ -803,15 +804,15 @@ public class EspressoTest
 
         onData(is(instanceOf(ResultRange.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(index).onChildView(withId(R.id.button))
+                .atPosition(index).onChildView(withId(R.id.buttonColor))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
         onView(withText(String.format("%.2f ppm", value))).perform(click());
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
         try {
-            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -820,7 +821,7 @@ public class EspressoTest
 
         onData(is(instanceOf(ResultRange.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(index).onChildView(withId(R.id.button))
+                .atPosition(index).onChildView(withId(R.id.buttonColor))
                 .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
 
 
@@ -898,14 +899,14 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.noDilutionButton)).perform(click());
+        onView(withId(R.id.buttonNoDilution)).perform(click());
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
         try {
-            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -913,7 +914,7 @@ public class EspressoTest
         //Result dialog
         takeScreenshot();
 
-        onView(withId(R.id.endSurveyButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         mDevice.pressBack();
 
@@ -990,20 +991,20 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withId(R.id.noDilutionButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.noDilutionButton)).perform(click());
+        onView(withId(R.id.buttonNoDilution)).perform(click());
 
-        onView(allOf(withId(R.id.dilutionTextView), withText(R.string.noDilution)))
+        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.dilution1TextView), withText(R.string.noDilution)))
+        onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1011,7 +1012,7 @@ public class EspressoTest
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.endSurveyButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         try {
 
@@ -1025,23 +1026,23 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withId(R.id.percentButton1)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.percentButton1)).perform(click());
+        onView(withId(R.id.buttonDilution1)).perform(click());
 
-        onView(allOf(withId(R.id.dilutionTextView), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         //Test Start Screen
         takeScreenshot();
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1052,7 +1053,7 @@ public class EspressoTest
         //High levels found dialog
         takeScreenshot();
 
-        onView(withId(R.id.endSurveyButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         try {
 
@@ -1066,30 +1067,30 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withId(R.id.percentButton2)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.percentButton2)).perform(click());
+        onView(withId(R.id.buttonDilution2)).perform(click());
 
-        onView(allOf(withId(R.id.dilutionTextView), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.startButton)).perform(click());
+        onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.dilution1TextView), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
         //Test Progress Screen
         takeScreenshot();
 
         try {
-            Thread.sleep(14000 + (Config.INITIAL_DELAY + 5000) * Config.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         onView(withText("10.00")).check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.endSurveyButton)).perform(click());
+        onView(withId(R.id.buttonOk)).perform(click());
 
         mDevice.pressBack();
 
@@ -1106,9 +1107,54 @@ public class EspressoTest
 
     public void testZErrors() {
 
+        mCounter += 4;
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
+
         resetLanguage();
 
         goToMainScreen();
+
+        final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(),
+                true, MainApp.getVersion(this.getInstrumentation().getTargetContext()));
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = UpdateCheckTask.class.getDeclaredMethod("alertUpdateNotFound");
+                    method.setAccessible(true);
+                    method.invoke(updateCheckTask);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Update not found
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = UpdateCheckTask.class.getDeclaredMethod("alertUpdateAvailable");
+                    method.setAccessible(true);
+                    method.invoke(updateCheckTask);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Update available
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
 
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -1194,12 +1240,17 @@ public class EspressoTest
 
         //Error loading config
         takeScreenshot();
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        goToMainScreen();
+
     }
 
     private void saveCalibration() {
         File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                File.separator + Config.CALIBRATE_FOLDER_NAME;
+        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
         FileUtils.saveToFile(path, "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
@@ -1212,8 +1263,8 @@ public class EspressoTest
 
     private void saveHighLevelCalibration() {
         File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                File.separator + Config.CALIBRATE_FOLDER_NAME;
+        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
         FileUtils.saveToFile(path, "HighLevelTest", "0.0=255  88  47\n"
                 + "0.5=255  60  37\n"
@@ -1224,8 +1275,8 @@ public class EspressoTest
 
     private void saveLowLevelCalibration() {
         File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                File.separator + Config.CALIBRATE_FOLDER_NAME;
+        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
         FileUtils.saveToFile(path, "LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"

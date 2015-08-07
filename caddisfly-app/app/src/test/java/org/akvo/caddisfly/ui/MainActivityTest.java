@@ -22,8 +22,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.BuildConfig;
-import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.ResultRange;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
@@ -58,7 +58,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -74,7 +74,7 @@ public class MainActivityTest {
         }
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
-                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
+                AppConfig.MAX_COLOR_DISTANCE);
         assertEquals(-1.0, bundle.getDouble("resultValue"));
     }
 
@@ -90,7 +90,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -106,7 +106,7 @@ public class MainActivityTest {
         }
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
-                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
+                AppConfig.MAX_COLOR_DISTANCE);
         assertEquals(Color.rgb(255, 156, 149), bundle.getInt("resultColor"));
         assertEquals(1.1, bundle.getDouble("resultValue"));
     }
@@ -123,7 +123,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -139,7 +139,7 @@ public class MainActivityTest {
         }
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
-                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
+                AppConfig.MAX_COLOR_DISTANCE);
         assertEquals(Color.rgb(255, 146, 139), bundle.getInt("resultColor"));
         assertEquals(1.0, bundle.getDouble("resultValue"));
     }
@@ -152,7 +152,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -168,7 +168,7 @@ public class MainActivityTest {
         }
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
-                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
+                AppConfig.MAX_COLOR_DISTANCE);
         assertEquals(1.5, bundle.getDouble("resultValue"));
     }
 
@@ -180,7 +180,7 @@ public class MainActivityTest {
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(254, 101, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(254, 115, 138)));
@@ -196,7 +196,7 @@ public class MainActivityTest {
         }
 
         Bundle bundle = ColorUtils.getPpmValue(bitmap, testInfo, 50,
-                org.akvo.caddisfly.Config.MAX_COLOR_DISTANCE);
+                AppConfig.MAX_COLOR_DISTANCE);
         assertEquals(1.0, bundle.getDouble("resultValue"));
     }
 
@@ -238,7 +238,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -250,7 +250,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration1() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -262,7 +262,7 @@ public class MainActivityTest {
 
     @Test
     public void testRangeSlope() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -275,7 +275,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration2() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 87, 121)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 124, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 146, 139)));
@@ -288,7 +288,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration3() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 146, 139)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 87, 181)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 124, 157)));
@@ -301,7 +301,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration4() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 110, 15)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 139, 137)));
@@ -314,7 +314,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration5() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 110, 15)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 139, 137)));
@@ -327,7 +327,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration6() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 177)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(254, 101, 157)));
         testInfo.addRange(new ResultRange(1, Color.rgb(254, 115, 138)));
@@ -340,7 +340,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration7() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 0, 159)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(254, 28, 142)));
         testInfo.addRange(new ResultRange(1, Color.rgb(254, 56, 126)));
@@ -353,7 +353,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration8() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(250, 0, 0)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(240, 0, 0)));
         testInfo.addRange(new ResultRange(1, Color.rgb(225, 0, 0)));
@@ -367,7 +367,7 @@ public class MainActivityTest {
 
     @Test
     public void testValidateCalibration9() {
-        TestInfo testInfo = new TestInfo(null, "", "", MainApp.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo(null, "", "", AppConfig.TestType.COLORIMETRIC_LIQUID);
         testInfo.addRange(new ResultRange(0, Color.rgb(255, 88, 47)));
         testInfo.addRange(new ResultRange(0.5, Color.rgb(255, 60, 37)));
         testInfo.addRange(new ResultRange(1, Color.rgb(255, 35, 27)));

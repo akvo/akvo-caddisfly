@@ -19,49 +19,40 @@ package org.akvo.caddisfly;
 /*
 Global Configuration
  */
-public class Config {
+public class AppConfig {
 
     // For external app connection
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
-
     // Used to check if flow app is installed
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
-
     // Caddisfly update file name
     public static final String UPDATE_FILE_NAME = "akvo_caddisfly_update.apk";
-
     // Caddisfly update check path
     public static final String UPDATE_CHECK_URL
             = "http://caddisfly.ternup.com/akvoapp/v.txt";
-
     // Caddisfly update path
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
     //todo: remove this temporary file size
     public static final int UPDATE_FILE_TYPICAL_SIZE = 2500000;
-
     public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
     public static final String CALIBRATE_FOLDER_NAME = "calibration";
-
     public static final String APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
-
     // Tag for debug log filtering
     public static final String DEBUG_TAG = "Caddisfly";
-
     public static final String RESULT_VALUE_KEY = "resultValue";
     public static final String RESULT_COLOR_KEY = "resultColor";
-
     public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
     public static final String CONFIG_FILE = "tests.json";
-
     // width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     public static final int INITIAL_DELAY = 6000;
     public static final int MAX_COLOR_DISTANCE = 30;
     public static final double MIN_VALID_COLOR_DISTANCE = 5;
-
     public static final int SAMPLING_COUNT_DEFAULT = 5;
     public static final float SOUND_VOLUME = 1f;
+
+    public enum TestType {COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR}
 
 }

@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.MainApp;
@@ -82,17 +82,17 @@ public class VerboseResultFragment extends DialogFragment {
         MainApp mainApp = (MainApp) getActivity().getApplicationContext();
 
         if (mainApp.currentTestInfo.getCode().isEmpty() ||
-                mainApp.currentTestInfo.getType() != MainApp.TestType.COLORIMETRIC_LIQUID) {
+                mainApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
             mainApp.setDefaultTest();
         }
 
         int maxDistance = AppPreferences.getColorDistanceTolerance(getActivity());
 
         Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap,
-                mainApp.currentTestInfo, Config.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
+                mainApp.currentTestInfo, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
 
-        double result = resultValue.getDouble(Config.RESULT_VALUE_KEY, -1);
-        int color = resultValue.getInt(Config.RESULT_COLOR_KEY, 0);
+        double result = resultValue.getDouble(AppConfig.RESULT_VALUE_KEY, -1);
+        int color = resultValue.getInt(AppConfig.RESULT_COLOR_KEY, 0);
         int swatchColor = resultValue.getInt("MatchedColor", 0);
 
         textQuality.setText(String.format("quality: %.0f%%", resultValue.getDouble("quality", 0)));

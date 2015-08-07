@@ -2,7 +2,7 @@ package org.akvo.caddisfly.app;
 
 import android.content.Context;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
@@ -23,18 +23,18 @@ public class AppPreferences {
     public static int getSamplingTimes(Context context) {
         if (isDiagnosticMode(context)) {
             return Integer.parseInt(PreferencesUtils.getString(context,
-                    R.string.samplingsTimeKey, String.valueOf(Config.SAMPLING_COUNT_DEFAULT)));
+                    R.string.samplingsTimeKey, String.valueOf(AppConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
-            return Config.SAMPLING_COUNT_DEFAULT;
+            return AppConfig.SAMPLING_COUNT_DEFAULT;
         }
     }
 
     public static int getColorDistanceTolerance(Context context) {
         if (isDiagnosticMode(context)) {
             return Integer.parseInt(PreferencesUtils.getString(context,
-                    R.string.colorDistanceToleranceKey, String.valueOf(Config.MAX_COLOR_DISTANCE)));
+                    R.string.colorDistanceToleranceKey, String.valueOf(AppConfig.MAX_COLOR_DISTANCE)));
         } else {
-            return Config.MAX_COLOR_DISTANCE;
+            return AppConfig.MAX_COLOR_DISTANCE;
         }
     }
 

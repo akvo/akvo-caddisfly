@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.MainApp;
 import org.akvo.caddisfly.model.TestInfo;
@@ -44,9 +45,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         MainApp mainApp = (MainApp) getApplicationContext();
         mainApp.setSwatches(testInfo.getCode());
 
-
-        if (testInfo.getType() == MainApp.TestType.COLORIMETRIC_LIQUID) {
-            if (!MainApp.hasCameraFlash) {
+        if (testInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
+            if (!MainApp.hasFeatureCameraFlash(this)) {
                 AlertUtils.showError(this, R.string.cannotCalibrate,
                         getString(R.string.errorCameraFlashRequired),
                         null,

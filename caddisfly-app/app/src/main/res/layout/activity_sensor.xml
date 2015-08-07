@@ -27,7 +27,7 @@
     tools:context="org.akvo.caddisfly.ui.SensorActivity">
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -42,14 +42,13 @@
         android:id="@+id/connectionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
+        android:layout_below="@+id/textTitle"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/errorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -60,7 +59,6 @@
             tools:ignore="UnusedAttribute" />
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -69,7 +67,7 @@
             android:src="@drawable/usb" />
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/buttonOk"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,27 +81,27 @@
     </LinearLayout>
 
     <com.pnikosis.materialishprogress.ProgressWheel
-        android:id="@+id/progress_wheel"
+        android:id="@+id/progressWait"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_below="@+id/titleTextView"
+        android:layout_below="@+id/textTitle"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         wheel:matProg_barColor="#ffd8cd23"
         wheel:matProg_progressIndeterminate="true" />
 
     <LinearLayout
-        android:id="@+id/resultLayout"
+        android:id="@+id/layoutResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
+        android:layout_below="@+id/textTitle"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/resultTextView"
+            android:id="@+id/textResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-12dp"
@@ -113,7 +111,7 @@
             tools:text="20000" />
 
         <TextView
-            android:id="@+id/unitsTextView"
+            android:id="@+id/textUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.7"
@@ -128,7 +126,7 @@
             android:layout_marginTop="16dp">
 
             <ImageView
-                android:id="@+id/temperatureImageView"
+                android:id="@+id/imageTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
@@ -143,7 +141,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/temperatureTextView"
+                    android:id="@+id/textTemperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -152,7 +150,7 @@
                     tools:text="24°C" />
 
                 <TextView
-                    android:id="@+id/ecValueTextView"
+                    android:id="@+id/textEcValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -163,7 +161,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/okButton"
+            android:id="@+id/buttonAcceptResult"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

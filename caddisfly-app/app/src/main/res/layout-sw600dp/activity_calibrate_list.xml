@@ -33,7 +33,7 @@
     -->
 
     <fragment
-        android:id="@+id/calibrate_list"
+        android:id="@+id/fragmentCalibrateList"
         android:name="org.akvo.caddisfly.ui.CalibrateListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

@@ -48,7 +48,7 @@
                 android:contentDescription="@null" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonColor"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
@@ -66,7 +66,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/rgbText"
+                    android:id="@+id/textRgb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -79,7 +79,7 @@
     </TableLayout>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/resultList"
+        android:id="@+id/listResults"
         android:layout_width="match_parent"
         android:layout_height="255dp"
         android:clickable="false"

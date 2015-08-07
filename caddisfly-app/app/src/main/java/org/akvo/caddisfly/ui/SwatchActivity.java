@@ -32,7 +32,7 @@ public class SwatchActivity extends BaseActivity {
             SwatchFragment fragment = new SwatchFragment();
             //fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, fragment)
+                    .add(R.id.layoutContainer, fragment)
                     .commit();
 
         }

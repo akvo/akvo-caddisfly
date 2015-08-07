@@ -50,10 +50,8 @@ public class SensorActivity extends BaseActivity {
     private static final int readLength = 512;
     private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
     private static final int DEFAULT_BAUD_RATE = 9600;
-    //private static final int DEFAULT_BUFFER_SIZE = 1028;
     private static final int REQUEST_DELAY = 4000;
     private static final int INITIAL_DELAY = 1000;
-    // original ///////////////////////////////
     private final StringBuilder mReadData = new StringBuilder();
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private int byteCount = 0;
@@ -63,15 +61,10 @@ public class SensorActivity extends BaseActivity {
     private FT_Device ftDev = null;
     private int DevCount = -1;
     private int currentIndex = -1;
-    /*graphical objects*/
-    //ArrayAdapter<CharSequence> portAdapter;
-    /*local variables*/
     private byte stopBit; /*1:1stop bits, 2:2 stop bits*/
     private byte dataBit; /*8:8bit, 7: 7bit*/
     private byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
     private byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
-    //private int portNumber; /*port number*/
-    //ArrayList<CharSequence> portNumberList;
     private byte[] readData;
     private char[] readDataToText;
     private String mEc25Value = "";
@@ -138,17 +131,17 @@ public class SensorActivity extends BaseActivity {
             getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
         }
 
-        mResultTextView = (TextView) findViewById(R.id.resultTextView);
-        mTemperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
-        mEcValueTextView = (TextView) findViewById(R.id.ecValueTextView);
-        mProgressBar = (ProgressWheel) findViewById(R.id.progress_wheel);
-        mTemperatureImageView = (ImageView) findViewById(R.id.temperatureImageView);
-        mUnitsTextView = (TextView) findViewById(R.id.unitsTextView);
+        mResultTextView = (TextView) findViewById(R.id.textResult);
+        mTemperatureTextView = (TextView) findViewById(R.id.textTemperature);
+        mEcValueTextView = (TextView) findViewById(R.id.textEcValue);
+        mProgressBar = (ProgressWheel) findViewById(R.id.progressWait);
+        mTemperatureImageView = (ImageView) findViewById(R.id.imageTemperature);
+        mUnitsTextView = (TextView) findViewById(R.id.textUnit);
 
         final MainApp mainApp = (MainApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
 
-        Button backButton = (Button) findViewById(R.id.backButton);
+        Button backButton = (Button) findViewById(R.id.buttonOk);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +153,7 @@ public class SensorActivity extends BaseActivity {
         mTemperatureImageView.setVisibility(View.GONE);
         mUnitsTextView.setVisibility(View.GONE);
 
-        mOkButton = (Button) findViewById(R.id.okButton);
+        mOkButton = (Button) findViewById(R.id.buttonAcceptResult);
         mOkButton.setVisibility(View.INVISIBLE);
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,10 +170,10 @@ public class SensorActivity extends BaseActivity {
         });
 
         mConnectionLayout = (LinearLayout) findViewById(R.id.connectionLayout);
-        mResultLayout = (LinearLayout) findViewById(R.id.resultLayout);
+        mResultLayout = (LinearLayout) findViewById(R.id.layoutResult);
 
         if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
-            ((TextView) findViewById(R.id.titleTextView)).setText(
+            ((TextView) findViewById(R.id.textTitle)).setText(
                     mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
             mUnitsTextView.setText(mainApp.currentTestInfo.getUnit());
@@ -374,7 +367,7 @@ public class SensorActivity extends BaseActivity {
 
         ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
 
-        //Toast.makeText(this, "Config done", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "AppConfig done", Toast.LENGTH_SHORT).show();
     }
 
     private void SendMessage() {

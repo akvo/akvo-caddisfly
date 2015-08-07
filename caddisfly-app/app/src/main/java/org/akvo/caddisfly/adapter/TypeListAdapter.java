@@ -53,7 +53,7 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
             rowView.setVisibility(View.GONE);
         } else {
             rowView = inflater.inflate(R.layout.row_type, parent, false);
-            TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
+            TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
             ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
         }
         return rowView;

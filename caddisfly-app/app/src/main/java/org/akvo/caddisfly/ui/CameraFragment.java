@@ -39,7 +39,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ImageUtils;
@@ -51,7 +51,7 @@ import java.util.List;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
- * Use the {@link org.akvo.caddisfly.ui.CameraFragment#newInstance} factory method to
+ * Use the {@link ...CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
@@ -184,7 +184,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
                             }
                         }
-                    }, Config.INITIAL_DELAY);
+                    }, AppConfig.INITIAL_DELAY);
                 }
 
             } catch (Exception e) {
@@ -217,7 +217,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
         if (qOpened) {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-            FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
+            FrameLayout preview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
             preview.addView(mPreview);
 
             if (mPreviewOnly) {
@@ -451,7 +451,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                         VerboseResultFragment verboseResultFragment =
                                 VerboseResultFragment.newInstance(
                                         ImageUtils.getCroppedBitmap(bitmap,
-                                                Config.SAMPLE_CROP_LENGTH_DEFAULT),
+                                                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT),
                                         bitmap, bitmap.getWidth() + " x " + bitmap.getHeight(), mFragment);
 
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();

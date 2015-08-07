@@ -21,7 +21,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 
 import java.io.BufferedReader;
@@ -90,12 +90,12 @@ class UpdateChecker {
                             updateAvailable = true;
                         }
                     } catch (NumberFormatException e) {
-                        Log.e(Config.DEBUG_TAG,
+                        Log.e(AppConfig.DEBUG_TAG,
                                 "Invalid number online");
                     }
 
                 } else {
-                    Log.e(Config.DEBUG_TAG, "Invalid version code in app");
+                    Log.e(AppConfig.DEBUG_TAG, "Invalid version code in app");
                 }
                 return true;
             }
@@ -122,7 +122,7 @@ class UpdateChecker {
                     .getPackageInfo(mContext.getPackageName(), 0).versionCode;
             return code; // Found the code!
         } catch (Exception e) {
-            Log.e(Config.DEBUG_TAG, "Version Code not available");
+            Log.e(AppConfig.DEBUG_TAG, "Version Code not available");
         }
 
         return -1; // There was a problem.
@@ -188,11 +188,11 @@ class UpdateChecker {
             result = bufferedReader.readLine();
             return result;
         } catch (MalformedURLException e) {
-            Log.e(Config.DEBUG_TAG, "Invalid URL");
+            Log.e(AppConfig.DEBUG_TAG, "Invalid URL");
         } catch (IOException e) {
-            Log.e(Config.DEBUG_TAG, "IO exception");
+            Log.e(AppConfig.DEBUG_TAG, "IO exception");
         } catch (Exception e) {
-            Log.e(Config.DEBUG_TAG, e.getMessage());
+            Log.e(AppConfig.DEBUG_TAG, e.getMessage());
         }
         return "File read error";
     }

@@ -39,9 +39,9 @@ public class DilutionFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.fragment_dilution, container, false);
         getDialog().setTitle(R.string.selectDilution);
 
-        Button noDilutionButton = (Button) view.findViewById(R.id.noDilutionButton);
-        Button percentButton1 = (Button) view.findViewById(R.id.percentButton1);
-        Button percentButton2 = (Button) view.findViewById(R.id.percentButton2);
+        Button noDilutionButton = (Button) view.findViewById(R.id.buttonNoDilution);
+        Button percentButton1 = (Button) view.findViewById(R.id.buttonDilution1);
+        Button percentButton2 = (Button) view.findViewById(R.id.buttonDilution2);
 
         // todo: remove hardcoding of dilution times
         percentButton1.setText(String.format(getString(R.string.timesDilution), 2));

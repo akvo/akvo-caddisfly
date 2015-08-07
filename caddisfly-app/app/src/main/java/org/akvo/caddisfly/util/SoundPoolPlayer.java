@@ -21,7 +21,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 
@@ -44,7 +44,7 @@ public class SoundPoolPlayer {
         int iSoundId = mSounds.get(piResource);
 
         if (!AppPreferences.isSoundOff(context)) {
-            this.mShortPlayer.play(iSoundId, Config.SOUND_VOLUME, Config.SOUND_VOLUME, 0, 0, 1);
+            this.mShortPlayer.play(iSoundId, AppConfig.SOUND_VOLUME, AppConfig.SOUND_VOLUME, 0, 0, 1);
         }
     }
 

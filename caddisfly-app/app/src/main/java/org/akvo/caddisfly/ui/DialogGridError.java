@@ -73,7 +73,7 @@ public class DialogGridError extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.dialog_grid_error, container, false);
 
-        ListView resultList = (ListView) view.findViewById(R.id.resultList);
+        ListView resultList = (ListView) view.findViewById(R.id.listResults);
         resultList.setAdapter(new ImageAdapter());
 
         //mColors = getArguments().getIntegerArrayList("colors");
@@ -83,9 +83,9 @@ public class DialogGridError extends DialogFragment {
 
         mIsCalibration = getArguments().getBoolean("calibration");
 
-        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
-        Button retryButton = (Button) view.findViewById(R.id.retryButton);
-        Button okButton = (Button) view.findViewById(R.id.okButton);
+        Button cancelButton = (Button) view.findViewById(R.id.buttonCancel);
+        Button retryButton = (Button) view.findViewById(R.id.buttonRetry);
+        Button okButton = (Button) view.findViewById(R.id.buttonOk);
 
         if (allowRetry) {
             getDialog().setTitle(R.string.error);
@@ -163,9 +163,9 @@ public class DialogGridError extends DialogFragment {
 
             if (mainApp != null && rowView != null) {
                 //TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
-                TextView rgbText = (TextView) rowView.findViewById(R.id.rgbText);
+                TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-                Button button = (Button) rowView.findViewById(R.id.button);
+                Button button = (Button) rowView.findViewById(R.id.buttonColor);
 
                 Result result = mResults.get(position);
 
@@ -187,7 +187,7 @@ public class DialogGridError extends DialogFragment {
 
                 rgbText.setText(String.format("%d  %d  %d", r, g, b));
 
-                ListView resultList = (ListView) rowView.findViewById(R.id.resultList);
+                ListView resultList = (ListView) rowView.findViewById(R.id.listResults);
 
                 if (mIsCalibration) {
                     // Hide the results table and show only the color
@@ -230,7 +230,7 @@ public class DialogGridError extends DialogFragment {
             MainApp mainApp = ((MainApp) getActivity().getApplicationContext());
 
             if (mainApp != null && rowView != null) {
-                TextView descriptionText = (TextView) rowView.findViewById(R.id.descriptionText);
+                TextView descriptionText = (TextView) rowView.findViewById(R.id.textDescription);
                 TextView resultText = (TextView) rowView.findViewById(R.id.textResult);
                 descriptionText.setText(mResults.get(position).first);
                 resultText.setText(String.format("%.2f", mResults.get(position).second));

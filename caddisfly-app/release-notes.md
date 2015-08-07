@@ -4,6 +4,7 @@ v0.76 beta
 2. Calibration validation
 3. Refactor diagnostic preferences
 4. Color hsv value displayed with swatches
+5. Fix: White screen flash on app start
 
 v0.75 beta
 ----------

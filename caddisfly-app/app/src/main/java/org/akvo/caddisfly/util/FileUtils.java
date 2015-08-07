@@ -20,7 +20,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.io.BufferedReader;
@@ -94,8 +94,8 @@ public final class FileUtils {
     public static ArrayList<String> loadFromFile(TestInfo testInfo, String name) {
         try {
             File external = Environment.getExternalStorageDirectory();
-            String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                    File.separator + Config.CALIBRATE_FOLDER_NAME;
+            String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
             ArrayList<String> arrayList = new ArrayList<>();
             boolean oldVersion = false;

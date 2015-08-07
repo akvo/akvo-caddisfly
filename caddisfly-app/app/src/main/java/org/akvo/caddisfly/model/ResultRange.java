@@ -19,12 +19,10 @@ package org.akvo.caddisfly.model;
 public class ResultRange {
     private final double mValue;
     private int mColor;
-    //private final double mMultiplier;
 
     public ResultRange(double value, int color) {
         mValue = value;
         mColor = color;
-        //mMultiplier = 100 / (100 - dilution);
     }
 
     public double getValue() {
@@ -38,9 +36,5 @@ public class ResultRange {
     public void setColor(int value) {
         mColor = value;
     }
-
-    //public double getMultiplier() {
-    //return mMultiplier;
-    //}
 
 }

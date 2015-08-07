@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 
 import java.util.Calendar;
@@ -72,7 +72,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
                 .getBoolean(mContext, R.string.updateAvailableKey, false);
 
         if (!updateAvailable) {
-            if (checker.checkForUpdateByVersionCode(Config.UPDATE_CHECK_URL + "?" + mVersion)) {
+            if (checker.checkForUpdateByVersionCode(AppConfig.UPDATE_CHECK_URL + "?" + mVersion)) {
                 PreferencesUtils.setLong(mContext, R.string.lastUpdateCheckKey,
                         Calendar.getInstance().getTimeInMillis());
                 if (checker.isUpdateAvailable()) {
@@ -94,21 +94,29 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         }
 
         if (checker.isUpdateAvailable()) {
-            AlertUtils.askQuestion(mContext, R.string.updateAvailable, R.string.updateRequest,
-                    R.string.update, R.string.notNow, false,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            checker.downloadAndInstall(Config.UPDATE_URL + "?" + mVersion);
-                            PreferencesUtils.removeKey(mContext, R.string.updateAvailableKey);
-                        }
-                    }
-            );
-        } else {
-
-            if (!mBackground) {
-                AlertUtils.showMessage(mContext, R.string.noUpdate, R.string.updatedAlready);
-            }
+            alertUpdateAvailable();
+        } else if (!mBackground) {
+            alertUpdateNotFound();
         }
+
     }
+
+    private void alertUpdateNotFound() {
+        AlertUtils.showMessage(mContext, R.string.noUpdate, R.string.updatedAlready);
+    }
+
+    private void alertUpdateAvailable() {
+        AlertUtils.askQuestion(mContext, R.string.updateAvailable, R.string.updateRequest,
+                R.string.update, R.string.notNow, false,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checker.downloadAndInstall(AppConfig.UPDATE_URL + "?" + mVersion);
+                        PreferencesUtils.removeKey(mContext, R.string.updateAvailableKey);
+                    }
+                }
+        );
+    }
+
+
 }

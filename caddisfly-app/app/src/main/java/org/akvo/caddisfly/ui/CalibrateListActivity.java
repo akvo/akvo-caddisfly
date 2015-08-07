@@ -39,7 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.AppPreferences;
@@ -95,7 +95,7 @@ public class CalibrateListActivity extends BaseActivity
                     public boolean handleMessage(Message msg) {
                         CalibrateListAdapter adapter = (CalibrateListAdapter) ((CalibrateListFragment)
                                 getSupportFragmentManager()
-                                        .findFragmentById(R.id.calibrate_list))
+                                        .findFragmentById(R.id.fragmentCalibrateList))
                                 .getListAdapter();
                         if (adapter != null) {
                             adapter.notifyDataSetChanged();
@@ -125,13 +125,6 @@ public class CalibrateListActivity extends BaseActivity
         final MainApp mainApp = ((MainApp) getApplicationContext());
         setTitle(mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage()));
 
-        if (findViewById(R.id.calibrate_detail_container) != null) {
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            ((CalibrateListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.calibrate_list))
-                    .setActivateOnItemClick(true);
-        }
     }
 
     /**
@@ -167,7 +160,7 @@ public class CalibrateListActivity extends BaseActivity
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.calibrate_list)).setAdapter();
+                        .findFragmentById(R.id.fragmentCalibrateList)).setAdapter();
                 break;
         }
     }
@@ -227,8 +220,8 @@ public class CalibrateListActivity extends BaseActivity
                             }
 
                             File external = Environment.getExternalStorageDirectory();
-                            final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                                    File.separator + Config.CALIBRATE_FOLDER_NAME;
+                            final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
                             File file = new File(path, input.getText().toString());
                             if (file.exists()) {
@@ -289,8 +282,8 @@ public class CalibrateListActivity extends BaseActivity
                     android.R.layout.select_dialog_singlechoice);
 
             File external = Environment.getExternalStorageDirectory();
-            final String path = external.getPath() + Config.APP_EXTERNAL_PATH +
-                    File.separator + Config.CALIBRATE_FOLDER_NAME;
+            final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
+                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
             File folder = new File(path);
 
