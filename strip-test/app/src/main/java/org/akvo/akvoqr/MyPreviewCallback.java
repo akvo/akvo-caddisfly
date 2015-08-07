@@ -58,7 +58,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
         }
     };
-    private boolean testCalib = true;
+    private boolean testCalib = false;
 
     public static MyPreviewCallback getInstance(Context context) {
 

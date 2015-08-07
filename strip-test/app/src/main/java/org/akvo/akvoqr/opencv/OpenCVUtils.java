@@ -12,7 +12,6 @@ import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
-import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -163,7 +162,7 @@ public class OpenCVUtils {
 
                         for (double v : d)
                         {
-                            System.out.println("*** value of d  " + x + ":  = " + v);
+                            //System.out.println("*** value of d  " + x + ":  = " + v);
                         }
                         innermostContours = contours.get(x);
                         maxParent = mContours.get(0, x)[3];
@@ -219,7 +218,7 @@ public class OpenCVUtils {
         Imgproc.cvtColor(strip, edges, Imgproc.COLOR_RGB2Lab, 0);
 
 //        Imgproc.GaussianBlur(edges, edges, new Size(5, 5), 0);
-        Imgproc.medianBlur(edges, edges, 5);
+        Imgproc.medianBlur(edges, edges, 11);
         Core.split(edges, channels);
 
         Core.MinMaxLocResult result0 = Core.minMaxLoc(channels.get(0));
@@ -229,7 +228,7 @@ public class OpenCVUtils {
         Core.MinMaxLocResult result2 = Core.minMaxLoc(channels.get(2));
         System.out.println("***channel b . min val: " + result2.minVal + " max val: " + result2.maxVal);
 
-        Imgproc.threshold(channels.get(0), channels.get(0), 0, 128, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(channels.get(0), channels.get(0), 0, 175, Imgproc.THRESH_BINARY);
 //        Imgproc.adaptiveThreshold(channels.get(1), channels.get(1), 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
 //                Imgproc.THRESH_BINARY, 11, 2);
 //        Imgproc.adaptiveThreshold(channels.get(2), channels.get(2), 0, Imgproc.ADAPTIVE_THRESH_MEAN_C,
@@ -243,60 +242,71 @@ public class OpenCVUtils {
 
         Core.merge(channels, edges);
 
-        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
-        for(int j=1;j<edges.rows();j++)
-        {
-            for(int i=3;i<edges.cols();i+=1)
-            {
-                double[] val = edges.get(j,i);
+        Mat temp = edges.clone();
+        double minChroma = Double.MAX_VALUE;
+        for(int j=5;j<edges.rows()-5;j++) {
+            for (int i = 5; i < edges.cols() - 5; i += 1) {
+                double[] val = edges.get(j, i);
+                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
 
-                Mat sub = edges.submat(new Range(j - 1, edges.rows()-1), new Range(i - 3, i));
-                Scalar mean = Core.mean(sub);
-                for(double d: val) {
-//                    System.out.println("*** val "+ j + " , " + i + " = " + d);
-                }
-
-//                if(val[1] == 255)
-//                {
-//                    val[0] = 255;
-//
-//                    edges.put(j, i, val);
-//
-//                }
-//
-//                if(val[2] == 0)
-//                {
-//                    val[0] = 0;
-//
-//                    edges.put(j, i, val);
-//
-//                }
+                if(chromaPix < minChroma)
+                    minChroma = chromaPix;
             }
         }
+        System.out.println("***minChroma: " + minChroma);
+        for(int j=5;j<edges.rows()-5;j++)
+        {
+            for(int i=5;i<edges.cols()-5;i+=1) {
+//                Mat sub = edges.submat(new Range(j - 1, edges.rows()-1), new Range(i - 1, i));
 
+                double[] val = edges.get(j, i);
+                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
+
+                if(Math.abs(chromaPix - minChroma) > 5)
+                {
+                    val[0] = 0;
+//                    val[1] = 0;
+//                    val[2] = 0;
+                    temp.put(j, i, val);
+                }
+                else
+                {
+                    val[0] = 255;
+                    val[1] = 129;
+                    val[2] = 129;
+                    temp.put(j, i, val);
+                }
+            }
+        }
+        edges = temp.clone();
+
+        Core.split(edges, channels);
 //        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_RGB2HSV);
 //        Core.split(edges, channels);
 //        Imgproc.threshold(channels.get(0), channels.get(0), 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
 //        Core.merge(channels, edges);
 //        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_HSV2RGB);
 
-//        Core.inRange(edges, new Scalar(0, 5, 30), new Scalar(180, 255, 255), range);
+        Core.inRange(channels.get(0), new Scalar(0), new Scalar(1), range);
 
-        Imgproc.Canny(edges, range, 40, 120, 3, true);
+        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
+//        Imgproc.cvtColor(range, range, Imgproc.COLOR_RGB2GRAY);
+//        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
+
+//        Imgproc.Canny(range, range, 40, 120, 3, true);
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
         MatOfInt4 hierarchy = new MatOfInt4();
 
         Imgproc.findContours(range, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE, new Point(0, 0));
 
-        List<Mat> innermostContoursList = new ArrayList<>();
-
-        int listno = 1;
+        List<Mat> outermostContoursList = new ArrayList<>();
 
         for (int x = 0; x < contours.size(); x++)
         {
-
             double areasize = Imgproc.contourArea(contours.get(x));
+
+//            Imgproc.drawContours(edges, contours, x, new Scalar(0, 250, 0, 255),2);
 
             if (hierarchy.get(0,x)!=null && hierarchy.get(0, x)[3] < 0)//has no parent, outer contour
             {
@@ -307,32 +317,35 @@ public class OpenCVUtils {
 
                     for (double v : d)
                     {
-                        System.out.println("*** value of outer contour  " + listno + " , " + x + ":  = " + v);
+                        System.out.println("*** value of outer contour  " +  x + ":  = " + v);
                     }
-                    innermostContoursList.add(contours.get(x));
-                        Imgproc.drawContours(edges, contours, x, new Scalar(255, 0, 0, 255), 1);
+                    outermostContoursList.add(contours.get(x));
+//                    Imgproc.drawContours(edges, contours, x, new Scalar(255, 0, 0, 255), 1);
                 }
             }
 
         }
-        if(innermostContoursList.size()>0)
+        if(outermostContoursList.size()>0)
         {
-            for(Mat inner: innermostContoursList) {
+            for(Mat outer: outermostContoursList) {
                 //make square
-                inner.convertTo(mMOP2f, CvType.CV_32FC2);
-                Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.1 * Imgproc.arcLength(mMOP2f, true), true);
-                mMOP2f.convertTo(inner, CvType.CV_32S);
+//                outer.convertTo(mMOP2f, CvType.CV_32FC2);
+//                Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.01 * Imgproc.arcLength(mMOP2f, true), true);
+//                mMOP2f.convertTo(outer, CvType.CV_32S);
 
-                if (inner.rows() == 4) {
-                    if (Imgproc.contourArea(inner) > 200) {
-                        Converters.Mat_to_vector_Point2f(inner, pts);
+                if (outer.rows() > 3) {
+                    System.out.println("***contour area outer: " + Imgproc.contourArea(outer));
+                    if (Imgproc.contourArea(outer) > 2) {
+
+                        Converters.Mat_to_vector_Point2f(outer, pts);
                         detectColor(strip, pts);
-                        Core.rectangle(edges, pts.get(0), pts.get(2), new Scalar(0,255,0,255), 1);
+                        Point point1 = new Point(getMinX(pts), getMinY(pts));
+                        Point point2 = new Point(getMaxX(pts), getMaxY(pts));
+                        Core.rectangle(edges,point1, point2, new Scalar(0,255,0,255), 1);
                     }
                 }
             }
         }
-
 
         return edges;
     }
@@ -408,7 +421,7 @@ public class OpenCVUtils {
 
         for(double val: mean.val) {
 
-                        System.out.println("***Scalar colors: "+  val);
+            System.out.println("***Scalar colors: "+  val);
         }
 
         int color = Color.rgb((int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
