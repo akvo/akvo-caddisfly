@@ -29,7 +29,6 @@ public class ResultActivity extends AppCompatActivity {
     Bitmap bitmap;
     public static List<ColorDetected> colors = new ArrayList<>();
     public static List<ColorDetected> stripColors = new ArrayList<>();
-    public static int numSuccess = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

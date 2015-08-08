@@ -195,7 +195,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
 
                 //find calibration patches
-               Mat calMat = listener.calibrateImage(warp_dst);
+                listener.showProgress();
+                Mat calMat = listener.getCalibratedImage(warp_dst);
+                listener.dismissProgress();
+
+                if(calMat==null)
+                {
+                    System.out.println("***calibration failed");
+                    return;
+                }
 //                ResultActivity.colors.clear();
 //
 //                for(Patch patch: patches) {

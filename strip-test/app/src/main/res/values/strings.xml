@@ -7,4 +7,7 @@
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_open_cv">OpenCVActivity</string>
+    <string name="title_activity_result_strip_test">ResultStripTestActivity</string>
+    <string name="calibrating">Calibrating</string>
+    <string name="please_wait">Please wait...</string>
 </resources>

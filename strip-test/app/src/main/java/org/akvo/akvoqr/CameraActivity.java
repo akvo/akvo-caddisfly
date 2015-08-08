@@ -1,10 +1,13 @@
 package org.akvo.akvoqr;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.FrameLayout;
 
@@ -25,6 +28,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     MyPreviewCallback previewCallback;
     private String TAG = "CameraActivity";
     private Intent intent;
+    private android.os.Handler handler;
     private boolean testing = true;
 
     @Override
@@ -33,6 +37,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         setContentView(R.layout.activity_camera);
 
        intent = new Intent(this, ResultActivity.class);
+        handler = new Handler(Looper.getMainLooper());
     }
 
     private void init()
@@ -49,6 +54,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             preview.addView(mPreview);
 
         }
+
+
     }
     public void onPause()
     {
@@ -149,27 +156,47 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    private final int MAX_ITER = 100;
+    public static final int MAX_ITER = 2;
     private int iter=0;
+    private long startTime;
+
     @Override
     public void setBitmap(Bitmap bitmap) {
-
 
         if(testing)
         {
             if(iter<MAX_ITER && !isFinishing()) {
 
-                iter++;
-                if (ResultActivity.stripColors.size() == 2) {
-                    ResultActivity.numSuccess++;
+                if(iter==0) {
+                    startTime = System.currentTimeMillis();
+
+                    ResultStripTestActivity.testResults.clear();
+
                 }
 
+                iter++;
+
+                MyPreviewCallback.firstTime = true;
                 mCamera.setOneShotPreviewCallback(previewCallback);
-                System.out.println("***TEST RESULTS: " + ResultActivity.numSuccess + "out of " + iter);
+//                System.out.println("***TEST RESULTS: " + ResultStripTestActivity.numSuccess + " out of " + iter);
+
+                return;
             }
             else {
-                ResultActivity.numSuccess = 0;
-                System.out.println("***FINAL TEST RESULTS: " + ResultActivity.numSuccess + "out of " + MAX_ITER);
+
+                long endTime = System.currentTimeMillis();
+                long dur = endTime - startTime;
+                int ss = (int) Math.floor(dur/1000);
+                int mm = (int) Math.floor(ss/60);
+                int hh = (int) Math.floor(mm/60);
+                long restM = mm - hh*60;
+                long restS = ss - hh*60*1000;
+                String duration = hh + ":" + restM + ":" + restS;
+//                System.out.println("***FINAL TEST RESULTS: " + ResultStripTestActivity.numSuccess + " out of " + MAX_ITER + ". Duration: " + duration );
+
+                startActivity(new Intent(this, ResultStripTestActivity.class));
+
+                finish();
             }
         }
         else
@@ -197,10 +224,47 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
-    public Mat calibrateImage(Mat mat)
+    public Mat getCalibratedImage(Mat mat)
     {
         CalibrationCard calibrationCard = new CalibrationCard();
-        return calibrationCard.calibrateImage(this, mat);
+        return calibrationCard.calibrateImage(CameraActivity.this, mat);
 
     }
+
+    @Override
+    public void showProgress() {
+        handler.post(showProgress);
+    }
+
+    @Override
+    public void dismissProgress() {
+        handler.post(dismissProgress);
+    }
+
+    private ProgressDialog progress;
+    private Runnable showProgress = new Runnable() {
+
+        @Override
+        public void run() {
+            if(progress==null)
+            {
+                progress = new ProgressDialog(CameraActivity.this);
+                progress.setTitle(getString(R.string.calibrating));
+                progress.setMessage(getString(R.string.please_wait));
+                progress.show();
+            }
+        }
+    };
+
+    private Runnable dismissProgress = new Runnable() {
+        @Override
+        public void run() {
+            if(progress!=null)
+            {
+                progress.dismiss();
+                progress=null;
+            }
+        }
+    };
+
 }

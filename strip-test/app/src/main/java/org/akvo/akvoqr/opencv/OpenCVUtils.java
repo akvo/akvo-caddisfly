@@ -3,6 +3,8 @@ package org.akvo.akvoqr.opencv;
 import android.graphics.Color;
 
 import org.akvo.akvoqr.ResultActivity;
+import org.akvo.akvoqr.ResultStripTestActivity;
+import org.akvo.akvoqr.TestResult;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -244,16 +246,25 @@ public class OpenCVUtils {
 
         Mat temp = edges.clone();
         double minChroma = Double.MAX_VALUE;
+        Point minChromaPixPos = new Point();
+
         for(int j=5;j<edges.rows()-5;j++) {
             for (int i = 5; i < edges.cols() - 5; i += 1) {
                 double[] val = edges.get(j, i);
+                val[1] = val[1] - 128;
+                val[2] = val[2] - 128;
+                edges.put(j,i, val);
                 double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
 
-                if(chromaPix < minChroma)
+                if(chromaPix < minChroma) {
                     minChroma = chromaPix;
+                    double[] pos = new double[]{i,j};
+                    minChromaPixPos.set(pos);
+                }
             }
         }
         System.out.println("***minChroma: " + minChroma);
+
         for(int j=5;j<edges.rows()-5;j++)
         {
             for(int i=5;i<edges.cols()-5;i+=1) {
@@ -302,6 +313,8 @@ public class OpenCVUtils {
 
         List<Mat> outermostContoursList = new ArrayList<>();
 
+        int numPatchesFound = 0;
+
         for (int x = 0; x < contours.size(); x++)
         {
             double areasize = Imgproc.contourArea(contours.get(x));
@@ -327,24 +340,33 @@ public class OpenCVUtils {
         }
         if(outermostContoursList.size()>0)
         {
+            numPatchesFound = 0;
             for(Mat outer: outermostContoursList) {
                 //make square
 //                outer.convertTo(mMOP2f, CvType.CV_32FC2);
 //                Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.01 * Imgproc.arcLength(mMOP2f, true), true);
 //                mMOP2f.convertTo(outer, CvType.CV_32S);
 
+
                 if (outer.rows() > 3) {
                     System.out.println("***contour area outer: " + Imgproc.contourArea(outer));
-                    if (Imgproc.contourArea(outer) > 2) {
+                    if (Imgproc.contourArea(outer) > 200) {
 
                         Converters.Mat_to_vector_Point2f(outer, pts);
                         detectColor(strip, pts);
                         Point point1 = new Point(getMinX(pts), getMinY(pts));
                         Point point2 = new Point(getMaxX(pts), getMaxY(pts));
-                        Core.rectangle(strip,point1, point2, new Scalar(0,255,0,255), 1);
+                        Core.rectangle(strip, point1, point2, new Scalar(0, 0, 0, 255), 2);
+
+                        numPatchesFound++;
                     }
                 }
             }
+            System.out.println("***numPatchesFound: " + numPatchesFound);
+
+            TestResult testResult = TestResult.getTestResultFromMat(strip, true, true, minChroma, minChromaPixPos, numPatchesFound);
+            ResultStripTestActivity.testResults.add(testResult);
+
         }
 
         return strip;

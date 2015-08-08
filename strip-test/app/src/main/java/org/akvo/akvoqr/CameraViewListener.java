@@ -15,6 +15,10 @@ public interface CameraViewListener {
 
     void setBitmap(Bitmap bitmap);
 
-    Mat calibrateImage(Mat mat);
+    Mat getCalibratedImage(Mat mat);
+
+    void showProgress();
+
+    void dismissProgress();
 
 }

@@ -29,6 +29,11 @@
         <activity
             android:name=".CameraActivity"
             android:label="@string/title_activity_open_cv"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ResultStripTestActivity"
+            android:label="@string/title_activity_result_strip_test"
             android:screenOrientation="landscape">
         </activity>
     </application>
