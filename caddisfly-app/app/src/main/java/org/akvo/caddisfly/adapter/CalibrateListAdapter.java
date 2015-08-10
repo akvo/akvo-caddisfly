@@ -33,17 +33,17 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtils;
 
 import java.util.ArrayList;
 
-public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
+public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
 
-    public CalibrateListAdapter(Activity activity, ResultRange[] rangeArray) {
+    public CalibrateListAdapter(Activity activity, Swatch[] rangeArray) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
     }
@@ -53,9 +53,9 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         LayoutInflater inflater = activity.getLayoutInflater();
         @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
-        final MainApp mainApp = ((MainApp) activity.getApplicationContext());
-        ArrayList<ResultRange> ranges = mainApp.currentTestInfo.getRanges();
-        ResultRange range = ranges.get(position);
+        final CaddisflyApp caddisflyApp = ((CaddisflyApp) activity.getApplicationContext());
+        ArrayList<Swatch> ranges = caddisflyApp.currentTestInfo.getRanges();
+        Swatch range = ranges.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
         TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
@@ -71,7 +71,7 @@ public class CalibrateListAdapter extends ArrayAdapter<ResultRange> {
         Spannable word = new SpannableString(String.format("%.2f ", range.getValue()));
         textUnit.setText(word);
 
-        Spannable wordTwo = new SpannableString(mainApp.currentTestInfo.getUnit());
+        Spannable wordTwo = new SpannableString(caddisflyApp.currentTestInfo.getUnit());
 
         wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

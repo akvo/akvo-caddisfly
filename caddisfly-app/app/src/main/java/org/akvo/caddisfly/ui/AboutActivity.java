@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.Locale;
@@ -40,7 +40,7 @@ public class AboutActivity extends BaseActivity {
         mDiagnosticMode = AppPreferences.isDiagnosticMode(this);
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
-        productView.setText(MainApp.getVersion(this));
+        productView.setText(CaddisflyApp.getVersion(this));
 
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;

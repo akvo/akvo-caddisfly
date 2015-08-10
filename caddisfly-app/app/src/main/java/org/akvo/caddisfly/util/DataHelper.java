@@ -49,7 +49,8 @@ public final class DataHelper {
         ArrayList<Double> distances = new ArrayList<>();
 
         for (int i = 1; i < colors.size() - 1; i++) {
-            distances.add(ColorUtils.getColorDistance(colors.get(i).getColor(), colors.get(i + 1).getColor()));
+            distances.add(ColorUtils.getColorDistance(colors.get(i).getResults().get(0).getColor(),
+                    colors.get(i + 1).getResults().get(0).getColor()));
         }
 
         for (int i = 0; i < distances.size(); i++) {
@@ -60,7 +61,7 @@ public final class DataHelper {
 
         //Ignore the first result
         for (int i = 1; i < colors.size(); i++) {
-            int color = colors.get(i).getColor();
+            int color = colors.get(i).getResults().get(0).getColor();
             if (color != 0) {
                 counter++;
                 red += Color.red(color);
@@ -121,7 +122,7 @@ public final class DataHelper {
         ArrayList<Double> resultValues = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
-            resultValues.add(results.get(i).getValue());
+            resultValues.add(results.get(i).getResults().get(0).getResult());
         }
 
         double commonResult;
@@ -135,7 +136,7 @@ public final class DataHelper {
 
         //Ignore the first result
         for (int i = 1; i < results.size(); i++) {
-            double value = results.get(i).getValue();
+            double value = results.get(i).getResults().get(0).getResult();
             if (value > -1 && Math.abs(value - commonResult) < 0.21) {
                 tempResults.add(value);
             }

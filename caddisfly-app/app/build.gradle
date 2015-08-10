@@ -67,7 +67,6 @@ android {
         keep = [
                 "android.graphics.Color",
                 "android.graphics.Bitmap",
-                "android.os.BaseBundle",
                 "android.util.Pair"
         ]
     }

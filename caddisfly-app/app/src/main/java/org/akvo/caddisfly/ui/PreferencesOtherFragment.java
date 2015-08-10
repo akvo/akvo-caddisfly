@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
@@ -58,7 +58,7 @@ public class PreferencesOtherFragment extends PreferenceFragment {
         if (updatePreference != null) {
             updatePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false, MainApp.getVersion(getActivity()));
+                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false, CaddisflyApp.getVersion(getActivity()));
                     updateCheckTask.execute();
                     return true;
                 }

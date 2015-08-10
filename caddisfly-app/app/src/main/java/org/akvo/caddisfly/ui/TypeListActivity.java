@@ -21,9 +21,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtils;
 
@@ -42,35 +41,41 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {
-        MainApp mainApp = (MainApp) getApplicationContext();
-        mainApp.setSwatches(testInfo.getCode());
+        CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
+        caddisflyApp.setSwatches(testInfo.getCode());
 
-        if (testInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
-            if (!MainApp.hasFeatureCameraFlash(this)) {
-                AlertUtils.showError(this, R.string.cannotCalibrate,
-                        getString(R.string.errorCameraFlashRequired),
-                        null,
-                        R.string.ok, null, null);
-            } else {
-                final Intent intent = new Intent(this, CalibrateListActivity.class);
-                startActivity(intent);
-            }
-        } else {
+        switch (testInfo.getType()) {
+            case COLORIMETRIC_LIQUID:
+                if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
+                    AlertUtils.showError(this, R.string.cannotCalibrate,
+                            getString(R.string.errorCameraFlashRequired),
+                            null,
+                            R.string.ok, null, null);
+                } else {
+                    final Intent intent = new Intent(this, CalibrateListActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case COLORIMETRIC_STRIP:
 
-            boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-            if (hasOtg) {
-                AlertUtils.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
-                        R.string.calibrate, R.string.cancel, true,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-            } else {
-                alertFeatureNotSupported();
-            }
+
+                break;
+            case SENSOR:
+                boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
+                if (hasOtg) {
+                    AlertUtils.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
+                            R.string.calibrate, R.string.cancel, true,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                } else {
+                    alertFeatureNotSupported();
+                }
+                break;
         }
     }
 

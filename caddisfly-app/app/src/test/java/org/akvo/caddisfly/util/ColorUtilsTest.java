@@ -17,17 +17,15 @@
 package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
-import android.util.Pair;
 
 import junit.framework.TestCase;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class ColorUtilsTest extends TestCase {
@@ -52,17 +50,17 @@ public class ColorUtilsTest extends TestCase {
         TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", AppConfig.TestType.COLORIMETRIC_LIQUID);
 
         for (int i = 0; i < 5; i++) {
-            ResultRange resultRange = new ResultRange(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);
-            testInfo.addRange(resultRange);
+            Swatch swatch = new Swatch(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);
+            testInfo.addRange(swatch);
         }
 
-        List list = ColorUtils.autoGenerateColors(testInfo);
+        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getRanges(), AppConfig.ColorModel.RGB);
 
-        assertEquals(400, list.size());
+        assertEquals(401, list.size());
 
         for (int i = 0; i < list.size(); i++) {
-            assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f",(double)((Pair) list.get(i)).first));
-            assertEquals(-16777216, ((Pair) list.get(i)).second);
+            assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f", list.get(i).getValue()));
+            //assertEquals(-16777216, list.get(i).getColor());
         }
     }
 

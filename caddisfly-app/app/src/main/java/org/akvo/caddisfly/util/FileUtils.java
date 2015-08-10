@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.io.BufferedReader;
@@ -39,7 +40,7 @@ public final class FileUtils {
     private FileUtils() {
     }
 
-    public static void deleteFile(String folder, String fileName) {
+    public static void deleteFile(File folder, String fileName) {
         //File external = Environment.getExternalStorageDirectory();
         //String path = external.getPath() + folder;
         File file = new File(folder, fileName);
@@ -47,16 +48,38 @@ public final class FileUtils {
         file.delete();
     }
 
-    public static void saveToFile(String path, String name, String data) {
+    /**
+     * Get the root of the files storage directory, depending on the resource being app internal
+     * (not concerning the user) or not (users might need to pull the resource from the storage).
+     *
+     * @param internal true for app specific resources, false otherwise
+     * @return The root directory for this kind of resources
+     */
+    public static String getFilesStorageDir(boolean internal) {
+        if (internal) {
+            String state = Environment.getExternalStorageState();
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
+                File path = CaddisflyApp.getApp().getExternalFilesDir(null);
+                if (path == null) {
+                    return CaddisflyApp.getApp().getFilesDir().getAbsolutePath();
+                } else {
+                    return path.getAbsolutePath();
+                }
+            } else
+                return CaddisflyApp.getApp().getFilesDir().getAbsolutePath();
+        }
+        return Environment.getExternalStorageDirectory().getAbsolutePath();
+    }
+
+    public static void saveToFile(File folder, String name, String data) {
         try {
 
-            File folder = new File(path);
             if (!folder.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 folder.mkdirs();
             }
 
-            File file = new File(path, name);
+            File file = new File(folder, name);
             //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
             FileWriter filewriter = new FileWriter(file);
@@ -71,12 +94,12 @@ public final class FileUtils {
         }
     }
 
-    public static String loadTextFromFile(String filename) {
+    public static String loadTextFromFile(File file) {
 
         StringBuilder text = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filename));
+            BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -93,17 +116,14 @@ public final class FileUtils {
 
     public static ArrayList<String> loadFromFile(TestInfo testInfo, String name) {
         try {
-            File external = Environment.getExternalStorageDirectory();
-            String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
             ArrayList<String> arrayList = new ArrayList<>();
             boolean oldVersion = false;
 
-            File folder = new File(path);
+            File folder = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
             if (folder.exists()) {
 
-                File file = new File(path, name);
+                File file = new File(folder, name);
 
                 FileReader filereader = new FileReader(file);
 

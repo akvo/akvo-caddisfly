@@ -24,7 +24,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputFilter;
@@ -41,10 +40,9 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.FileUtils;
@@ -93,13 +91,10 @@ public class CalibrateListActivity extends BaseActivity
             case R.id.menu_load:
                 Handler.Callback callback = new Handler.Callback() {
                     public boolean handleMessage(Message msg) {
-                        CalibrateListAdapter adapter = (CalibrateListAdapter) ((CalibrateListFragment)
+                        CalibrateListFragment fragment = (CalibrateListFragment)
                                 getSupportFragmentManager()
-                                        .findFragmentById(R.id.fragmentCalibrateList))
-                                .getListAdapter();
-                        if (adapter != null) {
-                            adapter.notifyDataSetChanged();
-                        }
+                                        .findFragmentById(R.id.fragmentCalibrateList);
+                        fragment.setAdapter();
                         return true;
                     }
                 };
@@ -122,8 +117,8 @@ public class CalibrateListActivity extends BaseActivity
             getSupportActionBar().setDisplayUseLogoEnabled(false);
         }
 
-        final MainApp mainApp = ((MainApp) getApplicationContext());
-        setTitle(mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage()));
+        final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
+        setTitle(caddisflyApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage()));
 
     }
 
@@ -134,11 +129,11 @@ public class CalibrateListActivity extends BaseActivity
     @Override
     public void onItemSelected(int id) {
         mPosition = id;
-        final MainApp mainApp = ((MainApp) getApplicationContext());
-        ResultRange mRange = mainApp.currentTestInfo.getRange(mPosition);
+        final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
+        Swatch mRange = caddisflyApp.currentTestInfo.getRange(mPosition);
 
         final Intent intent = new Intent();
-        intent.setClass(this, CameraSensorActivity.class);
+        intent.setClass(this, ColorimetricLiquidActivity.class);
         intent.putExtra("isCalibration", true);
         intent.putExtra("rangeValue", mRange.getValue());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -152,11 +147,11 @@ public class CalibrateListActivity extends BaseActivity
         switch (requestCode) {
             case REQUEST_CALIBRATE:
 
-                final MainApp mainApp = ((MainApp) getApplicationContext());
-                ResultRange mRange = mainApp.currentTestInfo.getRange(mPosition);
+                final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
+                Swatch mRange = caddisflyApp.currentTestInfo.getRange(mPosition);
 
                 if (resultCode == Activity.RESULT_OK) {
-                    mainApp.storeCalibratedData(mRange, data.getIntExtra("color", 0));
+                    caddisflyApp.saveCalibratedData(mRange, data.getIntExtra("color", 0));
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()
@@ -173,7 +168,7 @@ public class CalibrateListActivity extends BaseActivity
 
     private void saveCalibration() {
         final Context context = this;
-        final MainApp mainApp = (MainApp) this.getApplicationContext();
+        final CaddisflyApp caddisflyApp = (CaddisflyApp) this.getApplicationContext();
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
@@ -212,16 +207,14 @@ public class CalibrateListActivity extends BaseActivity
                         if (!input.getText().toString().trim().isEmpty()) {
                             final StringBuilder exportList = new StringBuilder();
 
-                            for (ResultRange range : mainApp.currentTestInfo.getRanges()) {
+                            for (Swatch range : caddisflyApp.currentTestInfo.getRanges()) {
                                 exportList.append(String.format("%.2f", range.getValue()))
                                         .append("=")
                                         .append(ColorUtils.getColorRgbString(range.getColor()));
                                 exportList.append('\n');
                             }
 
-                            File external = Environment.getExternalStorageDirectory();
-                            final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
+                            final File path = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
 
                             File file = new File(path, input.getText().toString());
                             if (file.exists()) {
@@ -271,7 +264,7 @@ public class CalibrateListActivity extends BaseActivity
 
     private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
-        final MainApp mainApp = (MainApp) this.getApplicationContext();
+        final CaddisflyApp caddisflyApp = (CaddisflyApp) this.getApplicationContext();
 
         try {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
@@ -281,12 +274,8 @@ public class CalibrateListActivity extends BaseActivity
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     android.R.layout.select_dialog_singlechoice);
 
-            File external = Environment.getExternalStorageDirectory();
-            final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                    File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
 
-            File folder = new File(path);
-
+            final File folder = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
 
             if (folder.exists()) {
                 final File[] listFiles = folder.listFiles();
@@ -310,23 +299,24 @@ public class CalibrateListActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String fileName = listFiles[which].getName();
-                                final ArrayList<ResultRange> swatchList = new ArrayList<>();
+                                final ArrayList<Swatch> swatchList = new ArrayList<>();
 
                                 ArrayList<String> rgbList;
                                 try {
-                                    rgbList = FileUtils.loadFromFile(mainApp.currentTestInfo, fileName);
+                                    rgbList = FileUtils.loadFromFile(caddisflyApp.currentTestInfo, fileName);
 
                                     if (rgbList != null) {
 
                                         for (String rgb : rgbList) {
                                             String[] values = rgb.split("=");
-                                            ResultRange range = new ResultRange(stringToDouble(values[0]), ColorUtils.getColorFromRgb(values[1]));
+                                            Swatch range = new Swatch(stringToDouble(values[0]),
+                                                    ColorUtils.getColorFromRgb(values[1]));
                                             swatchList.add(range);
                                         }
                                         (new AsyncTask<Void, Void, Void>() {
                                             @Override
                                             protected Void doInBackground(Void... params) {
-                                                mainApp.saveCalibratedSwatches(swatchList);
+                                                caddisflyApp.saveCalibratedSwatches(swatchList);
                                                 return null;
                                             }
 
@@ -369,7 +359,7 @@ public class CalibrateListActivity extends BaseActivity
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 String fileName = listFiles[position].getName();
-                                                FileUtils.deleteFile(path, fileName);
+                                                FileUtils.deleteFile(folder, fileName);
                                                 ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                                 listAdapter.remove(listAdapter.getItem(position));
                                                 alert.dismiss();

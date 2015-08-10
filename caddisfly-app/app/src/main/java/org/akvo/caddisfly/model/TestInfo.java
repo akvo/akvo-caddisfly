@@ -27,8 +27,7 @@ public class TestInfo {
     private final Hashtable mNames;
     private final String mCode;
     private final String mUnit;
-    private final ArrayList<ResultRange> mRanges;
-    private final ArrayList<ResultRange> mSwatches;
+    private final ArrayList<Swatch> mRanges;
     private final AppConfig.TestType mType;
     private final ArrayList<Integer> mDilutions;
 
@@ -38,13 +37,21 @@ public class TestInfo {
         mCode = code;
         mUnit = unit;
         mRanges = new ArrayList<>();
-        mSwatches = new ArrayList<>();
+        mDilutions = new ArrayList<>();
+    }
+
+    public TestInfo() {
+        mNames = null;
+        mType = AppConfig.TestType.COLORIMETRIC_LIQUID;
+        mCode = "";
+        mUnit = "";
+        mRanges = new ArrayList<>();
         mDilutions = new ArrayList<>();
     }
 
     public void sortRange() {
-        Collections.sort(mRanges, new Comparator<ResultRange>() {
-            public int compare(ResultRange c1, ResultRange c2) {
+        Collections.sort(mRanges, new Comparator<Swatch>() {
+            public int compare(Swatch c1, Swatch c2) {
                 return Double.compare(c1.getValue(), (c2.getValue()));
             }
         });
@@ -71,29 +78,21 @@ public class TestInfo {
         return mUnit;
     }
 
-    public ArrayList<ResultRange> getRanges() {
+    public ArrayList<Swatch> getRanges() {
         return mRanges;
     }
 
     public double getDilutionRequiredLevel() {
-        ResultRange resultRange = mRanges.get(mRanges.size() - 1);
-        return resultRange.getValue() - 0.2;
+        Swatch swatch = mRanges.get(mRanges.size() - 1);
+        return swatch.getValue() - 0.2;
     }
 
-    public void addRange(ResultRange value) {
+    public void addRange(Swatch value) {
         mRanges.add(value);
     }
 
-    public ResultRange getRange(int position) {
+    public Swatch getRange(int position) {
         return mRanges.get(position);
-    }
-
-    public ArrayList<ResultRange> getSwatches() {
-        return mSwatches;
-    }
-
-    public void addSwatch(ResultRange value) {
-        mSwatches.add(value);
     }
 
     public void addDilution(int dilution) {

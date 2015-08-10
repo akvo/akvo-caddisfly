@@ -19,7 +19,7 @@ package org.akvo.caddisfly.util;
 import android.graphics.Color;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +71,7 @@ public final class JsonUtils {
                     }
                 }
 
-                AppConfig.TestType type = AppConfig.TestType.COLORIMETRIC_LIQUID;
+                AppConfig.TestType type;
                 if (item.has("type")) {
                     switch (item.getInt("type")) {
                         case 0:
@@ -82,7 +82,13 @@ public final class JsonUtils {
                             break;
                         case 2:
                             type = AppConfig.TestType.SENSOR;
+                            break;
+                        default:
+                            //Invalid test type skip it
+                            continue;
                     }
+                } else {
+                    continue;
                 }
 
                 testInfo = new TestInfo(
@@ -103,6 +109,7 @@ public final class JsonUtils {
                     testInfo.addDilution(Integer.parseInt(dilution));
                 }
 
+                //Load the ranges
                 String ranges = "0";
                 if (item.has("ranges")) {
                     ranges = item.getString("ranges");
@@ -111,13 +118,14 @@ public final class JsonUtils {
                 String[] rangesArray = ranges.split(",");
 
                 for (String range : rangesArray) {
-                    ResultRange resultRange = new ResultRange(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
-                    testInfo.addRange(resultRange);
+                    Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
+                    testInfo.addRange(swatch);
                 }
 
                 testInfo.sortRange();
 
                 tests.add(testInfo);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

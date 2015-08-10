@@ -279,7 +279,7 @@ public final class ExternalCameraFragment extends DialogFragment {
             public void run() {
                 takePicture();
             }
-        }, AppConfig.INITIAL_DELAY);
+        }, AppConfig.DELAY_BETWEEN_SAMPLING);
     }
 
     private void takePicture() {
@@ -295,7 +295,7 @@ public final class ExternalCameraFragment extends DialogFragment {
                     }
                 }
             }
-        }, AppConfig.INITIAL_DELAY);
+        }, AppConfig.DELAY_BETWEEN_SAMPLING);
     }
 
     public boolean hasTestCompleted() {

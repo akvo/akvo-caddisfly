@@ -16,6 +16,10 @@
 
 package org.akvo.caddisfly;
 
+import org.akvo.caddisfly.util.FileUtils;
+
+import java.io.File;
+
 /*
 Global Configuration
  */
@@ -23,36 +27,76 @@ public class AppConfig {
 
     // For external app connection
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
+
     // Used to check if flow app is installed
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
+
     // Caddisfly update file name
     public static final String UPDATE_FILE_NAME = "akvo_caddisfly_update.apk";
+
     // Caddisfly update check path
     public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/akvoapp/v.txt";
+            = "http://caddisfly.ternup.com/akvoapp/v1.txt";
     // Caddisfly update path
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
     //todo: remove this temporary file size
-    public static final int UPDATE_FILE_TYPICAL_SIZE = 2500000;
+    public static final int UPDATE_FILE_TYPICAL_SIZE = 1500000;
     public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
-    public static final String CALIBRATE_FOLDER_NAME = "calibration";
     public static final String APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
+    public static final String CONFIG_FILE = "tests.json";
+
     // Tag for debug log filtering
     public static final String DEBUG_TAG = "Caddisfly";
-    public static final String RESULT_VALUE_KEY = "resultValue";
-    public static final String RESULT_COLOR_KEY = "resultColor";
-    public static final String CONFIG_FOLDER = "/org.akvo.caddisfly/config/";
-    public static final String CONFIG_FILE = "tests.json";
-    // width and height of cropped image
+
+    // Width and height of cropped image
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-    public static final int INITIAL_DELAY = 6000;
+    public static final int DELAY_BETWEEN_SAMPLING = 6000;
+    //The maximum color distance before the color is considered out of range
     public static final int MAX_COLOR_DISTANCE = 30;
+    //The minimum color distance between the swatches on calibration
     public static final double MIN_VALID_COLOR_DISTANCE = 5;
     public static final int SAMPLING_COUNT_DEFAULT = 5;
     public static final float SOUND_VOLUME = 1f;
 
+    // Folders
+    private static final String DIR_APK = "apk"; // App upgrades
+    private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
+    private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
+
+    /**
+     * Get the appropriate files directory for the given FileType. The directory may or may
+     * not be in the app-specific External Storage. The caller cannot assume anything about
+     * the location.
+     *
+     * @param type FileType to determine the type of resource attempting to use.
+     * @return File representing the root directory for the given FileType.
+     */
+    public static File getFilesDir(FileType type) {
+        String path = null;
+        switch (type) {
+            case APK:
+                path = FileUtils.getFilesStorageDir(true) + File.separator + DIR_APK;
+                break;
+            case CALIBRATION:
+                path = FileUtils.getFilesStorageDir(false) + File.separator + DIR_CALIBRATION;
+                break;
+            case CONFIG:
+                path = FileUtils.getFilesStorageDir(false) + File.separator + DIR_CONFIG;
+                break;
+        }
+        File dir = new File(path);
+        if (!dir.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
     public enum TestType {COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR}
 
+    public enum ColorModel {RGB, LAB, HSV}
+
+    public enum FileType {APK, CALIBRATION, CONFIG}
 }

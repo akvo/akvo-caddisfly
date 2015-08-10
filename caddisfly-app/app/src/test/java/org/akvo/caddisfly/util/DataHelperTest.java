@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.ResultInfo;
 
 import java.util.ArrayList;
 
@@ -33,20 +34,30 @@ public class DataHelperTest extends TestCase {
         ClassUtils.assertUtilityClassWellDefined(DataHelper.class);
     }
 
+    private Result createNewResult(double value) {
+        return createNewResult(value, 0);
+    }
+
+    private Result createNewResult(double value, int color) {
+        ArrayList<ResultInfo> results = new ArrayList<>();
+        results.add(new ResultInfo(value, color));
+        return new Result(null, results);
+    }
+
     public void testGetAverageResult() throws Exception {
 
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.54, result, 0);
@@ -54,16 +65,16 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage2() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(0.0, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(0.0));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.58, result, 0);
@@ -71,9 +82,9 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage3() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.5));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
@@ -81,10 +92,10 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage4() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
@@ -92,11 +103,11 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage5() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.7));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
@@ -104,12 +115,12 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage6() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.7));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.64, result, 0);
@@ -117,12 +128,12 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage7() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1, result, 0);
@@ -130,13 +141,13 @@ public class DataHelperTest extends TestCase {
 
     public void testAverage8() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, 0, null, null));
-        results.add(new Result(1.8, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.7, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.5, 0, null, null));
-        results.add(new Result(1.6, 0, null, null));
+        results.add(createNewResult(1.6));
+        results.add(createNewResult(1.8));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.7));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.5));
+        results.add(createNewResult(1.6));
 
         double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.6, result, 0);
@@ -144,13 +155,13 @@ public class DataHelperTest extends TestCase {
 
     public void testGetAverageColor1() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, Color.rgb(255, 255, 255), null, null));
-        results.add(new Result(1.8, Color.rgb(250, 250, 250), null, null));
-        results.add(new Result(1.7, Color.rgb(245, 245, 245), null, null));
-        results.add(new Result(1.7, Color.rgb(240, 240, 240), null, null));
-        results.add(new Result(1.5, Color.rgb(235, 235, 235), null, null));
-        results.add(new Result(1.5, Color.rgb(235, 235, 235), null, null));
-        results.add(new Result(1.6, Color.rgb(230, 230, 230), null, null));
+        results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
+        results.add(createNewResult(1.8, Color.rgb(250, 250, 250)));
+        results.add(createNewResult(1.7, Color.rgb(245, 245, 245)));
+        results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
+        results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
+        results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
+        results.add(createNewResult(1.6, Color.rgb(230, 230, 230)));
 
         int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(Color.rgb(239, 239, 239), color);
@@ -158,10 +169,10 @@ public class DataHelperTest extends TestCase {
 
     public void testGetAverageColor2() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, Color.rgb(255, 255, 255), null, null));
-        results.add(new Result(1.8, Color.rgb(250, 250, 250), null, null));
-        results.add(new Result(1.7, Color.rgb(245, 245, 245), null, null));
-        results.add(new Result(1.7, Color.rgb(240, 240, 240), null, null));
+        results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
+        results.add(createNewResult(1.8, Color.rgb(250, 250, 250)));
+        results.add(createNewResult(1.7, Color.rgb(245, 245, 245)));
+        results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
 
         int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(0, color);
@@ -169,12 +180,13 @@ public class DataHelperTest extends TestCase {
 
     public void testGetAverageColor3() {
         ArrayList<Result> results = new ArrayList<>();
-        results.add(new Result(1.6, Color.rgb(255, 255, 255), null, null));
-        results.add(new Result(1.8, Color.rgb(250, 250, 250), null, null));
-        results.add(new Result(1.7, Color.rgb(239, 245, 245), null, null));
-        results.add(new Result(1.7, Color.rgb(240, 240, 240), null, null));
-        results.add(new Result(1.5, Color.rgb(235, 235, 235), null, null));
-        results.add(new Result(1.5, Color.rgb(210, 230, 210), null, null));
+        results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
+        results.add(createNewResult(1.8, Color.rgb(250, 250, 250)));
+        results.add(createNewResult(1.7, Color.rgb(245, 245, 245)));
+        results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
+        results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
+        results.add(createNewResult(1.5, Color.rgb(210, 230, 210)));
+
         int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(0, color);
     }

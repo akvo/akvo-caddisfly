@@ -15,11 +15,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView
         android:id="@+id/listResults"
         android:layout_width="match_parent"
         android:layout_height="0dip"
@@ -32,7 +33,8 @@
         android:numColumns="2"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:listitem="@layout/row_info" />
 
     <LinearLayout
         android:id="@+id/layoutRetry"

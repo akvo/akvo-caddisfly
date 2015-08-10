@@ -34,7 +34,6 @@ public class ResultFragment extends DialogFragment {
         args.putString("title", title);
         args.putDouble("result", result);
         args.putInt("dilution", dilutionLevel);
-        //args.putBundle("message", msg.getData());
         args.putString("unit", unit);
         fragment.setArguments(args);
         return fragment;
@@ -53,7 +52,6 @@ public class ResultFragment extends DialogFragment {
         TextView unitTextView = (TextView) view.findViewById(R.id.textUnit);
         Button button = (Button) view.findViewById(R.id.buttonOk);
 
-        //final Bundle bundle = getArguments().getBundle("message");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

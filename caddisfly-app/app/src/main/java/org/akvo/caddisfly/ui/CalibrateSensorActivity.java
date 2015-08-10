@@ -34,7 +34,7 @@ import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.AlertUtils;
 
 public class CalibrateSensorActivity extends BaseActivity {
@@ -265,11 +265,11 @@ public class CalibrateSensorActivity extends BaseActivity {
         final EditText lowValueEditText = (EditText) findViewById(R.id.editLowValue);
         final EditText highValueEditText = (EditText) findViewById(R.id.editHighValue);
 
-        final MainApp mainApp = (MainApp) getApplicationContext();
+        final CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
-        if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+                    caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()));
         }
 
         baudRate = 9600;

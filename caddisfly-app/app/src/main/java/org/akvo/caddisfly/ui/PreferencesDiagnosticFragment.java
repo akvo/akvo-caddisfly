@@ -34,7 +34,7 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
@@ -96,13 +96,13 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
             startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     Context context = getActivity();
-                    MainApp mainApp = (MainApp) context.getApplicationContext();
-                    mainApp.initializeCurrentTest();
-                    if (mainApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
-                        mainApp.setDefaultTest();
+                    CaddisflyApp caddisflyApp = (CaddisflyApp) context.getApplicationContext();
+                    caddisflyApp.initializeCurrentTest();
+                    if (caddisflyApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
+                        caddisflyApp.setDefaultTest();
                     }
 
-                    final Intent intent = new Intent(context, CameraSensorActivity.class);
+                    final Intent intent = new Intent(context, ColorimetricLiquidActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -113,8 +113,8 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-                    mainApp.initializeCurrentTest();
+                    CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
+                    caddisflyApp.initializeCurrentTest();
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     CameraFragment cameraFragment = CameraFragment.newInstance(true);
                     cameraFragment.show(ft, "cameraFragment");
@@ -127,8 +127,8 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
         if (externalCameraPreviewPreference != null) {
             externalCameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
-                    mainApp.initializeCurrentTest();
+                    CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
+                    caddisflyApp.initializeCurrentTest();
 
                     final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
                     List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
@@ -150,9 +150,9 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
         if (sensorPreference != null) {
             sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+                    CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
                     //todo: fix hardcoding of econd
-                    mainApp.setSwatches("ECOND");
+                    caddisflyApp.setSwatches("ECOND");
 
                     final Intent intent = new Intent(getActivity(), SensorActivity.class);
                     startActivity(intent);

@@ -40,7 +40,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 
 import java.lang.ref.WeakReference;
 import java.util.zip.CRC32;
@@ -138,7 +138,7 @@ public class SensorActivity extends BaseActivity {
         mTemperatureImageView = (ImageView) findViewById(R.id.imageTemperature);
         mUnitsTextView = (TextView) findViewById(R.id.textUnit);
 
-        final MainApp mainApp = (MainApp) getApplicationContext();
+        final CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
         Configuration conf = getResources().getConfiguration();
 
         Button backButton = (Button) findViewById(R.id.buttonOk);
@@ -159,7 +159,7 @@ public class SensorActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getIntent());
-                if (mainApp.currentTestInfo.getCode().equals("TEMPE")) {
+                if (caddisflyApp.currentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
                     intent.putExtra("response", mEc25Value);
@@ -172,11 +172,11 @@ public class SensorActivity extends BaseActivity {
         mConnectionLayout = (LinearLayout) findViewById(R.id.connectionLayout);
         mResultLayout = (LinearLayout) findViewById(R.id.layoutResult);
 
-        if (!mainApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+                    caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()));
 
-            mUnitsTextView.setText(mainApp.currentTestInfo.getUnit());
+            mUnitsTextView.setText(caddisflyApp.currentTestInfo.getUnit());
         }
 
         //http://developer.android.com/guide/topics/connectivity/usb/host.html

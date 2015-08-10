@@ -1,10 +1,13 @@
 v0.76 beta
 ----------
 1. Fix: update download progress bar
-2. Calibration validation
+2. Calibration validation and error message
 3. Refactor diagnostic preferences
 4. Color hsv value displayed with swatches
 5. Fix: White screen flash on app start
+6. Diagnostic: Display lab, rgb and hsv results
+7. External folder name changed to Akvo Caddisfly
+8. Update apk file save to internal folder instead of downloads
 
 v0.75 beta
 ----------

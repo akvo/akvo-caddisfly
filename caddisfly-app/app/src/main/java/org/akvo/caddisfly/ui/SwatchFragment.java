@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -25,8 +24,8 @@ import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.SwatchesAdapter;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class SwatchFragment extends ListFragment {
     public SwatchFragment() {
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,29 +48,26 @@ public class SwatchFragment extends ListFragment {
 
         getActivity().setTitle(R.string.swatches);
 
-        Activity activity = getActivity();
-        if (activity != null) {
+        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
-            MainApp mainApp = (MainApp) activity.getApplicationContext();
+        if (caddisflyApp != null) {
+            ArrayList<Swatch> swatchList = new ArrayList<>();
 
-            if (mainApp != null) {
-                ArrayList<ResultRange> swatchList = new ArrayList<>();
-
-                if (mainApp.currentTestInfo.getRanges().size() > 0) {
-                    int startValue = (int) (mainApp.currentTestInfo.getRange(0).getValue() * 10);
-                    int endValue = (int) (mainApp.currentTestInfo.getRange(mainApp.currentTestInfo.getRanges().size() - 1).getValue() * 10);
-                    for (int i = startValue; i <= endValue; i += 1) {
-                        String key = String.format("%s-%.2f", mainApp.currentTestInfo.getCode(), (i / 10f));
-                        ResultRange range = new ResultRange((double) i / 10,
-                                PreferencesUtils.getInt(activity, key, 0));
-                        swatchList.add(range);
-                    }
-                    ResultRange[] colorArray = swatchList.toArray(new ResultRange[swatchList.size()]);
-
-                    SwatchesAdapter swatchesAdapter = new SwatchesAdapter(getActivity(), colorArray);
-                    setListAdapter(swatchesAdapter);
+            if (caddisflyApp.currentTestInfo.getRanges().size() > 0) {
+                int startValue = (int) (caddisflyApp.currentTestInfo.getRange(0).getValue() * 10);
+                int endValue = (int) (caddisflyApp.currentTestInfo.getRange(caddisflyApp.currentTestInfo.getRanges().size() - 1).getValue() * 10);
+                for (int i = startValue; i <= endValue; i += 1) {
+                    String key = String.format("%s-%.2f", caddisflyApp.currentTestInfo.getCode(), (i / 10f));
+                    Swatch range = new Swatch((double) i / 10,
+                            PreferencesUtils.getInt(getActivity(), key, 0));
+                    swatchList.add(range);
                 }
+                Swatch[] colorArray = swatchList.toArray(new Swatch[swatchList.size()]);
+
+                SwatchesAdapter swatchesAdapter = new SwatchesAdapter(getActivity(), colorArray);
+                setListAdapter(swatchesAdapter);
             }
         }
+
     }
 }

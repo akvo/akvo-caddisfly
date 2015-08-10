@@ -19,14 +19,13 @@ package org.akvo.caddisfly.ui;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.TypeListAdapter;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
@@ -62,24 +61,23 @@ public class TypeListFragment extends ListFragment {
     private void setAdapter() {
 
         Activity activity = getActivity();
-        MainApp mainApp = (MainApp) activity.getApplicationContext();
-        assert mainApp != null;
+        CaddisflyApp caddisflyApp = (CaddisflyApp) activity.getApplicationContext();
+        assert caddisflyApp != null;
 
         try {
-            final String path = Environment.getExternalStorageDirectory() + AppConfig.CONFIG_FOLDER + AppConfig.CONFIG_FILE;
 
-            File file = new File(path);
+            File file = new File(AppConfig.getFilesDir(AppConfig.FileType.CONFIG), AppConfig.CONFIG_FILE);
             String text;
 
             //Look for external json config file otherwise use the internal default one
             if (file.exists()) {
-                text = FileUtils.loadTextFromFile(path);
+                text = FileUtils.loadTextFromFile(file);
                 //ignore file if it is old version
                 if (!text.contains("ranges")) {
-                    text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_json);
+                    text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_config);
                 }
             } else {
-                text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_json);
+                text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_config);
             }
             mTests = JsonUtils.loadTests(text);
         } catch (JSONException e) {

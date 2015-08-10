@@ -34,18 +34,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
@@ -60,14 +63,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CameraSensorActivity extends BaseActivity
-        implements ResultFragment.ResultDialogListener, DilutionFragment.DilutionDialogListener,
-        MessageFragment.MessageDialogListener, DialogGridError.ErrorListDialogListener {
+public class ColorimetricLiquidActivity extends BaseActivity
+        implements ResultFragment.ResultDialogListener,
+        MessageFragment.MessageDialogListener, DiagnosticResultDialog.ErrorListDialogListener {
     private final Handler delayHandler = new Handler();
     private boolean mIsCalibration;
-    private DilutionFragment mDilutionFragment;
     private int mDilutionLevel = 0;
-    private DialogGridError mResultFragment;
+    private DiagnosticResultDialog mResultFragment;
     private TextView mDilutionTextView;
     private TextView mDilutionTextView1;
     private SoundPoolPlayer sound;
@@ -82,23 +84,21 @@ public class CameraSensorActivity extends BaseActivity
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
     private ArrayList<Result> mResults;
-    //private ArrayList<Integer> mColors;
-    //private ArrayList<Bitmap> mBitmaps;
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
     private boolean mIgnoreShake;
     private USBMonitor mUSBMonitor;
 
-    @SuppressWarnings("SameParameterValue")
-    private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
-        Animation inAnimation = viewAnimator.getInAnimation();
-        Animation outAnimation = viewAnimator.getOutAnimation();
-        viewAnimator.setInAnimation(null);
-        viewAnimator.setOutAnimation(null);
-        viewAnimator.setDisplayedChild(whichChild);
-        viewAnimator.setInAnimation(inAnimation);
-        viewAnimator.setOutAnimation(outAnimation);
-    }
+//    @SuppressWarnings("SameParameterValue")
+//    private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
+//        Animation inAnimation = viewAnimator.getInAnimation();
+//        Animation outAnimation = viewAnimator.getOutAnimation();
+//        viewAnimator.setInAnimation(null);
+//        viewAnimator.setOutAnimation(null);
+//        viewAnimator.setDisplayedChild(whichChild);
+//        viewAnimator.setInAnimation(inAnimation);
+//        viewAnimator.setOutAnimation(outAnimation);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +107,19 @@ public class CameraSensorActivity extends BaseActivity
         setContentView(R.layout.activity_camera_sensor);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(getResources().getString(R.string.calibrate));
+
+            mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
+            double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
+            if (mIsCalibration) {
+                getSupportActionBar().setDisplayUseLogoEnabled(false);
+                getSupportActionBar().setTitle(String.format("%s %.2f %s",
+                        getResources().getString(R.string.calibrate),
+                        rangeValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
+            } else {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+            }
         }
 
         sound = new SoundPoolPlayer(this);
@@ -117,8 +127,13 @@ public class CameraSensorActivity extends BaseActivity
         mDilutionTextView = (TextView) findViewById(R.id.textDilution);
         mDilutionTextView1 = (TextView) findViewById(R.id.textDilution2);
 
-        mDilutionTextView.setVisibility(View.GONE);
-        mDilutionTextView1.setVisibility(View.GONE);
+        if (!mIsCalibration && CaddisflyApp.getApp().currentTestInfo.hasDilution()) {
+            mDilutionTextView.setVisibility(View.VISIBLE);
+            mDilutionTextView1.setVisibility(View.VISIBLE);
+        } else {
+            mDilutionTextView.setVisibility(View.GONE);
+            mDilutionTextView1.setVisibility(View.GONE);
+        }
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
@@ -129,7 +144,8 @@ public class CameraSensorActivity extends BaseActivity
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake() {
-                if ((mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
+                if ((mIgnoreShake) || mWaitingForStillness || mCameraFragment == null
+                        || isDestroyed()) {
                     return;
                 }
                 mWaitingForStillness = true;
@@ -158,6 +174,82 @@ public class CameraSensorActivity extends BaseActivity
 
         mUSBMonitor = new USBMonitor(this, null);
 
+        //setTitle(R.string.selectDilution);
+
+        Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
+        Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);
+        Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
+
+        // todo: remove hardcoding of dilution times
+        percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
+        percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
+
+        noDilutionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDilutionLevel = 0;
+                mDilutionTextView.setText(R.string.noDilution);
+                mDilutionTextView1.setText(R.string.noDilution);
+                mViewAnimator.showNext();
+            }
+        });
+
+        percentButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDilutionLevel = 1;
+                String dilutionLabel = String.format(getString(R.string.timesDilution), 2);
+                mDilutionTextView.setText(dilutionLabel);
+                mDilutionTextView1.setText(dilutionLabel);
+                mViewAnimator.showNext();
+            }
+        });
+
+        percentButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDilutionLevel = 2;
+                String dilutionLabel = String.format(getString(R.string.timesDilution), 5);
+                mDilutionTextView.setText(dilutionLabel);
+                mDilutionTextView1.setText(dilutionLabel);
+                mViewAnimator.showNext();
+            }
+        });
+
+
+        findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mViewAnimator.showNext();
+
+                acquireWakeLock();
+
+                // disable the key guard when device wakes up and shake alert is displayed
+                getWindow().setFlags(
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                );
+
+                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(),
+                        R.xml.camera_device_filter);
+                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+
+                InitializeTest();
+
+                if (usbDeviceList.size() > 0) {
+                    startExternalTest();
+                } else {
+                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                            SensorManager.SENSOR_DELAY_UI);
+                }
+            }
+        });
     }
 
     private void InitializeTest() {
@@ -171,41 +263,9 @@ public class CameraSensorActivity extends BaseActivity
         mWaitingForStillness = true;
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
-        setAnimatorDisplayedChild(mViewAnimator, 0);
+        //setAnimatorDisplayedChild(mViewAnimator, 0);
 
-        findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                mViewAnimator.showNext();
-
-                acquireWakeLock();
-
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().hide();
-                }
-                // disable the key guard when device wakes up and shake alert is displayed
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                );
-
-                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(),
-                        R.xml.camera_device_filter);
-                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                if (usbDeviceList.size() > 0) {
-                    startExternalTest();
-                } else {
-                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                            SensorManager.SENSOR_DELAY_UI);
-                }
-            }
-        });
     }
 
     private void acquireWakeLock() {
@@ -264,7 +324,7 @@ public class CameraSensorActivity extends BaseActivity
     }
 
     private void ShowVerboseError(boolean testFailed, double result, int color, boolean isCalibration) {
-        mResultFragment = DialogGridError.newInstance(mResults, testFailed, result, color, isCalibration);
+        mResultFragment = DiagnosticResultDialog.newInstance(mResults, testFailed, result, color, isCalibration);
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
@@ -278,23 +338,26 @@ public class CameraSensorActivity extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
-        MainApp mainApp = (MainApp) getApplicationContext();
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
 
         TextView ppmTextView = ((TextView) findViewById(R.id.ppmTextView));
         if (mIsCalibration) {
-            ppmTextView.setText(String.format("%.2f %s", rangeValue, mainApp.currentTestInfo.getUnit()));
+            ppmTextView.setText(String.format("%.2f %s", rangeValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
             ppmTextView.setVisibility(View.VISIBLE);
         } else {
             ppmTextView.setVisibility(View.GONE);
 
             if (getSupportActionBar() != null) {
-                getSupportActionBar().hide();
+                getSupportActionBar().setTitle(R.string.appName);
             }
+
+//            if (getSupportActionBar() != null) {
+//                getSupportActionBar().hide();
+//            }
             // disable the key guard when device wakes up and shake alert is displayed
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                             WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN |
@@ -307,23 +370,15 @@ public class CameraSensorActivity extends BaseActivity
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
-        ((TextView) findViewById(R.id.textTitle)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.textTitle2)).setText(mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle2)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle3)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
 
-        if (mainApp.currentTestInfo.getCode().isEmpty()) {
+        if (CaddisflyApp.getApp().currentTestInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
-        } else if (!mIsCalibration && mainApp.currentTestInfo.hasDilution()
-                && !mTestCompleted) {
-            mDilutionFragment = DilutionFragment.newInstance();
-            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-            Fragment prev = getFragmentManager().findFragmentByTag("dilutionFragment");
-            if (prev != null) {
-                ft.remove(prev);
-            }
-            mDilutionFragment.setCancelable(false);
-            mDilutionFragment.show(ft, "dilutionFragment");
-
+        } else if (mIsCalibration || !CaddisflyApp.getApp().currentTestInfo.hasDilution()) {
+            //setAnimatorDisplayedChild(mViewAnimator, 0);
+            mViewAnimator.showNext();
         } else if (!mTestCompleted) {
             InitializeTest();
         }
@@ -344,36 +399,86 @@ public class CameraSensorActivity extends BaseActivity
 
     private void getResult(Bitmap bitmap) {
 
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-//        byte[] croppedData;
-//
-//        croppedData = bos.toByteArray();
-//
-//        Bitmap croppedBitmap = BitmapFactory.decodeByteArray(croppedData, 0, croppedData.length);
-
         int maxDistance = AppPreferences.getColorDistanceTolerance(this);
 
-        Bundle bundle = ColorUtils.getPpmValue(bitmap,
-                ((MainApp) getApplicationContext()).currentTestInfo,
-                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
-//        bitmap.recycle();
+        ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        double result = bundle.getDouble(AppConfig.RESULT_VALUE_KEY, -1);
-        int color = bundle.getInt(AppConfig.RESULT_COLOR_KEY, 0);
+        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
 
-        ArrayList<Pair<String, Double>> results = new ArrayList<>();
-        results.add(new Pair<>("HSV 1 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_1", -1)));
-        results.add(new Pair<>("HSV 2 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_2", -1)));
-        results.add(new Pair<>("HSV 3 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_3", -1)));
-        results.add(new Pair<>("HSV 5 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY + "_5", -1)));
+        ArrayList<ResultInfo> results = new ArrayList<>();
 
-        results.add(new Pair<>("RGB 5 Calibration", bundle.getDouble(AppConfig.RESULT_VALUE_KEY, -1)));
+        ArrayList<Swatch> tempColorRange = new ArrayList<>();
+        tempColorRange.add(testInfo.getRanges().get(0));
+        tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
 
-        Result resultInfo = new Result(result, color, bitmap, results);
+        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.LAB);
 
-        mResults.add(resultInfo);
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.RGB);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.HSV);
+
+        results.add(resultInfo);
+
+        tempColorRange.add(1, testInfo.getRanges().get((testInfo.getRanges().size() / 2) - 1));
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.LAB);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.RGB);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                tempColorRange,
+                maxDistance,
+                AppConfig.ColorModel.HSV);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                CaddisflyApp.getApp().currentTestInfo.getRanges(),
+                maxDistance,
+                AppConfig.ColorModel.RGB);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                CaddisflyApp.getApp().currentTestInfo.getRanges(),
+                maxDistance,
+                AppConfig.ColorModel.HSV);
+
+        results.add(resultInfo);
+
+        resultInfo = ColorUtils.analyzeColor(photoColor,
+                CaddisflyApp.getApp().currentTestInfo.getRanges(),
+                maxDistance,
+                AppConfig.ColorModel.LAB);
+
+        results.add(0, resultInfo);
+
+        Result result = new Result(bitmap, results);
+
+        mResults.add(result);
     }
 
     private void startExternalTest() {
@@ -437,19 +542,11 @@ public class CameraSensorActivity extends BaseActivity
                 delayHandler.postDelayed(delayRunnable, 0);
             }
         }).execute();
-
-
     }
 
     private void startTest() {
 
         mResults = new ArrayList<>();
-
-//        try {
-//            Thread.sleep(AppConfig.INITIAL_DELAY, 0);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         //mWaitingForShake = false;
         //mWaitingForFirstShake = false;
@@ -510,19 +607,21 @@ public class CameraSensorActivity extends BaseActivity
                         }
                     };
 
-                    delayHandler.postDelayed(delayRunnable, AppConfig.INITIAL_DELAY);
+                    delayHandler.postDelayed(delayRunnable, AppConfig.DELAY_BETWEEN_SAMPLING);
                 }
             }
         }).execute();
     }
 
     private void AnalyzeResult(byte[] data) {
+
+        releaseResources();
+
         String message = getString(R.string.errorTestFailed);
         double result = DataHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this));
 
-        MainApp mainApp = (MainApp) getApplicationContext();
-        if (result >= mainApp.currentTestInfo.getDilutionRequiredLevel() &&
-                mainApp.currentTestInfo.hasDilution()) {
+        if (mDilutionLevel < 2 && result >= CaddisflyApp.getApp().currentTestInfo.getDilutionRequiredLevel() &&
+                CaddisflyApp.getApp().currentTestInfo.hasDilution()) {
             mHighLevelsFound = true;
         }
 
@@ -538,7 +637,6 @@ public class CameraSensorActivity extends BaseActivity
 
         int color = DataHelper.getAverageColor(mResults, AppPreferences.getSamplingTimes(this));
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
-        releaseResources();
         Intent intent = new Intent(getIntent());
         intent.putExtra("result", result);
         intent.putExtra("color", color);
@@ -568,7 +666,7 @@ public class CameraSensorActivity extends BaseActivity
                     sound.playShortResource(this, R.raw.done);
                     ShowVerboseError(false, result, color, false);
                 } else {
-                    String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+                    String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
                     if (mHighLevelsFound && mDilutionLevel < 2) {
                         sound.playShortResource(this, R.raw.beep_long);
@@ -595,7 +693,7 @@ public class CameraSensorActivity extends BaseActivity
                     } else {
                         sound.playShortResource(this, R.raw.done);
                         ResultFragment mResultFragment = ResultFragment.newInstance(title, result,
-                                mDilutionLevel, mainApp.currentTestInfo.getUnit());
+                                mDilutionLevel, CaddisflyApp.getApp().currentTestInfo.getUnit());
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                         Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
@@ -638,51 +736,12 @@ public class CameraSensorActivity extends BaseActivity
     }
 
     @Override
-    public void onFinishDilutionDialog(int index) {
-        if (index == -1) {
-            releaseResources();
-            Intent intent = new Intent(getIntent());
-            this.setResult(Activity.RESULT_CANCELED, intent);
-            finish();
-        } else {
-            mDilutionLevel = index;
-            mDilutionFragment.dismiss();
-
-            //todo: remove hard coding of dilution levels
-            String dilutionLabel;
-            switch (mDilutionLevel) {
-                case 0:
-                    mDilutionTextView.setText(R.string.noDilution);
-                    mDilutionTextView1.setText(R.string.noDilution);
-                    break;
-                case 1:
-                    dilutionLabel = String.format(getString(R.string.timesDilution), 2);
-                    mDilutionTextView.setText(dilutionLabel);
-                    mDilutionTextView1.setText(dilutionLabel);
-                    break;
-                case 2:
-                    dilutionLabel = String.format(getString(R.string.timesDilution), 5);
-                    mDilutionTextView.setText(dilutionLabel);
-                    mDilutionTextView1.setText(dilutionLabel);
-                    break;
-            }
-
-            if (!mIsCalibration) {
-                mDilutionTextView.setVisibility(View.VISIBLE);
-                mDilutionTextView1.setVisibility(View.VISIBLE);
-            }
-            InitializeTest();
-        }
-    }
-
-    @Override
     public void onFinishErrorListDialog(boolean retry, boolean cancelled, boolean isCalibration) {
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(this, R.raw.beep_long);
-            MainApp mainApp = (MainApp) getApplicationContext();
-            String title = mainApp.currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+            String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
             //todo: remove hard coding of dilution levels
             String message = "";

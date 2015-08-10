@@ -167,7 +167,7 @@ public class PreferencesUtils {
         PreferencesUtils.removeKey(context, getKey(context, keyId));
     }
 
-    private static void removeKey(Context context, String keyId) {
+    public static void removeKey(Context context, String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();

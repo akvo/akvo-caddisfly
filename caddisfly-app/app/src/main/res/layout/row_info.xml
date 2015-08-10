@@ -78,15 +78,63 @@
         </TableRow>
     </TableLayout>
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:clickable="false"
+            android:columnCount="4"
+            android:focusable="false"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cal"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Lab"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="RGB"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Hsv"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+    <ListView
         android:id="@+id/listResults"
         android:layout_width="match_parent"
-        android:layout_height="255dp"
+        android:layout_height="100dp"
         android:clickable="false"
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="2"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:listitem="@layout/row_result" />
 </LinearLayout>

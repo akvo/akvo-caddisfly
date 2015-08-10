@@ -16,11 +16,11 @@
 
 package org.akvo.caddisfly.model;
 
-public class ResultRange {
+public class Swatch {
     private final double mValue;
     private int mColor;
 
-    public ResultRange(double value, int color) {
+    public Swatch(double value, int color) {
         mValue = value;
         mColor = color;
     }

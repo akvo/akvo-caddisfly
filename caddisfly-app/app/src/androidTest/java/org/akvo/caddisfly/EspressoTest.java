@@ -40,9 +40,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
-import org.akvo.caddisfly.ui.CameraSensorActivity;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.ui.ColorimetricLiquidActivity;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtils;
@@ -174,7 +174,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = MainApp.getVersion(getActivity());
+        String version = CaddisflyApp.getVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -802,7 +802,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onData(is(instanceOf(ResultRange.class)))
+        onData(is(instanceOf(Swatch.class)))
                 .inAdapterView(withId(android.R.id.list))
                 .atPosition(index).onChildView(withId(R.id.buttonColor))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
@@ -812,14 +812,14 @@ public class EspressoTest
         onView(withId(R.id.buttonStart)).perform(click());
 
         try {
-            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         //onView(withId(R.id.okButton)).perform(click());
 
-        onData(is(instanceOf(ResultRange.class)))
+        onData(is(instanceOf(Swatch.class)))
                 .inAdapterView(withId(android.R.id.list))
                 .atPosition(index).onChildView(withId(R.id.buttonColor))
                 .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
@@ -863,7 +863,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = MainApp.getVersion(getActivity());
+        String version = CaddisflyApp.getVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -906,7 +906,7 @@ public class EspressoTest
         onView(withId(R.id.buttonStart)).perform(click());
 
         try {
-            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -953,7 +953,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = MainApp.getVersion(getActivity());
+        String version = CaddisflyApp.getVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -1004,7 +1004,7 @@ public class EspressoTest
                 .check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1042,7 +1042,7 @@ public class EspressoTest
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         try {
-            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1083,7 +1083,7 @@ public class EspressoTest
         takeScreenshot();
 
         try {
-            Thread.sleep(14000 + (AppConfig.INITIAL_DELAY + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1118,7 +1118,7 @@ public class EspressoTest
         goToMainScreen();
 
         final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(),
-                true, MainApp.getVersion(this.getInstrumentation().getTargetContext()));
+                true, CaddisflyApp.getVersion(this.getInstrumentation().getTargetContext()));
 
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -1228,7 +1228,7 @@ public class EspressoTest
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 try {
-                    Method method = CameraSensorActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                    Method method = ColorimetricLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
                     method.setAccessible(true);
                     method.invoke(activity);
                 } catch (Exception e) {
@@ -1250,7 +1250,7 @@ public class EspressoTest
     private void saveCalibration() {
         File external = Environment.getExternalStorageDirectory();
         final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
+                File.separator + AppConfig.DIR_CALIBRATION;
 
         FileUtils.saveToFile(path, "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
@@ -1264,7 +1264,7 @@ public class EspressoTest
     private void saveHighLevelCalibration() {
         File external = Environment.getExternalStorageDirectory();
         final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
+                File.separator + AppConfig.DIR_CALIBRATION;
 
         FileUtils.saveToFile(path, "HighLevelTest", "0.0=255  88  47\n"
                 + "0.5=255  60  37\n"
@@ -1276,7 +1276,7 @@ public class EspressoTest
     private void saveLowLevelCalibration() {
         File external = Environment.getExternalStorageDirectory();
         final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.CALIBRATE_FOLDER_NAME;
+                File.separator + AppConfig.DIR_CALIBRATION;
 
         FileUtils.saveToFile(path, "LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"

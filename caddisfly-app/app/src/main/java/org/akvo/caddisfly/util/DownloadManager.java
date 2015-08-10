@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -95,9 +94,9 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
                 URL url = new URL(sUrl[0]);
 
-                File oldFile = new File(String.format("%s/%s", Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        .getPath(), AppConfig.UPDATE_FILE_NAME));
+                File oldFile = new File(String.format("%s/%s",
+                        AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
+                        AppConfig.UPDATE_FILE_NAME));
 
                 if (oldFile.exists()) {
                     //noinspection ResultOfMethodCallIgnored
@@ -111,9 +110,9 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
                 OutputStream output =
-                        new FileOutputStream(String.format("%s/%s", Environment
-                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                                .getPath(), AppConfig.UPDATE_FILE_NAME));
+                        new FileOutputStream(String.format("%s/%s",
+                                AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
+                                AppConfig.UPDATE_FILE_NAME));
 
                 // this will be useful so that you can show a typical 0-100% progress bar
                 // todo:fix content length problem
@@ -203,9 +202,9 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     private void install() {
         if (downloaded) {
             String filePath =
-                    String.format("%s/%s", Environment
-                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                            .getPath(), AppConfig.UPDATE_FILE_NAME);
+                    String.format("%s/%s",
+                            AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
+                            AppConfig.UPDATE_FILE_NAME);
             Uri fileLoc = Uri.fromFile(new File(filePath));
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(fileLoc, "application/vnd.android.package-archive");

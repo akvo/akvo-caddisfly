@@ -28,7 +28,7 @@
         android:required="true" />
 
     <application
-        android:name=".app.MainApp"
+        android:name=".app.CaddisflyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
@@ -82,7 +82,7 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".ui.CameraSensorActivity"
+            android:name=".ui.ColorimetricLiquidActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.CalibrateListActivity"
             android:screenOrientation="nosensor" />

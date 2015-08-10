@@ -27,20 +27,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.model.ResultRange;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtils;
 
 import java.text.DecimalFormat;
 
-public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
+public class SwatchesAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
-    private final ResultRange[] colorArray;
+    private final Swatch[] colorArray;
 
     private final DecimalFormat doubleFormat = new DecimalFormat("0.0");
 
-    public SwatchesAdapter(Activity activity, ResultRange[] colorArray) {
+    public SwatchesAdapter(Activity activity, Swatch[] colorArray) {
         super(activity, R.layout.row_swatch, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;
@@ -51,9 +51,9 @@ public class SwatchesAdapter extends ArrayAdapter<ResultRange> {
         LayoutInflater inflater = activity.getLayoutInflater();
         @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_swatch, parent, false);
 
-        MainApp mainApp = ((MainApp) activity.getApplicationContext());
+        CaddisflyApp caddisflyApp = ((CaddisflyApp) activity.getApplicationContext());
 
-        if (mainApp != null && rowView != null) {
+        if (caddisflyApp != null && rowView != null) {
             TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
             TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
             TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);

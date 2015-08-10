@@ -33,19 +33,21 @@ import android.widget.TextView;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.ResultInfo;
 import org.akvo.caddisfly.util.ColorUtils;
 
-public class VerboseResultFragment extends DialogFragment {
+public class DiagnosticResultFragment extends DialogFragment {
 
     private Bitmap mExtractBitmap;
     private Bitmap mPhotoBitmap;
     private String mDimension;
     private Fragment mParentFragment;
 
-    public static VerboseResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
+    public static DiagnosticResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
                                                     String dimension, Fragment parentFragment) {
-        VerboseResultFragment fragment = new VerboseResultFragment();
+        DiagnosticResultFragment fragment = new DiagnosticResultFragment();
         fragment.mExtractBitmap = extractBitmap;
         fragment.mPhotoBitmap = photoBitmap;
         fragment.mDimension = dimension;
@@ -60,7 +62,7 @@ public class VerboseResultFragment extends DialogFragment {
 
         getDialog().setTitle(R.string.result);
 
-        final View view = inflater.inflate(R.layout.dialog_verbose_error, container, false);
+        final View view = inflater.inflate(R.layout.dialog_diagnostic_details, container, false);
 
         ImageView imageExtract = (ImageView) view.findViewById(R.id.imageExtract);
         ImageView imagePhoto = (ImageView) view.findViewById(R.id.imagePhoto);
@@ -79,32 +81,37 @@ public class VerboseResultFragment extends DialogFragment {
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
-        MainApp mainApp = (MainApp) getActivity().getApplicationContext();
+        CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
 
-        if (mainApp.currentTestInfo.getCode().isEmpty() ||
-                mainApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
-            mainApp.setDefaultTest();
+        if (caddisflyApp.currentTestInfo.getCode().isEmpty() ||
+                caddisflyApp.currentTestInfo.getType() != AppConfig.TestType.COLORIMETRIC_LIQUID) {
+            caddisflyApp.setDefaultTest();
         }
 
         int maxDistance = AppPreferences.getColorDistanceTolerance(getActivity());
 
-        Bundle resultValue = ColorUtils.getPpmValue(mExtractBitmap,
-                mainApp.currentTestInfo, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT, maxDistance);
+        ColorInfo photoColor = ColorUtils.getColorFromBitmap(mExtractBitmap,
+                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        double result = resultValue.getDouble(AppConfig.RESULT_VALUE_KEY, -1);
-        int color = resultValue.getInt(AppConfig.RESULT_COLOR_KEY, 0);
-        int swatchColor = resultValue.getInt("MatchedColor", 0);
+        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+                caddisflyApp.currentTestInfo.getRanges(),
+                maxDistance,
+                AppConfig.ColorModel.RGB);
 
-        textQuality.setText(String.format("quality: %.0f%%", resultValue.getDouble("quality", 0)));
+        double result = resultInfo.getResult();
+        int color = resultInfo.getColor();
+        int swatchColor = resultInfo.getMatchedColor();
+
+        textQuality.setText(String.format("quality: %.0f%%", photoColor.getQuality()));
 
         if (result > -1) {
-            textResult.setText(String.format("%s : %.2f %s", mainApp.currentTestInfo.getName("en"),
-                    result, mainApp.currentTestInfo.getUnit()));
-            textDistance.setText(String.format("distance: %.2f", resultValue.getDouble("Distance")));
-            buttonSwatchColor.setBackgroundColor(resultValue.getInt("MatchedColor", 0));
+            textResult.setText(String.format("%s : %.2f %s", caddisflyApp.currentTestInfo.getName("en"),
+                    result, caddisflyApp.currentTestInfo.getUnit()));
+            textDistance.setText(String.format("distance: %.2f", resultInfo.getDistance()));
+            buttonSwatchColor.setBackgroundColor(resultInfo.getMatchedColor());
             swatchRgbValue.setText(String.format("r: %s", ColorUtils.getColorRgbString(swatchColor)));
         } else {
-            textResult.setText(String.format("%s", mainApp.currentTestInfo.getName("en")));
+            textResult.setText(String.format("%s", caddisflyApp.currentTestInfo.getName("en")));
         }
         buttonColorExtract.setBackgroundColor(color);
 

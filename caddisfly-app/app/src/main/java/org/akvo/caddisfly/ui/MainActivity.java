@@ -37,7 +37,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DateUtils;
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_TEST = 1;
     private static final int REQUEST_LANGUAGE = 2;
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    private Boolean external = false;
+    private Boolean mIsExternalAppCall = false;
     private boolean mShouldFinish = false;
     private String mLanguageCode;
 
@@ -91,6 +91,8 @@ public class MainActivity extends BaseActivity {
 
         //todo: upgrade stuff. To be removed...
         upgradeOldFolderPath();
+
+
     }
 
     private void checkForUpdate() {
@@ -102,7 +104,7 @@ public class MainActivity extends BaseActivity {
 
         Calendar currentDate = Calendar.getInstance();
         if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, MainApp.getVersion(this));
+            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, CaddisflyApp.getVersion(this));
             updateCheckTask.execute();
         }
     }
@@ -112,18 +114,17 @@ public class MainActivity extends BaseActivity {
                 AppConfig.OLD_FILES_FOLDER_NAME + File.separator + AppConfig.OLD_CALIBRATE_FOLDER_NAME);
 
         boolean folderFixed = true;
+        File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
+                AppConfig.APP_EXTERNAL_PATH);
 
         if (oldFolder.exists()) {
-            File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    AppConfig.APP_EXTERNAL_PATH);
 
             if (!newPath.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 newPath.mkdirs();
             }
 
-            newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    AppConfig.APP_EXTERNAL_PATH + File.separator + AppConfig.CALIBRATE_FOLDER_NAME);
+            newPath = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
             if (!newPath.exists()) {
                 folderFixed = oldFolder.renameTo(newPath);
             }
@@ -135,6 +136,12 @@ public class MainActivity extends BaseActivity {
             FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
                     + AppConfig.OLD_FILES_FOLDER_NAME);
         }
+
+        if (newPath.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            newPath.renameTo(new File(Environment.getExternalStorageDirectory().getPath(), "Akvo Caddisfly"));
+        }
+
     }
 
     @Override
@@ -202,7 +209,7 @@ public class MainActivity extends BaseActivity {
             }
             res.updateConfiguration(config, dm);
 
-            if (!external) {
+            if (!mIsExternalAppCall) {
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
             }
@@ -282,18 +289,18 @@ public class MainActivity extends BaseActivity {
         String action = intent.getAction();
         String type = intent.getType();
         String mQuestionTitle;
-        MainApp mainApp = (MainApp) getApplicationContext();
+        CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
 
         if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
-                external = true;
+                mIsExternalAppCall = true;
                 mQuestionTitle = intent.getStringExtra("questionTitle");
                 mLanguageCode = intent.getStringExtra("language");
 
                 String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
-                mainApp.setSwatches(code);
+                caddisflyApp.setSwatches(code);
 
-                if (mainApp.currentTestInfo == null) {
+                if (caddisflyApp.currentTestInfo == null) {
 
                     String itemName;
                     if (mQuestionTitle.length() > 0) {
@@ -321,7 +328,7 @@ public class MainActivity extends BaseActivity {
                             }, null
                     );
                 } else {
-                    if (!MainApp.hasFeatureCameraFlash(this)) {
+                    if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
                         alertCameraFlashNotAvailable();
                     } else {
                         startTest();
@@ -335,48 +342,53 @@ public class MainActivity extends BaseActivity {
 
     private void startTest() {
         Context context = this;
-        MainApp mainApp = (MainApp) context.getApplicationContext();
-        if (mainApp.currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
+        CaddisflyApp caddisflyApp = (CaddisflyApp) context.getApplicationContext();
+        switch (caddisflyApp.currentTestInfo.getType()) {
+            case COLORIMETRIC_LIQUID:
+                if (!ColorUtils.validateColorRange(caddisflyApp.currentTestInfo.getRanges())) {
+                    Configuration conf = getResources().getConfiguration();
 
-            if (!ColorUtils.validateColorRange(mainApp.currentTestInfo.getRanges())) {
-                Configuration conf = getResources().getConfiguration();
+                    String message = getString(R.string.errorCalibrationIncomplete,
+                            caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()));
+                    String alertMessage = String.format("%s\r\n\r\n%s",
+                            message,
+                            getString(R.string.doYouWantToCalibrate));
 
-                String message = getString(R.string.errorCalibrationIncomplete,
-                        mainApp.currentTestInfo.getName(conf.locale.getLanguage()));
-
-                String alertMessage = String.format("%s\r\n\r\n%s", message,
-                        getString(R.string.doYouWantToCalibrate));
-
-                AlertUtils.showAlert(context, R.string.cannotStartTest,
-                        alertMessage, R.string.calibrate,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface,
-                                    int i) {
-                                final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-                                startActivity(intent);
+                    AlertUtils.showAlert(context, R.string.cannotStartTest,
+                            alertMessage, R.string.calibrate,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        DialogInterface dialogInterface,
+                                        int i) {
+                                    final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
+                                    startActivity(intent);
+                                }
+                            }, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        DialogInterface dialogInterface,
+                                        int i) {
+                                    finish();
+                                }
                             }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface,
-                                    int i) {
-                                finish();
-                            }
-                        }
-                );
-                return;
-            }
+                    );
+                    return;
+                }
 
-            final Intent intent = new Intent(context, CameraSensorActivity.class);
-            startActivityForResult(intent, REQUEST_TEST);
+                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetricLiquidActivity.class);
+                startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
 
-        } else if (mainApp.currentTestInfo.getType() == AppConfig.TestType.SENSOR) {
-            final Intent intent = new Intent(context, SensorActivity.class);
-            startActivityForResult(intent, REQUEST_TEST);
+                break;
+            case COLORIMETRIC_STRIP:
+
+
+                break;
+            case SENSOR:
+                final Intent sensorIntent = new Intent(context, SensorActivity.class);
+                startActivityForResult(sensorIntent, REQUEST_TEST);
+                break;
         }
-
     }
 
     @Override

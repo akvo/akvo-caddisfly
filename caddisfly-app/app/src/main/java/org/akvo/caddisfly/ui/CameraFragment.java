@@ -55,7 +55,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraFragment extends DialogFragment implements VerboseResultFragment.ResultDialogListener {
+public class CameraFragment extends DialogFragment implements DiagnosticResultFragment.ResultDialogListener {
     private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;
     private int samplingCount;
@@ -184,7 +184,7 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
 
                             }
                         }
-                    }, AppConfig.INITIAL_DELAY);
+                    }, AppConfig.DELAY_BETWEEN_SAMPLING);
                 }
 
             } catch (Exception e) {
@@ -448,8 +448,8 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                         stopCamera();
                         Bitmap bitmap = ImageUtils.getBitmap(bytes);
 
-                        VerboseResultFragment verboseResultFragment =
-                                VerboseResultFragment.newInstance(
+                        DiagnosticResultFragment diagnosticResultFragment =
+                                DiagnosticResultFragment.newInstance(
                                         ImageUtils.getCroppedBitmap(bitmap,
                                                 AppConfig.SAMPLE_CROP_LENGTH_DEFAULT),
                                         bitmap, bitmap.getWidth() + " x " + bitmap.getHeight(), mFragment);
@@ -461,8 +461,8 @@ public class CameraFragment extends DialogFragment implements VerboseResultFragm
                             ft.remove(prev);
                         }
 
-                        verboseResultFragment.setCancelable(true);
-                        verboseResultFragment.show(ft, "resultDialog");
+                        diagnosticResultFragment.setCancelable(true);
+                        diagnosticResultFragment.show(ft, "resultDialog");
 
                     } else {
                         pictureCallback.onPictureTaken(bytes, camera);

@@ -19,14 +19,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.SwatchActivity">
+    tools:showIn="@layout/activity_calibrate_list">
+
+    <TextView
+        android:id="@+id/textCalibrationError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/error_background"
+        android:drawableStart="@drawable/error"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@string/calibrationIsInvalid"
+        android:textSize="16sp" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        tools:listitem="@layout/row_swatch" />
+        tools:listitem="@layout/row_calibrate" />
 
     <TextView
         android:id="@android:id/empty"
