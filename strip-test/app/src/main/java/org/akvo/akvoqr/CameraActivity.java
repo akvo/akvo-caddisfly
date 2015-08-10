@@ -156,7 +156,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    public static final int MAX_ITER = 2;
+    public static final int MAX_ITER = 1;
     private int iter=0;
     private long startTime;
 
@@ -165,6 +165,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         if(testing)
         {
+
             if(iter<MAX_ITER && !isFinishing()) {
 
                 if(iter==0) {
@@ -195,6 +196,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 //                System.out.println("***FINAL TEST RESULTS: " + ResultStripTestActivity.numSuccess + " out of " + MAX_ITER + ". Duration: " + duration );
 
                 startActivity(new Intent(this, ResultStripTestActivity.class));
+
+                bitmap.recycle();
 
                 finish();
             }

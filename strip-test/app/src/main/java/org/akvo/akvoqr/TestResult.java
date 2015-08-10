@@ -11,18 +11,20 @@ import org.opencv.core.Point;
  */
 public class TestResult {
     public Bitmap original;
-    public Bitmap calibrated;
+    public Bitmap resultBitmap;
     public boolean testOK;
     public double minChroma;
-    public int minChromaColor;
+    public double[] minChromaLab = new double[3];
+    public int minChromaColor = 0;
     public int numPatchesFound;
 
-    public TestResult(Bitmap bitmap, boolean calibrated,
-                      boolean testOK, double minChroma, Point minChromaPixPos,  int numPatchesFound) {
+    public TestResult(Bitmap bitmap, boolean resultBitmap,
+                      boolean testOK, double minChroma,
+                      double[] minChromaLab, int numPatchesFound) {
 
-        if(calibrated)
+        if(resultBitmap)
         {
-            this.calibrated = bitmap;
+            this.resultBitmap = bitmap;
         }
         else
         {
@@ -31,16 +33,45 @@ public class TestResult {
         this.testOK = testOK;
         this.minChroma = minChroma;
         this.numPatchesFound = numPatchesFound;
+        this.minChromaLab = minChromaLab;
 
-       minChromaColor = bitmap.getPixel((int)minChromaPixPos.x, (int)minChromaPixPos.y);
+
+
     }
 
     public static TestResult getTestResultFromMat(Mat mat, boolean calibrated, boolean testOK,
-                                                  double minChroma, Point minChromaPixPos, int numPatchesFound)
+                                                  double minChroma, double[] minChromaLab, int numPatchesFound)
     {
         Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bitmap);
 
-        return new TestResult(bitmap, calibrated, testOK, minChroma, minChromaPixPos, numPatchesFound);
+        return new TestResult(bitmap, calibrated, testOK, minChroma, minChromaLab, numPatchesFound);
+    }
+
+    public void setOriginal(Mat mat)
+    {
+        Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(mat, bitmap);
+
+        this.original = bitmap;
+
+    }
+    public void setResultBitmap(Mat mat)
+    {
+        Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(mat, bitmap);
+
+        this.resultBitmap = bitmap;
+    }
+
+    public void setNumPatchesFound(int num)
+    {
+        this.numPatchesFound = num;
+    }
+    public void setMinChromaColor(Point minChromaPixPos)
+    {
+        if(original!=null)
+            minChromaColor = original.getPixel((int)minChromaPixPos.x, (int)minChromaPixPos.y);
+
     }
 }

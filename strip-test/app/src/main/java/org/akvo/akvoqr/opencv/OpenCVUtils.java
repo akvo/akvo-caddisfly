@@ -14,6 +14,7 @@ import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -209,6 +210,8 @@ public class OpenCVUtils {
 
     public static Mat detectStripPatchesAdaptiveTresh(Mat strip)
     {
+        Mat orig = strip.clone();
+        Mat labMat = new Mat();
         Mat edges = new Mat();
         Mat range = new Mat();
         List<Mat> channels = new ArrayList<>();
@@ -217,10 +220,12 @@ public class OpenCVUtils {
 
         ResultActivity.stripColors.clear();
 
+        Imgproc.cvtColor(strip, labMat, Imgproc.COLOR_RGB2Lab, 0);
         Imgproc.cvtColor(strip, edges, Imgproc.COLOR_RGB2Lab, 0);
 
 //        Imgproc.GaussianBlur(edges, edges, new Size(5, 5), 0);
-        Imgproc.medianBlur(edges, edges, 11);
+        Imgproc.medianBlur(edges, edges, 3);
+
         Core.split(edges, channels);
 
         Core.MinMaxLocResult result0 = Core.minMaxLoc(channels.get(0));
@@ -230,7 +235,7 @@ public class OpenCVUtils {
         Core.MinMaxLocResult result2 = Core.minMaxLoc(channels.get(2));
         System.out.println("***channel b . min val: " + result2.minVal + " max val: " + result2.maxVal);
 
-        Imgproc.threshold(channels.get(0), channels.get(0), 0, 175, Imgproc.THRESH_BINARY);
+//        Imgproc.threshold(channels.get(0), channels.get(0), 0, 175, Imgproc.THRESH_BINARY);
 //        Imgproc.adaptiveThreshold(channels.get(1), channels.get(1), 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
 //                Imgproc.THRESH_BINARY, 11, 2);
 //        Imgproc.adaptiveThreshold(channels.get(2), channels.get(2), 0, Imgproc.ADAPTIVE_THRESH_MEAN_C,
@@ -247,48 +252,160 @@ public class OpenCVUtils {
         Mat temp = edges.clone();
         double minChroma = Double.MAX_VALUE;
         Point minChromaPixPos = new Point();
+        double[] minChromaLab = new double[3];
 
-        for(int j=5;j<edges.rows()-5;j++) {
-            for (int i = 5; i < edges.cols() - 5; i += 1) {
-                double[] val = edges.get(j, i);
-                val[1] = val[1] - 128;
-                val[2] = val[2] - 128;
-                edges.put(j,i, val);
-                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
+//        for(int j=5;j<edges.rows()-5;j++) {
+//            for (int i = 5; i < edges.cols() - 5; i += 1) {
+//                double[] val = edges.get(j, i);
+//                val[1] = val[1] - 128;
+//                val[2] = val[2] - 128;
+////                edges.put(j,i, val);
+//                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
+//
+//                if(chromaPix < minChroma) {
+//                    minChroma = chromaPix;
+//                    double[] pos = new double[]{i,j};
+//                    minChromaPixPos.set(pos);
+//
+//                    double[] lab = labMat.get(j,i);
+//                    minChromaLab[0] = lab[0];
+//                    minChromaLab[1] = lab[1];
+//                    minChromaLab[2] = lab[2];
+//
+//                }
+//            }
+//        }
 
-                if(chromaPix < minChroma) {
-                    minChroma = chromaPix;
-                    double[] pos = new double[]{i,j};
-                    minChromaPixPos.set(pos);
+
+        for(int c=0;c<edges.cols();c++)
+        {
+            double sumL = 0;
+            double minCh = Double.MAX_VALUE;
+            Point minChPoint = new Point(0,0);
+            double maxCh = -Double.MAX_VALUE;
+            Point maxChPoint = new Point(0,0);
+
+            for(int r=3;r<edges.rows()-3;r++)
+            {
+                double[] vals = edges.get(r,c);
+                sumL += vals[0];
+
+                vals[1] = vals[1] - 128;
+                vals[2] = vals[2] - 128;
+                double ch = Math.sqrt(vals[1] * vals[1] + vals[2] * vals[2]);
+
+                System.out.println("***Lum and Chroma: "  + " L = " + vals[0]
+                        + " a = " + vals[1] + " b = " + vals[2]);
+
+                if(ch < minCh)
+                {
+                    minCh = ch;
+                    minChPoint = new Point(c,r);
+                }
+                if(ch > maxCh)
+                {
+                    maxCh = ch;
+                    maxChPoint = new Point(c, r);
                 }
             }
+
+            double avgL = sumL/edges.rows();
+//
+//            System.out.println("***avgL for col. " + c + " = " + avgL);
+//            System.out.println("***minCh for col. " + c + " = " + minCh);
+
+            for(int rr=0; rr<edges.rows(); rr++)
+            {
+                double[] vals = edges.get(rr, c);
+//                double[] valsMinCh = edges.get((int)minChPoint.y, (int)minChPoint.x);
+                double[] valsMaxCh = edges.get((int)maxChPoint.y, (int)maxChPoint.x);
+
+                vals[0] = avgL;
+//                vals[1] = valsMaxCh[1];
+//                vals[2] = valsMaxCh[2];
+                temp.put(rr, c, vals);
+            }
         }
-        System.out.println("***minChroma: " + minChroma);
+        double sumL = 0;
+        double avgL = 0;
+        for(int r=3;r<temp.rows()-3;r++) {
 
-        for(int j=5;j<edges.rows()-5;j++)
-        {
-            for(int i=5;i<edges.cols()-5;i+=1) {
-//                Mat sub = edges.submat(new Range(j - 1, edges.rows()-1), new Range(i - 1, i));
+            for (int c = 0; c < temp.cols(); c++) {
+                double[] vals = temp.get(r, c);
+                sumL += vals[0];
+            }
+        }
+        avgL = sumL / (temp.cols()*(temp.rows()-6));
 
-                double[] val = edges.get(j, i);
-                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
+//        System.out.println("***avgL for img. " + " = " + avgL);
 
-                if(Math.abs(chromaPix - minChroma) > 5)
-                {
-                    val[0] = 0;
-//                    val[1] = 0;
-//                    val[2] = 0;
-                    temp.put(j, i, val);
+        for(int r=3;r<temp.rows()-3;r++) {
+            for(int cc=0; cc<temp.cols(); cc++)
+            {
+                double[] vals = temp.get(r, cc);
+                double AB = (vals[1]-128) + (vals[2]-128);
+
+                if(vals[0] < avgL - 1 && AB > 0) {
+                    vals[0] = vals[0]/2;
                 }
                 else
                 {
-                    val[0] = 255;
-                    val[1] = 129;
-                    val[2] = 129;
-                    temp.put(j, i, val);
+                    vals[0] = 255;
                 }
+                temp.put(r, cc, vals);
             }
         }
+
+        for(int cc=0; cc<temp.cols()-1; cc++)
+        {
+            Mat submat = temp.submat(new Range(3, temp.rows() - 3), new Range(cc, cc+1));
+            Core.split(submat, channels);
+            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+
+            double minVal = result.minVal;
+
+            int countMinVal = 0;
+            for(int r=3;r<temp.rows()-3;r++) {
+                double[] vals = temp.get(r, cc);
+                if (vals[0] < 255) {
+                    countMinVal++;
+                }
+            }
+            for(int r=0;r<temp.rows();r++) {
+                double[] vals = temp.get(r, cc);
+                if (countMinVal > temp.rows()/2) {
+                    vals[0] = minVal;
+                }
+                else{
+                    vals[0] = 255;
+                }
+                temp.put(r,cc, vals);
+            }
+        }
+//        for(int j=5;j<edges.rows()-5;j++)
+//        {
+//            for(int i=5;i<edges.cols()-5;i+=1) {
+////                Mat sub = edges.submat(new Range(j - 1, edges.rows()-1), new Range(i - 1, i));
+//
+//                double[] val = edges.get(j, i);
+//                double chromaPix = Math.sqrt(val[1] * val[1] + val[2] * val[2]);
+//
+//                if(Math.abs(chromaPix - minChroma) > 5)
+//                {
+//                    val[0] = 0;
+////                    val[1] = 0;
+////                    val[2] = 0;
+//                    temp.put(j, i, val);
+//                }
+//                else
+//                {
+//                    val[0] = 255;
+//                    val[1] = 129;
+//                    val[2] = 129;
+//                    temp.put(j, i, val);
+//                }
+//            }
+//        }
         edges = temp.clone();
 
         Core.split(edges, channels);
@@ -298,7 +415,7 @@ public class OpenCVUtils {
 //        Core.merge(channels, edges);
 //        Imgproc.cvtColor(edges, edges, Imgproc.COLOR_HSV2RGB);
 
-        Core.inRange(channels.get(0), new Scalar(0), new Scalar(1), range);
+        Core.inRange(channels.get(0), new Scalar(0), new Scalar(250), range);
 
         Imgproc.cvtColor(edges, edges, Imgproc.COLOR_Lab2RGB);
 //        Imgproc.cvtColor(range, range, Imgproc.COLOR_RGB2GRAY);
@@ -338,10 +455,15 @@ public class OpenCVUtils {
             }
 
         }
-        if(outermostContoursList.size()>0)
-        {
+
+        TestResult testResult = TestResult.getTestResultFromMat(strip, true, true, minChroma,
+                minChromaLab, numPatchesFound);
+        testResult.setOriginal(orig);
+
+        if(outermostContoursList.size()>0) {
             numPatchesFound = 0;
-            for(Mat outer: outermostContoursList) {
+
+            for (Mat outer : outermostContoursList) {
                 //make square
 //                outer.convertTo(mMOP2f, CvType.CV_32FC2);
 //                Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.01 * Imgproc.arcLength(mMOP2f, true), true);
@@ -362,12 +484,16 @@ public class OpenCVUtils {
                     }
                 }
             }
-            System.out.println("***numPatchesFound: " + numPatchesFound);
-
-            TestResult testResult = TestResult.getTestResultFromMat(strip, true, true, minChroma, minChromaPixPos, numPatchesFound);
-            ResultStripTestActivity.testResults.add(testResult);
-
         }
+//        System.out.println("***minChromaPixPos: " + minChromaPixPos.x + ", " + minChromaPixPos.y);
+
+//        Core.circle(strip, minChromaPixPos, 10, new Scalar(0, 255, 255, 255), 2);
+
+        testResult.setNumPatchesFound(numPatchesFound);
+        testResult.setMinChromaColor(minChromaPixPos);
+
+        testResult.setResultBitmap(strip);
+        ResultStripTestActivity.testResults.add(testResult);
 
         return strip;
     }

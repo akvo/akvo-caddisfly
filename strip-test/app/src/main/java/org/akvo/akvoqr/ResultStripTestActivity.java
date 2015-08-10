@@ -36,6 +36,7 @@ public class ResultStripTestActivity extends AppCompatActivity {
 
         for(int i=0;i<testResults.size();i++)
         {
+            TestResult testResult = testResults.get(i);
             LinearLayout innerlayout = new LinearLayout(this);
             innerlayout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -50,14 +51,36 @@ public class ResultStripTestActivity extends AppCompatActivity {
                 imageView.setBackgroundColor(Color.RED);
             }
 
-            imageView.setImageBitmap(testResults.get(i).calibrated);
+            imageView.setImageBitmap(testResults.get(i).resultBitmap);
             imageView.setPadding(5, 5, 5, 5);
             innerlayout.addView(imageView, params);
 
-            TextView minChromaView = new TextView(this);
-            minChromaView.setBackgroundColor(testResults.get(i).minChromaColor);
-            minChromaView.setText("min chroma");
-            innerlayout.addView(minChromaView, params);
+//            TextView minChromaView = new TextView(this);
+//            minChromaView.setTextColor(Color.GREEN);
+//            minChromaView.setBackgroundColor(testResults.get(i).minChromaColor);
+//            minChromaView.setText("L = " + String.format("%.0f", (testResult.minChromaLab[0] / 255) * 100) +
+//                    "\na = " + String.format("%.0f", testResult.minChromaLab[1] - 128)
+//                    + "\nb = " + String.format("%.0f", testResult.minChromaLab[2] - 128));
+//            innerlayout.addView(minChromaView, params);
+//
+//            float[] hsv = new float[3];
+//            Color.colorToHSV(testResults.get(i).minChromaColor, hsv);
+//
+//            TextView minChromaView1 = new TextView(this);
+//
+//            minChromaView1.setText("h = "+ String.format("%.0f",hsv[0])+"\n" +
+//                    "s = " + String.format("%.0f",hsv[1]) + "\n" +
+//                    "v = " + String.format("%.0f",hsv[2]));
+//
+//            hsv[1] = 1f;
+//            hsv[2] = 1f;
+//            minChromaView1.setBackgroundColor(Color.HSVToColor(hsv));
+//
+//            innerlayout.addView(minChromaView1, params);
+
+//            TextView minChromaView2 = new TextView(this);
+//            minChromaView2.setText(String.format("%.0f", testResult.minChroma));
+//            innerlayout.addView(minChromaView2);
 
             layout.addView(innerlayout, params);
         }
