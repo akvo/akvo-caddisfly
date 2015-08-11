@@ -89,12 +89,13 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        //todo: upgrade stuff. To be removed...
         upgradeOldFolderPath();
-
 
     }
 
+    /**
+     * Check for update, but not more than once an hour
+     */
     private void checkForUpdate() {
         long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
 
@@ -103,12 +104,16 @@ public class MainActivity extends BaseActivity {
         lastCheckDate.setTimeInMillis(updateLastCheck);
 
         Calendar currentDate = Calendar.getInstance();
-        if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
+        if (DateUtils.getHoursDifference(lastCheckDate, currentDate) > 0) {
             UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, CaddisflyApp.getVersion(this));
             updateCheckTask.execute();
         }
     }
 
+    /**
+     * Upgrade folder names and paths created by previous version to new folder structure
+     */
+    //todo: upgrade stuff. To be removed eventually...
     private void upgradeOldFolderPath() {
         File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
                 AppConfig.OLD_FILES_FOLDER_NAME + File.separator + AppConfig.OLD_CALIBRATE_FOLDER_NAME);
@@ -298,7 +303,7 @@ public class MainActivity extends BaseActivity {
                 mLanguageCode = intent.getStringExtra("language");
 
                 String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
-                caddisflyApp.setSwatches(code);
+                caddisflyApp.loadTestConfiguration(code);
 
                 if (caddisflyApp.currentTestInfo == null) {
 
@@ -378,10 +383,6 @@ public class MainActivity extends BaseActivity {
 
                 final Intent colorimetricLiquidIntent = new Intent(context, ColorimetricLiquidActivity.class);
                 startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
-
-                break;
-            case COLORIMETRIC_STRIP:
-
 
                 break;
             case SENSOR:

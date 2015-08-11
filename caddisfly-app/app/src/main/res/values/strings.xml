@@ -31,13 +31,13 @@
     <string name="load">Load</string>
     <string name="swatches">Swatches</string>
     <string name="calibrate">Calibrate</string>
-    <string name="calibrated">Calibrated</string>
+    <string name="calibrated" tools:ignore="UnusedResources">Calibrated</string>
     <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="version" tools:ignore="UnusedResources">Version</string>
-    <string name="success">Success</string>
-    <string name="done">Done</string>
+    <string name="success" tools:ignore="UnusedResources">Success</string>
+    <string name="done" tools:ignore="UnusedResources">Done</string>
 
     <!--External-->
     <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
@@ -94,7 +94,6 @@
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--Dilution Selection Dialog-->
-    <string name="selectDilution">Select Dilution</string>
     <string name="noDilution">No Dilution</string>
     <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d Times Dilution</string>
 
@@ -155,12 +154,10 @@
     <!--Diagnostic Mode: Settings-->
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera</string>
-    <string name="externalCamera">Colorimeter external camera</string>
     <string name="testSensor">EC Sensor</string>
     <string name="autoFocus">Auto Focus</string>
     <string name="useFlashMode">Use Flash Mode</string>
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
-    <string name="deviceConnectExternalCamera">Please connect Akvo Caddisfly Sensor and try again</string>
 </resources>

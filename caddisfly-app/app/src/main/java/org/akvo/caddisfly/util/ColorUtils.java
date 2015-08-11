@@ -37,13 +37,13 @@ import java.util.ArrayList;
 public final class ColorUtils {
 
     private static final int GRAY_TOLERANCE = 10;
-    static double Xn = 0.950470;
-    static double Yn = 1.0;
-    static double Zn = 1.088830;
-    static double t0 = 0.137931034;  // 4 / 29;
-    static double t1 = 0.206896552;  // 6 / 29;
-    static double t2 = 0.12841855;   // 3 * t1 * t1;
-    static double t3 = 0.008856452; // t1 * t1 * t1;
+    private static final double Xn = 0.950470;
+    private static final double Yn = 1.0;
+    private static final double Zn = 1.088830;
+    private static final double t0 = 0.137931034;  // 4 / 29;
+    private static final double t1 = 0.206896552;  // 6 / 29;
+    private static final double t2 = 0.12841855;   // 3 * t1 * t1;
+    private static final double t3 = 0.008856452; // t1 * t1 * t1;
 
     private ColorUtils() {
     }
@@ -59,12 +59,12 @@ public final class ColorUtils {
 
         //Find the color that matches the photoColor from the calibrated colorRange
         ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(
-                photoColor.getColor(), colorRange, 4);
+                photoColor.getColor(), colorRange, AppConfig.MIN_VALID_COLOR_DISTANCE);
 
         //If no color matches the colorRange then generate a gradient by interpolation
         if (colorCompareInfo.getResult() < 0) {
 
-            ArrayList<Swatch> swatchRange = ColorUtils.generateGradient(colorRange, colorModel);
+            ArrayList<Swatch> swatchRange = ColorUtils.generateGradient(colorRange, colorModel, 0.01);
 
             //Find the color within the generated gradient that matches the photoColor
             colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
@@ -131,7 +131,7 @@ public final class ColorUtils {
             int goodColors = 0;
 
             for (int i = 0; i < colorsFound; i++) {
-                double distance = getColorDistance(commonColor, m.keyAt(i));
+                double distance = getColorDistanceLab(colorToLab(commonColor), colorToLab(m.keyAt(i)));
 
                 if (distance < 10) {
                     goodColors++;
@@ -214,7 +214,10 @@ public final class ColorUtils {
             }
             for (Swatch range2 : colorRange) {
                 if (swatch != range2) {
-                    if (getColorDistance(swatch.getColor(), range2.getColor()) < AppConfig.MIN_VALID_COLOR_DISTANCE) {
+                    double value = getColorDistanceLab(colorToLab(swatch.getColor()),
+                            colorToLab(range2.getColor()));
+
+                    if (value <= AppConfig.MIN_VALID_COLOR_DISTANCE) {
                         //Duplicate color
                         return false;
                     }
@@ -278,7 +281,7 @@ public final class ColorUtils {
      * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
     private static ColorCompareInfo getNearestColorFromSwatchRange(
-            int colorToFind, ArrayList<Swatch> colorRange, int maxDistance) {
+            int colorToFind, ArrayList<Swatch> colorRange, double maxDistance) {
 
         double distance = maxDistance;
 
@@ -288,7 +291,7 @@ public final class ColorUtils {
         for (int i = 0; i < colorRange.size(); i++) {
             int tempColor = colorRange.get(i).getColor();
 
-            double temp = getColorDistance(tempColor, colorToFind);
+            double temp = getColorDistanceLab(colorToLab(tempColor), colorToLab(colorToFind));
 
             if (temp == 0.0) {
                 resultValue = colorRange.get(i).getValue();
@@ -328,14 +331,15 @@ public final class ColorUtils {
      * @return The list of generated color swatches
      */
     @SuppressWarnings("SameParameterValue")
-    public static ArrayList<Swatch> generateGradient(ArrayList<Swatch> colorRange, AppConfig.ColorModel colorModel) {
+    public static ArrayList<Swatch> generateGradient(ArrayList<Swatch> colorRange,
+                                                     AppConfig.ColorModel colorModel, double increment) {
 
         if (colorModel == AppConfig.ColorModel.HSV) {
             return getGradientHsvColor(colorRange, 200);
         }
 
         ArrayList<Swatch> list = new ArrayList<>();
-        double increment = 0.01;
+        //double increment = 0.01;
 
         for (int i = 0; i < colorRange.size() - 1; i++) {
 
@@ -424,7 +428,7 @@ public final class ColorUtils {
     }
 
     //http://stackoverflow.com/questions/27090107/color-gradient-algorithm-in-lab-color-space
-    public static LabColor getGradientLabColor(LabColor c1, LabColor c2, int n, int index) {
+    private static LabColor getGradientLabColor(LabColor c1, LabColor c2, int n, int index) {
         double alpha = (double) index / (n - 1);  // 0.0 <= alpha <= 1.0
         double L = (1 - alpha) * c1.L + alpha * c2.L;
         double a = (1 - alpha) * c1.a + alpha * c2.a;
@@ -432,7 +436,7 @@ public final class ColorUtils {
         return new LabColor(L, a, b);
     }
 
-    public static int labToRgb(LabColor color) {
+    private static int labToRgb(LabColor color) {
         double a, b, g, l, r, x, y, z;
         l = color.L;
         a = color.a;
@@ -452,7 +456,7 @@ public final class ColorUtils {
         return Color.rgb((int) r, (int) g, (int) b);
     }
 
-    public static double lab_xyz(double t) {
+    private static double lab_xyz(double t) {
         if (t > t1) {
             return t * t * t;
         } else {
@@ -460,11 +464,11 @@ public final class ColorUtils {
         }
     }
 
-    public static double xyz_rgb(double r) {
+    private static double xyz_rgb(double r) {
         return Math.round(255 * (r <= 0.00304 ? 12.92 * r : 1.055 * Math.pow(r, 1 / 2.4) - 0.055));
     }
 
-    public static LabColor rgbToLab(double r, double g, double b) {
+    private static LabColor rgbToLab(double r, double g, double b) {
         XyzColor xyzColor = rgb2xyz(r, g, b);
         return new LabColor(116 * xyzColor.y - 16, 500 * (xyzColor.x - xyzColor.y), 200 * (xyzColor.y - xyzColor.z));
     }
@@ -496,14 +500,15 @@ public final class ColorUtils {
         return new XyzColor(x, y, z);
     }
 
-    public static int labToColor(LabColor color) {
+    private static int labToColor(LabColor color) {
         return labToRgb(color);
     }
 
     // create gradient from yellow to red to black with 100 steps
-    //var gradient = hsbGradient(100, [{h:0.14, s:0.5, b:1}, {h:0, s:1, b:1}, {h:0, s:1, b:0}]);
+    //var gradient = hsvGradient(100, [{h:0.14, s:0.5, b:1}, {h:0, s:1, b:1}, {h:0, s:1, b:0}]);
     // http://stackoverflow.com/questions/2593832/how-to-interpolate-hue-values-in-hsv-colour-space
-    public static ArrayList<Swatch> getGradientHsvColor(ArrayList<Swatch> colors, int steps) {
+    @SuppressWarnings("SameParameterValue")
+    private static ArrayList<Swatch> getGradientHsvColor(ArrayList<Swatch> colors, int steps) {
         int parts = colors.size() - 1;
         ArrayList<Swatch> gradient = new ArrayList<>();
         int gradientIndex = 0;
@@ -514,17 +519,17 @@ public final class ColorUtils {
 
             double startValue = colors.get(col).getValue();
 
-            float[] hsbColor = new float[3];
+            float[] hsvColor = new float[3];
 
             Color.RGBToHSV(Color.red(colors.get(col).getColor()),
                     Color.green(colors.get(col).getColor()),
-                    Color.blue(colors.get(col).getColor()), hsbColor);
-            HsvColor c1 = new HsvColor(hsbColor[0], hsbColor[1], hsbColor[2]);
+                    Color.blue(colors.get(col).getColor()), hsvColor);
+            HsvColor c1 = new HsvColor(hsvColor[0], hsvColor[1], hsvColor[2]);
 
             Color.RGBToHSV(Color.red(colors.get(col + 1).getColor()),
                     Color.green(colors.get(col + 1).getColor()),
-                    Color.blue(colors.get(col + 1).getColor()), hsbColor);
-            HsvColor c2 = new HsvColor(hsbColor[0], hsbColor[1], hsbColor[2]);
+                    Color.blue(colors.get(col + 1).getColor()), hsvColor);
+            HsvColor c2 = new HsvColor(hsvColor[0], hsvColor[1], hsvColor[2]);
 
             // determine clockwise and counter-clockwise distance between hues
             double distCCW = (c1.h >= c2.h) ? c1.h - c2.h : 1 + c1.h - c2.h;
@@ -537,16 +542,15 @@ public final class ColorUtils {
             for (int step = 0; step < partSteps; step++) {
                 double p = step / partSteps;
                 // interpolate h, s, b
-                float[] hsvColor = new float[3];
                 float h = (float) ((distCW <= distCCW) ? c1.h + (distCW * p) : c1.h - (distCCW * p));
                 if (h < 0) h = 1 + h;
                 if (h > 1) h = h - 1;
                 float s = (float) ((1 - p) * c1.s + p * c2.s);
-                float b = (float) ((1 - p) * c1.v + p * c2.v);
+                float v = (float) ((1 - p) * c1.v + p * c2.v);
 
                 hsvColor[0] = h;
                 hsvColor[1] = s;
-                hsvColor[2] = b;
+                hsvColor[2] = v;
                 // add to gradient array
                 gradient.add(gradientIndex, new Swatch(startValue + (step * increment),
                         Color.HSVToColor(hsvColor)));
@@ -557,5 +561,80 @@ public final class ColorUtils {
         return gradient;
     }
 
+    //https://github.com/StanfordHCI/c3/blob/master/java/src/edu/stanford/vis/color/LAB.java
+    public static double getColorDistanceLab(LabColor x, LabColor y) {
+        // adapted from Sharma et al's MATLAB implementation at
+        //  http://www.ece.rochester.edu/~gsharma/ciede2000/
+
+        // parametric factors, use defaults
+        double kl = 1, kc = 1, kh = 1;
+
+        // compute terms
+        double pi = Math.PI,
+                L1 = x.L, a1 = x.a, b1 = x.b, Cab1 = Math.sqrt(a1 * a1 + b1 * b1),
+                L2 = y.L, a2 = y.a, b2 = y.b, Cab2 = Math.sqrt(a2 * a2 + b2 * b2),
+                Cab = 0.5 * (Cab1 + Cab2),
+                G = 0.5 * (1 - Math.sqrt(Math.pow(Cab, 7) / (Math.pow(Cab, 7) + Math.pow(25, 7)))),
+                ap1 = (1 + G) * a1,
+                ap2 = (1 + G) * a2,
+                Cp1 = Math.sqrt(ap1 * ap1 + b1 * b1),
+                Cp2 = Math.sqrt(ap2 * ap2 + b2 * b2),
+                Cpp = Cp1 * Cp2;
+
+        // ensure hue is between 0 and 2pi
+        double hp1 = Math.atan2(b1, ap1);
+        if (hp1 < 0) hp1 += 2 * pi;
+        double hp2 = Math.atan2(b2, ap2);
+        if (hp2 < 0) hp2 += 2 * pi;
+
+        double dL = L2 - L1,
+                dC = Cp2 - Cp1,
+                dhp = hp2 - hp1;
+
+        if (dhp > +pi) dhp -= 2 * pi;
+        if (dhp < -pi) dhp += 2 * pi;
+        if (Cpp == 0) dhp = 0;
+
+        // Note that the defining equations actually need
+        // signed Hue and chroma differences which is different
+        // from prior color difference formulae
+        double dH = 2 * Math.sqrt(Cpp) * Math.sin(dhp / 2);
+
+        // Weighting functions
+        double Lp = 0.5 * (L1 + L2),
+                Cp = 0.5 * (Cp1 + Cp2);
+
+        // Average Hue Computation
+        // This is equivalent to that in the paper but simpler programmatically.
+        // Average hue is computed in radians and converted to degrees where needed
+        double hp = 0.5 * (hp1 + hp2);
+        // Identify positions for which abs hue diff exceeds 180 degrees
+        if (Math.abs(hp1 - hp2) > pi) hp -= pi;
+        if (hp < 0) hp += 2 * pi;
+
+        // Check if one of the chroma values is zero, in which case set
+        // mean hue to the sum which is equivalent to other value
+        if (Cpp == 0) hp = hp1 + hp2;
+
+        double Lpm502 = (Lp - 50) * (Lp - 50),
+                Sl = 1 + 0.015 * Lpm502 / Math.sqrt(20 + Lpm502),
+                Sc = 1 + 0.045 * Cp,
+                T = 1 - 0.17 * Math.cos(hp - pi / 6)
+                        + 0.24 * Math.cos(2 * hp)
+                        + 0.32 * Math.cos(3 * hp + pi / 30)
+                        - 0.20 * Math.cos(4 * hp - 63 * pi / 180),
+                Sh = 1 + 0.015 * Cp * T,
+                ex = (180 / pi * hp - 275) / 25,
+                deltaThetaRad = (30 * pi / 180) * Math.exp(-1 * (ex * ex)),
+                Rc = 2 * Math.sqrt(Math.pow(Cp, 7) / (Math.pow(Cp, 7) + Math.pow(25, 7))),
+                RT = -1 * Math.sin(2 * deltaThetaRad) * Rc;
+
+        dL = dL / (kl * Sl);
+        dC = dC / (kc * Sc);
+        dH = dH / (kh * Sh);
+
+        // The CIE 00 color difference
+        return Math.sqrt(dL * dL + dC * dC + dH * dH + RT * dC * dH);
+    }
 
 }

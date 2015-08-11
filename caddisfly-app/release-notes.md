@@ -8,6 +8,7 @@ v0.76 beta
 6. Diagnostic: Display lab, rgb and hsv results
 7. External folder name changed to Akvo Caddisfly
 8. Update apk file save to internal folder instead of downloads
+9. Removed external usb camera code
 
 v0.75 beta
 ----------

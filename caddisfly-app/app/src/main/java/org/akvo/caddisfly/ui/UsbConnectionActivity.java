@@ -31,28 +31,6 @@ public class UsbConnectionActivity extends AppCompatActivity {
     private TextView mConnectedTextView;
     private LinearLayout mProgressLayout;
 
-//    private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-//    IntentFilter filter;
-//
-//    //http://developer.android.com/guide/topics/connectivity/usb/host.html
-//    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//
-//            switch (action) {
-//                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-//                    Toast.makeText(getBaseContext(), "Device Connected", Toast.LENGTH_LONG).show();
-//                    break;
-//                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-//                    Toast.makeText(getBaseContext(), "Device Disconnected", Toast.LENGTH_LONG).show();
-//                    break;
-//                case ACTION_USB_PERMISSION:
-//                    Toast.makeText(getBaseContext(), "Device Connected", Toast.LENGTH_LONG).show();
-//                    break;
-//            }
-//        }
-//    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +45,6 @@ public class UsbConnectionActivity extends AppCompatActivity {
 
         mConnectedTextView = (TextView) findViewById(R.id.textConnected);
         mProgressLayout = (LinearLayout) findViewById(R.id.layoutProgress);
-
-        //http://developer.android.com/guide/topics/connectivity/usb/host.html
-//        filter = new IntentFilter();
-//        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-//        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-//        registerReceiver(mUsbReceiver, filter);
-
     }
 
     @Override
@@ -88,7 +59,6 @@ public class UsbConnectionActivity extends AppCompatActivity {
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
-                //Toast.makeText(getBaseContext(), "EC Sensor Device Connected", Toast.LENGTH_LONG).show();
                 finish();
             }
         }, 4000);

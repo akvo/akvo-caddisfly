@@ -15,7 +15,6 @@
   -->
 
 <resources>
-
     <color name="primary">#ff2c2e2c</color>
     <color name="primary_dark">#ff0a632b</color>
     <color name="accent">#35924d</color>
@@ -28,5 +27,4 @@
     <color name="amber">#ff6f00</color>
     <color name="red">#ff0000</color>
     <color name="error_background">#2afac900</color>
-
 </resources>

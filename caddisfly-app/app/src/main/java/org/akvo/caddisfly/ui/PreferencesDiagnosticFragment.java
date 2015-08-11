@@ -21,7 +21,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -35,12 +34,7 @@ import android.widget.ListView;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.usb.DeviceFilter;
-import org.akvo.caddisfly.usb.USBMonitor;
-import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ListViewUtils;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +42,6 @@ import java.util.List;
 public class PreferencesDiagnosticFragment extends PreferenceFragment {
 
     private ListView list;
-    private USBMonitor mUSBMonitor;
 
     public PreferencesDiagnosticFragment() {
         // Required empty public constructor
@@ -64,8 +57,6 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.card_row, container, false);
-
-        mUSBMonitor = new USBMonitor(getActivity(), null);
 
         final EditTextPreference sampleTimesPreference =
                 (EditTextPreference) findPreference(getString(R.string.samplingsTimeKey));
@@ -123,37 +114,12 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
             });
         }
 
-        Preference externalCameraPreviewPreference = findPreference("externalCamera");
-        if (externalCameraPreviewPreference != null) {
-            externalCameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
-                    caddisflyApp.initializeCurrentTest();
-
-                    final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
-                    List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                    if (usbDeviceList.size() > 0) {
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ExternalCameraFragment cameraFragment = ExternalCameraFragment.newInstance(true);
-                        cameraFragment.setCancelable(false);
-                        cameraFragment.show(ft, "externalCameraFragment");
-                    } else {
-                        AlertUtils.showMessage(getActivity(), R.string.sensorNotFound, R.string.deviceConnectExternalCamera);
-                    }
-
-                    return true;
-                }
-            });
-        }
-
         Preference sensorPreference = findPreference("ecSensor");
         if (sensorPreference != null) {
             sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
-                    //todo: fix hardcoding of econd
-                    caddisflyApp.setSwatches("ECOND");
-
+                    caddisflyApp.loadTestConfiguration("ECOND");
                     final Intent intent = new Intent(getActivity(), SensorActivity.class);
                     startActivity(intent);
                     return true;

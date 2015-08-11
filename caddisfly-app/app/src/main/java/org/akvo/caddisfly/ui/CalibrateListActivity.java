@@ -85,7 +85,7 @@ public class CalibrateListActivity extends BaseActivity
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_swatches:
-                final Intent intent = new Intent(this, SwatchActivity.class);
+                final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_load:
@@ -160,15 +160,22 @@ public class CalibrateListActivity extends BaseActivity
         }
     }
 
+    /**
+     * Hides the keyboard
+     *
+     * @param input the EditText for which the keyboard is open
+     */
     private void closeKeyboard(EditText input) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
     }
 
+    /**
+     * Save the current calibration to a text file
+     */
     private void saveCalibration() {
         final Context context = this;
-        final CaddisflyApp caddisflyApp = (CaddisflyApp) this.getApplicationContext();
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
@@ -207,7 +214,7 @@ public class CalibrateListActivity extends BaseActivity
                         if (!input.getText().toString().trim().isEmpty()) {
                             final StringBuilder exportList = new StringBuilder();
 
-                            for (Swatch range : caddisflyApp.currentTestInfo.getRanges()) {
+                            for (Swatch range : CaddisflyApp.getApp().currentTestInfo.getRanges()) {
                                 exportList.append(String.format("%.2f", range.getValue()))
                                         .append("=")
                                         .append(ColorUtils.getColorRgbString(range.getColor()));
@@ -250,18 +257,28 @@ public class CalibrateListActivity extends BaseActivity
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    private double stringToDouble(String s) {
+    /**
+     * Convert a string number into a double value
+     *
+     * @param text the text to be converted to number
+     * @return
+     */
+    private double stringToDouble(String text) {
 
-        s = s.replaceAll(",", ".");
+        text = text.replaceAll(",", ".");
         NumberFormat nf = NumberFormat.getInstance(Locale.US);
         try {
-            return nf.parse(s).doubleValue();
+            return nf.parse(text).doubleValue();
         } catch (ParseException e) {
             e.printStackTrace();
             return 0.0;
         }
     }
 
+    /**
+     * Load the calibrated swatches from the calibration text file
+     * @param callback callback to be initated once the loading is complete
+     */
     private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
         final CaddisflyApp caddisflyApp = (CaddisflyApp) this.getApplicationContext();
@@ -379,7 +396,5 @@ public class CalibrateListActivity extends BaseActivity
         }
 
         callback.handleMessage(null);
-
     }
-
 }

@@ -3,7 +3,7 @@ package org.akvo.caddisfly.model;
 import org.akvo.caddisfly.AppConfig;
 
 public class ResultInfo {
-    private int color;
+    private final int color;
     private double result;
     private int matchedColor;
     private double distance;
@@ -17,10 +17,6 @@ public class ResultInfo {
 
     public int getColor() {
         return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
     }
 
     public double getResult() {

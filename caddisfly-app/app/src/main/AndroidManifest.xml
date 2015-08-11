@@ -92,7 +92,7 @@
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.SwatchActivity"
+            android:name=".ui.DiagnosticSwatchActivity"
             android:label="@string/swatches"
             android:screenOrientation="nosensor">
             <meta-data
@@ -104,9 +104,6 @@
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".ui.ExternalCameraActivity"
-            android:label="@string/appName" />
         <activity
             android:name=".ui.TypeListActivity"
             android:label="@string/calibrate"

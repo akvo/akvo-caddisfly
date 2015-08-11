@@ -16,12 +16,7 @@
 
 <resources>
 
-    <!--pid = 6001 vid = 0403-->
+  <!--EC Sensor pid = 6001 vid = 0403-->
     <usb-device vendor-id="1027" />
-
-    <!-- all device of UVC -->
-    <usb-device
-        class="239"
-        subclass="2" />
 
 </resources>

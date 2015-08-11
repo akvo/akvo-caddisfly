@@ -23,9 +23,6 @@
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
         <Preference
-            android:key="externalCamera"
-            android:title="@string/externalCamera" />
-        <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">
         </Preference>

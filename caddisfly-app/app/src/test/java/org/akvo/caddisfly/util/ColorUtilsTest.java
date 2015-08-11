@@ -54,7 +54,7 @@ public class ColorUtilsTest extends TestCase {
             testInfo.addRange(swatch);
         }
 
-        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getRanges(), AppConfig.ColorModel.RGB);
+        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getRanges(), AppConfig.ColorModel.RGB, 0.01);
 
         assertEquals(401, list.size());
 

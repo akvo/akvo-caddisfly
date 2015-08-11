@@ -79,6 +79,7 @@
     </TableLayout>
 
     <TableLayout
+        android:id="@+id/colorModelHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*">
@@ -97,7 +98,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Cal"
+                android:text="@string/steps"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -105,21 +106,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Lab"
+                android:text="@string/lab"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="RGB"
+                android:text="@string/rgb"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Hsv"
+                android:text="@string/hsv"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </TableRow>

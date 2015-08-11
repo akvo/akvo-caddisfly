@@ -77,7 +77,7 @@ import static org.hamcrest.object.HasToString.hasToString;
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private static final String mCurrentLanguage = "en";
+    private static final String mCurrentLanguage = "fr";
     private static final boolean mTakeScreenshots = false;
     private static int mCounter = 0;
     private final HashMap<String, String> stringHashMapEN = new HashMap<>();
@@ -199,9 +199,9 @@ public class EspressoTest
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
 
-        saveCalibration();
+        saveInvalidCalibration();
 
-        String path = Environment.getExternalStorageDirectory().getPath() + "/org.akvo.caddisfly/screenshots";
+        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
 
         File folder = new File(path);
         if (!folder.exists()) {
@@ -282,6 +282,9 @@ public class EspressoTest
 
         onView(withText("Test")).perform(click());
 
+        onView(withText(String.format("%s. %s", getActivity().getString(R.string.calibrationIsInvalid),
+                getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
+
         goToMainScreen();
 
         leaveDiagnosticMode();
@@ -309,9 +312,37 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
+        saveCalibration();
+
         mDevice.pressBack();
         mDevice.pressBack();
         mDevice.pressBack();
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menu_load)).perform(click());
+
+        onView(withText("Test")).perform(click());
+
+        goToMainScreen();
+
+        leaveDiagnosticMode();
+
+        onView(withId(R.id.action_settings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -1248,11 +1279,7 @@ public class EspressoTest
     }
 
     private void saveCalibration() {
-        File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.DIR_CALIBRATION;
-
-        FileUtils.saveToFile(path, "Test", "0.0=255  88  177\n"
+        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
                 + "1.0=255  139  137\n"
                 + "1.5=253  174  74\n"
@@ -1261,12 +1288,18 @@ public class EspressoTest
                 + "3.0=254  169  61\n");
     }
 
-    private void saveHighLevelCalibration() {
-        File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.DIR_CALIBRATION;
+    private void saveInvalidCalibration() {
+        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
+                + "0.5=255  110  15\n"
+                + "1.0=255  139  137\n"
+                + "1.5=253  174  74\n"
+                + "2.0=253  174  76\n"
+                + "2.5=236  172  81\n"
+                + "3.0=254  169  61\n");
+    }
 
-        FileUtils.saveToFile(path, "HighLevelTest", "0.0=255  88  47\n"
+    private void saveHighLevelCalibration() {
+        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "HighLevelTest", "0.0=255  88  47\n"
                 + "0.5=255  60  37\n"
                 + "1.0=255  35  27\n"
                 + "1.5=253  17  17\n"
@@ -1274,11 +1307,7 @@ public class EspressoTest
     }
 
     private void saveLowLevelCalibration() {
-        File external = Environment.getExternalStorageDirectory();
-        final String path = external.getPath() + AppConfig.APP_EXTERNAL_PATH +
-                File.separator + AppConfig.DIR_CALIBRATION;
-
-        FileUtils.saveToFile(path, "LowLevelTest", "0.0=255  60  37\n"
+        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"
                 + "1.0=253  17  17\n"
                 + "1.5=254  0  0\n"
@@ -1321,7 +1350,7 @@ public class EspressoTest
                 }
 
                 File path = new File(Environment.getExternalStorageDirectory().getPath() +
-                        "/org.akvo.caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
+                        "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
                 mDevice.takeScreenshot(path, 0.5f, 60);
             }
         }

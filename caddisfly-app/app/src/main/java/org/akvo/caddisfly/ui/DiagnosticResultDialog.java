@@ -29,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -162,7 +163,6 @@ public class DiagnosticResultDialog extends DialogFragment {
             CaddisflyApp caddisflyApp = ((CaddisflyApp) getActivity().getApplicationContext());
 
             if (caddisflyApp != null && rowView != null) {
-                //TextView ppmText = (TextView) rowView.findViewById(R.id.ppmText);
                 TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
                 Button button = (Button) rowView.findViewById(R.id.buttonColor);
@@ -174,11 +174,10 @@ public class DiagnosticResultDialog extends DialogFragment {
 
                 button.setBackgroundColor(color);
 
-//                if (mIsCalibration) {
-//                    ppmText.setVisibility(View.INVISIBLE);
-//                } else if (mResults[position] > -1) {
-//                    ppmText.setText(doubleFormat.format(mResults[position]));
-//                }
+                if (mIsCalibration) {
+                    TableLayout colorModelHeading = (TableLayout) rowView.findViewById(R.id.colorModelHeading);
+                    colorModelHeading.setVisibility(View.GONE);
+                }
 
                 //display rgb value
                 int r = Color.red(color);
@@ -210,7 +209,6 @@ public class DiagnosticResultDialog extends DialogFragment {
         }
 
         public int getCount() {
-            //todo change this
             return 3;
         }
 
@@ -228,47 +226,42 @@ public class DiagnosticResultDialog extends DialogFragment {
             @SuppressLint("ViewHolder")
             View rowView = inflater.inflate(R.layout.row_result, parent, false);
 
-            CaddisflyApp caddisflyApp = ((CaddisflyApp) getActivity().getApplicationContext());
+            int calibrationSteps = 2;
+            switch (position) {
+                case 0:
+                    calibrationSteps = 2;
+                    break;
+                case 1:
+                    calibrationSteps = 3;
+                    break;
+                case 2:
+                    calibrationSteps = 5;
+                    break;
+            }
 
-            if (caddisflyApp != null && rowView != null) {
+            TextView textCalibrationSteps = (TextView) rowView.findViewById(R.id.textCalibrationSteps);
+            textCalibrationSteps.setText(String.format("%s step", calibrationSteps));
 
-                int calibrationSteps = 2;
-                switch (position) {
-                    case 0:
-                        calibrationSteps = 2;
-                        break;
-                    case 1:
-                        calibrationSteps = 3;
-                        break;
-                    case 2:
-                        calibrationSteps = 5;
-                        break;
-                }
-                TextView resultText;
+            TextView resultText;
 
-                for (ResultInfo resultInfo : mResults) {
-                    if (resultInfo.getCalibrationSteps() == calibrationSteps) {
+            for (ResultInfo resultInfo : mResults) {
+                if (resultInfo.getCalibrationSteps() == calibrationSteps) {
 
-                        TextView textCalibrationSteps = (TextView) rowView.findViewById(R.id.textCalibrationSteps);
-                        textCalibrationSteps.setText(String.format("%s step", resultInfo.getCalibrationSteps()));
-
-                        switch (resultInfo.getColorModel()) {
-                            case LAB:
-                                resultText = (TextView) rowView.findViewById(R.id.textLabResult);
-                                resultText.setText(String.format("%.2f", resultInfo.getResult()));
-                                break;
-                            case RGB:
-                                resultText = (TextView) rowView.findViewById(R.id.textRgbResult);
-                                resultText.setText(String.format("%.2f", resultInfo.getResult()));
-                                break;
-                            case HSV:
-                                resultText = (TextView) rowView.findViewById(R.id.textHsvResult);
-                                resultText.setText(String.format("%.2f", resultInfo.getResult()));
-                                break;
-                        }
+                    switch (resultInfo.getColorModel()) {
+                        case LAB:
+                            resultText = (TextView) rowView.findViewById(R.id.textLabResult);
+                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            break;
+                        case RGB:
+                            resultText = (TextView) rowView.findViewById(R.id.textRgbResult);
+                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            break;
+                        case HSV:
+                            resultText = (TextView) rowView.findViewById(R.id.textHsvResult);
+                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            break;
                     }
                 }
-
             }
             return rowView;
         }

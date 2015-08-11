@@ -54,9 +54,9 @@ public class AppConfig {
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     public static final int DELAY_BETWEEN_SAMPLING = 6000;
     //The maximum color distance before the color is considered out of range
-    public static final int MAX_COLOR_DISTANCE = 30;
-    //The minimum color distance between the swatches on calibration
-    public static final double MIN_VALID_COLOR_DISTANCE = 5;
+    public static final int MAX_COLOR_DISTANCE = 4;
+    //The minimum color distance allowed before the colors are considered equivalent
+    public static final double MIN_VALID_COLOR_DISTANCE = 1.2;
     public static final int SAMPLING_COUNT_DEFAULT = 5;
     public static final float SOUND_VOLUME = 1f;
 

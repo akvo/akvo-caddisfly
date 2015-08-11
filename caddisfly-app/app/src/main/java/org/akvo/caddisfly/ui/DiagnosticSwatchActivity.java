@@ -20,7 +20,7 @@ import android.os.Bundle;
 
 import org.akvo.caddisfly.R;
 
-public class SwatchActivity extends BaseActivity {
+public class DiagnosticSwatchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class SwatchActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
 
-            SwatchFragment fragment = new SwatchFragment();
+            DiagnosticSwatchFragment fragment = new DiagnosticSwatchFragment();
             //fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.layoutContainer, fragment)

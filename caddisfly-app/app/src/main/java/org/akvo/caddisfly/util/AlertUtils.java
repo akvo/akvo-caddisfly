@@ -61,18 +61,6 @@ public class AlertUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, String title, int message,
-                                 DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, context.getString(message), R.string.ok, R.string.cancel, true, false, callback, cancelListener);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, String title, int message, int okButtonText,
-                                 DialogInterface.OnClickListener callback, DialogInterface.OnClickListener cancelListener) {
-        showAlert(context, title, context.getString(message), okButtonText, R.string.cancel, true, false, callback, cancelListener);
-    }
-
-    @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, int title, int message,
                                  DialogInterface.OnClickListener callback,
                                  DialogInterface.OnClickListener cancelListener) {
@@ -81,9 +69,9 @@ public class AlertUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, int title, String message,
-                                 DialogInterface.OnClickListener callback,
-                                 DialogInterface.OnClickListener cancelListener) {
+    private static void showAlert(Context context, int title, String message,
+                                  DialogInterface.OnClickListener callback,
+                                  DialogInterface.OnClickListener cancelListener) {
 
         showAlert(context, context.getString(title), message, R.string.ok, R.string.cancel, true, false, callback, cancelListener);
     }

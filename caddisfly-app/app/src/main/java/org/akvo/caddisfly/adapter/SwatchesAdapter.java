@@ -27,20 +27,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtils;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class SwatchesAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
-    private final Swatch[] colorArray;
+    private final ArrayList<Swatch> colorArray;
 
-    private final DecimalFormat doubleFormat = new DecimalFormat("0.0");
-
-    public SwatchesAdapter(Activity activity, Swatch[] colorArray) {
+    public SwatchesAdapter(Activity activity, ArrayList<Swatch> colorArray) {
         super(activity, R.layout.row_swatch, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;
@@ -49,34 +46,37 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_swatch, parent, false);
+        @SuppressLint("ViewHolder")
+        View rowView = inflater.inflate(R.layout.row_swatch, parent, false);
 
-        CaddisflyApp caddisflyApp = ((CaddisflyApp) activity.getApplicationContext());
-
-        if (caddisflyApp != null && rowView != null) {
+        if (rowView != null) {
             TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
             TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
             TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);
             Button button = (Button) rowView.findViewById(R.id.buttonColor);
 
-            int color = colorArray[position].getColor();
+            int color = colorArray.get(position).getColor();
 
             button.setBackgroundColor(color);
 
             //display ppm value
-            ppmText.setText(doubleFormat.format(colorArray[position].getValue()));
+            ppmText.setText(String.format("%.2f", colorArray.get(position).getValue()));
 
             double distance = 0;
+            double distanceRgb = 0;
             if (position > 0) {
-                int previousColor = colorArray[position - 1].getColor();
-                distance = ColorUtils.getColorDistance(previousColor, color);
+                int previousColor = colorArray.get(position - 1).getColor();
+                distance = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(previousColor),
+                        ColorUtils.colorToLab(color));
+                distanceRgb = ColorUtils.getColorDistance(previousColor, color);
+
             }
 
             float[] colorHSV = new float[3];
             Color.colorToHSV(color, colorHSV);
 
-            rgbText.setText(String.format("d:%.0f  %s: %s", distance, "rgb", ColorUtils.getColorRgbString(color)));
-            hsvText.setText(String.format("d:%.0f  %s: %.0f  %.2f  %.2f", distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
+            rgbText.setText(String.format("d:%.2f  %s: %s", distanceRgb, "rgb", ColorUtils.getColorRgbString(color)));
+            hsvText.setText(String.format("d:%.2f  %s: %.0f  %.2f  %.2f", distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
         }
         return rowView;
     }

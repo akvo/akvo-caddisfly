@@ -13,6 +13,7 @@
         "type": "0",
         "code": "fluor",
         "unit": "ppm",
+        "calibrate": "true",
         "ranges": "0,0.5,1,1.5,2",
         "dilutions": "0,50,20"
       },
@@ -28,6 +29,7 @@
         "type": "0",
         "code": "chlor",
         "unit": "ppm",
+        "calibrate": "true",
         "ranges": "0,0.1,0.5,0.8,1.0"
       },
       {
@@ -42,6 +44,7 @@
         "type": "2",
         "code": "econd",
         "unit": "μS/cm",
+        "calibrate": "true",
         "ranges": "0"
       },
       {
@@ -56,6 +59,7 @@
         "type": "2",
         "code": "tempe",
         "unit": "°C",
+        "calibrate": "false",
         "ranges": "0"
       }
     ]

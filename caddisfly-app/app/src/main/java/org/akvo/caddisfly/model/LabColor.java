@@ -1,9 +1,9 @@
 package org.akvo.caddisfly.model;
 
 public class LabColor {
-    public double L;
-    public double a;
-    public double b;
+    public final double L;
+    public final double a;
+    public final double b;
 
     public LabColor(double l, double a, double b) {
         L = l;

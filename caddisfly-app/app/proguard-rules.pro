@@ -15,8 +15,3 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keepclassmembers public class com.serenegiant.usb.UVCCamera {
-    public *;
-    protected *;
-    private *;
-}

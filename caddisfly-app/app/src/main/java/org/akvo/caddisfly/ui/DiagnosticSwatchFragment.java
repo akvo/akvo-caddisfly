@@ -22,18 +22,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.SwatchesAdapter;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
-import org.akvo.caddisfly.util.PreferencesUtils;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ColorUtils;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("WeakerAccess")
-public class SwatchFragment extends ListFragment {
+public class DiagnosticSwatchFragment extends ListFragment {
 
-    public SwatchFragment() {
+    public DiagnosticSwatchFragment() {
     }
 
     @Override
@@ -48,26 +50,20 @@ public class SwatchFragment extends ListFragment {
 
         getActivity().setTitle(R.string.swatches);
 
-        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
 
-        if (caddisflyApp != null) {
-            ArrayList<Swatch> swatchList = new ArrayList<>();
+        if (testInfo.getRanges().size() > 0) {
 
-            if (caddisflyApp.currentTestInfo.getRanges().size() > 0) {
-                int startValue = (int) (caddisflyApp.currentTestInfo.getRange(0).getValue() * 10);
-                int endValue = (int) (caddisflyApp.currentTestInfo.getRange(caddisflyApp.currentTestInfo.getRanges().size() - 1).getValue() * 10);
-                for (int i = startValue; i <= endValue; i += 1) {
-                    String key = String.format("%s-%.2f", caddisflyApp.currentTestInfo.getCode(), (i / 10f));
-                    Swatch range = new Swatch((double) i / 10,
-                            PreferencesUtils.getInt(getActivity(), key, 0));
-                    swatchList.add(range);
-                }
-                Swatch[] colorArray = swatchList.toArray(new Swatch[swatchList.size()]);
+//            ArrayList<Swatch> tempColorRange = new ArrayList<>();
+//            tempColorRange.add(testInfo.getRanges().get(0));
+//            tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
+            ArrayList<Swatch> swatchList = ColorUtils.generateGradient(testInfo.getRanges(),
+                    AppConfig.ColorModel.LAB, 0.05);
 
-                SwatchesAdapter swatchesAdapter = new SwatchesAdapter(getActivity(), colorArray);
-                setListAdapter(swatchesAdapter);
-            }
+            //Swatch[] colorArray = swatchList.toArray(new Swatch[swatchList.size()]);
+
+            SwatchesAdapter swatchesAdapter = new SwatchesAdapter(getActivity(), swatchList);
+            setListAdapter(swatchesAdapter);
         }
-
     }
 }

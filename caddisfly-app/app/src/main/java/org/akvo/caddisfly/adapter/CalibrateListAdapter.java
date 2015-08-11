@@ -62,7 +62,6 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
         TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);
         TextView brightnessText = (TextView) rowView.findViewById(R.id.textBrightness);
         ImageView moreArrow = (ImageView) rowView.findViewById(R.id.imageArrow);
-        //ImageView errorImage = (ImageView) rowView.findViewById(R.id.error);
         Button button = (Button) rowView.findViewById(R.id.buttonColor);
 
         int color = range.getColor();
@@ -80,7 +79,12 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
 
         textUnit.append(wordTwo);
 
-        if (color != 0 && color != -16777216) {
+        if (color == 0 || color == Color.BLACK) {
+            button.setBackgroundColor(Color.argb(0, 10, 10, 10));
+            button.setText("?");
+            rgbText.setText("");
+            hsvText.setText("");
+        } else {
             button.setBackgroundColor(color);
             button.setText("");
 
@@ -89,26 +93,21 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
                 double distance = 0;
                 if (position > 0) {
                     int previousColor = ranges.get(position - 1).getColor();
-                    distance = ColorUtils.getColorDistance(previousColor, color);
+                    distance = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(previousColor),
+                            ColorUtils.colorToLab(color));
                 }
                 rgbText.setText(String.format("r: %s", ColorUtils.getColorRgbString(color)));
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
                 hsvText.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
-                brightnessText.setText(String.format("d:%.0f  b: %d", distance, ColorUtils.getBrightness(color)));
+                brightnessText.setText(String.format("d:%.2f  b: %d", distance, ColorUtils.getBrightness(color)));
                 rgbText.setVisibility(View.VISIBLE);
                 hsvText.setVisibility(View.VISIBLE);
                 brightnessText.setVisibility(View.VISIBLE);
                 moreArrow.setVisibility(View.GONE);
             }
-        } else {
-            button.setBackgroundColor(Color.argb(0, 10, 10, 10));
-            button.setText("?");
-            rgbText.setText("");
-            hsvText.setText("");
         }
-
 
         return rowView;
     }

@@ -42,7 +42,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {
         CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
-        caddisflyApp.setSwatches(testInfo.getCode());
+        caddisflyApp.loadTestConfiguration(testInfo.getCode());
 
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:

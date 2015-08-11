@@ -30,6 +30,7 @@ public class TestInfo {
     private final ArrayList<Swatch> mRanges;
     private final AppConfig.TestType mType;
     private final ArrayList<Integer> mDilutions;
+    private boolean requiresCalibation;
 
     public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType type) {
         mNames = names;
@@ -101,5 +102,13 @@ public class TestInfo {
 
     public boolean hasDilution() {
         return mDilutions.size() > 1;
+    }
+
+    public boolean isRequiresCalibation() {
+        return requiresCalibation;
+    }
+
+    public void setRequiresCalibation(boolean requiresCalibation) {
+        this.requiresCalibation = requiresCalibation;
     }
 }

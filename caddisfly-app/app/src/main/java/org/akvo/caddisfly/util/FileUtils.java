@@ -41,8 +41,6 @@ public final class FileUtils {
     }
 
     public static void deleteFile(File folder, String fileName) {
-        //File external = Environment.getExternalStorageDirectory();
-        //String path = external.getPath() + folder;
         File file = new File(folder, fileName);
         //noinspection ResultOfMethodCallIgnored
         file.delete();

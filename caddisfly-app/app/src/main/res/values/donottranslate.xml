@@ -26,4 +26,8 @@
         <item>fr</item>
     </string-array>
 
+    <string name="steps">Steps</string>
+    <string name="lab">LAB</string>
+    <string name="rgb">RGB</string>
+    <string name="hsv">HSV</string>
 </resources>

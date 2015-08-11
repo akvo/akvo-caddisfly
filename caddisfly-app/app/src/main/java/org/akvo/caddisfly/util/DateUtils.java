@@ -31,4 +31,14 @@ public final class DateUtils {
         return (int) ((calendar2.getTimeInMillis() -
                 calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
+
+    public static int getHoursDifference(Calendar calendar1, Calendar calendar2) {
+        if (calendar1 == null || calendar2 == null) {
+            return 0;
+        }
+
+        return (int) ((calendar2.getTimeInMillis() -
+                calendar1.getTimeInMillis()) / (1000 * 60 * 60));
+    }
+
 }

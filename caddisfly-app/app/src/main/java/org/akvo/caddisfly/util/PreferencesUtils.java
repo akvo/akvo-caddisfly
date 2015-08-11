@@ -84,15 +84,6 @@ public class PreferencesUtils {
         return sharedPreferences.getInt(keyId, defaultValue);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static int getInt(Context context, int keyId, int defaultValue) {
-        return getInt(context, getKey(context, keyId), defaultValue);
-    }
-
-    public static void setInt(Context context, int keyId, int value) {
-        PreferencesUtils.setInt(context, getKey(context, keyId), value);
-    }
-
     public static void setInt(Context context, String keyId, int value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

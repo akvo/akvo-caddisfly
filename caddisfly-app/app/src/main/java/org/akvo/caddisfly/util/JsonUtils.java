@@ -97,6 +97,11 @@ public final class JsonUtils {
                         item.getString("unit"),
                         type);
 
+                testInfo.setRequiresCalibation(true);
+                if (item.has("calibrate")) {
+                    testInfo.setRequiresCalibation(item.getString("calibrate").equalsIgnoreCase("true"));
+                }
+
                 //Load the dilution percentages
                 String dilutions = "0";
                 if (item.has("dilutions")) {
@@ -108,6 +113,7 @@ public final class JsonUtils {
                 for (String dilution : dilutionsArray) {
                     testInfo.addDilution(Integer.parseInt(dilution));
                 }
+
 
                 //Load the ranges
                 String ranges = "0";

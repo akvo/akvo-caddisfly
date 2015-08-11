@@ -29,7 +29,6 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,8 +48,6 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultInfo;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.usb.DeviceFilter;
-import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.ColorUtils;
 import org.akvo.caddisfly.util.DataHelper;
@@ -58,9 +55,7 @@ import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.ShakeDetector;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ColorimetricLiquidActivity extends BaseActivity
@@ -87,7 +82,6 @@ public class ColorimetricLiquidActivity extends BaseActivity
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
     private boolean mIgnoreShake;
-    private USBMonitor mUSBMonitor;
 
 //    @SuppressWarnings("SameParameterValue")
 //    private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -172,8 +166,6 @@ public class ColorimetricLiquidActivity extends BaseActivity
         mShakeDetector.minShakeAcceleration = 5;
         mShakeDetector.maxShakeDuration = 2000;
 
-        mUSBMonitor = new USBMonitor(this, null);
-
         //setTitle(R.string.selectDilution);
 
         Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
@@ -236,18 +228,11 @@ public class ColorimetricLiquidActivity extends BaseActivity
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 );
 
-                final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getBaseContext(),
-                        R.xml.camera_device_filter);
-                List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
 
                 InitializeTest();
 
-                if (usbDeviceList.size() > 0) {
-                    startExternalTest();
-                } else {
-                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                            SensorManager.SENSOR_DELAY_UI);
-                }
+                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                        SensorManager.SENSOR_DELAY_UI);
             }
         });
     }
@@ -290,13 +275,7 @@ public class ColorimetricLiquidActivity extends BaseActivity
 
         mSensorManager.unregisterListener(mShakeDetector);
 
-        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
-        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0) {
-            startExternalTest();
-        } else {
-            startTest();
-        }
+        startTest();
     }
 
     private void showError(String message, final Bitmap bitmap) {
@@ -407,68 +386,70 @@ public class ColorimetricLiquidActivity extends BaseActivity
 
         ArrayList<ResultInfo> results = new ArrayList<>();
 
-        ArrayList<Swatch> tempColorRange = new ArrayList<>();
-        tempColorRange.add(testInfo.getRanges().get(0));
-        tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
+        ResultInfo resultInfo;
+        if (AppPreferences.isDiagnosticMode(this)) {
+            ArrayList<Swatch> tempColorRange = new ArrayList<>();
+            tempColorRange.add(testInfo.getRanges().get(0));
+            tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.LAB);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.LAB);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.RGB);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.RGB);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.HSV);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.HSV);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        tempColorRange.add(1, testInfo.getRanges().get((testInfo.getRanges().size() / 2) - 1));
+            tempColorRange.add(1, testInfo.getRanges().get((testInfo.getRanges().size() / 2) - 1));
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.LAB);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.LAB);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.RGB);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.RGB);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                tempColorRange,
-                maxDistance,
-                AppConfig.ColorModel.HSV);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    tempColorRange,
+                    maxDistance,
+                    AppConfig.ColorModel.HSV);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                CaddisflyApp.getApp().currentTestInfo.getRanges(),
-                maxDistance,
-                AppConfig.ColorModel.RGB);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    CaddisflyApp.getApp().currentTestInfo.getRanges(),
+                    maxDistance,
+                    AppConfig.ColorModel.RGB);
 
-        results.add(resultInfo);
+            results.add(resultInfo);
 
-        resultInfo = ColorUtils.analyzeColor(photoColor,
-                CaddisflyApp.getApp().currentTestInfo.getRanges(),
-                maxDistance,
-                AppConfig.ColorModel.HSV);
+            resultInfo = ColorUtils.analyzeColor(photoColor,
+                    CaddisflyApp.getApp().currentTestInfo.getRanges(),
+                    maxDistance,
+                    AppConfig.ColorModel.HSV);
 
-        results.add(resultInfo);
-
+            results.add(resultInfo);
+        }
         resultInfo = ColorUtils.analyzeColor(photoColor,
                 CaddisflyApp.getApp().currentTestInfo.getRanges(),
                 maxDistance,
@@ -479,69 +460,6 @@ public class ColorimetricLiquidActivity extends BaseActivity
         Result result = new Result(bitmap, results);
 
         mResults.add(result);
-    }
-
-    private void startExternalTest() {
-        mResults = new ArrayList<>();
-        sound.playShortResource(this, R.raw.beep);
-        (new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-
-                mCameraFragment = ExternalCameraFragment.newInstance();
-                mCameraFragment.setCancelable(false);
-                if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
-
-                    ((ExternalCameraFragment) mCameraFragment).pictureCallback = new ExternalCameraFragment.PictureCallback() {
-                        @Override
-                        public void onPictureTaken(Bitmap bitmap) {
-
-                            Bitmap croppedBitmap = ImageUtils.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
-
-                            getResult(croppedBitmap);
-                            //bitmap.recycle();
-
-                            if (((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
-                                ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
-                                croppedBitmap.copyPixelsToBuffer(buffer);
-                                byte[] data = buffer.array();
-                                AnalyzeResult(data);
-                                mCameraFragment.dismiss();
-                            }
-                        }
-                    };
-                }
-
-                acquireWakeLock();
-
-                delayRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        Fragment prev = getFragmentManager().findFragmentByTag("externalCameraDialog");
-                        if (prev != null) {
-                            ft.remove(prev);
-                        }
-                        ft.addToBackStack(null);
-                        try {
-                            mCameraFragment.show(ft, "externalCameraDialog");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            finish();
-                        }
-                    }
-                };
-
-                delayHandler.postDelayed(delayRunnable, 0);
-            }
-        }).execute();
     }
 
     private void startTest() {

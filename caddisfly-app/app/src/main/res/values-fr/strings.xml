@@ -29,12 +29,13 @@
     <string name="load">Charger</string>
     <string name="swatches">Echantillons</string>
     <string name="calibrate">Etalonner</string>
-    <string name="calibrated">Etalonné</string>
+    <string name="calibrated" tools:ignore="UnusedResources">Etalonné</string>
     <string name="calibrating">En cours d\'étalonnage</string>
     <string name="settings">Paramètres</string>
     <string name="about">A propos</string>
     <string name="version" tools:ignore="UnusedResources">Version</string>
-    <string name="done">Effectué</string>
+    <string name="success" tools:ignore="UnusedResources">Success</string>
+    <string name="done" tools:ignore="UnusedResources">Effectué</string>
     <!--External-->
     <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Conductivité Electrique</string>
@@ -83,7 +84,6 @@
     <string name="highLevelsFound">La contamination en %1$s est très élevée</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Réessayez avec une dilution par %1$d</string>
     <!--Dilution Selection Dialog-->
-    <string name="selectDilution">Sélectionnez une dilution</string>
     <string name="noDilution">Pas de dilution</string>
     <string name="timesDilution" tools:ignore="PluralsCandidate">Dilution par %1$d</string>
     <!--Sensor Details Screen-->
@@ -118,7 +118,9 @@
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <!--Diagnostic Mode: Main Screen-->
     <string name="enableUserMode">Autoriser le mode utilisateur</string>
-    <!--Diagnostic Mode: Messages-->
+    <!--Diagnostic Mode: Messages -->
+    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
+    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
     <!--Diagnostic Mode: Save / Load Calibration-->
     <string name="saveCalibration">Enregistrer l\'étalonnage</string>
     <string name="saveProvideFileName">Nommer cette calibration</string>
@@ -134,12 +136,10 @@
     <!--Diagnostic Mode: Settings-->
     <string name="diagnostics">Diagnostiques</string>
     <string name="cameraPreview">Caméra colorimétrique</string>
-    <string name="externalCamera">Caméra colorimétrique externe</string>
     <string name="testSensor">Capteur d\'EC</string>
     <string name="autoFocus">Mise au point automatique</string>
     <string name="useFlashMode">Utiliser le mode flash</string>
     <string name="ignoreShakeDuringAnalysis">Ignorer les secousses pendant l\'analyse</string>
     <string name="debuggingOn">Afficher les messages de débogage</string>
     <string name="noSound">Eteindre le son</string>
-    <string name="deviceConnectExternalCamera">Veuillez connecter le capteur Akvo Caddisfly et réessayez</string>
 </resources>
