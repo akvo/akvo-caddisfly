@@ -16,48 +16,94 @@
 
 package org.akvo.caddisfly;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.FileUtils;
 
 import java.io.File;
 
-/*
-Global Configuration
+/**
+ * Global Configuration settings for the app
  */
 public class AppConfig {
 
-    // For external app connection
+    /**
+     * The intent action string used to connect to external app
+     */
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
-    // Used to check if flow app is installed
+    /**
+     * FLOW package name to check if FLOW app is installed
+     */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
-    // Caddisfly update file name
+    /**
+     * The file name for the downloaded update apk file
+     */
     public static final String UPDATE_FILE_NAME = "akvo_caddisfly_update.apk";
 
-    // Caddisfly update check path
-    public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/akvoapp/v1.txt";
-    // Caddisfly update path
+    /**
+     * The url to check for update version
+     */
+    public static final String UPDATE_CHECK_URL = "http://caddisfly.ternup.com/akvoapp/v.txt";
+
+    /**
+     * The url to download the update apk file from
+     */
     public static final String UPDATE_URL
             = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
-    //todo: remove this temporary file size
+
+    /**
+     * The expected size of the next update file to enable display of the progress bar.
+     * Used only if the update process cannot determine the size of the file to download
+     */
     public static final int UPDATE_FILE_TYPICAL_SIZE = 1500000;
+
+    //todo: remove when upgrade process no more required
+    @Deprecated
     public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
+    @Deprecated
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
-    public static final String APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
+    @Deprecated
+    public static final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
+
+    /**
+     * The user created configuration file name
+     */
     public static final String CONFIG_FILE = "tests.json";
 
-    // Tag for debug log filtering
+    /**
+     * Tag for debug log filtering
+     */
     public static final String DEBUG_TAG = "Caddisfly";
 
-    // Width and height of cropped image
+    /**
+     * Width and height of cropped image
+     */
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
+
+    /**
+     * The delay between each photo taken by the camera during the analysis
+     */
     public static final int DELAY_BETWEEN_SAMPLING = 6000;
-    //The maximum color distance before the color is considered out of range
+
+    /**
+     * The maximum color distance before the color is considered out of range
+     */
     public static final int MAX_COLOR_DISTANCE = 4;
-    //The minimum color distance allowed before the colors are considered equivalent
+
+    /**
+     * The minimum color distance allowed before the colors are considered equivalent
+     */
     public static final double MIN_VALID_COLOR_DISTANCE = 1.2;
+
+    /**
+     * The number of photos to take during analysis
+     */
     public static final int SAMPLING_COUNT_DEFAULT = 5;
+
+    /**
+     * The sound volume for the beeps and success/fail sounds
+     */
     public static final float SOUND_VOLUME = 1f;
 
     // Folders
@@ -94,9 +140,46 @@ public class AppConfig {
         return dir;
     }
 
-    public enum TestType {COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR}
+    /**
+     * Loads the tests from the json config file.
+     * <p/>
+     * Looks for the user created json file. If not found loads the internal json config file
+     *
+     * @return json configuration text
+     */
+    public static String getConfigJson() {
 
-    public enum ColorModel {RGB, LAB, HSV}
+        File file = new File(AppConfig.getFilesDir(AppConfig.FileType.CONFIG), AppConfig.CONFIG_FILE);
+        String text;
 
-    public enum FileType {APK, CALIBRATION, CONFIG}
+        //Look for external json config file otherwise use the internal default one
+        if (file.exists()) {
+            text = FileUtils.loadTextFromFile(file);
+        } else {
+            text = FileUtils.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
+        }
+
+        return text;
+    }
+
+    /**
+     * The different types of testing methods
+     */
+    public enum TestType {
+        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR
+    }
+
+    /**
+     * The different types of color models
+     */
+    public enum ColorModel {
+        RGB, LAB, HSV
+    }
+
+    /**
+     * The different types of files
+     */
+    public enum FileType {
+        APK, CALIBRATION, CONFIG
+    }
 }

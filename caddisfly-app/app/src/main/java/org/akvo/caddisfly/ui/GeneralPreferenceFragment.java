@@ -34,11 +34,11 @@ import org.akvo.caddisfly.util.ListViewUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreferencesGeneralFragment extends PreferenceFragment {
+public class GeneralPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public PreferencesGeneralFragment() {
+    public GeneralPreferenceFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +47,6 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,13 +67,11 @@ public class PreferencesGeneralFragment extends PreferenceFragment {
         return rootView;
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         list = (ListView) view.findViewById(android.R.id.list);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

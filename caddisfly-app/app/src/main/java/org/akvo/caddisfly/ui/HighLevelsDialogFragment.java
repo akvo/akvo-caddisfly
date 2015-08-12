@@ -28,10 +28,10 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
-public class MessageFragment extends DialogFragment {
+public class HighLevelsDialogFragment extends DialogFragment {
 
-    public static MessageFragment newInstance(String title, String message, int dilutionLevel) {
-        MessageFragment fragment = new MessageFragment();
+    public static HighLevelsDialogFragment newInstance(String title, String message, int dilutionLevel) {
+        HighLevelsDialogFragment fragment = new HighLevelsDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("message", message);

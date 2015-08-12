@@ -35,12 +35,11 @@ import org.akvo.caddisfly.util.UpdateCheckTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreferencesOtherFragment extends PreferenceFragment {
-
+public class OtherPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public PreferencesOtherFragment() {
+    public OtherPreferenceFragment() {
         // Required empty public constructor
     }
 

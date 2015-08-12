@@ -469,7 +469,7 @@ public final class ColorUtils {
     }
 
     private static LabColor rgbToLab(double r, double g, double b) {
-        XyzColor xyzColor = rgb2xyz(r, g, b);
+        XyzColor xyzColor = rgbToXyz(r, g, b);
         return new LabColor(116 * xyzColor.y - 16, 500 * (xyzColor.x - xyzColor.y), 200 * (xyzColor.y - xyzColor.z));
     }
 
@@ -489,7 +489,7 @@ public final class ColorUtils {
         }
     }
 
-    private static XyzColor rgb2xyz(double r, double g, double b) {
+    private static XyzColor rgbToXyz(double r, double g, double b) {
         double x, y, z;
         r = rgb_xyz(r);
         g = rgb_xyz(g);

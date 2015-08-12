@@ -56,10 +56,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                     startActivity(intent);
                 }
                 break;
-            case COLORIMETRIC_STRIP:
-
-
-                break;
             case SENSOR:
                 boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {

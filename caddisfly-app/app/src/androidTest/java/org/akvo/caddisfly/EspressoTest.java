@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.core.deps.guava.collect.Iterables;
@@ -42,7 +43,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
-import org.akvo.caddisfly.ui.ColorimetricLiquidActivity;
+import org.akvo.caddisfly.ui.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtils;
@@ -218,11 +219,7 @@ public class EspressoTest
         final Button button = (Button) getActivity().findViewById(R.id.buttonStartSurvey);
         assertNotNull(button);
 
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(4000);
 
         //Main Screen
         takeScreenshot();
@@ -270,11 +267,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(4000);
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
@@ -289,11 +282,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(4000);
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -326,11 +315,7 @@ public class EspressoTest
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(4000);
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
@@ -589,6 +574,8 @@ public class EspressoTest
 
         startApp();
 
+        sleep(2000);
+
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
         prefs.edit().clear().apply();
@@ -842,11 +829,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        try {
-            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         //onView(withId(R.id.okButton)).perform(click());
 
@@ -936,11 +919,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        try {
-            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();
@@ -1034,11 +1013,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        try {
-            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1072,11 +1047,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
-        try {
-            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1113,11 +1084,7 @@ public class EspressoTest
         //Test Progress Screen
         takeScreenshot();
 
-        try {
-            Thread.sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText("10.00")).check(matches(isCompletelyDisplayed()));
 
@@ -1134,6 +1101,55 @@ public class EspressoTest
 //        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
 //        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
 
+    }
+
+    public void testRestartAppDuringAnalysis() {
+
+        resetLanguage();
+
+        goToMainScreen();
+
+        onView(withId(R.id.action_settings)).perform(click());
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        sleep(500);
+
+        onView(withId(R.id.buttonStart)).perform(click());
+
+        mDevice.pressHome();
+
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        sleep(1000);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+    }
+
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void testZErrors() {
@@ -1259,7 +1275,7 @@ public class EspressoTest
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 try {
-                    Method method = ColorimetricLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                    Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
                     method.setAccessible(true);
                     method.invoke(activity);
                 } catch (Exception e) {
@@ -1333,21 +1349,11 @@ public class EspressoTest
         return activity[0];
     }
 
-//    private void takeSpoonScreenshot() {
-//        if (mTakeScreenshots) {
-//            Spoon.screenshot(getCurrentActivity(), "screen-" + mCounter++ + "-" + mCurrentLanguage);
-//        }
-//    }
-
     private void takeScreenshot() {
         if (mTakeScreenshots) {
             int SDK_VERSION = android.os.Build.VERSION.SDK_INT;
             if (SDK_VERSION >= 17) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                sleep(500);
 
                 File path = new File(Environment.getExternalStorageDirectory().getPath() +
                         "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
@@ -1355,7 +1361,6 @@ public class EspressoTest
             }
         }
     }
-
 
     private boolean clickListViewItem(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector());

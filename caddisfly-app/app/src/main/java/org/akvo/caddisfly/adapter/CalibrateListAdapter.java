@@ -50,11 +50,14 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
+
         LayoutInflater inflater = activity.getLayoutInflater();
-        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
+
+        @SuppressLint("ViewHolder")
+        View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
         final CaddisflyApp caddisflyApp = ((CaddisflyApp) activity.getApplicationContext());
-        ArrayList<Swatch> ranges = caddisflyApp.currentTestInfo.getRanges();
+        ArrayList<Swatch> ranges = caddisflyApp.currentTestInfo.getSwatches();
         Swatch range = ranges.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);

@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
 
                 checkDiagnosticMode();
 
-                checkDiagnosticActionBar();
+                changeActionBarStyleBasedOnCurrentMode();
             }
         });
 
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
 
         boolean folderFixed = true;
         File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                AppConfig.APP_EXTERNAL_PATH);
+                AppConfig.OLD_APP_EXTERNAL_PATH);
 
         if (oldFolder.exists()) {
 
@@ -350,7 +350,7 @@ public class MainActivity extends BaseActivity {
         CaddisflyApp caddisflyApp = (CaddisflyApp) context.getApplicationContext();
         switch (caddisflyApp.currentTestInfo.getType()) {
             case COLORIMETRIC_LIQUID:
-                if (!ColorUtils.validateColorRange(caddisflyApp.currentTestInfo.getRanges())) {
+                if (!ColorUtils.validateColorRange(caddisflyApp.currentTestInfo.getSwatches())) {
                     Configuration conf = getResources().getConfiguration();
 
                     String message = getString(R.string.errorCalibrationIncomplete,
@@ -381,7 +381,7 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
 
-                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetricLiquidActivity.class);
+                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
                 startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
 
                 break;

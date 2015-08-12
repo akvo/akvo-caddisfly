@@ -23,15 +23,10 @@ import android.view.View;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.adapter.TypeListAdapter;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
-import org.json.JSONException;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -54,46 +49,17 @@ public class TypeListFragment extends ListFragment {
     public TypeListFragment() {
     }
 
-//    public static TypeListFragment newInstance() {
-//        return new TypeListFragment();
-//    }
-
-    private void setAdapter() {
-
-        Activity activity = getActivity();
-        CaddisflyApp caddisflyApp = (CaddisflyApp) activity.getApplicationContext();
-        assert caddisflyApp != null;
-
-        try {
-
-            File file = new File(AppConfig.getFilesDir(AppConfig.FileType.CONFIG), AppConfig.CONFIG_FILE);
-            String text;
-
-            //Look for external json config file otherwise use the internal default one
-            if (file.exists()) {
-                text = FileUtils.loadTextFromFile(file);
-                //ignore file if it is old version
-                if (!text.contains("ranges")) {
-                    text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_config);
-                }
-            } else {
-                text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_config);
-            }
-            mTests = JsonUtils.loadTests(text);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        assert mTests != null;
-        TypeListAdapter customList = new TypeListAdapter(getActivity(), mTests.toArray(new TestInfo[mTests.size()]));
-        setListAdapter(customList);
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAdapter();
+
+        mTests = JsonUtils.loadConfigurationsForAllTests(AppConfig.getConfigJson());
+
+        //set the adapter with tests list
+        TypeListAdapter customList = new TypeListAdapter(getActivity(),
+                mTests.toArray(new TestInfo[mTests.size()]));
+        setListAdapter(customList);
     }
 
 

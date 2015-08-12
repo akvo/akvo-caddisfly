@@ -8,6 +8,9 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtils;
 
+/**
+ * The base activity with common functions
+ */
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -21,10 +24,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        checkDiagnosticActionBar();
+        changeActionBarStyleBasedOnCurrentMode();
     }
 
-    void checkDiagnosticActionBar() {
+    /**
+     * Changes the action bar style depending on if the app is in user mode or diagnostic mode
+     * This serves as a visual indication as to what mode the app is running in
+     */
+    void changeActionBarStyleBasedOnCurrentMode() {
         if (AppPreferences.isDiagnosticMode(this)) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(

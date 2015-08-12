@@ -76,9 +76,9 @@ public class SensorActivity extends BaseActivity {
     private LinearLayout mConnectionLayout;
     private LinearLayout mResultLayout;
     private ProgressWheel mProgressBar;
-    //private boolean firstResultIgnored = false;
     private ImageView mTemperatureImageView;
     private TextView mUnitsTextView;
+
     //http://developer.android.com/guide/topics/connectivity/usb/host.html
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {

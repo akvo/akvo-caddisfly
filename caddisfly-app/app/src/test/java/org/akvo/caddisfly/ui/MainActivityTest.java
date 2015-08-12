@@ -57,16 +57,16 @@ public class MainActivityTest {
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                testInfo.getRanges(),
+                testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
@@ -86,16 +86,16 @@ public class MainActivityTest {
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                testInfo.getRanges(),
+                testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.LAB);
 
@@ -116,16 +116,16 @@ public class MainActivityTest {
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                testInfo.getRanges(),
+                testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
@@ -142,16 +142,16 @@ public class MainActivityTest {
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                testInfo.getRanges(),
+                testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
@@ -167,16 +167,16 @@ public class MainActivityTest {
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 88, 177)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(254, 101, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(254, 115, 138)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(254, 128, 119)));
-        testInfo.addRange(new Swatch(2, Color.rgb(254, 142, 99)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 88, 177)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(254, 101, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(254, 115, 138)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 128, 119)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99)));
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                testInfo.getRanges(),
+                testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
@@ -214,7 +214,7 @@ public class MainActivityTest {
                 "        ]\n" +
                 "    }\n" +
                 "}";
-        TestInfo testInfo = JsonUtils.loadJson(jsonText, "fluor");
+        TestInfo testInfo = JsonUtils.loadTestConfigurationByCode(jsonText, "fluor");
         assert testInfo != null;
         assertEquals("FLUOR", testInfo.getCode());
     }
@@ -222,143 +222,143 @@ public class MainActivityTest {
     @Test
     public void testValidateCalibration() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration1() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 175, 123)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123)));
 
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testRangeSlope() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 175, 113)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 113)));
 
-        assertEquals(31.82420654296875, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(31.82420654296875, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration2() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 87, 121)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 175, 123)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 121)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123)));
 
-        assertEquals(22.2095458984375, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(22.2095458984375, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration3() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 146, 139)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 87, 181)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 124, 157)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(250, 171, 130)));
-        testInfo.addRange(new Swatch(2, Color.rgb(245, 185, 122)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 146, 139)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 87, 181)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 124, 157)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        assertEquals(21.658697509765624, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(21.658697509765624, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration4() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 88, 177)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 110, 15)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 139, 137)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(253, 174, 74)));
-        testInfo.addRange(new Swatch(2, Color.rgb(244, 180, 86)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 88, 177)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 110, 15)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 139, 137)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86)));
 
-        assertEquals(29.022808837890626, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(29.022808837890626, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration5() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 110, 15)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 88, 177)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 139, 137)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(253, 174, 74)));
-        testInfo.addRange(new Swatch(2, Color.rgb(244, 180, 86)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 110, 15)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 88, 177)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 139, 137)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86)));
 
-        assertEquals(17.87760009765625, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(17.87760009765625, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration6() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 88, 177)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(254, 101, 157)));
-        testInfo.addRange(new Swatch(1, Color.rgb(254, 115, 138)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(254, 128, 119)));
-        testInfo.addRange(new Swatch(2, Color.rgb(254, 142, 99)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 88, 177)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(254, 101, 157)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(254, 115, 138)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 128, 119)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99)));
 
-        assertEquals(24.640643310546874, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(24.640643310546874, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration7() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 0, 159)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(254, 28, 142)));
-        testInfo.addRange(new Swatch(1, Color.rgb(254, 56, 126)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(254, 84, 110)));
-        testInfo.addRange(new Swatch(2, Color.rgb(254, 112, 93)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 0, 159)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(254, 28, 142)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(254, 56, 126)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 84, 110)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(254, 112, 93)));
 
-        assertEquals(22.0148193359375, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(22.0148193359375, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
     @Test
     public void testValidateCalibration8() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(250, 0, 0)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(240, 0, 0)));
-        testInfo.addRange(new Swatch(1, Color.rgb(225, 0, 0)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(210, 0, 0)));
-        testInfo.addRange(new Swatch(2, Color.rgb(195, 0, 0)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(250, 0, 0)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(240, 0, 0)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(225, 0, 0)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(210, 0, 0)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(195, 0, 0)));
 
-        assertEquals(0.0, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(0.0, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
 
     @Test
     public void testValidateCalibration9() {
         TestInfo testInfo = new TestInfo();
-        testInfo.addRange(new Swatch(0, Color.rgb(255, 88, 47)));
-        testInfo.addRange(new Swatch(0.5, Color.rgb(255, 60, 37)));
-        testInfo.addRange(new Swatch(1, Color.rgb(255, 35, 27)));
-        testInfo.addRange(new Swatch(1.5, Color.rgb(253, 17, 17)));
-        testInfo.addRange(new Swatch(2, Color.rgb(254, 0, 0)));
+        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 88, 47)));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 60, 37)));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 35, 27)));
+        testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 17, 17)));
+        testInfo.addSwatch(new Swatch(2, Color.rgb(254, 0, 0)));
 
-        assertEquals(-5.996826171875, ColorUtils.calculateSlope(testInfo.getRanges()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getRanges()));
+        assertEquals(-5.996826171875, ColorUtils.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
     }
 
 }

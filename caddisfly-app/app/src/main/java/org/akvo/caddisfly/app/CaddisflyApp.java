@@ -21,16 +21,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.FileUtils;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
-import org.json.JSONException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -45,13 +41,13 @@ public class CaddisflyApp extends Application {
      * Check if the device has a camera flash
      *
      * @param context the context
-     * @return true if flash exists otherwise false
+     * @return true if camera flash exists otherwise false
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean hasFeatureCameraFlash(Context context) {
         //check only once for flash
         if (!checkedForFlash) {
-            hasCameraFlash = ApiUtils.checkCameraFlash(context);
+            hasCameraFlash = ApiUtils.hasCameraFlash(context);
             checkedForFlash = true;
         }
         return hasCameraFlash;
@@ -107,27 +103,6 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Loads the json config file from external folder. If the file does not exist
-     * then use the internal config file from the raw folder
-     *
-     * @return json configuration text
-     */
-    private String getConfigJson() {
-
-        File file = new File(AppConfig.getFilesDir(AppConfig.FileType.CONFIG), AppConfig.CONFIG_FILE);
-        String text;
-
-        //Look for external json config file otherwise use the internal default one
-        if (file.exists()) {
-            text = FileUtils.loadTextFromFile(file);
-        } else {
-            text = FileUtils.readRawTextFile(this, R.raw.tests_config);
-        }
-
-        return text;
-    }
-
-    /**
      * Initialize the current test by loading the configuration and calibration information
      */
     public void initializeCurrentTest() {
@@ -144,16 +119,12 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        try {
-            tests = JsonUtils.loadTests(getConfigJson());
-            if (tests.size() > 0) {
-                currentTestInfo = tests.get(0);
-                if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
-                    loadCalibratedSwatches(currentTestInfo);
-                }
+        tests = JsonUtils.loadConfigurationsForAllTests(AppConfig.getConfigJson());
+        if (tests.size() > 0) {
+            currentTestInfo = tests.get(0);
+            if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
+                loadCalibratedSwatches(currentTestInfo);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
@@ -164,11 +135,8 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfiguration(String testCode) {
 
-        try {
-            currentTestInfo = JsonUtils.loadJson(getConfigJson(), testCode.toUpperCase());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        currentTestInfo = JsonUtils.loadTestConfigurationByCode(
+                AppConfig.getConfigJson(), testCode.toUpperCase());
 
         if (currentTestInfo != null) {
             if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
@@ -186,7 +154,7 @@ public class CaddisflyApp extends Application {
 
         CaddisflyApp context = ((CaddisflyApp) this.getApplicationContext());
 
-        for (Swatch range : testInfo.getRanges()) {
+        for (Swatch range : testInfo.getSwatches()) {
             String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), range.getValue());
             range.setColor(PreferencesUtils.getInt(context, key, 0));
         }

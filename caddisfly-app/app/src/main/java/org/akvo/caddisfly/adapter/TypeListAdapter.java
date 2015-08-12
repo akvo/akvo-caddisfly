@@ -41,13 +41,14 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = mActivity.getLayoutInflater();
-        @SuppressLint("ViewHolder")
 
+        LayoutInflater inflater = mActivity.getLayoutInflater();
+
+        @SuppressLint("ViewHolder")
         TestInfo testInfo = mTestInfoArray[position];
         View rowView;
 
-        if (testInfo.isRequiresCalibation()) {
+        if (testInfo.getRequiresCalibration()) {
             rowView = inflater.inflate(R.layout.row_type, parent, false);
             TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
             ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));

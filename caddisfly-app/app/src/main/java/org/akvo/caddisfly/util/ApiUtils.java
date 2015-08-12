@@ -27,13 +27,32 @@ import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
 
+/**
+ * Utility functions for api related actions
+ */
 @SuppressWarnings("deprecation")
 public final class ApiUtils {
 
     private ApiUtils() {
     }
 
-    public static boolean checkCameraFlash(Context context) {
+    public static Camera getCameraInstance() {
+        Camera c = null;
+        try {
+            c = Camera.open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    /**
+     * Checks if the device has a camera flash
+     *
+     * @param context the context
+     * @return true if camera flash is available
+     */
+    public static boolean hasCameraFlash(Context context) {
         boolean hasFlash = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         Camera camera = getCameraInstance();
         try {
@@ -59,19 +78,13 @@ public final class ApiUtils {
         return hasFlash;
     }
 
-    private static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
-
+    /**
+     * Lock the screen orientation based on the natural position of the device
+     *
+     * @param activity the activity
+     */
     public static void lockScreenOrientation(Activity activity) {
         WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-        //Configuration configuration = activity.getResources().getConfiguration();
         int rotation = windowManager.getDefaultDisplay().getRotation();
 
         Point point = new Point();
@@ -100,7 +113,4 @@ public final class ApiUtils {
         }
     }
 
-//    public static void unlockScreenOrientation(Activity activity) {
-//        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-//    }
 }

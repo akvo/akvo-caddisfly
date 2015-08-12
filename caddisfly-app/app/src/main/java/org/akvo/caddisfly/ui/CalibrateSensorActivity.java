@@ -228,7 +228,6 @@ public class CalibrateSensorActivity extends BaseActivity {
      * This is workaround before android 4.2 . Because BroadcastReceiver can not
      * receive ACTION_USB_DEVICE_ATTACHED broadcast
      */
-
     @Override
     public void onResume() {
         super.onResume();

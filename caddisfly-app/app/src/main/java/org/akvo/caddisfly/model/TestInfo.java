@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.model;
 
+import android.graphics.Color;
+
 import org.akvo.caddisfly.AppConfig;
 
 import java.util.ArrayList;
@@ -23,35 +25,54 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 
+/**
+ * Model to hold test configuration information
+ */
 public class TestInfo {
-    private final Hashtable mNames;
-    private final String mCode;
-    private final String mUnit;
-    private final ArrayList<Swatch> mRanges;
-    private final AppConfig.TestType mType;
-    private final ArrayList<Integer> mDilutions;
-    private boolean requiresCalibation;
+    private final Hashtable names;
+    private final String code;
+    private final String unit;
+    private final ArrayList<Swatch> swatches;
+    private final AppConfig.TestType testType;
+    private final ArrayList<Integer> dilutions;
+    private final boolean requiresCalibration;
+    private boolean mIsDirty;
 
-    public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType type) {
-        mNames = names;
-        mType = type;
-        mCode = code;
-        mUnit = unit;
-        mRanges = new ArrayList<>();
-        mDilutions = new ArrayList<>();
+    public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType testType,
+                    boolean requiresCalibration, String[] rangesArray, String[] dilutionsArray) {
+        this.names = names;
+        this.testType = testType;
+        this.code = code;
+        this.unit = unit;
+        swatches = new ArrayList<>();
+        dilutions = new ArrayList<>();
+        this.requiresCalibration = requiresCalibration;
+
+        for (String range : rangesArray) {
+            Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
+            addSwatch(swatch);
+        }
+
+        for (String dilution : dilutionsArray) {
+            addDilution(Integer.parseInt(dilution));
+        }
     }
 
     public TestInfo() {
-        mNames = null;
-        mType = AppConfig.TestType.COLORIMETRIC_LIQUID;
-        mCode = "";
-        mUnit = "";
-        mRanges = new ArrayList<>();
-        mDilutions = new ArrayList<>();
+        names = null;
+        testType = AppConfig.TestType.COLORIMETRIC_LIQUID;
+        code = "";
+        unit = "";
+        swatches = new ArrayList<>();
+        dilutions = new ArrayList<>();
+        this.requiresCalibration = false;
     }
 
-    public void sortRange() {
-        Collections.sort(mRanges, new Comparator<Swatch>() {
+    /**
+     * Sort the swatches for this test by their result values
+     */
+    private void sort() {
+        Collections.sort(swatches, new Comparator<Swatch>() {
             public int compare(Swatch c1, Swatch c2) {
                 return Double.compare(c1.getValue(), (c2.getValue()));
             }
@@ -59,56 +80,64 @@ public class TestInfo {
     }
 
     public String getName(String languageCode) {
-        if (mNames.containsKey(languageCode)) {
-            return mNames.get(languageCode).toString();
-        } else if (mNames.containsKey("en")) {
-            return mNames.get("en").toString();
+        if (names.containsKey(languageCode)) {
+            return names.get(languageCode).toString();
+        } else if (names.containsKey("en")) {
+            return names.get("en").toString();
         }
         return "";
     }
 
     public AppConfig.TestType getType() {
-        return mType;
+        return testType;
     }
 
     public String getCode() {
-        return mCode;
+        return code;
     }
 
     public String getUnit() {
-        return mUnit;
+        return unit;
     }
 
-    public ArrayList<Swatch> getRanges() {
-        return mRanges;
+    public ArrayList<Swatch> getSwatches() {
+        //ensure that swatches is always sorted
+        if (mIsDirty) {
+            mIsDirty = false;
+            sort();
+        }
+        return swatches;
     }
 
     public double getDilutionRequiredLevel() {
-        Swatch swatch = mRanges.get(mRanges.size() - 1);
+        Swatch swatch = swatches.get(swatches.size() - 1);
         return swatch.getValue() - 0.2;
     }
 
-    public void addRange(Swatch value) {
-        mRanges.add(value);
+    public void addSwatch(Swatch value) {
+        swatches.add(value);
+        mIsDirty = true;
     }
 
-    public Swatch getRange(int position) {
-        return mRanges.get(position);
+    public Swatch getSwatch(int position) {
+        return swatches.get(position);
     }
 
-    public void addDilution(int dilution) {
-        mDilutions.add(dilution);
+    private void addDilution(int dilution) {
+        dilutions.add(dilution);
     }
 
-    public boolean hasDilution() {
-        return mDilutions.size() > 1;
+    public boolean getCanUseDilution() {
+        return dilutions.size() > 1;
     }
 
-    public boolean isRequiresCalibation() {
-        return requiresCalibation;
+    /**
+     * Gets if this test type requires calibration
+     *
+     * @return true if calibration required
+     */
+    public boolean getRequiresCalibration() {
+        return requiresCalibration;
     }
 
-    public void setRequiresCalibation(boolean requiresCalibation) {
-        this.requiresCalibation = requiresCalibation;
-    }
 }

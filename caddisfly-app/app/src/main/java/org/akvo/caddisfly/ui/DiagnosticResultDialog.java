@@ -19,7 +19,6 @@ package org.akvo.caddisfly.ui;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,11 +40,12 @@ import org.akvo.caddisfly.util.ColorUtils;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A Dialog to display detailed result information of the analysis
+ * <p/>
+ * Only displayed in diagnostic mode
  */
 public class DiagnosticResultDialog extends DialogFragment {
 
-    //ArrayList<Integer> mColors;
     private ArrayList<Result> mResults;
     private boolean mIsCalibration;
 
@@ -53,13 +53,21 @@ public class DiagnosticResultDialog extends DialogFragment {
         // Required empty public constructor
     }
 
+    /**
+     * Returns a new instance of this dialog
+     *
+     * @param results       array list of results
+     * @param allowRetry    whether to display retry button
+     * @param result        the result value
+     * @param color         the color value
+     * @param isCalibration is this a calibration result
+     * @return the dialog
+     */
     public static DiagnosticResultDialog newInstance(ArrayList<Result> results, boolean allowRetry,
                                                      double result, int color, boolean isCalibration) {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
-        //args.putIntegerArrayList("colors", colors);
-        //args.putDoubleArray("results", convertDoubles(results));
         args.putDouble("result", result);
         args.putInt("color", color);
         args.putBoolean("calibration", isCalibration);
@@ -75,10 +83,8 @@ public class DiagnosticResultDialog extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_diagnostic_result, container, false);
 
         ListView resultList = (ListView) view.findViewById(R.id.listResults);
-        resultList.setAdapter(new ImageAdapter());
+        resultList.setAdapter(new ResultListAdapter());
 
-        //mColors = getArguments().getIntegerArrayList("colors");
-        //mResults = getArguments().getDoubleArray("results");
         boolean allowRetry = getArguments().getBoolean("retry");
         int mColor = getArguments().getInt("color");
 
@@ -88,6 +94,7 @@ public class DiagnosticResultDialog extends DialogFragment {
         Button retryButton = (Button) view.findViewById(R.id.buttonRetry);
         Button okButton = (Button) view.findViewById(R.id.buttonOk);
 
+        //if allowRetry is true then this is an error show retry button
         if (allowRetry) {
             getDialog().setTitle(R.string.error);
             cancelButton.setVisibility(View.VISIBLE);
@@ -97,8 +104,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                 @Override
                 public void onClick(View view) {
 
-                    ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(false, true, mIsCalibration);
+                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                    listener.onFinishDiagnosticResultDialog(false, true, mIsCalibration);
 
                 }
             });
@@ -107,8 +114,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                 @Override
                 public void onClick(View view) {
 
-                    ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(true, false, mIsCalibration);
+                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                    listener.onFinishDiagnosticResultDialog(true, false, mIsCalibration);
 
                 }
             });
@@ -128,8 +135,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                 @Override
                 public void onClick(View view) {
 
-                    ErrorListDialogListener listener = (ErrorListDialogListener) getActivity();
-                    listener.onFinishErrorListDialog(false, false, mIsCalibration);
+                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                    listener.onFinishDiagnosticResultDialog(false, false, mIsCalibration);
 
                 }
             });
@@ -137,11 +144,12 @@ public class DiagnosticResultDialog extends DialogFragment {
         return view;
     }
 
-    public interface ErrorListDialogListener {
-        void onFinishErrorListDialog(boolean retry, boolean cancelled, boolean isCalibration);
+    public interface DiagnosticResultDialogListener {
+        void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration);
     }
 
-    private class ImageAdapter extends BaseAdapter {
+    private class ResultListAdapter extends BaseAdapter {
+
         public int getCount() {
             return mResults.size();
         }
@@ -193,18 +201,19 @@ public class DiagnosticResultDialog extends DialogFragment {
                     resultList.setVisibility(View.GONE);
                 } else {
                     // Show the results table
-                    resultList.setAdapter(new ResultsAdapter(result.getResults()));
+                    resultList.setAdapter(new ResultsDetailsAdapter(result.getResults()));
                 }
             }
             return rowView;
         }
     }
 
-    public class ResultsAdapter extends BaseAdapter {
+
+    public class ResultsDetailsAdapter extends BaseAdapter {
 
         final ArrayList<ResultInfo> mResults;
 
-        public ResultsAdapter(ArrayList<ResultInfo> results) {
+        public ResultsDetailsAdapter(ArrayList<ResultInfo> results) {
             mResults = results;
         }
 

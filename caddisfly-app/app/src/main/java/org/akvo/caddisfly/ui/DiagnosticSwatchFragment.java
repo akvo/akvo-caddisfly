@@ -52,12 +52,12 @@ public class DiagnosticSwatchFragment extends ListFragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
 
-        if (testInfo.getRanges().size() > 0) {
+        if (testInfo.getSwatches().size() > 0) {
 
 //            ArrayList<Swatch> tempColorRange = new ArrayList<>();
-//            tempColorRange.add(testInfo.getRanges().get(0));
-//            tempColorRange.add(testInfo.getRanges().get(testInfo.getRanges().size() - 1));
-            ArrayList<Swatch> swatchList = ColorUtils.generateGradient(testInfo.getRanges(),
+//            tempColorRange.add(testInfo.getSwatches().get(0));
+//            tempColorRange.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
+            ArrayList<Swatch> swatchList = ColorUtils.generateGradient(testInfo.getSwatches(),
                     AppConfig.ColorModel.LAB, 0.05);
 
             //Swatch[] colorArray = swatchList.toArray(new Swatch[swatchList.size()]);

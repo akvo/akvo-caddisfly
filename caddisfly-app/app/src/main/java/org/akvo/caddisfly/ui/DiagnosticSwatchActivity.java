@@ -30,7 +30,6 @@ public class DiagnosticSwatchActivity extends BaseActivity {
         if (savedInstanceState == null) {
 
             DiagnosticSwatchFragment fragment = new DiagnosticSwatchFragment();
-            //fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.layoutContainer, fragment)
                     .commit();

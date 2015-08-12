@@ -34,7 +34,7 @@ import org.akvo.caddisfly.util.ColorUtils;
 /**
  * A list fragment representing a list of Calibrate items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link ...CalibrateListFragment.Callbacks}
+ * Activities containing this fragment MUST implement the {@link CalibrateListFragment.Callbacks}
  * interface.
  */
 public class CalibrateListFragment extends ListFragment {
@@ -62,14 +62,14 @@ public class CalibrateListFragment extends ListFragment {
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
         CalibrateListAdapter calibrateListAdapter = new CalibrateListAdapter(getActivity(),
-                caddisflyApp.currentTestInfo.getRanges().toArray(
-                        new Swatch[caddisflyApp.currentTestInfo.getRanges().size()]));
+                caddisflyApp.currentTestInfo.getSwatches().toArray(
+                        new Swatch[caddisflyApp.currentTestInfo.getSwatches().size()]));
 
         setListAdapter(calibrateListAdapter);
 
         //Display error if calibration is completed but invalid
-        if (ColorUtils.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getRanges()) &&
-                !ColorUtils.validateColorRange(CaddisflyApp.getApp().currentTestInfo.getRanges())) {
+        if (ColorUtils.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getSwatches()) &&
+                !ColorUtils.validateColorRange(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
             textCalibrationError.setVisibility(View.VISIBLE);

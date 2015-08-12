@@ -45,7 +45,9 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
+
         LayoutInflater inflater = activity.getLayoutInflater();
+
         @SuppressLint("ViewHolder")
         View rowView = inflater.inflate(R.layout.row_swatch, parent, false);
 

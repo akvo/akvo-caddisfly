@@ -51,10 +51,6 @@ android {
     packagingOptions {
         exclude 'LICENSE.txt'
     }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 unMock {
@@ -66,7 +62,7 @@ unMock {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc3'
+    testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.assertj:assertj-core:1.7.0'
     androidTestCompile 'com.android.support.test:runner:0.3'
     androidTestCompile 'com.android.support.test:rules:0.3'

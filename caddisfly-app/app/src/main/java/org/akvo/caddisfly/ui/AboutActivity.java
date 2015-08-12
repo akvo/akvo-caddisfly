@@ -28,6 +28,11 @@ import org.akvo.caddisfly.util.PreferencesUtils;
 
 import java.util.Locale;
 
+/**
+ * Displays the app version and other company/copyright related information
+ * <br/>
+ * Includes a way to switch to diagnostic mode
+ */
 public class AboutActivity extends BaseActivity {
 
     private boolean mDiagnosticMode;
@@ -45,6 +50,9 @@ public class AboutActivity extends BaseActivity {
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
 
+            /**
+             * Turn on diagnostic mode if the user clicks on the version text 10 times
+             */
             @Override
             public void onClick(View view) {
                 if (!mDiagnosticMode) {
@@ -60,7 +68,7 @@ public class AboutActivity extends BaseActivity {
 
                         mDiagnosticMode = true;
 
-                        checkDiagnosticActionBar();
+                        changeActionBarStyleBasedOnCurrentMode();
                     }
                 }
             }

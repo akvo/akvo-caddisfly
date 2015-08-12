@@ -42,6 +42,7 @@ import android.widget.FrameLayout;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
+import org.akvo.caddisfly.util.ApiUtils;
 import org.akvo.caddisfly.util.ImageUtils;
 import org.akvo.caddisfly.util.SoundPoolPlayer;
 
@@ -51,11 +52,11 @@ import java.util.List;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
- * Use the {@link ...CameraFragment#newInstance} factory method to
+ * Use the {@link CameraDialogFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraFragment extends DialogFragment implements DiagnosticResultFragment.ResultDialogListener {
+public class CameraDialogFragment extends DialogFragment implements DiagnosticResultFragment.ResultDialogListener {
     private static final String ARG_PREVIEW_ONLY = "preview";
     public Camera.PictureCallback pictureCallback;
     private int samplingCount;
@@ -70,7 +71,7 @@ public class CameraFragment extends DialogFragment implements DiagnosticResultFr
     // View to display the camera output.
     private CameraPreview mPreview;
 
-    public CameraFragment() {
+    public CameraDialogFragment() {
         // Required empty public constructor
     }
 
@@ -79,29 +80,19 @@ public class CameraFragment extends DialogFragment implements DiagnosticResultFr
      * this fragment using the provided parameters.
      *
      * @param previewOnly if true will display preview only, otherwise start taking pictures
-     * @return A new instance of fragment CameraFragment.
+     * @return A new instance of fragment CameraDialogFragment.
      */
     @SuppressWarnings("SameParameterValue")
-    public static CameraFragment newInstance(boolean previewOnly) {
-        CameraFragment fragment = new CameraFragment();
+    public static CameraDialogFragment newInstance(boolean previewOnly) {
+        CameraDialogFragment fragment = new CameraDialogFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_PREVIEW_ONLY, previewOnly);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static CameraFragment newInstance() {
-        return new CameraFragment();
-    }
-
-    private static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
+    public static CameraDialogFragment newInstance() {
+        return new CameraDialogFragment();
     }
 
     @Override
@@ -212,7 +203,7 @@ public class CameraFragment extends DialogFragment implements DiagnosticResultFr
     private boolean safeCameraOpenInView(View view) {
         boolean qOpened;
         releaseCameraAndPreview();
-        mCamera = getCameraInstance();
+        mCamera = ApiUtils.getCameraInstance();
         qOpened = (mCamera != null);
 
         if (qOpened) {

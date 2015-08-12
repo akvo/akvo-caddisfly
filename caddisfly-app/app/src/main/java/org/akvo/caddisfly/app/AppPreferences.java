@@ -6,6 +6,9 @@ import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.PreferencesUtils;
 
+/**
+ * Static functions to get or set values of various preferences
+ */
 public class AppPreferences {
 
     public static boolean isDiagnosticMode(Context context) {

@@ -47,20 +47,20 @@ public class ColorUtilsTest extends TestCase {
 
     public void testAutoGenerateColors() throws Exception {
         Hashtable hashtable = new Hashtable();
-        TestInfo testInfo = new TestInfo(hashtable, "FLUOR", "ppm", AppConfig.TestType.COLORIMETRIC_LIQUID);
+        TestInfo testInfo = new TestInfo();
 
         for (int i = 0; i < 5; i++) {
             Swatch swatch = new Swatch(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);
-            testInfo.addRange(swatch);
+            testInfo.addSwatch(swatch);
         }
 
-        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getRanges(), AppConfig.ColorModel.RGB, 0.01);
+        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getSwatches(), AppConfig.ColorModel.RGB, 0.01);
 
         assertEquals(401, list.size());
 
         for (int i = 0; i < list.size(); i++) {
             assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f", list.get(i).getValue()));
-            //assertEquals(-16777216, list.get(i).getColor());
+            assertEquals(Color.TRANSPARENT, list.get(i).getColor());
         }
     }
 

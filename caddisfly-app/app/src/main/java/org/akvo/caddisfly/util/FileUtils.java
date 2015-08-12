@@ -141,7 +141,7 @@ public final class FileUtils {
 
                 if (oldVersion) {
                     ArrayList<String> newArrayList = new ArrayList<>();
-                    int start = (int) (testInfo.getRange(0).getValue() / 0.1);
+                    int start = (int) (testInfo.getSwatch(0).getValue() / 0.1);
                     int end = arrayList.size() + start;
                     int index = 0;
                     for (int i = start; i < end; i++) {

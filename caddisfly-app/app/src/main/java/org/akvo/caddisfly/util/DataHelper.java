@@ -173,10 +173,4 @@ public final class DataHelper {
         return bd.doubleValue();
     }
 
-    public static boolean validDouble(String doubleString) {
-        return (doubleString.contains(".") && !doubleString.startsWith(".")) &&
-                doubleString.indexOf(".") == doubleString.length() - 3;
-
-
-    }
 }

@@ -39,11 +39,11 @@ import org.akvo.caddisfly.util.ListViewUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreferencesDiagnosticFragment extends PreferenceFragment {
+public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public PreferencesDiagnosticFragment() {
+    public DiagnosticPreferenceFragment() {
         // Required empty public constructor
     }
 
@@ -93,7 +93,7 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                         caddisflyApp.setDefaultTest();
                     }
 
-                    final Intent intent = new Intent(context, ColorimetricLiquidActivity.class);
+                    final Intent intent = new Intent(context, ColorimetryLiquidActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -107,8 +107,8 @@ public class PreferencesDiagnosticFragment extends PreferenceFragment {
                     CaddisflyApp caddisflyApp = (CaddisflyApp) getActivity().getApplicationContext();
                     caddisflyApp.initializeCurrentTest();
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    CameraFragment cameraFragment = CameraFragment.newInstance(true);
-                    cameraFragment.show(ft, "cameraFragment");
+                    CameraDialogFragment cameraDialogFragment = CameraDialogFragment.newInstance(true);
+                    cameraDialogFragment.show(ft, "cameraDialogFragment");
                     return true;
                 }
             });

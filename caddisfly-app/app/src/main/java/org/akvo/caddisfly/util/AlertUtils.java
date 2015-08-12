@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,9 @@ import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
 
+/**
+ * Utility functions to show alert messages
+ */
 public class AlertUtils {
 
     public static void showMessage(Context context, int title, int message) {
@@ -77,7 +81,7 @@ public class AlertUtils {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private static void showAlert(final Context context, String title, String message,
+    private static AlertDialog showAlert(final Context context, String title, String message,
                                   int okButtonText, int cancelButtonText, boolean cancelable,
                                   boolean isDestructive,
                                   DialogInterface.OnClickListener callback,
@@ -111,20 +115,21 @@ public class AlertUtils {
 
         final AlertDialog alert = builder.create();
         alert.show();
+
+        return alert;
     }
 
     @SuppressWarnings("SameParameterValue")
     @SuppressLint("InflateParams")
-    public static void showError(Context context, int title, String message, Bitmap bitmap, int okButtonText,
+    public static AlertDialog showError(Context context, int title, String message, Bitmap bitmap, int okButtonText,
                                  DialogInterface.OnClickListener callback,
                                  DialogInterface.OnClickListener cancelListener) {
 
         if (bitmap == null) {
-            showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, false, false, callback, cancelListener);
-            return;
+            return showAlert(context, context.getString(title), message, okButtonText, R.string.cancel, false, false, callback, cancelListener);
         }
 
-        AlertDialog myDialog;
+        AlertDialog alertDialog;
         View alertView;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -155,9 +160,13 @@ public class AlertUtils {
         }
 
         builder.setCancelable(false);
-        myDialog = builder.create();
+        alertDialog = builder.create();
 
-        myDialog.show();
+        if (context instanceof Activity) {
+            alertDialog.setOwnerActivity((Activity) context);
+        }
+        alertDialog.show();
+        return alertDialog;
 
     }
 

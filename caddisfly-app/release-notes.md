@@ -9,6 +9,7 @@ v0.76 beta
 7. External folder name changed to Akvo Caddisfly
 8. Update apk file save to internal folder instead of downloads
 9. Removed external usb camera code
+10 Fix: Alert window not dismissed on activity finish
 
 v0.75 beta
 ----------

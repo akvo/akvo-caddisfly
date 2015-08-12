@@ -82,7 +82,7 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".ui.ColorimetricLiquidActivity"
+            android:name=".ui.ColorimetryLiquidActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.CalibrateListActivity"
             android:screenOrientation="nosensor" />

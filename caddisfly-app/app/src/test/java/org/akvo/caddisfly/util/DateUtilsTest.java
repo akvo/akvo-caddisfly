@@ -29,9 +29,6 @@ public class DateUtilsTest extends TestCase {
     }
 
     public void testGetDaysNoDifference() throws Exception {
-//        Calendar lastCheckDate = Calendar.getInstance();
-//        lastCheckDate.setTimeInMillis(updateLastCheck);
-
         Calendar currentDate = Calendar.getInstance();
         int days = DateUtils.getDaysDifference(currentDate, currentDate);
         assertEquals(0, days);
@@ -49,6 +46,14 @@ public class DateUtilsTest extends TestCase {
         nextDate.add(Calendar.DAY_OF_MONTH, 1);
         int days = DateUtils.getDaysDifference(currentDate, nextDate);
         assertEquals(1, days);
+    }
+
+    public void testGetHoursDifference() throws Exception {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar nextDate = Calendar.getInstance();
+        nextDate.add(Calendar.HOUR_OF_DAY, 2);
+        int hours = DateUtils.getHoursDifference(currentDate, nextDate);
+        assertEquals(2, hours);
     }
 
 

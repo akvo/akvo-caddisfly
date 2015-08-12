@@ -94,7 +94,7 @@ public class DiagnosticResultFragment extends DialogFragment {
                 AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
-                caddisflyApp.currentTestInfo.getRanges(),
+                caddisflyApp.currentTestInfo.getSwatches(),
                 maxDistance,
                 AppConfig.ColorModel.RGB);
 

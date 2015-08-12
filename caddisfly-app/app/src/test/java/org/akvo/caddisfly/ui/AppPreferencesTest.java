@@ -70,7 +70,7 @@ public class AppPreferencesTest {
 
     @Test
     public void checkColorDistanceTolerance() {
-        checkDiagnosticPreference(R.string.colorDistanceToleranceKey, 30, "getColorDistanceTolerance", 99);
+        checkDiagnosticPreference(R.string.colorDistanceToleranceKey, 4, "getColorDistanceTolerance", 99);
     }
 
 

@@ -16,10 +16,7 @@
 
 package org.akvo.caddisfly.util;
 
-import android.graphics.Color;
-
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,13 +26,25 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+/**
+ * Utility functions to parse a text config json text
+ */
 public final class JsonUtils {
 
     private JsonUtils() {
     }
 
-    public static TestInfo loadJson(String jsonText, String testCode) throws JSONException {
-        ArrayList<TestInfo> tests = loadTests(jsonText);
+    /**
+     * Returns a TestInfo instance filled with test config for the given test code
+     *
+     * @param jsonText the json config text
+     * @param testCode the test code
+     * @return the TestInfo instance
+     * @throws JSONException
+     */
+    public static TestInfo loadTestConfigurationByCode(String jsonText, String testCode) {
+
+        ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
 
         for (TestInfo test : tests) {
             if (test.getCode().equalsIgnoreCase(testCode)) {
@@ -45,96 +54,96 @@ public final class JsonUtils {
         return null;
     }
 
-    public static ArrayList<TestInfo> loadTests(String jsonText) throws JSONException {
+    /**
+     * Load all the tests and their configurations from the json config text
+     *
+     * @param jsonText the json text
+     * @return ArrayList of TestInfo instances filled with config
+     * @throws JSONException
+     */
+    public static ArrayList<TestInfo> loadConfigurationsForAllTests(String jsonText) {
+
         JSONObject jsonObject;
-        TestInfo testInfo;
 
         ArrayList<TestInfo> tests = new ArrayList<>();
-        jsonObject = new JSONObject(jsonText).getJSONObject("tests");
-        JSONArray array = jsonObject.getJSONArray("test");
-        for (int i = 0; i < array.length(); i++) {
+        try {
+            jsonObject = new JSONObject(jsonText).getJSONObject("tests");
+            JSONArray array = jsonObject.getJSONArray("test");
+            for (int i = 0; i < array.length(); i++) {
 
-            try {
-                JSONObject item = array.getJSONObject(i);
+                try {
+                    JSONObject item = array.getJSONObject(i);
 
-                JSONArray nameArray = item.getJSONArray("name");
-
-                Hashtable<String, String> namesHashTable = new Hashtable<>(10, 10);
-
-                //Load test names in different languages
-                for (int j = 0; j < nameArray.length(); j++) {
-                    if (!nameArray.isNull(j)) {
-                        Iterator iterator = nameArray.getJSONObject(j).keys();
-                        String key = (String) iterator.next();
-                        String name = nameArray.getJSONObject(j).getString(key);
-                        namesHashTable.put(key, name);
+                    //Get the test type
+                    AppConfig.TestType type;
+                    if (item.has("type")) {
+                        switch (item.getInt("type")) {
+                            case 0:
+                                type = AppConfig.TestType.COLORIMETRIC_LIQUID;
+                                break;
+                            case 1:
+                                type = AppConfig.TestType.COLORIMETRIC_STRIP;
+                                break;
+                            case 2:
+                                type = AppConfig.TestType.SENSOR;
+                                break;
+                            default:
+                                //Invalid test type skip it
+                                continue;
+                        }
+                    } else {
+                        //Invalid test type skip it
+                        continue;
                     }
-                }
 
-                AppConfig.TestType type;
-                if (item.has("type")) {
-                    switch (item.getInt("type")) {
-                        case 0:
-                            type = AppConfig.TestType.COLORIMETRIC_LIQUID;
-                            break;
-                        case 1:
-                            type = AppConfig.TestType.COLORIMETRIC_STRIP;
-                            break;
-                        case 2:
-                            type = AppConfig.TestType.SENSOR;
-                            break;
-                        default:
-                            //Invalid test type skip it
-                            continue;
+                    //Get the name for this test
+                    JSONArray nameArray = item.getJSONArray("name");
+
+                    Hashtable<String, String> namesHashTable =
+                            new Hashtable<>(nameArray.length(), nameArray.length());
+
+                    //Load test names in different languages
+                    for (int j = 0; j < nameArray.length(); j++) {
+                        if (!nameArray.isNull(j)) {
+                            Iterator iterator = nameArray.getJSONObject(j).keys();
+                            String key = (String) iterator.next();
+                            String name = nameArray.getJSONObject(j).getString(key);
+                            namesHashTable.put(key, name);
+                        }
                     }
-                } else {
-                    continue;
+
+                    //Load the dilution percentages
+                    String dilutions = "0";
+                    if (item.has("dilutions")) {
+                        dilutions = item.getString("dilutions");
+                    }
+                    String[] dilutionsArray = dilutions.split(",");
+
+                    //Load the ranges
+                    String ranges = "0";
+                    if (item.has("ranges")) {
+                        ranges = item.getString("ranges");
+                    }
+
+                    String[] rangesArray = ranges.split(",");
+
+                    //Create TestInfo object
+                    tests.add(new TestInfo(
+                            namesHashTable,
+                            item.getString("code").toUpperCase(),
+                            item.getString("unit"),
+                            type,
+                            //if calibrate not specified then default to true otherwise use specified value
+                            !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
+                            rangesArray,
+                            dilutionsArray));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                testInfo = new TestInfo(
-                        namesHashTable,
-                        item.getString("code").toUpperCase(),
-                        item.getString("unit"),
-                        type);
-
-                testInfo.setRequiresCalibation(true);
-                if (item.has("calibrate")) {
-                    testInfo.setRequiresCalibation(item.getString("calibrate").equalsIgnoreCase("true"));
-                }
-
-                //Load the dilution percentages
-                String dilutions = "0";
-                if (item.has("dilutions")) {
-                    dilutions = item.getString("dilutions");
-                }
-
-                String[] dilutionsArray = dilutions.split(",");
-
-                for (String dilution : dilutionsArray) {
-                    testInfo.addDilution(Integer.parseInt(dilution));
-                }
-
-
-                //Load the ranges
-                String ranges = "0";
-                if (item.has("ranges")) {
-                    ranges = item.getString("ranges");
-                }
-
-                String[] rangesArray = ranges.split(",");
-
-                for (String range : rangesArray) {
-                    Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
-                    testInfo.addRange(swatch);
-                }
-
-                testInfo.sortRange();
-
-                tests.add(testInfo);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        } catch (Exception ignored) {
+
         }
         return tests;
     }

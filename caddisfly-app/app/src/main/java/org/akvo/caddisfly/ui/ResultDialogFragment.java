@@ -26,10 +26,10 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
-public class ResultFragment extends DialogFragment {
+public class ResultDialogFragment extends DialogFragment {
 
-    public static ResultFragment newInstance(String title, double result, int dilutionLevel, String unit) {
-        ResultFragment fragment = new ResultFragment();
+    public static ResultDialogFragment newInstance(String title, double result, int dilutionLevel, String unit) {
+        ResultDialogFragment fragment = new ResultDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putDouble("result", result);

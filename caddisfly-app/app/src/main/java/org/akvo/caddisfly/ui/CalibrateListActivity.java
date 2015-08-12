@@ -130,10 +130,10 @@ public class CalibrateListActivity extends BaseActivity
     public void onItemSelected(int id) {
         mPosition = id;
         final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
-        Swatch mRange = caddisflyApp.currentTestInfo.getRange(mPosition);
+        Swatch mRange = caddisflyApp.currentTestInfo.getSwatch(mPosition);
 
         final Intent intent = new Intent();
-        intent.setClass(this, ColorimetricLiquidActivity.class);
+        intent.setClass(this, ColorimetryLiquidActivity.class);
         intent.putExtra("isCalibration", true);
         intent.putExtra("rangeValue", mRange.getValue());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -148,7 +148,7 @@ public class CalibrateListActivity extends BaseActivity
             case REQUEST_CALIBRATE:
 
                 final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
-                Swatch mRange = caddisflyApp.currentTestInfo.getRange(mPosition);
+                Swatch mRange = caddisflyApp.currentTestInfo.getSwatch(mPosition);
 
                 if (resultCode == Activity.RESULT_OK) {
                     caddisflyApp.saveCalibratedData(mRange, data.getIntExtra("color", 0));
@@ -214,7 +214,7 @@ public class CalibrateListActivity extends BaseActivity
                         if (!input.getText().toString().trim().isEmpty()) {
                             final StringBuilder exportList = new StringBuilder();
 
-                            for (Swatch range : CaddisflyApp.getApp().currentTestInfo.getRanges()) {
+                            for (Swatch range : CaddisflyApp.getApp().currentTestInfo.getSwatches()) {
                                 exportList.append(String.format("%.2f", range.getValue()))
                                         .append("=")
                                         .append(ColorUtils.getColorRgbString(range.getColor()));
@@ -261,7 +261,7 @@ public class CalibrateListActivity extends BaseActivity
      * Convert a string number into a double value
      *
      * @param text the text to be converted to number
-     * @return
+     * @return the double value
      */
     private double stringToDouble(String text) {
 
@@ -277,7 +277,7 @@ public class CalibrateListActivity extends BaseActivity
 
     /**
      * Load the calibrated swatches from the calibration text file
-     * @param callback callback to be initated once the loading is complete
+     * @param callback callback to be initiated once the loading is complete
      */
     private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
