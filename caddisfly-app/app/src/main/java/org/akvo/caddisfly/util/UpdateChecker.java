@@ -32,11 +32,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ * Manages update checking, downloading and installing of the update
+ *
  * @author Raghav Sood
  * @version API 2
  * @since API 1
  */
-
 class UpdateChecker {
 
     private final Context mContext;
@@ -196,11 +197,5 @@ class UpdateChecker {
         }
         return "File read error";
     }
-
-  /*  public void cancel() {
-        if (downloadManager != null) {
-            downloadManager.stop();
-        }
-    }*/
 
 }

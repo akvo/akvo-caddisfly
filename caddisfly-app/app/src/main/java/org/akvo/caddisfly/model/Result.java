@@ -21,19 +21,19 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 public class Result {
-    private final Bitmap mBitmap;
-    private final ArrayList<ResultInfo> mResults;
+    private final Bitmap bitmap;
+    private final ArrayList<ResultDetail> results;
 
-    public Result(Bitmap bitmap, ArrayList<ResultInfo> results) {
-        mBitmap = bitmap;
-        mResults = results;
+    public Result(Bitmap bitmap, ArrayList<ResultDetail> results) {
+        this.bitmap = bitmap;
+        this.results = results;
     }
 
     public Bitmap getBitmap() {
-        return mBitmap;
+        return bitmap;
     }
 
-    public ArrayList<ResultInfo> getResults() {
-        return mResults;
+    public ArrayList<ResultDetail> getResults() {
+        return results;
     }
 }

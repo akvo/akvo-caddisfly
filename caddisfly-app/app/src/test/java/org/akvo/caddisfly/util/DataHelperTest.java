@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.Result;
-import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.ResultDetail;
 
 import java.util.ArrayList;
 
@@ -39,8 +39,8 @@ public class DataHelperTest extends TestCase {
     }
 
     private Result createNewResult(double value, int color) {
-        ArrayList<ResultInfo> results = new ArrayList<>();
-        results.add(new ResultInfo(value, color));
+        ArrayList<ResultDetail> results = new ArrayList<>();
+        results.add(new ResultDetail(value, color));
         return new Result(null, results);
     }
 

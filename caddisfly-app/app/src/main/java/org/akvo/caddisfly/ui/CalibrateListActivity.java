@@ -291,7 +291,6 @@ public class CalibrateListActivity extends BaseActivity
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     android.R.layout.select_dialog_singlechoice);
 
-
             final File folder = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
 
             if (folder.exists()) {
@@ -320,7 +319,7 @@ public class CalibrateListActivity extends BaseActivity
 
                                 ArrayList<String> rgbList;
                                 try {
-                                    rgbList = FileUtils.loadFromFile(caddisflyApp.currentTestInfo, fileName);
+                                    rgbList = FileUtils.loadFromFile(fileName);
 
                                     if (rgbList != null) {
 

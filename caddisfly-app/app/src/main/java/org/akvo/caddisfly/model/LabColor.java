@@ -6,7 +6,7 @@ public class LabColor {
     public final double b;
 
     public LabColor(double l, double a, double b) {
-        L = l;
+        this.L = l;
         this.a = a;
         this.b = b;
     }

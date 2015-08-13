@@ -46,6 +46,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
+                //Only start the colorimetry calibration if the device has a camera flash
                 if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
                     AlertUtils.showError(this, R.string.cannotCalibrate,
                             getString(R.string.errorCameraFlashRequired),
@@ -57,6 +58,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 }
                 break;
             case SENSOR:
+                //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
                 boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     AlertUtils.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
@@ -75,6 +77,9 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         }
     }
 
+    /**
+     * Alert shown when a feature is not supported by the device
+     */
     private void alertFeatureNotSupported() {
         String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));

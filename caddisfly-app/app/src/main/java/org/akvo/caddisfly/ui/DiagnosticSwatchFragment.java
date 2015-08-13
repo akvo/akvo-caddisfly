@@ -54,13 +54,8 @@ public class DiagnosticSwatchFragment extends ListFragment {
 
         if (testInfo.getSwatches().size() > 0) {
 
-//            ArrayList<Swatch> tempColorRange = new ArrayList<>();
-//            tempColorRange.add(testInfo.getSwatches().get(0));
-//            tempColorRange.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
             ArrayList<Swatch> swatchList = ColorUtils.generateGradient(testInfo.getSwatches(),
                     AppConfig.ColorModel.LAB, 0.05);
-
-            //Swatch[] colorArray = swatchList.toArray(new Swatch[swatchList.size()]);
 
             SwatchesAdapter swatchesAdapter = new SwatchesAdapter(getActivity(), swatchList);
             setListAdapter(swatchesAdapter);

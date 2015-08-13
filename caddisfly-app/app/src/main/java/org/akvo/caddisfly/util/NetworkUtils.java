@@ -25,8 +25,17 @@ import android.provider.Settings;
 
 import org.akvo.caddisfly.R;
 
+/**
+ * Network related utility functions
+ */
 public class NetworkUtils {
 
+    /**
+     * Check if the device is connected to the internet
+     *
+     * @param context the context
+     * @return true if connected
+     */
     public static boolean checkInternetConnection(final Context context) {
 
         ConnectivityManager cm =
@@ -53,6 +62,7 @@ public class NetworkUtils {
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
     }
+
 
     public static boolean isOnline(Context context) {
         if (context != null) {

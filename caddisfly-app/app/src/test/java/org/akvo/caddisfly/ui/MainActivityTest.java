@@ -23,10 +23,11 @@ import android.graphics.Color;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.model.ColorInfo;
-import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.JsonUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,19 +66,19 @@ public class MainActivityTest {
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
-        assertEquals(-1.0, resultInfo.getResult());
+        assertEquals(-1.0, resultDetail.getResult());
     }
 
     @Test
     public void testGetPpmValue2() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
-            if (i > 1500) {
+            if (i > 1000) {
                 colors[i] = Color.rgb(255, 156, 149);
             } else {
                 colors[i] = -1;
@@ -94,13 +95,13 @@ public class MainActivityTest {
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.LAB);
 
-        assertEquals(Color.rgb(255, 156, 149), resultInfo.getColor());
-        assertEquals(1.01, resultInfo.getResult());
+        assertEquals(Color.rgb(255, 156, 149), resultDetail.getColor());
+        assertEquals(1.01, resultDetail.getResult());
     }
 
     @Test
@@ -124,13 +125,13 @@ public class MainActivityTest {
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
-        assertEquals(Color.rgb(255, 146, 139), resultInfo.getColor());
-        assertEquals(1.0, resultInfo.getResult());
+        assertEquals(Color.rgb(255, 146, 139), resultDetail.getColor());
+        assertEquals(1.0, resultDetail.getResult());
     }
 
     @Test
@@ -150,12 +151,12 @@ public class MainActivityTest {
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
-        assertEquals(1.5, resultInfo.getResult());
+        assertEquals(1.5, resultDetail.getResult());
     }
 
     @Test
@@ -175,12 +176,12 @@ public class MainActivityTest {
 
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
                 AppConfig.ColorModel.RGB);
 
-        assertEquals(1.0, resultInfo.getResult());
+        assertEquals(1.0, resultDetail.getResult());
     }
 
     @Test
@@ -228,7 +229,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -240,7 +241,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123)));
 
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -252,8 +253,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 113)));
 
-        assertEquals(31.82420654296875, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(31.82420654296875, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -265,8 +266,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123)));
 
-        assertEquals(22.2095458984375, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(22.2095458984375, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -278,8 +279,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        assertEquals(21.658697509765624, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(21.658697509765624, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -291,8 +292,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86)));
 
-        assertEquals(29.022808837890626, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(29.022808837890626, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -304,8 +305,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86)));
 
-        assertEquals(17.87760009765625, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(17.87760009765625, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -317,8 +318,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 128, 119)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99)));
 
-        assertEquals(24.640643310546874, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(24.640643310546874, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -330,8 +331,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 84, 110)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 112, 93)));
 
-        assertEquals(22.0148193359375, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(22.0148193359375, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
     @Test
@@ -343,8 +344,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(210, 0, 0)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(195, 0, 0)));
 
-        assertEquals(0.0, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(0.0, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
 
@@ -357,8 +358,8 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 17, 17)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 0, 0)));
 
-        assertEquals(-5.996826171875, ColorUtils.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, ColorUtils.validateColorRange(testInfo.getSwatches()));
+        assertEquals(-5.996826171875, DataHelper.calculateSlope(testInfo.getSwatches()));
+        assertEquals(true, DataHelper.validateSwatchList(testInfo.getSwatches()));
     }
 
 }

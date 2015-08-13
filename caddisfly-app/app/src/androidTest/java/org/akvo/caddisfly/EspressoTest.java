@@ -133,13 +133,17 @@ public class EspressoTest
         stringHashMapEN.put("electricalConductivity", "Electrical Conductivity");
         stringHashMapEN.put("unnamedDataPoint", "Unnamed data point");
         stringHashMapEN.put("createNewDataPoint", "CREATE NEW DATA POINT");
+        stringHashMapEN.put("useExternalSource", "Use External Source");
+        stringHashMapEN.put("next", "Next");
 
         stringHashMapFR.put("language", "Français");
-        stringHashMapFR.put("fluoride", "Fluor");
+        stringHashMapFR.put("fluoride", "Fluorure");
         stringHashMapFR.put("chlorine", "Chlore libre");
         stringHashMapFR.put("electricalConductivity", "Conductivité Electrique");
-        stringHashMapFR.put("unnamedDataPoint", "Unnamed data point");
-        stringHashMapFR.put("createNewDataPoint", "CREATE NEW DATA POINT");
+        stringHashMapFR.put("unnamedDataPoint", "Donnée non nommée");
+        stringHashMapFR.put("createNewDataPoint", "CRÉER UN NOUVEAU POINT");
+        stringHashMapFR.put("useExternalSource", "Utiliser source externe");
+        stringHashMapFR.put("next", "Suivant");
 
         if (mCurrentLanguage.equals("en")) {
             currentHashMap = stringHashMapEN;
@@ -150,22 +154,30 @@ public class EspressoTest
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
 
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
+        prefs.edit().clear().apply();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
         getActivity();
+
+        resetLanguage();
+
+        goToMainScreen();
 
     }
 
     @SuppressWarnings("EmptyMethod")
     public void test000() {
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
 
     }
 
@@ -196,10 +208,6 @@ public class EspressoTest
 
     public void test002_Screenshots() {
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
-
         saveInvalidCalibration();
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
@@ -209,8 +217,6 @@ public class EspressoTest
             //noinspection ResultOfMethodCallIgnored
             folder.mkdirs();
         }
-
-        resetLanguage();
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -366,15 +372,7 @@ public class EspressoTest
 
         openSurveyInFlow();
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -397,69 +395,33 @@ public class EspressoTest
 
         openSurveyInFlow();
 
-        try {
-            mDevice.findObject(new UiSelector().text("Next")).click();
+        clickExternalSourceButton("next");
 
-            mDevice.waitForWindowUpdate("", 2000);
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         //Calibration incomplete
         takeScreenshot();
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        try {
-            mDevice.findObject(new UiSelector().text("Next")).click();
+        clickExternalSourceButton("next");
 
-            mDevice.waitForWindowUpdate("", 2000);
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         //Connect EC Sensor Screen
         takeScreenshot();
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        try {
-            mDevice.findObject(new UiSelector().text("Next")).click();
+        clickExternalSourceButton("next");
 
-            mDevice.waitForWindowUpdate("", 2000);
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        try {
-            mDevice.findObject(new UiSelector().text("Next")).click();
+        clickExternalSourceButton("next");
 
-            mDevice.waitForWindowUpdate("", 2000);
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         //Test type not available
         takeScreenshot();
@@ -567,24 +529,7 @@ public class EspressoTest
 
     public void testStartASurvey() {
 
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-
-        startApp();
-
-        sleep(2000);
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
-
         saveCalibration();
-
-        goToMainScreen();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -622,15 +567,7 @@ public class EspressoTest
 
         openSurveyInFlow();
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -805,9 +742,6 @@ public class EspressoTest
     }
 
     public void testStartCalibrate() {
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
 
         startCalibrate(2, 4);
     }
@@ -850,28 +784,7 @@ public class EspressoTest
 
     public void testStartNoDilutionTest() {
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
-
-        goToMainScreen();
-
-
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-
-        startApp();
-
         saveLowLevelCalibration();
-
-        resetLanguage();
-
-        goToMainScreen();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -903,15 +816,7 @@ public class EspressoTest
 
         openSurveyInFlow();
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -941,23 +846,7 @@ public class EspressoTest
 
     public void testStartHighLevelTest() {
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
-
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-
-        startApp();
-
         saveHighLevelCalibration();
-
-        resetLanguage();
-
-        goToMainScreen();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -989,17 +878,7 @@ public class EspressoTest
 
         openSurveyInFlow();
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -1020,17 +899,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
 
@@ -1057,17 +926,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        try {
-
-            mDevice.findObject(new UiSelector().text("Use External Source")).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
+        clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
 
@@ -1103,11 +962,19 @@ public class EspressoTest
 
     }
 
+    private void clickExternalSourceButton(String buttonText) {
+        try {
+
+            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testRestartAppDuringAnalysis() {
-
-        resetLanguage();
-
-        goToMainScreen();
 
         onView(withId(R.id.action_settings)).perform(click());
 
@@ -1130,13 +997,13 @@ public class EspressoTest
             e.printStackTrace();
         }
 
-        sleep(1000);
+        sleep(3000);
 
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
 
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
 
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 200);
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -1155,14 +1022,6 @@ public class EspressoTest
     public void testZErrors() {
 
         mCounter += 4;
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.getInstrumentation().getTargetContext());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
-
-        goToMainScreen();
 
         final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(),
                 true, CaddisflyApp.getVersion(this.getInstrumentation().getTargetContext()));

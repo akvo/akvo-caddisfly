@@ -21,11 +21,9 @@ import android.graphics.Color;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.HsvColor;
 import org.akvo.caddisfly.model.LabColor;
-import org.akvo.caddisfly.model.ResultInfo;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.XyzColor;
 
@@ -36,7 +34,6 @@ import java.util.ArrayList;
  */
 public final class ColorUtils {
 
-    private static final int GRAY_TOLERANCE = 10;
     private static final double Xn = 0.950470;
     private static final double Yn = 1.0;
     private static final double Zn = 1.088830;
@@ -46,42 +43,6 @@ public final class ColorUtils {
     private static final double t3 = 0.008856452; // t1 * t1 * t1;
 
     private ColorUtils() {
-    }
-
-    /**
-     * Analyzes the color and returns a result info
-     *
-     * @param photoColor The color to compare
-     * @param colorRange The range of colors to compare against
-     */
-    public static ResultInfo analyzeColor(ColorInfo photoColor, ArrayList<Swatch> colorRange,
-                                          int maxDistance, AppConfig.ColorModel colorModel) {
-
-        //Find the color that matches the photoColor from the calibrated colorRange
-        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(
-                photoColor.getColor(), colorRange, AppConfig.MIN_VALID_COLOR_DISTANCE);
-
-        //If no color matches the colorRange then generate a gradient by interpolation
-        if (colorCompareInfo.getResult() < 0) {
-
-            ArrayList<Swatch> swatchRange = ColorUtils.generateGradient(colorRange, colorModel, 0.01);
-
-            //Find the color within the generated gradient that matches the photoColor
-            colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
-                    swatchRange, maxDistance);
-        }
-
-        //set the result
-        ResultInfo resultInfo = new ResultInfo(-1, photoColor.getColor());
-        if (colorCompareInfo.getResult() > -1) {
-            resultInfo.setColorModel(colorModel);
-            resultInfo.setCalibrationSteps(colorRange.size());
-            resultInfo.setResult(colorCompareInfo.getResult());
-            resultInfo.setMatchedColor(colorCompareInfo.getMatchedColor());
-            resultInfo.setDistance(colorCompareInfo.getDistance());
-        }
-
-        return resultInfo;
     }
 
     /**
@@ -111,7 +72,7 @@ public final class ColorUtils {
 
                     int color = bitmap.getPixel(i, j);
 
-                    if (ColorUtils.isNotGray(color)) {
+                    if (color != Color.TRANSPARENT) {
                         totalPixels++;
 
                         counter = m.get(color);
@@ -133,7 +94,7 @@ public final class ColorUtils {
             for (int i = 0; i < colorsFound; i++) {
                 double distance = getColorDistanceLab(colorToLab(commonColor), colorToLab(m.keyAt(i)));
 
-                if (distance < 10) {
+                if (distance < AppConfig.MIN_VALID_COLOR_DISTANCE) {
                     goodColors++;
                     goodPixelCount += m.valueAt(i);
                 }
@@ -152,19 +113,6 @@ public final class ColorUtils {
         return new ColorInfo(commonColor, quality);
     }
 
-
-    /**
-     * Checks if a given color is not close to gray color
-     *
-     * @param color The color to evaluate
-     * @return True if the color is not gray else False
-     */
-    private static boolean isNotGray(int color) {
-        return Math.abs(Color.red(color) - Color.green(color)) > GRAY_TOLERANCE
-                || Math.abs(Color.red(color) - Color.blue(color)) > GRAY_TOLERANCE;
-    }
-
-
     /**
      * Get the brightness of a given color
      *
@@ -182,7 +130,6 @@ public final class ColorUtils {
         );
     }
 
-
     /**
      * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
      *
@@ -197,114 +144,6 @@ public final class ColorUtils {
             }
         }
         return true;
-    }
-
-    /**
-     * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
-     *
-     * @param colorRange the range of colors
-     * @return True if valid otherwise false
-     */
-    public static boolean validateColorRange(ArrayList<Swatch> colorRange) {
-
-        for (Swatch swatch : colorRange) {
-            if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
-                //Calibration is incomplete
-                return false;
-            }
-            for (Swatch range2 : colorRange) {
-                if (swatch != range2) {
-                    double value = getColorDistanceLab(colorToLab(swatch.getColor()),
-                            colorToLab(range2.getColor()));
-
-                    if (value <= AppConfig.MIN_VALID_COLOR_DISTANCE) {
-                        //Duplicate color
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-        //return !(calculateSlope(colorRange) < 20 || calculateSlope(colorRange) > 40);
-    }
-
-    /**
-     * Calculate the slope of the linear trend for a range of colors
-     *
-     * @param colorRange the range of colors
-     * @return The slope value
-     */
-    public static double calculateSlope(ArrayList<Swatch> colorRange) {
-
-        double a = 0, b, c, d;
-        double xSum = 0, xSquaredSum = 0, ySum = 0;
-        double slope;
-
-        float[] colorHSV = new float[3];
-
-        float[] hValue = new float[colorRange.size()];
-
-        for (int i = 0; i < colorRange.size(); i++) {
-            //noinspection ResourceType
-            Color.colorToHSV(colorRange.get(i).getColor(), colorHSV);
-            hValue[i] = colorHSV[0];
-            if (hValue[i] < 100) {
-                hValue[i] += 360;
-            }
-            a += colorRange.get(i).getValue() * hValue[i];
-            xSum += colorRange.get(i).getValue();
-            xSquaredSum += Math.pow(colorRange.get(i).getValue(), 2);
-
-            ySum += hValue[i];
-        }
-
-        //Calculate the slope
-        a *= colorRange.size();
-        b = xSum * ySum;
-        c = xSquaredSum * colorRange.size();
-        d = Math.pow(xSum, 2);
-        slope = (a - b) / (c - d);
-
-        if (Double.isNaN(slope)) {
-            slope = 32;
-        }
-
-        return slope;
-    }
-
-    /**
-     * Compares the colorToFind to all colors in the color range and finds the nearest matching color
-     *
-     * @param colorToFind The colorToFind to compare
-     * @param colorRange  The range of colors from which to return the nearest colorToFind
-     * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
-     */
-    private static ColorCompareInfo getNearestColorFromSwatchRange(
-            int colorToFind, ArrayList<Swatch> colorRange, double maxDistance) {
-
-        double distance = maxDistance;
-
-        double resultValue = -1;
-        int matchedColor = -1;
-
-        for (int i = 0; i < colorRange.size(); i++) {
-            int tempColor = colorRange.get(i).getColor();
-
-            double temp = getColorDistanceLab(colorToLab(tempColor), colorToLab(colorToFind));
-
-            if (temp == 0.0) {
-                resultValue = colorRange.get(i).getValue();
-                matchedColor = colorRange.get(i).getColor();
-                break;
-            } else if (temp < distance) {
-                distance = temp;
-                resultValue = colorRange.get(i).getValue();
-                matchedColor = colorRange.get(i).getColor();
-            }
-        }
-
-        return new ColorCompareInfo(resultValue, colorToFind, matchedColor, distance);
     }
 
     /**
@@ -436,7 +275,13 @@ public final class ColorUtils {
         return new LabColor(L, a, b);
     }
 
-    private static int labToRgb(LabColor color) {
+    /**
+     * Convert LAB color to int Color
+     *
+     * @param color the LAB color
+     * @return int color value
+     */
+    private static int labToColor(LabColor color) {
         double a, b, g, l, r, x, y, z;
         l = color.L;
         a = color.a;
@@ -498,10 +343,6 @@ public final class ColorUtils {
         y = xyz_lab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / Yn);
         z = xyz_lab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / Zn);
         return new XyzColor(x, y, z);
-    }
-
-    private static int labToColor(LabColor color) {
-        return labToRgb(color);
     }
 
     // create gradient from yellow to red to black with 100 steps
@@ -636,5 +477,4 @@ public final class ColorUtils {
         // The CIE 00 color difference
         return Math.sqrt(dL * dL + dC * dC + dH * dH + RT * dC * dH);
     }
-
 }

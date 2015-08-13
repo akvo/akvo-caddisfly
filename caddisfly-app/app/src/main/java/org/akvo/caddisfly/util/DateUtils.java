@@ -18,11 +18,21 @@ package org.akvo.caddisfly.util;
 
 import java.util.Calendar;
 
+/**
+ * Utility functions for date and time
+ */
 public final class DateUtils {
 
     private DateUtils() {
     }
 
+    /**
+     * Gets the number of days in between two given dates
+     *
+     * @param calendar1 the first date
+     * @param calendar2 the second date
+     * @return the number days
+     */
     public static int getDaysDifference(Calendar calendar1, Calendar calendar2) {
         if (calendar1 == null || calendar2 == null) {
             return 0;
@@ -32,6 +42,13 @@ public final class DateUtils {
                 calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
 
+    /**
+     * Gets the number of hours in between two given dates
+     *
+     * @param calendar1 the first date
+     * @param calendar2 the second date
+     * @return the number hours
+     */
     public static int getHoursDifference(Calendar calendar1, Calendar calendar2) {
         if (calendar1 == null || calendar2 == null) {
             return 0;

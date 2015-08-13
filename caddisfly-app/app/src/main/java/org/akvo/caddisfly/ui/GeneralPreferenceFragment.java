@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.ui;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -32,7 +31,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ListViewUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment for general preferences section
  */
 public class GeneralPreferenceFragment extends PreferenceFragment {
 

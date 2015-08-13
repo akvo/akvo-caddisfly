@@ -18,11 +18,11 @@ package org.akvo.caddisfly.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.RawRes;
 import android.util.Log;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.model.TestInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,15 +33,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Utility functions to file and folder manipulation
+ */
 public final class FileUtils {
 
     private FileUtils() {
     }
 
-    public static void deleteFile(File folder, String fileName) {
-        File file = new File(folder, fileName);
+    /**
+     * Delete a file
+     *
+     * @param path     the path to the file
+     * @param fileName the name of the file to delete
+     */
+    public static void deleteFile(File path, String fileName) {
+        File file = new File(path, fileName);
         //noinspection ResultOfMethodCallIgnored
         file.delete();
     }
@@ -92,6 +100,12 @@ public final class FileUtils {
         }
     }
 
+    /**
+     * Read the text from a file
+     *
+     * @param file the file to read text from
+     * @return the loaded text
+     */
     public static String loadTextFromFile(File file) {
 
         StringBuilder text = new StringBuilder();
@@ -112,56 +126,48 @@ public final class FileUtils {
         return "";
     }
 
-    public static ArrayList<String> loadFromFile(TestInfo testInfo, String name) {
+    /**
+     * Load lines of strings from a file
+     *
+     * @param fileName the file name
+     * @return an list of string lines
+     */
+    public static ArrayList<String> loadFromFile(String fileName) {
+
         try {
-
             ArrayList<String> arrayList = new ArrayList<>();
-            boolean oldVersion = false;
-
             File folder = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
             if (folder.exists()) {
 
-                File file = new File(folder, name);
+                File file = new File(folder, fileName);
 
                 FileReader filereader = new FileReader(file);
 
                 BufferedReader in = new BufferedReader(filereader);
                 String line;
                 while ((line = in.readLine()) != null) {
-                    if (line.length() > 20 || line.contains("[")) {
-                        oldVersion = true;
-                        arrayList = new ArrayList<>(Arrays.asList(line.substring(1, line.length() - 1).split(",\\s*")));
-                        break;
-                    } else {
-                        arrayList.add(line);
-                    }
+                    arrayList.add(line);
                 }
                 in.close();
                 filereader.close();
-
-                if (oldVersion) {
-                    ArrayList<String> newArrayList = new ArrayList<>();
-                    int start = (int) (testInfo.getSwatch(0).getValue() / 0.1);
-                    int end = arrayList.size() + start;
-                    int index = 0;
-                    for (int i = start; i < end; i++) {
-                        newArrayList.add(String.format("%.2f=%s", i * 0.1, arrayList.get(index++)));
-                    }
-                    return newArrayList;
-                }
-
             }
             return arrayList;
-        } catch (Exception e) {
-            Log.d("failed to load file", e.toString());
+        } catch (Exception ignored) {
         }
 
         return null;
     }
 
+    /**
+     * Read a text file from the raw resources folder
+     *
+     * @param context    the context
+     * @param resourceId the resource Id
+     * @return the read text
+     */
     @SuppressWarnings("SameParameterValue")
-    public static String readRawTextFile(Context ctx, int resId) {
-        InputStream inputStream = ctx.getResources().openRawResource(resId);
+    public static String readRawTextFile(Context context, @RawRes int resourceId) {
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
 
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -179,6 +185,11 @@ public final class FileUtils {
         return text.toString();
     }
 
+    /**
+     * Delete all files in a path
+     *
+     * @param path the path
+     */
     public static void deleteFiles(String path) {
 
         File file = new File(path);

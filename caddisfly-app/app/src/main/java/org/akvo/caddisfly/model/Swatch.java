@@ -17,24 +17,24 @@
 package org.akvo.caddisfly.model;
 
 public class Swatch {
-    private final double mValue;
-    private int mColor;
+    private final double value;
+    private int color;
 
     public Swatch(double value, int color) {
-        mValue = value;
-        mColor = color;
+        this.value = value;
+        this.color = color;
     }
 
     public double getValue() {
-        return mValue;
+        return value;
     }
 
     public int getColor() {
-        return mColor;
+        return color;
     }
 
     public void setColor(int value) {
-        mColor = value;
+        color = value;
     }
 
 }

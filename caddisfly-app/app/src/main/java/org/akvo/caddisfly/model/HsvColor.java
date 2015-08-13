@@ -10,5 +10,4 @@ public class HsvColor {
         this.s = s;
         this.v = v;
     }
-
 }

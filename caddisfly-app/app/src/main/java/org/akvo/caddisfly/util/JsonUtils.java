@@ -40,7 +40,6 @@ public final class JsonUtils {
      * @param jsonText the json config text
      * @param testCode the test code
      * @return the TestInfo instance
-     * @throws JSONException
      */
     public static TestInfo loadTestConfigurationByCode(String jsonText, String testCode) {
 
@@ -59,7 +58,6 @@ public final class JsonUtils {
      *
      * @param jsonText the json text
      * @return ArrayList of TestInfo instances filled with config
-     * @throws JSONException
      */
     public static ArrayList<TestInfo> loadConfigurationsForAllTests(String jsonText) {
 

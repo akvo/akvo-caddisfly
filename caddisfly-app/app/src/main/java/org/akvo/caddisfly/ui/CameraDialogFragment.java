@@ -434,7 +434,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
             picturesTaken++;
             if (!mCancelled) {
                 if (!hasTestCompleted()) {
-                    sound.playShortResource(getActivity(), R.raw.beep);
+                    sound.playShortResource(R.raw.beep);
                     if (pictureCallback == null) {
                         stopCamera();
                         Bitmap bitmap = ImageUtils.getBitmap(bytes);

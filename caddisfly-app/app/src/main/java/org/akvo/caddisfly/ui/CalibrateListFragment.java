@@ -30,6 +30,7 @@ import org.akvo.caddisfly.adapter.CalibrateListAdapter;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.DataHelper;
 
 /**
  * A list fragment representing a list of Calibrate items.
@@ -69,7 +70,7 @@ public class CalibrateListFragment extends ListFragment {
 
         //Display error if calibration is completed but invalid
         if (ColorUtils.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getSwatches()) &&
-                !ColorUtils.validateColorRange(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
+                !DataHelper.validateSwatchList(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
             textCalibrationError.setVisibility(View.VISIBLE);

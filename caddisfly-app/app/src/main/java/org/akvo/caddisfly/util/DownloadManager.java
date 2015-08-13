@@ -39,8 +39,6 @@ import java.net.URLConnection;
  * DO NOT USE ON YOUR OWN. All calls are handled through UpdateChecker.
  *
  * @author Raghav Sood
- * @version API 2
- * @since API 1
  */
 class DownloadManager extends AsyncTask<String, Integer, String> {
 
@@ -55,11 +53,9 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     private boolean downloaded = false;
 
     /**
-     * Constructor for the download manager. DO NOT USE ON YOUR OWN. All calls are handled through
-     * UpdateChecker.
+     * DO NOT USE ON YOUR OWN. All calls are handled through UpdateChecker.
      *
      * @param context Activity context
-     * @since API 2
      */
     public DownloadManager(Context context) {
         mContext = context;
@@ -70,7 +66,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      * Checks to see if we have an active internet connection
      *
      * @return true if online, false otherwise
-     * @since API 1
      */
     private boolean isOnline() {
         try {
@@ -85,7 +80,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     /**
      * Downloads the update file in a background task
      *
-     * @since API 1
      */
     @Override
     protected String doInBackground(String... sUrl) {
@@ -155,7 +149,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     /**
      * Updates our progress bar with the download information
      *
-     * @since API 1
      */
     @Override
     protected void onProgressUpdate(Integer... changed) {
@@ -165,7 +158,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     /**
      * Sets up the progress dialog to notify user of download progress
      *
-     * @since API 1
      */
     @Override
     protected void onPreExecute() {
@@ -179,7 +171,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     /**
      * Dismissed progress dialog, calls install() if installAfterDownload is true
      *
-     * @since API 1
      */
     @Override
     protected void onPostExecute(String result) {
@@ -197,7 +188,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     /**
      * Launches an Intent to install the apk update.
      *
-     * @since API 2
      */
     private void install() {
         if (downloaded) {

@@ -2,7 +2,7 @@ package org.akvo.caddisfly.model;
 
 import org.akvo.caddisfly.AppConfig;
 
-public class ResultInfo {
+public class ResultDetail {
     private final int color;
     private double result;
     private int matchedColor;
@@ -10,7 +10,7 @@ public class ResultInfo {
     private int calibrationSteps;
     private AppConfig.ColorModel colorModel;
 
-    public ResultInfo(double result, int color) {
+    public ResultDetail(double result, int color) {
         this.result = result;
         this.color = color;
     }

@@ -35,8 +35,9 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorInfo;
-import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtils;
+import org.akvo.caddisfly.util.DataHelper;
 
 public class DiagnosticResultFragment extends DialogFragment {
 
@@ -93,22 +94,22 @@ public class DiagnosticResultFragment extends DialogFragment {
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(mExtractBitmap,
                 AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultInfo resultInfo = ColorUtils.analyzeColor(photoColor,
+        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 caddisflyApp.currentTestInfo.getSwatches(),
                 maxDistance,
                 AppConfig.ColorModel.RGB);
 
-        double result = resultInfo.getResult();
-        int color = resultInfo.getColor();
-        int swatchColor = resultInfo.getMatchedColor();
+        double result = resultDetail.getResult();
+        int color = resultDetail.getColor();
+        int swatchColor = resultDetail.getMatchedColor();
 
         textQuality.setText(String.format("quality: %.0f%%", photoColor.getQuality()));
 
         if (result > -1) {
             textResult.setText(String.format("%s : %.2f %s", caddisflyApp.currentTestInfo.getName("en"),
                     result, caddisflyApp.currentTestInfo.getUnit()));
-            textDistance.setText(String.format("distance: %.2f", resultInfo.getDistance()));
-            buttonSwatchColor.setBackgroundColor(resultInfo.getMatchedColor());
+            textDistance.setText(String.format("distance: %.2f", resultDetail.getDistance()));
+            buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
             swatchRgbValue.setText(String.format("r: %s", ColorUtils.getColorRgbString(swatchColor)));
         } else {
             textResult.setText(String.format("%s", caddisflyApp.currentTestInfo.getName("en")));

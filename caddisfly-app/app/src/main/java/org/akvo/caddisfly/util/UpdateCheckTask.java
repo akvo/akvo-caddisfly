@@ -26,6 +26,9 @@ import org.akvo.caddisfly.R;
 
 import java.util.Calendar;
 
+/**
+ * Check for app updates in the background and alert if the user if update is available
+ */
 public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
     private static UpdateChecker checker;
@@ -33,14 +36,18 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
     private final Context mContext;
     private final String mVersion;
 
-    private final boolean mBackground;
-
+    private final boolean mSilent;
 
     private ProgressDialog progressDialog;
 
-    public UpdateCheckTask(Context context, boolean background, String version) {
+    /**
+     * @param context the context
+     * @param silent  check silently without showing an alert if update not found
+     * @param version the current version of the app
+     */
+    public UpdateCheckTask(Context context, boolean silent, String version) {
         mContext = context;
-        mBackground = background;
+        mSilent = silent;
         mVersion = version;
     }
 
@@ -50,7 +57,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (NetworkUtils.isOnline(mContext)) {
             checker = new UpdateChecker(mContext, false);
-            if (!mBackground) {
+            if (!mSilent) {
                 progressDialog = new ProgressDialog(mContext);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage(mContext.getString(R.string.updateCheckingFor));
@@ -59,7 +66,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
             }
         } else {
             this.cancel(true);
-            if (!mBackground) {
+            if (!mSilent) {
                 NetworkUtils.checkInternetConnection(mContext);
             }
         }
@@ -95,16 +102,21 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
         if (checker.isUpdateAvailable()) {
             alertUpdateAvailable();
-        } else if (!mBackground) {
+        } else if (!mSilent) {
             alertUpdateNotFound();
         }
-
     }
 
+    /**
+     * Alert for update not found shown only if the user has manually requested an update check
+     */
     private void alertUpdateNotFound() {
         AlertUtils.showMessage(mContext, R.string.noUpdate, R.string.updatedAlready);
     }
 
+    /**
+     * Alert for update available
+     */
     private void alertUpdateAvailable() {
         AlertUtils.askQuestion(mContext, R.string.updateAvailable, R.string.updateRequest,
                 R.string.update, R.string.notNow, false,
@@ -117,6 +129,4 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
                 }
         );
     }
-
-
 }

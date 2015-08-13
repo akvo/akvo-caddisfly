@@ -18,7 +18,12 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
+import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.model.ColorCompareInfo;
+import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.model.Swatch;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,7 +43,153 @@ public final class DataHelper {
         return ret;
     }
 
-    public static int getAverageColor(ArrayList<Result> colors, int samplingTimes) {
+    /**
+     * Analyzes the color and returns a result info
+     *
+     * @param photoColor The color to compare
+     * @param swatches   The range of colors to compare against
+     */
+    public static ResultDetail analyzeColor(ColorInfo photoColor, ArrayList<Swatch> swatches,
+                                            int maxDistance, AppConfig.ColorModel colorModel) {
+
+        //Find the color that matches the photoColor from the calibrated colorRange
+        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(
+                photoColor.getColor(), swatches, AppConfig.MIN_VALID_COLOR_DISTANCE);
+
+        //If no color matches the colorRange then generate a gradient by interpolation
+        if (colorCompareInfo.getResult() < 0) {
+
+            ArrayList<Swatch> swatchRange = ColorUtils.generateGradient(swatches, colorModel, 0.01);
+
+            //Find the color within the generated gradient that matches the photoColor
+            colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
+                    swatchRange, maxDistance);
+        }
+
+        //set the result
+        ResultDetail resultDetail = new ResultDetail(-1, photoColor.getColor());
+        if (colorCompareInfo.getResult() > -1) {
+            resultDetail.setColorModel(colorModel);
+            resultDetail.setCalibrationSteps(swatches.size());
+            resultDetail.setResult(colorCompareInfo.getResult());
+            resultDetail.setMatchedColor(colorCompareInfo.getMatchedColor());
+            resultDetail.setDistance(colorCompareInfo.getDistance());
+        }
+
+        return resultDetail;
+    }
+
+    /**
+     * Compares the colorToFind to all colors in the color range and finds the nearest matching color
+     *
+     * @param colorToFind The colorToFind to compare
+     * @param swatches    The range of colors from which to return the nearest colorToFind
+     * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
+     */
+    private static ColorCompareInfo getNearestColorFromSwatchRange(
+            int colorToFind, ArrayList<Swatch> swatches, double maxDistance) {
+
+        double distance = maxDistance;
+
+        double resultValue = -1;
+        int matchedColor = -1;
+
+        for (int i = 0; i < swatches.size(); i++) {
+            int tempColor = swatches.get(i).getColor();
+
+            double temp = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(tempColor),
+                    ColorUtils.colorToLab(colorToFind));
+
+            if (temp == 0.0) {
+                resultValue = swatches.get(i).getValue();
+                matchedColor = swatches.get(i).getColor();
+                break;
+            } else if (temp < distance) {
+                distance = temp;
+                resultValue = swatches.get(i).getValue();
+                matchedColor = swatches.get(i).getColor();
+            }
+        }
+
+        return new ColorCompareInfo(resultValue, colorToFind, matchedColor, distance);
+    }
+
+    /**
+     * Calculate the slope of the linear trend for a range of colors
+     *
+     * @param swatches the range of colors
+     * @return The slope value
+     */
+    public static double calculateSlope(ArrayList<Swatch> swatches) {
+
+        double a = 0, b, c, d;
+        double xSum = 0, xSquaredSum = 0, ySum = 0;
+        double slope;
+
+        float[] colorHSV = new float[3];
+
+        float[] hValue = new float[swatches.size()];
+
+        for (int i = 0; i < swatches.size(); i++) {
+            //noinspection ResourceType
+            Color.colorToHSV(swatches.get(i).getColor(), colorHSV);
+            hValue[i] = colorHSV[0];
+            if (hValue[i] < 100) {
+                hValue[i] += 360;
+            }
+            a += swatches.get(i).getValue() * hValue[i];
+            xSum += swatches.get(i).getValue();
+            xSquaredSum += Math.pow(swatches.get(i).getValue(), 2);
+
+            ySum += hValue[i];
+        }
+
+        //Calculate the slope
+        a *= swatches.size();
+        b = xSum * ySum;
+        c = xSquaredSum * swatches.size();
+        d = Math.pow(xSum, 2);
+        slope = (a - b) / (c - d);
+
+        if (Double.isNaN(slope)) {
+            slope = 32;
+        }
+
+        return slope;
+    }
+
+    /**
+     * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
+     *
+     * @param swatches the range of colors
+     * @return True if valid otherwise false
+     */
+    public static boolean validateSwatchList(ArrayList<Swatch> swatches) {
+
+        for (Swatch swatch : swatches) {
+            if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
+                //Calibration is incomplete
+                return false;
+            }
+            for (Swatch range2 : swatches) {
+                if (swatch != range2) {
+                    double value = ColorUtils.getColorDistanceLab(
+                            ColorUtils.colorToLab(swatch.getColor()),
+                            ColorUtils.colorToLab(range2.getColor()));
+
+                    if (value <= AppConfig.MIN_VALID_COLOR_DISTANCE) {
+                        //Duplicate color
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+        //return !(calculateSlope(swatches) < 20 || calculateSlope(swatches) > 40);
+    }
+
+    public static int getAverageColor(ArrayList<Result> results, int samplingTimes) {
 
         int counter = 0;
 
@@ -48,9 +199,9 @@ public final class DataHelper {
 
         ArrayList<Double> distances = new ArrayList<>();
 
-        for (int i = 1; i < colors.size() - 1; i++) {
-            distances.add(ColorUtils.getColorDistance(colors.get(i).getResults().get(0).getColor(),
-                    colors.get(i + 1).getResults().get(0).getColor()));
+        for (int i = 1; i < results.size() - 1; i++) {
+            distances.add(ColorUtils.getColorDistance(results.get(i).getResults().get(0).getColor(),
+                    results.get(i + 1).getResults().get(0).getColor()));
         }
 
         for (int i = 0; i < distances.size(); i++) {
@@ -60,8 +211,8 @@ public final class DataHelper {
         }
 
         //Ignore the first result
-        for (int i = 1; i < colors.size(); i++) {
-            int color = colors.get(i).getResults().get(0).getColor();
+        for (int i = 1; i < results.size(); i++) {
+            int color = results.get(i).getResults().get(0).getColor();
             if (color != 0) {
                 counter++;
                 red += Color.red(color);
@@ -77,12 +228,12 @@ public final class DataHelper {
         }
     }
 
-    private static int getClosestMatchIndex(ArrayList<Double> resultArray, double commonResult) {
+    private static int getClosestMatchIndex(ArrayList<Double> results, double commonResult) {
         double difference = 9999999;
         int index = -1;
 
-        for (int i = 0; i < resultArray.size(); i++) {
-            double value = resultArray.get(i);
+        for (int i = 0; i < results.size(); i++) {
+            double value = results.get(i);
             if (value != -1 && Math.abs(commonResult - value) < difference) {
                 difference = Math.abs(commonResult - value);
                 index = i;

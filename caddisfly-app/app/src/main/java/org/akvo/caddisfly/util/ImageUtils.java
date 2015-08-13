@@ -22,16 +22,62 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+/**
+ * Set of utility functions to manipulate images
+ */
 public class ImageUtils {
 
     private ImageUtils() {
     }
 
-    private static Bitmap getRoundedShape(Bitmap scaleBitmapImage, int diameter) {
+    /**
+     * Decode bitmap from byte array
+     *
+     * @param bytes the byte array
+     * @return the bitmap
+     */
+    public static Bitmap getBitmap(byte[] bytes) {
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
 
-        Bitmap targetBitmap = Bitmap.createBitmap(diameter,
+    /**
+     * Crop a bitmap to a square shape with  given length
+     *
+     * @param bitmap the bitmap to crop
+     * @param length the length of the sides
+     * @return the cropped bitmap
+     */
+    @SuppressWarnings("SameParameterValue")
+    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length) {
+
+        int[] pixels = new int[length * length];
+
+        bitmap.getPixels(pixels, 0, length,
+                (bitmap.getWidth() - length) / 2,
+                (bitmap.getHeight() - length) / 2,
+                length,
+                length);
+        bitmap = Bitmap.createBitmap(pixels, 0, length,
+                length,
+                length,
+                Bitmap.Config.ARGB_8888);
+        bitmap = ImageUtils.getRoundedShape(bitmap, length);
+        bitmap.setHasAlpha(true);
+        return bitmap;
+    }
+
+    /**
+     * Crop bitmap image into a round shape
+     *
+     * @param bitmap   the bitmap
+     * @param diameter the diameter of the resulting image
+     * @return the rounded bitmap
+     */
+    private static Bitmap getRoundedShape(Bitmap bitmap, int diameter) {
+
+        Bitmap resultBitmap = Bitmap.createBitmap(diameter,
                 diameter, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(targetBitmap);
+        Canvas canvas = new Canvas(resultBitmap);
         Path path = new Path();
         path.addCircle(((float) diameter - 1) / 2,
                 ((float) diameter - 1) / 2,
@@ -40,34 +86,11 @@ public class ImageUtils {
         );
 
         canvas.clipPath(path);
-        targetBitmap.setHasAlpha(true);
-        canvas.drawBitmap(scaleBitmapImage,
-                new Rect(0, 0, scaleBitmapImage.getWidth(), scaleBitmapImage.getHeight()),
+        resultBitmap.setHasAlpha(true);
+        canvas.drawBitmap(bitmap,
+                new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
                 new Rect(0, 0, diameter, diameter), null
         );
-        return targetBitmap;
-    }
-
-    public static Bitmap getBitmap(byte[] bytes) {
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(Bitmap bitmap, int sampleLength) {
-
-        int[] pixels = new int[sampleLength * sampleLength];
-
-        bitmap.getPixels(pixels, 0, sampleLength,
-                (bitmap.getWidth() - sampleLength) / 2,
-                (bitmap.getHeight() - sampleLength) / 2,
-                sampleLength,
-                sampleLength);
-        bitmap = Bitmap.createBitmap(pixels, 0, sampleLength,
-                sampleLength,
-                sampleLength,
-                Bitmap.Config.ARGB_8888);
-        bitmap = ImageUtils.getRoundedShape(bitmap, sampleLength);
-        bitmap.setHasAlpha(true);
-        return bitmap;
+        return resultBitmap;
     }
 }

@@ -34,7 +34,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Result;
-import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtils;
 
 import java.util.ArrayList;
@@ -211,9 +211,9 @@ public class DiagnosticResultDialog extends DialogFragment {
 
     public class ResultsDetailsAdapter extends BaseAdapter {
 
-        final ArrayList<ResultInfo> mResults;
+        final ArrayList<ResultDetail> mResults;
 
-        public ResultsDetailsAdapter(ArrayList<ResultInfo> results) {
+        public ResultsDetailsAdapter(ArrayList<ResultDetail> results) {
             mResults = results;
         }
 
@@ -253,21 +253,21 @@ public class DiagnosticResultDialog extends DialogFragment {
 
             TextView resultText;
 
-            for (ResultInfo resultInfo : mResults) {
-                if (resultInfo.getCalibrationSteps() == calibrationSteps) {
+            for (ResultDetail resultDetail : mResults) {
+                if (resultDetail.getCalibrationSteps() == calibrationSteps) {
 
-                    switch (resultInfo.getColorModel()) {
+                    switch (resultDetail.getColorModel()) {
                         case LAB:
                             resultText = (TextView) rowView.findViewById(R.id.textLabResult);
-                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
                         case RGB:
                             resultText = (TextView) rowView.findViewById(R.id.textRgbResult);
-                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
                         case HSV:
                             resultText = (TextView) rowView.findViewById(R.id.textHsvResult);
-                            resultText.setText(String.format("%.2f", resultInfo.getResult()));
+                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
                     }
                 }

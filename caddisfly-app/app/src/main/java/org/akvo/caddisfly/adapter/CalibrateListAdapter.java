@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -61,11 +60,10 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
         Swatch range = ranges.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
-        TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
-        TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);
-        TextView brightnessText = (TextView) rowView.findViewById(R.id.textBrightness);
-        ImageView moreArrow = (ImageView) rowView.findViewById(R.id.imageArrow);
-        Button button = (Button) rowView.findViewById(R.id.buttonColor);
+        TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
+        TextView textHsv = (TextView) rowView.findViewById(R.id.textHsv);
+        TextView textBrightness = (TextView) rowView.findViewById(R.id.textBrightness);
+        Button buttonColor = (Button) rowView.findViewById(R.id.buttonColor);
 
         int color = range.getColor();
 
@@ -82,14 +80,11 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
 
         textUnit.append(wordTwo);
 
-        if (color == 0 || color == Color.BLACK) {
-            button.setBackgroundColor(Color.argb(0, 10, 10, 10));
-            button.setText("?");
-            rgbText.setText("");
-            hsvText.setText("");
+        if (color == Color.TRANSPARENT || color == Color.BLACK) {
+            buttonColor.setBackgroundColor(Color.argb(0, 10, 10, 10));
+            buttonColor.setText("?");
         } else {
-            button.setBackgroundColor(color);
-            button.setText("");
+            buttonColor.setBackgroundColor(color);
 
             //Display additional information if we are in diagnostic mode
             if (AppPreferences.isDiagnosticMode(getContext())) {
@@ -99,16 +94,16 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
                     distance = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(previousColor),
                             ColorUtils.colorToLab(color));
                 }
-                rgbText.setText(String.format("r: %s", ColorUtils.getColorRgbString(color)));
+                textRgb.setText(String.format("r: %s", ColorUtils.getColorRgbString(color)));
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
-                hsvText.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
-                brightnessText.setText(String.format("d:%.2f  b: %d", distance, ColorUtils.getBrightness(color)));
-                rgbText.setVisibility(View.VISIBLE);
-                hsvText.setVisibility(View.VISIBLE);
-                brightnessText.setVisibility(View.VISIBLE);
-                moreArrow.setVisibility(View.GONE);
+                textHsv.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
+                textBrightness.setText(String.format("d:%.2f  b: %d", distance, ColorUtils.getBrightness(color)));
+                textRgb.setVisibility(View.VISIBLE);
+                textHsv.setVisibility(View.VISIBLE);
+                textBrightness.setVisibility(View.VISIBLE);
+                rowView.findViewById(R.id.imageArrow).setVisibility(View.GONE);
             }
         }
 

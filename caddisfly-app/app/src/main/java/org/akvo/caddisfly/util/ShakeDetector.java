@@ -20,6 +20,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
+/**
+ * Implements SensorEventListener for receiving notifications from the SensorManager when
+ * sensor values have changed.
+ * <p/>
+ * http://stackoverflow.com/questions/2317428/android-i-want-to-shake-it
+ */
 public class ShakeDetector implements SensorEventListener {
 
     // Max to determine if the phone is not moving
@@ -76,8 +82,8 @@ public class ShakeDetector implements SensorEventListener {
         g[2] = g[2] / norm_Of_g;
 
         int inclination = (int) Math.round(Math.toDegrees(Math.acos(g[2])));
-        //Log.i("Sensor", String.valueOf(inclination));
-        // check inclination to detect if the phone is placed on a flat surface with screen below
+
+        // check inclination to detect if the phone is placed face down on a flat surface
         if (inclination > 172) {
             synchronized (this) {
                 long nowNoShake = System.currentTimeMillis();
@@ -138,10 +144,8 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     private void setCurrentAcceleration(SensorEvent event) {
-           /*
-         *  BEGIN SECTION from Android developer site. This code accounts for
-    	 *  gravity using a high-pass filter
-    	 */
+        // BEGIN SECTION from Android dev site. This code accounts for
+        // gravity using a high-pass filter
 
         final float alpha = 0.8f;
 
@@ -155,9 +159,7 @@ public class ShakeDetector implements SensorEventListener {
         mLinearAcceleration[Y] = event.values[Y] - mGravity[Y];
         mLinearAcceleration[Z] = event.values[Z] - mGravity[Z];
 
-        /*
-         *  END SECTION from Android developer site
-         */
+        // END SECTION from Android developer site
     }
 
     private float getMaxCurrentLinearAcceleration() {
@@ -183,13 +185,18 @@ public class ShakeDetector implements SensorEventListener {
         moveCount = 0;
     }
 
+    /**
+     * If the device has been shaken
+     */
     public interface OnShakeListener {
 
         void onShake();
     }
 
+    /**
+     * If the device is still for a while
+     */
     public interface OnNoShakeListener {
-
         void onNoShake();
     }
 

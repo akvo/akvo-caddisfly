@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.support.annotation.StringRes;
 
 /**
  * Various utility functions to get/set values from/to SharedPreferences
@@ -36,7 +37,7 @@ public class PreferencesUtils {
      * @param keyId   the key id
      * @return the string key
      */
-    private static String getKey(Context context, int keyId) {
+    private static String getKey(Context context, @StringRes int keyId) {
         return context.getString(keyId);
     }
 
@@ -49,7 +50,7 @@ public class PreferencesUtils {
      * @return the stored boolean value
      */
     @SuppressWarnings("SameParameterValue")
-    public static boolean getBoolean(Context context, int keyId, boolean defaultValue) {
+    public static boolean getBoolean(Context context, @StringRes int keyId, boolean defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(getKey(context, keyId), defaultValue);
@@ -63,7 +64,7 @@ public class PreferencesUtils {
      * @param value   the value
      */
     @SuppressWarnings("SameParameterValue")
-    public static void setBoolean(Context context, int keyId, boolean value) {
+    public static void setBoolean(Context context, @StringRes int keyId, boolean value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
@@ -110,7 +111,7 @@ public class PreferencesUtils {
      * @return the stored long value
      */
     @SuppressWarnings("SameParameterValue")
-    public static long getLong(Context context, int keyId) {
+    public static long getLong(Context context, @StringRes int keyId) {
         return PreferencesUtils.getLong(context, getKey(context, keyId));
     }
 
@@ -135,7 +136,7 @@ public class PreferencesUtils {
      * @param value   the value
      */
     @SuppressWarnings("SameParameterValue")
-    public static void setLong(Context context, int keyId, long value) {
+    public static void setLong(Context context, @StringRes int keyId, long value) {
         setLong(context, getKey(context, keyId), value);
     }
 
@@ -162,7 +163,7 @@ public class PreferencesUtils {
      * @return the stored string value
      */
     @SuppressWarnings("SameParameterValue")
-    public static String getString(Context context, int keyId, String defaultValue) {
+    public static String getString(Context context, @StringRes int keyId, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getString(getKey(context, keyId), defaultValue);
@@ -174,7 +175,7 @@ public class PreferencesUtils {
      * @param context the context
      * @param keyId   the key id
      */
-    public static void setString(Context context, int keyId, String value) {
+    public static void setString(Context context, @StringRes int keyId, String value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
@@ -189,7 +190,7 @@ public class PreferencesUtils {
      * @param keyId   the key id
      */
     @SuppressWarnings("SameParameterValue")
-    public static void removeKey(Context context, int keyId) {
+    public static void removeKey(Context context, @StringRes int keyId) {
         PreferencesUtils.removeKey(context, getKey(context, keyId));
     }
 
@@ -199,7 +200,7 @@ public class PreferencesUtils {
      * @param context the context
      * @param keyId   the key id
      */
-    public static void removeKey(Context context, String keyId) {
+    public static void removeKey(Context context, @StringRes String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();

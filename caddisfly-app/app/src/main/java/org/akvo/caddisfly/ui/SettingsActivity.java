@@ -16,14 +16,12 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.util.ApiUtils;
 
 public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -31,8 +29,6 @@ public class SettingsActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ApiUtils.lockScreenOrientation(this);
 
         setupActivity();
 
@@ -68,10 +64,7 @@ public class SettingsActivity extends BaseActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Context context = this.getApplicationContext();
-        assert context != null;
-
-        if (context.getString(R.string.languageKey).equals(s)) {
+        if (getApplicationContext().getString(R.string.languageKey).equals(s)) {
             finish();
         }
     }

@@ -39,7 +39,7 @@
     <!--External-->
     <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Conductivité Electrique</string>
-    <string name="fluoride" tools:ignore="UnusedResources">Fluor</string>
+    <string name="fluoride" tools:ignore="UnusedResources">Fluorure</string>
     <string name="freeChlorine" tools:ignore="UnusedResources">Chlore libre</string>
     <string name="iron" tools:ignore="UnusedResources">Fer</string>
     <string name="coliforms" tools:ignore="UnusedResources">Coliformes</string>

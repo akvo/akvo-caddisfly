@@ -21,11 +21,24 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+/**
+ * Utility functions for ListView manipulation
+ */
 public final class ListViewUtils {
 
     private ListViewUtils() {
     }
 
+    /**
+     * Set the ListView height based on the number of rows and their height
+     * <p/>
+     * Height for ListView needs to be set if used as a child of another ListView.
+     * The child ListView will not display any scrollbars so the height needs to be
+     * set so that all the rows are visible
+     *
+     * @param listView    the list view
+     * @param extraHeight extra bottom padding
+     */
     @SuppressWarnings("SameParameterValue")
     public static void setListViewHeightBasedOnChildren(ListView listView, int extraHeight) {
         ListAdapter listAdapter = listView.getAdapter();

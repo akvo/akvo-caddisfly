@@ -47,7 +47,7 @@ import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
-import org.akvo.caddisfly.model.ResultInfo;
+import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtils;
@@ -277,7 +277,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         setAnimatorDisplayedChild(mViewAnimator, 1);
 
-        sound.playShortResource(this, R.raw.err);
+        sound.playShortResource(R.raw.err);
 
         alertDialogToBeDestroyed = AlertUtils.showError(this, R.string.error, message, bitmap, R.string.retry,
                 new DialogInterface.OnClickListener() {
@@ -394,7 +394,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
 
-        ArrayList<ResultInfo> results = new ArrayList<>();
+        ArrayList<ResultDetail> results = new ArrayList<>();
 
         //In diagnostic mode show results based on other color models / number of calibration steps
         if (AppPreferences.isDiagnosticMode(this)) {
@@ -402,50 +402,50 @@ public class ColorimetryLiquidActivity extends BaseActivity
             tempColorRange.add(testInfo.getSwatches().get(0));
             tempColorRange.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.LAB));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.RGB));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.HSV));
 
             tempColorRange.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.LAB));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.RGB));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     tempColorRange,
                     maxDistance,
                     AppConfig.ColorModel.HSV));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(),
                     maxDistance,
                     AppConfig.ColorModel.RGB));
 
-            results.add(ColorUtils.analyzeColor(photoColor,
+            results.add(DataHelper.analyzeColor(photoColor,
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(),
                     maxDistance,
                     AppConfig.ColorModel.HSV));
         }
 
-        results.add(0, ColorUtils.analyzeColor(photoColor,
+        results.add(0, DataHelper.analyzeColor(photoColor,
                 CaddisflyApp.getApp().currentTestInfo.getSwatches(),
                 maxDistance,
                 AppConfig.ColorModel.LAB));
@@ -461,7 +461,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         mWaitingForStillness = false;
 
-        sound.playShortResource(getBaseContext(), R.raw.beep);
+        sound.playShortResource(R.raw.beep);
         mShakeDetector.minShakeAcceleration = 1;
         mShakeDetector.maxShakeDuration = 3000;
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -562,7 +562,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mTestCompleted = true;
 
         if (isCalibration && color != 0) {
-            sound.playShortResource(this, R.raw.done);
+            sound.playShortResource(R.raw.done);
             if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                 showDiagnosticResultDialog(false, result, color, true);
             } else {
@@ -571,7 +571,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         } else {
             if (result < 0 || color == 0) {
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
-                    sound.playShortResource(this, R.raw.err);
+                    sound.playShortResource(R.raw.err);
                     showDiagnosticResultDialog(true, 0, color, isCalibration);
                 } else {
                     showError(message, ImageUtils.getBitmap(data));
@@ -579,13 +579,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
             } else {
 
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
-                    sound.playShortResource(this, R.raw.done);
+                    sound.playShortResource(R.raw.done);
                     showDiagnosticResultDialog(false, result, color, false);
                 } else {
                     String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
                     if (mHighLevelsFound && mDilutionLevel < 2) {
-                        sound.playShortResource(this, R.raw.beep_long);
+                        sound.playShortResource(R.raw.beep_long);
                         //todo: remove hard coding of dilution levels
                         switch (mDilutionLevel) {
                             case 0:
@@ -607,7 +607,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         mHighLevelsDialogFragment.show(ft, "resultDialog");
 
                     } else {
-                        sound.playShortResource(this, R.raw.done);
+                        sound.playShortResource(R.raw.done);
                         ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
                                 mDilutionLevel, CaddisflyApp.getApp().currentTestInfo.getUnit());
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -670,7 +670,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
-            sound.playShortResource(this, R.raw.beep_long);
+            sound.playShortResource(R.raw.beep_long);
             String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
 
             //todo: remove hard coding of dilution levels

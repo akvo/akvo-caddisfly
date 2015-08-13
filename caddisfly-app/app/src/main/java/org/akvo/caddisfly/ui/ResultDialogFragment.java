@@ -21,11 +21,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
+/**
+ * Displays the results of an test analysis
+ */
 public class ResultDialogFragment extends DialogFragment {
 
     public static ResultDialogFragment newInstance(String title, double result, int dilutionLevel, String unit) {
@@ -43,58 +45,52 @@ public class ResultDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //set the dialog title
         getDialog().setTitle(R.string.result);
 
         final View view = inflater.inflate(R.layout.fragment_result, container, false);
 
-        TextView resultView = (TextView) view.findViewById(R.id.textResult);
-        TextView titleView = (TextView) view.findViewById(R.id.textTitle);
-        TextView unitTextView = (TextView) view.findViewById(R.id.textUnit);
-        Button button = (Button) view.findViewById(R.id.buttonOk);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.buttonOk).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ResultDialogListener listener = (ResultDialogListener) getActivity();
                 listener.onSuccessFinishDialog();
-
             }
         });
 
-        titleView.setText(getArguments().getString("title", ""));
+        //display the title
+        ((TextView) view.findViewById(R.id.textTitle)).setText(getArguments().getString("title", ""));
 
         double result = getArguments().getDouble("result", -1);
 
-        if (result > 999) {
-            resultView.setText(String.format("%.0f", result));
-        } else {
-            resultView.setText(String.format("%.2f", result));
-        }
+        //determine whether to display decimal places
+        ((TextView) view.findViewById(R.id.textResult)).setText(result > 999 ?
+                String.format("%.0f", result) : String.format("%.2f", result));
 
+        //display dilution information
         TextView dilutionTextView = (TextView) view.findViewById(R.id.textDilution);
         int dilutionLevel = getArguments().getInt("dilution", -1);
 
+        dilutionTextView.setVisibility(View.VISIBLE);
+
         //todo: remove hard coding of dilution levels
-        String dilutionLabel;
         switch (dilutionLevel) {
             case 0:
-                dilutionTextView.setVisibility(View.VISIBLE);
                 dilutionTextView.setText(R.string.noDilution);
                 break;
             case 1:
-                dilutionLabel = String.format(getString(R.string.timesDilution), 2);
-                dilutionTextView.setText(dilutionLabel);
-                dilutionTextView.setVisibility(View.VISIBLE);
+                dilutionTextView.setText(String.format(getString(R.string.timesDilution), 2));
                 break;
             case 2:
-                dilutionLabel = String.format(getString(R.string.timesDilution), 5);
-                dilutionTextView.setText(dilutionLabel);
-                dilutionTextView.setVisibility(View.VISIBLE);
+                dilutionTextView.setText(String.format(getString(R.string.timesDilution), 5));
+                break;
+            default:
+                dilutionTextView.setVisibility(View.GONE);
                 break;
         }
 
-        unitTextView.setText(getArguments().getString("unit", ""));
+        //display the unit
+        ((TextView) view.findViewById(R.id.textUnit)).setText(getArguments().getString("unit", ""));
 
         return view;
     }

@@ -24,9 +24,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.util.PreferencesUtils;
-
-import java.util.Locale;
 
 /**
  * Displays the app version and other company/copyright related information
@@ -35,46 +32,35 @@ import java.util.Locale;
  */
 public class AboutActivity extends BaseActivity {
 
-    private boolean mDiagnosticMode;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        mDiagnosticMode = AppPreferences.isDiagnosticMode(this);
+        setTitle(R.string.about);
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(CaddisflyApp.getVersion(this));
 
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
-
-            /**
-             * Turn on diagnostic mode if the user clicks on the version text 10 times
-             */
             @Override
             public void onClick(View view) {
-                if (!mDiagnosticMode) {
+                if (!AppPreferences.isDiagnosticMode(getBaseContext())) {
                     clickCount++;
+
+                    //Turn on diagnostic mode if the user clicks on the version text 10 times
                     if (clickCount > 9) {
                         clickCount = 0;
-                        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeEnabled), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), getString(
+                                R.string.diagnosticModeEnabled), Toast.LENGTH_LONG).show();
                         AppPreferences.enableDiagnosticMode(getBaseContext());
-
-                        //set the language preference to the current language
-                        Locale currentLocale = getResources().getConfiguration().locale;
-                        PreferencesUtils.setString(getBaseContext(), R.string.languageKey, currentLocale.getLanguage());
-
-                        mDiagnosticMode = true;
 
                         changeActionBarStyleBasedOnCurrentMode();
                     }
                 }
             }
         });
-
-        setTitle(R.string.about);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(false);
