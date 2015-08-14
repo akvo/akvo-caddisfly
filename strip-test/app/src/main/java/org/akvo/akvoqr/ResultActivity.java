@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -220,17 +219,13 @@ public class ResultActivity extends AppCompatActivity {
             this.color = color;
             this.x = x;
         }
-    }
 
-    private class mColorComparator implements Comparator<ColorDetected>
-    {
+        public int getColor() {
+            return color;
+        }
 
-        @Override
-        public int compare(ColorDetected lhs, ColorDetected rhs) {
-            if(lhs.x < rhs.x)
-                return -1;
-
-            return 1;
+        public int getX() {
+            return x;
         }
     }
 

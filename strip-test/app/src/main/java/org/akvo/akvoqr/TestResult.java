@@ -35,14 +35,16 @@ public class TestResult {
         this.numPatchesFound = numPatchesFound;
         this.minChromaLab = minChromaLab;
 
-
-
     }
 
     public static TestResult getTestResultFromMat(Mat mat, boolean calibrated, boolean testOK,
                                                   double minChroma, double[] minChromaLab, int numPatchesFound)
     {
         Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
+        double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+        int width = 400;
+        int height = (int) Math.round(ratio * width);
+        bitmap = Bitmap.createScaledBitmap(bitmap,width,height, false);
         Utils.matToBitmap(mat, bitmap);
 
         return new TestResult(bitmap, calibrated, testOK, minChroma, minChromaLab, numPatchesFound);
@@ -62,6 +64,7 @@ public class TestResult {
         Utils.matToBitmap(mat, bitmap);
 
         this.resultBitmap = bitmap;
+
     }
 
     public void setNumPatchesFound(int num)

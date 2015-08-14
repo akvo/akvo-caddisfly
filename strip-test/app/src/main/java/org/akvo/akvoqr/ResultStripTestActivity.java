@@ -3,6 +3,7 @@ package org.akvo.akvoqr;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -11,13 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ResultStripTestActivity extends AppCompatActivity {
 
     public static List<TestResult> testResults = new ArrayList<>();
     private int numSuccess = 0;
-    private int numPatchesExpected = 2;
+    private int numPatchesExpected = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class ResultStripTestActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+        params1.setMargins(5,5,5,5);
 
         TextView textView = new TextView(this);
         layout.addView(textView, params);
@@ -38,7 +41,12 @@ public class ResultStripTestActivity extends AppCompatActivity {
         {
             TestResult testResult = testResults.get(i);
             LinearLayout innerlayout = new LinearLayout(this);
-            innerlayout.setOrientation(LinearLayout.HORIZONTAL);
+            innerlayout.setOrientation(LinearLayout.VERTICAL);
+
+            ImageView originalView = new ImageView(this);
+            originalView.setImageBitmap(testResult.original);
+            originalView.setPadding(5, 5, 5, 5);
+            innerlayout.addView(originalView, params);
 
             ImageView imageView = new ImageView(this);
             if(testResults.get(i).numPatchesFound == numPatchesExpected)
@@ -48,20 +56,32 @@ public class ResultStripTestActivity extends AppCompatActivity {
             }
             else
             {
-                imageView.setBackgroundColor(Color.RED);
+                imageView.setBackgroundColor(Color.DKGRAY);
             }
 
             imageView.setImageBitmap(testResults.get(i).resultBitmap);
             imageView.setPadding(5, 5, 5, 5);
             innerlayout.addView(imageView, params);
 
-//            TextView minChromaView = new TextView(this);
-//            minChromaView.setTextColor(Color.GREEN);
-//            minChromaView.setBackgroundColor(testResults.get(i).minChromaColor);
-//            minChromaView.setText("L = " + String.format("%.0f", (testResult.minChromaLab[0] / 255) * 100) +
-//                    "\na = " + String.format("%.0f", testResult.minChromaLab[1] - 128)
-//                    + "\nb = " + String.format("%.0f", testResult.minChromaLab[2] - 128));
-//            innerlayout.addView(minChromaView, params);
+            if(ResultActivity.stripColors.size()>0) {
+
+                LinearLayout patcheslayout = new LinearLayout(this);
+                patcheslayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                for(int s=0;s<ResultActivity.stripColors.size();s++) {
+                    TextView patchView = new TextView(this);
+                    patchView.setTextColor(Color.BLACK);
+                    Collections.sort(ResultActivity.stripColors, new mColorComparator());
+                    ResultActivity.ColorDetected cd = ResultActivity.stripColors.get(s);
+
+                    patchView.setBackgroundColor(cd.getColor());
+                    patchView.setText("ppm:\n?");
+                    patchView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+
+                    patcheslayout.addView(patchView, params1);
+                }
+                innerlayout.addView(patcheslayout);
+            }
 //
 //            float[] hsv = new float[3];
 //            Color.colorToHSV(testResults.get(i).minChromaColor, hsv);
@@ -83,6 +103,7 @@ public class ResultStripTestActivity extends AppCompatActivity {
 //            innerlayout.addView(minChromaView2);
 
             layout.addView(innerlayout, params);
+
         }
 
         textView.setText("Results succesfull: " + numSuccess + " out of " + CameraActivity.MAX_ITER );

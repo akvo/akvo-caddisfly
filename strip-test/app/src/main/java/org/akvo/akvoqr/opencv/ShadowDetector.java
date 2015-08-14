@@ -2,6 +2,7 @@ package org.akvo.akvoqr.opencv;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -12,107 +13,105 @@ import java.util.ArrayList;
 
 /**
  * Created by linda on 7/4/15.
+ * http://www.answers.opencv.org/question/63470/how-to-detect-and-remove-shadow-of-a-object/
  */
 public class ShadowDetector {
 
-    public static Mat ShadowDetection(Mat image)
+    public static Mat ShadowDetection(Mat bgr)
     {
-        // Mat imageShadow = image.clone();
+         Mat imageShadow = bgr.clone();
 
-        int iW = (int)Math.round(image.size().width);
-        int iH = (int)Math.round(image.size().height);
+        int iW = (int)Math.round(bgr.size().width);
+        int iH = (int)Math.round(bgr.size().height);
 
-//        double[] data;
-//        float H = 0;
-//        float S;
-//        float V;
-//
-//        for(int i=5; i< iH-5; i++) //
-//        {
-//            for(int j=5; j< iW-5; j++)
-//            {
-//                data = imageShadow.get(i,j);
-//
-//                int B = (int)data[0];
-//                int G = (int)data[1];
-//                int R = (int)data[2];
-//                //Convert RGB to HSV
-//                float var_R = ( R / 255.0f ) ;                    //RGB from 0 to 255
-//                float var_G = ( G / 255.0f );
-//                float var_B = ( B / 255.0f );
-//
-//                float var_Min = Math.min(Math.min(var_R, var_G), var_B )  ;  //Min. value of RGB
-//                float   var_Max = Math.max( Math.max(var_R, var_G), var_B )  ;  //Max. value of RGB
-//                float   del_Max = var_Max - var_Min      ;       //Delta RGB value
-//
-//                V = var_Max;
-//
-//                if ( del_Max == 0 )                     //This is a gray, no chroma...
-//                {
-//                    H = 0  ;                              //HSV results from 0 to 1
-//                    S = 0;
-//                }
-//                else                                    //Chromatic data...
-//                {
-//                    S = del_Max / var_Max;
-//
-//                    float del_R = ( ( ( var_Max - var_R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-//                    float del_G = ( ( ( var_Max - var_G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-//                    float del_B = ( ( ( var_Max - var_B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-//
-//                    if      ( var_R == var_Max ) H = del_B - del_G;
-//                    else if ( var_G == var_Max ) H = ( 1 / 3 ) + del_R - del_B;
-//                    else if ( var_B == var_Max ) H = ( 2 / 3 ) + del_G - del_R;
-//
-//                    if ( H < 0 ) H += 1;
-//                    if ( H > 1 ) H -= 1;
-//                }
-//
-//                //if(V>0.3 && V<0.85 && H<85 && S<0.15)
-//                //if(V>0.5 && V<0.95 &&  S<0.2)
-//                if(V>0.3 && V<0.95 &&  S<0.2)
-//                {
-//                    //System.out.println("***making black : " + i + ", "+j);
-//                    data[0] = 0;// dataTmp[channel*(i*iW+j)];
-//                    data[1] = 0;// dataTmp[channel*(i*iW+j)+1];
-//                    data[2] = 0;// dataTmp[channel*(i*iW+j)+2];
-//                }
-//                else
-//                {
-//                    //System.out.println("***making white : " + i + ", "+j);
-//                    data[0] = 255;
-//                    data[1] = 255;
-//                    data[2] = 255;
-//                }
-//            }
-//        }
+        double[] data;
+        int channel = imageShadow.channels();
+        float H = 0;
+        float S;
+        float V;
 
+        for(int i=5; i< iH-5; i++) //
+        {
+            for(int j=5; j< iW-5; j++)
+            {
+                data = imageShadow.get(i,j);
+
+                int B = (int)data[0];
+                int G = (int)data[1];
+                int R = (int)data[2];
+                //Convert RGB to HSV
+                float var_R = ( R / 255.0f ) ;                    //RGB from 0 to 255
+                float var_G = ( G / 255.0f );
+                float var_B = ( B / 255.0f );
+
+                float var_Min = Math.min(Math.min(var_R, var_G), var_B )  ;  //Min. value of RGB
+                float   var_Max = Math.max( Math.max(var_R, var_G), var_B )  ;  //Max. value of RGB
+                float   del_Max = var_Max - var_Min      ;       //Delta RGB value
+
+                V = var_Max;
+
+                if ( del_Max == 0 )                     //This is a gray, no chroma...
+                {
+                    H = 0;                              //HSV results from 0 to 1
+                    S = 0;
+                }
+                else                                    //Chromatic data...
+                {
+                    S = del_Max / var_Max;
+
+                    float del_R = ( ( ( var_Max - var_R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+                    float del_G = ( ( ( var_Max - var_G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+                    float del_B = ( ( ( var_Max - var_B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+
+                    if      ( var_R == var_Max ) H = del_B - del_G;
+                    else if ( var_G == var_Max ) H = ( 1 / 3 ) + del_R - del_B;
+                    else if ( var_B == var_Max ) H = ( 2 / 3 ) + del_G - del_R;
+
+                    if ( H < 0 ) H += 1;
+                    if ( H > 1 ) H -= 1;
+                }
+
+                //if(V>0.3 && V<0.85 && H<85 && S<0.15)
+                //if(V>0.5 && V<0.95 &&  S<0.2)
+                if(V>0.3 && V<0.95 &&  S<0.2)
+                {
+                    data[0] = 0;// dataTmp[channel*(i*iW+j)];
+                    data[1] = 0;// dataTmp[channel*(i*iW+j)+1];
+                    data[2] = 0;// dataTmp[channel*(i*iW+j)+2];
+                    imageShadow.put(i, j, data);
+                }
+                else
+                {
+                    data[0] = 255;
+                    data[1] = 255;
+                    data[2] = 255;
+                    imageShadow.put(i, j, data);
+                }
+            }
+        }
 
         //Find big area of shadow
         Mat imageGray = new Mat();
-        Imgproc.cvtColor(image, imageGray, Imgproc.COLOR_RGB2GRAY);
+        Imgproc.cvtColor(imageShadow, imageGray, Imgproc.COLOR_RGB2GRAY);
 
         int dilation_size =2;
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE,
                 new Size(2 * dilation_size + 1, 2 * dilation_size + 1),
                 new Point(dilation_size, dilation_size));
         /// Apply the dilation operation to remove small areas
-        // Imgproc.dilate( imageGray, imageGray, element );
+         Imgproc.dilate( imageGray, imageGray, element );
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        //vector<vector<Point> > contours;
-        //vector<Vec4i> hierarchy;
-
 
         /// Find contours
-        Mat hierarchy = new Mat();
+        MatOfInt4 hierarchy = new MatOfInt4();
         // Imgproc.findContours(mHSVMat, contours, mContours, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         Imgproc.findContours(imageGray, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // vector<vector<Point> > contoursResult;
-        ArrayList<MatOfPoint>  contoursResult = new ArrayList<>();
-        Scalar colorRed = new Scalar(255, 0, 0, 255);
+        MatOfPoint contoursResult = new MatOfPoint();
+        Scalar colorWhite = new Scalar(255, 255, 255, 255);
 
         for( int m = 0; m < contours.size(); m++ )
         {
@@ -121,15 +120,17 @@ public class ShadowDetector {
             System.out.println("***area: " + area + "  iW*iH/10: "+ (iW*iH/10));
             if(area>400 && area < iW*iH)
             {
-                //hierarchy.push_back(contours.get(m));
+                contoursResult.push_back(contours.get(m));
+
             }
 
-            Imgproc.drawContours(imageGray, contours, m, colorRed, 2);
+
+            Imgproc.drawContours(bgr, contours, m, colorWhite, 1);
 
         }
+//        Core.subtract(bgr, contoursResult, bgr);
 
-        //imageGray.assignTo(image);
-        return imageGray;
+        return bgr;
     }
 
     public static Mat test(Mat image)

@@ -156,7 +156,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    public static final int MAX_ITER = 1;
+    public static final int MAX_ITER = 2;
     private int iter=0;
     private long startTime;
 
@@ -207,8 +207,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
             int width = 800;
             int height = (int) Math.round(ratio * width);
-            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
-            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
+//            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
+//            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
             try {
                 bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
             } catch (Exception e) {
