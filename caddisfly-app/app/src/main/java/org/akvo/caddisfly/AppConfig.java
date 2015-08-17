@@ -37,26 +37,16 @@ public class AppConfig {
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
     /**
-     * The file name for the downloaded update apk file
-     */
-    public static final String UPDATE_FILE_NAME = "akvo_caddisfly_update.apk";
-
-    /**
      * The url to check for update version
      */
-    public static final String UPDATE_CHECK_URL = "http://caddisfly.ternup.com/akvoapp/v.txt";
-
-    /**
-     * The url to download the update apk file from
-     */
-    public static final String UPDATE_URL
-            = "http://caddisfly.ternup.com/akvoapp/akvo_caddisfly_update.apk";
+    public static final String UPDATE_CHECK_URL
+            = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
 
     /**
      * The expected size of the next update file to enable display of the progress bar.
      * Used only if the update process cannot determine the size of the file to download
      */
-    public static final int UPDATE_FILE_TYPICAL_SIZE = 1500000;
+    public static final int UPDATE_FILE_TYPICAL_SIZE = 1400000;
 
     //todo: remove when upgrade process no more required
     @Deprecated
@@ -92,11 +82,11 @@ public class AppConfig {
     /**
      * The sound volume for the beeps and success/fail sounds
      */
-    public static final float SOUND_VOLUME = 0.01f;
+    public static final float SOUND_VOLUME = 1f;
     /**
      * The default color model used for analysis
      */
-    public static final ColorModel defaultColorModel = ColorModel.RGB;
+    public static final ColorModel defaultColorModel = ColorModel.LAB;
 
     /**
      * The user created configuration file name
@@ -163,7 +153,7 @@ public class AppConfig {
      * The different types of testing methods
      */
     public enum TestType {
-        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR
+        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
     }
 
     /**

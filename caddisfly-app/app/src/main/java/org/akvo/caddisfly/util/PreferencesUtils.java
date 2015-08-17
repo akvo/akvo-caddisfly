@@ -189,17 +189,6 @@ public class PreferencesUtils {
      * @param context the context
      * @param keyId   the key id
      */
-    @SuppressWarnings("SameParameterValue")
-    public static void removeKey(Context context, @StringRes int keyId) {
-        PreferencesUtils.removeKey(context, getKey(context, keyId));
-    }
-
-    /**
-     * Removes the key from the preferences
-     *
-     * @param context the context
-     * @param keyId   the key id
-     */
     public static void removeKey(Context context, @StringRes String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

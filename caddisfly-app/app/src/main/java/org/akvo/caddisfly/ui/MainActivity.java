@@ -41,6 +41,7 @@ import org.akvo.caddisfly.util.AlertUtils;
 import org.akvo.caddisfly.util.DataHelper;
 import org.akvo.caddisfly.util.DateUtils;
 import org.akvo.caddisfly.util.FileUtils;
+import org.akvo.caddisfly.util.NetworkUtils;
 import org.akvo.caddisfly.util.PreferencesUtils;
 import org.akvo.caddisfly.util.UpdateCheckTask;
 
@@ -160,17 +161,27 @@ public class MainActivity extends BaseActivity {
      * Check for update, but not more than once an hour
      */
     private void checkForUpdate() {
-        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
 
-        // last update check date
-        Calendar lastCheckDate = Calendar.getInstance();
-        lastCheckDate.setTimeInMillis(updateLastCheck);
+        final Context mContext = this;
 
-        Calendar currentDate = Calendar.getInstance();
-        if (DateUtils.getHoursDifference(lastCheckDate, currentDate) > 0) {
-            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, CaddisflyApp.getVersion(this));
-            updateCheckTask.execute();
-        }
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                if (NetworkUtils.isOnline(mContext)) {
+                    long updateLastCheck = PreferencesUtils.getLong(mContext, R.string.lastUpdateCheckKey);
+
+                    // last update check date
+                    Calendar lastCheckDate = Calendar.getInstance();
+                    lastCheckDate.setTimeInMillis(updateLastCheck);
+
+                    Calendar currentDate = Calendar.getInstance();
+                    if (DateUtils.getHoursDifference(lastCheckDate, currentDate) > 0) {
+                        UpdateCheckTask updateCheckTask = new UpdateCheckTask(mContext, true);
+                        updateCheckTask.execute();
+                    }
+                }
+            }
+        }, 2000);
+
     }
 
     @Override
@@ -248,7 +259,7 @@ public class MainActivity extends BaseActivity {
         locale = new Locale(languageCode);
 
         //if the app language is not already set to languageCode then set it now
-        if (!config.locale.equals(locale)) {
+        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
 
             config.locale = locale;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

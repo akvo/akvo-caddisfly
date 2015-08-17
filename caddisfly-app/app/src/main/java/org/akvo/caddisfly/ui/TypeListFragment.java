@@ -63,13 +63,16 @@ public class TypeListFragment extends ListFragment {
     }
 
 
+    //todo: check deprecation of onAttach. Currently using Context instead of Activity fails on Samsung device
+    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Activity context) {
+        super.onAttach(context);
+
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }

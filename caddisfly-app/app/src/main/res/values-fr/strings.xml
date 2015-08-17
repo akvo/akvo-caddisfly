@@ -112,6 +112,7 @@
     <string name="updateFetching">Téléchargement de la mise à jour…</string>
     <string name="notNow">Pas maintenant</string>
     <string name="updateFailedNoInternet">La mise à jour a échoué. Aucune connexion internet</string>
+    <string name="updateFailed">La mise à jour a échoué</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="companyOtherName">Akvo Foundation</string>

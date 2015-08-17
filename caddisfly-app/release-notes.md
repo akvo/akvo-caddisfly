@@ -11,6 +11,7 @@ v0.76 beta
 9. Removed external usb camera code
 10. Fix: Alert window not dismissed on activity finish
 11. Dilution dialog changed to normal screen
+12. Download update apk file and validate checksum
 
 v0.75 beta
 ----------

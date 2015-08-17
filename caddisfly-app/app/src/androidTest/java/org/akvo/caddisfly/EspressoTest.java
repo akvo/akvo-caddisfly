@@ -279,7 +279,11 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
+        sleep(2000);
+
         onView(withText("Test")).perform(click());
+
+        sleep(2000);
 
         onView(withText(String.format("%s. %s", getActivity().getString(R.string.calibrationIsInvalid),
                 getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
@@ -327,7 +331,11 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
+        sleep(2000);
+
         onView(withText("Test")).perform(click());
+
+        sleep(2000);
 
         goToMainScreen();
 
@@ -339,28 +347,40 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
-        onView(withText(R.string.incorrectCalibrationCanAffect)).check(matches(isDisplayed()));
+        try {
+            onView(withText(R.string.incorrectCalibrationCanAffect)).check(matches(isDisplayed()));
+            //Calibrate EC Warning
+            takeScreenshot();
 
-        //Calibrate EC Warning
-        takeScreenshot();
+            onView(withText(R.string.cancel)).perform(click());
 
-        onView(withText(R.string.cancel)).perform(click());
+            onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
-        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+            onView(withText(R.string.warning)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.warning)).check(matches(isDisplayed()));
+            onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(R.string.calibrate)).perform(click());
+            //Calibrate EC
+            takeScreenshot();
 
-        //Calibrate EC
-        takeScreenshot();
+            onView(withId(R.id.buttonStartCalibrate)).perform(click());
 
-        onView(withId(R.id.buttonStartCalibrate)).perform(click());
+            //EC not found dialog
+            takeScreenshot();
 
-        //EC not found dialog
-        takeScreenshot();
+            onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(android.R.id.button2)).perform(click());
+        } catch (Exception ex) {
+            String message = String.format("%s\r\n\r\n%s", getActivity().getString(R.string.phoneDoesNotSupport),
+                    getActivity().getString(R.string.pleaseContactSupport));
+
+            onView(withText(message)).check(matches(isDisplayed()));
+
+            //Feature not supported
+            takeScreenshot();
+
+            onView(withText(R.string.ok)).perform(click());
+        }
 
         goToMainScreen();
 
@@ -583,7 +603,11 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
+        sleep(2000);
+
         onView(withText("Test")).perform(click());
+
+        sleep(2000);
 
         Espresso.pressBack();
 
@@ -638,17 +662,26 @@ public class EspressoTest
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+        try {
+            onView(withText(R.string.warning)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.warning)).check(matches(isDisplayed()));
+            onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(R.string.calibrate)).perform(click());
+            onView(withId(R.id.buttonStartCalibrate)).perform(click());
 
-        onView(withId(R.id.buttonStartCalibrate)).perform(click());
+            onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
+            onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
-        onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+            onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(android.R.id.button2)).perform(click());
+        } catch (Exception ex) {
+            String message = String.format("%s\r\n\r\n%s", getActivity().getString(R.string.phoneDoesNotSupport),
+                    getActivity().getString(R.string.pleaseContactSupport));
+
+            onView(withText(message)).check(matches(isDisplayed()));
+
+            onView(withText(R.string.ok)).perform(click());
+        }
 
         Espresso.pressBack();
 
@@ -764,6 +797,8 @@ public class EspressoTest
         for (int i = 0; i < 10; i++) {
             onView(withId(R.id.textVersion)).perform(click());
         }
+
+        sleep(1000);
     }
 
     private void leaveDiagnosticMode() {
@@ -836,7 +871,11 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
+        sleep(2000);
+
         onView(withText("LowLevelTest")).perform(click());
+
+        sleep(2000);
 
         goToMainScreen();
 
@@ -849,6 +888,8 @@ public class EspressoTest
         openSurveyInFlow();
 
         clickExternalSourceButton("useExternalSource");
+
+        sleep(2000);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -898,7 +939,11 @@ public class EspressoTest
 
         onView(withId(R.id.menu_load)).perform(click());
 
+        sleep(2000);
+
         onView(withText("HighLevelTest")).perform(click());
+
+        sleep(2000);
 
         goToMainScreen();
 
@@ -911,6 +956,8 @@ public class EspressoTest
         openSurveyInFlow();
 
         clickExternalSourceButton("useExternalSource");
+
+        sleep(2000);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -1056,8 +1103,7 @@ public class EspressoTest
 
         mCounter += 4;
 
-        final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(),
-                true, CaddisflyApp.getVersion(this.getInstrumentation().getTargetContext()));
+        final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), true);
 
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -1080,9 +1126,10 @@ public class EspressoTest
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 try {
-                    Method method = UpdateCheckTask.class.getDeclaredMethod("alertUpdateAvailable");
+                    Method method = UpdateCheckTask.class.getDeclaredMethod(
+                            "alertUpdateAvailable", String.class, String.class, String.class);
                     method.setAccessible(true);
-                    method.invoke(updateCheckTask);
+                    method.invoke(updateCheckTask, "", "", "");
                 } catch (Exception e) {
                     e.printStackTrace();
                     assertEquals(e.getMessage(), 0, 1);

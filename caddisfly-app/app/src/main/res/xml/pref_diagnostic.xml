@@ -49,7 +49,7 @@
             android:numeric="integer"
             android:title="Sampling times" />
         <EditTextPreference
-            android:defaultValue="30"
+            android:defaultValue="4"
             android:dialogMessage="Enter a value below 100"
             android:key="@string/colorDistanceToleranceKey"
             android:maxLength="3"

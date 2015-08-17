@@ -125,6 +125,7 @@
     <string name="updateFetching">Downloading Akvo Caddisfly update…</string>
     <string name="notNow">Not now</string>
     <string name="updateFailedNoInternet">Update failed. No internet connection</string>
+    <string name="updateFailed">Update failed</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>

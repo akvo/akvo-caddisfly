@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,15 +43,13 @@ class UpdateChecker {
 
     private final Context mContext;
 
-    private boolean updateAvailable = false;
-
     private boolean haveValidContext = false;
 
     private boolean useToasts = false;
 
     /**
      * Constructor for UpdateChecker
-     *
+     * <p/>
      * Example call:
      * UpdateChecker updateChecker = new UpdateChecker(this, false);
      *
@@ -69,44 +68,49 @@ class UpdateChecker {
 
     /**
      * Checks for app update by version code.
-     *
+     * <p/>
      * Example call:
      * updateChecker.checkForUpdateByVersionCode("http://www.example.com/version.txt");
-     * @return true if update exists otherwise false
+     *
      * @param url URL at which the text file containing your latest version code is located.
+     * @return true if update exists otherwise false
      * @since API 1
      */
     @SuppressWarnings("SameParameterValue")
-    public boolean checkForUpdateByVersionCode(String url) {
+    public JSONObject checkForUpdateByVersionCode(String url) {
+
+        JSONObject json;
 
         if (NetworkUtils.checkInternetConnection(mContext)) {
             if (haveValidContext) {
                 int versionCode = getVersionCode();
-                int readCode;
                 if (versionCode >= 0) {
                     try {
-                        readCode = Integer.parseInt(readFile(url));
-                        // Check if update is available.
-                        if (readCode > versionCode) {
-                            updateAvailable = true;
-                        }
-                    } catch (NumberFormatException e) {
-                        Log.e(AppConfig.DEBUG_TAG,
-                                "Invalid number online");
-                    }
 
+                        String response = readFile(url);
+
+                        json = new JSONObject(response);
+                        int version = Integer.parseInt(json.getString("version"));
+
+                        // Check if update is available.
+                        if (version > versionCode) {
+                            return json;
+                        }
+                    } catch (Exception e) {
+                        Log.e(AppConfig.DEBUG_TAG, "Invalid number online");
+                    }
                 } else {
                     Log.e(AppConfig.DEBUG_TAG, "Invalid version code in app");
                 }
-                return true;
+                return null;
             }
-            return false;
+            return null;
         } else {
             if (useToasts) {
-                makeToastFromString("Update check failed. No internet connection available")
+                makeToastFromString(mContext.getString(R.string.updateFailedNoInternet))
                         .show();
             }
-            return false;
+            return null;
         }
     }
 
@@ -136,27 +140,13 @@ class UpdateChecker {
      * @since API 1
      */
     @SuppressWarnings("SameParameterValue")
-    public void downloadAndInstall(String apkUrl) {
+    public void downloadAndInstall(String apkUrl, String checksum, String version) {
         if (NetworkUtils.isOnline(mContext)) {
             DownloadManager downloadManager = new DownloadManager(mContext);
-            downloadManager.execute(apkUrl);
+            downloadManager.execute(apkUrl, checksum, version);
         } else {
             makeToastFromString(mContext.getString(R.string.updateFailedNoInternet)).show();
         }
-    }
-
-    public void setUpdateAvailable() {
-        updateAvailable = true;
-    }
-
-    /**
-     * Should be called after checkForUpdateByVersionCode()
-     *
-     * @return Returns true if an update is available, false if not.
-     * @since API 1
-     */
-    public boolean isUpdateAvailable() {
-        return updateAvailable;
     }
 
     /**

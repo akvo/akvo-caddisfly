@@ -19,7 +19,6 @@
     <string name="systemLanguageKey" translatable="false">systemLanguage</string>
 
     <string name="lastUpdateCheckKey" translatable="false">lastUpdateCheck</string>
-    <string name="updateAvailableKey" translatable="false">updateAvailable</string>
 
     <string name="ignoreShakeKey" translatable="false">ignoreShake</string>
     <string name="autoFocusKey" translatable="false">autoFocus</string>

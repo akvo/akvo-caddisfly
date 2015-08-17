@@ -443,6 +443,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(),
                     maxDistance,
                     AppConfig.ColorModel.HSV));
+
+            results.add(DataHelper.analyzeColor(photoColor,
+                    CaddisflyApp.getApp().currentTestInfo.getSwatches(),
+                    maxDistance,
+                    AppConfig.ColorModel.LAB));
         }
 
         results.add(0, DataHelper.analyzeColor(photoColor,

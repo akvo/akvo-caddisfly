@@ -22,18 +22,21 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
 
 /**
  * DO NOT USE ON YOUR OWN. All calls are handled through UpdateChecker.
@@ -52,6 +55,10 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     private boolean downloaded = false;
 
+    private String mChecksum;
+
+    private File downloadFilePath = null;
+
     /**
      * DO NOT USE ON YOUR OWN. All calls are handled through UpdateChecker.
      *
@@ -60,6 +67,40 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     public DownloadManager(Context context) {
         mContext = context;
         this.installAfterDownload = true;
+    }
+
+    //http://stackoverflow.com/questions/13152736/how-to-generate-an-md5-checksum-for-a-file-in-android
+    private static String getMD5Checksum(String filePath) {
+        String returnVal = "";
+        InputStream input = null;
+        try {
+            input = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            MessageDigest md5Hash = MessageDigest.getInstance("MD5");
+            int numRead = 0;
+            while (numRead != -1) {
+                numRead = input.read(buffer);
+                if (numRead > 0) {
+                    md5Hash.update(buffer, 0, numRead);
+                }
+            }
+            input.close();
+
+            byte[] md5Bytes = md5Hash.digest();
+            for (byte md5Byte : md5Bytes) {
+                returnVal += Integer.toString((md5Byte & 0xff) + 0x100, 16).substring(1);
+            }
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return returnVal.toUpperCase();
     }
 
     /**
@@ -78,24 +119,38 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
     }
 
     /**
-     * Downloads the update file in a background task
+     * Wipe any existing apk file, and create a new File for the new one, according to the
+     * given version
      *
+     * @param downloadUrl the url from where the file was downloaded
+     * @param version     the apk version
+     * @return the new file
+     */
+    private File createFile(String downloadUrl, String version) {
+        //cleanupDownloads(version);
+
+        String fileName = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
+        File directory = new File(AppConfig.getFilesDir(AppConfig.FileType.APK), version);
+        if (!directory.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            directory.mkdir();
+        }
+
+        return new File(directory, fileName);
+    }
+
+
+    /**
+     * Downloads the update file in a background task
      */
     @Override
-    protected String doInBackground(String... sUrl) {
+    protected String doInBackground(String... downloadInfo) {
         if (isOnline()) {
             try {
 
-                URL url = new URL(sUrl[0]);
-
-                File oldFile = new File(String.format("%s/%s",
-                        AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
-                        AppConfig.UPDATE_FILE_NAME));
-
-                if (oldFile.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    oldFile.delete();
-                }
+                URL url = new URL(downloadInfo[0]);
+                mChecksum = downloadInfo[1];
+                String version = downloadInfo[2];
 
                 URLConnection connection = url.openConnection();
                 connection.setConnectTimeout(60000);
@@ -103,15 +158,18 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
-                OutputStream output =
-                        new FileOutputStream(String.format("%s/%s",
-                                AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
-                                AppConfig.UPDATE_FILE_NAME));
+
+                downloadFilePath = createFile(url.getPath(), version);
+
+                OutputStream output = new FileOutputStream(downloadFilePath);
 
                 // this will be useful so that you can show a typical 0-100% progress bar
                 // todo:fix content length problem
-                //int fileLength = connection.getContentLength();
-                int fileLength = AppConfig.UPDATE_FILE_TYPICAL_SIZE;
+                int fileLength = connection.getContentLength();
+                if (fileLength < 100) {
+                    //could not determine the correct file size so use a typical file size
+                    fileLength = AppConfig.UPDATE_FILE_TYPICAL_SIZE;
+                }
 
                 //noinspection TryFinallyCanBeTryWithResources
                 try {
@@ -148,7 +206,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     /**
      * Updates our progress bar with the download information
-     *
      */
     @Override
     protected void onProgressUpdate(Integer... changed) {
@@ -157,7 +214,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     /**
      * Sets up the progress dialog to notify user of download progress
-     *
      */
     @Override
     protected void onPreExecute() {
@@ -170,7 +226,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
 
     /**
      * Dismissed progress dialog, calls install() if installAfterDownload is true
-     *
      */
     @Override
     protected void onPostExecute(String result) {
@@ -181,21 +236,29 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
         }
         downloaded = true;
         if (installAfterDownload) {
-            install();
+            if (downloadFilePath != null && downloadFilePath.exists()) {
+                String fileChecksum = getMD5Checksum(downloadFilePath.getPath());
+                if (fileChecksum != null && fileChecksum.equals(mChecksum)) {
+                    install(downloadFilePath);
+                } else {
+                    //delete the file if the checksum does not match
+                    // noinspection ResultOfMethodCallIgnored
+                    downloadFilePath.delete();
+                }
+            } else {
+                Toast.makeText(mContext,
+                        mContext.getString(R.string.updateFailed), Toast.LENGTH_SHORT).show();
+
+            }
         }
     }
 
     /**
      * Launches an Intent to install the apk update.
-     *
      */
-    private void install() {
+    private void install(File filePath) {
         if (downloaded) {
-            String filePath =
-                    String.format("%s/%s",
-                            AppConfig.getFilesDir(AppConfig.FileType.APK).getPath(),
-                            AppConfig.UPDATE_FILE_NAME);
-            Uri fileLoc = Uri.fromFile(new File(filePath));
+            Uri fileLoc = Uri.fromFile(filePath);
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(fileLoc, "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

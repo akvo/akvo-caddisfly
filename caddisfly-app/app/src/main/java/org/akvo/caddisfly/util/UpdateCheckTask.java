@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -31,24 +32,20 @@ import java.util.Calendar;
  */
 public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
-    private static UpdateChecker checker;
+    private static UpdateChecker updateChecker;
 
     private final Context mContext;
-    private final String mVersion;
-
     private final boolean mSilent;
-
+    private JSONObject updateInfo;
     private ProgressDialog progressDialog;
 
     /**
      * @param context the context
      * @param silent  check silently without showing an alert if update not found
-     * @param version the current version of the app
      */
-    public UpdateCheckTask(Context context, boolean silent, String version) {
+    public UpdateCheckTask(Context context, boolean silent) {
         mContext = context;
         mSilent = silent;
-        mVersion = version;
     }
 
     @Override
@@ -56,7 +53,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
 
         if (NetworkUtils.isOnline(mContext)) {
-            checker = new UpdateChecker(mContext, false);
+            updateChecker = new UpdateChecker(mContext, false);
             if (!mSilent) {
                 progressDialog = new ProgressDialog(mContext);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -74,21 +71,9 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-
-        boolean updateAvailable = PreferencesUtils
-                .getBoolean(mContext, R.string.updateAvailableKey, false);
-
-        if (!updateAvailable) {
-            if (checker.checkForUpdateByVersionCode(AppConfig.UPDATE_CHECK_URL + "?" + mVersion)) {
-                PreferencesUtils.setLong(mContext, R.string.lastUpdateCheckKey,
-                        Calendar.getInstance().getTimeInMillis());
-                if (checker.isUpdateAvailable()) {
-                    PreferencesUtils.setBoolean(mContext, R.string.updateAvailableKey, true);
-                }
-            }
-        } else {
-            checker.setUpdateAvailable();
-        }
+        updateInfo = updateChecker.checkForUpdateByVersionCode(AppConfig.UPDATE_CHECK_URL);
+        PreferencesUtils.setLong(mContext, R.string.lastUpdateCheckKey,
+                Calendar.getInstance().getTimeInMillis());
         return null;
     }
 
@@ -100,10 +85,21 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
             progressDialog.dismiss();
         }
 
-        if (checker.isUpdateAvailable()) {
-            alertUpdateAvailable();
-        } else if (!mSilent) {
-            alertUpdateNotFound();
+        if (updateInfo == null) {
+            if (!mSilent) {
+                alertUpdateNotFound();
+            }
+        } else {
+
+            try {
+                String location = updateInfo.getString("fileName");
+                String checksum = updateInfo.getString("md5Checksum");
+                String versionName = updateInfo.getString("versionName");
+
+                alertUpdateAvailable(location, checksum, versionName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -117,14 +113,13 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
     /**
      * Alert for update available
      */
-    private void alertUpdateAvailable() {
+    private void alertUpdateAvailable(final String url, final String checksum, final String version) {
         AlertUtils.askQuestion(mContext, R.string.updateAvailable, R.string.updateRequest,
                 R.string.update, R.string.notNow, false,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        checker.downloadAndInstall(AppConfig.UPDATE_URL + "?" + mVersion);
-                        PreferencesUtils.removeKey(mContext, R.string.updateAvailableKey);
+                        updateChecker.downloadAndInstall(url, checksum, version);
                     }
                 }
         );

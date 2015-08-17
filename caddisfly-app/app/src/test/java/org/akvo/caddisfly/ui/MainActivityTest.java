@@ -101,7 +101,7 @@ public class MainActivityTest {
                 AppConfig.defaultColorModel);
 
         assertEquals(Color.rgb(255, 156, 149), resultDetail.getColor());
-        assertEquals(1.04, resultDetail.getResult());
+        assertEquals(1.01, resultDetail.getResult());
     }
 
     @Test
