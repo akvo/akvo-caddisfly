@@ -50,8 +50,8 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
 
         if (testInfo.getRequiresCalibration()) {
             rowView = inflater.inflate(R.layout.row_type, parent, false);
-            TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
-            ppmText.setText(testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
+            ((TextView) rowView.findViewById(R.id.textUnit)).setText(
+                    testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
         } else {
             rowView = inflater.inflate(R.layout.row_blank, parent, false);
             rowView.setVisibility(View.GONE);

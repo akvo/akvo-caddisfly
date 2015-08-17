@@ -31,8 +31,8 @@ import org.akvo.caddisfly.app.AppPreferences;
  */
 public class SoundPoolPlayer {
     private final SparseIntArray mSounds = new SparseIntArray();
+    private final Context mContext;
     private SoundPool mShortPlayer = null;
-    private Context mContext;
 
     public SoundPoolPlayer(Context context) {
 

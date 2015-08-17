@@ -65,47 +65,44 @@ public class AppConfig {
     public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
     @Deprecated
     public static final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
-
-    /**
-     * The user created configuration file name
-     */
-    public static final String CONFIG_FILE = "tests.json";
-
     /**
      * Tag for debug log filtering
      */
     public static final String DEBUG_TAG = "Caddisfly";
-
     /**
      * Width and height of cropped image
      */
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-
     /**
      * The delay between each photo taken by the camera during the analysis
      */
     public static final int DELAY_BETWEEN_SAMPLING = 6000;
-
     /**
      * The maximum color distance before the color is considered out of range
      */
     public static final int MAX_COLOR_DISTANCE = 4;
-
     /**
      * The minimum color distance allowed before the colors are considered equivalent
      */
     public static final double MIN_VALID_COLOR_DISTANCE = 1.2;
-
     /**
      * The number of photos to take during analysis
      */
     public static final int SAMPLING_COUNT_DEFAULT = 5;
-
     /**
      * The sound volume for the beeps and success/fail sounds
      */
-    public static final float SOUND_VOLUME = 1f;
+    public static final float SOUND_VOLUME = 0.01f;
+    /**
+     * The default color model used for analysis
+     */
+    public static final ColorModel defaultColorModel = ColorModel.RGB;
 
+    /**
+     * The user created configuration file name
+     */
+    // Files
+    private static final String CONFIG_FILE = "tests.json";
     // Folders
     private static final String DIR_APK = "apk"; // App upgrades
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files

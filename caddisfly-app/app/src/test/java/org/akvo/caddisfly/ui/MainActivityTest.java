@@ -98,10 +98,10 @@ public class MainActivityTest {
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
                 AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.ColorModel.LAB);
+                AppConfig.defaultColorModel);
 
         assertEquals(Color.rgb(255, 156, 149), resultDetail.getColor());
-        assertEquals(1.01, resultDetail.getResult());
+        assertEquals(1.04, resultDetail.getResult());
     }
 
     @Test

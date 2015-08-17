@@ -106,12 +106,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
-            double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
+            double swatchValue = getIntent().getDoubleExtra("swatchValue", 0);
             if (mIsCalibration) {
                 getSupportActionBar().setDisplayUseLogoEnabled(false);
                 getSupportActionBar().setTitle(String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
-                        rangeValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
+                        swatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -322,11 +322,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
-        double rangeValue = getIntent().getDoubleExtra("rangeValue", 0);
+        double swatchValue = getIntent().getDoubleExtra("swatchValue", 0);
 
         TextView ppmTextView = ((TextView) findViewById(R.id.ppmTextView));
         if (mIsCalibration) {
-            ppmTextView.setText(String.format("%.2f %s", rangeValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
+            ppmTextView.setText(String.format("%.2f %s", swatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
             ppmTextView.setVisibility(View.VISIBLE);
         } else {
             ppmTextView.setVisibility(View.GONE);
@@ -398,39 +398,39 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         //In diagnostic mode show results based on other color models / number of calibration steps
         if (AppPreferences.isDiagnosticMode(this)) {
-            ArrayList<Swatch> tempColorRange = new ArrayList<>();
-            tempColorRange.add(testInfo.getSwatches().get(0));
-            tempColorRange.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
+            ArrayList<Swatch> swatches = new ArrayList<>();
+            swatches.add(testInfo.getSwatches().get(0));
+            swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.LAB));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.RGB));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.HSV));
 
-            tempColorRange.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
+            swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.LAB));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.RGB));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    tempColorRange,
+                    swatches,
                     maxDistance,
                     AppConfig.ColorModel.HSV));
 
@@ -448,7 +448,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         results.add(0, DataHelper.analyzeColor(photoColor,
                 CaddisflyApp.getApp().currentTestInfo.getSwatches(),
                 maxDistance,
-                AppConfig.ColorModel.LAB));
+                AppConfig.defaultColorModel));
 
         Result result = new Result(bitmap, results);
 

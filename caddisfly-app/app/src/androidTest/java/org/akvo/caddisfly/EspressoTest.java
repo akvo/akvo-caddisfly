@@ -78,7 +78,7 @@ import static org.hamcrest.object.HasToString.hasToString;
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private static final String mCurrentLanguage = "fr";
+    private static final String mCurrentLanguage = "en";
     private static final boolean mTakeScreenshots = false;
     private static int mCounter = 0;
     private final HashMap<String, String> stringHashMapEN = new HashMap<>();
@@ -299,7 +299,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        //Calibrate Ranges Screen
+        //Calibrate Swatches Screen
         takeScreenshot();
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
@@ -500,6 +500,38 @@ public class EspressoTest
         Espresso.pressBack();
 
         onView(withId(R.id.action_settings)).check(matches(isDisplayed()));
+    }
+
+    public void testIncompleteCalibration() {
+        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
+
+        onView(withId(R.id.buttonStartSurvey)).perform(click());
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        openSurveyInFlow();
+
+        clickExternalSourceButton("next");
+
+        clickExternalSourceButton("useExternalSource");
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+
+        String message = getActivity().getString(R.string.errorCalibrationIncomplete,
+                currentHashMap.get("chlorine"));
+        message = String.format("%s\r\n\r\n%s", message,
+                getActivity().getString(R.string.doYouWantToCalibrate));
+
+        onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.cancel)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).perform(click());
+
     }
 
     public void testChangeTestType() {
@@ -945,7 +977,8 @@ public class EspressoTest
 
         sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
-        onView(withText("10.00")).check(matches(isCompletelyDisplayed()));
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("10" + dfs.getDecimalSeparator() + "00")).check(matches(isCompletelyDisplayed()));
 
         onView(withId(R.id.buttonOk)).perform(click());
 

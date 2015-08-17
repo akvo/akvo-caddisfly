@@ -31,12 +31,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.AppPreferences;
@@ -75,7 +75,7 @@ public class SensorActivity extends BaseActivity {
     private Button mOkButton;
     private LinearLayout mConnectionLayout;
     private LinearLayout mResultLayout;
-    private ProgressWheel mProgressBar;
+    private ProgressBar mProgressBar;
     private ImageView mTemperatureImageView;
     private TextView mUnitsTextView;
 
@@ -134,7 +134,7 @@ public class SensorActivity extends BaseActivity {
         mResultTextView = (TextView) findViewById(R.id.textResult);
         mTemperatureTextView = (TextView) findViewById(R.id.textTemperature);
         mEcValueTextView = (TextView) findViewById(R.id.textEcValue);
-        mProgressBar = (ProgressWheel) findViewById(R.id.progressWait);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressWait);
         mTemperatureImageView = (ImageView) findViewById(R.id.imageTemperature);
         mUnitsTextView = (TextView) findViewById(R.id.textUnit);
 

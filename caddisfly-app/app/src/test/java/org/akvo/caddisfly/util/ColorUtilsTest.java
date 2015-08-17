@@ -60,7 +60,8 @@ public class ColorUtilsTest extends TestCase {
 
         for (int i = 0; i < list.size(); i++) {
             assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f", list.get(i).getValue()));
-            assertEquals(Color.TRANSPARENT, list.get(i).getColor());
+            assertEquals(true, list.get(i).getColor() == Color.BLACK ||
+                    list.get(i).getColor() == Color.TRANSPARENT);
         }
     }
 

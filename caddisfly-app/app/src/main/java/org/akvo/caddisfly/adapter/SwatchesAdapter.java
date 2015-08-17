@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -52,17 +51,14 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
         View rowView = inflater.inflate(R.layout.row_swatch, parent, false);
 
         if (rowView != null) {
-            TextView ppmText = (TextView) rowView.findViewById(R.id.textUnit);
-            TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
-            TextView hsvText = (TextView) rowView.findViewById(R.id.textHsv);
-            Button button = (Button) rowView.findViewById(R.id.buttonColor);
 
             int color = colorArray.get(position).getColor();
 
-            button.setBackgroundColor(color);
+            rowView.findViewById(R.id.buttonColor).setBackgroundColor(color);
 
             //display ppm value
-            ppmText.setText(String.format("%.2f", colorArray.get(position).getValue()));
+            ((TextView) rowView.findViewById(R.id.textUnit)).setText(
+                    String.format("%.2f", colorArray.get(position).getValue()));
 
             double distance = 0;
             double distanceRgb = 0;
@@ -77,8 +73,12 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
             float[] colorHSV = new float[3];
             Color.colorToHSV(color, colorHSV);
 
-            rgbText.setText(String.format("d:%.2f  %s: %s", distanceRgb, "rgb", ColorUtils.getColorRgbString(color)));
-            hsvText.setText(String.format("d:%.2f  %s: %.0f  %.2f  %.2f", distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
+            ((TextView) rowView.findViewById(R.id.textRgb)).setText(
+                    String.format("d:%.2f  %s: %s",
+                            distanceRgb, "rgb", ColorUtils.getColorRgbString(color)));
+            ((TextView) rowView.findViewById(R.id.textHsv)).setText(
+                    String.format("d:%.2f  %s: %.0f  %.2f  %.2f",
+                            distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
         }
         return rowView;
     }

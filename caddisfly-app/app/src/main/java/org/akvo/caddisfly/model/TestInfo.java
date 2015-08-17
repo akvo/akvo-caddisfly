@@ -39,7 +39,7 @@ public class TestInfo {
     private boolean mIsDirty;
 
     public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType testType,
-                    boolean requiresCalibration, String[] rangesArray, String[] dilutionsArray) {
+                    boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray) {
         this.names = names;
         this.testType = testType;
         this.code = code;
@@ -48,7 +48,7 @@ public class TestInfo {
         dilutions = new ArrayList<>();
         this.requiresCalibration = requiresCalibration;
 
-        for (String range : rangesArray) {
+        for (String range : swatchArray) {
             Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
             addSwatch(swatch);
         }

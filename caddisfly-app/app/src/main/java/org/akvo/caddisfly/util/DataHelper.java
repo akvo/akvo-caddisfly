@@ -53,17 +53,17 @@ public final class DataHelper {
                                             int maxDistance, AppConfig.ColorModel colorModel) {
 
         //Find the color that matches the photoColor from the calibrated colorRange
-        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatchRange(
+        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatches(
                 photoColor.getColor(), swatches, AppConfig.MIN_VALID_COLOR_DISTANCE);
 
         //If no color matches the colorRange then generate a gradient by interpolation
         if (colorCompareInfo.getResult() < 0) {
 
-            ArrayList<Swatch> swatchRange = ColorUtils.generateGradient(swatches, colorModel, 0.01);
+            ArrayList<Swatch> gradientSwatches = ColorUtils.generateGradient(swatches, colorModel, 0.01);
 
             //Find the color within the generated gradient that matches the photoColor
-            colorCompareInfo = getNearestColorFromSwatchRange(photoColor.getColor(),
-                    swatchRange, maxDistance);
+            colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
+                    gradientSwatches, maxDistance);
         }
 
         //set the result
@@ -86,7 +86,7 @@ public final class DataHelper {
      * @param swatches    The range of colors from which to return the nearest colorToFind
      * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
-    private static ColorCompareInfo getNearestColorFromSwatchRange(
+    private static ColorCompareInfo getNearestColorFromSwatches(
             int colorToFind, ArrayList<Swatch> swatches, double maxDistance) {
 
         double distance = maxDistance;
@@ -171,11 +171,11 @@ public final class DataHelper {
                 //Calibration is incomplete
                 return false;
             }
-            for (Swatch range2 : swatches) {
-                if (swatch != range2) {
+            for (Swatch swatch1 : swatches) {
+                if (swatch != swatch1) {
                     double value = ColorUtils.getColorDistanceLab(
                             ColorUtils.colorToLab(swatch.getColor()),
-                            ColorUtils.colorToLab(range2.getColor()));
+                            ColorUtils.colorToLab(swatch1.getColor()));
 
                     if (value <= AppConfig.MIN_VALID_COLOR_DISTANCE) {
                         //Duplicate color

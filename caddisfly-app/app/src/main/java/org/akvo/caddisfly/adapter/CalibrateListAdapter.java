@@ -56,8 +56,8 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
         View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
         final CaddisflyApp caddisflyApp = ((CaddisflyApp) activity.getApplicationContext());
-        ArrayList<Swatch> ranges = caddisflyApp.currentTestInfo.getSwatches();
-        Swatch range = ranges.get(position);
+        ArrayList<Swatch> swatches = caddisflyApp.currentTestInfo.getSwatches();
+        Swatch swatch = swatches.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
         TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
@@ -65,10 +65,10 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
         TextView textBrightness = (TextView) rowView.findViewById(R.id.textBrightness);
         Button buttonColor = (Button) rowView.findViewById(R.id.buttonColor);
 
-        int color = range.getColor();
+        int color = swatch.getColor();
 
         // display ppm value
-        Spannable word = new SpannableString(String.format("%.2f ", range.getValue()));
+        Spannable word = new SpannableString(String.format("%.2f ", swatch.getValue()));
         textUnit.setText(word);
 
         Spannable wordTwo = new SpannableString(caddisflyApp.currentTestInfo.getUnit());
@@ -90,7 +90,7 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
             if (AppPreferences.isDiagnosticMode(getContext())) {
                 double distance = 0;
                 if (position > 0) {
-                    int previousColor = ranges.get(position - 1).getColor();
+                    int previousColor = swatches.get(position - 1).getColor();
                     distance = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(previousColor),
                             ColorUtils.colorToLab(color));
                 }

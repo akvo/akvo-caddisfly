@@ -305,6 +305,8 @@ public class MainActivity extends BaseActivity {
                 //todo: fix FLOW to return language code
                 mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
 
+                setAppLanguage(mExternalAppLanguageCode);
+
                 //Extract the 5 letter code in the question and load the test config
                 CaddisflyApp.getApp().loadTestConfiguration(
                         mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
@@ -319,7 +321,6 @@ public class MainActivity extends BaseActivity {
                         startTest();
                     }
                 }
-                setAppLanguage(mExternalAppLanguageCode);
             }
         }
     }

@@ -130,12 +130,12 @@ public class CalibrateListActivity extends BaseActivity
     public void onItemSelected(int id) {
         mPosition = id;
         final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
-        Swatch mRange = caddisflyApp.currentTestInfo.getSwatch(mPosition);
+        Swatch swatch = caddisflyApp.currentTestInfo.getSwatch(mPosition);
 
         final Intent intent = new Intent();
         intent.setClass(this, ColorimetryLiquidActivity.class);
         intent.putExtra("isCalibration", true);
-        intent.putExtra("rangeValue", mRange.getValue());
+        intent.putExtra("swatchValue", swatch.getValue());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, REQUEST_CALIBRATE);
@@ -148,10 +148,10 @@ public class CalibrateListActivity extends BaseActivity
             case REQUEST_CALIBRATE:
 
                 final CaddisflyApp caddisflyApp = ((CaddisflyApp) getApplicationContext());
-                Swatch mRange = caddisflyApp.currentTestInfo.getSwatch(mPosition);
+                Swatch swatch = caddisflyApp.currentTestInfo.getSwatch(mPosition);
 
                 if (resultCode == Activity.RESULT_OK) {
-                    caddisflyApp.saveCalibratedData(mRange, data.getIntExtra("color", 0));
+                    caddisflyApp.saveCalibratedData(swatch, data.getIntExtra("color", 0));
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()
@@ -214,10 +214,10 @@ public class CalibrateListActivity extends BaseActivity
                         if (!input.getText().toString().trim().isEmpty()) {
                             final StringBuilder exportList = new StringBuilder();
 
-                            for (Swatch range : CaddisflyApp.getApp().currentTestInfo.getSwatches()) {
-                                exportList.append(String.format("%.2f", range.getValue()))
+                            for (Swatch swatch : CaddisflyApp.getApp().currentTestInfo.getSwatches()) {
+                                exportList.append(String.format("%.2f", swatch.getValue()))
                                         .append("=")
-                                        .append(ColorUtils.getColorRgbString(range.getColor()));
+                                        .append(ColorUtils.getColorRgbString(swatch.getColor()));
                                 exportList.append('\n');
                             }
 
@@ -325,9 +325,9 @@ public class CalibrateListActivity extends BaseActivity
 
                                         for (String rgb : rgbList) {
                                             String[] values = rgb.split("=");
-                                            Swatch range = new Swatch(stringToDouble(values[0]),
+                                            Swatch swatch = new Swatch(stringToDouble(values[0]),
                                                     ColorUtils.getColorFromRgb(values[1]));
-                                            swatchList.add(range);
+                                            swatchList.add(swatch);
                                         }
                                         (new AsyncTask<Void, Void, Void>() {
                                             @Override

@@ -154,25 +154,25 @@ public class CaddisflyApp extends Application {
 
         CaddisflyApp context = ((CaddisflyApp) this.getApplicationContext());
 
-        for (Swatch range : testInfo.getSwatches()) {
-            String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), range.getValue());
-            range.setColor(PreferencesUtils.getInt(context, key, 0));
+        for (Swatch swatch : testInfo.getSwatches()) {
+            String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
+            swatch.setColor(PreferencesUtils.getInt(context, key, 0));
         }
     }
 
     /**
      * Save a single calibrated color
      *
-     * @param range       The range object
+     * @param swatch       The swatch object
      * @param resultColor The color value
      */
-    public void saveCalibratedData(Swatch range, final int resultColor) {
-        String colorKey = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), range.getValue());
+    public void saveCalibratedData(Swatch swatch, final int resultColor) {
+        String colorKey = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), swatch.getValue());
 
         if (resultColor == 0) {
             PreferencesUtils.removeKey(getApplicationContext(), colorKey);
         } else {
-            range.setColor(resultColor);
+            swatch.setColor(resultColor);
             PreferencesUtils.setInt(getApplicationContext(), colorKey, resultColor);
         }
     }
@@ -180,14 +180,14 @@ public class CaddisflyApp extends Application {
     /**
      * Save a list of calibrated colors
      *
-     * @param rangeList List of swatch colors to be saved
+     * @param swatches List of swatch colors to be saved
      */
-    public void saveCalibratedSwatches(ArrayList<Swatch> rangeList) {
+    public void saveCalibratedSwatches(ArrayList<Swatch> swatches) {
 
-        for (Swatch range : rangeList) {
-            String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), range.getValue());
+        for (Swatch swatch : swatches) {
+            String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), swatch.getValue());
 
-            PreferencesUtils.setInt(this, key, range.getColor());
+            PreferencesUtils.setInt(this, key, swatch.getColor());
         }
 
         loadCalibratedSwatches(currentTestInfo);

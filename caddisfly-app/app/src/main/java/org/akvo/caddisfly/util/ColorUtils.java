@@ -133,11 +133,11 @@ public final class ColorUtils {
     /**
      * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
      *
-     * @param colorRange the range of colors
+     * @param swatches the range of colors
      * @return True if calibration is complete
      */
-    public static boolean isCalibrationComplete(ArrayList<Swatch> colorRange) {
-        for (Swatch swatch : colorRange) {
+    public static boolean isCalibrationComplete(ArrayList<Swatch> swatches) {
+        for (Swatch swatch : swatches) {
             if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
                 //Calibration is incomplete
                 return false;
@@ -164,28 +164,28 @@ public final class ColorUtils {
     }
 
     /**
-     * Auto generate the color swatches for the ranges of the given test type
+     * Auto generate the color swatches for the given test type
      *
-     * @param colorRange The test object
+     * @param swatches The test object
      * @return The list of generated color swatches
      */
     @SuppressWarnings("SameParameterValue")
-    public static ArrayList<Swatch> generateGradient(ArrayList<Swatch> colorRange,
+    public static ArrayList<Swatch> generateGradient(ArrayList<Swatch> swatches,
                                                      AppConfig.ColorModel colorModel, double increment) {
 
         if (colorModel == AppConfig.ColorModel.HSV) {
-            return getGradientHsvColor(colorRange, 200);
+            return getGradientHsvColor(swatches, 200);
         }
 
         ArrayList<Swatch> list = new ArrayList<>();
         //double increment = 0.01;
 
-        for (int i = 0; i < colorRange.size() - 1; i++) {
+        for (int i = 0; i < swatches.size() - 1; i++) {
 
-            int startColor = colorRange.get(i).getColor();
-            int endColor = colorRange.get(i + 1).getColor();
-            double startValue = colorRange.get(i).getValue();
-            int steps = (int) ((colorRange.get(i + 1).getValue() - startValue) / increment);
+            int startColor = swatches.get(i).getColor();
+            int endColor = swatches.get(i + 1).getColor();
+            double startValue = swatches.get(i).getValue();
+            int steps = (int) ((swatches.get(i + 1).getValue() - startValue) / increment);
 
             for (int j = 0; j < steps; j++) {
                 int color = 0;
@@ -201,8 +201,8 @@ public final class ColorUtils {
                 list.add(new Swatch(startValue + (j * increment), color));
             }
         }
-        list.add(new Swatch(colorRange.get(colorRange.size() - 1).getValue(),
-                colorRange.get(colorRange.size() - 1).getColor()));
+        list.add(new Swatch(swatches.get(swatches.size() - 1).getValue(),
+                swatches.get(swatches.size() - 1).getColor()));
 
         return list;
     }
