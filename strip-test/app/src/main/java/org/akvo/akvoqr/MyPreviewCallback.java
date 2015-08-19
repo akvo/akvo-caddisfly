@@ -18,9 +18,12 @@ import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.opencv.StripTestBrand;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
@@ -52,7 +55,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 if(allOK) {
                     if(bitmap!=null)
-                    listener.setBitmap(bitmap);
+                        listener.setBitmap(bitmap);
                 }
                 else
                     listener.getMessage(0);
@@ -229,14 +232,50 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     return;
                 }
                 //detect strip
-                Mat dest = calMat.clone();
+                Mat dest = warp_dst.clone();
 
-                float stripareaSize = 31; //mm
-                float vertSize = 75; //mm
-                float ratio = stripareaSize/vertSize;
-                int stripH = (int)Math.round(dest.height() * ratio);
-                Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
-                Mat striparea = dest.submat(rect);
+                Mat striparea = dest.clone();
+                String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
+                if(json!=null) {
+
+                    double hsize = 1;
+                    double vsize = 1;
+                    JSONObject object = new JSONObject(json);
+                    if(!object.isNull("calData"))
+                    {
+                        JSONObject calData = object.getJSONObject("calData");
+                        hsize = calData.getDouble("hsize");
+                        vsize = calData.getDouble("vsize");
+                    }
+                    if(!object.isNull("stripAreaData")) {
+                        JSONObject stripAreaData = object.getJSONObject("stripAreaData");
+                        if(!stripAreaData.isNull("area")) {
+                            JSONArray area = stripAreaData.getJSONArray("area");
+                            if(area.length()==4) {
+
+                                double ratioH = dest.width()/hsize;
+                                double ratioV = dest.height()/vsize;
+                                Point stripTopLeft = new Point(area.getDouble(0) * ratioH - 10,
+                                        area.getDouble(1) * ratioV - 10);
+                                Point stripBottomRight = new Point(area.getDouble(2) * ratioH + 10,
+                                        area.getDouble(3) * ratioV + 10);
+
+                                Rect roi = new Rect(stripTopLeft, stripBottomRight);
+                                striparea = dest.submat(roi);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+//                float stripareaSize = 31; //mm
+//                float vertSize = 75; //mm
+//                float ratio = stripareaSize/vertSize;
+//                int stripH = (int)Math.round(dest.height() * ratio);
+//                Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
+
+                }
+//
 
                 listener.showProgress(1);
                 Mat strip = OpenCVUtils.detectStrip(striparea);
@@ -247,7 +286,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     listener.showProgress(2);
 //                    System.out.println("***calmat format: " + CvType.typeToString(calMat.type()));
 
-                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.AQUACHECK);
+                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.HACH883738);
                     TestResult testResult = new TestResult();
                     testResult.setOriginal(striparea);
                     testResult.setResultBitmap(strip, 2);
