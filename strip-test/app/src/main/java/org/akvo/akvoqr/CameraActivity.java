@@ -36,7 +36,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-       intent = new Intent(this, ResultActivity.class);
+        intent = new Intent(this, ResultActivity.class);
         handler = new Handler(Looper.getMainLooper());
     }
 
@@ -146,7 +146,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             intent.putExtra("format", format);
             intent.putExtra("width", width);
             intent.putExtra("height", height);
-           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
 
         }
@@ -156,7 +156,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    public static final int MAX_ITER = 2;
+    public static final int MAX_ITER = 1;
     private int iter=0;
     private long startTime;
 
@@ -234,9 +234,39 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     }
 
+    private ProgressDialog progress;
     @Override
-    public void showProgress() {
+    public void showProgress(final int which) {
+
+        Runnable showProgress = new Runnable() {
+
+            @Override
+            public void run() {
+                if (progress == null) {
+                    progress = new ProgressDialog(CameraActivity.this);
+                    switch (which) {
+                        case 0:
+                            progress.setTitle(getString(R.string.calibrating));
+                            break;
+                        case 1:
+                            progress.setTitle("Detecting strip");
+                            break;
+                        case 2:
+                            progress.setTitle("Making bitmap");
+                            break;
+                        case 3:
+                            progress.setTitle("Looking for finder patterns");
+                            break;
+                        default:
+                            progress.setTitle("Busy doing something");
+                    }
+                    progress.setMessage(getString(R.string.please_wait));
+                    progress.show();
+                }
+            }
+        };
         handler.post(showProgress);
+
     }
 
     @Override
@@ -244,20 +274,20 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         handler.post(dismissProgress);
     }
 
-    private ProgressDialog progress;
-    private Runnable showProgress = new Runnable() {
-
-        @Override
-        public void run() {
-            if(progress==null)
-            {
-                progress = new ProgressDialog(CameraActivity.this);
-                progress.setTitle(getString(R.string.calibrating));
-                progress.setMessage(getString(R.string.please_wait));
-                progress.show();
-            }
-        }
-    };
+//
+//    private Runnable showProgress = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            if(progress==null)
+//            {
+//                progress = new ProgressDialog(CameraActivity.this);
+//                progress.setTitle(getString(R.string.calibrating));
+//                progress.setMessage(getString(R.string.please_wait));
+//                progress.show();
+//            }
+//        }
+//    };
 
     private Runnable dismissProgress = new Runnable() {
         @Override
@@ -270,4 +300,16 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     };
 
+    //getString(R.string.calibrating)
+    //getString(R.string.please_wait)
+    public void cameraProgressDialog(String title, String message)
+    {
+        if(progress==null)
+        {
+            progress = new ProgressDialog(CameraActivity.this);
+            progress.setTitle(title);
+            progress.setMessage(message);
+            progress.show();
+        }
+    }
 }

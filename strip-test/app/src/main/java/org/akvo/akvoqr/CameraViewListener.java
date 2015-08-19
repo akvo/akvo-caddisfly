@@ -17,7 +17,7 @@ public interface CameraViewListener {
 
     Mat getCalibratedImage(Mat mat);
 
-    void showProgress();
+    void showProgress(int which);
 
     void dismissProgress();
 

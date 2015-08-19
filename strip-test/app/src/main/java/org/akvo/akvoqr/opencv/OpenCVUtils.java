@@ -15,7 +15,7 @@ import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
-import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -33,6 +33,35 @@ import java.util.List;
  */
 public class OpenCVUtils {
 
+    public static Mat rotateImage(Mat src, RotatedRect rotatedRect)
+    {
+        Point[] rotatedRectPoints = new Point[4];
+        rotatedRect.points(rotatedRectPoints);
+
+        Mat rot_mat;
+        Mat cropped = new Mat();
+
+        /// Set the dst image the same type and size as src
+        Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
+
+        double angle = rotatedRect.angle;
+        Size rect_size = rotatedRect.size;
+        // thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
+        // we need to swap height and width if angle is lower than 45 degrees
+        if (angle < -45.) {
+            angle += 90.0;
+            rect_size.set(new double[]{rect_size.height, rect_size.width});
+        }
+        // get the rotation matrix
+        rot_mat = Imgproc.getRotationMatrix2D(rotatedRect.center, angle, 1.0);
+        // perform the affine transformation
+        Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
+        // crop the resulting image
+        rect_size.set(new double[]{rect_size.width-2, rect_size.height-2});
+        Imgproc.getRectSubPix(warp_rotate_dst, rect_size, rotatedRect.center, cropped);
+
+        return cropped;
+    }
     public static Mat perspectiveTransform(FinderPatternInfo info, Mat mbgra)
     {
         List<Point> srcList = new ArrayList<>();
@@ -96,119 +125,251 @@ public class OpenCVUtils {
     public static Mat detectStrip(Mat striparea)
     {
         Mat dst = new Mat();
-        Mat range = new Mat();
         List<Mat> channels = new ArrayList<>();
 
         Imgproc.cvtColor(striparea, dst, Imgproc.COLOR_RGB2Lab, 0);
 
-//        Imgproc.GaussianBlur(dst, dst, new Size(17, 17), 0);
         Imgproc.medianBlur(dst, dst, 11);
+
+        Mat temp = dst.clone();
+        for(int c=0; c<dst.cols()-11; c++) {
+            Mat submat = dst.submat(0, dst.rows()-1, c, c+11).clone();
+
+            Core.split(submat, channels);
+            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+
+//            System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal);
+
+            double treshold = result.minVal*1.25;
+
+            Imgproc.threshold(channels.get(0), channels.get(0), treshold, 255, Imgproc.THRESH_BINARY);
+
+            Core.merge(channels, submat);
+
+            for(int sc=0;sc<submat.cols();sc++) {
+                for (int sr = 0; sr < submat.rows(); sr++) {
+                    double[] vals = submat.get(sr, sc);
+                    for (int v = 0; v < vals.length; v++) {
+                        temp.put(sr, c+sc, vals);
+                    }
+                }
+            }
+            submat.release();
+        }
+
+        dst = temp.clone();
+        temp.release();
+
+        Imgproc.medianBlur(dst,dst,11);
         Core.split(dst, channels);
-//        Imgproc.equalizeHist(channels.get(0), channels.get(0));
-        Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
-
-        System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal);
-
-        double treshold = (result.maxVal - result.minVal) / 2;
-
-//        Imgproc.threshold(channels.get(0), channels.get(0), treshold, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
-        Imgproc.adaptiveThreshold(channels.get(0), channels.get(0), 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,
-                Imgproc.THRESH_BINARY, 11, 2);
-        Core.merge(channels, dst);
-
+        Core.inRange(channels.get(0), new Scalar(200, 0, 0), new Scalar(256, 255, 255), channels.get(0));
 
 //        Imgproc.cvtColor(dst, range, Imgproc.COLOR_RGB2GRAY);
-        Imgproc.Canny(dst, range, 40, 120, 3, true);
+//        Imgproc.Canny(dst, range, 40, 120, 3, true);
 
         Imgproc.cvtColor(dst, dst, Imgproc.COLOR_Lab2RGB);
-//        Core.inRange(dst, new Scalar(200, 0, 0), new Scalar(255, 255, 255), range);
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfPoint innermostContours = new MatOfPoint();
         MatOfInt4 mContours = new MatOfInt4();
         MatOfPoint2f mMOP2f = new MatOfPoint2f();
-        List<Point> pts = new ArrayList<>();
+
+        RotatedRect rotatedRect;
 
         Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE, new Point(0, 0));
         double maxParent = -Double.MAX_VALUE;
         for (int x = 0; x < contours.size(); x++) {
 
-            //make square
+            // we need the mMOP2f object for our rotated Rect
             contours.get(x).convertTo(mMOP2f, CvType.CV_32FC2);
-            Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.01 * Imgproc.arcLength(mMOP2f, true), true);
-            mMOP2f.convertTo(contours.get(x), CvType.CV_32S);
 
             double areasize = Imgproc.contourArea(contours.get(x));
 
+            System.out.println("***areasize contour strip: " + areasize);
+
+//            Imgproc.drawContours(dst, contours, x, new Scalar(255, 2, 255, 255), 1);
 
             if(mContours.get(0,x)[3] >= 0)//has parent, inner (hole) contour of a closed edge
             {
-
                 if(areasize > 10000)
                 {
 
                     if(mContours.get(0,x)[3] > maxParent)
                     {
-
-                        double[] d = mContours.get(0,x);
-
-                        for (double v : d)
-                        {
-                            //System.out.println("*** value of d  " + x + ":  = " + v);
-                        }
                         innermostContours = contours.get(x);
                         maxParent = mContours.get(0, x)[3];
                     }
-                    Imgproc.drawContours(dst, contours, x, new Scalar(255, 0, 255, 255), 1);
                 }
 
                 //Imgproc.drawContours(striparea, contours, x-1, new Scalar(0, 0, 255, 255), -1);
 
             } else {
-                Imgproc.drawContours(dst, contours, x, new Scalar(0, 255, 0, 255), 1);
+//                Imgproc.drawContours(dst, contours, x, new Scalar(0, 255, 0, 255), 1);
             }
         }
 
         List<Point> innermostList = innermostContours.toList();
         if(innermostList.size()>0) {
 
-            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
-            Point point2 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
+            //only needed for demo
+//            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
+//            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
+//            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
 
-            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-            System.out.println("*** innermostList min :" + point1.x + "," + point1.y);
-            System.out.println("*** innermostList max :" + point2.x + "," + point2.y);
+//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
 
             double d = Imgproc.contourArea(innermostContours);
             System.out.println("***contour area innermost: " + d);
-//            Imgproc.drawContours(dst, contours, (int) maxParent + 1, new Scalar(255, 0, 0, 255), 2);
 
-            int x = OpenCVUtils.getMinX(innermostList);
-            int y = OpenCVUtils.getMinY(innermostList);
-            int width = OpenCVUtils.getMaxX(innermostList) - x;
-            int height = OpenCVUtils.getMaxY(innermostList) - y;
-            Rect roi = new Rect(x, y, width, height);
+            //demo
+//            Imgproc.drawContours(dst, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 3);
+//            Core.rectangle(dst,point1, point3, new Scalar(255, 0, 0, 255), 2);
 
-            Core.rectangle(dst, point1, point2, new Scalar(255, 0,0,255),3);
-            return striparea.submat(roi);
+            rotatedRect = Imgproc.minAreaRect(mMOP2f);
+            if(rotatedRect!=null) {
 
+                //only needed for demo
+//                Point[] rotPoints = new Point[4];
+//                rotatedRect.points(rotPoints);
+
+//                Core.line(dst, rotPoints[0], rotPoints[1], new Scalar(0, 0, 255, 255), 2);
+//                Core.line(dst, rotPoints[1], rotPoints[2], new Scalar(0,0,255,255), 2);
+//                Core.line(dst, rotPoints[2], rotPoints[3], new Scalar(0,0,255,255), 2);
+//                Core.line(dst, rotPoints[3], rotPoints[0], new Scalar(0,0,255,255), 2);
+                Mat rotated = rotateImage(striparea, rotatedRect);
+                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type()));
+
+//                Mat hsv = new Mat();
+//
+//                Imgproc.cvtColor(rotated, hsv, Imgproc.COLOR_RGB2HSV);
+//                temp = hsv.clone();
+//
+//                for(int c=24;c<temp.cols()-24;c+=1) {
+//                    Mat submat = temp.submat(3, temp.rows() - 3, c - 24, c + 24);
+//                    Core.split(submat, channels);
+//                    Scalar mean = Core.mean(submat);
+//                    Core.merge(channels, submat);
+//
+//                    for (int cc = 0; cc < submat.cols(); cc++) {
+//                        for(int r=0;r<submat.rows();r++)
+//                        {
+//                            double[] vals = submat.get(r, cc);
+//                            vals[0] = mean.val[0];
+//                            vals[1] = mean.val[1];
+//                            vals[2] = mean.val[2];
+//
+//                            for(int rr=0;rr<temp.rows();rr++)
+//                                 temp.put(rr, c - 24 + cc, vals);
+//                        }
+//
+//                    }
+//
+//
+//                    submat.release();
+//                }
+
+//                for(int c=1;c<temp.cols();c++) {
+//                    for (int rr = 0; rr < temp.rows(); rr++) {
+//                        double[] hsvVals0 = temp.get(rr, c - 1);
+//                        double[] hsvVals1 = temp.get(rr, c);
+//                        if (Math.abs(hsvVals0[0] - hsvVals1[0]) > 150) {
+//                            hsvVals0[0] = 0;
+//                            hsvVals0[1] = 1;
+//                            hsvVals0[2] = 0;
+//                        }
+//
+//                        temp.put(rr, c, hsvVals0);
+//                    }
+//                }
+//                hsv = temp.clone();
+//                rotated = temp.clone();
+//                temp.release();
+//                Imgproc.cvtColor(hsv, rotated, Imgproc.COLOR_HSV2RGB);
+                return rotated;
+            }
         }
 
-        return striparea;
+        return dst;
     }
 
+    public static Mat detectStripColorBrandKnown(Mat src, StripTestBrand.brand brand)
+    {
+        StripTestBrand stripTestBrand = new StripTestBrand(brand);
+        List<StripTestBrand.Patch> patches = stripTestBrand.getPatches();
+
+        for (int i=0;i<patches.size();i++)
+        {
+            Point center = new Point(patches.get(i).center);
+            Core.circle(src, center, 5, new Scalar(0,0,0,255), -1);
+        }
+
+        return src;
+    }
+    public static Point getLeft(List<Point> list)
+    {
+        double minX = Double.MAX_VALUE;
+        Point left = new Point(0,0);
+        for(Point p: list)
+        {
+            if(p.x < minX)
+            {
+                minX = p.x;
+                left = p;
+            }
+        }
+        return left;
+    }
+    public static Point getRight(List<Point> list)
+    {
+        double maxX = -Double.MAX_VALUE;
+        Point right = new Point(0,0);
+        for(Point p: list)
+        {
+            if(p.x > maxX)
+            {
+                maxX = p.x;
+                right = p;
+            }
+        }
+        return right;
+    }
+    public static Point getTop(List<Point> list)
+    {
+        double minY = Double.MAX_VALUE;
+        Point top = new Point(0,0);
+        for(Point p: list)
+        {
+            if(p.y < minY)
+            {
+                minY = p.y;
+                top = p;
+            }
+        }
+        return top;
+    }
     public static Mat detectStripPatchesAdaptiveTresh(Mat strip)
     {
+
         Mat orig = strip.clone();
         Mat labMat = new Mat();
         Mat range = new Mat();
         List<Mat> channels = new ArrayList<>();
         List<Point> pts = new ArrayList<Point>();
         MatOfPoint2f mMOP2f = new MatOfPoint2f();
+        //Treshold for both upper and lower
+        MatOfInt matUpper = new MatOfInt();
+        MatOfInt matLower = new MatOfInt();
+        Mat grayUp = new Mat();
+        Mat grayLow = new Mat();
 
         ResultActivity.stripColors.clear();
 
         Imgproc.cvtColor(strip, labMat, Imgproc.COLOR_RGB2Lab, 0);
+        grayUp = labMat.clone();
+        grayLow = labMat.clone();
 
         Mat temp = labMat.clone();
         double minChroma = Double.MAX_VALUE;
@@ -292,6 +453,7 @@ public class OpenCVUtils {
             Mat submat = temp.submat(0, 10, i-min, i + max).clone();
 
             if (!submat.empty()) {
+
                 Core.split(submat, channels);
                 Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
@@ -301,16 +463,45 @@ public class OpenCVUtils {
                 double upperTreshold = 0.97 * result.maxVal;
                 double lowerTreshold = result.maxVal - 0.5 * (result.maxVal - result.minVal);
 
+//                Scalar mean = Core.mean(channels.get(0));
+//                if(mean!=null && mean.val.length>0) {
+//                    upperTreshold = 1.1 * mean.val[0];
+//                    lowerTreshold = 0.9 * mean.val[0];
+//                }
 //                System.out.println("***result upper tresh = " + upperTreshold);
 //                System.out.println("***result lower tresh = " + lowerTreshold);
 
-
-                //Treshold for both upper and lower
-                MatOfInt matUpper = new MatOfInt();
-                MatOfInt matLower = new MatOfInt();
-
                 Imgproc.threshold(channels.get(0), matUpper, upperTreshold, 255, Imgproc.THRESH_BINARY);
+
+                Mat mergeUp = new Mat();
+                Core.merge(channels, mergeUp);
+                for (int si = 0; si < mergeUp.cols(); si++) {
+                    for (int j = 0; j < 1; j++) {
+
+                        double[] vals = mergeUp.get(j, si);
+
+                        for(int x=0;x<grayUp.rows();x++) {
+
+                            grayUp.put(x, si + i - min, vals);
+                        }
+                    }
+                }
+
                 Imgproc.threshold(channels.get(0), matLower, lowerTreshold, 255, Imgproc.THRESH_BINARY);
+
+                Mat mergeLow = new Mat();
+                Core.merge(channels, mergeLow);
+                for (int si = 0; si < mergeLow.cols(); si++) {
+                    for (int j = 0; j < 1; j++) {
+
+                        double[] vals = mergeLow.get(j, si);
+
+                        for(int x=0;x<grayLow.rows();x++) {
+
+                            grayLow.put(x, si + i - min, vals);
+                        }
+                    }
+                }
 
 
                 //(Bitwise OR) sets a bit to 1 if one or both of the corresponding bits in its operands are 1,
@@ -322,12 +513,10 @@ public class OpenCVUtils {
 
                 Core.merge(channels, submat);
 
-
                 for (int si = 0; si < submat.cols(); si++) {
                     for (int j = 0; j < 1; j++) {
 
                         double[] vals = submat.get(j, si);
-
 
                         for(int x=0;x<mat.rows();x++) {
 
@@ -342,10 +531,11 @@ public class OpenCVUtils {
 
         }
         range=mat.clone();
-        labMat = temp.clone();
+        labMat = mat.clone();
 
         Imgproc.cvtColor(labMat, labMat, Imgproc.COLOR_Lab2RGB);
-//        Mat shadows = ShadowDetector.ShadowDetection(labMat);
+        Imgproc.cvtColor(grayUp, grayUp, Imgproc.COLOR_Lab2RGB);
+        Imgproc.cvtColor(grayLow, grayLow, Imgproc.COLOR_Lab2RGB);
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
@@ -391,8 +581,7 @@ public class OpenCVUtils {
 
         }
 
-        TestResult testResult = TestResult.getTestResultFromMat(strip, true, true, minChroma,
-                minChromaLab, numPatchesFound);
+        TestResult testResult = new TestResult();
         testResult.setOriginal(orig);
 
         if(outermostContoursList.size()>0) {
@@ -429,8 +618,9 @@ public class OpenCVUtils {
 
         testResult.setNumPatchesFound(numPatchesFound);
 
-
-        testResult.setResultBitmap(labMat);
+//        testResult.setResultBitmap(grayUp, 0);
+//        testResult.setResultBitmap(grayLow, 1);
+        testResult.setResultBitmap(labMat, 2);
         ResultStripTestActivity.testResults.add(testResult);
 
 
@@ -522,8 +712,8 @@ public class OpenCVUtils {
 
         Scalar meanLab = Core.mean(lab);
         double[] meanVal = meanLab.val;
-        for(double d: meanVal)
-        System.out.println("***meanLab: " + d);
+//        for(double d: meanVal)
+//        System.out.println("***meanLab: " + d);
         double ma = meanVal[1]-128;
         double mb = meanVal[2] - 128;
         double meanCh = Math.sqrt(ma*ma + mb*mb);
@@ -552,8 +742,8 @@ public class OpenCVUtils {
                 }
                 else {
                     if(ch<lowerTresh)
-                    System.out.println("***ch is lower than: " + lowerTresh + ". chroma: " +
-                            ch + ". maxX new: " + maxX);
+                        System.out.println("***ch is lower than: " + lowerTresh + ". chroma: " +
+                                ch + ". maxX new: " + maxX);
                     if(ch>upperTresh)
                         System.out.println("***ch is higher than: " + upperTresh + ". chroma: " +
                                 ch + ". maxX new: " + maxX);

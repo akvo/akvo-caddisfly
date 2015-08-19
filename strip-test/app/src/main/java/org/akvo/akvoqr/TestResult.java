@@ -12,42 +12,16 @@ import org.opencv.core.Point;
 public class TestResult {
     public Bitmap original;
     public Bitmap resultBitmap;
+    public Bitmap resultUpper;
+    public Bitmap resultLower;
     public boolean testOK;
     public double minChroma;
     public double[] minChromaLab = new double[3];
     public int minChromaColor = 0;
     public int numPatchesFound;
 
-    public TestResult(Bitmap bitmap, boolean resultBitmap,
-                      boolean testOK, double minChroma,
-                      double[] minChromaLab, int numPatchesFound) {
+    public TestResult() {
 
-        if(resultBitmap)
-        {
-            this.resultBitmap = bitmap;
-        }
-        else
-        {
-            this.original = bitmap;
-        }
-        this.testOK = testOK;
-        this.minChroma = minChroma;
-        this.numPatchesFound = numPatchesFound;
-        this.minChromaLab = minChromaLab;
-
-    }
-
-    public static TestResult getTestResultFromMat(Mat mat, boolean calibrated, boolean testOK,
-                                                  double minChroma, double[] minChromaLab, int numPatchesFound)
-    {
-        Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
-        double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
-        int width = 400;
-        int height = (int) Math.round(ratio * width);
-        bitmap = Bitmap.createScaledBitmap(bitmap,width,height, false);
-        Utils.matToBitmap(mat, bitmap);
-
-        return new TestResult(bitmap, calibrated, testOK, minChroma, minChromaLab, numPatchesFound);
     }
 
     public void setOriginal(Mat mat)
@@ -55,15 +29,36 @@ public class TestResult {
         Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bitmap);
 
+        double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+        int width = 400;
+        int height = (int) Math.round(ratio * width);
+        bitmap = Bitmap.createScaledBitmap(bitmap,width,height, false);
+
         this.original = bitmap;
 
     }
-    public void setResultBitmap(Mat mat)
+    public void setResultBitmap(Mat mat, int which)
     {
         Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bitmap);
 
-        this.resultBitmap = bitmap;
+        double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+        int width = 400;
+        int height = (int) Math.round(ratio * width);
+        bitmap = Bitmap.createScaledBitmap(bitmap,width,height, false);
+
+        switch (which)
+        {
+            case 0:
+                this.resultUpper = bitmap;
+                break;
+            case 1:
+                this.resultLower = bitmap;
+                break;
+            case 2:
+                this.resultBitmap = bitmap;
+        }
+
 
     }
 

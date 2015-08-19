@@ -17,6 +17,7 @@ import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
+import org.akvo.akvoqr.opencv.StripTestBrand;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
-    static boolean firstTime = true;
+    public static boolean firstTime = true;
     FinderPatternFinder finderPatternFinder;
     List<ResultPoint> resultPoints = new ArrayList<>();
     FinderPatternInfo info;
@@ -56,6 +57,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 else
                     listener.getMessage(0);
             }
+            if(bitmap!=null)
+                bitmap.recycle();
         }
     };
     private boolean testCalib = false;
@@ -70,7 +73,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(" must implement cameraviewhandler");
+            throw new ClassCastException(" must implement cameraviewListener");
         }
 
 
@@ -146,6 +149,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //TODO CHECK SHADOWS
 
+            listener.showProgress(3);
             findPossibleCenters(data);
 
             if (possibleCenters != null && possibleCenters.size() > 3) {
@@ -168,6 +172,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     firstTime = false;
                     return;
                 }
+                listener.dismissProgress();
 
                 for (FinderPattern pattern : possibleCenters) {
                     System.out.println("***pattern estimated module size: " + pattern.getEstimatedModuleSize());
@@ -195,7 +200,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
 
                 //find calibration patches
-                listener.showProgress();
+                listener.showProgress(0);
                 Mat calMat = listener.getCalibratedImage(warp_dst);
                 listener.dismissProgress();
 
@@ -233,17 +238,26 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
                 Mat striparea = dest.submat(rect);
 
+                listener.showProgress(1);
                 Mat strip = OpenCVUtils.detectStrip(striparea);
+                listener.dismissProgress();
 
                 if(strip!=null)
                 {
-                   System.out.println("***calmat format: " + CvType.typeToString(calMat.type()));
-                    Mat edges = OpenCVUtils.detectStripPatchesAdaptiveTresh(strip);
-//                    Mat edges = OpenCVUtils.detectStripPatchesOTSUTresh(strip);
+                    listener.showProgress(2);
+//                    System.out.println("***calmat format: " + CvType.typeToString(calMat.type()));
+
+                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.AQUACHECK);
+                    TestResult testResult = new TestResult();
+                    testResult.setOriginal(striparea);
+                    testResult.setResultBitmap(strip, 2);
+                    ResultStripTestActivity.testResults.add(testResult);
 
                     //create a bitmap with the same size and color config as the dest
-                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(edges, bitmap, true);
+//                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+//                    Utils.matToBitmap(strip, bitmap, true);
+
+                    listener.dismissProgress();
                 }
                 else
                 {

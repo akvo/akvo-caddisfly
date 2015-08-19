@@ -48,6 +48,16 @@ public class ResultStripTestActivity extends AppCompatActivity {
             originalView.setPadding(5, 5, 5, 5);
             innerlayout.addView(originalView, params);
 
+//            ImageView upper = new ImageView(this);
+//            upper.setImageBitmap(testResult.resultUpper);
+//            upper.setPadding(5, 5, 5, 5);
+//            innerlayout.addView(upper, params);
+//
+//            ImageView lower = new ImageView(this);
+//            lower.setImageBitmap(testResult.resultLower);
+//            lower.setPadding(5, 5, 5, 5);
+//            innerlayout.addView(lower, params);
+
             ImageView imageView = new ImageView(this);
             if(testResults.get(i).numPatchesFound == numPatchesExpected)
             {
@@ -58,10 +68,10 @@ public class ResultStripTestActivity extends AppCompatActivity {
             {
                 imageView.setBackgroundColor(Color.DKGRAY);
             }
-
             imageView.setImageBitmap(testResults.get(i).resultBitmap);
             imageView.setPadding(5, 5, 5, 5);
             innerlayout.addView(imageView, params);
+
 
             if(ResultActivity.stripColors.size()>0) {
 
