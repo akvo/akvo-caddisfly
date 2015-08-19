@@ -16,20 +16,16 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ApiUtils;
 
 
-public class UsbConnectionActivity extends AppCompatActivity {
-    private TextView mConnectedTextView;
-    private LinearLayout mProgressLayout;
+public class UsbConnectionActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +33,28 @@ public class UsbConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_usb_connection);
 
         ApiUtils.lockScreenOrientation(this);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setIcon(R.drawable.ic_actionbar_logo);
-        }
-
-        mConnectedTextView = (TextView) findViewById(R.id.textConnected);
-        mProgressLayout = (LinearLayout) findViewById(R.id.layoutProgress);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setTitle(R.string.appName);
+        progressDialog.setMessage(getString(R.string.deviceConnecting));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
-                mConnectedTextView.setVisibility(View.VISIBLE);
-                mProgressLayout.setVisibility(View.GONE);
+                progressDialog.setMessage(getString(R.string.deviceConnected));
             }
         }, 2000);
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
+                progressDialog.dismiss();
                 finish();
             }
         }, 4000);

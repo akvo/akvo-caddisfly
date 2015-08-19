@@ -163,8 +163,8 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
         results.add(createNewResult(1.6, Color.rgb(230, 230, 230)));
 
-        int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
-        assertEquals(Color.rgb(239, 239, 239), color);
+        int color = DataHelper.getAverageColor(results);
+        assertEquals(0, color);
     }
 
     public void testGetAverageColor2() {
@@ -174,7 +174,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.7, Color.rgb(245, 245, 245)));
         results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
 
-        int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        int color = DataHelper.getAverageColor(results);
         assertEquals(0, color);
     }
 
@@ -187,8 +187,20 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
         results.add(createNewResult(1.5, Color.rgb(210, 230, 210)));
 
-        int color = DataHelper.getAverageColor(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        int color = DataHelper.getAverageColor(results);
         assertEquals(0, color);
     }
 
+    public void testGetAverageColor4() {
+        ArrayList<Result> results = new ArrayList<>();
+        results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
+        results.add(createNewResult(1.8, Color.rgb(250, 254, 250)));
+        results.add(createNewResult(1.8, Color.rgb(251, 253, 250)));
+        results.add(createNewResult(1.8, Color.rgb(252, 252, 250)));
+        results.add(createNewResult(1.8, Color.rgb(253, 251, 250)));
+        results.add(createNewResult(1.8, Color.rgb(254, 250, 250)));
+
+        int color = DataHelper.getAverageColor(results);
+        assertEquals(Color.rgb(252, 252, 250), color);
+    }
 }

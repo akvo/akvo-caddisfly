@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.adapter.TypeListAdapter;
+import org.akvo.caddisfly.adapter.TestTypesAdapter;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.JsonUtils;
 
@@ -57,7 +57,7 @@ public class TypeListFragment extends ListFragment {
         mTests = JsonUtils.loadConfigurationsForAllTests(AppConfig.getConfigJson());
 
         //set the adapter with tests list
-        TypeListAdapter customList = new TypeListAdapter(getActivity(),
+        TestTypesAdapter customList = new TestTypesAdapter(getActivity(),
                 mTests.toArray(new TestInfo[mTests.size()]));
         setListAdapter(customList);
     }

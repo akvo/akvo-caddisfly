@@ -68,12 +68,6 @@ public class AppPreferencesTest {
         checkDiagnosticPreference(R.string.samplingsTimeKey, 5, "getSamplingTimes", 1);
     }
 
-    @Test
-    public void checkColorDistanceTolerance() {
-        checkDiagnosticPreference(R.string.colorDistanceToleranceKey, 4, "getColorDistanceTolerance", 99);
-    }
-
-
     private void checkDiagnosticPreference(@StringRes int key, Object defaultValue,
                                            String methodName, Object newValue) {
         Method method;

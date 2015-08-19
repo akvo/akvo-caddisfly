@@ -18,7 +18,6 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
@@ -50,20 +49,20 @@ public final class DataHelper {
      * @param swatches   The range of colors to compare against
      */
     public static ResultDetail analyzeColor(ColorInfo photoColor, ArrayList<Swatch> swatches,
-                                            int maxDistance, AppConfig.ColorModel colorModel) {
+                                            ColorUtils.ColorModel colorModel) {
 
         //Find the color that matches the photoColor from the calibrated colorRange
         ColorCompareInfo colorCompareInfo = getNearestColorFromSwatches(
-                photoColor.getColor(), swatches, AppConfig.MIN_VALID_COLOR_DISTANCE);
+                photoColor.getColor(), swatches, true);
 
-        //If no color matches the colorRange then generate a gradient by interpolation
+        //If there are no exact color matches in the swatches then generate a gradient by interpolation
         if (colorCompareInfo.getResult() < 0) {
 
             ArrayList<Swatch> gradientSwatches = ColorUtils.generateGradient(swatches, colorModel, 0.01);
 
             //Find the color within the generated gradient that matches the photoColor
             colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
-                    gradientSwatches, maxDistance);
+                    gradientSwatches, false);
         }
 
         //set the result
@@ -87,9 +86,14 @@ public final class DataHelper {
      * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
     private static ColorCompareInfo getNearestColorFromSwatches(
-            int colorToFind, ArrayList<Swatch> swatches, double maxDistance) {
+            int colorToFind, ArrayList<Swatch> swatches, boolean exactMatch) {
 
-        double distance = maxDistance;
+        double distance;
+        if (exactMatch) {
+            distance = ColorUtils.getMinDistance();
+        } else {
+            distance = ColorUtils.getMaxDistance();
+        }
 
         double resultValue = -1;
         int matchedColor = -1;
@@ -97,15 +101,14 @@ public final class DataHelper {
         for (int i = 0; i < swatches.size(); i++) {
             int tempColor = swatches.get(i).getColor();
 
-            double temp = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(tempColor),
-                    ColorUtils.colorToLab(colorToFind));
+            double tempDistance = ColorUtils.getColorDistance(tempColor, colorToFind);
 
-            if (temp == 0.0) {
+            if (tempDistance == 0.0) {
                 resultValue = swatches.get(i).getValue();
                 matchedColor = swatches.get(i).getColor();
                 break;
-            } else if (temp < distance) {
-                distance = temp;
+            } else if (tempDistance < distance) {
+                distance = tempDistance;
                 resultValue = swatches.get(i).getValue();
                 matchedColor = swatches.get(i).getColor();
             }
@@ -167,20 +170,14 @@ public final class DataHelper {
     public static boolean validateSwatchList(ArrayList<Swatch> swatches) {
 
         for (Swatch swatch : swatches) {
-            if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
+            if (swatch.getColor() == Color.TRANSPARENT || swatch.getColor() == Color.BLACK) {
                 //Calibration is incomplete
                 return false;
             }
             for (Swatch swatch1 : swatches) {
-                if (swatch != swatch1) {
-                    double value = ColorUtils.getColorDistanceLab(
-                            ColorUtils.colorToLab(swatch.getColor()),
-                            ColorUtils.colorToLab(swatch1.getColor()));
-
-                    if (value <= AppConfig.MIN_VALID_COLOR_DISTANCE) {
-                        //Duplicate color
-                        return false;
-                    }
+                if (swatch != swatch1 && ColorUtils.areColorsSimilar(swatch.getColor(), swatch1.getColor())) {
+                    //Duplicate color
+                    return false;
                 }
             }
         }
@@ -189,45 +186,52 @@ public final class DataHelper {
         //return !(calculateSlope(swatches) < 20 || calculateSlope(swatches) > 40);
     }
 
-    public static int getAverageColor(ArrayList<Result> results, int samplingTimes) {
-
-        int counter = 0;
+    /**
+     * Returns an average color from a list of results
+     * If any color does not closely match the rest of the colors then it returns 0
+     *
+     * @param results the list of results. Note: The first result will be ignored.
+     * @return the average color
+     */
+    public static int getAverageColor(ArrayList<Result> results) {
 
         int red = 0;
         int green = 0;
         int blue = 0;
 
-        ArrayList<Double> distances = new ArrayList<>();
+        for (int i = 1; i < results.size(); i++) {
 
-        for (int i = 1; i < results.size() - 1; i++) {
-            distances.add(ColorUtils.getColorDistance(results.get(i).getResults().get(0).getColor(),
-                    results.get(i + 1).getResults().get(0).getColor()));
-        }
+            int color1 = results.get(i).getResults().get(0).getColor();
 
-        for (int i = 0; i < distances.size(); i++) {
-            if (distances.get(i) > 20) {
+            //if invalid color return 0
+            if (color1 == 0) {
                 return 0;
             }
-        }
 
-        //Ignore the first result
-        for (int i = 1; i < results.size(); i++) {
-            int color = results.get(i).getResults().get(0).getColor();
-            if (color != 0) {
-                counter++;
-                red += Color.red(color);
-                green += Color.green(color);
-                blue += Color.blue(color);
+            //check all the colors are mostly similar otherwise return 0 (ignore first item)
+            for (int j = 1; j < results.size() - 1; j++) {
+                int color2 = results.get(j).getResults().get(0).getColor();
+                if (!ColorUtils.areColorsSimilar(color1, color2)) {
+                    return 0;
+                }
             }
+            red += Color.red(color1);
+            green += Color.green(color1);
+            blue += Color.blue(color1);
         }
 
-        if (counter >= samplingTimes - 1) {
-            return Color.rgb(red / counter, green / counter, blue / counter);
-        } else {
-            return 0;
-        }
+        //return an average color
+        int resultCount = results.size() - 1;
+        return Color.rgb(red / resultCount, green / resultCount, blue / resultCount);
     }
 
+    /**
+     * Returns the index of the item that closely matches the given value
+     *
+     * @param results      the list of results
+     * @param commonResult the result to compare with
+     * @return the index of the closest matching value
+     */
     private static int getClosestMatchIndex(ArrayList<Double> results, double commonResult) {
         double difference = 9999999;
         int index = -1;
@@ -242,6 +246,12 @@ public final class DataHelper {
         return index;
     }
 
+    /**
+     * Returns the value that appears the most number of times in the array
+     *
+     * @param array the array of values
+     * @return the most frequent value
+     */
     private static double mostFrequent(double[] array) {
         Map<Double, Integer> map = new HashMap<>();
 
@@ -265,6 +275,13 @@ public final class DataHelper {
         return mostFrequent;
     }
 
+    /**
+     * Returns the average of a list of values
+     *
+     * @param results the results
+     * @param samplingTimes the sampling times
+     * @return the average value
+     */
     public static double getAverageResult(ArrayList<Result> results, int samplingTimes) {
 
         double result = 0;

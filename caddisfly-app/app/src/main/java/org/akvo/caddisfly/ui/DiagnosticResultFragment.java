@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
@@ -47,7 +46,7 @@ public class DiagnosticResultFragment extends DialogFragment {
     private Fragment mParentFragment;
 
     public static DiagnosticResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
-                                                    String dimension, Fragment parentFragment) {
+                                                       String dimension, Fragment parentFragment) {
         DiagnosticResultFragment fragment = new DiagnosticResultFragment();
         fragment.mExtractBitmap = extractBitmap;
         fragment.mPhotoBitmap = photoBitmap;
@@ -89,15 +88,12 @@ public class DiagnosticResultFragment extends DialogFragment {
             caddisflyApp.setDefaultTest();
         }
 
-        int maxDistance = AppPreferences.getColorDistanceTolerance(getActivity());
-
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(mExtractBitmap,
                 AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 caddisflyApp.currentTestInfo.getSwatches(),
-                maxDistance,
-                AppConfig.ColorModel.RGB);
+                ColorUtils.ColorModel.RGB);
 
         double result = resultDetail.getResult();
         int color = resultDetail.getColor();

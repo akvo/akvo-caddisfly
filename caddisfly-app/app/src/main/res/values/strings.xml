@@ -161,4 +161,5 @@
     <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
+
 </resources>

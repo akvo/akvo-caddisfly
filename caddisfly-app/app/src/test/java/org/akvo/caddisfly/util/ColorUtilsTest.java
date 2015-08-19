@@ -20,7 +20,6 @@ import android.graphics.Color;
 
 import junit.framework.TestCase;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 
@@ -54,7 +53,7 @@ public class ColorUtilsTest extends TestCase {
             testInfo.addSwatch(swatch);
         }
 
-        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getSwatches(), AppConfig.ColorModel.RGB, 0.01);
+        ArrayList<Swatch> list = ColorUtils.generateGradient(testInfo.getSwatches(), ColorUtils.DEFAULT_COLOR_MODEL, 0.01);
 
         assertEquals(401, list.size());
 

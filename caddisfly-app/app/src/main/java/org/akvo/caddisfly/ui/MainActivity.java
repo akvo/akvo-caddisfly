@@ -111,10 +111,11 @@ public class MainActivity extends BaseActivity {
                 public void run() {
                     if (mShouldFinish) {
                         //close this app as external app is currently active
-                        finish();
+                        finishAffinity();
+                        ExitActivity.exitApplication(getApplicationContext());
                     }
                 }
-            }, 6000);
+            }, 2000);
         }
     }
 

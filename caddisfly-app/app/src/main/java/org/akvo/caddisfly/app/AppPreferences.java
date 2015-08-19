@@ -32,15 +32,6 @@ public class AppPreferences {
         }
     }
 
-    public static int getColorDistanceTolerance(Context context) {
-        if (isDiagnosticMode(context)) {
-            return Integer.parseInt(PreferencesUtils.getString(context,
-                    R.string.colorDistanceToleranceKey, String.valueOf(AppConfig.MAX_COLOR_DISTANCE)));
-        } else {
-            return AppConfig.MAX_COLOR_DISTANCE;
-        }
-    }
-
     public static boolean isSoundOff(Context context) {
         return isDiagnosticMode(context) &&
                 PreferencesUtils.getBoolean(context, R.string.noSoundKey, false);

@@ -178,7 +178,7 @@ public class AlertUtils {
 
         builder.setMessage(message);
 
-        ImageView image = (ImageView) alertView.findViewById(R.id.image);
+        ImageView image = (ImageView) alertView.findViewById(R.id.imageSample);
         image.setImageBitmap(bitmap);
 
         if (positiveListener != null) {

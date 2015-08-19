@@ -68,8 +68,7 @@ public class MainActivityTest {
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
-                AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.ColorModel.RGB);
+                ColorUtils.ColorModel.RGB);
 
         assertEquals(-1.0, resultDetail.getResult());
     }
@@ -97,11 +96,10 @@ public class MainActivityTest {
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
-                AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.defaultColorModel);
+                ColorUtils.DEFAULT_COLOR_MODEL);
 
         assertEquals(Color.rgb(255, 156, 149), resultDetail.getColor());
-        assertEquals(1.01, resultDetail.getResult());
+        assertEquals(1.1, resultDetail.getResult());
     }
 
     @Test
@@ -127,8 +125,7 @@ public class MainActivityTest {
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
-                AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.ColorModel.RGB);
+                ColorUtils.ColorModel.RGB);
 
         assertEquals(Color.rgb(255, 146, 139), resultDetail.getColor());
         assertEquals(1.0, resultDetail.getResult());
@@ -153,8 +150,7 @@ public class MainActivityTest {
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
-                AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.ColorModel.RGB);
+                ColorUtils.ColorModel.RGB);
 
         assertEquals(1.5, resultDetail.getResult());
     }
@@ -178,8 +174,7 @@ public class MainActivityTest {
 
         ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
-                AppConfig.MAX_COLOR_DISTANCE,
-                AppConfig.ColorModel.RGB);
+                ColorUtils.ColorModel.RGB);
 
         assertEquals(1.0, resultDetail.getResult());
     }

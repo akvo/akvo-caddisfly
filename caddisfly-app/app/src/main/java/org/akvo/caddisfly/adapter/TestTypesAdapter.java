@@ -27,13 +27,16 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 
-public class TypeListAdapter extends ArrayAdapter<TestInfo> {
+/**
+ * Adapter to list the various contaminant test types
+ */
+public class TestTypesAdapter extends ArrayAdapter<TestInfo> {
 
     private final Activity mActivity;
 
     private final TestInfo[] mTestInfoArray;
 
-    public TypeListAdapter(Activity activity, TestInfo[] testInfoArray) {
+    public TestTypesAdapter(Activity activity, TestInfo[] testInfoArray) {
         super(activity, R.layout.row_calibrate, testInfoArray);
         mActivity = activity;
         mTestInfoArray = testInfoArray;
@@ -48,6 +51,7 @@ public class TypeListAdapter extends ArrayAdapter<TestInfo> {
         TestInfo testInfo = mTestInfoArray[position];
         View rowView;
 
+        //include item in the list only if the test type requires calibration
         if (testInfo.getRequiresCalibration()) {
             rowView = inflater.inflate(R.layout.row_type, parent, false);
             ((TextView) rowView.findViewById(R.id.textUnit)).setText(

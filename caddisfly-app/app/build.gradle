@@ -55,7 +55,6 @@ android {
 
 unMock {
     keep "android.graphics.Color"
-    keep "android.util.Pair"
 }
 
 dependencies {
@@ -67,7 +66,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.3'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
 }

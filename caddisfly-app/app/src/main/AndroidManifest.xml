@@ -12,7 +12,7 @@
   ~  See the GNU Affero General Public License included below for more details.
   ~
   ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -47,6 +47,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -71,8 +72,10 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.UsbConnectionActivity"
+            android:autoRemoveFromRecents="true"
             android:label="@string/appName"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
@@ -109,6 +112,10 @@
             android:label="@string/calibrate"
             android:parentActivityName=".ui.SettingsActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".ui.ExitActivity"
+            android:autoRemoveFromRecents="true"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 
 </manifest>

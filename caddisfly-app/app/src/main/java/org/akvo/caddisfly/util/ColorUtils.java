@@ -20,7 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.HsvColor;
 import org.akvo.caddisfly.model.LabColor;
@@ -33,7 +32,10 @@ import java.util.ArrayList;
  * Set of utility functions for color calculations and analysis
  */
 public final class ColorUtils {
-
+    /**
+     * The default color model used for analysis
+     */
+    public static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
     private static final double Xn = 0.950470;
     private static final double Yn = 1.0;
     private static final double Zn = 1.088830;
@@ -41,8 +43,39 @@ public final class ColorUtils {
     private static final double t1 = 0.206896552;  // 6 / 29;
     private static final double t2 = 0.12841855;   // 3 * t1 * t1;
     private static final double t3 = 0.008856452; // t1 * t1 * t1;
-
+    /**
+     * The maximum color distance before the color is considered out of range
+     */
+    private static final int MAX_COLOR_DISTANCE_RGB = 30;
+    private static final int MAX_COLOR_DISTANCE_LAB = 4;
+    /**
+     * The minimum color distance at which the colors are considered equivalent
+     */
+    private static final double MIN_COLOR_DISTANCE_RGB = 6;
+    private static final double MIN_COLOR_DISTANCE_LAB = 1.2;
     private ColorUtils() {
+    }
+
+    public static double getMinDistance() {
+        switch (DEFAULT_COLOR_MODEL) {
+            case RGB:
+                return MIN_COLOR_DISTANCE_RGB;
+            case LAB:
+                return MIN_COLOR_DISTANCE_LAB;
+            default:
+                return MIN_COLOR_DISTANCE_RGB;
+        }
+    }
+
+    public static double getMaxDistance() {
+        switch (DEFAULT_COLOR_MODEL) {
+            case RGB:
+                return MAX_COLOR_DISTANCE_RGB;
+            case LAB:
+                return MAX_COLOR_DISTANCE_LAB;
+            default:
+                return MAX_COLOR_DISTANCE_RGB;
+        }
     }
 
     /**
@@ -92,9 +125,7 @@ public final class ColorUtils {
             int goodColors = 0;
 
             for (int i = 0; i < colorsFound; i++) {
-                double distance = getColorDistanceLab(colorToLab(commonColor), colorToLab(m.keyAt(i)));
-
-                if (distance < AppConfig.MIN_VALID_COLOR_DISTANCE) {
+                if (areColorsSimilar(commonColor, m.keyAt(i))) {
                     goodColors++;
                     goodPixelCount += m.valueAt(i);
                 }
@@ -154,6 +185,27 @@ public final class ColorUtils {
      * @return the distance between the two colors
      */
     public static double getColorDistance(int color1, int color2) {
+        switch (DEFAULT_COLOR_MODEL) {
+            case RGB:
+                return getColorDistanceRgb(color1, color2);
+
+            case LAB:
+                return getColorDistanceLab(colorToLab(color1), colorToLab(color2));
+
+            default:
+                //todo: create a hsv distance. currently using rgb
+                return getColorDistanceRgb(color1, color2);
+        }
+    }
+
+    /**
+     * Computes the Euclidean distance between the two colors
+     *
+     * @param color1 the first color
+     * @param color2 the color to compare with
+     * @return the distance between the two colors
+     */
+    private static double getColorDistanceRgb(int color1, int color2) {
         double r, g, b;
 
         r = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
@@ -163,6 +215,21 @@ public final class ColorUtils {
         return Math.sqrt(b + g + r);
     }
 
+    public static boolean areColorsSimilar(int color1, int color2) {
+        switch (DEFAULT_COLOR_MODEL) {
+            case RGB:
+                return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
+
+            case LAB:
+                return getColorDistanceLab(colorToLab(color1), colorToLab(color2))
+                        < MIN_COLOR_DISTANCE_LAB;
+
+            default:
+                //todo: create a hsv distance. currently using rgb
+                return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
+        }
+    }
+
     /**
      * Auto generate the color swatches for the given test type
      *
@@ -170,15 +237,14 @@ public final class ColorUtils {
      * @return The list of generated color swatches
      */
     @SuppressWarnings("SameParameterValue")
-    public static ArrayList<Swatch> generateGradient(ArrayList<Swatch> swatches,
-                                                     AppConfig.ColorModel colorModel, double increment) {
+    public static ArrayList<Swatch> generateGradient(
+            ArrayList<Swatch> swatches, ColorModel colorModel, double increment) {
 
-        if (colorModel == AppConfig.ColorModel.HSV) {
+        if (colorModel == ColorModel.HSV) {
             return getGradientHsvColor(swatches, 200);
         }
 
         ArrayList<Swatch> list = new ArrayList<>();
-        //double increment = 0.01;
 
         for (int i = 0; i < swatches.size() - 1; i++) {
 
@@ -476,5 +542,12 @@ public final class ColorUtils {
 
         // The CIE 00 color difference
         return Math.sqrt(dL * dL + dC * dC + dH * dH + RT * dC * dH);
+    }
+
+    /**
+     * The different types of color models
+     */
+    public enum ColorModel {
+        RGB, LAB, HSV
     }
 }

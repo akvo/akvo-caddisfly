@@ -31,6 +31,9 @@ import org.akvo.caddisfly.util.ColorUtils;
 
 import java.util.ArrayList;
 
+/**
+ * List of swatches including the generated gradient swatches
+ */
 public class SwatchesAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
@@ -56,7 +59,7 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
 
             rowView.findViewById(R.id.buttonColor).setBackgroundColor(color);
 
-            //display ppm value
+            //display unit value
             ((TextView) rowView.findViewById(R.id.textUnit)).setText(
                     String.format("%.2f", colorArray.get(position).getValue()));
 
@@ -67,7 +70,6 @@ public class SwatchesAdapter extends ArrayAdapter<Swatch> {
                 distance = ColorUtils.getColorDistanceLab(ColorUtils.colorToLab(previousColor),
                         ColorUtils.colorToLab(color));
                 distanceRgb = ColorUtils.getColorDistance(previousColor, color);
-
             }
 
             float[] colorHSV = new float[3];

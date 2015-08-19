@@ -127,29 +127,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        final EditTextPreference distancePreference =
-                (EditTextPreference) findPreference(getString(R.string.colorDistanceToleranceKey));
-        if (distancePreference != null) {
-            distancePreference.setSummary(distancePreference.getText());
-
-            distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 99) {
-                        newValue = 99;
-                    }
-
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                        newValue = 1;
-                    }
-
-                    distancePreference.setText(String.valueOf(newValue));
-                    distancePreference.setSummary(String.valueOf(newValue));
-                    return false;
-                }
-            });
-        }
-
         return rootView;
     }
 

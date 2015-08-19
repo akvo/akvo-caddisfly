@@ -38,11 +38,14 @@ import org.akvo.caddisfly.util.ColorUtils;
 
 import java.util.ArrayList;
 
-public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
+/**
+ * The calibrated swatches and values for each test type
+ */
+public class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
 
-    public CalibrateListAdapter(Activity activity, Swatch[] rangeArray) {
+    public CalibrationsAdapter(Activity activity, Swatch[] rangeArray) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
     }
@@ -67,10 +70,11 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
 
         int color = swatch.getColor();
 
-        // display ppm value
+        //display unit value
         Spannable word = new SpannableString(String.format("%.2f ", swatch.getValue()));
         textUnit.setText(word);
 
+        //append the unit
         Spannable wordTwo = new SpannableString(caddisflyApp.currentTestInfo.getUnit());
 
         wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
@@ -81,12 +85,14 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
         textUnit.append(wordTwo);
 
         if (color == Color.TRANSPARENT || color == Color.BLACK) {
+            //not calibrated so just show a '?' instead of color
             buttonColor.setBackgroundColor(Color.argb(0, 10, 10, 10));
             buttonColor.setText("?");
         } else {
+            //show the calibrated color
             buttonColor.setBackgroundColor(color);
 
-            //Display additional information if we are in diagnostic mode
+            //display additional information if we are in diagnostic mode
             if (AppPreferences.isDiagnosticMode(getContext())) {
                 double distance = 0;
                 if (position > 0) {
@@ -103,6 +109,7 @@ public class CalibrateListAdapter extends ArrayAdapter<Swatch> {
                 textRgb.setVisibility(View.VISIBLE);
                 textHsv.setVisibility(View.VISIBLE);
                 textBrightness.setVisibility(View.VISIBLE);
+                //hide the arrow to make space for diagnostics
                 rowView.findViewById(R.id.imageArrow).setVisibility(View.GONE);
             }
         }

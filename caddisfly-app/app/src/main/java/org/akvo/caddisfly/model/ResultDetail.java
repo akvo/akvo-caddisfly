@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.model;
 
-import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.util.ColorUtils;
 
 public class ResultDetail {
     private final int color;
@@ -8,7 +8,7 @@ public class ResultDetail {
     private int matchedColor;
     private double distance;
     private int calibrationSteps;
-    private AppConfig.ColorModel colorModel;
+    private ColorUtils.ColorModel colorModel;
 
     public ResultDetail(double result, int color) {
         this.result = result;
@@ -51,11 +51,11 @@ public class ResultDetail {
         this.calibrationSteps = calibrationSteps;
     }
 
-    public AppConfig.ColorModel getColorModel() {
+    public ColorUtils.ColorModel getColorModel() {
         return colorModel;
     }
 
-    public void setColorModel(AppConfig.ColorModel colorModel) {
+    public void setColorModel(ColorUtils.ColorModel colorModel) {
         this.colorModel = colorModel;
     }
 }

@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.adapter.CalibrateListAdapter;
+import org.akvo.caddisfly.adapter.CalibrationsAdapter;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtils;
@@ -62,11 +62,11 @@ public class CalibrateListFragment extends ListFragment {
     void setAdapter() {
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
-        CalibrateListAdapter calibrateListAdapter = new CalibrateListAdapter(getActivity(),
+        CalibrationsAdapter calibrationsAdapter = new CalibrationsAdapter(getActivity(),
                 caddisflyApp.currentTestInfo.getSwatches().toArray(
                         new Swatch[caddisflyApp.currentTestInfo.getSwatches().size()]));
 
-        setListAdapter(calibrateListAdapter);
+        setListAdapter(calibrationsAdapter);
 
         //Display error if calibration is completed but invalid
         if (ColorUtils.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getSwatches()) &&

@@ -48,13 +48,5 @@
             android:maxLength="2"
             android:numeric="integer"
             android:title="Sampling times" />
-        <EditTextPreference
-            android:defaultValue="4"
-            android:dialogMessage="Enter a value below 100"
-            android:key="@string/colorDistanceToleranceKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Max color distance" />
-
     </org.akvo.caddisfly.util.PreferenceCategoryCustom>
 </PreferenceScreen>

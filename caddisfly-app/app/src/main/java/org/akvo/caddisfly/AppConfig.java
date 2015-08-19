@@ -46,7 +46,7 @@ public class AppConfig {
      * The expected size of the next update file to enable display of the progress bar.
      * Used only if the update process cannot determine the size of the file to download
      */
-    public static final int UPDATE_FILE_TYPICAL_SIZE = 1400000;
+    public static final int UPDATE_FILE_TYPICAL_SIZE = 910000;
 
     //todo: remove when upgrade process no more required
     @Deprecated
@@ -68,14 +68,6 @@ public class AppConfig {
      */
     public static final int DELAY_BETWEEN_SAMPLING = 6000;
     /**
-     * The maximum color distance before the color is considered out of range
-     */
-    public static final int MAX_COLOR_DISTANCE = 4;
-    /**
-     * The minimum color distance allowed before the colors are considered equivalent
-     */
-    public static final double MIN_VALID_COLOR_DISTANCE = 1.2;
-    /**
      * The number of photos to take during analysis
      */
     public static final int SAMPLING_COUNT_DEFAULT = 5;
@@ -83,10 +75,6 @@ public class AppConfig {
      * The sound volume for the beeps and success/fail sounds
      */
     public static final float SOUND_VOLUME = 1f;
-    /**
-     * The default color model used for analysis
-     */
-    public static final ColorModel defaultColorModel = ColorModel.LAB;
 
     /**
      * The user created configuration file name
@@ -154,13 +142,6 @@ public class AppConfig {
      */
     public enum TestType {
         COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
-    }
-
-    /**
-     * The different types of color models
-     */
-    public enum ColorModel {
-        RGB, LAB, HSV
     }
 
     /**

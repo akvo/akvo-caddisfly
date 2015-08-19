@@ -387,8 +387,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
      */
     private void getAnalyzedResult(Bitmap bitmap) {
 
-        int maxDistance = AppPreferences.getColorDistanceTolerance(this);
-
         //Extract the color from the photo which will be used for comparison
         ColorInfo photoColor = ColorUtils.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
@@ -399,61 +397,39 @@ public class ColorimetryLiquidActivity extends BaseActivity
         //In diagnostic mode show results based on other color models / number of calibration steps
         if (AppPreferences.isDiagnosticMode(this)) {
             ArrayList<Swatch> swatches = new ArrayList<>();
+
+            //add only the first and last swatch for a 2 step analysis
             swatches.add(testInfo.getSwatches().get(0));
             swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
 
-            results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.LAB));
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.LAB));
 
-            results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.RGB));
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.RGB));
 
-            results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.HSV));
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.HSV));
 
+            //add the middle swatch for a 3 step analysis
             swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
 
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.LAB));
+
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.RGB));
+
+            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtils.ColorModel.HSV));
+
+            //use all the swatches for an all steps analysis
             results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.LAB));
+                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtils.ColorModel.RGB));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.RGB));
+                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtils.ColorModel.HSV));
 
             results.add(DataHelper.analyzeColor(photoColor,
-                    swatches,
-                    maxDistance,
-                    AppConfig.ColorModel.HSV));
-
-            results.add(DataHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(),
-                    maxDistance,
-                    AppConfig.ColorModel.RGB));
-
-            results.add(DataHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(),
-                    maxDistance,
-                    AppConfig.ColorModel.HSV));
-
-            results.add(DataHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(),
-                    maxDistance,
-                    AppConfig.ColorModel.LAB));
+                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtils.ColorModel.LAB));
         }
 
         results.add(0, DataHelper.analyzeColor(photoColor,
-                CaddisflyApp.getApp().currentTestInfo.getSwatches(),
-                maxDistance,
-                AppConfig.defaultColorModel));
+                CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtils.DEFAULT_COLOR_MODEL));
 
         Result result = new Result(bitmap, results);
 
@@ -556,7 +532,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 break;
         }
 
-        int color = DataHelper.getAverageColor(mResults, AppPreferences.getSamplingTimes(this));
+        int color = DataHelper.getAverageColor(mResults);
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
         Intent intent = new Intent(getIntent());
         intent.putExtra("result", result);
