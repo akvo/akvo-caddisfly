@@ -21,6 +21,7 @@ import android.graphics.Color;
 import junit.framework.TestCase;
 
 import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.helper.DataHelper;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 
@@ -31,7 +32,7 @@ public class DataHelperTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        ClassUtils.assertUtilityClassWellDefined(DataHelper.class);
+        ClassUtil.assertUtilityClassWellDefined(DataHelper.class);
     }
 
     private Result createNewResult(double value) {

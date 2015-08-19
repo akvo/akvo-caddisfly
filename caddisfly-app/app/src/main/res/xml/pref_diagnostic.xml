@@ -15,7 +15,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/diagnostics">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/diagnostics">
         <Preference
             android:key="startTest"
             android:title="Start Colorimetric Test" />
@@ -48,5 +48,5 @@
             android:maxLength="2"
             android:numeric="integer"
             android:title="Sampling times" />
-    </org.akvo.caddisfly.util.PreferenceCategoryCustom>
+    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

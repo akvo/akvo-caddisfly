@@ -16,11 +16,6 @@
 
 package org.akvo.caddisfly;
 
-import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.util.FileUtils;
-
-import java.io.File;
-
 /**
  * Global Configuration settings for the app
  */
@@ -48,17 +43,6 @@ public class AppConfig {
      */
     public static final int UPDATE_FILE_TYPICAL_SIZE = 910000;
 
-    //todo: remove when upgrade process no more required
-    @Deprecated
-    public static final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
-    @Deprecated
-    public static final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
-    @Deprecated
-    public static final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
-    /**
-     * Tag for debug log filtering
-     */
-    public static final String DEBUG_TAG = "Caddisfly";
     /**
      * Width and height of cropped image
      */
@@ -76,78 +60,4 @@ public class AppConfig {
      */
     public static final float SOUND_VOLUME = 1f;
 
-    /**
-     * The user created configuration file name
-     */
-    // Files
-    private static final String CONFIG_FILE = "tests.json";
-    // Folders
-    private static final String DIR_APK = "apk"; // App upgrades
-    private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
-    private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
-
-    /**
-     * Get the appropriate files directory for the given FileType. The directory may or may
-     * not be in the app-specific External Storage. The caller cannot assume anything about
-     * the location.
-     *
-     * @param type FileType to determine the type of resource attempting to use.
-     * @return File representing the root directory for the given FileType.
-     */
-    public static File getFilesDir(FileType type) {
-        String path = null;
-        switch (type) {
-            case APK:
-                path = FileUtils.getFilesStorageDir(true) + File.separator + DIR_APK;
-                break;
-            case CALIBRATION:
-                path = FileUtils.getFilesStorageDir(false) + File.separator + DIR_CALIBRATION;
-                break;
-            case CONFIG:
-                path = FileUtils.getFilesStorageDir(false) + File.separator + DIR_CONFIG;
-                break;
-        }
-        File dir = new File(path);
-        if (!dir.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            dir.mkdirs();
-        }
-        return dir;
-    }
-
-    /**
-     * Loads the tests from the json config file.
-     * <p/>
-     * Looks for the user created json file. If not found loads the internal json config file
-     *
-     * @return json configuration text
-     */
-    public static String getConfigJson() {
-
-        File file = new File(AppConfig.getFilesDir(AppConfig.FileType.CONFIG), AppConfig.CONFIG_FILE);
-        String text;
-
-        //Look for external json config file otherwise use the internal default one
-        if (file.exists()) {
-            text = FileUtils.loadTextFromFile(file);
-        } else {
-            text = FileUtils.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
-        }
-
-        return text;
-    }
-
-    /**
-     * The different types of testing methods
-     */
-    public enum TestType {
-        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
-    }
-
-    /**
-     * The different types of files
-     */
-    public enum FileType {
-        APK, CALIBRATION, CONFIG
-    }
 }

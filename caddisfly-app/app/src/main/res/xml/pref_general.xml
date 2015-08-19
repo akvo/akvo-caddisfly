@@ -15,7 +15,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/general">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/general">
         <Preference
             android:key="calibrate"
             android:summary="@string/calibrateSummary"
@@ -25,6 +25,6 @@
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
 
-    </org.akvo.caddisfly.util.PreferenceCategoryCustom>
+    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 
 </PreferenceScreen>

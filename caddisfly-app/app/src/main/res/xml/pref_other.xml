@@ -15,7 +15,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/other">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/other">
 
     <ListPreference
             android:defaultValue="en"
@@ -40,5 +40,5 @@
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
 
-    </org.akvo.caddisfly.util.PreferenceCategoryCustom>
+    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

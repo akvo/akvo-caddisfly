@@ -18,7 +18,7 @@ package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
 
-import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.app.CaddisflyApp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +33,12 @@ public class TestInfo {
     private final String code;
     private final String unit;
     private final ArrayList<Swatch> swatches;
-    private final AppConfig.TestType testType;
+    private final CaddisflyApp.TestType testType;
     private final ArrayList<Integer> dilutions;
     private final boolean requiresCalibration;
     private boolean mIsDirty;
 
-    public TestInfo(Hashtable names, String code, String unit, AppConfig.TestType testType,
+    public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray) {
         this.names = names;
         this.testType = testType;
@@ -60,7 +60,7 @@ public class TestInfo {
 
     public TestInfo() {
         names = null;
-        testType = AppConfig.TestType.COLORIMETRIC_LIQUID;
+        testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
         code = "";
         unit = "";
         swatches = new ArrayList<>();
@@ -88,7 +88,7 @@ public class TestInfo {
         return "";
     }
 
-    public AppConfig.TestType getType() {
+    public CaddisflyApp.TestType getType() {
         return testType;
     }
 

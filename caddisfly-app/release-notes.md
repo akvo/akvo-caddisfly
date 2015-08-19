@@ -106,8 +106,8 @@ v0.65 alpha
 -----------
 1. lg low res issue: width parameter of picture taken set to be at least between 800 and 1400
 2. ui: display units along with range values on calibrate screen
-3. devmode: added take picture for testing
-4. devmode: no sound option
+3. Diagnostic: added take picture for testing
+4. Diagnostic: no sound option
 
 v0.64 alpha
 -----------
@@ -207,7 +207,7 @@ example:
 6. longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. swatch validation disabled
 8. removed reliance on separate developer app for enabling controls 
-9. link to demo video on vimeo
+9. link to demo video
 10. for now ec and ec temperature are two separate tests and thereby two questions in survey
 
 **known issues**

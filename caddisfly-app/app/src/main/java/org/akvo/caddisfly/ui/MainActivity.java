@@ -35,15 +35,21 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.DataHelper;
-import org.akvo.caddisfly.util.DateUtils;
-import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.NetworkUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
-import org.akvo.caddisfly.util.UpdateCheckTask;
+import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.helper.DataHelper;
+import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.UpdateCheckTask;
+import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.DateUtil;
+import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.NetworkUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -124,12 +130,18 @@ public class MainActivity extends BaseActivity {
      */
     //todo: upgrade stuff. To be removed eventually...
     private void upgradeOldFolderPath() {
+
+        //todo: remove when upgrade process no more required
+        final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
+        final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
+        final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
+
         File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                AppConfig.OLD_FILES_FOLDER_NAME + File.separator + AppConfig.OLD_CALIBRATE_FOLDER_NAME);
+                OLD_FILES_FOLDER_NAME + File.separator + OLD_CALIBRATE_FOLDER_NAME);
 
         boolean folderFixed = true;
         File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                AppConfig.OLD_APP_EXTERNAL_PATH);
+                OLD_APP_EXTERNAL_PATH);
 
         if (oldFolder.exists()) {
 
@@ -138,17 +150,17 @@ public class MainActivity extends BaseActivity {
                 newPath.mkdirs();
             }
 
-            newPath = AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION);
+            newPath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
             if (!newPath.exists()) {
                 folderFixed = oldFolder.renameTo(newPath);
             }
         }
 
         oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                AppConfig.OLD_FILES_FOLDER_NAME);
+                OLD_FILES_FOLDER_NAME);
         if (oldFolder.exists() && folderFixed) {
-            FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
-                    + AppConfig.OLD_FILES_FOLDER_NAME);
+            FileUtil.deleteFiles(Environment.getExternalStorageDirectory().getPath()
+                    + OLD_FILES_FOLDER_NAME);
         }
 
         if (newPath.exists()) {
@@ -167,15 +179,15 @@ public class MainActivity extends BaseActivity {
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
-                if (NetworkUtils.isOnline(mContext)) {
-                    long updateLastCheck = PreferencesUtils.getLong(mContext, R.string.lastUpdateCheckKey);
+                if (NetworkUtil.isOnline(mContext)) {
+                    long updateLastCheck = PreferencesUtil.getLong(mContext, R.string.lastUpdateCheckKey);
 
                     // last update check date
                     Calendar lastCheckDate = Calendar.getInstance();
                     lastCheckDate.setTimeInMillis(updateLastCheck);
 
                     Calendar currentDate = Calendar.getInstance();
-                    if (DateUtils.getHoursDifference(lastCheckDate, currentDate) > 0) {
+                    if (DateUtil.getHoursDifference(lastCheckDate, currentDate) > 0) {
                         UpdateCheckTask updateCheckTask = new UpdateCheckTask(mContext, true);
                         updateCheckTask.execute();
                     }
@@ -225,18 +237,18 @@ public class MainActivity extends BaseActivity {
         String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
 
         //the language the system was set to the last time the app was run
-        String previousSystemLanguage = PreferencesUtils.getString(this, R.string.systemLanguageKey, "");
+        String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
 
         //if the system language was changed in the device settings then set that as the app language
         if (!previousSystemLanguage.equals(currentSystemLanguage)
                 && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
-            PreferencesUtils.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
-            PreferencesUtils.setString(this, R.string.languageKey, currentSystemLanguage);
+            PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
+            PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
         }
 
         if (languageCode == null || !Arrays.asList(supportedLanguages).contains(languageCode)) {
             //if requested language code is not supported then use language from preferences
-            languageCode = PreferencesUtils.getString(this, R.string.languageKey, "");
+            languageCode = PreferencesUtil.getString(this, R.string.languageKey, "");
             if (!Arrays.asList(supportedLanguages).contains(languageCode)) {
                 //no language was selected in the app settings so use the system language
                 String currentLanguage = getResources().getConfiguration().locale.getLanguage();
@@ -342,17 +354,23 @@ public class MainActivity extends BaseActivity {
      */
     private void startTest() {
         Context context = this;
-        CaddisflyApp caddisflyApp = (CaddisflyApp) context.getApplicationContext();
+        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
         switch (caddisflyApp.currentTestInfo.getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (!DataHelper.validateSwatchList(caddisflyApp.currentTestInfo.getSwatches())) {
+                if (!DataHelper.isSwatchListValid(caddisflyApp.currentTestInfo.getSwatches())) {
                     alertCalibrationIncomplete();
                     return;
                 }
 
                 final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
                 startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
+
+                break;
+            case COLORIMETRIC_STRIP:
+
+                final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
+                startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;
             case SENSOR:
@@ -389,14 +407,14 @@ public class MainActivity extends BaseActivity {
         String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
                 getString(R.string.pleaseContactSupport));
 
-        AlertUtils.showMessage(this, R.string.akvoFlowNotFound, message);
+        AlertUtil.showMessage(this, R.string.akvoFlowNotFound, message);
     }
 
     /**
      * Alert message for camera flash not found
      */
     private void alertCameraFlashNotAvailable() {
-        AlertUtils.showError(this, R.string.cannotStartTest,
+        AlertUtil.showError(this, R.string.cannotStartTest,
                 getString(R.string.errorCameraFlashRequired),
                 null,
                 R.string.backToSurvey,
@@ -419,7 +437,7 @@ public class MainActivity extends BaseActivity {
         message = String.format("%s\r\n\r\n%s", message,
                 getString(R.string.doYouWantToCalibrate));
 
-        AlertUtils.showAlert(this, R.string.cannotStartTest,
+        AlertUtil.showAlert(this, R.string.cannotStartTest,
                 message, R.string.calibrate,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -461,7 +479,7 @@ public class MainActivity extends BaseActivity {
         String message = getString(R.string.errorTestNotAvailable, itemName);
         message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
 
-        AlertUtils.showAlert(this, R.string.cannotStartTest, message,
+        AlertUtil.showAlert(this, R.string.cannotStartTest, message,
                 R.string.backToSurvey,
                 new DialogInterface.OnClickListener() {
                     @Override

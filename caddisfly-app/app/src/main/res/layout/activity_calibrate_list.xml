@@ -17,8 +17,8 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentCalibrateList"
-    android:name="org.akvo.caddisfly.ui.CalibrateListFragment"
+    android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.ui.CalibrateListActivity"
+    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
     tools:layout="@layout/fragment_calibrate_list" />

@@ -21,8 +21,8 @@ import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.util.PreferencesUtils;
+import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -80,10 +80,10 @@ public class AppPreferencesTest {
             assertEquals(defaultValue, method.invoke(null, RuntimeEnvironment.application));
 
             if (defaultValue instanceof Boolean) {
-                PreferencesUtils.setBoolean(RuntimeEnvironment.application, key, !(boolean) defaultValue);
+                PreferencesUtil.setBoolean(RuntimeEnvironment.application, key, !(boolean) defaultValue);
                 assertEquals(!(boolean) defaultValue, method.invoke(null, RuntimeEnvironment.application));
             } else if (defaultValue instanceof Integer) {
-                PreferencesUtils.setString(RuntimeEnvironment.application, key, newValue.toString());
+                PreferencesUtil.setString(RuntimeEnvironment.application, key, newValue.toString());
                 assertEquals(newValue, method.invoke(null, RuntimeEnvironment.application));
             }
 

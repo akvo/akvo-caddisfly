@@ -42,13 +42,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
-import org.akvo.caddisfly.ui.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
-import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.NetworkUtils;
-import org.akvo.caddisfly.util.UpdateCheckTask;
+import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.NetworkUtil;
+import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -187,7 +188,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getVersion(getActivity());
+        String version = CaddisflyApp.getAppVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -251,7 +252,7 @@ public class EspressoTest
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        if (!NetworkUtils.isOnline(getActivity())) {
+        if (!NetworkUtil.isOnline(getActivity())) {
             onView(withText(R.string.updateCheck)).perform(click());
 
             onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
@@ -698,7 +699,7 @@ public class EspressoTest
 
         onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
 
-        if (!NetworkUtils.isOnline(getActivity())) {
+        if (!NetworkUtil.isOnline(getActivity())) {
 
             onView(withText(R.string.updateCheck)).perform(click());
 
@@ -857,7 +858,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getVersion(getActivity());
+        String version = CaddisflyApp.getAppVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -925,7 +926,7 @@ public class EspressoTest
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getVersion(getActivity());
+        String version = CaddisflyApp.getAppVersion(getActivity());
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -1234,7 +1235,7 @@ public class EspressoTest
     }
 
     private void saveCalibration() {
-        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
+        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
                 + "1.0=255  139  137\n"
                 + "1.5=253  174  74\n"
@@ -1244,7 +1245,7 @@ public class EspressoTest
     }
 
     private void saveInvalidCalibration() {
-        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
+        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
                 + "1.0=255  139  137\n"
                 + "1.5=253  174  74\n"
@@ -1254,7 +1255,7 @@ public class EspressoTest
     }
 
     private void saveHighLevelCalibration() {
-        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "HighLevelTest", "0.0=255  88  47\n"
+        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "HighLevelTest", "0.0=255  88  47\n"
                 + "0.5=255  60  37\n"
                 + "1.0=255  35  27\n"
                 + "1.5=253  17  17\n"
@@ -1262,7 +1263,7 @@ public class EspressoTest
     }
 
     private void saveLowLevelCalibration() {
-        FileUtils.saveToFile(AppConfig.getFilesDir(AppConfig.FileType.CALIBRATION), "LowLevelTest", "0.0=255  60  37\n"
+        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"
                 + "1.0=253  17  17\n"
                 + "1.5=254  0  0\n"

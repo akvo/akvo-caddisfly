@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.AppPreferences;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.AppPreferences;
 
 /**
  * Displays the app version and other company/copyright related information
@@ -40,7 +40,7 @@ public class AboutActivity extends BaseActivity {
         setTitle(R.string.about);
 
         TextView productView = (TextView) findViewById(R.id.textVersion);
-        productView.setText(CaddisflyApp.getVersion(this));
+        productView.setText(CaddisflyApp.getAppVersion(this));
 
         productView.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;

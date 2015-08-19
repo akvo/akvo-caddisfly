@@ -23,7 +23,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.akvo.caddisfly.ui.SensorActivity">
+    tools:context="org.akvo.caddisfly.sensor.ec.SensorActivity">
 
     <TextView
         android:id="@+id/textTitle"
@@ -89,7 +89,8 @@
         android:indeterminate="true"
         android:indeterminateTint="#ffd8cd23"
         android:indeterminateTintMode="src_in"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
 
     <LinearLayout
         android:id="@+id/layoutResult"

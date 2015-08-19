@@ -20,12 +20,12 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import org.akvo.caddisfly.AppConfig;
+import org.akvo.caddisfly.helper.ConfigHelper;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.JsonUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
+import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,7 +47,7 @@ public class CaddisflyApp extends Application {
     public static boolean hasFeatureCameraFlash(Context context) {
         //check only once for flash
         if (!checkedForFlash) {
-            hasCameraFlash = ApiUtils.hasCameraFlash(context);
+            hasCameraFlash = ApiUtil.hasCameraFlash(context);
             checkedForFlash = true;
         }
         return hasCameraFlash;
@@ -68,7 +68,7 @@ public class CaddisflyApp extends Application {
      * @param context The context
      * @return The version name and number
      */
-    public static String getVersion(Context context) {
+    public static String getAppVersion(Context context) {
         try {
             String version = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0).versionName;
@@ -119,10 +119,10 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        tests = JsonUtils.loadConfigurationsForAllTests(AppConfig.getConfigJson());
+        tests = ConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
         if (tests.size() > 0) {
             currentTestInfo = tests.get(0);
-            if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
+            if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
                 loadCalibratedSwatches(currentTestInfo);
             }
         }
@@ -135,11 +135,11 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfiguration(String testCode) {
 
-        currentTestInfo = JsonUtils.loadTestConfigurationByCode(
-                AppConfig.getConfigJson(), testCode.toUpperCase());
+        currentTestInfo = ConfigHelper.loadTestConfigurationByCode(
+                FileHelper.getConfigJson(), testCode.toUpperCase());
 
         if (currentTestInfo != null) {
-            if (currentTestInfo.getType() == AppConfig.TestType.COLORIMETRIC_LIQUID) {
+            if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
                 loadCalibratedSwatches(currentTestInfo);
             }
         }
@@ -150,46 +150,20 @@ public class CaddisflyApp extends Application {
      *
      * @param testInfo The type of test
      */
-    private void loadCalibratedSwatches(TestInfo testInfo) {
-
-        CaddisflyApp context = ((CaddisflyApp) this.getApplicationContext());
+    public void loadCalibratedSwatches(TestInfo testInfo) {
 
         for (Swatch swatch : testInfo.getSwatches()) {
             String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
-            swatch.setColor(PreferencesUtils.getInt(context, key, 0));
+            swatch.setColor(PreferencesUtil.getInt(this.getApplicationContext(), key, 0));
         }
     }
+
 
     /**
-     * Save a single calibrated color
-     *
-     * @param swatch       The swatch object
-     * @param resultColor The color value
+     * The different types of testing methods
      */
-    public void saveCalibratedData(Swatch swatch, final int resultColor) {
-        String colorKey = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), swatch.getValue());
-
-        if (resultColor == 0) {
-            PreferencesUtils.removeKey(getApplicationContext(), colorKey);
-        } else {
-            swatch.setColor(resultColor);
-            PreferencesUtils.setInt(getApplicationContext(), colorKey, resultColor);
-        }
+    public enum TestType {
+        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
     }
 
-    /**
-     * Save a list of calibrated colors
-     *
-     * @param swatches List of swatch colors to be saved
-     */
-    public void saveCalibratedSwatches(ArrayList<Swatch> swatches) {
-
-        for (Swatch swatch : swatches) {
-            String key = String.format(Locale.US, "%s-%.2f", currentTestInfo.getCode(), swatch.getValue());
-
-            PreferencesUtils.setInt(this, key, swatch.getColor());
-        }
-
-        loadCalibratedSwatches(currentTestInfo);
-    }
 }

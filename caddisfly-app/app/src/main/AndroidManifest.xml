@@ -30,6 +30,7 @@
     <application
         android:name=".app.CaddisflyApp"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:logo="@drawable/ic_actionbar_logo"
@@ -47,7 +48,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -57,21 +57,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".preference.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.SensorActivity"
+            android:name=".sensor.ec.SensorActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.UsbConnectionActivity"
+            android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
@@ -85,37 +85,40 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".ui.ColorimetryLiquidActivity"
+            android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.CalibrateListActivity"
+            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.CalibrateListActivity"
+            android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.DiagnosticSwatchActivity"
+            android:name=".sensor.colorimetry.liquid.DiagnosticSwatchActivity"
             android:label="@string/swatches"
             android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.CalibrateListActivity" />
+                android:value=".sensor.colorimetry.liquid.CalibrateListActivity" />
         </activity>
         <activity
-            android:name=".ui.CalibrateSensorActivity"
+            android:name=".sensor.ec.CalibrateSensorActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.TypeListActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.ExitActivity"
             android:autoRemoveFromRecents="true"
             android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:label="@string/appName"></activity>
     </application>
 
 </manifest>

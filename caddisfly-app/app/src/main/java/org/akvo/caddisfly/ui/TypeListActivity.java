@@ -24,7 +24,9 @@ import android.os.Bundle;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.AlertUtils;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
+import org.akvo.caddisfly.util.AlertUtil;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
 
@@ -41,14 +43,13 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {
-        CaddisflyApp caddisflyApp = (CaddisflyApp) getApplicationContext();
-        caddisflyApp.loadTestConfiguration(testInfo.getCode());
+        CaddisflyApp.getApp().loadTestConfiguration(testInfo.getCode());
 
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
                 //Only start the colorimetry calibration if the device has a camera flash
                 if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
-                    AlertUtils.showError(this, R.string.cannotCalibrate,
+                    AlertUtil.showError(this, R.string.cannotCalibrate,
                             getString(R.string.errorCameraFlashRequired),
                             null,
                             R.string.ok, null, null);
@@ -61,7 +62,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
                 boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
-                    AlertUtils.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
+                    AlertUtil.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
                             R.string.calibrate, R.string.cancel, true,
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -84,6 +85,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
-        AlertUtils.showMessage(this, R.string.notSupported, message);
+        AlertUtil.showMessage(this, R.string.notSupported, message);
     }
 }

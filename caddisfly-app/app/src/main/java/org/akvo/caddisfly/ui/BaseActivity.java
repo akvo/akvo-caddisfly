@@ -2,11 +2,12 @@ package org.akvo.caddisfly.ui;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.AppPreferences;
-import org.akvo.caddisfly.util.ApiUtils;
+import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.util.ApiUtil;
 
 /**
  * The base activity with common functions
@@ -17,7 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ApiUtils.lockScreenOrientation(this);
+        ApiUtil.lockScreenOrientation(this);
     }
 
     @Override
@@ -35,12 +36,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (AppPreferences.isDiagnosticMode(this)) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
-                        getResources().getColor(R.color.diagnostic)));
+                        ContextCompat.getColor(this, R.color.diagnostic)));
             }
         } else {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
-                        getResources().getColor(R.color.action_bar)));
+                        ContextCompat.getColor(this, R.color.action_bar)));
             }
         }
     }

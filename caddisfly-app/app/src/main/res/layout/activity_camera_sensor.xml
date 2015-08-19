@@ -18,7 +18,7 @@
     android:id="@+id/viewAnimator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.ui.ColorimetryLiquidActivity">
+    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity">
 
     <LinearLayout
         android:id="@+id/layoutDilutions"
