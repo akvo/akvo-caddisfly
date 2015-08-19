@@ -19,7 +19,7 @@ public class ResultStripTestActivity extends AppCompatActivity {
 
     public static List<TestResult> testResults = new ArrayList<>();
     private int numSuccess = 0;
-    private int numPatchesExpected = 4;
+    private int numPatchesExpected = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

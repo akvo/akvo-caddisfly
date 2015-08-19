@@ -1,0 +1,20 @@
+{
+  "strips":[
+    {
+      "name": "Chlorine (ppm) and free chlorine (ppm)",
+      "code": "strip-CL-101",
+      "id": "336",
+      "img": "strip-336.jpg",
+      "brand": "HACH883738",
+      "numPatch": 2,
+      "length": 83.1,
+      "unit": "mm",
+      "patchDesc":["Total Chlorine ppm - end pad","Free Chlorine ppm"],
+      "patchPos":[3.3,17.2],
+     "patchWidth": [5,5],
+      "vals":[[5,10,20,30,50,100],[]],
+      "colours":[[244,244,255],[220,210,200],[]]
+    }
+
+  ]
+}

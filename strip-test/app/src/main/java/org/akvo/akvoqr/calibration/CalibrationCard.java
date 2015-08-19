@@ -1,8 +1,8 @@
 package org.akvo.akvoqr.calibration;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
+import org.akvo.akvoqr.AssetsManager;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -19,33 +19,16 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 // Performs the calibration of the image
 public class CalibrationCard{
     private final double ONE_OVER_NINE = 1.0/9;
-    public String loadJSONFromAsset(Context context,String fname) {
-        String json = null;
-        try {
-            AssetManager assetManager = context.getAssets();
-            InputStream is = assetManager.open(fname);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
+
 
     private CalibrationData readCalibrationFile(Context context){
         CalibrationData calData = new CalibrationData();
-        String json = loadJSONFromAsset(context,"calibration.json");
+        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
         try {
             JSONObject obj = new JSONObject(json);
 
