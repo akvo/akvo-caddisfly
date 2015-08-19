@@ -302,7 +302,12 @@ public class OpenCVUtils {
 
         for (int i=0;i<patches.size();i++)
         {
-            Point center = new Point(patches.get(i).center);
+            double srcWidth = src.width();
+            double srcHeight = src.height();
+            double ratioW = srcWidth/stripTestBrand.getStripLenght();
+            double x = patches.get(i).position * ratioW;
+            double y = srcHeight/2;
+            Point center = new Point(x, y);
             Core.circle(src, center, 5, new Scalar(0,0,0,255), -1);
         }
 

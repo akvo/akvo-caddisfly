@@ -51,7 +51,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if (listener != null) {
 
                 if(allOK) {
-
+                    if(bitmap!=null)
                     listener.setBitmap(bitmap);
                 }
                 else
@@ -254,8 +254,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     ResultStripTestActivity.testResults.add(testResult);
 
                     //create a bitmap with the same size and color config as the dest
-//                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
-//                    Utils.matToBitmap(strip, bitmap, true);
+                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(strip, bitmap, true);
 
                     listener.dismissProgress();
                 }

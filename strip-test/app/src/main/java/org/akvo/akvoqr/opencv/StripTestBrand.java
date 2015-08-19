@@ -11,6 +11,8 @@ public class StripTestBrand {
     public static enum brand{
             AQUACHECK };
 
+    private double stripLenght;
+    private double stripHeight;
     private List<Patch> patches = new ArrayList<>();
 
     public StripTestBrand(brand brandEnum)
@@ -18,8 +20,11 @@ public class StripTestBrand {
         switch (brandEnum)
         {
             case AQUACHECK:
-                patches.add(new Patch(0,8,8,new double[]{4,4}));
-                patches.add(new Patch(1,8,8,new double[]{20,4}));
+                this.stripHeight = 5; //mm
+                this.stripLenght = 83.1; //mm
+                patches.add(new Patch(0,8,8,3.3));
+                patches.add(new Patch(1,8,8,17.2));
+                break;
         }
     }
 
@@ -27,18 +32,26 @@ public class StripTestBrand {
         return patches;
     }
 
+    public double getStripHeight() {
+        return stripHeight;
+    }
+
+    public double getStripLenght() {
+        return stripLenght;
+    }
+
     public class Patch{
         int order;
         double width; //mm
         double height;//mm
-        double[] center;//x,y in mm
+        double position;//x in mm
 
-        public Patch(int order, double width, double height, double[] center)
+        public Patch(int order, double width, double height, double position)
         {
             this.order = order;
             this.width = width;
             this.height = height;
-            this.center = center;
+            this.position = position;
         }
     }
 }
