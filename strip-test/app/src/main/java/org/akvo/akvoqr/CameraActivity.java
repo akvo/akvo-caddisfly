@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.opencv.core.Mat;
@@ -29,7 +31,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private String TAG = "CameraActivity";
     private Intent intent;
     private android.os.Handler handler;
-    private boolean testing = true;
+    private TextView messageView;
+    private boolean testing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         intent = new Intent(this, ResultActivity.class);
         handler = new Handler(Looper.getMainLooper());
+
+        messageView = (TextView) findViewById(R.id.camera_preview_messageView);
     }
 
     private void init()
@@ -179,21 +184,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
                 MyPreviewCallback.firstTime = true;
                 mCamera.setOneShotPreviewCallback(previewCallback);
-//                System.out.println("***TEST RESULTS: " + ResultStripTestActivity.numSuccess + " out of " + iter);
 
                 return;
             }
             else {
-
-                long endTime = System.currentTimeMillis();
-                long dur = endTime - startTime;
-                int ss = (int) Math.floor(dur/1000);
-                int mm = (int) Math.floor(ss/60);
-                int hh = (int) Math.floor(mm/60);
-                long restM = mm - hh*60;
-                long restS = ss - hh*60*1000;
-                String duration = hh + ":" + restM + ":" + restS;
-//                System.out.println("***FINAL TEST RESULTS: " + ResultStripTestActivity.numSuccess + " out of " + MAX_ITER + ". Duration: " + duration );
 
                 startActivity(new Intent(this, ResultStripTestActivity.class));
 
@@ -220,6 +214,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
             sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
 
+            MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coin_flip);
+            mp.start();
+
             bitmap.recycle();
 
             finish();
@@ -238,35 +235,51 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void showProgress(final int which) {
 
-        Runnable showProgress = new Runnable() {
-
-            @Override
-            public void run() {
-                if (progress == null) {
-                    progress = new ProgressDialog(CameraActivity.this);
-                    switch (which) {
-                        case 0:
-                            progress.setTitle(getString(R.string.calibrating));
-                            break;
-                        case 1:
-                            progress.setTitle("Detecting strip");
-                            break;
-                        case 2:
-                            progress.setTitle("Making bitmap");
-                            break;
-                        case 3:
-                            progress.setTitle("Looking for finder patterns");
-                            break;
-                        default:
-                            progress.setTitle("Busy doing something");
-                    }
-                    progress.setMessage(getString(R.string.please_wait));
-                    progress.show();
+        if(which == 3)
+        {
+            Runnable showMessage = new Runnable() {
+                @Override
+                public void run() {
+                    if(messageView!=null)
+                        messageView.setText("Looking for finder patterns.\nPlease hold camera above striptest.");
                 }
-            }
-        };
-        handler.post(showProgress);
+            };
+           handler.post(showMessage);
+        }
+        else {
+            Runnable showProgress = new Runnable() {
 
+                @Override
+                public void run() {
+
+                    if(messageView!=null)
+                        messageView.setText("");
+
+                    if (progress == null) {
+                        progress = new ProgressDialog(CameraActivity.this);
+                        switch (which) {
+                            case 0:
+                                progress.setTitle(getString(R.string.calibrating));
+                                break;
+                            case 1:
+                                progress.setTitle("Detecting strip");
+                                break;
+                            case 2:
+                                progress.setTitle("Making bitmap");
+                                break;
+                            case 3:
+                                progress.setTitle("Looking for finder patterns");
+                                break;
+                            default:
+                                progress.setTitle("Busy doing something");
+                        }
+                        progress.setMessage(getString(R.string.please_wait));
+                        progress.show();
+                    }
+                }
+            };
+            handler.post(showProgress);
+        }
     }
 
     @Override

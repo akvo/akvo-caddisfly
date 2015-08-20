@@ -232,7 +232,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     return;
                 }
                 //detect strip
-                Mat dest = warp_dst.clone();
+                Mat dest = calMat.clone();
 
                 Mat striparea = dest.clone();
                 String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");

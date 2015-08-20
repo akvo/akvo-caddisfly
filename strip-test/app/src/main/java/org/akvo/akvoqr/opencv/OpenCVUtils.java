@@ -161,9 +161,8 @@ public class OpenCVUtils {
         System.out.println("***end submat");
 
         lab = temp.clone();
-//        temp.release();
+        temp.release();
 
-        Imgproc.medianBlur(lab, lab, 11);
         Core.split(lab, channels);
 //
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -172,8 +171,8 @@ public class OpenCVUtils {
         MatOfPoint2f mMOP2f = new MatOfPoint2f();
         RotatedRect rotatedRect;
 
-
-//        Core.inRange(gray, new Scalar(250, 0, 0), new Scalar(256, 255, 255), gray);
+        Imgproc.threshold(channels.get(0), channels.get(0), 254, 255, Imgproc.THRESH_BINARY);
+//        Core.inRange(lab, new Scalar(254, 0, 0), new Scalar(256, 255, 255), lab);
 
         Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE, new Point(0, 0));
         double maxParent = -Double.MAX_VALUE;
@@ -186,11 +185,11 @@ public class OpenCVUtils {
 
             System.out.println("***areasize contour strip: " + areasize);
 
-            Imgproc.drawContours(striparea, contours, x, new Scalar(255, 2, 255, 255), 1);
+//            Imgproc.drawContours(striparea, contours, x, new Scalar(255, 2, 255, 255), 1);
 
             if(mContours.get(0,x)[3] >= 0)//has parent, inner (hole) contour of a closed edge
             {
-                if(areasize > 10000)
+                if(areasize > 1000)
                 {
 
                     if(mContours.get(0,x)[3] > maxParent)
@@ -200,10 +199,10 @@ public class OpenCVUtils {
                     }
                 }
 
-                Imgproc.drawContours(striparea, contours, x-1, new Scalar(0, 255, 0, 255), 1);
+//                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 0, 255), 2);
 
             } else {
-//                Imgproc.drawContours(lab, contours, x, new Scalar(0, 255, 0, 255), 1);
+//                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 255, 255), 2);
             }
         }
 
@@ -211,21 +210,21 @@ public class OpenCVUtils {
         if(innermostList.size()>0) {
 
             //only needed for logging
-            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
-            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
-            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
+//            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
+//            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
+//            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
+//
+//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
 
-            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
-            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
-            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
-
-            double d = Imgproc.contourArea(innermostContours);
-            System.out.println("***contour area innermost: " + d);
+//            double d = Imgproc.contourArea(innermostContours);
+//            System.out.println("***contour area innermost: " + d);
 
             //demo
-            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 3);
-            Core.rectangle(striparea,point1, point3, new Scalar(255, 0, 0, 255), 2);
+//            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 3);
+//            Core.rectangle(striparea,point1, point3, new Scalar(255, 0, 0, 255), 2);
 
             rotatedRect = Imgproc.minAreaRect(mMOP2f);
             if(rotatedRect!=null) {
@@ -244,9 +243,7 @@ public class OpenCVUtils {
             }
         }
 
-        Core.merge(channels, lab);
-        Imgproc.cvtColor(temp, temp, Imgproc.COLOR_Lab2RGB);
-        return temp;
+        return striparea;
     }
 
     public static Mat detectStripColorBrandKnown(Mat src, StripTestBrand.brand brand)
@@ -277,7 +274,7 @@ public class OpenCVUtils {
                     (int)Math.round(mean.val[2]));
             ResultActivity.stripColors.add(new ResultActivity.ColorDetected(color, (int)Math.round(x)));
 
-            Core.circle(src, center, 5, new Scalar(0, 0, 0, 255), -1);
+            Core.rectangle(src, new Point(minCol,minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
             submat.release();
         }
 
