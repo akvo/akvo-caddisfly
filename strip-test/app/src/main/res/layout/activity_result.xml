@@ -14,17 +14,27 @@
         android:gravity="center"
         android:id="@+id/colors"
         android:background="@android:color/white"
-       >
+        >
     </GridView>
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/resultImage"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
         android:layout_toRightOf="@+id/colors"
         android:layout_toLeftOf="@+id/stripcolors"
-        />
+        android:orientation="vertical"
+        android:id="@+id/activity_resultLinearLayout"
+        >
+
+    </LinearLayout>
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/resultImage"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--android:scaleType="centerInside"-->
+    <!--android:layout_toRightOf="@+id/colors"-->
+    <!--android:layout_toLeftOf="@+id/stripcolors"-->
+    <!--/>-->
     <GridView
         android:layout_width="40dp"
         android:layout_height="match_parent"

@@ -21,10 +21,12 @@ import org.akvo.akvoqr.opencv.StripTestBrand;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private static boolean isRunning = false;
     private boolean focused = false;
     private boolean allOK = false;
-    private byte[] previewData;
     Bitmap bitmap;
+    private ArrayList<Mat> mats;
     private Handler handler;
     private Runnable runAtListener = new Runnable() {
         @Override
@@ -56,6 +58,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 if(allOK) {
                     if(bitmap!=null)
                         listener.setBitmap(bitmap);
+                    else if(mats!=null)
+                        listener.sendMats(mats);
                 }
                 else
                     listener.getMessage(0);
@@ -78,7 +82,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         } catch (ClassCastException e) {
             throw new ClassCastException(" must implement cameraviewListener");
         }
-
 
         handler = new Handler();
     }
@@ -177,6 +180,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 }
                 listener.dismissProgress();
 
+                listener.playSound();
+
                 for (FinderPattern pattern : possibleCenters) {
                     System.out.println("***pattern estimated module size: " + pattern.getEstimatedModuleSize());
                 }
@@ -212,6 +217,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     System.out.println("***calibration failed");
                     return;
                 }
+
+                //show calibrated patches in gridview in ResultActivity
 //                ResultActivity.colors.clear();
 //
 //                for(Patch patch: patches) {
@@ -255,10 +262,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                                 double ratioH = dest.width()/hsize;
                                 double ratioV = dest.height()/vsize;
-                                Point stripTopLeft = new Point(area.getDouble(0) * ratioH - 10,
-                                        area.getDouble(1) * ratioV - 10);
-                                Point stripBottomRight = new Point(area.getDouble(2) * ratioH + 10,
-                                        area.getDouble(3) * ratioV + 10);
+                                Point stripTopLeft = new Point(area.getDouble(0) * ratioH + 2 ,
+                                        area.getDouble(1) * ratioV + 2 );
+                                Point stripBottomRight = new Point(area.getDouble(2) * ratioH - 2,
+                                        area.getDouble(3) * ratioV - 2);
 
                                 Rect roi = new Rect(stripTopLeft, stripBottomRight);
                                 striparea = dest.submat(roi);
@@ -284,24 +291,28 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 if(strip!=null)
                 {
                     listener.showProgress(2);
-//                    System.out.println("***calmat format: " + CvType.typeToString(calMat.type()));
 
+                    //TODO Get brand from user input
                     strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.HACH883738);
-                    TestResult testResult = new TestResult();
-                    testResult.setOriginal(striparea);
-                    testResult.setResultBitmap(strip, 2);
-                    ResultStripTestActivity.testResults.add(testResult);
 
-                    //create a bitmap with the same size and color config as the dest
-                    bitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(strip, bitmap, true);
+                    mats = new ArrayList<>();
+                    mats.add(striparea);
+                    mats.add(strip);
 
                     listener.dismissProgress();
                 }
                 else
                 {
-                    bitmap = Bitmap.createBitmap(striparea.width(), striparea.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(striparea, bitmap, true);
+                    mats = new ArrayList<>();
+                    mats.add(striparea.clone());
+
+                    Core.line(striparea, new Point(0, 0), new Point(striparea.cols(),
+                            striparea.rows()), new Scalar(255, 0, 0, 255), 2);
+                    Core.line(striparea, new Point(0,striparea.rows()), new Point(striparea.cols(),
+                            0), new Scalar(255,0,0,255), 2);
+
+                    mats.add(striparea);
+
                 }
 
                 allOK = true;

@@ -57,8 +57,9 @@ public class OpenCVUtils {
         // perform the affine transformation
         Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
         // crop the resulting image
-        rect_size.set(new double[]{rect_size.width, rect_size.height});
-        Imgproc.getRectSubPix(warp_rotate_dst, rect_size, rotatedRect.center, cropped);
+//        rect_size.set(new double[]{rect_size.width, rect_size.height});
+        if(!warp_rotate_dst.empty())
+            Imgproc.getRectSubPix(warp_rotate_dst, rect_size, rotatedRect.center, cropped);
 
         return cropped;
     }
@@ -124,6 +125,7 @@ public class OpenCVUtils {
     }
     public static Mat detectStrip(Mat striparea)
     {
+        Mat orig = striparea.clone();
         Mat lab = new Mat();
         List<Mat> channels = new ArrayList<>();
 
@@ -132,6 +134,21 @@ public class OpenCVUtils {
         Imgproc.medianBlur(lab, lab, 11);
 
         Mat temp = lab.clone();
+
+        List<Double> maxVals = new ArrayList<>();
+        for(int c=0;c<lab.cols()-4;c+=4)
+        {
+            Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
+
+            Core.split(submat, channels);
+            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+            if(result.maxVal>50)
+                 maxVals.add(result.maxVal);
+        }
+        Collections.sort(maxVals);
+
+        System.out.println("***lowest maxVal: " + maxVals.get(0));
+
         System.out.println("***start submat");
         for(int c=0; c<lab.cols()-4; c+=4) {
             Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
@@ -139,13 +156,19 @@ public class OpenCVUtils {
             Core.split(submat, channels);
             Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
-//            System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal);
 
-            Scalar mean = Core.mean(submat);
-            double treshold = result.minVal*1.25;
-//            double treshold = mean.val[0];
-            Imgproc.threshold(channels.get(0), channels.get(0), treshold, 255, Imgproc.THRESH_BINARY);
+//            Scalar mean = Core.mean(submat);
+            double tresholdMax = maxVals.get(0);
+            double tresholdMin = result.minVal * 1.25;
 
+//            System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal
+//                    + " mean: " + mean.val[0] + " treshold: " + treshold);
+
+            Mat upper = new Mat();
+            Mat lower = new Mat();
+            Imgproc.threshold(channels.get(0), upper, tresholdMax, 255, Imgproc.THRESH_BINARY);
+            Imgproc.threshold(channels.get(0), lower, tresholdMin, 255, Imgproc.THRESH_BINARY);
+            Core.bitwise_and(upper,lower, channels.get(0));
             Core.merge(channels, submat);
 
             for(int sc=0;sc<submat.cols();sc++) {
@@ -161,25 +184,28 @@ public class OpenCVUtils {
         System.out.println("***end submat");
 
         lab = temp.clone();
-        temp.release();
+//        temp.release();
 
-        Core.split(lab, channels);
-//
+
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfPoint innermostContours = new MatOfPoint();
         MatOfInt4 mContours = new MatOfInt4();
         MatOfPoint2f mMOP2f = new MatOfPoint2f();
         RotatedRect rotatedRect;
 
+        Core.split(temp, channels);
+
+        //need to make binary image for findContours
         Imgproc.threshold(channels.get(0), channels.get(0), 254, 255, Imgproc.THRESH_BINARY);
 //        Core.inRange(lab, new Scalar(254, 0, 0), new Scalar(256, 255, 255), lab);
 
-        Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE, new Point(0, 0));
+        Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
         double maxParent = -Double.MAX_VALUE;
-        for (int x = 0; x < contours.size(); x++) {
 
-            // we need the mMOP2f object for our rotated Rect
-            contours.get(x).convertTo(mMOP2f, CvType.CV_32FC2);
+        //Sort on areasize, so the largest contour is the last one in the arraylist
+        Collections.sort(contours, new ContoursComparator());
+
+        for (int x = 0; x < contours.size(); x++) {
 
             double areasize = Imgproc.contourArea(contours.get(x));
 
@@ -194,14 +220,19 @@ public class OpenCVUtils {
 
                     if(mContours.get(0,x)[3] > maxParent)
                     {
-                        innermostContours = contours.get(x);
+                        contours.get(x).copyTo(innermostContours);
+
                         maxParent = mContours.get(0, x)[3];
                     }
                 }
 
 //                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 0, 255), 2);
 
-            } else {
+            }
+            else if(areasize > 1000)
+            {
+                //could not find innermost, take the largest
+                contours.get(x).copyTo(innermostContours);
 //                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 255, 255), 2);
             }
         }
@@ -210,21 +241,21 @@ public class OpenCVUtils {
         if(innermostList.size()>0) {
 
             //only needed for logging
-//            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
-//            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
-//            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
-//
-//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
-//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
-//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
+            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
+            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
+            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
 
-//            double d = Imgproc.contourArea(innermostContours);
-//            System.out.println("***contour area innermost: " + d);
+            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
 
             //demo
-//            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 3);
-//            Core.rectangle(striparea,point1, point3, new Scalar(255, 0, 0, 255), 2);
+//            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
+            Core.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
+
+            // we need the mMOP2f object for our rotated Rect
+            innermostContours.convertTo(mMOP2f, CvType.CV_32FC2);
 
             rotatedRect = Imgproc.minAreaRect(mMOP2f);
             if(rotatedRect!=null) {
@@ -232,18 +263,19 @@ public class OpenCVUtils {
                 //only needed for demo
 //                Point[] rotPoints = new Point[4];
 //                rotatedRect.points(rotPoints);
-
 //                Core.line(lab, rotPoints[0], rotPoints[1], new Scalar(0, 0, 255, 255), 2);
 //                Core.line(lab, rotPoints[1], rotPoints[2], new Scalar(0,0,255,255), 2);
 //                Core.line(lab, rotPoints[2], rotPoints[3], new Scalar(0,0,255,255), 2);
 //                Core.line(lab, rotPoints[3], rotPoints[0], new Scalar(0,0,255,255), 2);
                 Mat rotated = rotateImage(striparea, rotatedRect);
-                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type()));
+                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
+                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
+                        + " height: " + rotated.size().height);
                 return rotated;
             }
         }
 
-        return striparea;
+        return null;
     }
 
     public static Mat detectStripColorBrandKnown(Mat src, StripTestBrand.brand brand)

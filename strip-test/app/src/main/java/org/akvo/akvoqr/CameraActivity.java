@@ -18,6 +18,7 @@ import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by linda on 7/7/15.
@@ -116,20 +117,11 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     }
 
-    boolean focused;
     @Override
     public void getMessage(int what) {
         if(mCamera!=null && !isFinishing()) {
             if (what == 0) {
 
-
-//                    mCamera.autoFocus(new Camera.AutoFocusCallback() {
-//                        @Override
-//                        public void onAutoFocus(boolean success, Camera camera) {
-//                            if (success) focused = true;
-//
-//                        }
-//                    });
                 mCamera.setOneShotPreviewCallback(previewCallback);
 
             } else {
@@ -137,6 +129,25 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                 mCamera.setOneShotPreviewCallback(null);
             }
         }
+    }
+
+    @Override
+    public void sendMats(ArrayList<Mat> mats)
+    {
+        if(testing) {
+            TestResult testResult = new TestResult();
+            for(int i = 0; i<mats.size();i++) {
+
+                testResult.setResultBitmap(mats.get(i), i);
+                ResultStripTestActivity.testResults.add(testResult);
+            }
+        }
+        else {
+            intent.putExtra("mats", mats);
+            startActivity(intent);
+        }
+
+
     }
 
     @Override
@@ -163,7 +174,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     public static final int MAX_ITER = 1;
     private int iter=0;
-    private long startTime;
 
     @Override
     public void setBitmap(Bitmap bitmap) {
@@ -174,7 +184,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             if(iter<MAX_ITER && !isFinishing()) {
 
                 if(iter==0) {
-                    startTime = System.currentTimeMillis();
 
                     ResultStripTestActivity.testResults.clear();
 
@@ -313,16 +322,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     };
 
-    //getString(R.string.calibrating)
-    //getString(R.string.please_wait)
-    public void cameraProgressDialog(String title, String message)
+    @Override
+    public void playSound()
     {
-        if(progress==null)
-        {
-            progress = new ProgressDialog(CameraActivity.this);
-            progress.setTitle(title);
-            progress.setMessage(message);
-            progress.show();
-        }
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
+        mp.start();
     }
 }
