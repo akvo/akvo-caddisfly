@@ -61,6 +61,20 @@
         "unit": "°C",
         "calibrate": "false",
         "ranges": "0"
+      },
+      {
+        "name": [
+          {
+            "en": "pH"
+          },
+          {
+            "fr": "pH"
+          }
+        ],
+        "type": "1",
+        "code": "phydr",
+        "unit": "pH",
+        "calibrate": "false"
       }
     ]
   }

@@ -20,6 +20,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,7 +249,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             TextView textCalibrationSteps = (TextView) rowView.findViewById(R.id.textCalibrationSteps);
             textCalibrationSteps.setText(String.format("%s step", calibrationSteps));
 
-            TextView resultText;
+            TextView resultText = null;
 
             for (ResultDetail resultDetail : mResults) {
                 if (resultDetail.getCalibrationSteps() == calibrationSteps) {
@@ -266,6 +267,10 @@ public class DiagnosticResultDialog extends DialogFragment {
                             resultText = (TextView) rowView.findViewById(R.id.textHsvResult);
                             resultText.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
+                    }
+
+                    if (calibrationSteps == 5 && resultDetail.getColorModel() == ColorUtil.DEFAULT_COLOR_MODEL) {
+                        resultText.setTypeface(Typeface.DEFAULT_BOLD);
                     }
                 }
             }

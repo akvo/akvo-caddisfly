@@ -45,6 +45,7 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.sensor.turbidity.TurbidityActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
@@ -371,6 +372,12 @@ public class MainActivity extends BaseActivity {
 
                 final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
+
+                break;
+            case TURBIDITY_COLIFORMS:
+
+                final Intent turbidityIntent = new Intent(context, TurbidityActivity.class);
+                startActivityForResult(turbidityIntent, REQUEST_TEST);
 
                 break;
             case SENSOR:

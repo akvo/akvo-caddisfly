@@ -18,25 +18,23 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -64,7 +62,7 @@ import java.util.Locale;
  * to listen for item selections.
  */
 public class CalibrateListActivity extends BaseActivity
-        implements CalibrateListFragment.Callbacks {
+        implements CalibrateListFragment.Callbacks, SaveCalibrationDialogFragment.OnFragmentInteractionListener {
 
     private final int REQUEST_CALIBRATE = 100;
     private int mPosition;
@@ -179,100 +177,14 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     /**
-     * Hides the keyboard
-     *
-     * @param input the EditText for which the keyboard is open
-     */
-    private void closeKeyboard(EditText input) {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-    }
-
-    /**
      * Save the current calibration to a text file
      */
     private void saveCalibration() {
-        final Context context = this;
 
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
 
-        alertDialogBuilder.setView(input);
-        alertDialogBuilder.setCancelable(false);
-
-        alertDialogBuilder.setTitle(R.string.saveCalibration);
-        alertDialogBuilder.setMessage(R.string.saveProvideFileName);
-
-
-        alertDialogBuilder.setPositiveButton(R.string.save, null);
-        alertDialogBuilder
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        closeKeyboard(input);
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alertDialog = alertDialogBuilder.create(); //create the box
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-
-                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-
-                        if (!input.getText().toString().trim().isEmpty()) {
-                            final StringBuilder exportList = new StringBuilder();
-
-                            for (Swatch swatch : CaddisflyApp.getApp().currentTestInfo.getSwatches()) {
-                                exportList.append(String.format("%.2f", swatch.getValue()))
-                                        .append("=")
-                                        .append(ColorUtil.getColorRgbString(swatch.getColor()));
-                                exportList.append('\n');
-                            }
-
-                            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
-
-                            File file = new File(path, input.getText().toString());
-                            if (file.exists()) {
-                                AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
-                                        R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                FileUtil.saveToFile(path, input.getText().toString(),
-                                                        exportList.toString());
-                                            }
-                                        }
-                                );
-                            } else {
-                                FileUtil.saveToFile(path, input.getText().toString(),
-                                        exportList.toString());
-                            }
-
-                            closeKeyboard(input);
-                            alertDialog.dismiss();
-                        } else {
-                            input.setError(getString(R.string.saveInvalidFileName));
-                        }
-                    }
-                });
-            }
-        });
-
-        alertDialog.show();
-        input.requestFocus();
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
     /**
@@ -311,9 +223,9 @@ public class CalibrateListActivity extends BaseActivity
         caddisflyApp.loadCalibratedSwatches(caddisflyApp.currentTestInfo);
     }
 
-
     /**
      * Load the calibrated swatches from the calibration text file
+     *
      * @param callback callback to be initiated once the loading is complete
      */
     private void loadCalibration(final Handler.Callback callback) {
@@ -326,10 +238,12 @@ public class CalibrateListActivity extends BaseActivity
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     android.R.layout.select_dialog_singlechoice);
 
-            final File folder = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
 
-            if (folder.exists()) {
-                final File[] listFiles = folder.listFiles();
+            final File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+
+            if (subPath.exists()) {
+                final File[] listFiles = subPath.listFiles();
                 Arrays.sort(listFiles);
 
                 for (File listFile : listFiles) {
@@ -352,18 +266,29 @@ public class CalibrateListActivity extends BaseActivity
                                 String fileName = listFiles[which].getName();
                                 final ArrayList<Swatch> swatchList = new ArrayList<>();
 
-                                ArrayList<String> rgbList;
+                                ArrayList<String> calibrationDetails;
                                 try {
-                                    rgbList = FileUtil.loadFromFile(fileName);
+                                    calibrationDetails = FileUtil.loadFromFile(subPath, fileName);
 
-                                    if (rgbList != null) {
+                                    if (calibrationDetails != null) {
 
-                                        for (String rgb : rgbList) {
+                                        for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
+                                            if (!calibrationDetails.get(i).contains("=")) {
+                                                calibrationDetails.remove(i);
+                                            }
+                                        }
+
+                                        for (String rgb : calibrationDetails) {
                                             String[] values = rgb.split("=");
                                             Swatch swatch = new Swatch(stringToDouble(values[0]),
                                                     ColorUtil.getColorFromRgb(values[1]));
                                             swatchList.add(swatch);
                                         }
+
+                                        Toast.makeText(getBaseContext(),
+                                                String.format(getString(R.string.calibrationLoaded), fileName),
+                                                Toast.LENGTH_SHORT).show();
+
                                         (new AsyncTask<Void, Void, Void>() {
                                             @Override
                                             protected Void doInBackground(Void... params) {
@@ -410,10 +335,11 @@ public class CalibrateListActivity extends BaseActivity
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 String fileName = listFiles[position].getName();
-                                                FileUtil.deleteFile(folder, fileName);
+                                                FileUtil.deleteFile(subPath, fileName);
                                                 ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                                 listAdapter.remove(listAdapter.getItem(position));
                                                 alert.dismiss();
+                                                Toast.makeText(getBaseContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                 return true;
@@ -430,5 +356,10 @@ public class CalibrateListActivity extends BaseActivity
         }
 
         callback.handleMessage(null);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

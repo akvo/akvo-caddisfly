@@ -54,6 +54,9 @@ public final class ColorUtil {
     private static final double MIN_COLOR_DISTANCE_RGB = 6;
     private static final double MIN_COLOR_DISTANCE_LAB = 1.2;
 
+    private static final double MIN_CALIBRATION_COLOR_DISTANCE_RGB = 11;
+    private static final double MIN_CALIBRATION_COLOR_DISTANCE_LAB = 1.5;
+
     private ColorUtil() {
     }
 
@@ -215,6 +218,22 @@ public final class ColorUtil {
 
         return Math.sqrt(b + g + r);
     }
+
+    public static boolean areColorsTooDissimilar(int color1, int color2) {
+        switch (DEFAULT_COLOR_MODEL) {
+            case RGB:
+                return getColorDistanceRgb(color1, color2) > MIN_CALIBRATION_COLOR_DISTANCE_RGB;
+
+            case LAB:
+                return getColorDistanceLab(colorToLab(color1), colorToLab(color2))
+                        > MIN_CALIBRATION_COLOR_DISTANCE_LAB;
+
+            default:
+                //todo: create a hsv distance. currently using rgb
+                return getColorDistanceRgb(color1, color2) > MIN_COLOR_DISTANCE_RGB;
+        }
+    }
+
 
     public static boolean areColorsSimilar(int color1, int color2) {
         switch (DEFAULT_COLOR_MODEL) {

@@ -22,7 +22,6 @@ import android.support.annotation.RawRes;
 import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.FileHelper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -129,17 +128,17 @@ public final class FileUtil {
     /**
      * Load lines of strings from a file
      *
+     * @param path the path to the file
      * @param fileName the file name
      * @return an list of string lines
      */
-    public static ArrayList<String> loadFromFile(String fileName) {
+    public static ArrayList<String> loadFromFile(File path, String fileName) {
 
         try {
             ArrayList<String> arrayList = new ArrayList<>();
-            File folder = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
-            if (folder.exists()) {
+            if (path.exists()) {
 
-                File file = new File(folder, fileName);
+                File file = new File(path, fileName);
 
                 FileReader filereader = new FileReader(file);
 

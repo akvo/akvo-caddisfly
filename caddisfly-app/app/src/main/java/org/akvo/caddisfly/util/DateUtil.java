@@ -16,7 +16,10 @@
 
 package org.akvo.caddisfly.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utility functions for date and time
@@ -56,6 +59,11 @@ public final class DateUtil {
 
         return (int) ((calendar2.getTimeInMillis() -
                 calendar1.getTimeInMillis()) / (1000 * 60 * 60));
+    }
+
+
+    public static String getDateTimeString() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
     }
 
 }

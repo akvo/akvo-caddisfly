@@ -213,7 +213,7 @@ public final class DataHelper {
             //check all the colors are mostly similar otherwise return 0 (ignore first item)
             for (int j = 1; j < results.size() - 1; j++) {
                 int color2 = results.get(j).getResults().get(0).getColor();
-                if (!ColorUtil.areColorsSimilar(color1, color2)) {
+                if (ColorUtil.areColorsTooDissimilar(color1, color2)) {
                     return 0;
                 }
             }

@@ -143,4 +143,6 @@
     <string name="ignoreShakeDuringAnalysis">Ignorer les secousses pendant l\'analyse</string>
     <string name="debuggingOn">Afficher les messages de débogage</string>
     <string name="noSound">Eteindre le son</string>
+    <string name="fileSaved">File saved</string>
+    <string name="calibrationLoaded">%1$s loaded</string>
 </resources>

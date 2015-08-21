@@ -1,4 +1,4 @@
-package org.akvo.caddisfly.sensor.colorimetry.strip;
+package org.akvo.caddisfly.sensor.turbidity;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,12 +10,12 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 
-public class ColorimetryStripActivity extends AppCompatActivity {
+public class TurbidityActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_colorimetry_strip);
+        setContentView(R.layout.activity_turbidity);
     }
 
     @Override

@@ -12,6 +12,8 @@ v0.76 beta
 10. Fix: Alert window not dismissed on activity finish
 11. Dilution dialog changed to normal screen
 12. Download update apk file and validate checksum
+13. Added device details and date to calibration file save
+14. Added reagent expiry date dialog to save calibration
 
 v0.75 beta
 ----------

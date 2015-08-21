@@ -57,6 +57,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_camera_sensor);
+        setContentView(R.layout.activity_colorimetry_liquid);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -326,12 +327,14 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         double swatchValue = getIntent().getDoubleExtra("swatchValue", 0);
 
-        TextView ppmTextView = ((TextView) findViewById(R.id.ppmTextView));
+        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+
+        TextView textResult = ((TextView) findViewById(R.id.textResult));
         if (mIsCalibration) {
-            ppmTextView.setText(String.format("%.2f %s", swatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
-            ppmTextView.setVisibility(View.VISIBLE);
+            textResult.setText(String.format("%.2f %s", swatchValue, testInfo.getUnit()));
+            textResult.setVisibility(View.VISIBLE);
         } else {
-            ppmTextView.setVisibility(View.GONE);
+            textResult.setVisibility(View.GONE);
 
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(R.string.appName);
@@ -353,14 +356,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
         Configuration conf = res.getConfiguration();
 
         //set the title to the test contaminant name
-        ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.textTitle2)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.textTitle3)).setText(CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle2)).setText(testInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle3)).setText(testInfo.getName(conf.locale.getLanguage()));
 
-        if (CaddisflyApp.getApp().currentTestInfo.getCode().isEmpty()) {
+        if (testInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
-        } else if (mIsCalibration || !CaddisflyApp.getApp().currentTestInfo.getCanUseDilution()) {
-            mViewAnimator.showNext();
+        } else if (mIsCalibration || !testInfo.getCanUseDilution()) {
+            releaseResources();
+            setAnimatorDisplayedChild(mViewAnimator, 1);
         } else if (!mTestCompleted) {
             InitializeTest();
         }
@@ -555,6 +559,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             if (result < 0 || color == Color.TRANSPARENT) {
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(R.raw.err);
+                    //save the image for diagnostics
+                    ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result));
                     showDiagnosticResultDialog(true, 0, color, isCalibration);
                 } else {
                     showError(message, ImageUtil.getBitmap(data));
@@ -563,6 +569,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(R.raw.done);
+                    //save the image for diagnostics
+                    ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result));
                     showDiagnosticResultDialog(false, result, color, false);
                 } else {
                     String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());

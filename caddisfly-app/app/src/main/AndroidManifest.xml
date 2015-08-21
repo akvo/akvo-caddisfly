@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -118,7 +119,12 @@
             android:theme="@android:style/Theme.NoDisplay" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
-            android:label="@string/appName"></activity>
+            android:label="@string/appName"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.turbidity.TurbidityActivity"
+            android:label="@string/appName"
+            android:screenOrientation="nosensor" />
     </application>
 
 </manifest>

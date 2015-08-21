@@ -22,6 +22,11 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+import org.akvo.caddisfly.helper.FileHelper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
 /**
  * Set of utility functions to manipulate images
  */
@@ -92,5 +97,19 @@ public class ImageUtil {
                 new Rect(0, 0, diameter, diameter), null
         );
         return resultBitmap;
+    }
+
+    public static void saveImage(byte[] data, String fileName) {
+
+        File photo = new File(FileHelper.getFilesDir(FileHelper.FileType.IMAGE), fileName + ".jpg");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(photo.getPath());
+
+            fos.write(data);
+            fos.close();
+        } catch (Exception ignored) {
+
+        }
     }
 }

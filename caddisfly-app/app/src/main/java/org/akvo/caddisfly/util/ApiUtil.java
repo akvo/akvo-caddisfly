@@ -22,6 +22,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.telephony.TelephonyManager;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -112,5 +113,24 @@ public final class ApiUtil {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
+
+    /**
+     * Gets the device's IMEI (MEID or ESN for CDMA phone)
+     *
+     * @return the international mobile equipment id
+     */
+    public static String getEquipmentId(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        String number = null;
+        if (telephonyManager != null) {
+            number = telephonyManager.getDeviceId();
+        }
+        if (number == null) {
+            number = "No equipment Id";
+        }
+        return number;
+    }
+
 
 }

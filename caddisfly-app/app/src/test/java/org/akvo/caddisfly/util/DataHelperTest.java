@@ -204,4 +204,32 @@ public class DataHelperTest extends TestCase {
         int color = DataHelper.getAverageColor(results);
         assertEquals(Color.rgb(252, 252, 250), color);
     }
+
+    public void testGetAverageColor5() {
+        ArrayList<Result> results = new ArrayList<>();
+        results.add(createNewResult(1.6, Color.rgb(225, 1, 1)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 2)));
+        results.add(createNewResult(1.8, Color.rgb(215, 1, 1)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 1)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 1)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 3)));
+
+        int color = DataHelper.getAverageColor(results);
+        assertEquals(Color.rgb(223, 1, 1), color);
+    }
+
+    public void testGetAverageColor6() {
+        ArrayList<Result> results = new ArrayList<>();
+        results.add(createNewResult(1.6, Color.rgb(179, 128, 81)));
+        results.add(createNewResult(1.8, Color.rgb(176, 126, 77)));
+        results.add(createNewResult(1.8, Color.rgb(177, 125, 77)));
+        results.add(createNewResult(1.8, Color.rgb(177, 125, 77)));
+        results.add(createNewResult(1.8, Color.rgb(175, 125, 76)));
+        results.add(createNewResult(1.8, Color.rgb(175, 124, 77)));
+
+        int color = DataHelper.getAverageColor(results);
+        assertEquals(Color.rgb(176, 125, 76), color);
+    }
+
+
 }

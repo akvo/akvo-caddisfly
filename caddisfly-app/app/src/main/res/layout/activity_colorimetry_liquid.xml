@@ -104,7 +104,7 @@
             tools:text="Contaminant" />
 
         <TextView
-            android:id="@+id/ppmTextView"
+            android:id="@+id/textResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
