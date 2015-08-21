@@ -1,6 +1,9 @@
 package org.opencv.core;
 
 // C++: class Mat
+
+import java.io.Serializable;
+
 /**
  * <p>OpenCV C++ n-dimensional dense array class</p>
  *
@@ -414,7 +417,7 @@ package org.opencv.core;
  *
  * @see <a href="http://docs.opencv.org/modules/core/doc/basic_structures.html#mat">org.opencv.core.Mat</a>
  */
-public class Mat {
+public class Mat implements Serializable{
 
     public final long nativeObj;
 
