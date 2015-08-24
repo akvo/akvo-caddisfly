@@ -20,7 +20,6 @@ import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.opencv.StripTestBrand;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -68,7 +67,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 bitmap.recycle();
         }
     };
-    private boolean testCalib = false;
+    private boolean testCalib = true;
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -232,9 +231,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 if(testCalib)
                 {
+//
+//                    bitmap = Bitmap.createBitmap(calMat.width(), calMat.height(), Bitmap.Config.ARGB_8888);
+//                    Utils.matToBitmap(calMat, bitmap, true);
+                    mats = new ArrayList<>();
+                    mats.add(calMat.clone());
 
-                    bitmap = Bitmap.createBitmap(calMat.width(), calMat.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(calMat, bitmap, true);
                     allOK = true;
                     return;
                 }
@@ -294,6 +296,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     //TODO Get brand from user input
                     strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.HACH883738);
+
 
                     mats = new ArrayList<>();
                     mats.add(striparea);

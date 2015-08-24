@@ -223,8 +223,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
             sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
 
-            MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coin_flip);
-            mp.start();
+//            MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coin_flip);
+//            mp.start();
 
             bitmap.recycle();
 
