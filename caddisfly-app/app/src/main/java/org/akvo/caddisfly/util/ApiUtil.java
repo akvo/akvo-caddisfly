@@ -115,7 +115,7 @@ public final class ApiUtil {
     }
 
     /**
-     * Gets the device's IMEI (MEID or ESN for CDMA phone)
+     * Gets the device's Equipment Id
      *
      * @return the international mobile equipment id
      */

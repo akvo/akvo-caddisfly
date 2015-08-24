@@ -104,12 +104,14 @@ public class DiagnosticResultFragment extends DialogFragment {
         if (result > -1) {
             textResult.setText(String.format("%s : %.2f %s", caddisflyApp.currentTestInfo.getName("en"),
                     result, caddisflyApp.currentTestInfo.getUnit()));
-            textDistance.setText(String.format("distance: %.2f", resultDetail.getDistance()));
-            buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
-            swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
         } else {
             textResult.setText(String.format("%s", caddisflyApp.currentTestInfo.getName("en")));
         }
+
+        textDistance.setText(String.format("distance: %.2f", resultDetail.getDistance()));
+        buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
+        swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
+
         buttonColorExtract.setBackgroundColor(color);
 
         textColorRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));

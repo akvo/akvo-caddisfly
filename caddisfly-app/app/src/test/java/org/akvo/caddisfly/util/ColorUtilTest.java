@@ -24,7 +24,6 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 @SuppressWarnings("unused")
 public class ColorUtilTest extends TestCase {
@@ -45,7 +44,6 @@ public class ColorUtilTest extends TestCase {
     }
 
     public void testAutoGenerateColors() throws Exception {
-        Hashtable hashtable = new Hashtable();
         TestInfo testInfo = new TestInfo();
 
         for (int i = 0; i < 5; i++) {

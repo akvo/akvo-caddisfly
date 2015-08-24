@@ -23,7 +23,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,7 +61,7 @@ import java.util.Locale;
  * to listen for item selections.
  */
 public class CalibrateListActivity extends BaseActivity
-        implements CalibrateListFragment.Callbacks, SaveCalibrationDialogFragment.OnFragmentInteractionListener {
+        implements CalibrateListFragment.Callbacks {
 
     private final int REQUEST_CALIBRATE = 100;
     private int mPosition;
@@ -356,10 +355,5 @@ public class CalibrateListActivity extends BaseActivity
         }
 
         callback.handleMessage(null);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

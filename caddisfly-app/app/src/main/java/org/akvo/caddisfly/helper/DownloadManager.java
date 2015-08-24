@@ -244,6 +244,8 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                     //delete the file if the checksum does not match
                     // noinspection ResultOfMethodCallIgnored
                     downloadFilePath.delete();
+                    Toast.makeText(mContext,
+                            mContext.getString(R.string.updateFailed), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(mContext,

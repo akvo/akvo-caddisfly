@@ -1,19 +1,24 @@
+v0.77 beta
+__________
+1. Diagnostic: Camera preview runs a test if device placed flat face down
+2. Diagnostic: Nearest matching color and distance displayed even if test fails
+
 v0.76 beta
 ----------
 1. Fix: update download progress bar
 2. Calibration validation and error message
-3. Refactor diagnostic preferences
-4. Color hsv value displayed with swatches
-5. Fix: White screen flash on app start
-6. Diagnostic: Display lab, rgb and hsv results
-7. External folder name changed to Akvo Caddisfly
-8. Update apk file save to internal folder instead of downloads
-9. Removed external usb camera code
-10. Fix: Alert window not dismissed on activity finish
-11. Dilution dialog changed to normal screen
-12. Download update apk file and validate checksum
-13. Added device details and date to calibration file save
-14. Added reagent expiry date dialog to save calibration
+3. Fix: White screen flash on app start
+4. External folder name changed to Akvo Caddisfly
+5. Update apk file save to internal folder instead of downloads
+6. Removed external usb camera code
+7. Fix: Alert window not dismissed on activity finish
+8. Dilution dialog changed to normal screen
+9. Download update apk file and validate checksum
+10. Diagnostic: Added device details, date and other info to calibration file save
+11. Diagnostic: Added reagent expiry date dialog to save calibration
+12. Diagnostic: Sampled image is saved to image folder
+13. Diagnostic: Display lab, rgb and hsv results
+14. Color hsv value displayed with swatches
 
 v0.75 beta
 ----------

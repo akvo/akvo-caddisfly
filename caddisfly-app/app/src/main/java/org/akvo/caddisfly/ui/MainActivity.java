@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
     private void startSurvey() {
         Intent intent = getPackageManager()
                 .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+
         if (intent == null) {
             //external app is not installed
             alertDependantAppNotFound();
@@ -118,7 +119,7 @@ public class MainActivity extends BaseActivity {
                 public void run() {
                     if (mShouldFinish) {
                         //close this app as external app is currently active
-                        finishAffinity();
+                        finish();
                         ExitActivity.exitApplication(getApplicationContext());
                     }
                 }
@@ -180,7 +181,7 @@ public class MainActivity extends BaseActivity {
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
-                if (NetworkUtil.isOnline(mContext)) {
+                if (NetworkUtil.checkInternetConnection(mContext, false)) {
                     long updateLastCheck = PreferencesUtil.getLong(mContext, R.string.lastUpdateCheckKey);
 
                     // last update check date

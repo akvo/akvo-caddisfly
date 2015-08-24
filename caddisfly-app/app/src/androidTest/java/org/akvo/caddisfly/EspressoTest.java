@@ -44,6 +44,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
@@ -152,6 +153,9 @@ public class EspressoTest
             currentHashMap = stringHashMapFR;
         }
 
+        CaddisflyApp.getApp().currentTestInfo = new TestInfo(null, "FLUOR", "ppm",
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{});
+
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
 
@@ -252,7 +256,7 @@ public class EspressoTest
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        if (!NetworkUtil.isOnline(getActivity())) {
+        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
             onView(withText(R.string.updateCheck)).perform(click());
 
             onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
@@ -427,6 +431,7 @@ public class EspressoTest
 
         clickExternalSourceButton("next");
 
+        //EC
         clickExternalSourceButton("useExternalSource");
 
         //Connect EC Sensor Screen
@@ -436,12 +441,23 @@ public class EspressoTest
 
         clickExternalSourceButton("next");
 
+        //Temperature
         clickExternalSourceButton("useExternalSource");
 
         onView(withId(R.id.buttonOk)).perform(click());
 
         clickExternalSourceButton("next");
 
+        //pH
+        clickExternalSourceButton("useExternalSource");
+
+        onView(withText("To be implemented")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.buttonOk)).perform(click());
+
+        clickExternalSourceButton("next");
+
+        //Caffeine
         clickExternalSourceButton("useExternalSource");
 
         //Test type not available
@@ -699,7 +715,7 @@ public class EspressoTest
 
         onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
 
-        if (!NetworkUtil.isOnline(getActivity())) {
+        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
 
             onView(withText(R.string.updateCheck)).perform(click());
 
@@ -831,7 +847,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         //onView(withId(R.id.okButton)).perform(click());
 
@@ -898,7 +914,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();
@@ -972,7 +988,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
@@ -996,7 +1012,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
-        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1023,7 +1039,7 @@ public class EspressoTest
         //Test Progress Screen
         takeScreenshot();
 
-        sleep(14000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (AppConfig.DELAY_BETWEEN_SAMPLING + 5000) * AppConfig.SAMPLING_COUNT_DEFAULT);
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("10" + dfs.getDecimalSeparator() + "00")).check(matches(isCompletelyDisplayed()));
@@ -1235,7 +1251,12 @@ public class EspressoTest
     }
 
     private void saveCalibration() {
-        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
+
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+        File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+
+        FileUtil.saveToFile(subPath,
+                "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
                 + "1.0=255  139  137\n"
                 + "1.5=253  174  74\n"
@@ -1245,9 +1266,13 @@ public class EspressoTest
     }
 
     private void saveInvalidCalibration() {
-        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "Test", "0.0=255  88  177\n"
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+        File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+
+        FileUtil.saveToFile(subPath,
+                "Test", "0.0=255  88  177\n"
                 + "0.5=255  110  15\n"
-                + "1.0=255  139  137\n"
+                + "1.0=255  138  137\n"
                 + "1.5=253  174  74\n"
                 + "2.0=253  174  76\n"
                 + "2.5=236  172  81\n"
@@ -1255,7 +1280,11 @@ public class EspressoTest
     }
 
     private void saveHighLevelCalibration() {
-        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "HighLevelTest", "0.0=255  88  47\n"
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+        File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+
+        FileUtil.saveToFile(subPath,
+                "HighLevelTest", "0.0=255  88  47\n"
                 + "0.5=255  60  37\n"
                 + "1.0=255  35  27\n"
                 + "1.5=253  17  17\n"
@@ -1263,7 +1292,11 @@ public class EspressoTest
     }
 
     private void saveLowLevelCalibration() {
-        FileUtil.saveToFile(FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION), "LowLevelTest", "0.0=255  60  37\n"
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+        File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+
+        FileUtil.saveToFile(subPath,
+                "LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"
                 + "1.0=253  17  17\n"
                 + "1.5=254  0  0\n"

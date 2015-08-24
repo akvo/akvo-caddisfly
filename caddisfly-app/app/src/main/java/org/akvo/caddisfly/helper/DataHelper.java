@@ -69,12 +69,12 @@ public final class DataHelper {
         //set the result
         ResultDetail resultDetail = new ResultDetail(-1, photoColor.getColor());
         if (colorCompareInfo.getResult() > -1) {
-            resultDetail.setColorModel(colorModel);
-            resultDetail.setCalibrationSteps(swatches.size());
             resultDetail.setResult(colorCompareInfo.getResult());
-            resultDetail.setMatchedColor(colorCompareInfo.getMatchedColor());
-            resultDetail.setDistance(colorCompareInfo.getDistance());
         }
+        resultDetail.setColorModel(colorModel);
+        resultDetail.setCalibrationSteps(swatches.size());
+        resultDetail.setMatchedColor(colorCompareInfo.getMatchedColor());
+        resultDetail.setDistance(colorCompareInfo.getDistance());
 
         return resultDetail;
     }
@@ -98,11 +98,18 @@ public final class DataHelper {
 
         double resultValue = -1;
         int matchedColor = -1;
+        double tempDistance;
+        double nearestDistance = 999;
+        int nearestMatchedColor = -1;
 
         for (int i = 0; i < swatches.size(); i++) {
             int tempColor = swatches.get(i).getColor();
 
-            double tempDistance = ColorUtil.getColorDistance(tempColor, colorToFind);
+            tempDistance = ColorUtil.getColorDistance(tempColor, colorToFind);
+            if (nearestDistance > tempDistance) {
+                nearestDistance = tempDistance;
+                nearestMatchedColor = tempColor;
+            }
 
             if (tempDistance == 0.0) {
                 resultValue = swatches.get(i).getValue();
@@ -115,6 +122,11 @@ public final class DataHelper {
             }
         }
 
+        //if no result was found add some diagnostic info
+        if (resultValue == -1) {
+            distance = nearestDistance;
+            matchedColor = nearestMatchedColor;
+        }
         return new ColorCompareInfo(resultValue, colorToFind, matchedColor, distance);
     }
 

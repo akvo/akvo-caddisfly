@@ -20,6 +20,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.SparseIntArray;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.HsvColor;
 import org.akvo.caddisfly.model.LabColor;
@@ -36,6 +38,10 @@ public final class ColorUtil {
      * The default color model used for analysis
      */
     public static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
+    /**
+     * The maximum color distance before the color is considered out of range
+     */
+    public static final int MAX_COLOR_DISTANCE_RGB = 30;
     private static final double Xn = 0.950470;
     private static final double Yn = 1.0;
     private static final double Zn = 1.088830;
@@ -43,19 +49,19 @@ public final class ColorUtil {
     private static final double t1 = 0.206896552;  // 6 / 29;
     private static final double t2 = 0.12841855;   // 3 * t1 * t1;
     private static final double t3 = 0.008856452; // t1 * t1 * t1;
-    /**
-     * The maximum color distance before the color is considered out of range
-     */
-    private static final int MAX_COLOR_DISTANCE_RGB = 30;
     private static final int MAX_COLOR_DISTANCE_LAB = 4;
+
     /**
      * The minimum color distance at which the colors are considered equivalent
      */
     private static final double MIN_COLOR_DISTANCE_RGB = 6;
     private static final double MIN_COLOR_DISTANCE_LAB = 1.2;
 
-    private static final double MIN_CALIBRATION_COLOR_DISTANCE_RGB = 11;
-    private static final double MIN_CALIBRATION_COLOR_DISTANCE_LAB = 1.5;
+    /**
+     * The color distance within which the sampled colors should be for a valid test
+     */
+    private static final double MAX_SAMPLING_COLOR_DISTANCE_RGB = 11;
+    private static final double MAX_SAMPLING_COLOR_DISTANCE_LAB = 1.5;
 
     private ColorUtil() {
     }
@@ -74,7 +80,9 @@ public final class ColorUtil {
     public static double getMaxDistance() {
         switch (DEFAULT_COLOR_MODEL) {
             case RGB:
-                return MAX_COLOR_DISTANCE_RGB;
+                //todo: remove this diagnostic code
+                return AppPreferences.getColorDistanceTolerance(CaddisflyApp.getApp().getApplicationContext());
+            //return MAX_COLOR_DISTANCE_RGB;
             case LAB:
                 return MAX_COLOR_DISTANCE_LAB;
             default:
@@ -89,7 +97,8 @@ public final class ColorUtil {
      * @param sampleLength The max length of the image to traverse
      * @return The extracted color information
      */
-    public static ColorInfo getColorFromBitmap(Bitmap bitmap, int sampleLength) {
+    public static ColorInfo getColorFromBitmap(Bitmap bitmap,
+                                               @SuppressWarnings("SameParameterValue") int sampleLength) {
         int highestCount = 0;
         int commonColor = -1;
         int counter;
@@ -222,11 +231,11 @@ public final class ColorUtil {
     public static boolean areColorsTooDissimilar(int color1, int color2) {
         switch (DEFAULT_COLOR_MODEL) {
             case RGB:
-                return getColorDistanceRgb(color1, color2) > MIN_CALIBRATION_COLOR_DISTANCE_RGB;
+                return getColorDistanceRgb(color1, color2) > MAX_SAMPLING_COLOR_DISTANCE_RGB;
 
             case LAB:
                 return getColorDistanceLab(colorToLab(color1), colorToLab(color2))
-                        > MIN_CALIBRATION_COLOR_DISTANCE_LAB;
+                        > MAX_SAMPLING_COLOR_DISTANCE_LAB;
 
             default:
                 //todo: create a hsv distance. currently using rgb

@@ -65,6 +65,19 @@
             android:paddingRight="20dp"
             android:text="@string/startSurvey"
             tools:ignore="UnusedAttribute" />
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/button_orange"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingBottom="50dp"-->
+        <!--android:lineSpacingExtra="10dp"-->
+        <!--android:paddingTop="50dp"-->
+        <!--android:paddingStart="10dp"-->
+        <!--android:paddingEnd="10dp"-->
+        <!--android:text="To conduct a test open Akvo FLOW"-->
+        <!--android:textSize="18sp" />-->
     </RelativeLayout>
 </FrameLayout>
 

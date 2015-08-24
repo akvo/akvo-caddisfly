@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,7 +37,7 @@ public class NetworkUtil {
      * @param context the context
      * @return true if connected
      */
-    public static boolean checkInternetConnection(final Context context) {
+    public static boolean checkInternetConnection(final Context context, boolean showAlert) {
 
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -45,35 +46,28 @@ public class NetworkUtil {
 
         if (activeNetwork == null || !activeNetwork.isConnectedOrConnecting()) {
 
-            AlertUtil.showAlert(context, R.string.noInternetConnection, R.string.enableInternet,
-                    R.string.settings,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                            context.startActivity(intent);
-                        }
-                    },
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    });
-        }
+            if (showAlert && (context instanceof Activity)) {
 
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-    }
-
-
-    public static boolean isOnline(Context context) {
-        if (context != null) {
-            try {
-                ConnectivityManager cm = (ConnectivityManager) context
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-                return cm.getActiveNetworkInfo().isConnectedOrConnecting();
-            } catch (Exception e) {
-                return false;
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        AlertUtil.showAlert(context, R.string.noInternetConnection, R.string.enableInternet,
+                                R.string.settings,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                        context.startActivity(intent);
+                                    }
+                                },
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                });
+                    }
+                });
             }
+            return false;
         }
-        return false;
+
+        return true;
     }
 }

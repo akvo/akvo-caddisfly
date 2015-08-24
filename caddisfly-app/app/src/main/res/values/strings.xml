@@ -141,7 +141,6 @@
 
     <!--Diagnostic Mode: Save / Load Calibration-->
     <string name="saveCalibration">Save Calibration</string>
-    <string name="saveProvideFileName">Give a descriptive name for this calibration</string>
     <string name="saveInvalidFileName">Invalid file name</string>
     <string name="fileAlreadyExists">File already exists</string>
     <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
@@ -167,5 +166,6 @@
     <string name="reagentExpiryDate">Reagent expiry date</string>
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
+    <string name="required">Required</string>
 
 </resources>

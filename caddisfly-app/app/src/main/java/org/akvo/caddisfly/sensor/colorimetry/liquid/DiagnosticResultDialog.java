@@ -252,7 +252,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             TextView resultText = null;
 
             for (ResultDetail resultDetail : mResults) {
-                if (resultDetail.getCalibrationSteps() == calibrationSteps) {
+                if (resultDetail.getResult() > -1 && resultDetail.getCalibrationSteps() == calibrationSteps) {
 
                     switch (resultDetail.getColorModel()) {
                         case LAB:

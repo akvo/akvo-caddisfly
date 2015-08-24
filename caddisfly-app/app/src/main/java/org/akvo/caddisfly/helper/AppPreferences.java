@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
@@ -29,6 +30,15 @@ public class AppPreferences {
                     R.string.samplingsTimeKey, String.valueOf(AppConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
             return AppConfig.SAMPLING_COUNT_DEFAULT;
+        }
+    }
+
+    public static int getColorDistanceTolerance(Context context) {
+        if (isDiagnosticMode(context)) {
+            return Integer.parseInt(PreferencesUtil.getString(context,
+                    R.string.colorDistanceToleranceKey, String.valueOf(ColorUtil.MAX_COLOR_DISTANCE_RGB)));
+        } else {
+            return ColorUtil.MAX_COLOR_DISTANCE_RGB;
         }
     }
 

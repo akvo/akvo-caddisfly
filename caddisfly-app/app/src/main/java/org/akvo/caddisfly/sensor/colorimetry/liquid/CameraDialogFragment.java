@@ -27,6 +27,8 @@ import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -42,6 +44,7 @@ import android.widget.FrameLayout;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -57,17 +60,18 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public class CameraDialogFragment extends DialogFragment implements DiagnosticResultFragment.ResultDialogListener {
-    private static final String ARG_PREVIEW_ONLY = "preview";
+    private static final String ARG_DIAGNOSTIC_MODE = "diagnostics";
     public Camera.PictureCallback pictureCallback;
+    private ShakeDetector mShakeDetector;
+    private SensorManager mSensorManager;
     private int samplingCount;
     private int picturesTaken;
-    private boolean mPreviewOnly;
+    private boolean mDiagnosticMode;
     private SoundPoolPlayer sound;
     private boolean mCancelled = false;
     private AlertDialog progressDialog;
     private Camera mCamera;
     private Fragment mFragment;
-
     // View to display the camera output.
     private CameraPreview mPreview;
 
@@ -79,14 +83,14 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param previewOnly if true will display preview only, otherwise start taking pictures
+     * @param diagnosticMode if true will display preview only, otherwise start taking pictures
      * @return A new instance of fragment CameraDialogFragment.
      */
     @SuppressWarnings("SameParameterValue")
-    public static CameraDialogFragment newInstance(boolean previewOnly) {
+    public static CameraDialogFragment newInstance(boolean diagnosticMode) {
         CameraDialogFragment fragment = new CameraDialogFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_PREVIEW_ONLY, previewOnly);
+        args.putBoolean(ARG_DIAGNOSTIC_MODE, diagnosticMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -99,7 +103,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
+            mDiagnosticMode = getArguments().getBoolean(ARG_DIAGNOSTIC_MODE);
         }
         mFragment = this;
 
@@ -121,7 +125,6 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
         return view;
     }
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
@@ -133,7 +136,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
     @Override
     public void onStart() {
         super.onStart();
-        if (!mPreviewOnly) {
+        if (!mDiagnosticMode) {
             startTakingPictures();
         }
     }
@@ -150,7 +153,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
         progressDialog.getWindow().setGravity(Gravity.BOTTOM);
         progressDialog.show();
 
-        takePicture(mPreviewOnly);
+        takePicture(mDiagnosticMode);
     }
 
     private void takePicture(boolean isPreview) {
@@ -211,11 +214,37 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
             preview.addView(mPreview);
 
-            if (mPreviewOnly) {
+            //in diagnostic mode allow user to long press or place device face down to to run a quick test
+            if (mDiagnosticMode) {
+
+                //Set up the shake detector
+                mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+                final Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+                mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
+                    @Override
+                    public void onShake() {
+                    }
+                }, new ShakeDetector.OnNoShakeListener() {
+                    @Override
+                    public void onNoShake() {
+                        unregisterShakeDetector();
+                        takePicture(mDiagnosticMode);
+                    }
+                });
+
+                mShakeDetector.minShakeAcceleration = 5;
+                mShakeDetector.maxShakeDuration = 2000;
+
+
+                mSensorManager.registerListener(mShakeDetector, accelerometer,
+                        SensorManager.SENSOR_DELAY_UI);
+
                 preview.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        takePicture(mPreviewOnly);
+                        unregisterShakeDetector();
+                        takePicture(mDiagnosticMode);
                         return false;
                     }
                 });
@@ -224,6 +253,14 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
             mPreview.startCameraPreview();
         }
         return qOpened;
+    }
+
+    private void unregisterShakeDetector() {
+        try {
+            mSensorManager.unregisterListener(mShakeDetector);
+        } catch (Exception ignored) {
+
+        }
     }
 
     @Override
@@ -264,6 +301,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
     @Override
     public void onDetach() {
         super.onDetach();
+        unregisterShakeDetector();
         sound.release();
     }
 
@@ -292,7 +330,6 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
 
         public CameraPreview(Context context, Camera camera) {
             super(context);
-            //mPreviewOnly = previewOnly;
             setCamera(camera);
             mHolder = getHolder();
             mHolder.addCallback(this);
@@ -457,7 +494,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
 
                     } else {
                         pictureCallback.onPictureTaken(bytes, camera);
-                        takePicture(mPreviewOnly);
+                        takePicture(mDiagnosticMode);
                     }
                 } else {
                     pictureCallback.onPictureTaken(bytes, camera);

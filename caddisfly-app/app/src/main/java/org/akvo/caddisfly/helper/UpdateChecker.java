@@ -83,7 +83,7 @@ class UpdateChecker {
 
         JSONObject json;
 
-        if (NetworkUtil.checkInternetConnection(mContext)) {
+        if (NetworkUtil.checkInternetConnection(mContext, false)) {
             if (haveValidContext) {
                 int versionCode = getVersionCode();
                 if (versionCode >= 0) {
@@ -143,7 +143,7 @@ class UpdateChecker {
      */
     @SuppressWarnings("SameParameterValue")
     public void downloadAndInstall(String apkUrl, String checksum, String version) {
-        if (NetworkUtil.isOnline(mContext)) {
+        if (NetworkUtil.checkInternetConnection(mContext, false)) {
             DownloadManager downloadManager = new DownloadManager(mContext);
             downloadManager.execute(apkUrl, checksum, version);
         } else {

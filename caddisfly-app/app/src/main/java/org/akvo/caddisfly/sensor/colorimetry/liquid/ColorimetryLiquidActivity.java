@@ -56,6 +56,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -560,7 +561,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(R.raw.err);
                     //save the image for diagnostics
-                    ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result));
+                    saveImageForDiagnostics(data, result);
                     showDiagnosticResultDialog(true, 0, color, isCalibration);
                 } else {
                     showError(message, ImageUtil.getBitmap(data));
@@ -570,7 +571,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 if (AppPreferences.isDiagnosticMode(getBaseContext())) {
                     sound.playShortResource(R.raw.done);
                     //save the image for diagnostics
-                    ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result));
+                    saveImageForDiagnostics(data, result);
                     showDiagnosticResultDialog(false, result, color, false);
                 } else {
                     String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
@@ -613,6 +614,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 }
             }
         }
+    }
+
+    private void saveImageForDiagnostics(byte[] data, double result) {
+        ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result)
+                + "." + ApiUtil.getEquipmentId(this))
+        ;
     }
 
     @Override
@@ -658,6 +665,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     @Override
     public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration) {
+        setAnimatorDisplayedChild(mViewAnimator, 1);
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();

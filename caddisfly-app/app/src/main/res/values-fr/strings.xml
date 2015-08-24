@@ -124,7 +124,6 @@
     <string name="diagnosticModeDisabled">Mode diagnostique désactivé</string>
     <!--Diagnostic Mode: Save / Load Calibration-->
     <string name="saveCalibration">Enregistrer l\'étalonnage</string>
-    <string name="saveProvideFileName">Nommer cette calibration</string>
     <string name="saveInvalidFileName">Nom de fichier incorrect</string>
     <string name="fileAlreadyExists">Ce fichier existe déjà</string>
     <string name="doYouWantToOverwrite">Voulez-vous remplacer ce fichier?</string>
@@ -145,4 +144,8 @@
     <string name="noSound">Eteindre le son</string>
     <string name="fileSaved">File saved</string>
     <string name="calibrationLoaded">%1$s loaded</string>
+    <string name="name">Nom</string>
+    <string name="deleted">Effacé</string>
+    <string name="required">Obligatoire</string>
+
 </resources>

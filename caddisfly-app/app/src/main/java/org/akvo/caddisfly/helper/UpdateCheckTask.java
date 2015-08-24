@@ -56,7 +56,7 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (NetworkUtil.isOnline(mContext)) {
+        if (NetworkUtil.checkInternetConnection(mContext, !mSilent)) {
             updateChecker = new UpdateChecker(mContext, false);
             if (!mSilent) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -73,9 +73,6 @@ public class UpdateCheckTask extends AsyncTask<Void, Void, Void> {
             }
         } else {
             this.cancel(true);
-            if (!mSilent) {
-                NetworkUtil.checkInternetConnection(mContext);
-            }
         }
     }
 
