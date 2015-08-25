@@ -73,4 +73,10 @@
         <item name="android:textColor">@color/text_tertiary</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogCustom.Destructive"></style>
+
 </resources>

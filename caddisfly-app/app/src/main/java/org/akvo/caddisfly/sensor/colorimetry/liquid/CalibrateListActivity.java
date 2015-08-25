@@ -230,18 +230,17 @@ public class CalibrateListActivity extends BaseActivity
     private void loadCalibration(final Handler.Callback callback) {
         final Context context = this;
         try {
-            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-            builderSingle.setIcon(R.mipmap.ic_launcher);
-            builderSingle.setTitle(R.string.loadCalibration);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.loadCalibration);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-                    android.R.layout.select_dialog_singlechoice);
+                    R.layout.row_text);
 
             final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
 
             final File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
 
-            if (subPath.exists()) {
+            if (subPath.exists() && subPath.isDirectory()) {
                 final File[] listFiles = subPath.listFiles();
                 Arrays.sort(listFiles);
 
@@ -249,7 +248,7 @@ public class CalibrateListActivity extends BaseActivity
                     arrayAdapter.add(listFile.getName());
                 }
 
-                builderSingle.setNegativeButton(R.string.cancel,
+                builder.setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -258,7 +257,7 @@ public class CalibrateListActivity extends BaseActivity
                         }
                 );
 
-                builderSingle.setAdapter(arrayAdapter,
+                builder.setAdapter(arrayAdapter,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -317,11 +316,11 @@ public class CalibrateListActivity extends BaseActivity
                         }
                 );
 
-                final AlertDialog alert = builderSingle.create();
-                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialogInterface) {
-                        final ListView listView = alert.getListView();
+                        final ListView listView = alertDialog.getListView();
                         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                             @Override
                             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -337,7 +336,7 @@ public class CalibrateListActivity extends BaseActivity
                                                 FileUtil.deleteFile(subPath, fileName);
                                                 ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                                 listAdapter.remove(listAdapter.getItem(position));
-                                                alert.dismiss();
+                                                alertDialog.dismiss();
                                                 Toast.makeText(getBaseContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -347,7 +346,7 @@ public class CalibrateListActivity extends BaseActivity
 
                     }
                 });
-                alert.show();
+                alertDialog.show();
             } else {
                 AlertUtil.showMessage(context, R.string.notFound, R.string.loadFilesNotAvailable);
             }

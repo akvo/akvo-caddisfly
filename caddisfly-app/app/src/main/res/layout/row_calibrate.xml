@@ -91,19 +91,6 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageError"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|end"
-            android:contentDescription="@null"
-            android:paddingEnd="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingStart="10dp"
-            android:src="@drawable/error"
-            android:visibility="gone" />
-
-        <ImageView
             android:id="@+id/imageArrow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

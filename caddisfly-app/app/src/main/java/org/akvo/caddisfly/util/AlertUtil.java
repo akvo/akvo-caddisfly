@@ -136,10 +136,10 @@ public class AlertUtil {
             builder.setNegativeButton(cancelButtonText, negativeListener);
         }
 
-        final AlertDialog alert = builder.create();
-        alert.show();
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
-        return alert;
+        return alertDialog;
     }
 
     /**

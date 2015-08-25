@@ -18,8 +18,6 @@
 
 buildscript {
     repositories {
-        mavenCentral()
-        mavenLocal()
         jcenter()
     }
     dependencies {
@@ -30,11 +28,6 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
         jcenter()
-    }
-    //todo: remove this when android studio/sdk bug is fixed
-    configurations.all {
-        resolutionStrategy.force 'com.android.support:support-annotations:22.2.1'
     }
 }
