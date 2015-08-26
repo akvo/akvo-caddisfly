@@ -86,31 +86,28 @@ class UpdateChecker {
         if (NetworkUtil.checkInternetConnection(mContext, false)) {
             if (haveValidContext) {
                 int versionCode = getVersionCode();
-                if (versionCode >= 0) {
-                    try {
+                try {
 
-                        String response = readFile(url);
+                    String response = readFile(url);
 
-                        json = new JSONObject(response);
-                        int version = Integer.parseInt(json.getString("version"));
+                    json = new JSONObject(response);
+                    int version = Integer.parseInt(json.getString("version"));
 
-                        // Check if update is available.
-                        if (version > versionCode) {
-                            return json;
-                        }
-                    } catch (Exception e) {
-                        Log.e(DEBUG_TAG, "Invalid number online");
+                    // Check if update is available.
+                    if (version > versionCode) {
+                        return json;
                     }
-                } else {
-                    Log.e(DEBUG_TAG, "Invalid version code in app");
+                } catch (Exception e) {
+                    if (useToasts) {
+                        makeToastFromString(mContext.getString(R.string.updateFailed)).show();
+                    }
                 }
                 return null;
             }
             return null;
         } else {
             if (useToasts) {
-                makeToastFromString(mContext.getString(R.string.updateFailedNoInternet))
-                        .show();
+                makeToastFromString(mContext.getString(R.string.updateFailedNoInternet)).show();
             }
             return null;
         }

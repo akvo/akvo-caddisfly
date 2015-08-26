@@ -27,11 +27,6 @@ public class AppConfig {
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     /**
-     * FLOW package name to check if FLOW app is installed
-     */
-    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
-
-    /**
      * The url to check for update version
      */
     public static final String UPDATE_CHECK_URL

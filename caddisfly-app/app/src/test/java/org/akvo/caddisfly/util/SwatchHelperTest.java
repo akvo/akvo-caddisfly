@@ -21,18 +21,18 @@ import android.graphics.Color;
 import junit.framework.TestCase;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.helper.DataHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
-public class DataHelperTest extends TestCase {
+public class SwatchHelperTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        ClassUtil.assertUtilityClassWellDefined(DataHelper.class);
+        ClassUtil.assertUtilityClassWellDefined(SwatchHelper.class);
     }
 
     private Result createNewResult(double value) {
@@ -60,7 +60,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.5));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.54, result, 0);
     }
 
@@ -77,7 +77,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.5));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.58, result, 0);
     }
 
@@ -87,7 +87,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.8));
         results.add(createNewResult(1.5));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -98,7 +98,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.5));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -110,7 +110,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.7));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1.0, result, 0);
     }
 
@@ -123,7 +123,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.7));
         results.add(createNewResult(1.7));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.64, result, 0);
     }
 
@@ -136,7 +136,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.5));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(-1, result, 0);
     }
 
@@ -150,7 +150,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5));
         results.add(createNewResult(1.6));
 
-        double result = DataHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
+        double result = SwatchHelper.getAverageResult(results, AppConfig.SAMPLING_COUNT_DEFAULT);
         assertEquals(1.6, result, 0);
     }
 
@@ -164,7 +164,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
         results.add(createNewResult(1.6, Color.rgb(230, 230, 230)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(0, color);
     }
 
@@ -175,7 +175,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.7, Color.rgb(245, 245, 245)));
         results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(0, color);
     }
 
@@ -188,7 +188,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.5, Color.rgb(235, 235, 235)));
         results.add(createNewResult(1.5, Color.rgb(210, 230, 210)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(0, color);
     }
 
@@ -201,7 +201,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(253, 251, 250)));
         results.add(createNewResult(1.8, Color.rgb(254, 250, 250)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(Color.rgb(252, 252, 250), color);
     }
 
@@ -214,7 +214,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(225, 1, 1)));
         results.add(createNewResult(1.8, Color.rgb(225, 1, 3)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(Color.rgb(223, 1, 1), color);
     }
 
@@ -227,7 +227,7 @@ public class DataHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(175, 125, 76)));
         results.add(createNewResult(1.8, Color.rgb(175, 124, 77)));
 
-        int color = DataHelper.getAverageColor(results);
+        int color = SwatchHelper.getAverageColor(results);
         assertEquals(Color.rgb(176, 125, 76), color);
     }
 

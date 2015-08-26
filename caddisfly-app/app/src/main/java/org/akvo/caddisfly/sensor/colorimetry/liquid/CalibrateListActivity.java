@@ -37,9 +37,9 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -355,4 +355,5 @@ public class CalibrateListActivity extends BaseActivity
 
         callback.handleMessage(null);
     }
+
 }

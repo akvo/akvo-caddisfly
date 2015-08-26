@@ -21,7 +21,7 @@ import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

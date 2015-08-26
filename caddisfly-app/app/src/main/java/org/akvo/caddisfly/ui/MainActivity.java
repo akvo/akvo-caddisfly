@@ -36,10 +36,10 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
-import org.akvo.caddisfly.helper.DataHelper;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.UpdateCheckTask;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity {
     //tracks whether this app was launched by an external app
     private Boolean mIsExternalAppCall = false;
     //tracks if the app should automatically close (after launching an external app)
-    private boolean mShouldFinish = false;
     //the language requested by the external app
     private String mExternalAppLanguageCode;
 
@@ -73,13 +72,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        findViewById(R.id.buttonStartSurvey).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSurvey();
-            }
-        });
 
         findViewById(R.id.buttonDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,34 +89,6 @@ public class MainActivity extends BaseActivity {
         upgradeOldFolderPath();
 
         checkForUpdate();
-    }
-
-    /**
-     * Opens Akvo FLOW app
-     */
-    private void startSurvey() {
-        Intent intent = getPackageManager()
-                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
-
-        if (intent == null) {
-            //external app is not installed
-            alertDependantAppNotFound();
-        } else {
-            startActivity(intent);
-            //external app was launched so get ready to close this one
-            mShouldFinish = true;
-
-            //After external app is launched wait a short while and then close this app
-            (new Handler()).postDelayed(new Runnable() {
-                public void run() {
-                    if (mShouldFinish) {
-                        //close this app as external app is currently active
-                        finish();
-                        ExitActivity.exitApplication(getApplicationContext());
-                    }
-                }
-            }, 2000);
-        }
     }
 
     /**
@@ -316,8 +280,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Do not close this app as user manually opened it
-        mShouldFinish = false;
 
         Intent intent = getIntent();
         String type = intent.getType();
@@ -341,9 +303,14 @@ public class MainActivity extends BaseActivity {
                 if (CaddisflyApp.getApp().currentTestInfo == null) {
                     alertTestTypeNotSupported(mQuestionTitle);
                 } else {
-                    if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
-                        alertCameraFlashNotAvailable();
-                    } else {
+                    if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }
+                    )) {
                         startTest();
                     }
                 }
@@ -360,7 +327,7 @@ public class MainActivity extends BaseActivity {
         switch (caddisflyApp.currentTestInfo.getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (!DataHelper.isSwatchListValid(caddisflyApp.currentTestInfo.getSwatches())) {
+                if (!SwatchHelper.isSwatchListValid(caddisflyApp.currentTestInfo.getSwatches())) {
                     alertCalibrationIncomplete();
                     return;
                 }
@@ -406,33 +373,6 @@ public class MainActivity extends BaseActivity {
                 break;
             default:
         }
-    }
-
-    /**
-     * Alert message for external app not found
-     */
-    private void alertDependantAppNotFound() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
-                getString(R.string.pleaseContactSupport));
-
-        AlertUtil.showMessage(this, R.string.akvoFlowNotFound, message);
-    }
-
-    /**
-     * Alert message for camera flash not found
-     */
-    private void alertCameraFlashNotAvailable() {
-        AlertUtil.showError(this, R.string.cannotStartTest,
-                getString(R.string.errorCameraFlashRequired),
-                null,
-                R.string.backToSurvey,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                },
-                null);
     }
 
     /**

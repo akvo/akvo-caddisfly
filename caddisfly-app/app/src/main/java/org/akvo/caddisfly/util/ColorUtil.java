@@ -21,12 +21,12 @@ import android.graphics.Color;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.HsvColor;
 import org.akvo.caddisfly.model.LabColor;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.XyzColor;
+import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.ArrayList;
 

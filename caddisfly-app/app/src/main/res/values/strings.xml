@@ -56,9 +56,6 @@
     <string name="pleaseEnterValue">Enter a value</string>
 
     <!--Main Screen-->
-    <string name="startSurvey">Start Survey</string>
-    <string name="akvoFlowNotFound">Akvo FLOW not found</string>
-    <string name="errorAkvoFlowRequired">Install Akvo FLOW app and try again</string>
     <string name="cannotCalibrate">Cannot calibrate</string>
     <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
     <string name="cannotStartTest">Cannot start test</string>
@@ -167,5 +164,8 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
+    <string name="toConductTestOpenApp">To conduct a test open Akvo FLOW</string>
+    <string name="cameraNotAvailable">Camera not available</string>
+    <string name="cameraInUse">Camera not available or is in use. Try restarting device.</string>
 
 </resources>

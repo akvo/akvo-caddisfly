@@ -1,5 +1,14 @@
+v0.78 beta
+----------
+1. Action bar style changed to theme default
+2. Start Survey button removed from main activity
+3. Removed app from recent task list
+4. Some style improvements
+5. Diagnostic: Battery level added to image file name
+6. Diagnostic: Calibration (C) or Test (T) info added image name
+
 v0.77 beta
-__________
+----------
 1. Diagnostic: Camera preview runs a test if device placed flat face down
 2. Diagnostic: Nearest matching color and distance displayed even if test fails
 

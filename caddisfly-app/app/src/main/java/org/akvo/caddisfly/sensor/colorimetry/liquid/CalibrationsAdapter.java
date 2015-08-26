@@ -32,8 +32,8 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
@@ -96,8 +96,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
                 double distance = 0;
                 if (position > 0) {
                     int previousColor = swatches.get(position - 1).getColor();
-                    distance = ColorUtil.getColorDistanceLab(ColorUtil.colorToLab(previousColor),
-                            ColorUtil.colorToLab(color));
+                    distance = ColorUtil.getColorDistance(previousColor, color);
                 }
                 textRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
 

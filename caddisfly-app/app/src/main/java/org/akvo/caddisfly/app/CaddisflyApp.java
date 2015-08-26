@@ -18,12 +18,17 @@ package org.akvo.caddisfly.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.support.annotation.StringRes;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ConfigHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -40,16 +45,33 @@ public class CaddisflyApp extends Application {
     /**
      * Check if the device has a camera flash
      *
-     * @param context the context
+     * @param context         the context
+     * @param onClickListener positive button listener
      * @return true if camera flash exists otherwise false
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean hasFeatureCameraFlash(Context context) {
+    public static boolean hasFeatureCameraFlash(Context context, @StringRes int errorTitle,
+                                                DialogInterface.OnClickListener onClickListener) {
         //check only once for flash
         if (!checkedForFlash) {
-            hasCameraFlash = ApiUtil.hasCameraFlash(context);
+            @SuppressWarnings("deprecation")
+            Camera camera = ApiUtil.getCameraInstance();
+            if (camera == null) {
+                AlertUtil.showAlert(context, R.string.cameraNotAvailable,
+                        R.string.cameraInUse, R.string.ok, onClickListener, null);
+                return false;
+            } else {
+                hasCameraFlash = ApiUtil.hasCameraFlash(context, camera);
+            }
             checkedForFlash = true;
         }
+
+        if (!hasCameraFlash) {
+            AlertUtil.showAlert(context, errorTitle,
+                    R.string.errorCameraFlashRequired,
+                    R.string.backToSurvey, onClickListener, null);
+
+        }
+
         return hasCameraFlash;
     }
 

@@ -31,7 +31,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -43,9 +42,9 @@ import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 
@@ -392,7 +391,6 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
 
             Camera.Size mSize;
             for (Camera.Size size : sizes) {
-                Log.i("Caddisfly", "Available resolution: " + size.width + " " + size.height);
                 if (size.width > 400 && size.width < 1000) {
                     mSize = size;
                     parameters.setPictureSize(mSize.width, mSize.height);

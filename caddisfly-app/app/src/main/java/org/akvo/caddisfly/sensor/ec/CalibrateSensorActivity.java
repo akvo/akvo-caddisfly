@@ -22,7 +22,6 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -132,7 +131,7 @@ public class CalibrateSensorActivity extends BaseActivity {
 
     private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         if (ftDev == null || !ftDev.isOpen()) {
-            Log.e("j2xx", "SetConfig: device not open");
+            //device not open
             return;
         }
 
@@ -213,7 +212,7 @@ public class CalibrateSensorActivity extends BaseActivity {
 
     private void SendMessage(String data) {
         if (ftDev == null || !ftDev.isOpen()) {
-            Log.e("j2xx", "SendMessage: device not open");
+            //device not open
             return;
         }
 
@@ -390,4 +389,11 @@ public class CalibrateSensorActivity extends BaseActivity {
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
     }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        finish();
+    }
+
 }

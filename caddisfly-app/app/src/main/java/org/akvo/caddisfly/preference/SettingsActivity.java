@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 public class SettingsActivity extends BaseActivity
@@ -30,13 +29,7 @@ public class SettingsActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setupActivity();
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
     }
 
     @Override

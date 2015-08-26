@@ -6,7 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtil;
 
 /**

@@ -51,9 +51,6 @@
     <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
     <string name="pleaseEnterValue">Entrer une valeur</string>
     <!--Main Screen-->
-    <string name="startSurvey">Commencer l\'enquête</string>
-    <string name="akvoFlowNotFound">Akvo FLOW est introuvable</string>
-    <string name="errorAkvoFlowRequired">Installez l\'application Akvo FLOW et réessayez</string>
     <string name="cannotCalibrate">Impossible d\'étalonner</string>
     <string name="errorCameraFlashRequired">Le flash de l\'appareil est introuvable</string>
     <string name="cannotStartTest">Impossible de commencer le test</string>

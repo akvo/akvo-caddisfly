@@ -22,6 +22,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.view.Surface;
 import android.view.WindowManager;
@@ -53,9 +54,8 @@ public final class ApiUtil {
      * @param context the context
      * @return true if camera flash is available
      */
-    public static boolean hasCameraFlash(Context context) {
+    public static boolean hasCameraFlash(Context context, @NonNull Camera camera) {
         boolean hasFlash = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        Camera camera = getCameraInstance();
         try {
             Camera.Parameters p;
 
@@ -72,9 +72,7 @@ public final class ApiUtil {
                 }
             }
         } finally {
-            if (camera != null) {
-                camera.release();
-            }
+            camera.release();
         }
         return hasFlash;
     }

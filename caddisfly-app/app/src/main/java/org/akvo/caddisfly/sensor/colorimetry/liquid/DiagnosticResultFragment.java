@@ -33,7 +33,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.DataHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -91,7 +91,7 @@ public class DiagnosticResultFragment extends DialogFragment {
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(mExtractBitmap,
                 AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultDetail resultDetail = DataHelper.analyzeColor(photoColor,
+        ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 caddisflyApp.currentTestInfo.getSwatches(),
                 ColorUtil.ColorModel.RGB);
 

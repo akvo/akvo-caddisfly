@@ -34,6 +34,7 @@ public class ColorCompareInfo {
         return result;
     }
 
+    @SuppressWarnings("unused")
     public int getResultColor() {
         return resultColor;
     }

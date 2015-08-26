@@ -43,6 +43,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -50,7 +51,6 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.NetworkUtil;
-import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -64,7 +64,6 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -227,9 +226,6 @@ public class EspressoTest
 
         goToMainScreen();
 
-        final Button button = (Button) getActivity().findViewById(R.id.buttonStartSurvey);
-        assertNotNull(button);
-
         sleep(4000);
 
         //Main Screen
@@ -286,7 +282,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        onView(withText("Test")).perform(click());
+        onView(withText("TestInvalid")).perform(click());
 
         sleep(2000);
 
@@ -319,7 +315,9 @@ public class EspressoTest
         saveCalibration();
 
         mDevice.pressBack();
+
         mDevice.pressBack();
+
         mDevice.pressBack();
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
@@ -338,7 +336,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        onView(withText("Test")).perform(click());
+        onView(withText("TestValid")).perform(click());
 
         sleep(2000);
 
@@ -389,11 +387,7 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
-
-        onView(withId(R.id.buttonStartSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -412,11 +406,7 @@ public class EspressoTest
 
         startApp();
 
-        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
-
-        onView(withId(R.id.buttonStartSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -500,11 +490,11 @@ public class EspressoTest
 
     private void goToMainScreen() {
 
-        Button button = (Button) getCurrentActivity().findViewById(R.id.buttonStartSurvey);
+        TextView button = (TextView) getCurrentActivity().findViewById(R.id.textOpenApp);
         while (button == null) {
             Espresso.pressBack();
             mDevice.waitForWindowUpdate("", 2000);
-            button = (Button) getCurrentActivity().findViewById(R.id.buttonStartSurvey);
+            button = (TextView) getCurrentActivity().findViewById(R.id.textOpenApp);
         }
     }
 
@@ -530,9 +520,9 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
-
         Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -540,11 +530,7 @@ public class EspressoTest
     }
 
     public void testIncompleteCalibration() {
-        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
-
-        onView(withId(R.id.buttonStartSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -585,15 +571,14 @@ public class EspressoTest
 
         Espresso.pressBack();
 
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
         onView(withText(currentHashMap.get("chlorine"))).perform(click());
 
         onView(withText("0" + dfs.getDecimalSeparator() + "50 ppm")).perform(click());
 
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
     }
 
     public void testStartASurvey() {
@@ -622,7 +607,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        onView(withText("Test")).perform(click());
+        onView(withText("TestValid")).perform(click());
 
         sleep(2000);
 
@@ -632,11 +617,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.buttonStartSurvey)).check(matches(isClickable()));
-
-        onView(withId(R.id.buttonStartSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -654,16 +635,38 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 1000);
 
-        //onView(withId(R.id.placeInStandText)).check(matches(isDisplayed()));
-
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
     }
 
     private void openSurveyInFlow() {
+        // Start from the home screen
+        mDevice.pressHome();
+        mDevice.waitForWindowUpdate("", 2000);
+        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
+        allAppsButton.click();
+        mDevice.waitForWindowUpdate("", 2000);
+
+        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+        appViews.setAsHorizontalList();
+
+        UiObject settingsApp = null;
+        try {
+            String appName = "Akvo FLOW";
+            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (settingsApp != null) {
+                settingsApp.clickAndWaitForNewWindow();
+            }
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        assertTrue("Unable to detect app", settingsApp != null);
+
         clickListViewItem("Automated Tests");
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
             clickListViewItem(currentHashMap.get("createNewDataPoint"));
@@ -755,14 +758,6 @@ public class EspressoTest
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         onView(withId(R.id.action_swatches)).perform(click());
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
 
     }
 
@@ -898,9 +893,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withText(R.string.startSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -966,9 +959,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withText(R.string.startSurvey)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -1104,7 +1095,7 @@ public class EspressoTest
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+        clickListViewItem("Automated Tests");
 
     }
 
@@ -1155,24 +1146,6 @@ public class EspressoTest
         });
 
         //Update available
-        takeScreenshot();
-
-        onView(withId(android.R.id.button2)).perform(click());
-
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = MainActivity.class.getDeclaredMethod("alertDependantAppNotFound");
-                    method.setAccessible(true);
-                    method.invoke(getActivity());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //Akvo flow not installed
         takeScreenshot();
 
         onView(withId(android.R.id.button2)).perform(click());
@@ -1256,13 +1229,13 @@ public class EspressoTest
         File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
 
         FileUtil.saveToFile(subPath,
-                "Test", "0.0=255  88  177\n"
-                + "0.5=255  110  15\n"
-                + "1.0=255  139  137\n"
-                + "1.5=253  174  74\n"
-                + "2.0=244  180  86\n"
-                + "2.5=236  172  81\n"
-                + "3.0=254  169  61\n");
+                "TestValid", "0.0=255  88  177\n"
+                        + "0.5=255  110  15\n"
+                        + "1.0=255  139  137\n"
+                        + "1.5=253  174  74\n"
+                        + "2.0=244  180  86\n"
+                        + "2.5=236  172  81\n"
+                        + "3.0=254  169  61\n");
     }
 
     private void saveInvalidCalibration() {
@@ -1270,13 +1243,13 @@ public class EspressoTest
         File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
 
         FileUtil.saveToFile(subPath,
-                "Test", "0.0=255  88  177\n"
-                + "0.5=255  110  15\n"
-                + "1.0=255  138  137\n"
-                + "1.5=253  174  74\n"
-                + "2.0=253  174  76\n"
-                + "2.5=236  172  81\n"
-                + "3.0=254  169  61\n");
+                "TestInvalid", "0.0=255  88  177\n"
+                        + "0.5=255  110  15\n"
+                        + "1.0=255  138  137\n"
+                        + "1.5=253  174  74\n"
+                        + "2.0=253  174  76\n"
+                        + "2.5=236  172  81\n"
+                        + "3.0=254  169  61\n");
     }
 
     private void saveHighLevelCalibration() {
@@ -1285,10 +1258,10 @@ public class EspressoTest
 
         FileUtil.saveToFile(subPath,
                 "HighLevelTest", "0.0=255  88  47\n"
-                + "0.5=255  60  37\n"
-                + "1.0=255  35  27\n"
-                + "1.5=253  17  17\n"
-                + "2.0=254  0  0\n");
+                        + "0.5=255  60  37\n"
+                        + "1.0=255  35  27\n"
+                        + "1.5=253  17  17\n"
+                        + "2.0=254  0  0\n");
     }
 
     private void saveLowLevelCalibration() {
@@ -1297,10 +1270,10 @@ public class EspressoTest
 
         FileUtil.saveToFile(subPath,
                 "LowLevelTest", "0.0=255  60  37\n"
-                + "0.5=255  35  27\n"
-                + "1.0=253  17  17\n"
-                + "1.5=254  0  0\n"
-                + "2.0=224  0  0\n");
+                        + "0.5=255  35  27\n"
+                        + "1.0=253  17  17\n"
+                        + "1.5=254  0  0\n"
+                        + "2.0=224  0  0\n");
     }
 
 

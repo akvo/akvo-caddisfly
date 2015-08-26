@@ -26,7 +26,6 @@ import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,7 +39,7 @@ import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.lang.ref.WeakReference;
@@ -290,7 +289,7 @@ public class SensorActivity extends BaseActivity {
     @SuppressWarnings("SameParameterValue")
     private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         if (ftDev == null || !ftDev.isOpen()) {
-            Log.e("j2xx", "SetConfig: device not open");
+            //device not open
             return;
         }
 
@@ -373,7 +372,7 @@ public class SensorActivity extends BaseActivity {
 
     private void SendMessage() {
         if (ftDev == null || !ftDev.isOpen()) {
-            Log.e("j2xx", "SendMessage: device not open");
+            //device not open
             return;
         }
 
@@ -503,6 +502,12 @@ public class SensorActivity extends BaseActivity {
         }
         mResult = "";
 
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        finish();
     }
 
     private static class WeakRefHandler extends Handler {

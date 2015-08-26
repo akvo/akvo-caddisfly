@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
+import org.akvo.caddisfly.preference.AppPreferences;
 
 /**
  * Displays the app version and other company/copyright related information

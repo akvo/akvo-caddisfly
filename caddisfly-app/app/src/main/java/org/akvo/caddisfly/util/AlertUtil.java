@@ -38,6 +38,7 @@ public class AlertUtil {
         showAlert(context, title, message, null, null);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void showMessage(Context context, @StringRes int title, String message) {
         showAlert(context, title, message, null, null);
     }
@@ -165,7 +166,7 @@ public class AlertUtil {
                     R.string.cancel, false, false, positiveListener, negativeListener);
         }
 
-        AlertDialog alertDialog;
+        final AlertDialog alertDialog;
         View alertView;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 

@@ -24,26 +24,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-
     <application
         android:name=".app.CaddisflyApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
-        android:logo="@drawable/ic_actionbar_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:theme="@style/MainActivityTheme"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,11 +56,14 @@
         <activity
             android:name=".preference.SettingsActivity"
             android:label="@string/settings"
+            android:logo="@null"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
+            android:finishOnTaskLaunch="true"
             android:label="@string/about"
+            android:noHistory="true"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -94,15 +93,13 @@
             android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".sensor.colorimetry.liquid.DiagnosticSwatchActivity"
             android:label="@string/swatches"
-            android:screenOrientation="nosensor">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".sensor.colorimetry.liquid.CalibrateListActivity" />
-        </activity>
+            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.ec.CalibrateSensorActivity"
             android:label="@string/calibrate"
@@ -113,10 +110,6 @@
             android:label="@string/calibrate"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".ui.ExitActivity"
-            android:autoRemoveFromRecents="true"
-            android:theme="@android:style/Theme.NoDisplay" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:label="@string/appName"

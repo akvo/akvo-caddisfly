@@ -48,12 +48,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
                 //Only start the colorimetry calibration if the device has a camera flash
-                if (!CaddisflyApp.hasFeatureCameraFlash(this)) {
-                    AlertUtil.showError(this, R.string.cannotCalibrate,
-                            getString(R.string.errorCameraFlashRequired),
-                            null,
-                            R.string.ok, null, null);
-                } else {
+                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate, null)) {
                     final Intent intent = new Intent(this, CalibrateListActivity.class);
                     startActivity(intent);
                 }
@@ -87,4 +82,5 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
         AlertUtil.showMessage(this, R.string.notSupported, message);
     }
+
 }

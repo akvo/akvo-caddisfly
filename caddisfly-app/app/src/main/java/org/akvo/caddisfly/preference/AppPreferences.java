@@ -1,4 +1,4 @@
-package org.akvo.caddisfly.helper;
+package org.akvo.caddisfly.preference;
 
 import android.content.Context;
 

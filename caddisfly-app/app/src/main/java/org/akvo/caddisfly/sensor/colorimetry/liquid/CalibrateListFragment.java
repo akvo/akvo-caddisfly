@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.DataHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtil;
 
@@ -69,7 +69,7 @@ public class CalibrateListFragment extends ListFragment {
 
         //Display error if calibration is completed but invalid
         if (ColorUtil.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getSwatches()) &&
-                !DataHelper.isSwatchListValid(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
+                !SwatchHelper.isSwatchListValid(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
             textCalibrationError.setVisibility(View.VISIBLE);

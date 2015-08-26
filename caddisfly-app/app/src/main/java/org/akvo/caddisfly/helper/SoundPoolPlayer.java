@@ -24,6 +24,7 @@ import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 
 /**
  * Manages various sounds used in the app

@@ -24,6 +24,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -45,15 +47,15 @@ import android.widget.ViewAnimator;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.AppPreferences;
-import org.akvo.caddisfly.helper.DataHelper;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -69,6 +71,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         HighLevelsDialogFragment.MessageDialogListener, DiagnosticResultDialog.DiagnosticResultDialogListener {
     private final Handler delayHandler = new Handler();
     private boolean mIsCalibration;
+    private double mSwatchValue;
     private int mDilutionLevel = 0;
     private DiagnosticResultDialog mResultFragment;
     private TextView mDilutionTextView;
@@ -110,12 +113,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
-            double swatchValue = getIntent().getDoubleExtra("swatchValue", 0);
+            mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
             if (mIsCalibration) {
                 getSupportActionBar().setDisplayUseLogoEnabled(false);
                 getSupportActionBar().setTitle(String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
-                        swatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
+                        mSwatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -326,13 +329,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
-        double swatchValue = getIntent().getDoubleExtra("swatchValue", 0);
+        mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
 
         TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
 
         TextView textResult = ((TextView) findViewById(R.id.textResult));
         if (mIsCalibration) {
-            textResult.setText(String.format("%.2f %s", swatchValue, testInfo.getUnit()));
+            textResult.setText(String.format("%.2f %s", mSwatchValue, testInfo.getUnit()));
             textResult.setVisibility(View.VISIBLE);
         } else {
             textResult.setVisibility(View.GONE);
@@ -409,33 +412,33 @@ public class ColorimetryLiquidActivity extends BaseActivity
             swatches.add(testInfo.getSwatches().get(0));
             swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.HSV));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.HSV));
 
             //add the middle swatch for a 3 step analysis
             swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
 
-            results.add(DataHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.HSV));
+            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.HSV));
 
             //use all the swatches for an all steps analysis
-            results.add(DataHelper.analyzeColor(photoColor,
+            results.add(SwatchHelper.analyzeColor(photoColor,
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.RGB));
 
-            results.add(DataHelper.analyzeColor(photoColor,
+            results.add(SwatchHelper.analyzeColor(photoColor,
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.HSV));
 
-            results.add(DataHelper.analyzeColor(photoColor,
+            results.add(SwatchHelper.analyzeColor(photoColor,
                     CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.LAB));
         }
 
-        results.add(0, DataHelper.analyzeColor(photoColor,
+        results.add(0, SwatchHelper.analyzeColor(photoColor,
                 CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL));
 
         Result result = new Result(bitmap, results);
@@ -522,7 +525,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         releaseResources();
 
         String message = getString(R.string.errorTestFailed);
-        double result = DataHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this));
+        double result = SwatchHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this));
 
         if (mDilutionLevel < 2 && result >= CaddisflyApp.getApp().currentTestInfo.getDilutionRequiredLevel() &&
                 CaddisflyApp.getApp().currentTestInfo.getCanUseDilution()) {
@@ -539,7 +542,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 break;
         }
 
-        int color = DataHelper.getAverageColor(mResults);
+        int color = SwatchHelper.getAverageColor(mResults);
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
         Intent intent = new Intent(getIntent());
         intent.putExtra("result", result);
@@ -552,6 +555,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (isCalibration && color != Color.TRANSPARENT) {
             sound.playShortResource(R.raw.done);
             if (AppPreferences.isDiagnosticMode(getBaseContext())) {
+                saveImageForDiagnostics(data, result);
                 showDiagnosticResultDialog(false, result, color, true);
             } else {
                 finish();
@@ -617,9 +621,23 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     private void saveImageForDiagnostics(byte[] data, double result) {
-        ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "." + String.format("%.2f", result)
-                + "." + ApiUtil.getEquipmentId(this))
-        ;
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, intentFilter);
+        int batteryPercent = -1;
+
+        if (batteryStatus != null) {
+            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            batteryPercent = (int) ((level / (float) scale) * 100);
+        }
+
+        if (mIsCalibration) {
+            result = mSwatchValue;
+        }
+
+        ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "_"
+                + (mIsCalibration ? "C" : "T") + "_" + String.format("%.2f", result)
+                + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
     }
 
     @Override

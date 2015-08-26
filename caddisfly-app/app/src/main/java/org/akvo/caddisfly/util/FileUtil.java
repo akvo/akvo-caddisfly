@@ -19,7 +19,6 @@ package org.akvo.caddisfly.util;
 import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.RawRes;
-import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 
@@ -77,25 +76,25 @@ public final class FileUtil {
     }
 
     public static void saveToFile(File folder, String name, String data) {
-        try {
-
-            if (!folder.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                folder.mkdirs();
-            }
-
-            File file = new File(folder, name);
+        if (!folder.exists()) {
             //noinspection ResultOfMethodCallIgnored
-            file.createNewFile();
-            FileWriter filewriter = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(filewriter);
+            folder.mkdirs();
+        }
 
-            out.write(data);
+        File file = new File(folder, name);
 
-            out.close();
-            filewriter.close();
-        } catch (Exception e) {
-            Log.d("failed to save file", e.toString());
+        try {
+            if (file.createNewFile()) {
+                FileWriter filewriter = new FileWriter(file);
+                BufferedWriter out = new BufferedWriter(filewriter);
+
+                out.write(data);
+
+                out.close();
+                filewriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -128,7 +127,7 @@ public final class FileUtil {
     /**
      * Load lines of strings from a file
      *
-     * @param path the path to the file
+     * @param path     the path to the file
      * @param fileName the file name
      * @return an list of string lines
      */

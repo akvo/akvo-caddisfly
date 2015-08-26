@@ -32,9 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class DataHelper {
+public final class SwatchHelper {
 
-    private DataHelper() {
+    private SwatchHelper() {
     }
 
     private static double[] convertDoubles(List<Double> doubles) {
@@ -183,13 +183,13 @@ public final class DataHelper {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isSwatchListValid(ArrayList<Swatch> swatches) {
 
-        for (Swatch swatch : swatches) {
-            if (swatch.getColor() == Color.TRANSPARENT || swatch.getColor() == Color.BLACK) {
+        for (Swatch swatch1 : swatches) {
+            if (swatch1.getColor() == Color.TRANSPARENT || swatch1.getColor() == Color.BLACK) {
                 //Calibration is incomplete
                 return false;
             }
-            for (Swatch swatch1 : swatches) {
-                if (swatch != swatch1 && ColorUtil.areColorsSimilar(swatch.getColor(), swatch1.getColor())) {
+            for (Swatch swatch2 : swatches) {
+                if (swatch1 != swatch2 && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
                     return false;
                 }
