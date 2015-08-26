@@ -17,7 +17,7 @@ import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.opencv.StripTestBrand;
+import org.akvo.akvoqr.opencv.StripTest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.core.Core;
@@ -67,7 +67,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 bitmap.recycle();
         }
     };
-    private boolean testCalib = true;
+    private boolean testCalib = false;
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -243,6 +243,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 //detect strip
                 Mat dest = calMat.clone();
 
+                Mat orig = new Mat();
                 Mat striparea = dest.clone();
                 String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
                 if(json!=null) {
@@ -271,6 +272,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                                 Rect roi = new Rect(stripTopLeft, stripBottomRight);
                                 striparea = dest.submat(roi);
+                                orig = warp_dst.submat(roi);
                             }
                         }
                     }
@@ -295,10 +297,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     listener.showProgress(2);
 
                     //TODO Get brand from user input
-                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTestBrand.brand.HACH883738);
+                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTest.brand.HACH883738);
 
 
                     mats = new ArrayList<>();
+                    if(!orig.empty())
+                        mats.add(orig);
                     mats.add(striparea);
                     mats.add(strip);
 

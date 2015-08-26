@@ -278,17 +278,18 @@ public class OpenCVUtils {
         return null;
     }
 
-    public static Mat detectStripColorBrandKnown(Mat src, StripTestBrand.brand brand)
+    public static Mat detectStripColorBrandKnown(Mat src, StripTest.brand brandEnum)
     {
-        StripTestBrand stripTestBrand = new StripTestBrand(brand);
-        List<StripTestBrand.Patch> patches = stripTestBrand.getPatches();
+        StripTest stripTestBrand = StripTest.getInstance();
+        StripTest.Brand brand = stripTestBrand.getBrand(brandEnum);
+        List<StripTest.Brand.Patch> patches = brand.getPatches();
 
         ResultActivity.stripColors.clear();
         for (int i=0;i<patches.size();i++)
         {
             double srcWidth = src.width();
             double srcHeight = src.height();
-            double ratioW = srcWidth/stripTestBrand.getStripLenght();
+            double ratioW = srcWidth/brand.getStripLenght();
             double x = patches.get(i).position * ratioW;
             double y = srcHeight/2;
             Point center = new Point(x, y);
