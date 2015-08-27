@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.akvo.akvoqr.color.ColorDetected;
+import org.akvo.akvoqr.color.mColorComparator;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +85,7 @@ public class ResultStripTestActivity extends AppCompatActivity {
                     TextView patchView = new TextView(this);
                     patchView.setTextColor(Color.BLACK);
                     Collections.sort(ResultActivity.stripColors, new mColorComparator());
-                    ResultActivity.ColorDetected cd = ResultActivity.stripColors.get(s);
+                    ColorDetected cd = ResultActivity.stripColors.get(s);
 
                     patchView.setBackgroundColor(cd.getColor());
                     patchView.setText("ppm:\n?");

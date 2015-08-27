@@ -5,6 +5,7 @@ import android.graphics.Color;
 import org.akvo.akvoqr.ResultActivity;
 import org.akvo.akvoqr.ResultStripTestActivity;
 import org.akvo.akvoqr.TestResult;
+import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -292,22 +293,30 @@ public class OpenCVUtils {
             double ratioW = srcWidth/brand.getStripLenght();
             double x = patches.get(i).position * ratioW;
             double y = srcHeight/2;
-            Point center = new Point(x, y);
 
-            int minRow =(int)Math.round(Math.max(y-5, 0));
+            int minRow =(int)Math.round(Math.max(y - 5, 0));
             int maxRow = (int)Math.round(Math.min(y + 5, srcHeight));
             int minCol = (int)Math.round(Math.max(x - 5, 0));
-            int maxCol = (int)Math.round(Math.min(x+5, srcWidth));
-            Mat submat = src.submat(minRow,maxRow,
+            int maxCol = (int)Math.round(Math.min(x + 5, srcWidth));
+
+            Mat submat = src.submat(minRow, maxRow,
                     minCol, maxCol);
             Scalar mean = Core.mean(submat);
 
-
+            ColorDetected colorDetected = new ColorDetected((int) Math.round(x));
+            colorDetected.setRgb(mean);
             int color = Color.rgb((int)Math.round(mean.val[0]),(int)Math.round(mean.val[1]),
                     (int)Math.round(mean.val[2]));
-            ResultActivity.stripColors.add(new ResultActivity.ColorDetected(color, (int)Math.round(x)));
 
-            Core.rectangle(src, new Point(minCol,minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
+            colorDetected.setColor(color);
+
+            Mat lab = new Mat();
+            Imgproc.cvtColor(submat, lab, Imgproc.COLOR_RGB2Lab);
+            mean = Core.mean(lab);
+            colorDetected.setLab(mean);
+            ResultActivity.stripColors.add(colorDetected);
+
+            Core.rectangle(src, new Point(minCol, minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
             submat.release();
         }
 
@@ -774,7 +783,9 @@ public class OpenCVUtils {
         }
 
         int color = Color.rgb((int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
-        ResultActivity.stripColors.add(new ResultActivity.ColorDetected(color, left));
+        ColorDetected colorDetected = new ColorDetected(left);
+        colorDetected.setColor(color);
+        ResultActivity.stripColors.add(colorDetected);
 
         return pts;
     }

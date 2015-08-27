@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.akvo.akvoqr.color.ColorDetected;
+import org.akvo.akvoqr.color.mColorComparator;
 import org.akvo.akvoqr.opencv.StripTest;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +36,8 @@ public class ResultActivity extends AppCompatActivity {
     public static List<ColorDetected> stripColors = new ArrayList<>();
     private Map<String, JSONArray> ppmValues;
     private JSONArray ppms;
+    private boolean useLab = true;
+    private boolean useRGB = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +93,15 @@ public class ResultActivity extends AppCompatActivity {
 //            }
 
             //The colors of calibration card
-            if(colors.size()>0)
-            {
-                GridView colorLayout = (GridView) findViewById(R.id.colors);
-
-                Collections.sort(colors, new mColorComparator());
-                MyAdapter adapter = new MyAdapter(this, 0, colors);
-                colorLayout.setAdapter(adapter);
-
-            }
+//            if(colors.size()>0)
+//            {
+//                GridView colorLayout = (GridView) findViewById(R.id.colors);
+//
+//                Collections.sort(colors, new mColorComparator());
+//                MyAdapter adapter = new MyAdapter(this, 0, colors);
+//                colorLayout.setAdapter(adapter);
+//
+//            }
 
             //The colors of the strip test
             if(stripColors.size()>0)
@@ -107,56 +111,129 @@ public class ResultActivity extends AppCompatActivity {
                 Collections.sort(stripColors, new mColorComparator());
 
                 /**
-                * TODO put values in strips.json in assets
-                * After we decide if quality of image used to gather colors is sufficient
-                */
+                 * TODO put values in strips.json in assets
+                 * After we decide if quality of image used to gather colors is sufficient
+                 */
                 StripTest stripTestBrand = StripTest.getInstance();
                 StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
                 ArrayList<ColorDetected> colors = stripTestBrand.getPPMColorsFromImage();
 
                 ppmValues = brand.getPpmValues();
 
+                // The colors from the strip test brand, sort on x position (left to right)
                 Collections.sort(colors, new mColorComparator());
 
+                double[] pointA = null;
+                double[] pointB = null;
+                double[] pointC = null;
+                double labda = 0;
+                boolean matchFound = false;
                 for(int j=0;j<stripColors.size();j++) {
-                    for (int i = 0; i < colors.size(); i++) {
-                        int CA = colors.get(0).color;
-                        int CB = colors.get(colors.size()-1).color;
-                        int CL = stripColors.get(j).color;
 
-                        int CAred = Color.red(CA);
-                        int CAgreen = Color.green(CA);
-                        int CAblue = Color.blue(CA);
-                        int CBred = Color.red(CB);
-                        int CBgreen = Color.green(CB);
-                        int CBblue = Color.blue(CB);
+                    if(useLab && stripColors.get(j).getLab()!=null) {
+
+                        System.out.println("***stripColors has Lab");
+                        double LC = stripColors.get(j).getLab().val[0];
+                        double aC = stripColors.get(j).getLab().val[1];
+                        double bC = stripColors.get(j).getLab().val[2];
+                        System.out.println("***Lab: " + LC + ", " + aC + ", "+ bC);
+                        pointC = new double[]{LC, aC, bC};
+                    }
+                    else if(useRGB && stripColors.get(j).getRgb()!=null)
+                    {
+                        System.out.println("***stripColors has RGB");
+                        pointC = stripColors.get(j).getRgb().val;
+                    }
+                    else if(stripColors.get(j).getColor()!=0)
+                    {
+                        System.out.println("***stripColors has no Lab");
+                        int CL = stripColors.get(j).getColor();
                         int CLred = Color.red(CL);
                         int CLgreen = Color.green(CL);
                         int CLblue = Color.blue(CL);
+                        pointC = new double[]{CLred, CLgreen, CLblue};
 
-                        System.out.println("***color patch no: " + i + "  CA rgb: " + CAred + ", " + CAgreen + " ," + CAblue);
-                        System.out.println("***color patch no: " + i + "  CB rgb: " + CBred + ", " + CBgreen + " ," + CBblue);
-                        System.out.println("***color patch no: " + i + "  CL rgb: " + CLred + ", " + CLgreen + " ," + CLblue);
+                    }
 
-                        double[] pointA = new double[]{CAred, CAgreen, CAblue};
-                        double[] pointB = new double[]{CBred, CBgreen, CBblue};
-                        double[] pointC = new double[]{CLred, CLgreen, CLblue};
+                    for (int i = 0; i < colors.size() - 1; i++) {
 
+                        if(useLab && colors.get(i).getLab()!=null)
+                        {
+
+                            double LA = colors.get(i).getLab().val[0];
+                            double aA = colors.get(i).getLab().val[1];
+                            double bA = colors.get(i).getLab().val[2];
+                            double LB = colors.get(i+1).getLab().val[0];
+                            double aB = colors.get(i+1).getLab().val[1];
+                            double bB = colors.get(i+1).getLab().val[2];
+
+                            pointA = new double[]{LA, aA, bA};
+                            pointB = new double[]{LB, aB, bB};
+
+                        }
+                        else if(useRGB )
+                        {
+                            if(colors.get(i).getRgb()!=null)
+                                pointA = colors.get(i).getRgb().val;
+                            if(colors.get(i+1).getRgb()!=null)
+                                pointB = colors.get(i+1).getRgb().val;
+                        }
+                        else if(colors.get(i).getColor()!=0) {
+
+
+                            int CA = colors.get(0).getColor();
+                            int CB = colors.get(colors.size() - 1).getColor();
+
+                            int CAred = Color.red(CA);
+                            int CAgreen = Color.green(CA);
+                            int CAblue = Color.blue(CA);
+                            int CBred = Color.red(CB);
+                            int CBgreen = Color.green(CB);
+                            int CBblue = Color.blue(CB);
+
+//                            System.out.println("***color patch no: " + i + "  CA rgb: " + CAred + ", " + CAgreen + " ," + CAblue);
+//                            System.out.println("***color patch no: " + i + "  CB rgb: " + CBred + ", " + CBgreen + " ," + CBblue);
+//                            System.out.println("***color patch no: " + i + "  CL rgb: " + CLred + ", " + CLgreen + " ," + CLblue);
+
+                            pointA = new double[]{CAred, CAgreen, CAblue};
+                            pointB = new double[]{CBred, CBgreen, CBblue};
+
+                        }
                         try {
 
-                            double labda = getClosestPointOnLine(pointA, pointB, pointC);
-                            System.out.println("***color patch no: " + i + "  labda: " + labda );
+                            if(pointA!=null && pointB!=null & pointC!=null) {
+                                labda = getClosestPointOnLine(pointA, pointB, pointC);
+                                System.out.println("***color patch no: " + i + "  labda: " + labda);
 
-                            String ppmDesc = brand.getPatchDescList().get(j);
-                            ppms = ppmValues.get(ppmDesc);
+                                String ppmDesc = brand.getPatchDescList().get(j);
+                                ppms = ppmValues.get(ppmDesc);
 
-                            double ppm = (1 - labda) * ppms.getDouble(0) + labda * ppms.getDouble(ppms.length() - 1);
+                                if(0 < labda && labda < 1) {
+                                    double ppm = (1 - labda) * ppms.getDouble(i) + labda * ppms.getDouble(i+1);
 
-                            stripColors.get(j).setPpm(ppm);
+                                    stripColors.get(j).setPpm(ppm);
+                                    matchFound = true;
+                                }
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    if(!matchFound && labda>1) //we have a very dark color. interpolate.
+                    {
+
+                        try {
+
+                            double ppm = (1 - labda) * ppms.getDouble(ppms.length()-2) + labda * ppms.getDouble(ppms.length() -1);
+                            stripColors.get(j).setPpm(ppm);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }
 
@@ -276,35 +353,6 @@ public class ResultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class ColorDetected
-    {
-        private int color;
-        private int x;
-        private double ppm;
-
-        public ColorDetected(int color, int x)
-        {
-            this.color = color;
-            this.x = x;
-        }
-
-        public int getColor() {
-            return color;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public void setPpm(double ppm) {
-            this.ppm = ppm;
-        }
-
-        public double getPpm() {
-            return ppm;
-        }
-    }
-
     private class MyAdapter extends ArrayAdapter<ColorDetected> {
 
         List<ColorDetected> objects;
@@ -334,7 +382,7 @@ public class ResultActivity extends AppCompatActivity {
                 textView = (TextView) convertView;
             }
 
-            textView.setBackgroundColor(objects.get(position).color);
+            textView.setBackgroundColor(objects.get(position).getColor());
 
             try {
                 if (objects.get(position).getPpm() == Double.MAX_VALUE)

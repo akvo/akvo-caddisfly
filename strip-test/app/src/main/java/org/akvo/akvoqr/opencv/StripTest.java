@@ -7,7 +7,7 @@ import android.graphics.Color;
 import org.akvo.akvoqr.App;
 import org.akvo.akvoqr.AssetsManager;
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.ResultActivity;
+import org.akvo.akvoqr.color.ColorDetected;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +56,6 @@ public class StripTest {
 
     public class Brand
     {
-        private String code;
         private double stripLenght;
         private double stripHeight;
         private List<String> patchDescList = new ArrayList<>();
@@ -156,12 +155,17 @@ public class StripTest {
         }
     }
 
+    /* Get the mean Scalars from an image in res/drawable. The image contains color patches
+     * that correspond to ppm values. This is supposed to be a temporary solution, until we find
+     * reliable values for color. It gives the possiblity to test with different color schemes, e.g.
+     * rgb and lab
+     */
     public ArrayList getPPMColorsFromImage()
     {
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         MatOfPoint2f mop2f = new MatOfPoint2f();
-        ArrayList<ResultActivity.ColorDetected> colors = new ArrayList<>();
+        ArrayList<ColorDetected> colors = new ArrayList<>();
 
         try {
             Bitmap bitmap = BitmapFactory.decodeResource(App.getMyApplicationContext().getResources(), R.drawable.total_chlorine_cal);
@@ -201,22 +205,30 @@ public class StripTest {
                         Scalar mean = Core.mean(submat);
                         System.out.println("***rgb: ");
                         System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
+                        ColorDetected colorDetected = new ColorDetected((int)points[0].x);
 
-//                        Imgproc.cvtColor(submat, submat, Imgproc.COLOR_RGB2Lab);
-//                        mean = Core.mean(submat);
-//                        System.out.println("***lab: ");
-//                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
-
-                        Core.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
+                        colorDetected.setRgb(mean);
 
                         int color = Color.rgb((int) Math.round(mean.val[0]),
                                 (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
+                        colorDetected.setColor(color);
 
-                        colors.add(new ResultActivity.ColorDetected(color, (int)points[0].x));
+//
+                        Imgproc.cvtColor(submat, submat, Imgproc.COLOR_RGB2Lab);
+                        mean = Core.mean(submat);
+
+                        colorDetected.setLab(mean);
+
+                        System.out.println("***lab: ");
+                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
+
+                        colors.add(colorDetected);
+
+                        Core.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
+
                       }
                 }
             }
-
 
             return colors;
 
