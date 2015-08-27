@@ -35,8 +35,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
 
+        //need when changing language
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
             getSupportActionBar().setTitle(getResources().getString(R.string.calibrate));
         }
     }
@@ -48,7 +48,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
                 //Only start the colorimetry calibration if the device has a camera flash
-                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate, null)) {
+                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
+                        R.string.ok, null)) {
                     final Intent intent = new Intent(this, CalibrateListActivity.class);
                     startActivity(intent);
                 }

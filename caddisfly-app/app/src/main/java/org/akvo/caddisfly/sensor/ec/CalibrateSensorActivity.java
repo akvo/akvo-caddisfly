@@ -244,10 +244,6 @@ public class CalibrateSensorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_sensor);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-        }
-
         mContext = this;
 
         try {

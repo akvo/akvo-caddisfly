@@ -304,6 +304,7 @@ public class MainActivity extends BaseActivity {
                     alertTestTypeNotSupported(mQuestionTitle);
                 } else {
                     if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                            R.string.backToSurvey,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

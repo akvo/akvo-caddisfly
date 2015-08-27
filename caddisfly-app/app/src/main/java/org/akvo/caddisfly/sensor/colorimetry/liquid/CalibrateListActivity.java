@@ -112,10 +112,6 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-        }
-
         setTitle(CaddisflyApp.getApp().currentTestInfo.getName(
                 getResources().getConfiguration().locale.getLanguage()));
 

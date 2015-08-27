@@ -38,9 +38,33 @@ import java.util.Locale;
 public class CaddisflyApp extends Application {
 
     private static boolean hasCameraFlash;
-    private static boolean checkedForFlash;
     private static CaddisflyApp app;// Singleton
     public TestInfo currentTestInfo = new TestInfo();
+
+    /**
+     * Check if the camera is available
+     *
+     * @param context         the context
+     * @param onClickListener positive button listener
+     * @return true if camera flash exists otherwise false
+     */
+    @SuppressWarnings("deprecation")
+    public static Camera getCamera(Context context,
+                                   DialogInterface.OnClickListener onClickListener) {
+
+        Camera camera = ApiUtil.getCameraInstance();
+        if (camera == null) {
+            String message = String.format("%s\r\n\r\n%s",
+                    context.getString(R.string.checkDeviceHasCamera),
+                    context.getString(R.string.tryRestarting));
+
+            AlertUtil.showError(context, R.string.cameraNotAvailable,
+                    message, null, R.string.ok, onClickListener, null);
+            return null;
+        }
+
+        return camera;
+    }
 
     /**
      * Check if the device has a camera flash
@@ -50,28 +74,34 @@ public class CaddisflyApp extends Application {
      * @return true if camera flash exists otherwise false
      */
     public static boolean hasFeatureCameraFlash(Context context, @StringRes int errorTitle,
+                                                @StringRes int buttonText,
                                                 DialogInterface.OnClickListener onClickListener) {
-        //check only once for flash
-        if (!checkedForFlash) {
+        if (PreferencesUtil.containsKey(context, R.string.hasCameraFlashKey)) {
+            hasCameraFlash = PreferencesUtil.getBoolean(context, R.string.hasCameraFlashKey, false);
+        } else {
+
             @SuppressWarnings("deprecation")
-            Camera camera = ApiUtil.getCameraInstance();
-            if (camera == null) {
-                AlertUtil.showAlert(context, R.string.cameraNotAvailable,
-                        R.string.cameraInUse, R.string.ok, onClickListener, null);
-                return false;
-            } else {
-                hasCameraFlash = ApiUtil.hasCameraFlash(context, camera);
+            Camera camera = getCamera(context, onClickListener);
+            try {
+                if (camera != null) {
+
+                    hasCameraFlash = ApiUtil.hasCameraFlash(context, camera);
+                    PreferencesUtil.setBoolean(context, R.string.hasCameraFlashKey, hasCameraFlash);
+
+                    if (!hasCameraFlash) {
+                        AlertUtil.showAlert(context, errorTitle,
+                                R.string.errorCameraFlashRequired,
+                                buttonText, onClickListener, null);
+
+                    }
+                }
+            } finally {
+                if (camera != null) {
+                    camera.release();
+                }
+
             }
-            checkedForFlash = true;
         }
-
-        if (!hasCameraFlash) {
-            AlertUtil.showAlert(context, errorTitle,
-                    R.string.errorCameraFlashRequired,
-                    R.string.backToSurvey, onClickListener, null);
-
-        }
-
         return hasCameraFlash;
     }
 

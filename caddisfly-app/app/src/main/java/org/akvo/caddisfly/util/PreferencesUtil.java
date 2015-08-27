@@ -187,14 +187,27 @@ public class PreferencesUtil {
      * Removes the key from the preferences
      *
      * @param context the context
-     * @param keyId   the key id
+     * @param key   the key id
      */
-    public static void removeKey(Context context, @StringRes String keyId) {
+    public static void removeKey(Context context, String key) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
-        editor.remove(keyId);
+        editor.remove(key);
         editor.apply();
     }
 
+    /**
+     * Checks if the key is already saved in the preferences
+     *
+     * @param context the context
+     * @param keyId   the key id
+     * @return true if found
+     */
+    @SuppressWarnings("SameParameterValue")
+    public static boolean containsKey(Context context, @StringRes int keyId) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPreferences.contains(getKey(context, keyId));
+    }
 }

@@ -61,9 +61,5 @@ public class AboutActivity extends BaseActivity {
                 }
             }
         });
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-        }
     }
 }

@@ -39,7 +39,13 @@ public class SettingsActivity extends BaseActivity
     }
 
     private void setupActivity() {
+
         setContentView(R.layout.activity_settings);
+
+        //need when changing language
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.layoutContent, new GeneralPreferenceFragment())

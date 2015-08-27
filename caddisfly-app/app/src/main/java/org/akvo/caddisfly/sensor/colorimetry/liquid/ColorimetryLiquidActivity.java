@@ -68,7 +68,8 @@ import java.util.ArrayList;
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
-        HighLevelsDialogFragment.MessageDialogListener, DiagnosticResultDialog.DiagnosticResultDialogListener {
+        HighLevelsDialogFragment.MessageDialogListener,
+        DiagnosticResultDialog.DiagnosticResultDialogListener {
     private final Handler delayHandler = new Handler();
     private boolean mIsCalibration;
     private double mSwatchValue;
@@ -110,18 +111,14 @@ public class ColorimetryLiquidActivity extends BaseActivity
         setContentView(R.layout.activity_colorimetry_liquid);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
             mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
             mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
             if (mIsCalibration) {
-                getSupportActionBar().setDisplayUseLogoEnabled(false);
                 getSupportActionBar().setTitle(String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
                         mSwatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
             }
         }
 
@@ -246,6 +243,22 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         mWaitingForStillness = true;
 
+        final Context context = this;
+        Camera camera = null;
+        try {
+            camera = CaddisflyApp.getCamera(context, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    releaseResources();
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+        } finally {
+            if (camera != null) {
+                camera.release();
+            }
+        }
     }
 
     /**
@@ -468,6 +481,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             @Override
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
+
                 mCameraFragment = CameraDialogFragment.newInstance();
                 if (!((CameraDialogFragment) mCameraFragment).hasTestCompleted()) {
                     ((CameraDialogFragment) mCameraFragment).pictureCallback = new Camera.PictureCallback() {

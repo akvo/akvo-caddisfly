@@ -166,6 +166,8 @@
     <string name="required">Required</string>
     <string name="toConductTestOpenApp">To conduct a test open Akvo FLOW</string>
     <string name="cameraNotAvailable">Camera not available</string>
-    <string name="cameraInUse">Camera not available or is in use. Try restarting device.</string>
+    <string name="checkDeviceHasCamera">Check that the device has a camera</string>
+    <string name="tryRestarting">Try restarting the device</string>
+
 
 </resources>

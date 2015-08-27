@@ -58,7 +58,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraDialogFragment extends DialogFragment implements DiagnosticResultFragment.ResultDialogListener {
+public class CameraDialogFragment extends DialogFragment
+        implements DiagnosticResultFragment.ResultDialogListener {
     private static final String ARG_DIAGNOSTIC_MODE = "diagnostics";
     public Camera.PictureCallback pictureCallback;
     private ShakeDetector mShakeDetector;
@@ -116,10 +117,8 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         // Create preview and set it as the content
-        boolean opened = safeCameraOpenInView(view);
-
-        if (!opened) {
-            return view;
+        if (!safeCameraOpenInView(view)) {
+            return null;
         }
         return view;
     }
@@ -135,7 +134,7 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
     @Override
     public void onStart() {
         super.onStart();
-        if (!mDiagnosticMode) {
+        if (mCamera != null && !mDiagnosticMode) {
             startTakingPictures();
         }
     }
@@ -234,7 +233,6 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
 
                 mShakeDetector.minShakeAcceleration = 5;
                 mShakeDetector.maxShakeDuration = 2000;
-
 
                 mSensorManager.registerListener(mShakeDetector, accelerometer,
                         SensorManager.SENSOR_DELAY_UI);
@@ -362,13 +360,6 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
             parameters.setJpegQuality(100);
             parameters.setZoom(0);
 
-            if (parameters.getMaxNumMeteringAreas() > 0) {
-                List<Camera.Area> meteringAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-100, -100, 100, 100);
-                meteringAreas.add(new Camera.Area(areaRect1, 1000));
-                parameters.setMeteringAreas(meteringAreas);
-            }
-
             List<String> focusModes = parameters.getSupportedFocusModes();
 
             if (AppPreferences.getAutoFocus(getContext())) {
@@ -385,6 +376,20 @@ public class CameraDialogFragment extends DialogFragment implements DiagnosticRe
                     if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
                         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
                     }
+            }
+
+            if (parameters.getMaxNumMeteringAreas() > 0) {
+                List<Camera.Area> meteringAreas = new ArrayList<>();
+                Rect areaRect1 = new Rect(-100, -100, 100, 100);
+                meteringAreas.add(new Camera.Area(areaRect1, 1000));
+                parameters.setMeteringAreas(meteringAreas);
+            }
+
+            if (parameters.getMaxNumFocusAreas() > 0) {
+                List<Camera.Area> focusAreas = new ArrayList<>();
+                Rect areaRect1 = new Rect(-100, -100, 100, 100);
+                focusAreas.add(new Camera.Area(areaRect1, 1000));
+                parameters.setFocusAreas(focusAreas);
             }
 
             List<Camera.Size> sizes = parameters.getSupportedPictureSizes();

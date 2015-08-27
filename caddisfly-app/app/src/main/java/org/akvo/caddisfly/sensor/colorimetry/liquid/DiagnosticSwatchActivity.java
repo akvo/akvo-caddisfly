@@ -36,9 +36,5 @@ public class DiagnosticSwatchActivity extends BaseActivity {
                     .commit();
 
         }
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-        }
     }
 }
