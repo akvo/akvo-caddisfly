@@ -68,6 +68,7 @@ public class StripTest {
                 JSONObject strip = stripObjects.get(brandEnum.name());
                 try {
                     this.stripLenght = strip.getDouble("length");
+                    this.stripHeight = strip.getDouble("height");
                     JSONArray ppmVals = strip.getJSONArray("ppmVals");
                     JSONArray patchDesc = strip.getJSONArray("patchDesc");
                     for(int i=0;i<patchDesc.length();i++)

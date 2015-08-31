@@ -21,8 +21,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.Converters;
-import org.opencv.video.BackgroundSubtractorMOG;
-import org.opencv.video.BackgroundSubtractorMOG2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,23 +32,23 @@ import java.util.List;
  */
 public class OpenCVUtils {
 
-    public static Mat rotateImage(Mat src, RotatedRect rotatedRect)
+    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize)
     {
-        Point[] rotatedRectPoints = new Point[4];
-        rotatedRect.points(rotatedRectPoints);
+//        Point[] rotatedRectPoints = new Point[4];
+//        rotatedRect.points(rotatedRectPoints);
 
         Mat rot_mat;
         Mat cropped = new Mat();
 
         /// Set the dst image the same type and size as src
-        Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
-
+       // Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
+        Mat warp_rotate_dst = new Mat(src.rows(), src.cols(), src.type());
         double angle = rotatedRect.angle;
         Size rect_size = rotatedRect.size;
         // thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
         // we need to swap height and width if angle is lower than 45 degrees
-        if (angle < -45.) {
-            angle += 90.0;
+        if (angle < -45) {
+            angle += 90;
             rect_size.set(new double[]{rect_size.height, rect_size.width});
         }
         // get the rotation matrix
@@ -58,10 +56,15 @@ public class OpenCVUtils {
         // perform the affine transformation
         Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
         // crop the resulting image
-//        rect_size.set(new double[]{rect_size.width, rect_size.height});
-        if(!warp_rotate_dst.empty())
-            Imgproc.getRectSubPix(warp_rotate_dst, rect_size, rotatedRect.center, cropped);
-
+        if(!warp_rotate_dst.empty()) {
+            Point centerBrand = new Point(
+                    rotatedRect.center.x + (rotatedRect.size.width - brandSize.width)/2,
+                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/2);
+            System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
+            + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
+            + " diff height: " + (rotatedRect.size.height - brandSize.height)/2);
+            Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
+        }
         return cropped;
     }
     public static Mat perspectiveTransform(FinderPatternInfo info, Mat mbgra)
@@ -124,9 +127,10 @@ public class OpenCVUtils {
 
         return warp_dst;
     }
-    public static Mat detectStrip(Mat striparea)
+
+    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH)
     {
-        Mat orig = striparea.clone();
+
         Mat lab = new Mat();
         List<Mat> channels = new ArrayList<>();
 
@@ -144,7 +148,7 @@ public class OpenCVUtils {
             Core.split(submat, channels);
             Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
             if(result.maxVal>50)
-                 maxVals.add(result.maxVal);
+                maxVals.add(result.maxVal);
         }
         Collections.sort(maxVals);
 
@@ -156,7 +160,6 @@ public class OpenCVUtils {
 
             Core.split(submat, channels);
             Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
-
 
 //            Scalar mean = Core.mean(submat);
             double tresholdMax = maxVals.get(0);
@@ -183,10 +186,6 @@ public class OpenCVUtils {
             submat.release();
         }
         System.out.println("***end submat");
-
-        lab = temp.clone();
-//        temp.release();
-
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfPoint innermostContours = new MatOfPoint();
@@ -253,11 +252,9 @@ public class OpenCVUtils {
 
             //demo
 //            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
-            Core.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
 
             // we need the mMOP2f object for our rotated Rect
             innermostContours.convertTo(mMOP2f, CvType.CV_32FC2);
-
             rotatedRect = Imgproc.minAreaRect(mMOP2f);
             if(rotatedRect!=null) {
 
@@ -268,10 +265,22 @@ public class OpenCVUtils {
 //                Core.line(lab, rotPoints[1], rotPoints[2], new Scalar(0,0,255,255), 2);
 //                Core.line(lab, rotPoints[2], rotPoints[3], new Scalar(0,0,255,255), 2);
 //                Core.line(lab, rotPoints[3], rotPoints[0], new Scalar(0,0,255,255), 2);
-                Mat rotated = rotateImage(striparea, rotatedRect);
+
+                //make sure detected area is not smaller than known strip size of brand
+
+                Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
+
+                Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
                 System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
                         + " size: " + rotated.size().toString() + " width: " + rotated.size().width
                         + " height: " + rotated.size().height);
+
+                Core.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
+
+                point1 = new Point(point3.x - rotated.width(), point3.y - rotated.height());
+
+                Core.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
+
                 return rotated;
             }
         }
@@ -279,10 +288,9 @@ public class OpenCVUtils {
         return null;
     }
 
-    public static Mat detectStripColorBrandKnown(Mat src, StripTest.brand brandEnum)
+    public static Mat detectStripColorBrandKnown(Mat src, StripTest.Brand brand)
     {
-        StripTest stripTestBrand = StripTest.getInstance();
-        StripTest.Brand brand = stripTestBrand.getBrand(brandEnum);
+
         List<StripTest.Brand.Patch> patches = brand.getPatches();
 
         ResultActivity.stripColors.clear();
@@ -294,10 +302,11 @@ public class OpenCVUtils {
             double x = patches.get(i).position * ratioW;
             double y = srcHeight/2;
 
-            int minRow =(int)Math.round(Math.max(y - 5, 0));
-            int maxRow = (int)Math.round(Math.min(y + 5, srcHeight));
-            int minCol = (int)Math.round(Math.max(x - 5, 0));
-            int maxCol = (int)Math.round(Math.min(x + 5, srcWidth));
+            System.out.println("***srcHeight: " + srcHeight + " strip height: " + brand.getStripHeight()*ratioW);
+            int minRow =(int)Math.round(Math.max(y - 7, 0));
+            int maxRow = (int)Math.round(Math.min(y + 7, srcHeight));
+            int minCol = (int)Math.round(Math.max(x - 7, 0));
+            int maxCol = (int)Math.round(Math.min(x + 7, srcWidth));
 
             Mat submat = src.submat(minRow, maxRow,
                     minCol, maxCol);
@@ -909,25 +918,6 @@ public class OpenCVUtils {
 
         }
         return maxLap;
-    }
-
-    public Mat shadowDetection(Mat src)
-    {
-        Mat fgmask = new Mat();
-        BackgroundSubtractorMOG backgroundSubtractor = new BackgroundSubtractorMOG();
-        backgroundSubtractor.apply(src, fgmask);
-
-        return fgmask;
-    }
-
-    public Mat shadowDetectionMOG2(Mat src)
-    {
-        Mat fgmask = new Mat();
-        BackgroundSubtractorMOG2 backgroundSubtractorMOG2 = new BackgroundSubtractorMOG2(5, 0.5f, true);
-
-        backgroundSubtractorMOG2.apply(src, fgmask, 0);
-
-        return fgmask;
     }
 
     //enhance contrast

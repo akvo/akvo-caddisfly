@@ -56,8 +56,10 @@ public class ResultActivity extends AppCompatActivity {
                     Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(mat, bitmap);
 
-                    double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
-                    int width = 800;
+                    double max = bitmap.getHeight()>bitmap.getWidth()? bitmap.getHeight(): bitmap.getWidth();
+                    double min = bitmap.getHeight()<bitmap.getWidth()? bitmap.getHeight(): bitmap.getWidth();
+                    double ratio = (double) min / (double) max;
+                    int width = (int) Math.max(800, max);
                     int height = (int) Math.round(ratio * width);
 
                     bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
@@ -72,6 +74,12 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
 
+            /*start obsolete code */
+            /* code that was used when Intent to start this Activity had a byte[] in Extra's
+             * to pass the image.
+             * now we put a Serializable Mat object in Extra's.
+             * I keep it here in case that does not work well and we need to fall back on Android standards.
+             */
 //            try {
 //                if (format == ImageFormat.NV21) {
 //
@@ -103,11 +111,16 @@ public class ResultActivity extends AppCompatActivity {
 //
 //            }
 
+            /* end obsolete code */
+
             //The colors of the strip test
+            // stripColors arraylist is filled in class OpenCVUtils, when detecting the color of the patches
+            // detectStripColorBrandKnown(Mat src, StripTest.Brand brand)
             if(stripColors.size()>0)
             {
                 GridView colorLayout1 = (GridView) findViewById(R.id.stripcolors);
 
+                //sort the arraylist on x-position
                 Collections.sort(stripColors, new mColorComparator());
 
                 /**
@@ -121,32 +134,53 @@ public class ResultActivity extends AppCompatActivity {
                 ppmValues = brand.getPpmValues();
 
                 // The colors from the strip test brand, sort on x position (left to right)
+                // this assumes that the darkest color is the one on the right;
+                // that is important to do something with labda and matchFound after setting them
+                // in the for-loop that follows
                 Collections.sort(colors, new mColorComparator());
 
+                //logging
+                for(int h=0;h<colors.size();h++)
+                {
+                    double[] val =colors.get(h).getRgb().val;
+                    System.out.println("***color hach rgb: " +  val[0] + ", " + val[1] + ", " + val[2]);
+                }
+
+                //for Lab
                 double[] pointA = null;
                 double[] pointB = null;
                 double[] pointC = null;
+                //for rgb
+                double[] pointAr = null;
+                double[] pointBr = null;
+                double[] pointCr = null;
+
                 double labda = 0;
+                double labdar = 0;
                 boolean matchFound = false;
+
                 for(int j=0;j<stripColors.size();j++) {
 
+                    // make pointC array
                     if(useLab && stripColors.get(j).getLab()!=null) {
 
                         System.out.println("***stripColors has Lab");
-                        double LC = stripColors.get(j).getLab().val[0];
-                        double aC = stripColors.get(j).getLab().val[1];
-                        double bC = stripColors.get(j).getLab().val[2];
-                        System.out.println("***Lab: " + LC + ", " + aC + ", "+ bC);
-                        pointC = new double[]{LC, aC, bC};
+                        pointC = stripColors.get(j).getLab().val;
+                        System.out.println("***Lab: " + pointC[0] + ", " + pointC[1] + ", "+ pointC[2]);
+
                     }
-                    else if(useRGB && stripColors.get(j).getRgb()!=null)
+                    // make pointCr arry
+                   /* else */ if(useRGB && stripColors.get(j).getRgb()!=null)
                     {
                         System.out.println("***stripColors has RGB");
-                        pointC = stripColors.get(j).getRgb().val;
+                        pointCr = stripColors.get(j).getRgb().val;
+
+                        System.out.println("***RGB: " + pointCr[0] + ", " + pointCr[1] + ", "+ pointCr[2]);
                     }
                     else if(stripColors.get(j).getColor()!=0)
                     {
-                        System.out.println("***stripColors has no Lab");
+                        // if for some reason there is no lab or rgb info, but ColorDetected has an integer (Android Color)
+                        // we use that to get rgb values
                         int CL = stripColors.get(j).getColor();
                         int CLred = Color.red(CL);
                         int CLgreen = Color.green(CL);
@@ -155,28 +189,21 @@ public class ResultActivity extends AppCompatActivity {
 
                     }
 
+                    // make points A and B
                     for (int i = 0; i < colors.size() - 1; i++) {
 
                         if(useLab && colors.get(i).getLab()!=null)
                         {
-
-                            double LA = colors.get(i).getLab().val[0];
-                            double aA = colors.get(i).getLab().val[1];
-                            double bA = colors.get(i).getLab().val[2];
-                            double LB = colors.get(i+1).getLab().val[0];
-                            double aB = colors.get(i+1).getLab().val[1];
-                            double bB = colors.get(i+1).getLab().val[2];
-
-                            pointA = new double[]{LA, aA, bA};
-                            pointB = new double[]{LB, aB, bB};
+                            pointA = colors.get(i).getLab().val;
+                            pointB = colors.get(i+1).getLab().val;
 
                         }
-                        else if(useRGB )
+                        /*else */ if(useRGB )
                         {
                             if(colors.get(i).getRgb()!=null)
-                                pointA = colors.get(i).getRgb().val;
+                                pointAr = colors.get(i).getRgb().val;
                             if(colors.get(i+1).getRgb()!=null)
-                                pointB = colors.get(i+1).getRgb().val;
+                                pointBr = colors.get(i+1).getRgb().val;
                         }
                         else if(colors.get(i).getColor()!=0) {
 
@@ -191,48 +218,75 @@ public class ResultActivity extends AppCompatActivity {
                             int CBgreen = Color.green(CB);
                             int CBblue = Color.blue(CB);
 
-//                            System.out.println("***color patch no: " + i + "  CA rgb: " + CAred + ", " + CAgreen + " ," + CAblue);
-//                            System.out.println("***color patch no: " + i + "  CB rgb: " + CBred + ", " + CBgreen + " ," + CBblue);
-//                            System.out.println("***color patch no: " + i + "  CL rgb: " + CLred + ", " + CLgreen + " ," + CLblue);
-
                             pointA = new double[]{CAred, CAgreen, CAblue};
                             pointB = new double[]{CBred, CBgreen, CBblue};
 
                         }
+
                         try {
 
+                            double ppm = 0;
+                            //Lab
                             if(pointA!=null && pointB!=null & pointC!=null) {
+
                                 labda = getClosestPointOnLine(pointA, pointB, pointC);
-                                System.out.println("***color patch no: " + i + "  labda: " + labda);
 
                                 String ppmDesc = brand.getPatchDescList().get(j);
                                 ppms = ppmValues.get(ppmDesc);
+                                ppm = (1 - labda) * ppms.getDouble(i) + labda * ppms.getDouble(i+1);
 
+                                // if labda is between 0 and 1, it is valid. Maybe we should break the loop here.
+                                // we set matchFound to true, so if the loop ends with matchFound = false,
+                                // we can do something with that info (extrapolate)
                                 if(0 < labda && labda < 1) {
-                                    double ppm = (1 - labda) * ppms.getDouble(i) + labda * ppms.getDouble(i+1);
 
                                     stripColors.get(j).setPpm(ppm);
                                     matchFound = true;
                                 }
+                                System.out.println("***LAB*** color patch no: " + i + "  labda: " + labda + " ppm: " + ppm);
+
                             }
+
+                            //RGB
+                            if(pointAr!=null && pointBr!=null & pointCr!=null) {
+
+                                labdar = getClosestPointOnLine(pointAr, pointBr, pointCr);
+
+                                String ppmDesc = brand.getPatchDescList().get(j);
+                                ppms = ppmValues.get(ppmDesc);
+                                ppm = (1 - labdar) * ppms.getDouble(i) + labdar * ppms.getDouble(i+1);
+
+                                if(0 < labda && labda < 1) {
+
+                                    /* We chose te display the ppm for Lab in the above, ignore for rgb */
+                                    //stripColors.get(j).setPpm(ppm);
+                                    // matchFound = true;
+                                }
+                                System.out.println("***RGB*** color patch no: " + i + "  labdarr: " + labdar + " ppm: " + ppm);
+
+                            }
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
 
-                    if(!matchFound && labda>1) //we have a very dark color. interpolate.
+                    if(!matchFound && labda>1) //we have a very dark color. extrapolate.
                     {
 
-                        try {
-
+                        try
+                        {
                             double ppm = (1 - labda) * ppms.getDouble(ppms.length()-2) + labda * ppms.getDouble(ppms.length() -1);
                             stripColors.get(j).setPpm(ppm);
 
-                        } catch (JSONException e) {
+                            System.out.println("***NO MATCH FOUND*** strip patch no: " + j + "  labda: " + labda + " ppm: " + ppm);
+                            System.out.println("***SETTING LAB VALUE FOR PPM: " + ppm);
+                        }
+                        catch (JSONException e)
+                        {
                             e.printStackTrace();
                         }
-
 
                     }
                 }

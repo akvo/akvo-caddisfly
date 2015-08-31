@@ -22,6 +22,7 @@
         android:layout_toRightOf="@+id/colors"
         android:layout_toLeftOf="@+id/stripcolors"
         android:orientation="vertical"
+        android:background="@android:color/background_light"
         android:id="@+id/activity_resultLinearLayout"
         >
 

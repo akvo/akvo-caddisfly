@@ -4,7 +4,7 @@
 	"unit":"mm",
 	"calData":{
 		"patchSize":9,
-		"hsize":132,
+		"hsize":131.5,
 		"vsize":75,
 		"locations":[
 			{"n":1,"x":121.5,"y":37.5,"gray":"false"},

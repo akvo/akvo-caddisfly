@@ -18,6 +18,7 @@ import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.opencv.StripTest;
+import org.akvo.akvoqr.sensor.LightSensor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.core.Core;
@@ -151,6 +152,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         try {
 
             //TODO CHECK EXPOSURE
+            int number = 10;
+            LightSensor lightSensor = new LightSensor();
+            lightSensor.start();
+            while (lightSensor.getLux()==-1 && number>0) {
+                System.out.println("*** lux: " + lightSensor.getLux());
+                number --;
+                try {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            lightSensor.stop();
 
             //TODO CHECK SHADOWS
 
@@ -245,6 +261,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 Mat orig = new Mat();
                 Mat striparea = dest.clone();
+                double ratioW = 1;
+                double ratioH = 1;
                 String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
                 if(json!=null) {
 
@@ -263,12 +281,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             JSONArray area = stripAreaData.getJSONArray("area");
                             if(area.length()==4) {
 
-                                double ratioH = dest.width()/hsize;
-                                double ratioV = dest.height()/vsize;
-                                Point stripTopLeft = new Point(area.getDouble(0) * ratioH + 2 ,
-                                        area.getDouble(1) * ratioV + 2 );
-                                Point stripBottomRight = new Point(area.getDouble(2) * ratioH - 2,
-                                        area.getDouble(3) * ratioV - 2);
+                                ratioW = dest.width()/hsize;
+                                ratioH = dest.height()/vsize;
+                                Point stripTopLeft = new Point(area.getDouble(0) * ratioW + 2 ,
+                                        area.getDouble(1) * ratioH + 2 );
+                                Point stripBottomRight = new Point(area.getDouble(2) * ratioW - 2,
+                                        area.getDouble(3) * ratioH - 2);
 
                                 Rect roi = new Rect(stripTopLeft, stripBottomRight);
                                 striparea = dest.submat(roi);
@@ -286,25 +304,28 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
 
                 }
-//
+
+                //TODO Get brand from user input
+                StripTest stripTestBrand = StripTest.getInstance();
+                StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
 
                 listener.showProgress(1);
-                Mat strip = OpenCVUtils.detectStrip(striparea);
+                Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                 listener.dismissProgress();
 
                 if(strip!=null)
                 {
                     listener.showProgress(2);
 
-                    //TODO Get brand from user input
-                    strip = OpenCVUtils.detectStripColorBrandKnown(strip, StripTest.brand.HACH883738);
+
+                    Mat detCol = OpenCVUtils.detectStripColorBrandKnown(strip, brand);
 
 
                     mats = new ArrayList<>();
                     if(!orig.empty())
                         mats.add(orig);
                     mats.add(striparea);
-                    mats.add(strip);
+                    mats.add(detCol);
 
                     listener.dismissProgress();
                 }
