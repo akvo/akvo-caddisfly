@@ -83,11 +83,11 @@ public class CalibrateListActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_swatches:
+            case R.id.actionSwatches:
                 final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.menu_load:
+            case R.id.menuLoad:
                 Handler.Callback callback = new Handler.Callback() {
                     public boolean handleMessage(Message msg) {
                         CalibrateListFragment fragment = (CalibrateListFragment)
@@ -99,7 +99,7 @@ public class CalibrateListActivity extends BaseActivity
                 };
                 loadCalibration(callback);
                 return true;
-            case R.id.menu_save:
+            case R.id.menuSave:
                 saveCalibration();
                 return true;
         }

@@ -54,6 +54,9 @@
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
     <string name="pleaseEnterValue">Enter a value</string>
+    <string name="cameraBusy">Camera Busy</string>
+    <string name="checkDeviceHasCamera">Can\'t use camera. Make sure flashlight is off and close any apps that may be using the camera</string>
+    <string name="tryRestarting">If the problem continues, please restart this device</string>
 
     <!--Main Screen-->
     <string name="cannotCalibrate">Cannot calibrate</string>
@@ -62,6 +65,7 @@
     <string name="errorTestNotAvailable">No configuration found for %1$s</string>
     <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
     <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
+    <string name="toConductTestOpenApp">To conduct a test open Akvo FLOW</string>
 
     <!--Settings Screen-->
     <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
@@ -164,10 +168,7 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
-    <string name="toConductTestOpenApp">To conduct a test open Akvo FLOW</string>
-    <string name="cameraNotAvailable">Camera not available</string>
-    <string name="checkDeviceHasCamera">Check that the device has a camera</string>
-    <string name="tryRestarting">Try restarting the device</string>
-
-
+    <string name="useCamera2" translateable="false">Use Camera2 API</string>
+    <string name="stop">Stop</string>
+    <string name="manageColiformsTest">Manage Coliforms Test</string>
 </resources>

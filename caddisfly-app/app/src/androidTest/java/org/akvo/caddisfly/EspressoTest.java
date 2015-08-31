@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.UpdateCheckTask;
@@ -187,7 +189,7 @@ public class EspressoTest
 
     public void test001_Language() {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -203,7 +205,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.language)).perform(click());
 
@@ -231,7 +233,7 @@ public class EspressoTest
         //Main Screen
         takeScreenshot();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         //Settings Screen
         takeScreenshot();
@@ -278,7 +280,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.menu_load)).perform(click());
+        onView(withId(R.id.menuLoad)).perform(click());
 
         sleep(2000);
 
@@ -295,7 +297,7 @@ public class EspressoTest
 
         sleep(4000);
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -332,7 +334,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.menu_load)).perform(click());
+        onView(withId(R.id.menuLoad)).perform(click());
 
         sleep(2000);
 
@@ -344,7 +346,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -500,7 +502,7 @@ public class EspressoTest
 
     public void testSwatches() {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -512,11 +514,11 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.action_swatches)).perform(click());
+        onView(withId(R.id.actionSwatches)).perform(click());
 
         Espresso.pressBack();
 
-        onView(withId(R.id.action_swatches)).check(matches(isDisplayed()));
+        onView(withId(R.id.actionSwatches)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -526,7 +528,7 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        onView(withId(R.id.action_settings)).check(matches(isDisplayed()));
+        onView(withId(R.id.actionSettings)).check(matches(isDisplayed()));
     }
 
     public void testIncompleteCalibration() {
@@ -558,7 +560,7 @@ public class EspressoTest
     }
 
     public void testChangeTestType() {
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -585,7 +587,7 @@ public class EspressoTest
 
         saveCalibration();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -597,13 +599,13 @@ public class EspressoTest
 
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.menu_load)).perform(click());
+        onView(withId(R.id.menuLoad)).perform(click());
 
         sleep(2000);
 
@@ -675,7 +677,7 @@ public class EspressoTest
     }
 
     public void testCalibrateSensor() {
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrateSummary)).check(matches(isDisplayed()));
 
@@ -712,7 +714,7 @@ public class EspressoTest
 
     public void testCheckUpdate() {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.updateCheck)).check(matches(isDisplayed()));
 
@@ -737,7 +739,7 @@ public class EspressoTest
 
     public void testDiagnosticMode() {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -751,18 +753,18 @@ public class EspressoTest
 
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.action_swatches)).perform(click());
+        onView(withId(R.id.actionSwatches)).perform(click());
 
     }
 
     public void testLanguage4() {
-        onView(withId(R.id.action_settings))
+        onView(withId(R.id.actionSettings))
                 .perform(click());
 
 //        onView(withText(R.string.language))
@@ -778,7 +780,7 @@ public class EspressoTest
     }
 
     public void testLanguage5() {
-        onView(withId(R.id.action_settings))
+        onView(withId(R.id.actionSettings))
                 .perform(click());
 
 //        onView(withText(R.string.language))
@@ -794,7 +796,7 @@ public class EspressoTest
     }
 
     private void resetLanguage() {
-        onView(withId(R.id.action_settings))
+        onView(withId(R.id.actionSettings))
                 .perform(click());
 
         onView(withText(R.string.language))
@@ -827,7 +829,7 @@ public class EspressoTest
 
     private void startCalibrate(double value, int index) {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -865,7 +867,7 @@ public class EspressoTest
 
         saveLowLevelCalibration();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -881,7 +883,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.menu_load)).perform(click());
+        onView(withId(R.id.menuLoad)).perform(click());
 
         sleep(2000);
 
@@ -931,7 +933,7 @@ public class EspressoTest
 
         saveHighLevelCalibration();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -947,7 +949,7 @@ public class EspressoTest
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        onView(withId(R.id.menu_load)).perform(click());
+        onView(withId(R.id.menuLoad)).perform(click());
 
         sleep(2000);
 
@@ -1064,7 +1066,7 @@ public class EspressoTest
 
     public void testRestartAppDuringAnalysis() {
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -1172,7 +1174,7 @@ public class EspressoTest
 
         getActivity();
 
-        onView(withId(R.id.action_settings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -1297,8 +1299,7 @@ public class EspressoTest
 
     private void takeScreenshot() {
         if (mTakeScreenshots) {
-            int SDK_VERSION = android.os.Build.VERSION.SDK_INT;
-            if (SDK_VERSION >= 17) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 sleep(500);
 
                 File path = new File(Environment.getExternalStorageDirectory().getPath() +

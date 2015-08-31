@@ -18,7 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -34,6 +33,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -83,7 +83,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private Sensor mAccelerometer;
     private boolean mWaitingForStillness = false;
     private ViewAnimator mViewAnimator;
-    private DialogFragment mCameraFragment;
+    private CameraDialog mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
     private ArrayList<Result> mResults;
@@ -482,47 +482,54 @@ public class ColorimetryLiquidActivity extends BaseActivity
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
 
-                mCameraFragment = CameraDialogFragment.newInstance();
-                if (!((CameraDialogFragment) mCameraFragment).hasTestCompleted()) {
-                    ((CameraDialogFragment) mCameraFragment).pictureCallback = new Camera.PictureCallback() {
-                        @Override
-                        public void onPictureTaken(byte[] data, Camera camera) {
-
-                            Bitmap bitmap = ImageUtil.getBitmap(data);
-                            Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
-
-                            getAnalyzedResult(croppedBitmap);
-
-                            if (((CameraDialogFragment) mCameraFragment).hasTestCompleted()) {
-
-                                AnalyzeResult(data);
-                                mCameraFragment.dismiss();
-                            }
-                        }
-                    };
-
-                    acquireWakeLock();
-
-                    delayRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            Fragment prev = getFragmentManager().findFragmentByTag("cameraDialog");
-                            if (prev != null) {
-                                ft.remove(prev);
-                            }
-                            ft.addToBackStack(null);
-                            try {
-                                mCameraFragment.show(ft, "cameraDialog");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                finish();
-                            }
-                        }
-                    };
-
-                    delayHandler.postDelayed(delayRunnable, AppConfig.DELAY_BETWEEN_SAMPLING);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                        AppPreferences.getUseCamera2Api(getBaseContext())) {
+                    mCameraFragment = Camera2DialogFragment.newInstance();
+                } else {
+                    mCameraFragment = CameraDialogFragment.newInstance();
                 }
+
+                mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
+                    @Override
+                    public void onPictureTaken(byte[] bytes, boolean completed) {
+                        Bitmap bitmap = ImageUtil.getBitmap(bytes);
+                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                        getAnalyzedResult(croppedBitmap);
+
+                        if (completed) {
+                            AnalyzeResult(bytes);
+                            mCameraFragment.dismiss();
+                        } else {
+                            sound.playShortResource(R.raw.beep);
+                        }
+                    }
+                });
+
+                acquireWakeLock();
+
+                delayRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        Fragment prev = getFragmentManager().findFragmentByTag("cameraDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        ft.addToBackStack(null);
+                        try {
+                            mCameraFragment.show(ft, "cameraDialog");
+                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()),
+                                    AppConfig.DELAY_BETWEEN_SAMPLING);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            finish();
+                        }
+                    }
+                };
+
+                delayHandler.postDelayed(delayRunnable, AppConfig.DELAY_BETWEEN_SAMPLING);
+
             }
         }).execute();
     }
@@ -649,7 +656,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             result = mSwatchValue;
         }
 
-        ImageUtil.saveImage(data, DateUtil.getDateTimeString() + "_"
+        ImageUtil.saveImage(data, "", DateUtil.getDateTimeString() + "_"
                 + (mIsCalibration ? "C" : "T") + "_" + String.format("%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
     }
@@ -662,13 +669,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void releaseResources() {
         mSensorManager.unregisterListener(mShakeDetector);
         delayHandler.removeCallbacks(delayRunnable);
-        if (mCameraFragment != null && mCameraFragment instanceof CameraDialogFragment) {
+        if (mCameraFragment != null) {
             try {
                 mCameraFragment.dismiss();
             } catch (Exception ignored) {
 
             }
-            ((CameraDialogFragment) mCameraFragment).stopCamera();
+            mCameraFragment.stopCamera();
         }
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();

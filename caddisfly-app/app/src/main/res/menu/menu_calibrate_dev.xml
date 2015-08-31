@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".sensor.colorimetry.liquid.CalibrateListActivity">
     <item
-        android:id="@+id/menu_save"
+        android:id="@+id/menuSave"
         android:enabled="true"
         android:icon="@drawable/ic_action_save_dark"
         android:orderInCategory="0"
@@ -28,7 +28,7 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/menu_load"
+        android:id="@+id/menuLoad"
         android:enabled="true"
         android:icon="@drawable/ic_action_load_dark"
         android:orderInCategory="0"
@@ -37,7 +37,7 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/action_swatches"
+        android:id="@+id/actionSwatches"
         android:icon="@drawable/ic_menu_swatch_dark"
         android:orderInCategory="100"
         android:title="@string/swatches"

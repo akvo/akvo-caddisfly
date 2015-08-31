@@ -181,7 +181,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 button.setBackgroundColor(color);
 
                 if (mIsCalibration) {
-                    TableLayout colorModelHeading = (TableLayout) rowView.findViewById(R.id.colorModelHeading);
+                    TableLayout colorModelHeading = (TableLayout) rowView.findViewById(R.id.tableHeading);
                     colorModelHeading.setVisibility(View.GONE);
                 }
 

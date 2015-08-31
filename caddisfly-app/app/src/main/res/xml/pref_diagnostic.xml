@@ -27,6 +27,9 @@
             android:title="@string/testSensor">
         </Preference>
         <CheckBoxPreference
+            android:key="@string/useCamera2Key"
+            android:title="@string/useCamera2" />
+        <CheckBoxPreference
             android:key="@string/autoFocusKey"
             android:title="@string/autoFocus" />
         <CheckBoxPreference

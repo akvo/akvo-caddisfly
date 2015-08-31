@@ -58,7 +58,7 @@ public class CaddisflyApp extends Application {
                     context.getString(R.string.checkDeviceHasCamera),
                     context.getString(R.string.tryRestarting));
 
-            AlertUtil.showError(context, R.string.cameraNotAvailable,
+            AlertUtil.showError(context, R.string.cameraBusy,
                     message, null, R.string.ok, onClickListener, null);
             return null;
         }
@@ -215,7 +215,16 @@ public class CaddisflyApp extends Application {
      * The different types of testing methods
      */
     public enum TestType {
-        COLORIMETRIC_LIQUID, COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
+        /**
+         * Test type where a liquid reagent is mixed with sample and
+         * color is analysed from the resulting solution (e.g. Fluoride, Chlorine)
+         */
+        COLORIMETRIC_LIQUID,
+
+        /**
+         *
+         */
+        COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
     }
 
 }

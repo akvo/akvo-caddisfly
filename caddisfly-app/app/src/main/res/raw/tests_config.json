@@ -75,6 +75,20 @@
         "code": "phydr",
         "unit": "pH",
         "calibrate": "false"
+      },
+      {
+        "name": [
+          {
+            "en": "Coliforms"
+          },
+          {
+            "fr": "Coliforms"
+          }
+        ],
+        "type": "3",
+        "code": "colif",
+        "unit": "",
+        "calibrate": "true"
       }
     ]
   }

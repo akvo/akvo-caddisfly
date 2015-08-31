@@ -38,7 +38,7 @@
         tools:text="Contaminant" />
 
     <LinearLayout
-        android:id="@+id/connectionLayout"
+        android:id="@+id/layoutConnection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textTitle"

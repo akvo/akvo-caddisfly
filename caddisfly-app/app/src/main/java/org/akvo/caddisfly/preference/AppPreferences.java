@@ -66,4 +66,10 @@ public class AppPreferences {
         return isDiagnosticMode(context) &&
                 PreferencesUtil.getBoolean(context, R.string.showDebugMessagesKey, false);
     }
+
+    public static boolean getUseCamera2Api(Context context) {
+        return isDiagnosticMode(context) &&
+                PreferencesUtil.getBoolean(context, R.string.useCamera2Key, false);
+    }
+
 }

@@ -38,16 +38,16 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtil;
 
-public class DiagnosticResultFragment extends DialogFragment {
+public class DiagnosticDetailsFragment extends DialogFragment {
 
     private Bitmap mExtractBitmap;
     private Bitmap mPhotoBitmap;
     private String mDimension;
     private Fragment mParentFragment;
 
-    public static DiagnosticResultFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
+    public static DiagnosticDetailsFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
                                                        String dimension, Fragment parentFragment) {
-        DiagnosticResultFragment fragment = new DiagnosticResultFragment();
+        DiagnosticDetailsFragment fragment = new DiagnosticDetailsFragment();
         fragment.mExtractBitmap = extractBitmap;
         fragment.mPhotoBitmap = photoBitmap;
         fragment.mDimension = dimension;
@@ -71,8 +71,8 @@ public class DiagnosticResultFragment extends DialogFragment {
         Button buttonColorExtract = (Button) view.findViewById(R.id.buttonColorExtract);
         Button buttonSwatchColor = (Button) view.findViewById(R.id.buttonSwatchColor);
 
-        TextView textColorRgb = (TextView) view.findViewById(R.id.rgbValue);
-        TextView swatchRgbValue = (TextView) view.findViewById(R.id.swatchRgbValue);
+        TextView textColorRgb = (TextView) view.findViewById(R.id.textExtractedRgb);
+        TextView swatchRgbValue = (TextView) view.findViewById(R.id.textSwatchRgb);
         TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
         TextView textDistance = (TextView) view.findViewById(R.id.textDistance);
         TextView textQuality = (TextView) view.findViewById(R.id.textQuality);
@@ -99,7 +99,7 @@ public class DiagnosticResultFragment extends DialogFragment {
         int color = resultDetail.getColor();
         int swatchColor = resultDetail.getMatchedColor();
 
-        textQuality.setText(String.format("quality: %.0f%%", photoColor.getQuality()));
+        textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
 
         if (result > -1) {
             textResult.setText(String.format("%s : %.2f %s", caddisflyApp.currentTestInfo.getName("en"),
@@ -108,7 +108,7 @@ public class DiagnosticResultFragment extends DialogFragment {
             textResult.setText(String.format("%s", caddisflyApp.currentTestInfo.getName("en")));
         }
 
-        textDistance.setText(String.format("distance: %.2f", resultDetail.getDistance()));
+        textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
         buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
         swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
 
@@ -145,8 +145,8 @@ public class DiagnosticResultFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        ResultDialogListener listener = (ResultDialogListener) mParentFragment;
-        listener.onSuccessFinishDialog();
+//        ResultDialogListener listener = (ResultDialogListener) mParentFragment;
+//        listener.onSuccessFinishDialog();
     }
 
     @Override

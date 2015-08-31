@@ -19,15 +19,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="10dp"
     android:weightSum="1">
 
     <TextView
         android:id="@+id/textResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:paddingBottom="10dp"
+        android:paddingBottom="6dp"
         android:textSize="17sp"
         android:textStyle="bold"
         tools:text="Fluoride : 1.0" />
@@ -83,8 +84,8 @@
             android:clickable="false"
             android:columnCount="3"
             android:focusable="false"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="10dp"
             tools:ignore="UselessParent">
 
             <TextView
@@ -92,51 +93,77 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
                 tools:text="Q: 60" />
 
             <TextView
-                android:id="@+id/rgbValue"
+                android:id="@+id/textExtractedRgb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
                 tools:text="255 255 255" />
 
             <TextView
-                android:id="@+id/swatchRgbValue"
+                android:id="@+id/textSwatchRgb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
                 tools:text="255 255 255" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:clickable="false"
+            android:columnCount="3"
+            android:focusable="false"
+            android:gravity="center"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/textDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="D: 10" />
+
+            <TextView
+                android:id="@+id/textDimension"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="10000 x 2000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="10dp" />
 
         </TableRow>
     </TableLayout>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment">
 
-    <TextView
-        android:id="@+id/textDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        tools:text="Distance : 10" />
+        <ImageView
+            android:id="@+id/imagePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/textDimension"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        tools:text="10000 x 2000" />
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/border"
+            android:gravity="center" />
+    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imagePhoto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@null" />
 </LinearLayout>

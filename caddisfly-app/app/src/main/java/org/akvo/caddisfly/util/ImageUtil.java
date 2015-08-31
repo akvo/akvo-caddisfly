@@ -19,6 +19,7 @@ package org.akvo.caddisfly.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Rect;
 
@@ -99,9 +100,17 @@ public class ImageUtil {
         return resultBitmap;
     }
 
-    public static void saveImage(byte[] data, String fileName) {
+    public static void saveImage(byte[] data, String subfolder, String fileName) {
 
-        File photo = new File(FileHelper.getFilesDir(FileHelper.FileType.IMAGE), fileName + ".jpg");
+        File subPath = new File(FileHelper.getFilesDir(FileHelper.FileType.IMAGE).getPath() +
+                File.separator + subfolder);
+
+        if (!subPath.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            subPath.mkdirs();
+        }
+
+        File photo = new File(subPath, fileName + ".jpg");
 
         try {
             FileOutputStream fos = new FileOutputStream(photo.getPath());
@@ -111,5 +120,11 @@ public class ImageUtil {
         } catch (Exception ignored) {
 
         }
+    }
+
+    public static Bitmap rotateImage(Bitmap in, int angle) {
+        Matrix mat = new Matrix();
+        mat.postRotate(angle);
+        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
     }
 }

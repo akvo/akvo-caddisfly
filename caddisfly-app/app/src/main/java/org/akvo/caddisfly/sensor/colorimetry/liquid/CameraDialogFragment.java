@@ -16,22 +16,13 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -40,17 +31,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.ShakeDetector;
-import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtil;
-import org.akvo.caddisfly.util.ImageUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -58,20 +48,14 @@ import java.util.List;
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraDialogFragment extends DialogFragment
-        implements DiagnosticResultFragment.ResultDialogListener {
-    private static final String ARG_DIAGNOSTIC_MODE = "diagnostics";
-    public Camera.PictureCallback pictureCallback;
-    private ShakeDetector mShakeDetector;
-    private SensorManager mSensorManager;
-    private int samplingCount;
-    private int picturesTaken;
-    private boolean mDiagnosticMode;
-    private SoundPoolPlayer sound;
+public class CameraDialogFragment extends CameraDialog
+        implements DiagnosticDetailsFragment.ResultDialogListener {
+    private int mNumberOfPhotosToTake;
+    private int mPhotoCurrentCount = 0;
+
     private boolean mCancelled = false;
-    private AlertDialog progressDialog;
     private Camera mCamera;
-    private Fragment mFragment;
+
     // View to display the camera output.
     private CameraPreview mPreview;
 
@@ -83,31 +67,41 @@ public class CameraDialogFragment extends DialogFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param diagnosticMode if true will display preview only, otherwise start taking pictures
      * @return A new instance of fragment CameraDialogFragment.
      */
-    @SuppressWarnings("SameParameterValue")
-    public static CameraDialogFragment newInstance(boolean diagnosticMode) {
-        CameraDialogFragment fragment = new CameraDialogFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_DIAGNOSTIC_MODE, diagnosticMode);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public static CameraDialogFragment newInstance() {
         return new CameraDialogFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mDiagnosticMode = getArguments().getBoolean(ARG_DIAGNOSTIC_MODE);
-        }
-        mFragment = this;
+    private static Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.05;
+        double targetRatio = (double) w / h;
+        if (sizes == null) return null;
 
-        sound = new SoundPoolPlayer(getActivity());
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        // Try to find an size match aspect ratio and size
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - h) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - h);
+            }
+        }
+
+        // Cannot find the one match the aspect ratio, ignore the requirement
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - h) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - h);
+                }
+            }
+        }
+        return optimalSize;
     }
 
     @Override
@@ -134,58 +128,34 @@ public class CameraDialogFragment extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        if (mCamera != null && !mDiagnosticMode) {
-            startTakingPictures();
-        }
-    }
-
-    private void startTakingPictures() {
-
-        samplingCount = 0;
-        picturesTaken = 0;
-        Context context = getActivity();
-        progressDialog = new AlertDialog.Builder(context).create();
-        progressDialog.setMessage(getString(R.string.analyzingWait));
-        progressDialog.setCancelable(false);
-
-        progressDialog.getWindow().setGravity(Gravity.BOTTOM);
-        progressDialog.show();
-
-        takePicture(mDiagnosticMode);
-    }
-
-    private void takePicture(boolean isPreview) {
-
         mPreview.setCamera(mCamera);
-        if (getActivity() != null) {
-            mPreview.startCameraPreview();
-            try {
-
-                if (isPreview) {
-                    PictureCallback localCallback = new PictureCallback();
-                    mCamera.takePicture(null, null, localCallback);
-                } else {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            PictureCallback localCallback = new PictureCallback();
-                            try {
-                                mCamera.takePicture(null, null, localCallback);
-                            } catch (Exception ignored) {
-
-                            }
-                        }
-                    }, AppConfig.DELAY_BETWEEN_SAMPLING);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+        mPreview.startCameraPreview();
     }
 
+    @Override
+    public void takePictureSingle() {
+        mNumberOfPhotosToTake = 1;
+        mPhotoCurrentCount = 0;
+
+        PictureCallback localCallback = new PictureCallback();
+        try {
+            mCamera.takePicture(null, null, localCallback);
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    @Override
+    public void takePictures(int count, long delay) {
+        mNumberOfPhotosToTake = count;
+        mPhotoCurrentCount = 0;
+
+        Timer timer = new Timer();
+        TimeLapseTask task = new TimeLapseTask();
+        timer.schedule(task, delay, delay);
+    }
+
+    @Override
     public void stopCamera() {
         mCancelled = true;
         releaseCameraAndPreview();
@@ -196,82 +166,36 @@ public class CameraDialogFragment extends DialogFragment
      *
      * @return true if completed, false if not
      */
-    public boolean hasTestCompleted() {
-        return (getActivity() != null && samplingCount >
-                AppPreferences.getSamplingTimes(getActivity())) || picturesTaken > 10;
+    private boolean hasCompleted() {
+        return mPhotoCurrentCount > mNumberOfPhotosToTake;
     }
 
     private boolean safeCameraOpenInView(View view) {
-        boolean qOpened;
+        boolean opened;
         releaseCameraAndPreview();
         mCamera = ApiUtil.getCameraInstance();
-        qOpened = (mCamera != null);
+        opened = (mCamera != null);
 
-        if (qOpened) {
+        if (opened) {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
             preview.addView(mPreview);
 
-            //in diagnostic mode allow user to long press or place device face down to to run a quick test
-            if (mDiagnosticMode) {
-
-                //Set up the shake detector
-                mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-                final Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-                mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
-                    @Override
-                    public void onShake() {
-                    }
-                }, new ShakeDetector.OnNoShakeListener() {
-                    @Override
-                    public void onNoShake() {
-                        unregisterShakeDetector();
-                        takePicture(mDiagnosticMode);
-                    }
-                });
-
-                mShakeDetector.minShakeAcceleration = 5;
-                mShakeDetector.maxShakeDuration = 2000;
-
-                mSensorManager.registerListener(mShakeDetector, accelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-
-                preview.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        unregisterShakeDetector();
-                        takePicture(mDiagnosticMode);
-                        return false;
-                    }
-                });
-            }
-
             mPreview.startCameraPreview();
         }
-        return qOpened;
-    }
-
-    private void unregisterShakeDetector() {
-        try {
-            mSensorManager.unregisterListener(mShakeDetector);
-        } catch (Exception ignored) {
-
-        }
+        return opened;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+        mCancelled = true;
+        releaseCameraAndPreview();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releaseCameraAndPreview();
     }
 
     @Override
@@ -293,13 +217,6 @@ public class CameraDialogFragment extends DialogFragment
             mPreview.destroyDrawingCache();
             mPreview.mCamera = null;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        unregisterShakeDetector();
-        sound.release();
     }
 
     @Override
@@ -394,11 +311,9 @@ public class CameraDialogFragment extends DialogFragment
 
             List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
 
-            Camera.Size mSize;
             for (Camera.Size size : sizes) {
                 if (size.width > 400 && size.width < 1000) {
-                    mSize = size;
-                    parameters.setPictureSize(mSize.width, mSize.height);
+                    parameters.setPictureSize(size.width, size.height);
                     break;
                 }
             }
@@ -416,8 +331,6 @@ public class CameraDialogFragment extends DialogFragment
 
             mCamera.setDisplayOrientation(90);
             mCamera.setParameters(parameters);
-
-            requestLayout();
         }
 
         public void surfaceCreated(SurfaceHolder holder) {
@@ -448,18 +361,31 @@ public class CameraDialogFragment extends DialogFragment
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
                 List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+                Camera.Size optimalSize = getOptimalPreviewSize(sizes, w, h);
+                parameters.setPreviewSize(optimalSize.width, optimalSize.height);
 
-                Camera.Size mSize;
-                for (Camera.Size size : sizes) {
-                    if (size.width > 400 && size.width < 1000) {
-                        mSize = size;
-                        parameters.setPictureSize(mSize.width, mSize.height);
-                        break;
-                    }
-                }
+//                for (Camera.Size size : sizes) {
+//                    if (size.width > 400 && size.width < 1000) {
+//                        parameters.setPreviewSize(size.width, size.height);
+//                        break;
+//                    }
+//                }
+                requestLayout();
 
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Timer task for continuous triggering of preview callbacks
+    private class TimeLapseTask extends TimerTask {
+        @Override
+        public void run() {
+            try {
+                takePictureSingle();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -470,37 +396,17 @@ public class CameraDialogFragment extends DialogFragment
 
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
-            samplingCount++;
-            picturesTaken++;
+            mPhotoCurrentCount++;
             if (!mCancelled) {
-                if (!hasTestCompleted()) {
-                    sound.playShortResource(R.raw.beep);
-                    if (pictureCallback == null) {
-                        stopCamera();
-                        Bitmap bitmap = ImageUtil.getBitmap(bytes);
+                for (PictureTaken pictureTakenObserver : pictureTakenObservers) {
+                    pictureTakenObserver.onPictureTaken(bytes, hasCompleted());
+                }
+                if (!hasCompleted()) {
+                    try {
+                        camera.startPreview();
+                    } catch (Exception ignored) {
 
-                        DiagnosticResultFragment diagnosticResultFragment =
-                                DiagnosticResultFragment.newInstance(
-                                        ImageUtil.getCroppedBitmap(bitmap,
-                                                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT),
-                                        bitmap, bitmap.getWidth() + " x " + bitmap.getHeight(), mFragment);
-
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                        Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                        if (prev != null) {
-                            ft.remove(prev);
-                        }
-
-                        diagnosticResultFragment.setCancelable(true);
-                        diagnosticResultFragment.show(ft, "resultDialog");
-
-                    } else {
-                        pictureCallback.onPictureTaken(bytes, camera);
-                        takePicture(mDiagnosticMode);
                     }
-                } else {
-                    pictureCallback.onPictureTaken(bytes, camera);
                 }
             }
         }

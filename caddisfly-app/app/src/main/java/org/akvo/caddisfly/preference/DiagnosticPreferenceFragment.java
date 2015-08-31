@@ -34,8 +34,8 @@ import android.widget.ListView;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
@@ -109,8 +109,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 public boolean onPreferenceClick(Preference preference) {
                     CaddisflyApp.getApp().initializeCurrentTest();
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    CameraDialogFragment cameraDialogFragment = CameraDialogFragment.newInstance(true);
-                    cameraDialogFragment.show(ft, "cameraDialogFragment");
+                    DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+                    diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
                     return true;
                 }
             });

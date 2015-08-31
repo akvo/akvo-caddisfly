@@ -169,7 +169,7 @@ public class SensorActivity extends BaseActivity {
             }
         });
 
-        mConnectionLayout = (LinearLayout) findViewById(R.id.connectionLayout);
+        mConnectionLayout = (LinearLayout) findViewById(R.id.layoutConnection);
         mResultLayout = (LinearLayout) findViewById(R.id.layoutResult);
 
         if (!caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {

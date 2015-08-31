@@ -29,4 +29,5 @@
     <string name="colorDistanceToleranceKey" translateable="false">colorDistanceTolerance</string>
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>
+    <string name="useCamera2Key" translateable="false">userCamera2</string>
 </resources>

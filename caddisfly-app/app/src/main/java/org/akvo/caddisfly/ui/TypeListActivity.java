@@ -26,6 +26,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
+import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
@@ -69,6 +70,14 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                             });
                 } else {
                     alertFeatureNotSupported();
+                }
+                break;
+            case TURBIDITY_COLIFORMS:
+                //Only start the colorimetry calibration if the device has a camera flash
+                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
+                        R.string.ok, null)) {
+                    final Intent intent = new Intent(this, TurbidityStartActivity.class);
+                    startActivity(intent);
                 }
                 break;
         }
