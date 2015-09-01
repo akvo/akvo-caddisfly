@@ -34,12 +34,17 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private android.os.Handler handler;
     private TextView messageView;
     private boolean testing = false;
+    private String brand;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        if(getIntent().getStringExtra("brand")!=null)
+        {
+            this.brand = getIntent().getStringExtra("brand");
+        }
         intent = new Intent(this, ResultActivity.class);
         handler = new Handler(Looper.getMainLooper());
 
@@ -327,5 +332,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     {
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
         mp.start();
+    }
+
+    @Override
+    public String getBrand() {
+        return brand;
     }
 }

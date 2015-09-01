@@ -26,4 +26,6 @@ public interface CameraViewListener {
     void dismissProgress();
 
     void playSound();
+
+    String getBrand();
 }

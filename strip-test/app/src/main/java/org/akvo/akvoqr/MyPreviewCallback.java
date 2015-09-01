@@ -303,9 +303,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 }
 
                 if (striparea != null) {
-                    //TODO Get brand from user input
+
                     StripTest stripTestBrand = StripTest.getInstance();
-                    StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
+                    StripTest.Brand brand = stripTestBrand.getBrand(listener.getBrand());
 
                     listener.showProgress(1);
                     Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
@@ -319,8 +319,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
 
                         mats = new ArrayList<>();
-                        if (!orig.empty())
+                        if (!orig.empty()) {
+                            Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2RGBA);
                             mats.add(orig);
+                        }
                         mats.add(striparea);
                         mats.add(detCol);
 

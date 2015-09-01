@@ -33,8 +33,8 @@ import java.util.Map;
  */
 public class StripTest {
 
-    public static enum brand{
-        HACH883738 };
+//    public enum brand{
+//        hach883738 };
     public static StripTest instance;
     private static JSONArray stripsJson;
     private static Map<String, JSONObject> stripObjects;
@@ -49,7 +49,11 @@ public class StripTest {
         return instance;
     }
 
-    public Brand getBrand(brand brand)
+    public Map<String, JSONObject> getStripObjects() {
+        return stripObjects;
+    }
+
+    public Brand getBrand(String brand)
     {
         return new Brand(brand);
     }
@@ -62,10 +66,10 @@ public class StripTest {
         private List<Patch> patches = new ArrayList<>();
         private Map<String, JSONArray> ppmValues = new HashMap<>();
 
-        public Brand(brand brandEnum) {
+        public Brand(String brand) {
 
             if (stripObjects != null) {
-                JSONObject strip = stripObjects.get(brandEnum.name());
+                JSONObject strip = stripObjects.get(brand);
                 try {
                     this.stripLenght = strip.getDouble("length");
                     this.stripHeight = strip.getDouble("height");
@@ -128,7 +132,7 @@ public class StripTest {
             }
         }
     }
-    public static void fromJson()
+    private static void fromJson()
     {
         String json = AssetsManager.getInstance().loadJSONFromAsset("strips.json");
         try {

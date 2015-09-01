@@ -128,7 +128,7 @@ public class ResultActivity extends AppCompatActivity {
                  * After we decide if quality of image used to gather colors is sufficient
                  */
                 StripTest stripTestBrand = StripTest.getInstance();
-                StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
+                StripTest.Brand brand = stripTestBrand.getBrand("HACH883738");
                 ArrayList<ColorDetected> colors = stripTestBrand.getPPMColorsFromImage();
 
                 ppmValues = brand.getPpmValues();
