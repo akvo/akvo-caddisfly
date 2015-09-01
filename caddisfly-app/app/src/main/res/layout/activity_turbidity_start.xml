@@ -13,6 +13,7 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:textAllCaps="false"
@@ -26,25 +27,62 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="70dp"
+        android:paddingBottom="50dp"
         android:visibility="visible">
 
         <TextView
             android:id="@+id/textStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:textSize="18sp"
-            tools:text="Status: Take photo every 2 minutes" />
+            tools:text="Status: Active" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/editInterval"
+                android:text="Interval: "
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editInterval"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="1" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/editImageCount"
+                android:text="Images :"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editImageCount"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="10" />
+        </LinearLayout>
         <Button
             android:id="@+id/buttonManageTimer"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:backgroundTint="@color/button_orange"
             android:text="@string/start"
             tools:ignore="UnusedAttribute" />

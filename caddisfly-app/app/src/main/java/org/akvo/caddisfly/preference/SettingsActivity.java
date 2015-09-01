@@ -19,16 +19,22 @@ package org.akvo.caddisfly.preference;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.ScrollView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    ScrollView mScrollView;
+    int mScrollPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setupActivity();
     }
 
@@ -42,7 +48,7 @@ public class SettingsActivity extends BaseActivity
 
         setContentView(R.layout.activity_settings);
 
-        //need when changing language
+        //needed when changing language
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getResources().getString(R.string.settings));
         }
@@ -60,6 +66,8 @@ public class SettingsActivity extends BaseActivity
                     .add(R.id.layoutContent3, new DiagnosticPreferenceFragment())
                     .commit();
         }
+
+        mScrollView = (ScrollView) findViewById(R.id.scrollViewSettings);
     }
 
     @Override
@@ -71,9 +79,27 @@ public class SettingsActivity extends BaseActivity
 
     @Override
     public void onPause() {
+        int scrollbarPosition = mScrollView.getScrollY();
+
+        PreferencesUtil.setInt(this, "settingsScrollPosition", scrollbarPosition);
+
         super.onPause();
+
         PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        mScrollPosition = PreferencesUtil.getInt(this, "settingsScrollPosition", 0);
+
+        mScrollView.post(new Runnable() {
+            public void run() {
+                mScrollView.scrollTo(0, mScrollPosition);
+            }
+        });
     }
 
     @Override
@@ -81,6 +107,6 @@ public class SettingsActivity extends BaseActivity
         super.onResume();
         PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
                 .registerOnSharedPreferenceChangeListener(this);
-    }
 
+    }
 }

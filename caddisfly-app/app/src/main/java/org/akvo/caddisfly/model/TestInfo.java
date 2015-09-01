@@ -80,10 +80,12 @@ public class TestInfo {
     }
 
     public String getName(String languageCode) {
-        if (names.containsKey(languageCode)) {
-            return names.get(languageCode).toString();
-        } else if (names.containsKey("en")) {
-            return names.get("en").toString();
+        if (names != null) {
+            if (names.containsKey(languageCode)) {
+                return names.get(languageCode).toString();
+            } else if (names.containsKey("en")) {
+                return names.get("en").toString();
+            }
         }
         return "";
     }

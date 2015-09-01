@@ -1,7 +1,9 @@
 package org.akvo.caddisfly.sensor.turbidity;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.view.WindowManager;
 
 import org.akvo.caddisfly.AppConfig;
@@ -24,6 +27,10 @@ import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 
 public class TurbidityActivity extends Activity {
+
+    public static final int REQUEST_CODE = 1020;
+    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+    private static final int DELAY = 60000;
 
     CameraDialog mCameraDialog;
     private SoundPoolPlayer sound;
@@ -75,8 +82,20 @@ public class TurbidityActivity extends Activity {
         ImageUtil.saveImage(data, "COLIF", DateUtil.getDateTimeString() + "_"
                 + "" + "_" + String.format("%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
-    }
 
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(this, TurbidityStartReceiver.class);
+            intent.setAction(ACTION_ALARM_RECEIVER);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + DELAY, pendingIntent);
+        }
+    }
 
     @Override
     protected void onStart() {
@@ -88,7 +107,8 @@ public class TurbidityActivity extends Activity {
                 if (!mDestroyed) {
                     getFragmentManager().beginTransaction()
                             .add(R.id.layoutContainer, mCameraDialog)
-                            .commit();
+                            .commitAllowingStateLoss();
+                    ;
 
                     mCameraDialog.takePictures(1, AppConfig.DELAY_BETWEEN_SAMPLING);
                 }
@@ -113,7 +133,8 @@ public class TurbidityActivity extends Activity {
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "CameraSensorWakeLock");
+            wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |
+                    PowerManager.ACQUIRE_CAUSES_WAKEUP, "CameraSensorWakeLock");
             wakeLock.acquire();
         }
     }

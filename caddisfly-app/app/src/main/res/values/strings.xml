@@ -170,5 +170,5 @@
     <string name="required">Required</string>
     <string name="useCamera2" translateable="false">Use Camera2 API</string>
     <string name="stop">Stop</string>
-    <string name="manageColiformsTest">Manage Coliforms Test</string>
+    <string name="startColiformsTest">Start Coloforms Test</string>
 </resources>

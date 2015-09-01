@@ -50,9 +50,13 @@ public class DiagnosticPreviewFragment extends DialogFragment {
             mCameraDialog = CameraDialogFragment.newInstance();
         }
 
+        final DiagnosticPreviewFragment currentDialog = this;
+
         mCameraDialog.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
             @Override
             public void onPictureTaken(byte[] bytes, boolean completed) {
+
+                mCameraDialog.dismiss();
 
                 sound.playShortResource(R.raw.beep);
 
@@ -96,6 +100,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
                 diagnosticDetailsFragment.setCancelable(true);
                 diagnosticDetailsFragment.show(ft, "resultDialog");
+                currentDialog.dismiss();
             }
         });
 
@@ -103,12 +108,10 @@ public class DiagnosticPreviewFragment extends DialogFragment {
                 .add(R.id.layoutContainer, mCameraDialog)
                 .commit();
 
-
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View view) {
                 mCameraDialog.takePictureSingle();
-                return false;
             }
         });
 

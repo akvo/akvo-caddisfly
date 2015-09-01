@@ -21,9 +21,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -34,10 +36,14 @@ import android.widget.ListView;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
+
+import java.util.Hashtable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,11 +98,31 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     Context context = getActivity();
                     CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
                     caddisflyApp.initializeCurrentTest();
-                    if (caddisflyApp.currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
+                    if (caddisflyApp.currentTestInfo == null ||
+                            caddisflyApp.currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
                         caddisflyApp.setDefaultTest();
                     }
 
                     final Intent intent = new Intent(context, ColorimetryLiquidActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+
+        final Preference startTurbidityTestPreference = findPreference("startTurbidityTest");
+        if (startTurbidityTestPreference != null) {
+            startTurbidityTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    Context context = getActivity();
+                    Hashtable<String, String> namesHashTable = new Hashtable<>(1, 1);
+                    namesHashTable.put("en", "Coliforms");
+
+                    CaddisflyApp.getApp().currentTestInfo = new TestInfo(namesHashTable, "COLIF",
+                            "", CaddisflyApp.TestType.TURBIDITY_COLIFORMS, false,
+                            new String[]{}, new String[]{});
+
+                    final Intent intent = new Intent(context, TurbidityStartActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -126,6 +152,15 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     return true;
                 }
             });
+        }
+
+        Preference useCamera2 = findPreference(getString(R.string.useCamera2Key));
+        if (useCamera2 != null) {
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                PreferenceCategory preferenceCategory =
+                        (PreferenceCategory) findPreference("preferenceCategoryDiagnostics");
+                preferenceCategory.removePreference(useCamera2);
+            }
         }
 
         final EditTextPreference distancePreference =

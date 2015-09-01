@@ -55,10 +55,17 @@ public class TypeListFragment extends ListFragment {
 
         mTests = ConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
 
+        //Only items that require calibration to be displayed in the list
+        for (int i = mTests.size() - 1; i >= 0; i--) {
+            if (!mTests.get(i).getRequiresCalibration()) {
+                mTests.remove(i);
+            }
+        }
+
         //set the adapter with tests list
-        TestTypesAdapter customList = new TestTypesAdapter(getActivity(),
+        TestTypesAdapter testTypesAdapter = new TestTypesAdapter(getActivity(),
                 mTests.toArray(new TestInfo[mTests.size()]));
-        setListAdapter(customList);
+        setListAdapter(testTypesAdapter);
     }
 
 

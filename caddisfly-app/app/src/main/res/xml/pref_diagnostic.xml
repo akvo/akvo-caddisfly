@@ -15,13 +15,18 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/diagnostics">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom
+        android:key="preferenceCategoryDiagnostics"
+        android:title="@string/diagnostics">
+        <Preference
+            android:key="cameraPreview"
+            android:title="@string/cameraPreview" />
         <Preference
             android:key="startTest"
             android:title="Start Colorimetric Test" />
         <Preference
-            android:key="cameraPreview"
-            android:title="@string/cameraPreview" />
+            android:key="startTurbidityTest"
+            android:title="Start Turbidity Test" />
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">

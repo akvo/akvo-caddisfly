@@ -70,7 +70,6 @@
         <activity
             android:name=".preference.SettingsActivity"
             android:label="@string/settings"
-            android:logo="@null"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -137,7 +136,13 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".sensor.turbidity.TurbidityStartActivity"
-            android:parentActivityName=".ui.TypeListActivity" />
+            android:parentActivityName=".ui.TypeListActivity"
+            android:screenOrientation="nosensor" />
+
+        <receiver
+            android:name=".sensor.turbidity.TurbidityStartReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

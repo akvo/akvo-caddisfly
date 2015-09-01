@@ -53,6 +53,6 @@ public class AppConfig {
     /**
      * The sound volume for the beeps and success/fail sounds
      */
-    public static final float SOUND_VOLUME = 0.1f;
+    public static final float SOUND_VOLUME = 1f;
 
 }

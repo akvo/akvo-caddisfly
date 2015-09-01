@@ -83,7 +83,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
 
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
-        if (caddisflyApp.currentTestInfo.getCode().isEmpty() ||
+        if (caddisflyApp.currentTestInfo == null || caddisflyApp.currentTestInfo.getCode().isEmpty() ||
                 caddisflyApp.currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
             caddisflyApp.setDefaultTest();
         }

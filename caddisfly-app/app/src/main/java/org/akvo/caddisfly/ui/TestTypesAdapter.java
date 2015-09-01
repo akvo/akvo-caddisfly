@@ -42,6 +42,7 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
         mTestInfoArray = testInfoArray;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
@@ -51,15 +52,10 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
         TestInfo testInfo = mTestInfoArray[position];
         View rowView;
 
-        //include item in the list only if the test type requires calibration
-        if (testInfo.getRequiresCalibration()) {
-            rowView = inflater.inflate(R.layout.row_type, parent, false);
-            ((TextView) rowView.findViewById(R.id.textUnit)).setText(
-                    testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
-        } else {
-            rowView = inflater.inflate(R.layout.row_blank, parent, false);
-            rowView.setVisibility(View.GONE);
-        }
+        rowView = inflater.inflate(R.layout.row_type, parent, false);
+        ((TextView) rowView.findViewById(R.id.textUnit)).setText(
+                testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
+
         return rowView;
     }
 }

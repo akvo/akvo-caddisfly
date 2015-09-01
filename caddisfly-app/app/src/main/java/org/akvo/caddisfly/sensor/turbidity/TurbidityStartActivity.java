@@ -2,16 +2,20 @@ package org.akvo.caddisfly.sensor.turbidity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -19,41 +23,42 @@ import org.akvo.caddisfly.model.TestInfo;
 
 public class TurbidityStartActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE = 0;
-    private static final int DELAY = 360000;
-    private boolean alarmStarted;
+    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+    public static final int REQUEST_CODE = 1020;
+    private static final int DELAY = 60000;
+    private boolean mAlarmStarted;
+    private Button buttonStartTimer;
+    private TextView textStatus;
+    private EditText editInterval;
+    private EditText editImageCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turbidity_start);
 
-        setTitle(R.string.manageColiformsTest);
+        setTitle(R.string.startColiformsTest);
 
-        final TextView textStatus = (TextView) findViewById(R.id.textStatus);
+        textStatus = (TextView) findViewById(R.id.textStatus);
+        buttonStartTimer = (Button) findViewById(R.id.buttonManageTimer);
+        editInterval = (EditText) findViewById(R.id.editInterval);
+        editImageCount = (EditText) findViewById(R.id.editImageCount);
 
-        final Button buttonStartTimer = (Button) findViewById(R.id.buttonManageTimer);
         if (isAlarmRunning()) {
-            textStatus.setText("Status: Take photo every 1 minute");
-            buttonStartTimer.setText(R.string.stop);
-            alarmStarted = true;
+            setStartStatus();
         } else {
-            textStatus.setText("Status: Inactive");
-            buttonStartTimer.setText(R.string.start);
-            alarmStarted = false;
+            setStopStatus();
         }
 
         buttonStartTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                PendingIntent pendingIntent = getPendingIntent();
+                PendingIntent pendingIntent = getPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                if (alarmStarted) {
-                    buttonStartTimer.setEnabled(false);
-                    buttonStartTimer.setText(R.string.start);
-                    alarmStarted = false;
+                if (mAlarmStarted) {
+                    setStopStatus();
 
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
@@ -62,39 +67,70 @@ public class TurbidityStartActivity extends AppCompatActivity {
 
                 } else {
 
-                    buttonStartTimer.setEnabled(false);
-                    buttonStartTimer.setText(R.string.stop);
+                    setStartStatus();
 
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, DELAY, pendingIntent);
+                        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                SystemClock.elapsedRealtime() + 10000, pendingIntent);
                     } else {
-                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, DELAY, pendingIntent);
+                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000,
+                                DELAY, pendingIntent);
                     }
-
-                    alarmStarted = true;
-                    textStatus.setText("Status: Take photo every 1 minute");
-
-                    buttonStartTimer.setEnabled(true);
-
                 }
+            }
+        });
+
+
+        final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                editInterval.setText(String.format("%02d : %02d", hour, minute));
+            }
+        };
+
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, time, 0, 0, true);
+
+        editInterval.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    timePickerDialog.show();
+                }
+            }
+        });
+
+        editInterval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePickerDialog.show();
             }
         });
     }
 
-    private PendingIntent getPendingIntent() {
-        Intent intent = new Intent(this, TurbidityActivity.class);
-//        intent.setAction(Intent.ACTION_MAIN);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+    private void setStartStatus() {
+        textStatus.setText("Status: Active");
+        editInterval.setEnabled(false);
+        editImageCount.setEnabled(false);
+        buttonStartTimer.setText(R.string.stop);
+        mAlarmStarted = true;
+    }
 
-        return PendingIntent.getActivity(this, REQUEST_CODE, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+    private void setStopStatus() {
+        textStatus.setText("Status: Inactive");
+        editInterval.setEnabled(true);
+        editImageCount.setEnabled(true);
+        buttonStartTimer.setText(R.string.start);
+        mAlarmStarted = false;
+    }
 
+    private PendingIntent getPendingIntent(int flag) {
+        Intent intent = new Intent(this, TurbidityStartReceiver.class);
+        intent.setAction(ACTION_ALARM_RECEIVER);
+        return PendingIntent.getBroadcast(this, REQUEST_CODE, intent, flag);
     }
 
     private boolean isAlarmRunning() {
-        Intent intent = new Intent(getBaseContext(), TurbidityActivity.class);
-        return PendingIntent.getActivity(this, REQUEST_CODE, intent,
-                PendingIntent.FLAG_NO_CREATE) != null;
+        return getPendingIntent(PendingIntent.FLAG_NO_CREATE) != null;
     }
 
     @Override
@@ -108,6 +144,5 @@ public class TurbidityStartActivity extends AppCompatActivity {
 
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
-
     }
 }

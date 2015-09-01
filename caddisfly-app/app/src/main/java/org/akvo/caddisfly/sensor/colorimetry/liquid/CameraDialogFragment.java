@@ -136,13 +136,7 @@ public class CameraDialogFragment extends CameraDialog
     public void takePictureSingle() {
         mNumberOfPhotosToTake = 1;
         mPhotoCurrentCount = 0;
-
-        PictureCallback localCallback = new PictureCallback();
-        try {
-            mCamera.takePicture(null, null, localCallback);
-        } catch (Exception ignored) {
-
-        }
+        takePicture();
     }
 
     @Override
@@ -153,6 +147,15 @@ public class CameraDialogFragment extends CameraDialog
         Timer timer = new Timer();
         TimeLapseTask task = new TimeLapseTask();
         timer.schedule(task, delay, delay);
+    }
+
+    private void takePicture() {
+        PictureCallback localCallback = new PictureCallback();
+        try {
+            mCamera.takePicture(null, null, localCallback);
+        } catch (Exception ignored) {
+
+        }
     }
 
     @Override
@@ -167,7 +170,7 @@ public class CameraDialogFragment extends CameraDialog
      * @return true if completed, false if not
      */
     private boolean hasCompleted() {
-        return mPhotoCurrentCount > mNumberOfPhotosToTake;
+        return mPhotoCurrentCount >= mNumberOfPhotosToTake;
     }
 
     private boolean safeCameraOpenInView(View view) {
@@ -385,7 +388,7 @@ public class CameraDialogFragment extends CameraDialog
         @Override
         public void run() {
             try {
-                takePictureSingle();
+                takePicture();
             } catch (Exception e) {
                 e.printStackTrace();
             }

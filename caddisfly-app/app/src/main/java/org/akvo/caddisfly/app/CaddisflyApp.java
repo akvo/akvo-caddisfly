@@ -158,7 +158,7 @@ public class CaddisflyApp extends Application {
      * Initialize the current test by loading the configuration and calibration information
      */
     public void initializeCurrentTest() {
-        if (currentTestInfo.getCode().isEmpty()) {
+        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty()) {
             setDefaultTest();
         } else {
             loadTestConfiguration(currentTestInfo.getCode());
@@ -216,15 +216,26 @@ public class CaddisflyApp extends Application {
      */
     public enum TestType {
         /**
-         * Test type where a liquid reagent is mixed with sample and
-         * color is analysed from the resulting solution (e.g. Fluoride, Chlorine)
+         * Liquid reagent is mixed with sample and color is analysed from the resulting
+         * color change in the solution
          */
         COLORIMETRIC_LIQUID,
 
         /**
-         *
+         * Strip paper is dipped into the sample and color is analysed from the resulting
+         * color change on the strip paper
          */
-        COLORIMETRIC_STRIP, SENSOR, TURBIDITY_COLIFORMS
+        COLORIMETRIC_STRIP,
+
+        /**
+         * External sensors connected to the phone/device
+         */
+        SENSOR,
+
+        /**
+         * Measure of turbidity in the liquid
+         */
+        TURBIDITY_COLIFORMS
     }
 
 }

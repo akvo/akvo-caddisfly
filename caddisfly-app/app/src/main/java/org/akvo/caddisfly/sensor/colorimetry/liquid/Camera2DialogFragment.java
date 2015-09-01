@@ -94,7 +94,7 @@ public class Camera2DialogFragment extends CameraDialog {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    private int mPhotoCount;
+    private int mNumberOfPhotosToTake;
 
     private int mPhotoCurrentCount;
     /**
@@ -299,7 +299,6 @@ public class Camera2DialogFragment extends CameraDialog {
         }
 
     };
-    private long mCaptureDelay;
 
     /**
      * Given {@code choices} of {@code Size}s supported by a camera, chooses the smallest one whose
@@ -362,7 +361,7 @@ public class Camera2DialogFragment extends CameraDialog {
      * @return true if completed, false if not
      */
     private boolean hasCompleted() {
-        return mPhotoCurrentCount > mPhotoCount;
+        return mPhotoCurrentCount >= mNumberOfPhotosToTake;
     }
 
     @Override
@@ -462,8 +461,8 @@ public class Camera2DialogFragment extends CameraDialog {
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
-//                                mPreviewRequestBuilder.set(CaptureRequest.FLASH_MODE,
-//                                        CameraMetadata.FLASH_MODE_TORCH);
+                                mPreviewRequestBuilder.set(CaptureRequest.FLASH_MODE,
+                                        CameraMetadata.FLASH_MODE_TORCH);
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -506,18 +505,6 @@ public class Camera2DialogFragment extends CameraDialog {
 
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
-    }
-
-    private void startTakingPictures() {
-        mPhotoCurrentCount = 0;
-
-        if (mPhotoCount == 1) {
-            takePictureSingle();
-        } else {
-            Timer timer = new Timer();
-            task = new TimeLapseTask();
-            timer.schedule(task, mCaptureDelay, mCaptureDelay);
-        }
     }
 
     @Override
@@ -677,16 +664,21 @@ public class Camera2DialogFragment extends CameraDialog {
      */
     @Override
     public void takePictureSingle() {
-        mPhotoCount = 1;
-        mCaptureDelay = 0;
-        lockFocus();
+        takePictures(1, 2000);
     }
 
     @Override
     public void takePictures(int count, long delay) {
-        mPhotoCount = count;
-        mCaptureDelay = delay;
-        startTakingPictures();
+        mNumberOfPhotosToTake = count;
+        mPhotoCurrentCount = 0;
+
+        Timer timer = new Timer();
+        task = new TimeLapseTask();
+        timer.schedule(task, delay, delay);
+    }
+
+    public void takePicture() {
+        lockFocus();
     }
 
     /**
@@ -841,7 +833,7 @@ public class Camera2DialogFragment extends CameraDialog {
         @Override
         public void run() {
             try {
-                takePictureSingle();
+                takePicture();
             } catch (Exception e) {
                 e.printStackTrace();
             }
