@@ -225,7 +225,7 @@ public class StripTest {
 
                         colors.add(colorDetected);
 
-                        Core.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
+                        Imgproc.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
 
                       }
                 }

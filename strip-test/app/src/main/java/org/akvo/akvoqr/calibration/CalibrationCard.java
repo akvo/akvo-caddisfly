@@ -418,29 +418,36 @@ public class CalibrationCard{
         CalibrationData calData = readCalibrationFile(context);
 
         if(calData!=null) {
-            calData.hsizePixel = imgMat.cols();
-            calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
-            calData.vsizePixel = imgMat.rows();
-            calData.vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+            try {
+                calData.hsizePixel = imgMat.cols();
+                calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
+                calData.vsizePixel = imgMat.rows();
+                calData.vfac = calData.vsizePixel / calData.vsize; // pixel per mm
 
-            // illumination correction
-            System.out.println("*** ILLUM - starting illumination correction");
-            imgMat = doIlluminationCorrection(imgMat, calData);
+                // illumination correction
+                System.out.println("*** ILLUM - starting illumination correction");
+                imgMat = doIlluminationCorrection(imgMat, calData);
 
-            // 1D LUT gray balance
-            System.out.println("*** ILLUM - starting gray balance");
-            imgMat = do1DLUTCorrection(imgMat, calData);
+                // 1D LUT gray balance
+                System.out.println("*** ILLUM - starting gray balance");
+                imgMat = do1DLUTCorrection(imgMat, calData);
 
-            // 3D LUT color balance
-            System.out.println("*** ILLUM - starting 3D lut");
-            imgMat = do3DLUTCorrection(imgMat, calData);
+                // 3D LUT color balance
+                System.out.println("*** ILLUM - starting 3D lut");
+                imgMat = do3DLUTCorrection(imgMat, calData);
 
-            // insert calibration colours in image
-            System.out.println("*** ILLUM - adding colours");
-            addCalColours(imgMat, calData);
+                // insert calibration colours in image
+                System.out.println("*** ILLUM - adding colours");
+                addCalColours(imgMat, calData);
 
-            System.out.println("*** end of calibration");
-            return imgMat;
+                System.out.println("*** end of calibration");
+                return imgMat;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return null;
+            }
         }
         return null;
     }

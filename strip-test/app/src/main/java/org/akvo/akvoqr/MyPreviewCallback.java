@@ -21,7 +21,6 @@ import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.sensor.LightSensor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -61,8 +60,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     else if(mats!=null)
                         listener.sendMats(mats);
                 }
-                else
+                else {
                     listener.getMessage(0);
+                }
             }
             if(bitmap!=null)
                 bitmap.recycle();
@@ -156,16 +156,17 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             LightSensor lightSensor = new LightSensor();
             lightSensor.start();
             while (lightSensor.getLux()==-1 && number>0) {
-                System.out.println("*** lux: " + lightSensor.getLux());
+
                 number --;
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 }
                 catch (InterruptedException e)
                 {
                     Thread.currentThread().interrupt();
                 }
             }
+            System.out.println("*** lux: " + lightSensor.getLux());
             lightSensor.stop();
 
             //TODO CHECK SHADOWS
@@ -180,9 +181,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 //we assume that second time is immediately after first time, so patterns are found while the camera is
                 //focused correctly
 
-                if (firstTime){
+                if (firstTime) {
                     System.out.println("*** focussing!!!!!!!");
-                    while (!focused){
+                    while (!focused) {
                         camera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
                             public void onAutoFocus(boolean success, Camera camera) {
@@ -201,23 +202,23 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     System.out.println("***pattern estimated module size: " + pattern.getEstimatedModuleSize());
                 }
 
-                int pheight =  camera.getParameters().getPreviewSize().height;
+                int pheight = camera.getParameters().getPreviewSize().height;
                 int pwidth = camera.getParameters().getPreviewSize().width;
 
                 //convert preview data to Mat object with highest possible quality
                 Mat mbgra = new Mat(pheight, pwidth, CvType.CV_8UC3);
                 Mat convert_mYuv = new Mat(pheight + pheight / 2, pwidth, CvType.CV_8UC1);
                 convert_mYuv.put(0, 0, data);
-                Imgproc.cvtColor(convert_mYuv, mbgra, Imgproc.COLOR_YUV2RGBA_NV21, mbgra.channels());
+                Imgproc.cvtColor(convert_mYuv, mbgra, Imgproc.COLOR_YUV2BGR_NV21, mbgra.channels());
 
 
                 //noOfModules: constant that holds the time estimated module size is to be multiplied by, used to 'cut out' image not showing finder patterns
                 //typical value is 3.5 as pattern is 1:1:3:1:1 which amounts to seven.
                 final float noOfModules = 0f;
-                final float adjustTL = noOfModules*possibleCenters.get(0).getEstimatedModuleSize();
-                final float adjustTR = noOfModules*possibleCenters.get(1).getEstimatedModuleSize();
-                final float adjustBL = noOfModules*possibleCenters.get(2).getEstimatedModuleSize();
-                final float adjustBR = noOfModules*possibleCenters.get(3).getEstimatedModuleSize();
+                final float adjustTL = noOfModules * possibleCenters.get(0).getEstimatedModuleSize();
+                final float adjustTR = noOfModules * possibleCenters.get(1).getEstimatedModuleSize();
+                final float adjustBL = noOfModules * possibleCenters.get(2).getEstimatedModuleSize();
+                final float adjustBR = noOfModules * possibleCenters.get(3).getEstimatedModuleSize();
 
                 //perspectiveTransform
                 Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
@@ -227,10 +228,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Mat calMat = listener.getCalibratedImage(warp_dst);
                 listener.dismissProgress();
 
-                if(calMat==null)
-                {
+                Mat dest;
+                Mat striparea = null;
+                if (calMat == null) {
                     System.out.println("***calibration failed");
-                    return;
+                    dest = warp_dst.clone();
+                } else {
+                    dest = calMat.clone();
                 }
 
                 //show calibrated patches in gridview in ResultActivity
@@ -245,46 +249,41 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                    ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
 //                }
 
-                if(testCalib)
-                {
-//
-//                    bitmap = Bitmap.createBitmap(calMat.width(), calMat.height(), Bitmap.Config.ARGB_8888);
-//                    Utils.matToBitmap(calMat, bitmap, true);
+                if (testCalib) {
+
                     mats = new ArrayList<>();
                     mats.add(calMat.clone());
 
                     allOK = true;
                     return;
                 }
-                //detect strip
-                Mat dest = calMat.clone();
 
+                //detect strip
                 Mat orig = new Mat();
-                Mat striparea = dest.clone();
+
                 double ratioW = 1;
                 double ratioH = 1;
                 String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
-                if(json!=null) {
+                if (json != null) {
 
                     double hsize = 1;
                     double vsize = 1;
                     JSONObject object = new JSONObject(json);
-                    if(!object.isNull("calData"))
-                    {
+                    if (!object.isNull("calData")) {
                         JSONObject calData = object.getJSONObject("calData");
                         hsize = calData.getDouble("hsize");
                         vsize = calData.getDouble("vsize");
                     }
-                    if(!object.isNull("stripAreaData")) {
+                    if (!object.isNull("stripAreaData")) {
                         JSONObject stripAreaData = object.getJSONObject("stripAreaData");
-                        if(!stripAreaData.isNull("area")) {
+                        if (!stripAreaData.isNull("area")) {
                             JSONArray area = stripAreaData.getJSONArray("area");
-                            if(area.length()==4) {
+                            if (area.length() == 4) {
 
-                                ratioW = dest.width()/hsize;
-                                ratioH = dest.height()/vsize;
-                                Point stripTopLeft = new Point(area.getDouble(0) * ratioW + 2 ,
-                                        area.getDouble(1) * ratioH + 2 );
+                                ratioW = dest.width() / hsize;
+                                ratioH = dest.height() / vsize;
+                                Point stripTopLeft = new Point(area.getDouble(0) * ratioW + 2,
+                                        area.getDouble(1) * ratioH + 2);
                                 Point stripBottomRight = new Point(area.getDouble(2) * ratioW - 2,
                                         area.getDouble(3) * ratioH - 2);
 
@@ -294,9 +293,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             }
                         }
                     }
-                }
-                else
-                {
+                } else {
 //                float stripareaSize = 31; //mm
 //                float vertSize = 75; //mm
 //                float ratio = stripareaSize/vertSize;
@@ -305,53 +302,56 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 }
 
-                //TODO Get brand from user input
-                StripTest stripTestBrand = StripTest.getInstance();
-                StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
+                if (striparea != null) {
+                    //TODO Get brand from user input
+                    StripTest stripTestBrand = StripTest.getInstance();
+                    StripTest.Brand brand = stripTestBrand.getBrand(StripTest.brand.HACH883738);
 
-                listener.showProgress(1);
-                Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
-                listener.dismissProgress();
-
-                if(strip!=null)
-                {
-                    listener.showProgress(2);
-
-
-                    Mat detCol = OpenCVUtils.detectStripColorBrandKnown(strip, brand);
-
-
-                    mats = new ArrayList<>();
-                    if(!orig.empty())
-                        mats.add(orig);
-                    mats.add(striparea);
-                    mats.add(detCol);
-
+                    listener.showProgress(1);
+                    Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                     listener.dismissProgress();
+
+                    if (strip != null) {
+                        listener.showProgress(2);
+
+
+                        Mat detCol = OpenCVUtils.detectStripColorBrandKnown(strip, brand);
+
+
+                        mats = new ArrayList<>();
+                        if (!orig.empty())
+                            mats.add(orig);
+                        mats.add(striparea);
+                        mats.add(detCol);
+
+                        listener.dismissProgress();
+                    } else {
+                        mats = new ArrayList<>();
+                        mats.add(striparea.clone());
+
+                        Imgproc.line(striparea, new Point(0, 0), new Point(striparea.cols(),
+                                striparea.rows()), new Scalar(255, 0, 0, 255), 2);
+                        Imgproc.line(striparea, new Point(0, striparea.rows()), new Point(striparea.cols(),
+                                0), new Scalar(255, 0, 0, 255), 2);
+
+                        mats.add(striparea);
+
+                    }
+
+                    allOK = true;
+
                 }
-                else
-                {
-                    mats = new ArrayList<>();
-                    mats.add(striparea.clone());
-
-                    Core.line(striparea, new Point(0, 0), new Point(striparea.cols(),
-                            striparea.rows()), new Scalar(255, 0, 0, 255), 2);
-                    Core.line(striparea, new Point(0,striparea.rows()), new Point(striparea.cols(),
-                            0), new Scalar(255,0,0,255), 2);
-
-                    mats.add(striparea);
-
-                }
-
-                allOK = true;
-
             }
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            listener.dismissProgress();
+
             allOK = false;
+
+
         }
     }
 

@@ -14,14 +14,16 @@ import org.opencv.core.Mat;
  */
 public class BaseCameraActivity  extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
 
-//    static {
-//
-//        if (!OpenCVLoader.initDebug()) {
-//            Log.d("ERROR", "Unable to load OpenCV");
-//        } else {
-//            Log.d("SUCCESS", "OpenCV loaded");
-//        }
-//    }
+    static{ System.loadLibrary("opencv_java3"); }
+    static {
+
+        if (!OpenCVLoader.initDebug()) {
+            Log.d("ERROR", "Unable to load OpenCV");
+
+        } else {
+            Log.d("SUCCESS", "OpenCV loaded");
+        }
+    }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -44,7 +46,7 @@ public class BaseCameraActivity  extends Activity implements CameraBridgeViewBas
     @Override
     public void onResume() {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
+        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
     }
 
     @Override

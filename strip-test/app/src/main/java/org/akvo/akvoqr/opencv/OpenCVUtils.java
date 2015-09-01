@@ -134,7 +134,7 @@ public class OpenCVUtils {
         Mat lab = new Mat();
         List<Mat> channels = new ArrayList<>();
 
-        Imgproc.cvtColor(striparea, lab, Imgproc.COLOR_RGB2Lab, 0);
+        Imgproc.cvtColor(striparea, lab, Imgproc.COLOR_BGR2Lab, 0);
 
         Imgproc.medianBlur(lab, lab, 11);
 
@@ -275,11 +275,11 @@ public class OpenCVUtils {
                         + " size: " + rotated.size().toString() + " width: " + rotated.size().width
                         + " height: " + rotated.size().height);
 
-                Core.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
+                Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
 
                 point1 = new Point(point3.x - rotated.width(), point3.y - rotated.height());
 
-                Core.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
+                Imgproc.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
 
                 return rotated;
             }
@@ -325,7 +325,7 @@ public class OpenCVUtils {
             colorDetected.setLab(mean);
             ResultActivity.stripColors.add(colorDetected);
 
-            Core.rectangle(src, new Point(minCol, minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
+            Imgproc.rectangle(src, new Point(minCol, minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
             submat.release();
         }
 
@@ -627,11 +627,11 @@ public class OpenCVUtils {
 
                         Point point1 = new Point(getMinX(pts), getMinY(pts));
                         Point point2 = new Point(getMaxX(pts), getMaxY(pts));
-                        Core.rectangle(labMat, point1, point2, new Scalar(0, 255, 3, 255), 1);
+                        Imgproc.rectangle(labMat, point1, point2, new Scalar(0, 255, 3, 255), 1);
 
                         pts = detectColor(labMat, pts);
 
-                        Core.rectangle(labMat, pts.get(0), pts.get(1), new Scalar(0, 0, 0, 255), 2);
+                        Imgproc.rectangle(labMat, pts.get(0), pts.get(1), new Scalar(0, 0, 0, 255), 2);
 
                         numPatchesFound++;
                     }
@@ -895,10 +895,10 @@ public class OpenCVUtils {
         Mat src_gray = new Mat();
         Mat dst = new Mat();
 
-        Imgproc.GaussianBlur(src, src, new Size(3, 3), 0, 0, Imgproc.BORDER_DEFAULT);
+        Imgproc.GaussianBlur(src, src, new Size(3, 3), 0, 0, Core.BORDER_DEFAULT);
         Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
 
-        Imgproc.Laplacian(src_gray, dst, ddepth, kernel_size, scale, delta, Imgproc.BORDER_DEFAULT);
+        Imgproc.Laplacian(src_gray, dst, ddepth, kernel_size, scale, delta, Core.BORDER_DEFAULT);
 
         if (!dst.empty()) {
 
