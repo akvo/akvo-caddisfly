@@ -39,8 +39,6 @@ import java.util.Locale;
  */
 public class SaveCalibrationDialogFragment extends DialogFragment {
 
-    // TODO: Rename and change types of parameters
-
     private final Calendar calendar = Calendar.getInstance();
     private EditText editName = null;
     private EditText editBatchNumber = null;
@@ -56,7 +54,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
      *
      * @return A new instance of fragment SaveCalibrationDialogFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SaveCalibrationDialogFragment newInstance() {
         return new SaveCalibrationDialogFragment();
     }
@@ -76,7 +73,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -154,7 +150,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     if (formEntryValid()) {
                         final StringBuilder calibrationDetails = new StringBuilder();
 
-                        for (Swatch swatch : CaddisflyApp.getApp().currentTestInfo.getSwatches()) {
+                        for (Swatch swatch : CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) {
                             calibrationDetails.append(String.format("%.2f", swatch.getValue()))
                                     .append("=")
                                     .append(ColorUtil.getColorRgbString(swatch.getColor()));
@@ -162,7 +158,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         }
 
                         calibrationDetails.append("Type: ");
-                        calibrationDetails.append(CaddisflyApp.getApp().currentTestInfo.getCode());
+                        calibrationDetails.append(CaddisflyApp.getApp().getCurrentTestInfo().getCode());
                         calibrationDetails.append("\n");
                         calibrationDetails.append("Date: ");
                         calibrationDetails.append(DateUtil.getDateTimeString());
@@ -190,16 +186,10 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         calibrationDetails.append("DeviceId: ");
                         calibrationDetails.append(ApiUtil.getEquipmentId(context));
 
-                        final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+                        final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
+                                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
-                        final File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
-                        //create a subfolder for this contaminant type by type code
-                        if (!subPath.exists()) {
-                            //noinspection ResultOfMethodCallIgnored
-                            subPath.mkdirs();
-                        }
-
-                        File file = new File(subPath, editName.getText().toString());
+                        File file = new File(path, editName.getText().toString());
 
                         if (file.exists()) {
                             AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
@@ -207,14 +197,14 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            FileUtil.saveToFile(subPath, editName.getText().toString(),
+                                            FileUtil.saveToFile(path, editName.getText().toString(),
                                                     calibrationDetails.toString());
                                             Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                             );
                         } else {
-                            FileUtil.saveToFile(subPath, editName.getText().toString(),
+                            FileUtil.saveToFile(path, editName.getText().toString(),
                                     calibrationDetails.toString());
                             Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
                         }

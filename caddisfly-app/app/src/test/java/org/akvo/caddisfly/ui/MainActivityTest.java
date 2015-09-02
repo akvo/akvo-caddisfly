@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.helper.ConfigHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
@@ -28,6 +27,7 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +64,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
@@ -92,7 +92,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
@@ -121,7 +121,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
@@ -146,7 +146,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122)));
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),
@@ -170,7 +170,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 128, 119)));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99)));
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
                 testInfo.getSwatches(),

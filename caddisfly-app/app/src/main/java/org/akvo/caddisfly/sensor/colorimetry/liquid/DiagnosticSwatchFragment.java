@@ -48,7 +48,7 @@ public class DiagnosticSwatchFragment extends ListFragment {
 
         getActivity().setTitle(R.string.swatches);
 
-        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         if (testInfo.getSwatches().size() > 0) {
 

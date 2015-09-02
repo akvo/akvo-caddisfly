@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -88,7 +87,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
                 DiagnosticDetailsFragment diagnosticDetailsFragment =
                         DiagnosticDetailsFragment.newInstance(
                                 ImageUtil.getCroppedBitmap(bitmap,
-                                        AppConfig.SAMPLE_CROP_LENGTH_DEFAULT),
+                                        LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT),
                                 bitmap, bitmap.getWidth() + " x " + bitmap.getHeight());
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -134,7 +133,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
                     public void run() {
                         mCameraDialog.takePictureSingle();
                     }
-                }, AppConfig.DELAY_BETWEEN_SAMPLING);
+                }, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
             }
         });
 

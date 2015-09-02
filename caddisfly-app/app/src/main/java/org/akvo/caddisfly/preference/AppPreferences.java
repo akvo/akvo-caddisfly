@@ -2,8 +2,8 @@ package org.akvo.caddisfly.preference;
 
 import android.content.Context;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -25,12 +25,15 @@ public class AppPreferences {
     }
 
     public static int getSamplingTimes(Context context) {
+        int samplingTimes;
         if (isDiagnosticMode(context)) {
-            return Integer.parseInt(PreferencesUtil.getString(context,
-                    R.string.samplingsTimeKey, String.valueOf(AppConfig.SAMPLING_COUNT_DEFAULT)));
+            samplingTimes = Integer.parseInt(PreferencesUtil.getString(context,
+                    R.string.samplingsTimeKey, String.valueOf(LiquidTestConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
-            return AppConfig.SAMPLING_COUNT_DEFAULT;
+            samplingTimes = LiquidTestConfig.SAMPLING_COUNT_DEFAULT;
         }
+        //Add 1 because first sample is always discarded during analysis
+        return samplingTimes + 1;
     }
 
     public static int getColorDistanceTolerance(Context context) {

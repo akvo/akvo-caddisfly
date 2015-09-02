@@ -15,13 +15,13 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.view.WindowManager;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.Camera2DialogFragment;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialog;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -122,10 +122,10 @@ public class TurbidityActivity extends Activity {
                             .add(R.id.layoutContainer, mCameraDialog)
                             .commitAllowingStateLoss();
 
-                    mCameraDialog.takePictures(1, AppConfig.DELAY_BETWEEN_SAMPLING);
+                    mCameraDialog.takePictures(1, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
                 }
             }
-        }, AppConfig.DELAY_BETWEEN_SAMPLING);
+        }, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
     }
 
     /**

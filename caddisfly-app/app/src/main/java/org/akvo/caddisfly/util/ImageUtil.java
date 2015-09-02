@@ -102,15 +102,9 @@ public class ImageUtil {
 
     public static void saveImage(byte[] data, String subfolder, String fileName) {
 
-        File subPath = new File(FileHelper.getFilesDir(FileHelper.FileType.IMAGE).getPath() +
-                File.separator + subfolder);
+        File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, subfolder);
 
-        if (!subPath.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            subPath.mkdirs();
-        }
-
-        File photo = new File(subPath, fileName + ".jpg");
+        File photo = new File(path, fileName + ".jpg");
 
         try {
             FileOutputStream fos = new FileOutputStream(photo.getPath());

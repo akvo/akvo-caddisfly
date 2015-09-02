@@ -68,8 +68,8 @@ public class SoundPoolPlayer {
 
         //play sound if the sound is not turned off in the preference
         if (!AppPreferences.isSoundOff(mContext)) {
-            mPlayer.play(mSounds.get(resourceId), AppConfig.SOUND_VOLUME,
-                    AppConfig.SOUND_VOLUME, 0, 0, 1);
+            mPlayer.play(mSounds.get(resourceId), AppConfig.SOUND_EFFECTS_VOLUME,
+                    AppConfig.SOUND_EFFECTS_VOLUME, 0, 0, 1);
         }
     }
 

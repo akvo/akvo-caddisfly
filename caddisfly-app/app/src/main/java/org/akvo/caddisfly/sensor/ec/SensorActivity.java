@@ -39,6 +39,7 @@ import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
@@ -138,7 +139,7 @@ public class SensorActivity extends BaseActivity {
         mTemperatureImageView = (ImageView) findViewById(R.id.imageTemperature);
         mUnitsTextView = (TextView) findViewById(R.id.textUnit);
 
-        final CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+        final TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         Configuration conf = getResources().getConfiguration();
 
         Button backButton = (Button) findViewById(R.id.buttonOk);
@@ -159,7 +160,7 @@ public class SensorActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getIntent());
-                if (caddisflyApp.currentTestInfo.getCode().equals("TEMPE")) {
+                if (currentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
                     intent.putExtra("response", mEc25Value);
@@ -172,11 +173,11 @@ public class SensorActivity extends BaseActivity {
         mConnectionLayout = (LinearLayout) findViewById(R.id.layoutConnection);
         mResultLayout = (LinearLayout) findViewById(R.id.layoutResult);
 
-        if (!caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    caddisflyApp.currentTestInfo.getName(conf.locale.getLanguage()));
+                    currentTestInfo.getName(conf.locale.getLanguage()));
 
-            mUnitsTextView.setText(caddisflyApp.currentTestInfo.getUnit());
+            mUnitsTextView.setText(currentTestInfo.getUnit());
         }
 
         //http://developer.android.com/guide/topics/connectivity/usb/host.html
@@ -389,7 +390,6 @@ public class SensorActivity extends BaseActivity {
      * This is workaround before android 4.2 . Because BroadcastReceiver can not
      * receive ACTION_USB_DEVICE_ATTACHED broadcast
      */
-
     @Override
     public void onResume() {
         super.onResume();
@@ -501,7 +501,6 @@ public class SensorActivity extends BaseActivity {
             }
         }
         mResult = "";
-
     }
 
     @Override

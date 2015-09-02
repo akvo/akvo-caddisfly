@@ -44,7 +44,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
@@ -94,6 +93,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private boolean mIgnoreShake;
     //pointer to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
+    private boolean mIsFirstResult;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -118,7 +118,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             if (mIsCalibration) {
                 getSupportActionBar().setTitle(String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
-                        mSwatchValue, CaddisflyApp.getApp().currentTestInfo.getUnit()));
+                        mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit()));
             } else {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
@@ -129,7 +129,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mDilutionTextView = (TextView) findViewById(R.id.textDilution);
         mDilutionTextView1 = (TextView) findViewById(R.id.textDilution2);
 
-        if (!mIsCalibration && CaddisflyApp.getApp().currentTestInfo.getCanUseDilution()) {
+        if (!mIsCalibration && CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
             mDilutionTextView.setVisibility(View.VISIBLE);
             mDilutionTextView1.setVisibility(View.VISIBLE);
         } else {
@@ -170,7 +170,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);
         Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
 
-        // todo: remove hardcoding of dilution times
+        //todo: remove hardcoding of dilution times
         percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
         percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
 
@@ -346,7 +346,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
 
-        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         TextView textResult = ((TextView) findViewById(R.id.textResult));
         if (mIsCalibration) {
@@ -413,9 +413,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void getAnalyzedResult(Bitmap bitmap) {
 
         //Extract the color from the photo which will be used for comparison
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         ArrayList<ResultDetail> results = new ArrayList<>();
 
@@ -444,17 +444,17 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
             //use all the swatches for an all steps analysis
             results.add(SwatchHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.RGB));
+                    CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.RGB));
 
             results.add(SwatchHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.HSV));
+                    CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.HSV));
 
             results.add(SwatchHelper.analyzeColor(photoColor,
-                    CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.ColorModel.LAB));
+                    CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.LAB));
         }
 
         results.add(0, SwatchHelper.analyzeColor(photoColor,
-                CaddisflyApp.getApp().currentTestInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL));
+                CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL));
 
         Result result = new Result(bitmap, results);
 
@@ -466,6 +466,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mResults = new ArrayList<>();
 
         mWaitingForStillness = false;
+        mIsFirstResult = true;
 
         sound.playShortResource(R.raw.beep);
         mShakeDetector.minShakeAcceleration = 1;
@@ -495,12 +496,17 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     @Override
                     public void onPictureTaken(byte[] bytes, boolean completed) {
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
-                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-                        getAnalyzedResult(croppedBitmap);
+                        //Ignore the first result as camera may not have focused correctly
+                        if (!mIsFirstResult) {
+                            getAnalyzedResult(croppedBitmap);
+                        }
+                        mIsFirstResult = false;
 
                         if (completed) {
-                            AnalyzeResult(bytes);
+                            AnalyzeFinalResult(bytes);
                             mCameraFragment.dismiss();
                         } else {
                             sound.playShortResource(R.raw.beep);
@@ -521,8 +527,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         ft.addToBackStack(null);
                         try {
                             mCameraFragment.show(ft, "cameraDialog");
-                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()) + 1,
-                                    AppConfig.DELAY_BETWEEN_SAMPLING);
+                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()),
+                                    LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
                             e.printStackTrace();
                             finish();
@@ -530,7 +536,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     }
                 };
 
-                delayHandler.postDelayed(delayRunnable, AppConfig.DELAY_BETWEEN_SAMPLING);
+                delayHandler.postDelayed(delayRunnable, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
 
             }
         }).execute();
@@ -543,15 +549,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
      *
      * @param data image data to be displayed if error in analysis
      */
-    private void AnalyzeResult(byte[] data) {
+    private void AnalyzeFinalResult(byte[] data) {
 
         releaseResources();
 
         String message = getString(R.string.errorTestFailed);
-        double result = SwatchHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this) + 1);
+        double result = SwatchHelper.getAverageResult(mResults);
 
-        if (mDilutionLevel < 2 && result >= CaddisflyApp.getApp().currentTestInfo.getDilutionRequiredLevel() &&
-                CaddisflyApp.getApp().currentTestInfo.getCanUseDilution()) {
+        if (mDilutionLevel < 2 && result >= CaddisflyApp.getApp().getCurrentTestInfo().getDilutionRequiredLevel() &&
+                CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
             mHighLevelsFound = true;
         }
 
@@ -601,7 +607,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     saveImageForDiagnostics(data, result);
                     showDiagnosticResultDialog(false, result, color, false);
                 } else {
-                    String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+                    String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
 
                     if (mHighLevelsFound && mDilutionLevel < 2) {
                         sound.playShortResource(R.raw.beep_long);
@@ -628,7 +634,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     } else {
                         sound.playShortResource(R.raw.done);
                         ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
-                                mDilutionLevel, CaddisflyApp.getApp().currentTestInfo.getUnit());
+                                mDilutionLevel, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                         Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
@@ -659,7 +665,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         }
 
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
-        ImageUtil.saveImage(data, CaddisflyApp.getApp().currentTestInfo.getCode(), date + "_"
+        ImageUtil.saveImage(data, CaddisflyApp.getApp().getCurrentTestInfo().getCode(), date + "_"
                 + (mIsCalibration ? "C" : "T") + "_" + String.format("%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
     }
@@ -712,7 +718,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);
-            String title = CaddisflyApp.getApp().currentTestInfo.getName(getResources().getConfiguration().locale.getLanguage());
+            String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
 
             //todo: remove hard coding of dilution levels
             String message = "";

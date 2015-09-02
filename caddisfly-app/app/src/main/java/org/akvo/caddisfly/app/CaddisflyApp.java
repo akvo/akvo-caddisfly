@@ -39,7 +39,16 @@ public class CaddisflyApp extends Application {
 
     private static boolean hasCameraFlash;
     private static CaddisflyApp app;// Singleton
-    public TestInfo currentTestInfo = new TestInfo();
+    private TestInfo mCurrentTestInfo = new TestInfo();
+
+    /**
+     * Gets the singleton app object
+     *
+     * @return the singleton app
+     */
+    public static CaddisflyApp getApp() {
+        return app;
+    }
 
     /**
      * Check if the camera is available
@@ -106,15 +115,6 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Gets the singleton app object
-     *
-     * @return the singleton app
-     */
-    public static CaddisflyApp getApp() {
-        return app;
-    }
-
-    /**
      * Gets the app version
      *
      * @param context The context
@@ -148,6 +148,19 @@ public class CaddisflyApp extends Application {
         }
     }
 
+    /**
+     * Gets the current TestInfo
+     *
+     * @return the current test info
+     */
+    public TestInfo getCurrentTestInfo() {
+        return mCurrentTestInfo;
+    }
+
+    public void setCurrentTestInfo(TestInfo testInfo) {
+        mCurrentTestInfo = testInfo;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -158,10 +171,10 @@ public class CaddisflyApp extends Application {
      * Initialize the current test by loading the configuration and calibration information
      */
     public void initializeCurrentTest() {
-        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty()) {
+        if (mCurrentTestInfo == null || mCurrentTestInfo.getCode().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfiguration(currentTestInfo.getCode());
+            loadTestConfiguration(mCurrentTestInfo.getCode());
         }
     }
 
@@ -173,9 +186,9 @@ public class CaddisflyApp extends Application {
         ArrayList<TestInfo> tests;
         tests = ConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
         if (tests.size() > 0) {
-            currentTestInfo = tests.get(0);
-            if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(currentTestInfo);
+            mCurrentTestInfo = tests.get(0);
+            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+                loadCalibratedSwatches(mCurrentTestInfo);
             }
         }
     }
@@ -187,12 +200,12 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfiguration(String testCode) {
 
-        currentTestInfo = ConfigHelper.loadTestConfigurationByCode(
+        mCurrentTestInfo = ConfigHelper.loadTestConfigurationByCode(
                 FileHelper.getConfigJson(), testCode.toUpperCase());
 
-        if (currentTestInfo != null) {
-            if (currentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(currentTestInfo);
+        if (mCurrentTestInfo != null) {
+            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+                loadCalibratedSwatches(mCurrentTestInfo);
             }
         }
     }
@@ -209,7 +222,6 @@ public class CaddisflyApp extends Application {
             swatch.setColor(PreferencesUtil.getInt(this.getApplicationContext(), key, 0));
         }
     }
-
 
     /**
      * The different types of testing methods

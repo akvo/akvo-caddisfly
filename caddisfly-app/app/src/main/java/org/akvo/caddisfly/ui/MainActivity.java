@@ -97,7 +97,6 @@ public class MainActivity extends BaseActivity {
     //todo: upgrade stuff. To be removed eventually...
     private void upgradeOldFolderPath() {
 
-        //todo: remove when upgrade process no more required
         final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
         final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
         final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
@@ -300,7 +299,7 @@ public class MainActivity extends BaseActivity {
                         mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
                 );
 
-                if (CaddisflyApp.getApp().currentTestInfo == null) {
+                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
                     alertTestTypeNotSupported(mQuestionTitle);
                 } else {
                     if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
@@ -325,10 +324,10 @@ public class MainActivity extends BaseActivity {
     private void startTest() {
         Context context = this;
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-        switch (caddisflyApp.currentTestInfo.getType()) {
+        switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (!SwatchHelper.isSwatchListValid(caddisflyApp.currentTestInfo.getSwatches())) {
+                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
                     alertCalibrationIncomplete();
                     return;
                 }
@@ -381,7 +380,7 @@ public class MainActivity extends BaseActivity {
      */
     private void alertCalibrationIncomplete() {
         String message = getString(R.string.errorCalibrationIncomplete,
-                CaddisflyApp.getApp().currentTestInfo.getName(
+                CaddisflyApp.getApp().getCurrentTestInfo().getName(
                         getResources().getConfiguration().locale.getLanguage()));
         message = String.format("%s\r\n\r\n%s", message,
                 getString(R.string.doYouWantToCalibrate));

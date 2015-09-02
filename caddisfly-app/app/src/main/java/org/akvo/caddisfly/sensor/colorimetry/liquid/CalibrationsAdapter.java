@@ -58,7 +58,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         @SuppressLint("ViewHolder")
         View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
-        ArrayList<Swatch> swatches = CaddisflyApp.getApp().currentTestInfo.getSwatches();
+        ArrayList<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
         Swatch swatch = swatches.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
@@ -74,7 +74,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         textUnit.setText(word);
 
         //append the unit
-        Spannable wordTwo = new SpannableString(CaddisflyApp.getApp().currentTestInfo.getUnit());
+        Spannable wordTwo = new SpannableString(CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
 
         wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

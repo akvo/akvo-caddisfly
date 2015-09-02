@@ -27,8 +27,14 @@ public class AppConfig {
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     /**
+     * The sound volume for the beeps and other sound effects
+     */
+    public static final float SOUND_EFFECTS_VOLUME = 1f;
+
+    /**
      * The url to check for update version
      */
+    //todo: remove when app gets hosted on Play Store
     public static final String UPDATE_CHECK_URL
             = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
 
@@ -36,23 +42,7 @@ public class AppConfig {
      * The expected size of the next update file to enable display of the progress bar.
      * Used only if the update process cannot determine the size of the file to download
      */
+    //todo: remove when app gets hosted on Play Store
     public static final int UPDATE_FILE_TYPICAL_SIZE = 910000;
-
-    /**
-     * Width and height of cropped image
-     */
-    public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-    /**
-     * The delay between each photo taken by the camera during the analysis
-     */
-    public static final int DELAY_BETWEEN_SAMPLING = 6000;
-    /**
-     * The number of photos to take during analysis
-     */
-    public static final int SAMPLING_COUNT_DEFAULT = 5;
-    /**
-     * The sound volume for the beeps and success/fail sounds
-     */
-    public static final float SOUND_VOLUME = 1f;
 
 }

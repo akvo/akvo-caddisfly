@@ -35,13 +35,13 @@ public class ColorimetryStripActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
         //set the title to the test contaminant name
-        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(currentTestInfo.getName(conf.locale.getLanguage()));
 
     }
 }

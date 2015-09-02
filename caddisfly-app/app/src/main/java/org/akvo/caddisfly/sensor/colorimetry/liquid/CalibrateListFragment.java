@@ -29,6 +29,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
 /**
@@ -59,17 +60,17 @@ public class CalibrateListFragment extends ListFragment {
     }
 
     void setAdapter() {
-        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         CalibrationsAdapter calibrationsAdapter = new CalibrationsAdapter(getActivity(),
-                caddisflyApp.currentTestInfo.getSwatches().toArray(
-                        new Swatch[caddisflyApp.currentTestInfo.getSwatches().size()]));
+                currentTestInfo.getSwatches().toArray(
+                        new Swatch[currentTestInfo.getSwatches().size()]));
 
         setListAdapter(calibrationsAdapter);
 
         //Display error if calibration is completed but invalid
-        if (ColorUtil.isCalibrationComplete(CaddisflyApp.getApp().currentTestInfo.getSwatches()) &&
-                !SwatchHelper.isSwatchListValid(CaddisflyApp.getApp().currentTestInfo.getSwatches())) {
+        if (ColorUtil.isCalibrationComplete(currentTestInfo.getSwatches()) &&
+                !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
             textCalibrationError.setVisibility(View.VISIBLE);

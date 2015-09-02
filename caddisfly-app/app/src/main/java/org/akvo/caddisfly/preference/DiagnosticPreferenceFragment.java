@@ -33,12 +33,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
@@ -76,8 +76,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > AppConfig.SAMPLING_COUNT_DEFAULT) {
-                        newValue = AppConfig.SAMPLING_COUNT_DEFAULT;
+                    if (Integer.parseInt(String.valueOf(newValue)) > LiquidTestConfig.SAMPLING_COUNT_DEFAULT) {
+                        newValue = LiquidTestConfig.SAMPLING_COUNT_DEFAULT;
                     }
 
                     if (Integer.parseInt(String.valueOf(newValue)) < 1) {
@@ -98,8 +98,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     Context context = getActivity();
                     CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
                     caddisflyApp.initializeCurrentTest();
-                    if (caddisflyApp.currentTestInfo == null ||
-                            caddisflyApp.currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
+                    if (caddisflyApp.getCurrentTestInfo() == null ||
+                            caddisflyApp.getCurrentTestInfo().getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
                         caddisflyApp.setDefaultTest();
                     }
 
@@ -118,9 +118,9 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     Hashtable<String, String> namesHashTable = new Hashtable<>(1, 1);
                     namesHashTable.put("en", "Coliforms");
 
-                    CaddisflyApp.getApp().currentTestInfo = new TestInfo(namesHashTable, "COLIF",
+                    CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(namesHashTable, "COLIF",
                             "", CaddisflyApp.TestType.TURBIDITY_COLIFORMS, false,
-                            new String[]{}, new String[]{});
+                            new String[]{}, new String[]{}));
 
                     final Intent intent = new Intent(context, TurbidityStartActivity.class);
                     startActivity(intent);

@@ -204,7 +204,7 @@ public final class SwatchHelper {
      * Returns an average color from a list of results
      * If any color does not closely match the rest of the colors then it returns 0
      *
-     * @param results the list of results. Note: The first result will be ignored.
+     * @param results the list of results
      * @return the average color
      */
     public static int getAverageColor(ArrayList<Result> results) {
@@ -213,7 +213,7 @@ public final class SwatchHelper {
         int green = 0;
         int blue = 0;
 
-        for (int i = 1; i < results.size(); i++) {
+        for (int i = 0; i < results.size(); i++) {
 
             int color1 = results.get(i).getResults().get(0).getColor();
 
@@ -222,8 +222,8 @@ public final class SwatchHelper {
                 return 0;
             }
 
-            //check all the colors are mostly similar otherwise return 0 (ignore first item)
-            for (int j = 1; j < results.size() - 1; j++) {
+            //check all the colors are mostly similar otherwise return 0
+            for (int j = 0; j < results.size(); j++) {
                 int color2 = results.get(j).getResults().get(0).getColor();
                 if (ColorUtil.areColorsTooDissimilar(color1, color2)) {
                     return 0;
@@ -235,7 +235,7 @@ public final class SwatchHelper {
         }
 
         //return an average color
-        int resultCount = results.size() - 1;
+        int resultCount = results.size();
         return Color.rgb(red / resultCount, green / resultCount, blue / resultCount);
     }
 
@@ -293,52 +293,31 @@ public final class SwatchHelper {
      * Returns the average of a list of values
      *
      * @param results       the results
-     * @param samplingTimes the sampling times
      * @return the average value
      */
-    public static double getAverageResult(ArrayList<Result> results, int samplingTimes) {
+    public static double getAverageResult(ArrayList<Result> results) {
 
         double result = 0;
 
-        int counter = 0;
         ArrayList<Double> resultValues = new ArrayList<>();
-
         for (int i = 0; i < results.size(); i++) {
             resultValues.add(results.get(i).getResults().get(0).getResult());
         }
 
-        double commonResult;
+        double commonResult = mostFrequent(convertDoubles(resultValues));
 
-        double[] resultArray = convertDoubles(resultValues);
-        //ignore first value;
-        resultArray[0] = -1;
-        commonResult = mostFrequent(resultArray);
-
-        ArrayList<Double> tempResults = new ArrayList<>();
-
-        //Ignore the first result
-        for (int i = 1; i < results.size(); i++) {
+        for (int i = 0; i < results.size(); i++) {
             double value = results.get(i).getResults().get(0).getResult();
             if (value > -1 && Math.abs(value - commonResult) < 0.21) {
-                tempResults.add(value);
+                result += value;
+            } else {
+                return -1;
             }
         }
 
-        int totalCount = tempResults.size();
-        while (tempResults.size() > 0 && counter < Math.min(totalCount, samplingTimes)) {
-            int index = getClosestMatchIndex(tempResults, commonResult);
-            result += tempResults.get(index);
-            counter++;
-            tempResults.remove(index);
-        }
-
-        if (counter >= Math.min(results.size() - 1, samplingTimes)) {
-            try {
-                result = round(result / counter, 2);
-            } catch (Exception ex) {
-                result = -1;
-            }
-        } else {
+        try {
+            result = round(result / results.size(), 2);
+        } catch (Exception ex) {
             result = -1;
         }
 

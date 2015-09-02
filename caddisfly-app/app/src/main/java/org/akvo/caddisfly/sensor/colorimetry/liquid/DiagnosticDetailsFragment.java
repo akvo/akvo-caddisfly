@@ -28,12 +28,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
 public class DiagnosticDetailsFragment extends DialogFragment {
@@ -56,6 +56,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         getDialog().setTitle(R.string.result);
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         final View view = inflater.inflate(R.layout.dialog_diagnostic_details, container, false);
 
@@ -76,40 +77,39 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
-        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-
-        if (caddisflyApp.currentTestInfo == null || caddisflyApp.currentTestInfo.getCode().isEmpty() ||
-                caddisflyApp.currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
-            caddisflyApp.setDefaultTest();
+        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty() ||
+                currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
+            CaddisflyApp.getApp().setDefaultTest();
         }
 
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(mExtractBitmap,
-                AppConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
-                caddisflyApp.currentTestInfo.getSwatches(),
-                ColorUtil.ColorModel.RGB);
+        if (currentTestInfo != null) {
+            ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
+                    currentTestInfo.getSwatches(),
+                    ColorUtil.ColorModel.RGB);
 
-        double result = resultDetail.getResult();
-        int color = resultDetail.getColor();
-        int swatchColor = resultDetail.getMatchedColor();
+            double result = resultDetail.getResult();
+            int color = resultDetail.getColor();
+            int swatchColor = resultDetail.getMatchedColor();
+            textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
+            buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
+            swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
 
-        textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
+            textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
 
-        if (result > -1) {
-            textResult.setText(String.format("%s : %.2f %s", caddisflyApp.currentTestInfo.getName("en"),
-                    result, caddisflyApp.currentTestInfo.getUnit()));
-        } else {
-            textResult.setText(String.format("%s", caddisflyApp.currentTestInfo.getName("en")));
+            if (result > -1) {
+                textResult.setText(String.format("%s : %.2f %s", currentTestInfo.getName("en"),
+                        result, currentTestInfo.getUnit()));
+            } else {
+                textResult.setText(String.format("%s", currentTestInfo.getName("en")));
+            }
+
+            buttonColorExtract.setBackgroundColor(color);
+
+            textColorRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
         }
-
-        textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
-        buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
-        swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
-
-        buttonColorExtract.setBackgroundColor(color);
-
-        textColorRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
 
         return view;
     }

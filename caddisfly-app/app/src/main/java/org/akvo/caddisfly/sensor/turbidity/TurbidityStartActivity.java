@@ -167,7 +167,7 @@ public class TurbidityStartActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        TestInfo testInfo = CaddisflyApp.getApp().currentTestInfo;
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         Resources res = getResources();
         Configuration conf = res.getConfiguration();

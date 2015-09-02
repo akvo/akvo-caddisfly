@@ -261,9 +261,9 @@ public class CalibrateSensorActivity extends BaseActivity {
         final EditText highValueEditText = (EditText) findViewById(R.id.editHighValue);
 
         Configuration conf = getResources().getConfiguration();
-        if (!CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    CaddisflyApp.getApp().currentTestInfo.getName(conf.locale.getLanguage()));
+                    CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
         }
 
         baudRate = 9600;

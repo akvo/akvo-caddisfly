@@ -19,6 +19,7 @@ public class FileHelper {
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
 
+
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may
      * not be in the app-specific External Storage. The caller cannot assume anything about
@@ -28,6 +29,19 @@ public class FileHelper {
      * @return File representing the root directory for the given FileType.
      */
     public static File getFilesDir(FileType type) {
+        return getFilesDir(type, "");
+    }
+
+    /**
+     * Get the appropriate files directory for the given FileType. The directory may or may
+     * not be in the app-specific External Storage. The caller cannot assume anything about
+     * the location.
+     *
+     * @param type    FileType to determine the type of resource attempting to use.
+     * @param subPath a sub directory to be created
+     * @return File representing the root directory for the given FileType.
+     */
+    public static File getFilesDir(FileType type, String subPath) {
         String path = null;
         switch (type) {
             case APK:
@@ -44,6 +58,9 @@ public class FileHelper {
                 break;
         }
         File dir = new File(path);
+        if (!subPath.isEmpty()) {
+            dir = new File(dir, subPath);
+        }
         if (!dir.exists()) {
             //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();

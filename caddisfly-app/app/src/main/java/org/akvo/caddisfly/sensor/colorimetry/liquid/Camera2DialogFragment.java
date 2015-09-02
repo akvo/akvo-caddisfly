@@ -540,7 +540,7 @@ public class Camera2DialogFragment extends CameraDialog {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             if (checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
+                // Consider calling
                 //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,

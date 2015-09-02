@@ -127,18 +127,12 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
      * @return the new file
      */
     private File createFile(String downloadUrl, String version) {
-        //cleanupDownloads(version);
 
         String fileName = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
-        File directory = new File(FileHelper.getFilesDir(FileHelper.FileType.APK), version);
-        if (!directory.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            directory.mkdir();
-        }
+        File path = new File(FileHelper.getFilesDir(FileHelper.FileType.APK), version);
 
-        return new File(directory, fileName);
+        return new File(path, fileName);
     }
-
 
     /**
      * Downloads the update file in a background task
@@ -164,7 +158,6 @@ class DownloadManager extends AsyncTask<String, Integer, String> {
                 OutputStream output = new FileOutputStream(downloadFilePath);
 
                 // this will be useful so that you can show a typical 0-100% progress bar
-                // todo:fix content length problem
                 int fileLength = connection.getContentLength();
                 if (fileLength < 100) {
                     //could not determine the correct file size so use a typical file size

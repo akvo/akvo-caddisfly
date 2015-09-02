@@ -39,6 +39,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -112,7 +113,7 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        setTitle(CaddisflyApp.getApp().currentTestInfo.getName(
+        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName(
                 getResources().getConfiguration().locale.getLanguage()));
 
     }
@@ -124,7 +125,7 @@ public class CalibrateListActivity extends BaseActivity
     @Override
     public void onItemSelected(int id) {
         mPosition = id;
-        Swatch swatch = CaddisflyApp.getApp().currentTestInfo.getSwatch(mPosition);
+        Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
         final Intent intent = new Intent();
         intent.setClass(this, ColorimetryLiquidActivity.class);
@@ -141,7 +142,7 @@ public class CalibrateListActivity extends BaseActivity
         switch (requestCode) {
             case REQUEST_CALIBRATE:
 
-                Swatch swatch = CaddisflyApp.getApp().currentTestInfo.getSwatch(mPosition);
+                Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
                 if (resultCode == Activity.RESULT_OK) {
                     saveCalibratedData(swatch, data.getIntExtra("color", 0));
@@ -161,7 +162,7 @@ public class CalibrateListActivity extends BaseActivity
      */
     private void saveCalibratedData(Swatch swatch, final int resultColor) {
         String colorKey = String.format(Locale.US, "%s-%.2f",
-                CaddisflyApp.getApp().currentTestInfo.getCode(), swatch.getValue());
+                CaddisflyApp.getApp().getCurrentTestInfo().getCode(), swatch.getValue());
 
         if (resultColor == 0) {
             PreferencesUtil.removeKey(getApplicationContext(), colorKey);
@@ -207,15 +208,15 @@ public class CalibrateListActivity extends BaseActivity
      */
     private void saveCalibratedSwatches(ArrayList<Swatch> swatches) {
 
-        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         for (Swatch swatch : swatches) {
             String key = String.format(Locale.US, "%s-%.2f",
-                    caddisflyApp.currentTestInfo.getCode(), swatch.getValue());
+                    currentTestInfo.getCode(), swatch.getValue());
 
             PreferencesUtil.setInt(this, key, swatch.getColor());
         }
 
-        caddisflyApp.loadCalibratedSwatches(caddisflyApp.currentTestInfo);
+        CaddisflyApp.getApp().loadCalibratedSwatches(currentTestInfo);
     }
 
     /**
@@ -232,12 +233,16 @@ public class CalibrateListActivity extends BaseActivity
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     R.layout.row_text);
 
-            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
+            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
+                    CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
-            final File subPath = new File(path, CaddisflyApp.getApp().currentTestInfo.getCode());
+            File[] listFilesTemp = null;
+            if (path.exists() && path.isDirectory()) {
+                listFilesTemp = path.listFiles();
+            }
 
-            if (subPath.exists() && subPath.isDirectory()) {
-                final File[] listFiles = subPath.listFiles();
+            final File[] listFiles = listFilesTemp;
+            if (listFiles != null && listFiles.length > 0) {
                 Arrays.sort(listFiles);
 
                 for (File listFile : listFiles) {
@@ -262,7 +267,7 @@ public class CalibrateListActivity extends BaseActivity
 
                                 ArrayList<String> calibrationDetails;
                                 try {
-                                    calibrationDetails = FileUtil.loadFromFile(subPath, fileName);
+                                    calibrationDetails = FileUtil.loadFromFile(path, fileName);
 
                                     if (calibrationDetails != null) {
 
@@ -329,7 +334,7 @@ public class CalibrateListActivity extends BaseActivity
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 String fileName = listFiles[position].getName();
-                                                FileUtil.deleteFile(subPath, fileName);
+                                                FileUtil.deleteFile(path, fileName);
                                                 ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                                 listAdapter.remove(listAdapter.getItem(position));
                                                 alertDialog.dismiss();
