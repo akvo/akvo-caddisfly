@@ -69,7 +69,6 @@
     <string name="calibrationIsInvalid">Etalonnage invalide</string>
     <string name="tryRecalibrating">Essayez d\'étalonner à nouveau</string>
     <!--Test Progress Screen-->
-    <string name="analyzingWait">Analyse en cours</string>
     <string name="placeDeviceInStand">Placez le téléphone sur une surface plane, face vers le bas</string>
     <string name="waitTillCameraSound">et attendez jusqu\'à la fin du test</string>
     <string name="errorTestInterrupted">Le test s\'est interrompu. Ne déplacez pas le téléphone pendant la durée du test</string>

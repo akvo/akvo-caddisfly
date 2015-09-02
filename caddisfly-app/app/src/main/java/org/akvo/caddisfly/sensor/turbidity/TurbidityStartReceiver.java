@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public class TurbidityStartReceiver extends BroadcastReceiver {
-    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+    private static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
 
     public TurbidityStartReceiver() {
     }
@@ -14,8 +14,10 @@ public class TurbidityStartReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
             if (ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
+                String date = intent.getStringExtra("startDateTime");
                 Intent intentActivity = new Intent(context, TurbidityActivity.class);
                 intentActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentActivity.putExtra("startDateTime", date);
                 context.startActivity(intentActivity);
             }
         }

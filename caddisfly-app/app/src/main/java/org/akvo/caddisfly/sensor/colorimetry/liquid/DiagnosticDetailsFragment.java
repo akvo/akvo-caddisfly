@@ -18,8 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,16 +41,13 @@ public class DiagnosticDetailsFragment extends DialogFragment {
     private Bitmap mExtractBitmap;
     private Bitmap mPhotoBitmap;
     private String mDimension;
-    private Fragment mParentFragment;
 
     public static DiagnosticDetailsFragment newInstance(Bitmap extractBitmap, Bitmap photoBitmap,
-                                                       String dimension, Fragment parentFragment) {
+                                                        String dimension) {
         DiagnosticDetailsFragment fragment = new DiagnosticDetailsFragment();
         fragment.mExtractBitmap = extractBitmap;
         fragment.mPhotoBitmap = photoBitmap;
         fragment.mDimension = dimension;
-        fragment.mParentFragment = parentFragment;
-
         return fragment;
     }
 
@@ -143,20 +138,10 @@ public class DiagnosticDetailsFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
-        super.onCancel(dialog);
-//        ResultDialogListener listener = (ResultDialogListener) mParentFragment;
-//        listener.onSuccessFinishDialog();
-    }
-
-    @Override
     public void onDestroy() {
         mExtractBitmap.recycle();
         mPhotoBitmap.recycle();
         super.onDestroy();
     }
 
-    public interface ResultDialogListener {
-        void onSuccessFinishDialog();
-    }
 }

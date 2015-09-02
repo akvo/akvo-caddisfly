@@ -142,7 +142,7 @@
         <receiver
             android:name=".sensor.turbidity.TurbidityStartReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="false" />
     </application>
 
 </manifest>

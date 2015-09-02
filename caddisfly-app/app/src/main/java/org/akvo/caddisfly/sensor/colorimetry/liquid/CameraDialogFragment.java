@@ -48,8 +48,7 @@ import java.util.TimerTask;
  * create an instance of this fragment.
  */
 @SuppressWarnings("deprecation")
-public class CameraDialogFragment extends CameraDialog
-        implements DiagnosticDetailsFragment.ResultDialogListener {
+public class CameraDialogFragment extends CameraDialog {
     private int mNumberOfPhotosToTake;
     private int mPhotoCurrentCount = 0;
 
@@ -197,11 +196,6 @@ public class CameraDialogFragment extends CameraDialog
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onCancel(DialogInterface dialog) {
         if (getActivity() != null && getActivity() instanceof Cancelled) {
             ((Cancelled) getActivity()).dialogCancelled();
@@ -220,11 +214,6 @@ public class CameraDialogFragment extends CameraDialog
             mPreview.destroyDrawingCache();
             mPreview.mCamera = null;
         }
-    }
-
-    @Override
-    public void onSuccessFinishDialog() {
-        this.dismiss();
     }
 
     public interface Cancelled {

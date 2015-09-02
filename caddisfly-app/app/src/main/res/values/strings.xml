@@ -65,7 +65,7 @@
     <string name="errorTestNotAvailable">No configuration found for %1$s</string>
     <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
     <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
-    <string name="toConductTestOpenApp">To conduct a test open Akvo FLOW</string>
+    <string name="toConductTestOpenApp">Open Akvo Flow to start a test</string>
 
     <!--Settings Screen-->
     <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
@@ -81,7 +81,6 @@
     <string name="tryRecalibrating">Try recalibrating</string>
 
     <!--Test Progress Screen-->
-    <string name="analyzingWait">Analyzing…</string>
     <string name="placeDeviceInStand">Place the phone face down on a flat surface</string>
     <string name="waitTillCameraSound">and wait for test to complete</string>
     <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
@@ -168,7 +167,4 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
-    <string name="useCamera2" translateable="false">Use Camera2 API</string>
-    <string name="stop">Stop</string>
-    <string name="startColiformsTest">Start Coloforms Test</string>
 </resources>

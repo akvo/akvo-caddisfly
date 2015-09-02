@@ -20,17 +20,25 @@ import android.widget.TimePicker;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.PreferencesUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TurbidityStartActivity extends AppCompatActivity {
 
-    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
-    public static final int REQUEST_CODE = 1020;
-    private static final int DELAY = 60000;
+    private static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+    private static final int REQUEST_CODE = 1020;
     private boolean mAlarmStarted;
     private Button buttonStartTimer;
     private TextView textStatus;
     private EditText editInterval;
     private EditText editImageCount;
+
+    private int mDelayHour;
+    private int mDelayMinute;
+    private int mImageCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,26 +77,46 @@ public class TurbidityStartActivity extends AppCompatActivity {
 
                     setStartStatus();
 
+                    mImageCount = Integer.parseInt(editImageCount.getText().toString());
+
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                                 SystemClock.elapsedRealtime() + 10000, pendingIntent);
                     } else {
-                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000,
-                                DELAY, pendingIntent);
+                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                SystemClock.elapsedRealtime() + 10000,
+                                ((mDelayHour * 60) + mDelayMinute) * 60000, pendingIntent);
                     }
                 }
             }
         });
 
+        mDelayHour = PreferencesUtil.getInt(getBaseContext(),
+                getString(R.string.cameraRepeatIntervalHourKey), 0);
+        mDelayMinute = PreferencesUtil.getInt(getBaseContext(),
+                getString(R.string.cameraRepeatIntervalMinuteKey), 1);
+
+        mImageCount = PreferencesUtil.getInt(getBaseContext(),
+                getString(R.string.cameraRepeatImageCountKey), 10);
+
+        editInterval.setText(String.format("%02d : %02d", mDelayHour, mDelayMinute));
+        editImageCount.setText(String.valueOf(mImageCount));
 
         final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 editInterval.setText(String.format("%02d : %02d", hour, minute));
+                mDelayHour = hour;
+                mDelayMinute = minute;
+                PreferencesUtil.setInt(getBaseContext(),
+                        getString(R.string.cameraRepeatIntervalHourKey), hour);
+                PreferencesUtil.setInt(getBaseContext(),
+                        getString(R.string.cameraRepeatIntervalMinuteKey), minute);
             }
         };
 
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, time, 0, 0, true);
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, time,
+                mDelayHour, mDelayMinute, true);
 
         editInterval.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -126,6 +154,8 @@ public class TurbidityStartActivity extends AppCompatActivity {
     private PendingIntent getPendingIntent(int flag) {
         Intent intent = new Intent(this, TurbidityStartReceiver.class);
         intent.setAction(ACTION_ALARM_RECEIVER);
+        String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
+        intent.putExtra("startDateTime", date);
         return PendingIntent.getBroadcast(this, REQUEST_CODE, intent, flag);
     }
 

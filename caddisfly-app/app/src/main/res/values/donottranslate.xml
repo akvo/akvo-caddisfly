@@ -30,4 +30,12 @@
     <string name="lab">LAB</string>
     <string name="rgb">RGB</string>
     <string name="hsv">HSV</string>
+
+    <!--Used in Diagnostic mode-->
+    <string name="useCamera2" translateable="false">Use Camera2 API</string>
+    <string name="stop">Stop</string>
+    <string name="startColiformsTest">Start Coliforms Test</string>
+    <string name="Images">Images</string>
+    <string name="Interval">Interval</string>
+
 </resources>

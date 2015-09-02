@@ -60,10 +60,12 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
-import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
@@ -519,7 +521,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         ft.addToBackStack(null);
                         try {
                             mCameraFragment.show(ft, "cameraDialog");
-                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()),
+                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()) + 1,
                                     AppConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -546,7 +548,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         releaseResources();
 
         String message = getString(R.string.errorTestFailed);
-        double result = SwatchHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this));
+        double result = SwatchHelper.getAverageResult(mResults, AppPreferences.getSamplingTimes(this) + 1);
 
         if (mDilutionLevel < 2 && result >= CaddisflyApp.getApp().currentTestInfo.getDilutionRequiredLevel() &&
                 CaddisflyApp.getApp().currentTestInfo.getCanUseDilution()) {
@@ -656,7 +658,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             result = mSwatchValue;
         }
 
-        ImageUtil.saveImage(data, "", DateUtil.getDateTimeString() + "_"
+        String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
+        ImageUtil.saveImage(data, CaddisflyApp.getApp().currentTestInfo.getCode(), date + "_"
                 + (mIsCalibration ? "C" : "T") + "_" + String.format("%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
     }
@@ -752,5 +755,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
         this.setResult(Activity.RESULT_OK, intent);
         releaseResources();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sound.release();
     }
 }

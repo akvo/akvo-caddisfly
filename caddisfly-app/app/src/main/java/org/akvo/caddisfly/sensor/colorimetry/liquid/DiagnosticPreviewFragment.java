@@ -89,7 +89,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
                         DiagnosticDetailsFragment.newInstance(
                                 ImageUtil.getCroppedBitmap(bitmap,
                                         AppConfig.SAMPLE_CROP_LENGTH_DEFAULT),
-                                bitmap, bitmap.getWidth() + " x " + bitmap.getHeight(), getParentFragment());
+                                bitmap, bitmap.getWidth() + " x " + bitmap.getHeight());
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
 

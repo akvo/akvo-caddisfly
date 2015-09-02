@@ -60,14 +60,18 @@
             android:id="@+id/textOpenApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/button_orange"
             android:gravity="center"
             android:lineSpacingExtra="10dp"
             android:paddingBottom="50dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:paddingTop="50dp"
+            android:shadowColor="#ccc"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:text="@string/toConductTestOpenApp"
+            android:textColor="@color/text_tertiary"
             android:textSize="18sp" />
     </RelativeLayout>
 </FrameLayout>

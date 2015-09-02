@@ -42,7 +42,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.UpdateCheckTask;
@@ -443,9 +442,9 @@ public class EspressoTest
         //pH
         clickExternalSourceButton("useExternalSource");
 
-        onView(withText("To be implemented")).check(matches(isDisplayed()));
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        onView(withText(R.string.backToSurvey)).perform(click());
 
         clickExternalSourceButton("next");
 
@@ -1152,23 +1151,23 @@ public class EspressoTest
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = MainActivity.class.getDeclaredMethod("alertCameraFlashNotAvailable");
-                    method.setAccessible(true);
-                    method.invoke(getActivity());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //No flash
-        takeScreenshot();
-
-        onView(withId(android.R.id.button1)).perform(click());
+//        getActivity().runOnUiThread(new Runnable() {
+//            public void run() {
+//                try {
+//                    Method method = MainActivity.class.getDeclaredMethod("alertCameraFlashNotAvailable");
+//                    method.setAccessible(true);
+//                    method.invoke(getActivity());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    assertEquals(e.getMessage(), 0, 1);
+//                }
+//            }
+//        });
+//
+//        //No flash
+//        takeScreenshot();
+//
+//        onView(withId(android.R.id.button1)).perform(click());
 
         startApp();
 

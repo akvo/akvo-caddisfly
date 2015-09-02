@@ -23,16 +23,20 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.Camera2DialogFragment;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialog;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment;
 import org.akvo.caddisfly.util.ApiUtil;
-import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TurbidityActivity extends Activity {
 
-    public static final int REQUEST_CODE = 1020;
-    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
-    private static final int DELAY = 60000;
+    private static final int REQUEST_CODE = 1020;
+    private static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
 
-    CameraDialog mCameraDialog;
+    private CameraDialog mCameraDialog;
     private SoundPoolPlayer sound;
     private PowerManager.WakeLock wakeLock;
     private boolean mDestroyed;
@@ -68,6 +72,7 @@ public class TurbidityActivity extends Activity {
         });
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void saveImage(byte[] data, double result) {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = registerReceiver(null, intentFilter);
@@ -79,21 +84,29 @@ public class TurbidityActivity extends Activity {
             batteryPercent = (int) ((level / (float) scale) * 100);
         }
 
-        ImageUtil.saveImage(data, "COLIF", DateUtil.getDateTimeString() + "_"
+        String startDate = getIntent().getStringExtra("startDateTime");
+        String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
+        ImageUtil.saveImage(data, "COLIF" + File.separator + startDate, date + "_"
                 + "" + "_" + String.format("%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
-
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Intent intent = new Intent(this, TurbidityStartReceiver.class);
             intent.setAction(ACTION_ALARM_RECEIVER);
+            intent.putExtra("startDateTime", startDate);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent,
                     PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
+            int delayHour = PreferencesUtil.getInt(getBaseContext(),
+                    getString(R.string.cameraRepeatIntervalHourKey), 0);
+            int delayMinute = PreferencesUtil.getInt(getBaseContext(),
+                    getString(R.string.cameraRepeatIntervalMinuteKey), 1);
+
             alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + DELAY, pendingIntent);
+                    SystemClock.elapsedRealtime() +
+                            ((delayHour * 60) + delayMinute) * 60000, pendingIntent);
         }
     }
 
@@ -108,7 +121,6 @@ public class TurbidityActivity extends Activity {
                     getFragmentManager().beginTransaction()
                             .add(R.id.layoutContainer, mCameraDialog)
                             .commitAllowingStateLoss();
-                    ;
 
                     mCameraDialog.takePictures(1, AppConfig.DELAY_BETWEEN_SAMPLING);
                 }

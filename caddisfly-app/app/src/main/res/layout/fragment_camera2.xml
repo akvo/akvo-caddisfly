@@ -13,22 +13,22 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:keepScreenOn="true">
 
     <org.akvo.caddisfly.sensor.colorimetry.liquid.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/border"
-        android:gravity="center" />
+        android:layout_gravity="center"
+        android:background="@drawable/border" />
 
-</RelativeLayout>
+</FrameLayout>

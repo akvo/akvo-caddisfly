@@ -23,10 +23,10 @@
             android:title="@string/cameraPreview" />
         <Preference
             android:key="startTest"
-            android:title="Start Colorimetric Test" />
+            android:title="Colorimetric Test" />
         <Preference
             android:key="startTurbidityTest"
-            android:title="Start Turbidity Test" />
+            android:title="Turbidity Test" />
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor">

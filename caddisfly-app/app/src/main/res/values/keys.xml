@@ -30,4 +30,8 @@
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>
     <string name="useCamera2Key" translateable="false">userCamera2</string>
+    <string name="cameraRepeatIntervalHourKey" translateable="false">cameraRepeatIntervalHour</string>
+    <string name="cameraRepeatIntervalMinuteKey" translateable="false">cameraRepeatIntervalMinute</string>
+    <string name="cameraRepeatImageCountKey" translateable="false">cameraRepeatImageCount</string>
+
 </resources>

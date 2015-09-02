@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -63,10 +62,6 @@ public class Camera2DialogFragment extends CameraDialog {
      */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     /**
-     * Tag for the {@link Log}.
-     */
-    private static final String TAG = "Camera2BasicFragment";
-    /**
      * Camera state: Showing camera preview.
      */
     private static final int STATE_PREVIEW = 0;
@@ -94,8 +89,11 @@ public class Camera2DialogFragment extends CameraDialog {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
+    /**
+     * A {@link Semaphore} to prevent the app from exiting before closing the camera.
+     */
+    private final Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private int mNumberOfPhotosToTake;
-
     private int mPhotoCurrentCount;
     /**
      * ID of the current {@link CameraDevice}.
@@ -141,46 +139,47 @@ public class Camera2DialogFragment extends CameraDialog {
      */
     private CaptureRequest mPreviewRequest;
     /**
+     * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
+     */
+    private final CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
+
+        @Override
+        public void onOpened(@NonNull CameraDevice cameraDevice) {
+            // This method is called when the camera is opened.  We start camera preview here.
+            mCameraOpenCloseLock.release();
+            mCameraDevice = cameraDevice;
+            createCameraPreviewSession();
+        }
+
+        @Override
+        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
+            mCameraDevice = null;
+        }
+
+        @Override
+        public void onError(@NonNull CameraDevice cameraDevice, int error) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
+            mCameraDevice = null;
+            Activity activity = getActivity();
+            if (null != activity) {
+                activity.finish();
+            }
+        }
+
+    };
+    /**
      * The current state of camera state for taking pictures.
      *
      * @see #mCaptureCallback
      */
     private int mState = STATE_PREVIEW;
     /**
-     * A {@link Semaphore} to prevent the app from exiting before closing the camera.
-     */
-    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
-    /**
-     * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
-     * {@link TextureView}.
-     */
-    private final TextureView.SurfaceTextureListener mSurfaceTextureListener
-            = new TextureView.SurfaceTextureListener() {
-
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture texture, int width, int height) {
-            openCamera(width, height);
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
-            configureTransform(width, height);
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
-            return true;
-        }
-
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture texture) {
-        }
-
-    };
-    /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
-    private CameraCaptureSession.CaptureCallback mCaptureCallback
+    private final CameraCaptureSession.CaptureCallback mCaptureCallback
             = new CameraCaptureSession.CaptureCallback() {
 
         private void process(CaptureResult result) {
@@ -242,38 +241,6 @@ public class Camera2DialogFragment extends CameraDialog {
         }
 
     };
-    /**
-     * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
-     */
-    private final CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
-
-        @Override
-        public void onOpened(@NonNull CameraDevice cameraDevice) {
-            // This method is called when the camera is opened.  We start camera preview here.
-            mCameraOpenCloseLock.release();
-            mCameraDevice = cameraDevice;
-            createCameraPreviewSession();
-        }
-
-        @Override
-        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            mCameraOpenCloseLock.release();
-            cameraDevice.close();
-            mCameraDevice = null;
-        }
-
-        @Override
-        public void onError(@NonNull CameraDevice cameraDevice, int error) {
-            mCameraOpenCloseLock.release();
-            cameraDevice.close();
-            mCameraDevice = null;
-            Activity activity = getActivity();
-            if (null != activity) {
-                activity.finish();
-            }
-        }
-
-    };
     private TimeLapseTask task;
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
@@ -296,6 +263,33 @@ public class Camera2DialogFragment extends CameraDialog {
             for (PictureTaken pictureTakenObserver : pictureTakenObservers) {
                 pictureTakenObserver.onPictureTaken(bytes, hasCompleted());
             }
+        }
+
+    };
+    /**
+     * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
+     * {@link TextureView}.
+     */
+    private final TextureView.SurfaceTextureListener mSurfaceTextureListener
+            = new TextureView.SurfaceTextureListener() {
+
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture texture, int width, int height) {
+            openCamera(width, height);
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
+            configureTransform(width, height);
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
+            return true;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture texture) {
         }
 
     };
@@ -327,7 +321,13 @@ public class Camera2DialogFragment extends CameraDialog {
         if (bigEnough.size() > 0) {
             return Collections.min(bigEnough, new CompareSizesByArea());
         } else {
-            Log.e(TAG, "Couldn't find any suitable preview size");
+
+            for (Size size : choices) {
+                if (size.getWidth() == 640) {
+                    return size;
+                }
+            }
+
             return choices[0];
         }
     }
@@ -343,6 +343,7 @@ public class Camera2DialogFragment extends CameraDialog {
      * @param mode  integer to get for.
      * @return true if the array contains the given integer, otherwise false.
      */
+    @SuppressWarnings("SameParameterValue")
     private static boolean contains(int[] modes, int mode) {
         if (modes == null) {
             return false;
@@ -484,11 +485,6 @@ public class Camera2DialogFragment extends CameraDialog {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_camera2, container, false);
@@ -517,7 +513,8 @@ public class Camera2DialogFragment extends CameraDialog {
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
         // the SurfaceTextureListener).
         if (mTextureView.isAvailable()) {
-            openCamera(mTextureView.getWidth(), mTextureView.getHeight());
+            //openCamera(mTextureView.getWidth(), mTextureView.getHeight());
+            openCamera(640, 480);
         } else {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
@@ -677,7 +674,7 @@ public class Camera2DialogFragment extends CameraDialog {
         timer.schedule(task, delay, delay);
     }
 
-    public void takePicture() {
+    private void takePicture() {
         lockFocus();
     }
 
@@ -799,7 +796,7 @@ public class Camera2DialogFragment extends CameraDialog {
     /**
      * Compares two {@code Size}s based on their areas.
      */
-    static class CompareSizesByArea implements Comparator<Size> {
+    private static class CompareSizesByArea implements Comparator<Size> {
 
         @Override
         public int compare(Size lhs, Size rhs) {

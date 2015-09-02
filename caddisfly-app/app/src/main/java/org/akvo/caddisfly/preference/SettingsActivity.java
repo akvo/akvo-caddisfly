@@ -28,8 +28,8 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    ScrollView mScrollView;
-    int mScrollPosition;
+    private ScrollView mScrollView;
+    private int mScrollPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
