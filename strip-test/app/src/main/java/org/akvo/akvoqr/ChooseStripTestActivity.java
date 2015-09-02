@@ -18,32 +18,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.akvo.akvoqr.opencv.StripTest;
-import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Set;
 
-public class ChooseStripTest2Activity extends AppCompatActivity implements ActionBar.TabListener {
+public class ChooseStripTestActivity extends AppCompatActivity implements ActionBar.TabListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+
     SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     ViewPager mViewPager;
+    StripTest stripTest;
+    private static final String BRAND = "org.akvo.akvoqr.brand";
+    List<PlaceholderFragment> fragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_strip_test2);
+        setContentView(R.layout.activity_choose_strip_test);
+
+        stripTest = StripTest.getInstance();
+        Set<String> allBrands = stripTest.getAllBrands();
+        for(String brandString: allBrands)
+        {
+            StripTest.Brand brand = stripTest.getBrand(brandString);
+            String brandName = brand.getName();
+            System.out.println("***brandname: " + brandName);
+
+            fragments.add(PlaceholderFragment.newInstance(brandString));
+        }
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -118,10 +122,6 @@ public class ChooseStripTest2Activity extends AppCompatActivity implements Actio
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -132,48 +132,42 @@ public class ChooseStripTest2Activity extends AppCompatActivity implements Actio
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return fragments.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+            PlaceholderFragment fragment = fragments.get(position);
+            String title = fragment.getArguments().getString(BRAND);
+
+            if(title!=null) {
+                return title.toUpperCase(l);
             }
+
             return null;
+
         }
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * This class assumes that there are .png images in res/drawable that have the same name
+     * as the String 'brand' in the JsonObject 'strip' in strips.json from assets
      */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+
+        private String brandName;
+
+        public static PlaceholderFragment newInstance(String brandName) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(BRAND, brandName);
             fragment.setArguments(args);
             return fragment;
         }
@@ -184,19 +178,25 @@ public class ChooseStripTest2Activity extends AppCompatActivity implements Actio
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_choose_strip_test2, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
             final ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
-            StripTest stripTest = StripTest.getInstance();
-            Map<String, JSONObject> map = stripTest.getStripObjects();
-            for (String brand : map.keySet()) {
-                int resId = getResources().getIdentifier(brand.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName());
+
+            if(getArguments()!=null) {
+
+                this.brandName = getArguments().getString(BRAND);
+
+                int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName());
                 imageView.setImageResource(resId);
 
-
                 Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButton);
-                button.setOnClickListener(new ChooseBrandOnClickListener(brand));
+                button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
+
             }
             return rootView;
+        }
+
+        public String getBrandName() {
+            return brandName;
         }
 
         private class ChooseBrandOnClickListener implements View.OnClickListener{
