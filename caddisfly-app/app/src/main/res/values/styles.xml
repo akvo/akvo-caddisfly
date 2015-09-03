@@ -1,17 +1,17 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
@@ -29,13 +29,12 @@
     <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowShowWallpaper">false</item>
     </style>
 
-    <style name="Button" parent="@android:style/Widget.Button">
-        <item name="colorButtonNormal">@color/button_orange</item>
-        <item name="android:colorBackground">@color/button_orange</item>
-        <item name="android:background">@drawable/start_button</item>
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
@@ -45,7 +44,22 @@
         <item name="android:paddingStart">10dp</item>
         <item name="android:minWidth">200dp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:minHeight">50dp</item>
+        <item name="android:minHeight">70dp</item>
+    </style>
+
+    <style name="Button.Green">
+        <item name="colorButtonNormal">#009900</item>
+        <item name="colorControlHighlight">#027602</item>
+    </style>
+
+    <style name="Button.Orange">
+        <item name="colorButtonNormal">#ef9f28</item>
+        <item name="colorControlHighlight">#cc851b</item>
+    </style>
+
+    <style name="Button.Blue">
+        <item name="colorButtonNormal">#ff16867d</item>
+        <item name="colorControlHighlight">#095f58</item>
     </style>
 
     <style name="width_match_parent_max_tablet">

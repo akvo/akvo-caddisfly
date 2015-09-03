@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.helper;
@@ -237,27 +237,6 @@ public final class SwatchHelper {
         //return an average color
         int resultCount = results.size();
         return Color.rgb(red / resultCount, green / resultCount, blue / resultCount);
-    }
-
-    /**
-     * Returns the index of the item that closely matches the given value
-     *
-     * @param results      the list of results
-     * @param commonResult the result to compare with
-     * @return the index of the closest matching value
-     */
-    private static int getClosestMatchIndex(ArrayList<Double> results, double commonResult) {
-        double difference = 9999999;
-        int index = -1;
-
-        for (int i = 0; i < results.size(); i++) {
-            double value = results.get(i);
-            if (value != -1 && Math.abs(commonResult - value) < difference) {
-                difference = Math.abs(commonResult - value);
-                index = i;
-            }
-        }
-        return index;
     }
 
     /**

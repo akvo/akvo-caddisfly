@@ -1,17 +1,17 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,10 +61,9 @@
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/button_orange"
                 android:text="@string/start"
-                tools:ignore="UnusedAttribute" />
+                android:theme="@style/Button.Green" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -115,11 +114,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/button_orange"
             android:text="@string/next"
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:textStyle="bold"
+            android:theme="@style/Button.Green"
             android:visibility="visible"
             tools:ignore="UnusedAttribute" />
 
@@ -166,7 +162,6 @@
 
         <Button
             android:id="@+id/buttonCalibrateHigh"
-            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -176,6 +171,7 @@
             android:textAllCaps="true"
             android:textColor="#fff"
             android:textStyle="bold"
+            android:theme="@style/Button.Green"
             android:visibility="visible"
             tools:ignore="UnusedAttribute" />
 

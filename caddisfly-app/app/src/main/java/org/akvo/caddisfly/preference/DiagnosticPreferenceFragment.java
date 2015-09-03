@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.preference;
@@ -20,7 +20,9 @@ package org.akvo.caddisfly.preference;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -32,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -91,6 +94,21 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
+        final Preference enableUserModePreference = findPreference("enableUserModeKey");
+        if (enableUserModePreference != null) {
+            enableUserModePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    Toast.makeText(getActivity(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
+
+                    AppPreferences.disableDiagnosticMode(getActivity());
+
+                    getActivity().finish();
+
+                    return true;
+                }
+            });
+        }
+
         final Preference startTestPreference = findPreference("startTest");
         if (startTestPreference != null) {
             startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -114,16 +132,18 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (startTurbidityTestPreference != null) {
             startTurbidityTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    Context context = getActivity();
-                    Hashtable<String, String> namesHashTable = new Hashtable<>(1, 1);
-                    namesHashTable.put("en", "Coliforms");
 
-                    CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(namesHashTable, "COLIF",
-                            "", CaddisflyApp.TestType.TURBIDITY_COLIFORMS, false,
-                            new String[]{}, new String[]{}));
+                    if (isCameraAvailable()) {
+                        Hashtable<String, String> namesHashTable = new Hashtable<>(1, 1);
+                        namesHashTable.put("en", "Coliforms");
 
-                    final Intent intent = new Intent(context, TurbidityStartActivity.class);
-                    startActivity(intent);
+                        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(namesHashTable, "COLIF",
+                                "", CaddisflyApp.TestType.TURBIDITY_COLIFORMS, false,
+                                new String[]{}, new String[]{}));
+
+                        final Intent intent = new Intent(getActivity(), TurbidityStartActivity.class);
+                        startActivity(intent);
+                    }
                     return true;
                 }
             });
@@ -133,10 +153,13 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    CaddisflyApp.getApp().initializeCurrentTest();
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
-                    diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+
+                    if (isCameraAvailable()) {
+                        CaddisflyApp.getApp().initializeCurrentTest();
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+                        diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+                    }
                     return true;
                 }
             });
@@ -187,6 +210,29 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         }
 
         return rootView;
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean isCameraAvailable() {
+        Camera camera = null;
+        try {
+            camera = CaddisflyApp.getCamera(getActivity(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            if (camera != null) {
+                return true;
+            }
+
+        } finally {
+            if (camera != null) {
+                camera.release();
+            }
+        }
+        return false;
     }
 
     @Override

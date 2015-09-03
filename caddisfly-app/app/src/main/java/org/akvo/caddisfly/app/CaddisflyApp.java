@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.app;
@@ -62,9 +62,9 @@ public class CaddisflyApp extends Application {
                                    DialogInterface.OnClickListener onClickListener) {
 
         Camera camera = ApiUtil.getCameraInstance();
-        if (camera == null) {
+        if (hasFeatureBackCamera(context, onClickListener) && camera == null) {
             String message = String.format("%s\r\n\r\n%s",
-                    context.getString(R.string.checkDeviceHasCamera),
+                    context.getString(R.string.cannotUseCamera),
                     context.getString(R.string.tryRestarting));
 
             AlertUtil.showError(context, R.string.cameraBusy,
@@ -73,6 +73,18 @@ public class CaddisflyApp extends Application {
         }
 
         return camera;
+    }
+
+    private static boolean hasFeatureBackCamera(Context context,
+                                                DialogInterface.OnClickListener onClickListener) {
+        PackageManager packageManager = context.getPackageManager();
+        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            AlertUtil.showAlert(context, R.string.cameraNotAvailable,
+                    R.string.cameraRequired,
+                    R.string.ok, onClickListener, null);
+            return false;
+        }
+        return true;
     }
 
     /**

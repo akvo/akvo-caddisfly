@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly;
@@ -199,9 +199,7 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        goToMainScreen();
-
-        onView(withId(R.id.buttonDisableDiagnostics)).check(matches(isDisplayed()));
+        Espresso.pressBack();
 
         leaveDiagnosticMode();
 
@@ -293,6 +291,8 @@ public class EspressoTest
 
         goToMainScreen();
 
+        onView(withId(R.id.actionSettings)).perform(click());
+
         leaveDiagnosticMode();
 
         sleep(4000);
@@ -343,6 +343,8 @@ public class EspressoTest
         sleep(2000);
 
         goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
 
         leaveDiagnosticMode();
 
@@ -595,9 +597,9 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        Espresso.pressBack();
-
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
+
+        goToMainScreen();
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -749,9 +751,9 @@ public class EspressoTest
 
         Espresso.pressBack();
 
-        Espresso.pressBack();
-
         onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
+
+        goToMainScreen();
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -816,9 +818,8 @@ public class EspressoTest
     }
 
     private void leaveDiagnosticMode() {
-        onView(withId(R.id.buttonDisableDiagnostics)).perform(click());
 
-        onView(withId(R.id.buttonDisableDiagnostics)).check(matches(not(isDisplayed())));
+        onView(withText(R.string.enableUserMode)).perform(click());
 
     }
 
@@ -893,6 +894,8 @@ public class EspressoTest
 
         goToMainScreen();
 
+        onView(withId(R.id.actionSettings)).perform(click());
+
         leaveDiagnosticMode();
 
         onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
@@ -958,6 +961,8 @@ public class EspressoTest
         sleep(2000);
 
         goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
 
         leaveDiagnosticMode();
 
