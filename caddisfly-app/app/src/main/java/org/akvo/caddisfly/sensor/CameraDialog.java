@@ -1,4 +1,4 @@
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
+package org.akvo.caddisfly.sensor;
 
 import android.app.DialogFragment;
 

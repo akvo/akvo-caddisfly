@@ -29,9 +29,9 @@ import java.util.Iterator;
 /**
  * Utility functions to parse a text config json text
  */
-public final class ConfigHelper {
+public final class TestConfigHelper {
 
-    private ConfigHelper() {
+    private TestConfigHelper() {
     }
 
     /**

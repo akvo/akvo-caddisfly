@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
-public class LiquidTestConfig {
+public class ColorimetryLiquidConfig {
 
     /**
      * Width and height of cropped image

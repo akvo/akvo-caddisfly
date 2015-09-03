@@ -24,8 +24,8 @@ import android.hardware.Camera;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.ConfigHelper;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -184,7 +184,7 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        tests = ConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+        tests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
@@ -200,7 +200,7 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfiguration(String testCode) {
 
-        mCurrentTestInfo = ConfigHelper.loadTestConfigurationByCode(
+        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(
                 FileHelper.getConfigJson(), testCode.toUpperCase());
 
         if (mCurrentTestInfo != null) {

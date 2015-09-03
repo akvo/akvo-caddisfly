@@ -18,10 +18,9 @@ import android.view.WindowManager;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.Camera2DialogFragment;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialog;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
+import org.akvo.caddisfly.sensor.Camera2DialogFragment;
+import org.akvo.caddisfly.sensor.CameraDialog;
+import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -33,9 +32,7 @@ import java.util.Locale;
 
 public class TurbidityActivity extends Activity {
 
-    private static final int REQUEST_CODE = 1020;
-    private static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
-
+    public static final int DELAY_INITIAL = 6000;
     private CameraDialog mCameraDialog;
     private SoundPoolPlayer sound;
     private PowerManager.WakeLock wakeLock;
@@ -92,10 +89,10 @@ public class TurbidityActivity extends Activity {
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Intent intent = new Intent(this, TurbidityStartReceiver.class);
-            intent.setAction(ACTION_ALARM_RECEIVER);
+            intent.setAction(TurbidityConfig.ACTION_ALARM_RECEIVER);
             intent.putExtra("startDateTime", startDate);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                    TurbidityConfig.INTENT_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -122,10 +119,10 @@ public class TurbidityActivity extends Activity {
                             .add(R.id.layoutContainer, mCameraDialog)
                             .commitAllowingStateLoss();
 
-                    mCameraDialog.takePictures(1, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
+                    mCameraDialog.takePictures(1, DELAY_INITIAL);
                 }
             }
-        }, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
+        }, DELAY_INITIAL);
     }
 
     /**

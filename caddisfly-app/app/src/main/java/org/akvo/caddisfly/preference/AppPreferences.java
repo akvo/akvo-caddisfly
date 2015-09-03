@@ -3,7 +3,7 @@ package org.akvo.caddisfly.preference;
 import android.content.Context;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -28,9 +28,9 @@ public class AppPreferences {
         int samplingTimes;
         if (isDiagnosticMode(context)) {
             samplingTimes = Integer.parseInt(PreferencesUtil.getString(context,
-                    R.string.samplingsTimeKey, String.valueOf(LiquidTestConfig.SAMPLING_COUNT_DEFAULT)));
+                    R.string.samplingsTimeKey, String.valueOf(ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
-            samplingTimes = LiquidTestConfig.SAMPLING_COUNT_DEFAULT;
+            samplingTimes = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
         }
         //Add 1 because first sample is always discarded during analysis
         return samplingTimes + 1;

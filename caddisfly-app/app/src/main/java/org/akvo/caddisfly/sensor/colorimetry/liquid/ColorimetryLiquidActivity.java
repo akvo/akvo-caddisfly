@@ -55,6 +55,9 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.Camera2DialogFragment;
+import org.akvo.caddisfly.sensor.CameraDialog;
+import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -413,7 +416,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void getAnalyzedResult(Bitmap bitmap) {
 
         //Extract the color from the photo which will be used for comparison
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -497,7 +500,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     public void onPictureTaken(byte[] bytes, boolean completed) {
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {
@@ -528,7 +531,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         try {
                             mCameraFragment.show(ft, "cameraDialog");
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(getBaseContext()),
-                                    LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
+                                    ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
                             e.printStackTrace();
                             finish();
@@ -536,7 +539,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     }
                 };
 
-                delayHandler.postDelayed(delayRunnable, LiquidTestConfig.DELAY_BETWEEN_SAMPLING);
+                delayHandler.postDelayed(delayRunnable, ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
 
             }
         }).execute();

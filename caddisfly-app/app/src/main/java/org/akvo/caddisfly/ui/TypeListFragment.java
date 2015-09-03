@@ -22,8 +22,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.helper.ConfigHelper;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class TypeListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTests = ConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+        mTests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
 
         //Only items that require calibration to be displayed in the list
         for (int i = mTests.size() - 1; i >= 0; i--) {

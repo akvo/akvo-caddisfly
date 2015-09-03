@@ -83,7 +83,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         }
 
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(mExtractBitmap,
-                LiquidTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         if (currentTestInfo != null) {
             ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,

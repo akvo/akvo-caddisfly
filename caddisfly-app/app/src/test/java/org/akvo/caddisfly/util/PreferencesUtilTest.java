@@ -18,14 +18,14 @@ package org.akvo.caddisfly.util;
 
 import junit.framework.TestCase;
 
-import org.akvo.caddisfly.helper.ConfigHelper;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 
 @SuppressWarnings({"unused", "EmptyMethod"})
 public class PreferencesUtilTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        ClassUtil.assertUtilityClassWellDefined(ConfigHelper.class);
+        ClassUtil.assertUtilityClassWellDefined(TestConfigHelper.class);
     }
 
     public void testGetBoolean() throws Exception {

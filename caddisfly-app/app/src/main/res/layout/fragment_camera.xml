@@ -20,7 +20,7 @@
     android:layout_height="fill_parent"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CameraDialogFragment">
+    tools:context="org.akvo.caddisfly.sensor.CameraDialogFragment">
 
     <FrameLayout
         android:id="@+id/layoutCameraPreview"

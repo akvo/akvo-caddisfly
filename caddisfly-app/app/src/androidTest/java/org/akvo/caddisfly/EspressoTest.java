@@ -48,7 +48,7 @@ import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtil;
@@ -844,7 +844,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(16000 + (LiquidTestConfig.DELAY_BETWEEN_SAMPLING + 5000) * LiquidTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         //onView(withId(R.id.okButton)).perform(click());
 
@@ -909,7 +909,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(16000 + (LiquidTestConfig.DELAY_BETWEEN_SAMPLING + 5000) * LiquidTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();
@@ -981,7 +981,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        sleep(16000 + (LiquidTestConfig.DELAY_BETWEEN_SAMPLING + 5000) * LiquidTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1005,7 +1005,7 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
-        sleep(16000 + (LiquidTestConfig.DELAY_BETWEEN_SAMPLING + 5000) * LiquidTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 5)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1032,7 +1032,7 @@ public class EspressoTest
         //Test Progress Screen
         takeScreenshot();
 
-        sleep(16000 + (LiquidTestConfig.DELAY_BETWEEN_SAMPLING + 5000) * LiquidTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("10" + dfs.getDecimalSeparator() + "00")).check(matches(isCompletelyDisplayed()));

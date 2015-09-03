@@ -28,8 +28,6 @@ import java.util.Locale;
 
 public class TurbidityStartActivity extends AppCompatActivity {
 
-    private static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
-    private static final int REQUEST_CODE = 1020;
     private boolean mAlarmStarted;
     private Button buttonStartTimer;
     private TextView textStatus;
@@ -153,10 +151,10 @@ public class TurbidityStartActivity extends AppCompatActivity {
 
     private PendingIntent getPendingIntent(int flag) {
         Intent intent = new Intent(this, TurbidityStartReceiver.class);
-        intent.setAction(ACTION_ALARM_RECEIVER);
+        intent.setAction(TurbidityConfig.ACTION_ALARM_RECEIVER);
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         intent.putExtra("startDateTime", date);
-        return PendingIntent.getBroadcast(this, REQUEST_CODE, intent, flag);
+        return PendingIntent.getBroadcast(this, TurbidityConfig.INTENT_REQUEST_CODE, intent, flag);
     }
 
     private boolean isAlarmRunning() {

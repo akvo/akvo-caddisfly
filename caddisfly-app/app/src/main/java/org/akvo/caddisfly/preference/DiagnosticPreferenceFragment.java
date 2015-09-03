@@ -37,8 +37,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTestConfig;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
@@ -76,8 +76,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > LiquidTestConfig.SAMPLING_COUNT_DEFAULT) {
-                        newValue = LiquidTestConfig.SAMPLING_COUNT_DEFAULT;
+                    if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
+                        newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                     }
 
                     if (Integer.parseInt(String.valueOf(newValue)) < 1) {

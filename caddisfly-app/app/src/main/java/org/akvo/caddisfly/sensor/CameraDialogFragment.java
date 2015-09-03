@@ -14,7 +14,7 @@
  *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
+package org.akvo.caddisfly.sensor;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
 import java.io.IOException;
@@ -127,8 +128,23 @@ public class CameraDialogFragment extends CameraDialog {
     @Override
     public void onStart() {
         super.onStart();
-        mPreview.setCamera(mCamera);
-        mPreview.startCameraPreview();
+        if (mCamera != null) {
+            mPreview.setCamera(mCamera);
+            mPreview.startCameraPreview();
+        } else {
+            String message = String.format("%s\r\n\r\n%s",
+                    getString(R.string.checkDeviceHasCamera),
+                    getString(R.string.tryRestarting));
+
+            AlertUtil.showError(getActivity(), R.string.cameraBusy,
+                    message, null, R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            dismiss();
+                        }
+                    }, null);
+        }
     }
 
     @Override
@@ -175,6 +191,7 @@ public class CameraDialogFragment extends CameraDialog {
     private boolean safeCameraOpenInView(View view) {
         boolean opened;
         releaseCameraAndPreview();
+
         mCamera = ApiUtil.getCameraInstance();
         opened = (mCamera != null);
 
