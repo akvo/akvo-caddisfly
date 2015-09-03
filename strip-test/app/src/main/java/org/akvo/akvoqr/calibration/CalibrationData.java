@@ -20,14 +20,14 @@ public class CalibrationData {
     public Double patchSize;
     public Double hsize;
     public Double vsize;
-    public Map<Integer,Location> locations;
-    public Map<Integer,CalValue> calValues;
+    public Map<String,Location> locations;
+    public Map<String,CalValue> calValues;
     public List<WhiteLine> whiteLines;
     public Double[] stripArea;
 
     public CalibrationData(){
-        this.locations = new HashMap<Integer,Location>();
-        this.calValues = new HashMap<Integer,CalValue>();
+        this.locations = new HashMap<String,Location>();
+        this.calValues = new HashMap<String,CalValue>();
         this.whiteLines = new ArrayList<WhiteLine>();
         this.stripArea = new Double[4];
     }
@@ -35,12 +35,10 @@ public class CalibrationData {
     public class Location {
         public Double x;
         public Double y;
-        public Boolean grayPatch;
 
-        public Location(Double x, Double y, Boolean grayPatch){
+        public Location(Double x, Double y){
             this.x = x;
             this.y = y;
-            this.grayPatch = grayPatch;
         }
     }
 
@@ -48,11 +46,13 @@ public class CalibrationData {
         public int R;
         public int G;
         public int B;
+        public Boolean grayPatch;
 
-        public CalValue(int R, int G, int B){
+        public CalValue(int R, int G, int B, Boolean grayPatch){
             this.R = R;
             this.G = G;
             this.B = B;
+            this.grayPatch = grayPatch;
         }
     }
 
@@ -71,14 +71,14 @@ public class CalibrationData {
         }
     }
 
-    public void addLocation(Integer i, Double x, Double y, Boolean grayPatch){
-        Location loc = new Location(x,y,grayPatch);
-        this.locations.put(i,loc);
+    public void addLocation(String label, Double x, Double y){
+        Location loc = new Location(x,y);
+        this.locations.put(label,loc);
     }
 
-    public void addCal(Integer i, int R, int G, int B){
-        CalValue calVal = new CalValue(R,G,B);
-        this.calValues.put(i,calVal);
+    public void addCal(String label, int R, int G, int B, Boolean grayPatch){
+        CalValue calVal = new CalValue(R,G,B,grayPatch);
+        this.calValues.put(label,calVal);
     }
 
     public void addWhiteLine(Double x1, Double y1, Double x2, Double y2, Double width){

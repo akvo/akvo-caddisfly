@@ -250,7 +250,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                }
 
                 if (testCalib) {
-
+                    Imgproc.cvtColor(calMat, calMat, Imgproc.COLOR_BGR2RGBA);
                     mats = new ArrayList<>();
                     mats.add(calMat.clone());
 

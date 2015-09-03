@@ -47,14 +47,14 @@ public class CalibrationCard{
             JSONArray locJSON = calDataJSON.getJSONArray("locations");
             for(int i=0;i < locJSON.length();i++){
                 JSONObject loc = locJSON.getJSONObject(i);
-                calData.addLocation(loc.getInt("n"),loc.getDouble("x"),loc.getDouble("y"),loc.getBoolean("gray"));
+                calData.addLocation(loc.getString("l"),loc.getDouble("x"),loc.getDouble("y"));
             }
 
             // colours
             JSONArray colJSON = calDataJSON.getJSONArray("calValues");
             for(int i=0;i < colJSON.length();i++){
                 JSONObject cal = colJSON.getJSONObject(i);
-                calData.addCal(cal.getInt("n"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"));
+                calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"), cal.getBoolean("gray"));
             }
 
             // white lines
@@ -87,7 +87,6 @@ public class CalibrationCard{
         if (val > max) {
             return max;
         }
-
         return val < min ? min : val;
     }
 
@@ -220,12 +219,15 @@ public class CalibrationCard{
     private Mat create1DLUT(double[] coeffB, double[] coeffG, double[] coeffR) {
         Mat lutMat = new Mat(1, 256, CvType.CV_8UC3);
 
+        // create storage area for lut, and put it in an array
         int size = (int)(lutMat.total() * lutMat.channels());
         byte[] temp = new byte[size];
         lutMat.get(0, 0, temp);
+
         int B;
         int G;
         int R;
+
         for(int i = 0; i < 256; ++i){
             double detB = coeffB[1]*coeffB[1] - 4.0 * coeffB[2] * (coeffB[0]-i);
             double detG = coeffG[1]*coeffG[1] - 4.0 * coeffG[2] * (coeffG[0]-i);
@@ -263,22 +265,53 @@ public class CalibrationCard{
         return lutMat;
     }
 
+    private Mat create1DLUT2(double[] coeffB, double[] coeffG, double[] coeffR) {
+        Mat lutMat = new Mat(1, 256, CvType.CV_8UC3);
+
+        // create storage area for lut, and put it in an array
+        int size = (int)(lutMat.total() * lutMat.channels());
+        byte[] temp = new byte[size];
+        lutMat.get(0, 0, temp);
+
+        int B;
+        int G;
+        int R;
+        int isq;
+        for(int i = 0; i < 256; ++i){
+            isq = i * i;
+            B = (int) Math.round(coeffB[2] * isq + coeffB[1] * i + coeffB[0]);
+            G = (int) Math.round(coeffG[2] * isq + coeffG[1] * i + coeffG[0]);
+            R = (int) Math.round(coeffG[2] * isq + coeffR[1] * i + coeffR[0]);
+
+            // cap values
+            B = capValue(B,0,255);
+            G = capValue(G,0,255);
+            R = capValue(R,0,255);
+
+            // put value in lut
+            temp[3 * i] = (byte) B;
+            temp[3 * i + 1] = (byte) G;
+            temp[3 * i + 2] = (byte) R;
+        }
+        lutMat.put(0, 0, temp);
+        return lutMat;
+    }
+
     private Mat do1DLUTCorrection(Mat imgMat, CalibrationData calData) {
-        // System.out.println("*** 1D-LUT - starting 1D LUT");
         final WeightedObservedPoints obsB = new WeightedObservedPoints();
         final WeightedObservedPoints obsG = new WeightedObservedPoints();
         final WeightedObservedPoints obsR = new WeightedObservedPoints();
 
         // iterate over all patches
-        for (int no : calData.locations.keySet()){
-            CalibrationData.Location loc = calData.locations.get(no);
-            if (loc.grayPatch){
+        for (String label : calData.calValues.keySet()){
+            CalibrationData.CalValue cal = calData.calValues.get(label);
+            CalibrationData.Location loc = calData.locations.get(label);
+            if (cal.grayPatch){
                 //include this point
                 float[] BGRcol = measurePatch(imgMat,loc.x,loc.y,calData); // measure patch colour
-
-                obsB.add(calData.calValues.get(no).B, BGRcol[0]);
-                obsG.add(calData.calValues.get(no).G, BGRcol[1]);
-                obsR.add(calData.calValues.get(no).R, BGRcol[2]);
+                obsB.add(BGRcol[0],cal.B);
+                obsG.add(BGRcol[1],cal.G);
+                obsR.add(BGRcol[2],cal.R);
             }
         }
         // Instantiate a second-degree polynomial fitter.
@@ -291,7 +324,8 @@ public class CalibrationCard{
         final double[] coeffR = fitter.fit(obsR.toList());
 
         // create lookup table
-        Mat lut = create1DLUT(coeffB, coeffG, coeffR);
+//        Mat lut = create1DLUT(coeffB, coeffG, coeffR);
+        Mat lut = create1DLUT2(coeffB, coeffG, coeffR);
         Mat imgcorr = imgMat.clone();
 
         Core.LUT(imgMat, lut, imgcorr);
@@ -299,22 +333,23 @@ public class CalibrationCard{
     }
 
     private Mat do3DLUTCorrection(Mat imgMat, CalibrationData calData) {
-        // System.out.println("*** 3D-LUT - starting 3D LUT");
         int total = calData.locations.keySet().size();
         RealMatrix coef = new Array2DRowRealMatrix(total,3);
         RealMatrix cal = new Array2DRowRealMatrix(total,3);
         int index = 0;
 
-        for (int no : calData.locations.keySet()){
-            CalibrationData.Location loc = calData.locations.get(no);
+        for (String label : calData.calValues.keySet()){
+            CalibrationData.CalValue calv = calData.calValues.get(label);
+            CalibrationData.Location loc = calData.locations.get(label);
             float[] BGRcol = measurePatch(imgMat,loc.x,loc.y,calData); // measure patch colour
 
             coef.setEntry(index,0,BGRcol[0]);
             coef.setEntry(index,1,BGRcol[1]);
             coef.setEntry(index,2,BGRcol[2]);
-            cal.setEntry(index,0,calData.calValues.get(no).B);
-            cal.setEntry(index,1,calData.calValues.get(no).G);
-            cal.setEntry(index,2,calData.calValues.get(no).R);
+
+            cal.setEntry(index,0,calv.B);
+            cal.setEntry(index,1,calv.G);
+            cal.setEntry(index,2,calv.R);
             index++;
         }
         DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
@@ -354,7 +389,7 @@ public class CalibrationCard{
             C_R[i] = c_r * i;
         }
 
-        //use the solution to correct the patch
+        //use the solution to correct the image
         int Btemp, Gtemp, Rtemp, Bnew, Gnew, Rnew;
         int ii3;
         byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
@@ -366,9 +401,9 @@ public class CalibrationCard{
                 Gtemp = temp[ii3 + 1] & 0xFF;
                 Rtemp = temp[ii3 + 2] & 0xFF;
 
-                Bnew = (int) Math.round(C_B[Btemp] + B_B[Gtemp] + A_B[Rtemp]);
-                Gnew = (int) Math.round(C_G[Btemp] + B_G[Gtemp] + A_G[Rtemp]);
-                Rnew = (int) Math.round(C_R[Btemp] + B_R[Gtemp] + A_R[Rtemp]);
+                Bnew = (int) Math.round(A_B[Btemp] + B_B[Gtemp] + C_B[Rtemp]);
+                Gnew = (int) Math.round(A_G[Btemp] + B_G[Gtemp] + C_G[Rtemp]);
+                Rnew = (int) Math.round(A_R[Btemp] + B_R[Gtemp] + C_R[Rtemp]);
 
                 // cap values
                 Bnew = capValue(Bnew,0,255);
@@ -387,27 +422,25 @@ public class CalibrationCard{
         return imgMat;
     }
 
-    // TODO fix order of R,G,B, by fixing the 3D lut order
     private void addPatch(Mat imgMat, Double x, Double y, CalibrationData.CalValue calValue,CalibrationData calData) {
         int xp = (int) Math.round(x * calData.hfac);
         int yp = (int) Math.round(y * calData.vfac);
-        int dp = (int) Math.round(calData.patchSize * calData.hfac * 0.125);
+        int dp = (int) Math.round(calData.patchSize * calData.hfac * 0.150);
         for (int i = -dp; i <= dp; i++){
             for (int ii = -dp; ii <= dp; ii++){
                 byte[] col = new byte[3];
-                // accidentaly puts RGB in right order for move to bitmap
-                col[0] = (byte) calValue.R;
+                col[0] = (byte) calValue.B;
                 col[1] = (byte) calValue.G;
-                col[2] = (byte) calValue.B;
+                col[2] = (byte) calValue.R;
                 imgMat.put(yp + i, xp + ii,col);
             }
         }
     }
 
     private void addCalColours(Mat imgMat, CalibrationData calData) {
-        for (int no : calData.locations.keySet()){
-            CalibrationData.Location loc = calData.locations.get(no);
-            addPatch(imgMat,loc.x,loc.y,calData.calValues.get(no),calData);
+        for (String label : calData.locations.keySet()){
+            CalibrationData.Location loc = calData.locations.get(label);
+            addPatch(imgMat,loc.x,loc.y,calData.calValues.get(label),calData);
         }
     }
 
