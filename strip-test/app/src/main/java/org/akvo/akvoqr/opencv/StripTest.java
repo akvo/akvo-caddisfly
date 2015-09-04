@@ -23,15 +23,17 @@ import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by linda on 8/19/15.
  */
-public class StripTest {
+public class StripTest{
 
 //    public enum brand{
 //        hach883738 };
@@ -53,13 +55,23 @@ public class StripTest {
         return stripObjects;
     }
 
+    public JSONArray getStripsJson() {
+        return stripsJson;
+    }
+
+    public Set<String> getAllBrands()
+    {
+        return stripObjects.keySet();
+    }
+
     public Brand getBrand(String brand)
     {
         return new Brand(brand);
     }
 
-    public class Brand
+    public class Brand  implements Serializable
     {
+        private String name;
         private double stripLenght;
         private double stripHeight;
         private List<String> patchDescList = new ArrayList<>();
@@ -73,18 +85,22 @@ public class StripTest {
                 try {
                     this.stripLenght = strip.getDouble("length");
                     this.stripHeight = strip.getDouble("height");
+                    this.name = strip.getString("name");
                     JSONArray ppmVals = strip.getJSONArray("ppmVals");
                     JSONArray patchDesc = strip.getJSONArray("patchDesc");
                     for(int i=0;i<patchDesc.length();i++)
                     {
                         patchDescList.add(patchDesc.getString(i));
                     }
-                    for (int i = 0; i < ppmVals.length(); i++) {
-                        JSONArray ppms = ppmVals.getJSONArray(i);
-                        if (patchDesc.get(i) != null)
-                            ppmValues.put(patchDesc.getString(i), ppms);
-                        else
-                            ppmValues.put("no-name", ppms);
+                    if(patchDesc.length()== ppmVals.length()) {
+
+                        for (int i = 0; i < ppmVals.length(); i++) {
+                            JSONArray ppms = ppmVals.getJSONArray(i);
+                            if (patchDesc.get(i) != null)
+                                ppmValues.put(patchDesc.getString(i), ppms);
+                            else
+                                ppmValues.put("no-name", ppms);
+                        }
                     }
                     JSONArray patchPos = strip.getJSONArray("patchPos");
                     JSONArray patchWidth = strip.getJSONArray("patchWidth");
@@ -116,6 +132,10 @@ public class StripTest {
 
         public Map<String, JSONArray> getPpmValues() {
             return ppmValues;
+        }
+
+        public String getName() {
+            return name;
         }
 
         public class Patch {
