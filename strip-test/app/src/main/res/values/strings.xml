@@ -5,5 +5,7 @@
     <string name="title_activity_result">Results</string>
     <string name="calibrating">Calibrating</string>
     <string name="please_wait">Please wait...</string>
+    <string name="save">Save</string>
+    <string name="redo_test">Redo Test</string>
 
 </resources>

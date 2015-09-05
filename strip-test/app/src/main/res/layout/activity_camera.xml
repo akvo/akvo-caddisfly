@@ -11,6 +11,11 @@
         android:layout_weight="1"
         />
 
+    <org.akvo.akvoqr.ui.ProgressIndicatorView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ppm_circle_area"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/activity_cameraProgressIndicatorView"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

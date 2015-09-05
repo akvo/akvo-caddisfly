@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.opencv.core.Mat;
 
@@ -34,6 +35,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private Intent intent;
     private android.os.Handler handler;
     private TextView messageView;
+    private ProgressIndicatorView progressIndicatorView;
     private boolean testing = false;
     private String brand;
 
@@ -50,6 +52,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         handler = new Handler(Looper.getMainLooper());
 
         messageView = (TextView) findViewById(R.id.camera_preview_messageView);
+        progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
     }
 
     private void init()
@@ -212,7 +215,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void showProgress(final int which) {
 
-        if(which == 3)
+
+        if(which == 0)
         {
             Runnable showMessage = new Runnable() {
                 @Override
@@ -229,6 +233,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                 @Override
                 public void run() {
 
+                    progressIndicatorView.setStepsTaken(which);
+
                     if(messageView!=null)
                         messageView.setText("");
 
@@ -236,19 +242,19 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                         progress = new ProgressDialog(CameraActivity.this);
                         switch (which) {
                             case 0:
-                                progress.setTitle(getString(R.string.calibrating));
-                                break;
-                            case 1:
-                                progress.setTitle("Detecting strip");
-                                break;
-                            case 2:
-                                progress.setTitle("Making bitmap");
-                                break;
-                            case 3:
                                 progress.setTitle("Looking for finder patterns");
                                 break;
+                            case 1:
+                                progress.setTitle(getString(R.string.calibrating));
+                                break;
+                            case 2:
+                                progress.setTitle("Detecting strip");
+                                break;
+                            case 3:
+                                progress.setTitle("Making bitmap");
+                                break;
                             default:
-                                progress.setTitle("Busy doing something");
+                                progress.setTitle("Finished");
                         }
                         progress.setMessage(getString(R.string.please_wait));
                         progress.show();

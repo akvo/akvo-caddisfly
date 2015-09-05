@@ -11,14 +11,14 @@
         android:background="@drawable/background_white_black_line_bottom"
         android:layout_marginBottom="@dimen/activity_vertical_margin">
         <org.akvo.akvoqr.ui.CircleView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/ppm_circle_area"
+            android:layout_height="@dimen/ppm_circle_area"
             android:id="@+id/result_ppm_layoutCircleView"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:id="@+id/result_ppm_layoutPPMtextView"
             />
     </LinearLayout>

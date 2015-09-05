@@ -171,7 +171,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //TODO CHECK SHADOWS
 
-            listener.showProgress(3);
+            listener.showProgress(0);
             findPossibleCenters(data);
 
             if (possibleCenters != null && possibleCenters.size() > 3) {
@@ -224,7 +224,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
 
                 //find calibration patches
-                listener.showProgress(0);
+                listener.showProgress(1);
                 Mat calMat = listener.getCalibratedImage(warp_dst);
                 listener.dismissProgress();
 
@@ -307,12 +307,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     StripTest stripTestBrand = StripTest.getInstance();
                     StripTest.Brand brand = stripTestBrand.getBrand(listener.getBrand());
 
-                    listener.showProgress(1);
+                    listener.showProgress(2);
                     Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                     listener.dismissProgress();
 
                     if (strip != null) {
-                        listener.showProgress(2);
+                        listener.showProgress(3);
 
                         mats = new ArrayList<>();
 //                        if (!orig.empty()) {
@@ -337,6 +337,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         mats.add(striparea);
 
                     }
+                    listener.showProgress(4);
+                    listener.dismissProgress();
 
                     allOK = true;
 
