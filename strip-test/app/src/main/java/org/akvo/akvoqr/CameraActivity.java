@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.util.Constant;
 import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
@@ -41,9 +42,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        if(getIntent().getStringExtra("brand")!=null)
+        if(getIntent().getStringExtra(Constant.BRAND)!=null)
         {
-            this.brand = getIntent().getStringExtra("brand");
+            this.brand = getIntent().getStringExtra(Constant.BRAND);
         }
         intent = new Intent(this, ResultActivity.class);
         handler = new Handler(Looper.getMainLooper());
@@ -70,6 +71,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
     public void onPause()
     {
+        MyPreviewCallback.firstTime = true;
+        mCamera.setOneShotPreviewCallback(null);
+
         if(mCamera!=null) {
 
             mCamera.stopPreview();
@@ -84,7 +88,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
         Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
-        MyPreviewCallback.firstTime = true;
+
         super.onPause();
 
     }
@@ -92,6 +96,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void onStop()
     {
         Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+
+        super.onPause();
 
         super.onStop();
     }
@@ -139,20 +145,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void sendMats(ArrayList<Mat> mats)
     {
-        if(testing) {
-            TestResult testResult = new TestResult();
-            for(int i = 0; i<mats.size();i++) {
 
-                testResult.setResultBitmap(mats.get(i), i);
-                ResultStripTestActivity.testResults.add(testResult);
-            }
-        }
-        else {
-            intent.putExtra("mats", mats);
-            startActivity(intent);
-        }
+        intent.putExtra(Constant.MAT, mats);
+        intent.putExtra(Constant.BRAND, brand);
+        startActivity(intent);
 
-
+        this.finish();
     }
 
     @Override
@@ -177,41 +175,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    public static final int MAX_ITER = 1;
-    private int iter=0;
-
     @Override
     public void setBitmap(Bitmap bitmap) {
 
-        if(testing)
-        {
-
-            if(iter<MAX_ITER && !isFinishing()) {
-
-                if(iter==0) {
-
-                    ResultStripTestActivity.testResults.clear();
-
-                }
-
-                iter++;
-
-                MyPreviewCallback.firstTime = true;
-                mCamera.setOneShotPreviewCallback(previewCallback);
-
-                return;
-            }
-            else {
-
-                startActivity(new Intent(this, ResultStripTestActivity.class));
-
-                bitmap.recycle();
-
-                finish();
-            }
-        }
-        else
-        {
             double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
             int width = 800;
             int height = (int) Math.round(ratio * width);
@@ -228,13 +194,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
             sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
 
-//            MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coin_flip);
-//            mp.start();
-
             bitmap.recycle();
 
             finish();
-        }
+
     }
 
     @Override
@@ -258,7 +221,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                         messageView.setText("Looking for finder patterns.\nPlease hold camera above striptest.");
                 }
             };
-           handler.post(showMessage);
+            handler.post(showMessage);
         }
         else {
             Runnable showProgress = new Runnable() {

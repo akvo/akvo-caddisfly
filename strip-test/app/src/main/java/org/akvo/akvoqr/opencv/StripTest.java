@@ -1,27 +1,9 @@
 package org.akvo.akvoqr.opencv;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-
-import org.akvo.akvoqr.App;
 import org.akvo.akvoqr.AssetsManager;
-import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.color.ColorDetected;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opencv.android.Utils;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.RotatedRect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +17,7 @@ import java.util.Set;
  */
 public class StripTest{
 
-//    public enum brand{
+    //    public enum brand{
 //        hach883738 };
     public static StripTest instance;
     private static JSONArray stripsJson;
@@ -74,42 +56,34 @@ public class StripTest{
         private String name;
         private double stripLenght;
         private double stripHeight;
-        private List<String> patchDescList = new ArrayList<>();
         private List<Patch> patches = new ArrayList<>();
-        private Map<String, JSONArray> ppmValues = new HashMap<>();
+        private JSONArray instructions;
 
         public Brand(String brand) {
 
             if (stripObjects != null) {
                 JSONObject strip = stripObjects.get(brand);
-                try {
-                    this.stripLenght = strip.getDouble("length");
-                    this.stripHeight = strip.getDouble("height");
-                    this.name = strip.getString("name");
-                    JSONArray ppmVals = strip.getJSONArray("ppmVals");
-                    JSONArray patchDesc = strip.getJSONArray("patchDesc");
-                    for(int i=0;i<patchDesc.length();i++)
-                    {
-                        patchDescList.add(patchDesc.getString(i));
-                    }
-                    if(patchDesc.length()== ppmVals.length()) {
+                if(strip!=null) {
+                    try {
+                        this.stripLenght = strip.getDouble("length");
+                        this.stripHeight = strip.getDouble("height");
+                        this.name = strip.getString("name");
+                        this.instructions = strip.getJSONArray("instructions");
 
-                        for (int i = 0; i < ppmVals.length(); i++) {
-                            JSONArray ppms = ppmVals.getJSONArray(i);
-                            if (patchDesc.get(i) != null)
-                                ppmValues.put(patchDesc.getString(i), ppms);
-                            else
-                                ppmValues.put("no-name", ppms);
+                        JSONArray patchesArr = strip.getJSONArray("patches");
+                        for(int i=0;i<patchesArr.length();i++) {
+                            JSONObject patchObj = patchesArr.getJSONObject(i);
+                            String patchDesc = patchObj.getString("patchDesc");
+                            int patchPos = patchObj.getInt("patchPos");
+                            int patchWidth = patchObj.getInt("patchWidth");
+                            JSONArray ppmVals = patchObj.getJSONArray("ppmVals");
+
+                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, ppmVals));
                         }
-                    }
-                    JSONArray patchPos = strip.getJSONArray("patchPos");
-                    JSONArray patchWidth = strip.getJSONArray("patchWidth");
 
-                    for (int i = 0; i < patchPos.length(); i++) {
-                        patches.add(new Patch(i, patchWidth.getDouble(i), 0, patchPos.getDouble(i)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }
@@ -126,29 +100,49 @@ public class StripTest{
             return stripLenght;
         }
 
-        public List<String> getPatchDescList() {
-            return patchDescList;
-        }
+//        public List<String> getPatchDescList() {
+//            return patchDescList;
+//        }
 
-        public Map<String, JSONArray> getPpmValues() {
-            return ppmValues;
-        }
+//        public Map<String, JSONArray> getPpmValues() {
+//            return ppmValues;
+//        }
 
         public String getName() {
             return name;
         }
 
+        public JSONArray getInstructions() {
+            return instructions;
+        }
+
         public class Patch {
             int order;
+            String desc;
             double width; //mm
             double height;//mm
             double position;//x in mm
+            JSONArray ppmValues;
 
-            public Patch(int order, double width, double height, double position) {
+            public Patch(int order, String desc, double width, double height, double position, JSONArray ppmValues) {
                 this.order = order;
+                this.desc = desc;
                 this.width = width;
                 this.height = height;
                 this.position = position;
+                this.ppmValues = ppmValues;
+            }
+
+            public String getDesc() {
+                return desc;
+            }
+
+            public double getPosition() {
+                return position;
+            }
+
+            public JSONArray getPpmValues() {
+                return ppmValues;
             }
         }
     }
@@ -180,87 +174,5 @@ public class StripTest{
         }
     }
 
-    /* Get the mean Scalars from an image in res/drawable. The image contains color patches
-     * that correspond to ppm values. This is supposed to be a temporary solution, until we find
-     * reliable values for color. It gives the possiblity to test with different color schemes, e.g.
-     * rgb and lab
-     */
-    public ArrayList getPPMColorsFromImage()
-    {
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        MatOfPoint2f mop2f = new MatOfPoint2f();
-        ArrayList<ColorDetected> colors = new ArrayList<>();
 
-        try {
-            Bitmap bitmap = BitmapFactory.decodeResource(App.getMyApplicationContext().getResources(), R.drawable.total_chlorine_cal);
-
-            Mat free_chl = new Mat();
-
-            Utils.bitmapToMat(bitmap, free_chl);
-
-            Imgproc.medianBlur(free_chl, free_chl, 5);
-            Mat gray = new Mat();
-            Imgproc.cvtColor(free_chl, gray, Imgproc.COLOR_RGB2GRAY);
-
-            Imgproc.Canny(gray,gray,40,120);
-            Imgproc.findContours(gray, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
-
-            System.out.println("***strip test chlorine colors: ");
-
-            for (int x = 0; x < contours.size(); x++) {
-
-
-                if(Imgproc.contourArea(contours.get(x))>1) {
-
-                    contours.get(x).convertTo(mop2f, CvType.CV_32FC2);
-                    Imgproc.approxPolyDP(mop2f, mop2f, 30, true);
-                    mop2f.convertTo(contours.get(x), CvType.CV_32S);
-
-                    if (contours.get(x).rows() > 2) {
-                        RotatedRect rotatedRect = Imgproc.minAreaRect(mop2f);
-
-                        Point[] points = new Point[4];
-                        rotatedRect.points(points);
-                        Point tl = new Point(Math.max(0,rotatedRect.center.x - 10), Math.max(0, rotatedRect.center.y - 10));
-                        Point br = new Point(Math.min(free_chl.cols(), rotatedRect.center.x + 10), Math.min(free_chl.rows(), rotatedRect.center.y + 10));
-                        Rect roi = new Rect(tl, br);
-                        Mat submat = free_chl.submat(roi);
-
-                        Scalar mean = Core.mean(submat);
-                        System.out.println("***rgb: ");
-                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
-                        ColorDetected colorDetected = new ColorDetected((int)points[0].x);
-
-                        colorDetected.setRgb(mean);
-
-                        int color = Color.rgb((int) Math.round(mean.val[0]),
-                                (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
-                        colorDetected.setColor(color);
-
-//
-                        Imgproc.cvtColor(submat, submat, Imgproc.COLOR_RGB2Lab);
-                        mean = Core.mean(submat);
-
-                        colorDetected.setLab(mean);
-
-                        System.out.println("***lab: ");
-                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
-
-                        colors.add(colorDetected);
-
-                        Imgproc.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
-
-                      }
-                }
-            }
-
-            return colors;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 }

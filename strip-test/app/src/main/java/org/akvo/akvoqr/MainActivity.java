@@ -8,9 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.akvo.akvoqr.util.Constant;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button buttonCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,19 +21,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Button buttonCamera = (Button) findViewById(R.id.startCameraButton);
+        buttonCamera = (Button) findViewById(R.id.startCameraButton);
         buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                int[] states = v.getDrawableState();
+                for(int i: states)
+                System.out.println("***states: " + i);
+//                v.setFocusable(false);
+//                v.setFocusableInTouchMode(false);
+
+//                v.setPressed(true);
+                v.setActivated(!v.isActivated());
                 Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                String brandName = getIntent().getStringExtra(Constant.BRAND);
+                if(brandName!=null)
+                {
+                    intent.putExtra(Constant.BRAND, brandName);
+                }
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
 
+        Button buttonCancel = (Button) findViewById(R.id.activity_mainButtonCancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.this.finish();
+            }
+        });
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(buttonCamera!=null)
+            buttonCamera.setActivated(false);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

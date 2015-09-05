@@ -1,12 +1,15 @@
 package org.akvo.akvoqr.opencv;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
-import org.akvo.akvoqr.ResultActivity;
-import org.akvo.akvoqr.ResultStripTestActivity;
+import org.akvo.akvoqr.App;
+import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.TestResult;
 import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -16,6 +19,7 @@ import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -41,7 +45,7 @@ public class OpenCVUtils {
         Mat cropped = new Mat();
 
         /// Set the dst image the same type and size as src
-       // Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
+        // Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
         Mat warp_rotate_dst = new Mat(src.rows(), src.cols(), src.type());
         double angle = rotatedRect.angle;
         Size rect_size = rotatedRect.size;
@@ -61,8 +65,8 @@ public class OpenCVUtils {
                     rotatedRect.center.x + (rotatedRect.size.width - brandSize.width)/2,
                     rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/2);
             System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
-            + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
-            + " diff height: " + (rotatedRect.size.height - brandSize.height)/2);
+                    + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
+                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/2);
             Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
         }
         return cropped;
@@ -288,48 +292,25 @@ public class OpenCVUtils {
         return null;
     }
 
-    public static Mat detectStripColorBrandKnown(Mat src, StripTest.Brand brand)
+    public static ColorDetected detectStripColorBrandKnown(Mat submat)
     {
 
-        List<StripTest.Brand.Patch> patches = brand.getPatches();
+        Scalar mean = Core.mean(submat);
 
-        ResultActivity.stripColors.clear();
-        for (int i=0;i<patches.size();i++)
-        {
-            double srcWidth = src.width();
-            double srcHeight = src.height();
-            double ratioW = srcWidth/brand.getStripLenght();
-            double x = patches.get(i).position * ratioW;
-            double y = srcHeight/2;
+        ColorDetected colorDetected = new ColorDetected(0);
+        colorDetected.setRgb(mean);
+        int color = Color.rgb((int)Math.round(mean.val[0]),(int)Math.round(mean.val[1]),
+                (int)Math.round(mean.val[2]));
 
-            System.out.println("***srcHeight: " + srcHeight + " strip height: " + brand.getStripHeight()*ratioW);
-            int minRow =(int)Math.round(Math.max(y - 7, 0));
-            int maxRow = (int)Math.round(Math.min(y + 7, srcHeight));
-            int minCol = (int)Math.round(Math.max(x - 7, 0));
-            int maxCol = (int)Math.round(Math.min(x + 7, srcWidth));
+        colorDetected.setColor(color);
 
-            Mat submat = src.submat(minRow, maxRow,
-                    minCol, maxCol);
-            Scalar mean = Core.mean(submat);
+        Mat lab = new Mat();
+        Imgproc.cvtColor(submat, lab, Imgproc.COLOR_RGB2Lab);
+        mean = Core.mean(lab);
+        colorDetected.setLab(mean);
+        submat.release();
 
-            ColorDetected colorDetected = new ColorDetected((int) Math.round(x));
-            colorDetected.setRgb(mean);
-            int color = Color.rgb((int)Math.round(mean.val[0]),(int)Math.round(mean.val[1]),
-                    (int)Math.round(mean.val[2]));
-
-            colorDetected.setColor(color);
-
-            Mat lab = new Mat();
-            Imgproc.cvtColor(submat, lab, Imgproc.COLOR_RGB2Lab);
-            mean = Core.mean(lab);
-            colorDetected.setLab(mean);
-            ResultActivity.stripColors.add(colorDetected);
-
-            Imgproc.rectangle(src, new Point(minCol, minRow), new Point(maxCol, maxRow), new Scalar(0, 255, 0, 255), 1);
-            submat.release();
-        }
-
-        return src;
+        return colorDetected;
     }
     public static Point getLeft(List<Point> list)
     {
@@ -387,8 +368,6 @@ public class OpenCVUtils {
         MatOfInt matLower = new MatOfInt();
         Mat grayUp = new Mat();
         Mat grayLow = new Mat();
-
-        ResultActivity.stripColors.clear();
 
         Imgproc.cvtColor(strip, labMat, Imgproc.COLOR_RGB2Lab, 0);
         grayUp = labMat.clone();
@@ -639,14 +618,6 @@ public class OpenCVUtils {
             }
         }
 
-        testResult.setNumPatchesFound(numPatchesFound);
-
-//        testResult.setResultBitmap(grayUp, 0);
-//        testResult.setResultBitmap(grayLow, 1);
-        testResult.setResultBitmap(labMat, 2);
-        ResultStripTestActivity.testResults.add(testResult);
-
-
         return strip;
     }
 
@@ -657,7 +628,6 @@ public class OpenCVUtils {
         List<Point> pts = new ArrayList<Point>();
         MatOfPoint2f mMOP2f = new MatOfPoint2f();
 
-        ResultActivity.stripColors.clear();
         Imgproc.cvtColor(strip, edges, Imgproc.COLOR_RGB2Lab, 0);
 
         Imgproc.GaussianBlur(edges, edges, new Size(5, 5), 0);
@@ -775,8 +745,6 @@ public class OpenCVUtils {
             }
         }
 
-
-
         sub = rgb.submat(top , top + (maxY - top), left, left + (maxX-left));
 
         pts.clear();
@@ -794,7 +762,6 @@ public class OpenCVUtils {
         int color = Color.rgb((int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
         ColorDetected colorDetected = new ColorDetected(left);
         colorDetected.setColor(color);
-        ResultActivity.stripColors.add(colorDetected);
 
         return pts;
     }
@@ -962,5 +929,89 @@ public class OpenCVUtils {
             }
 
         }
+    }
+
+    /* Get the mean Scalars from an image in res/drawable. The image contains color patches
+     * that correspond to ppm values. This is supposed to be a temporary solution, until we find
+     * reliable values for color. It gives the possiblity to test with different color schemes, e.g.
+     * rgb and lab
+     */
+    public static ArrayList getPPMColorsFromImage()
+    {
+        List<MatOfPoint> contours = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        MatOfPoint2f mop2f = new MatOfPoint2f();
+        ArrayList<ColorDetected> colors = new ArrayList<>();
+
+        try {
+            Bitmap bitmap = BitmapFactory.decodeResource(App.getMyApplicationContext().getResources(), R.drawable.total_chlorine_cal);
+
+            Mat free_chl = new Mat();
+
+            Utils.bitmapToMat(bitmap, free_chl);
+
+            Imgproc.medianBlur(free_chl, free_chl, 5);
+            Mat gray = new Mat();
+            Imgproc.cvtColor(free_chl, gray, Imgproc.COLOR_RGB2GRAY);
+
+            Imgproc.Canny(gray,gray,40,120);
+            Imgproc.findContours(gray, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+
+            System.out.println("***strip test chlorine colors: ");
+
+            for (int x = 0; x < contours.size(); x++) {
+
+
+                if(Imgproc.contourArea(contours.get(x))>1) {
+
+                    contours.get(x).convertTo(mop2f, CvType.CV_32FC2);
+                    Imgproc.approxPolyDP(mop2f, mop2f, 30, true);
+                    mop2f.convertTo(contours.get(x), CvType.CV_32S);
+
+                    if (contours.get(x).rows() > 2) {
+                        RotatedRect rotatedRect = Imgproc.minAreaRect(mop2f);
+
+                        Point[] points = new Point[4];
+                        rotatedRect.points(points);
+                        Point tl = new Point(Math.max(0,rotatedRect.center.x - 10), Math.max(0, rotatedRect.center.y - 10));
+                        Point br = new Point(Math.min(free_chl.cols(), rotatedRect.center.x + 10), Math.min(free_chl.rows(), rotatedRect.center.y + 10));
+                        Rect roi = new Rect(tl, br);
+                        Mat submat = free_chl.submat(roi);
+
+                        Scalar mean = Core.mean(submat);
+                        System.out.println("***rgb: ");
+                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
+                        ColorDetected colorDetected = new ColorDetected((int)points[0].x);
+
+                        colorDetected.setRgb(mean);
+
+                        int color = Color.rgb((int) Math.round(mean.val[0]),
+                                (int) Math.round(mean.val[1]), (int) Math.round(mean.val[2]));
+                        colorDetected.setColor(color);
+
+//
+                        Imgproc.cvtColor(submat, submat, Imgproc.COLOR_RGB2Lab);
+                        mean = Core.mean(submat);
+
+                        colorDetected.setLab(mean);
+
+                        System.out.println("***lab: ");
+                        System.out.println(Math.round(mean.val[0]) + ", " + Math.round(mean.val[1]) + ", " + Math.round(mean.val[2]));
+
+                        colors.add(colorDetected);
+
+                        Imgproc.rectangle(free_chl, points[0], points[2], new Scalar(0, 255, 0, 255), 1);
+
+                    }
+                }
+            }
+
+            return colors;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

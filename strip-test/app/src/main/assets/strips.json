@@ -4,52 +4,104 @@
       "name": "Chlorine (ppm) and free chlorine (ppm)",
       "code": "strip-CL-101",
       "id": "336",
-      "img": "strip-336.jpg",
+      // "img": "strip-336.jpg",
       "brand": "HACH883738",
       "numPatch": 2,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
-      "patchDesc":["Total Chlorine ppm - end pad","Free Chlorine ppm"],
-      "patchPos":[3.3,17.2],
-      "patchWidth": [5,5],
-      "vals":[[5,10,20,30,50,100],[]],
-      "colours":[[244,244,255],[220,210,200],[]],
-      "ppmVals": [[0,0.5,1,2,4,10],[0,0.5,1,2,4,10]]
+      "patches": [
+        {
+          "patchDesc":"Total Chlorine ppm - end pad",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        },
+        {
+          "patchDesc":"Free Chlorine ppm",
+          "patchPos":17.2,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        }
+      ],
+      "instructions": ["Collect water sample",
+        "Click on Perform Test button",
+        "Move strip back and forward during 30 seconds in water",
+        "Remove excess water",
+        "Click Start button"]
     },
     {
       "name": "PH 4-9",
       "code": "strip-PH-4-9",
       "id": "337",
-      "img": "strip-336.jpg",
+      // "img": "strip-336.jpg",
       "brand": "HACH2745650",
       "numPatch": 1,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
-      "patchDesc":["pH"],
-      "patchPos":[3.3],
-      "patchWidth": [5],
-      "vals":[[5,10,20,30,50,100]],
-      "colours":[[244,244,255],[220,210,200],[]],
-      "ppmVals": [[4,5,6,7,8,9]]
+      "patches": [
+        {
+          "patchDesc":"pH",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        }
+      ],
+      "instructions": ["Move strip back and forward during 30 seconds in water"]
     },
     {
       "name": "5 in 1 Water Quality",
       "code": "strip-5-in-1",
       "id": "338",
-     // "img": "strip-336.jpg",
+      // "img": "strip-336.jpg",
       "brand": "HACH2755250",
       "numPatch": 5,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
       "patchDesc":["total chlorine", "free chlorine", "hardness", "alkalinity", "pH"],
-      "patchPos":[3.3, 17.2, 20, 23, 25],
-      "patchWidth": [5,5,5,5,5],
-      "vals":[[5,10,20,30,50,100],[]],
-      "colours":[[244,244,255],[220,210,200],[]],
-      "ppmVals": [[0,0.5,1,2,4,10],[0,0.5,1,2,4,10],[0,0.5,1,2,4,10],[0,0.5,1,2,4,10],[0,0.5,1,2,4,10]]
+      "patches": [
+        {
+          "patchDesc":"Total Chlorine",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        },
+        {
+          "patchDesc":"Free Chlorine",
+          "patchPos":17.2,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        },
+        {
+          "patchDesc":"hardness",
+          "patchPos":25,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        },
+        {
+          "patchDesc":"alkalinity",
+          "patchPos":40,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        },
+        {
+          "patchDesc":"pH",
+          "patchPos":60,
+          "patchWidth": 5,
+          "colours":[[244,244,255],[220,210,200],[]],
+          "ppmVals": [0,0.5,1,2,4,10]
+        }
+      ],
+      "instructions": ["Move strip back and forward during 30 seconds in water"]
     }
 
   ]

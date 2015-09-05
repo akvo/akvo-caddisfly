@@ -314,23 +314,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     if (strip != null) {
                         listener.showProgress(2);
 
-
-                        Mat detCol = OpenCVUtils.detectStripColorBrandKnown(strip, brand);
-
-
                         mats = new ArrayList<>();
-                        if (!orig.empty()) {
-                            Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2RGBA);
-                            mats.add(orig);
-                        }
-                        mats.add(striparea);
-                        mats.add(detCol);
+//                        if (!orig.empty()) {
+//                            Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2RGBA);
+//                            mats.add(orig);
+//                        }
+                        Imgproc.cvtColor(strip, strip, Imgproc.COLOR_BGR2RGBA);
+                        //mats.add(striparea);
+                        mats.add(strip);
 
                         listener.dismissProgress();
                     } else {
                         mats = new ArrayList<>();
                         mats.add(striparea.clone());
 
+                        //draw a red cross over the image
                         Imgproc.line(striparea, new Point(0, 0), new Point(striparea.cols(),
                                 striparea.rows()), new Scalar(255, 0, 0, 255), 2);
                         Imgproc.line(striparea, new Point(0, striparea.rows()), new Point(striparea.cols(),
