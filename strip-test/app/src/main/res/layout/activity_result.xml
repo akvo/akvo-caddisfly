@@ -7,7 +7,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/activity_resultLinearLayoutBottom">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,18 +22,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/activity_resultLinearLayoutBottom">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"
             android:layout_weight="1"
+            android:id="@+id/activity_resultButtonSave"
             android:background="@color/mediumblue"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/redo_test"
             android:layout_weight="1"
+            android:id="@+id/activity_resultButtonRedo"
             android:background="@android:color/transparent"/>
     </LinearLayout>
 </RelativeLayout>

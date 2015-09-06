@@ -26,13 +26,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                int[] states = v.getDrawableState();
-                for(int i: states)
-                System.out.println("***states: " + i);
-//                v.setFocusable(false);
-//                v.setFocusableInTouchMode(false);
-
-//                v.setPressed(true);
                 v.setActivated(!v.isActivated());
                 Intent intent = new Intent(MainActivity.this, CameraActivity.class);
                 String brandName = getIntent().getStringExtra(Constant.BRAND);

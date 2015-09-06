@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item >
         <shape
             android:shape="oval">
@@ -17,10 +18,15 @@
         <shape
             android:shape="oval">
             <solid
-                android:color="@color/skyblue"/>
+                android:color="@color/mediumblue"/>
             <size
                 android:width="110dp"
                 android:height="110dp"/>
         </shape>
+    </item>
+    <item android:bottom="25dp" android:top="25dp" android:right="25dp" android:left="45dp" >
+        <inset
+            android:drawable="@drawable/arrow_black_right"
+            android:scaleWidth="5%"/>
     </item>
 </layer-list>

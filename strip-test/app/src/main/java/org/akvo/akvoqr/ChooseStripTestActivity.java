@@ -220,7 +220,7 @@ public class ChooseStripTestActivity extends AppCompatActivity implements Action
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), InstructionListActivity.class);
                 intent.putExtra(Constant.BRAND, brand);
                 startActivity(intent);
             }

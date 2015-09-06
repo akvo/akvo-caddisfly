@@ -7,5 +7,8 @@
     <string name="please_wait">Please wait...</string>
     <string name="save">Save</string>
     <string name="redo_test">Redo Test</string>
+    <string name="title_instruction_list">Instructions</string>
+    <string name="title_instruction_detail">Instruction Detail</string>
+    <string name="start">Start</string>
 
 </resources>

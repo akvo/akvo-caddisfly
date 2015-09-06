@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -103,6 +104,21 @@ public class ResultActivity extends AppCompatActivity {
                 ppmValues = patches.get(i).getPpmValues();
                 
                 new ColorDetectedTask().execute(submat);
+
+                Button save = (Button) findViewById(R.id.activity_resultButtonSave);
+                Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
+
+                //TODO onclicklistener for save button
+
+                redo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intentRedo = new Intent(ResultActivity.this, ChooseStripTestActivity.class);
+                        intentRedo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intentRedo);
+                        ResultActivity.this.finish();
+                    }
+                });
 
             }
 
