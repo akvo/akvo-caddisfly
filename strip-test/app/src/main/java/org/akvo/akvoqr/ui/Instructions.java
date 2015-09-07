@@ -25,7 +25,7 @@ public class Instructions {
         addInstructions(new Instruction("2", R.drawable.instruction_light,"Make sure light is good"));
 
         addInstructions(new Instruction("3", R.drawable.instruction_finder_pattern,
-                "Click start button and hold device over test. Make sure all finder patterns are in sight."));
+                "After clicking \'Start\' button hold device over test. Make sure all finder patterns are in sight."));
 
         addInstructions(new Instruction("4", R.raw.futurebeep2,
                 "When you hear a sound, you can move the camera away from the test."));
