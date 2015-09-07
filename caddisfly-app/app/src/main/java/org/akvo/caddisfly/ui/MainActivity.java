@@ -31,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -72,11 +73,37 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setLogo(R.drawable.ic_actionbar_logo);
-            getSupportActionBar().setDisplayUseLogoEnabled(true);
-        }
+        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                        Toast.LENGTH_SHORT).show();
+
+                AppPreferences.disableDiagnosticMode(getBaseContext());
+
+                switchLayoutForDiagnosticOrUserMode();
+
+                changeActionBarStyleBasedOnCurrentMode();
+
+//                PackageManager pm = getPackageManager();
+//                Intent i = new Intent("android.intent.action.MAIN");
+//                i.addCategory("android.intent.category.HOME");
+//                List<ResolveInfo> lst = pm.queryIntentActivities(i, 0);
+//                if (lst != null) {
+//                    for (ResolveInfo resolveInfo : lst) {
+//                        try {
+//                            Intent home = new Intent("android.intent.action.MAIN");
+//                            home.addCategory("android.intent.category.HOME");
+//                            home.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+//                            startActivity(home);
+//                            break;
+//                        } catch (Throwable t) {
+//                            t.printStackTrace();
+//                        }
+//                    }
+//                }
+            }
+        });
 
         upgradeOldFolderPath();
 

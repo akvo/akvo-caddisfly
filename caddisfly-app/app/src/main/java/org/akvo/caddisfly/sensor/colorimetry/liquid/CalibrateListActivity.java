@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
@@ -77,13 +77,7 @@ public class CalibrateListActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.actionSwatches:
                 final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
                 startActivity(intent);
@@ -103,6 +97,9 @@ public class CalibrateListActivity extends BaseActivity
             case R.id.menuSave:
                 saveCalibration();
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -116,6 +113,12 @@ public class CalibrateListActivity extends BaseActivity
         setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName(
                 getResources().getConfiguration().locale.getLanguage()));
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     /**
@@ -134,6 +137,7 @@ public class CalibrateListActivity extends BaseActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, REQUEST_CALIBRATE);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override

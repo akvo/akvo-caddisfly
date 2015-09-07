@@ -37,6 +37,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -701,6 +702,17 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
         releaseResources();
@@ -717,7 +729,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
         releaseResources();
         Intent intent = new Intent(getIntent());
         this.setResult(Activity.RESULT_CANCELED, intent);
-        finish();
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     @Override

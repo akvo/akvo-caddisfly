@@ -13,7 +13,9 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,39 +33,101 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
             android:ellipsize="none"
-            android:gravity="center"
+            android:gravity="start"
             android:singleLine="true"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#3f052e2a"
+            android:textColor="#2a007a8d"
             android:textSize="50sp" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabDisableDiagnostics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:baselineAlignBottom="false"
+            android:src="@android:drawable/ic_menu_revert"
+            app:backgroundTint="@color/red"
+            tools:ignore="RelativeOverlap" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <TextView
-            android:id="@+id/textOpenApp"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:lineSpacingExtra="10dp"
-            android:paddingBottom="50dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="50dp"
-            android:shadowColor="#0d4006"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:text="@string/toConductTestOpenApp"
-            android:textColor="#e3ffffff"
-            android:textSize="18sp" />
-    </RelativeLayout>
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#22003b69"
+            app:cardElevation="1dp"
+            app:contentPadding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Calibration"
+                    android:textColor="#e2e0e0"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="For best results Caddisfly must be calibrated correctly. Press the gear icon above for Settings."
+                    android:textColor="#e2e0e0"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#22003b69"
+            app:cardElevation="1dp"
+            app:contentPadding="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Performing a Test"
+                    android:textColor="#e2e0e0"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="To perform a water quality test, open Akvo FLOW app and fill the appropriate survey."
+                    android:textColor="#e2e0e0"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 </FrameLayout>
 

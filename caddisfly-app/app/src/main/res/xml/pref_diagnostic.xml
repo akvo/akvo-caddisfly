@@ -19,17 +19,14 @@
         android:key="preferenceCategoryDiagnostics"
         android:title="@string/diagnostics">
         <Preference
-            android:key="enableUserModeKey"
-            android:title="@string/enableUserMode" />
-        <Preference
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
         <Preference
             android:key="startTest"
             android:title="Colorimetric Test" />
         <Preference
-            android:key="startTurbidityTest"
-            android:title="Turbidity Test" />
+            android:key="startColiformsTest"
+            android:title="Coliforms Test" />
         <Preference
             android:key="ecSensor"
             android:title="@string/testSensor" />
@@ -65,5 +62,9 @@
             android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
+        <Preference
+            android:key="checkUpdate"
+            android:summary="@string/updateSummary"
+            android:title="@string/updateCheck" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

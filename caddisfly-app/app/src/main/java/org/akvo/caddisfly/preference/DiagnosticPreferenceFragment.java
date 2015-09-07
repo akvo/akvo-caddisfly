@@ -34,10 +34,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
@@ -94,21 +94,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        final Preference enableUserModePreference = findPreference("enableUserModeKey");
-        if (enableUserModePreference != null) {
-            enableUserModePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    Toast.makeText(getActivity(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
-
-                    AppPreferences.disableDiagnosticMode(getActivity());
-
-                    getActivity().finish();
-
-                    return true;
-                }
-            });
-        }
-
         final Preference startTestPreference = findPreference("startTest");
         if (startTestPreference != null) {
             startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -128,7 +113,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        final Preference startTurbidityTestPreference = findPreference("startTurbidityTest");
+        final Preference startTurbidityTestPreference = findPreference("startColiformsTest");
         if (startTurbidityTestPreference != null) {
             startTurbidityTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
@@ -205,6 +190,17 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     distancePreference.setText(String.valueOf(newValue));
                     distancePreference.setSummary(String.valueOf(newValue));
                     return false;
+                }
+            });
+        }
+
+        Preference updatePreference = findPreference("checkUpdate");
+        if (updatePreference != null) {
+            updatePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false);
+                    updateCheckTask.execute();
+                    return true;
                 }
             });
         }

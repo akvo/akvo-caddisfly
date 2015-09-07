@@ -13,6 +13,7 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
+
 <ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewAnimator"
@@ -32,6 +33,7 @@
             android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:textAllCaps="false"
@@ -43,41 +45,27 @@
         <Button
             android:id="@+id/buttonNoDilution"
             style="@style/Button"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginBottom="15dp"
             android:minHeight="80dp"
             android:minWidth="300dp"
-            android:paddingBottom="30dp"
-            android:paddingTop="30dp"
             android:text="@string/noDilution"
             android:theme="@style/Button.Green" />
 
         <Button
             android:id="@+id/buttonDilution1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            style="@style/Button"
+            android:layout_marginBottom="15dp"
             android:minHeight="80dp"
             android:minWidth="300dp"
-            android:paddingBottom="30dp"
-            android:paddingTop="30dp"
             android:text="@string/timesDilution"
-            android:textAllCaps="true"
-            android:textSize="18sp"
             android:theme="@style/Button.Green" />
 
         <Button
             android:id="@+id/buttonDilution2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            style="@style/Button"
             android:minHeight="80dp"
             android:minWidth="300dp"
-            android:paddingBottom="30dp"
-            android:paddingTop="30dp"
             android:text="@string/timesDilution"
-            android:textAllCaps="true"
-            android:textSize="18sp"
             android:theme="@style/Button.Green" />
     </LinearLayout>
 

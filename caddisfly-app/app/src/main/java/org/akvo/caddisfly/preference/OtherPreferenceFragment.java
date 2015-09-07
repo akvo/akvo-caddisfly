@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.preference;
@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.UpdateCheckTask;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 /**
@@ -52,15 +52,10 @@ public class OtherPreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
-        Preference updatePreference = findPreference("checkUpdate");
-        if (updatePreference != null) {
-            updatePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false);
-                    updateCheckTask.execute();
-                    return true;
-                }
-            });
+        Preference aboutPreference = findPreference("about");
+        if (aboutPreference != null) {
+            aboutPreference.setSummary(String.format("%s %s", getString(R.string.version),
+                    CaddisflyApp.getAppVersion(getActivity())));
         }
 
         return rootView;

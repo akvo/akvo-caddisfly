@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
-    <color name="primary">#ff2c2e2c</color>
-    <color name="primary_dark">#00260e</color>
-    <color name="accent">#35924d</color>
+    <color name="primary">#388E3C</color>
+    <color name="primary_dark">#317c34</color>
+    <color name="accent">#FF6E40</color>
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
     <color name="text_tertiary">#ffffffff</color>
     <color name="diagnostic">#ff0000</color>
-    <color name="button_orange">#FFEF9F28</color>
-    <color name="action_bar">#ff2c2e2c</color>
+    <color name="diagnostic_status">#e20101</color>
+    <color name="button_orange">#9A0F53</color>
+    <color name="action_bar">#388E3C</color>
     <color name="amber">#ff6f00</color>
     <color name="red">#ff0000</color>
     <color name="error_background">#2afac900</color>

@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly
@@ -14,11 +14,8 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragmentCalibrateList"
-    android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
-    tools:layout="@layout/fragment_calibrate_list" />
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:fromXDelta="0%"
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:toXDelta="100%" />
