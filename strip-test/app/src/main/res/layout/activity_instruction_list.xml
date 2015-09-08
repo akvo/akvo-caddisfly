@@ -5,13 +5,13 @@
     <fragment
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/instruction_list"
-        android:name="org.akvo.akvoqr.InstructionListFragment"
+        android:name="org.akvo.akvoqr.instructions_app.InstructionListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_alignParentTop="true"
-        tools:context="org.akvo.akvoqr.InstructionListActivity"
+        tools:context="org.akvo.akvoqr.instructions_app.InstructionListActivity"
         tools:layout="@android:layout/list_content" />
 
     <include layout="@layout/start_button" />

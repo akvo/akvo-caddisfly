@@ -1,4 +1,4 @@
-package org.akvo.akvoqr;
+package org.akvo.akvoqr.instructions_app;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.akvo.akvoqr.ui.Instructions;
+import org.akvo.akvoqr.R;
 
 /**
  * A fragment representing a single Instruction detail screen.

@@ -1,10 +1,12 @@
-package org.akvo.akvoqr;
+package org.akvo.akvoqr.instructions_app;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import org.akvo.akvoqr.R;
 
 /**
  * An activity representing a single Instruction detail screen. This

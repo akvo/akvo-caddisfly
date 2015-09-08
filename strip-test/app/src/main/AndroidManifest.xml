@@ -38,16 +38,16 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".InstructionListActivity"
+            android:name=".instructions_app.InstructionListActivity"
             android:label="@string/title_instruction_list" >
         </activity>
         <activity
-            android:name=".InstructionDetailActivity"
+            android:name=".instructions_app.InstructionDetailActivity"
             android:label="@string/title_instruction_detail"
-            android:parentActivityName=".InstructionListActivity" >
+            android:parentActivityName=".instructions_app.InstructionListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.akvo.akvoqr.InstructionListActivity" />
+                android:value=".instructions_app.InstructionListActivity" />
         </activity>
     </application>
 

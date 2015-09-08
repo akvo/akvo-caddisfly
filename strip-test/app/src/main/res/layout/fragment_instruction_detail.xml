@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp" android:textIsSelectable="true"
-    tools:context="org.akvo.akvoqr.InstructionDetailFragment" >
+    tools:context="org.akvo.akvoqr.instructions_app.InstructionDetailFragment" >
 
     <TextView
         android:layout_width="match_parent"

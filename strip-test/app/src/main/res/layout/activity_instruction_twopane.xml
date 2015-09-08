@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:showDividers="middle"
         android:id="@+id/activity_instructionLinLay"
-        tools:context="org.akvo.akvoqr.InstructionListActivity">
+        tools:context="org.akvo.akvoqr.instructions_app.InstructionListActivity">
 
         <!--
         This layout is a two-pane layout for the Instructions
@@ -32,7 +32,7 @@
             >
 
             <fragment android:id="@+id/instruction_list"
-                android:name="org.akvo.akvoqr.InstructionListFragment"
+                android:name="org.akvo.akvoqr.instructions_app.InstructionListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 tools:layout="@android:layout/list_content" />

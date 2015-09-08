@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.akvo.akvoqr.instructions_app.InstructionListActivity;
 import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;

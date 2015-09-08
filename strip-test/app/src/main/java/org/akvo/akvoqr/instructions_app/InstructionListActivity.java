@@ -1,4 +1,4 @@
-package org.akvo.akvoqr;
+package org.akvo.akvoqr.instructions_app;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 
+import org.akvo.akvoqr.CameraActivity;
+import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.util.Constant;
 
 

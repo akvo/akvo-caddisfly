@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.ui;
+package org.akvo.akvoqr.instructions_app;
 
 import android.content.Context;
 import android.view.LayoutInflater;

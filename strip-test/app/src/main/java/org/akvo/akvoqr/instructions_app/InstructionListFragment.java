@@ -1,4 +1,4 @@
-package org.akvo.akvoqr;
+package org.akvo.akvoqr.instructions_app;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.akvo.akvoqr.ui.Instructions;
-import org.akvo.akvoqr.ui.InstructionsAdapter;
+import org.akvo.akvoqr.R;
 
 import java.util.List;
 
