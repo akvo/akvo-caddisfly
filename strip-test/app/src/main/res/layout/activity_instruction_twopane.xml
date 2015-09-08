@@ -1,28 +1,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp" android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal" android:orientation="horizontal"
-    android:showDividers="middle" tools:context="org.akvo.akvoqr.InstructionListActivity">
+    xmlns:tools="http://schemas.android.com/tools"
 
-    <!--
-    This layout is a two-pane layout for the Instructions
-    master/detail flow.
-    See res/values-large/refs.xml and
-    res/values-sw600dp/refs.xml for an example of layout aliases
-    that replace the single-pane version of the layout with
-    this two-pane version.
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:id="@+id/activity_instructionLinLay"
+        tools:context="org.akvo.akvoqr.InstructionListActivity">
 
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    -->
+        <!--
+        This layout is a two-pane layout for the Instructions
+        master/detail flow.
+        See res/values-large/refs.xml and
+        res/values-sw600dp/refs.xml for an example of layout aliases
+        that replace the single-pane version of the layout with
+        this two-pane version.
 
-    <fragment android:id="@+id/instruction_list"
-        android:name="org.akvo.akvoqr.InstructionListFragment" android:layout_width="0dp"
-        android:layout_height="match_parent" android:layout_weight="1"
-        tools:layout="@android:layout/list_content" />
+        For more on layout aliases, see:
+        http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+        -->
 
-    <FrameLayout android:id="@+id/instruction_detail_container" android:layout_width="0dp"
-        android:layout_height="match_parent" android:layout_weight="3" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
 
-</LinearLayout>
+            <fragment android:id="@+id/instruction_list"
+                android:name="org.akvo.akvoqr.InstructionListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                tools:layout="@android:layout/list_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/path_right"/>
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left"
+                android:text="@string/start"
+                android:id="@+id/activity_instruction_listStartButton"
+                android:background="@drawable/button_start_selector"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout android:id="@+id/instruction_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+
+    </LinearLayout>

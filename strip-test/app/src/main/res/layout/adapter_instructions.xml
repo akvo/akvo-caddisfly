@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/progress_icon_top"
+        android:src="@drawable/progress_icon_center"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:id="@+id/adapter_instructionsImageView"/>
@@ -17,4 +17,5 @@
         android:drawableRight="@drawable/arrow_black_right"
         android:padding="15dp"
         android:id="@+id/adapter_instructionsTextView"/>
+
 </LinearLayout>

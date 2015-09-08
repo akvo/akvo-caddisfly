@@ -3,7 +3,9 @@ package org.akvo.akvoqr;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.akvoqr.ui.Instructions;
@@ -83,6 +85,12 @@ public class InstructionListFragment extends ListFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_instruction_list, null);
+        return view;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -91,6 +99,8 @@ public class InstructionListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+
     }
 
     @Override
@@ -103,6 +113,9 @@ public class InstructionListFragment extends ListFragment {
         }
 
         mCallbacks = (Callbacks) activity;
+
+
+
     }
 
     @Override

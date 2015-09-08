@@ -1,5 +1,8 @@
 package org.akvo.akvoqr.ui;
 
+import android.content.res.TypedArray;
+
+import org.akvo.akvoqr.App;
 import org.akvo.akvoqr.R;
 
 import java.util.ArrayList;
@@ -12,29 +15,31 @@ import java.util.Map;
  */
 public class Instructions {
 
-
     public static List<Instruction> instructions;
     public static Map<String, Instruction> INSTRUCTION_MAP = new HashMap<String, Instruction>();
+    private static String[] instruction_text;
+    private static TypedArray instruction_res;
 
     static
     {
+        instruction_text = App.getMyApplicationContext().getResources().getStringArray(R.array.instructions);
+        instruction_res = App.getMyApplicationContext().getResources().obtainTypedArray(R.array.instructions_res);
+
         instructions = new ArrayList<>();
 
-        addInstructions(new Instruction("1", R.drawable.instruction_place_strip,"Place strip inside black area"));
+        int res;
+        for(int i=0;i < instruction_text.length;i++)
+        {
+            res = instruction_res.getResourceId(i, -1);
 
-        addInstructions(new Instruction("2", R.drawable.instruction_light,"Make sure light is good"));
-
-        addInstructions(new Instruction("3", R.drawable.instruction_finder_pattern,
-                "After clicking \'Start\' button hold device over test. Make sure all finder patterns are in sight."));
-
-        addInstructions(new Instruction("4", R.raw.futurebeep2,
-                "When you hear a sound, you can move the camera away from the test."));
+            addInstructions(new Instruction(String.valueOf(i+1), res, instruction_text[i]));
+        }
+        instruction_res.recycle();
     }
     private static void addInstructions(Instruction instruction)
     {
         instructions.add(instruction);
         INSTRUCTION_MAP.put(instruction.id, instruction);
-
     }
 
     public List<Instruction> getInstructions() {
