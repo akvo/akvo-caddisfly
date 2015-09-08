@@ -2,7 +2,7 @@ package org.akvo.akvoqr.calibration;
 
 import android.content.Context;
 
-import org.akvo.akvoqr.AssetsManager;
+import org.akvo.akvoqr.util.AssetsManager;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;

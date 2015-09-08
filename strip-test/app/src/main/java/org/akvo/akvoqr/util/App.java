@@ -1,4 +1,4 @@
-package org.akvo.akvoqr;
+package org.akvo.akvoqr.util;
 
 import android.app.Application;
 import android.content.Context;

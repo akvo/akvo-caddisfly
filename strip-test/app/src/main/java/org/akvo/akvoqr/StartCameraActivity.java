@@ -11,7 +11,7 @@ import android.widget.Button;
 import org.akvo.akvoqr.util.Constant;
 
 
-public class MainActivity extends AppCompatActivity {
+public class StartCameraActivity extends AppCompatActivity {
 
     private Button buttonCamera;
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 v.setActivated(!v.isActivated());
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                Intent intent = new Intent(StartCameraActivity.this, CameraActivity.class);
                 String brandName = getIntent().getStringExtra(Constant.BRAND);
                 if(brandName!=null)
                 {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.this.finish();
+                StartCameraActivity.this.finish();
             }
         });
     }

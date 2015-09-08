@@ -1,6 +1,6 @@
 package org.akvo.akvoqr.opencv;
 
-import org.akvo.akvoqr.AssetsManager;
+import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

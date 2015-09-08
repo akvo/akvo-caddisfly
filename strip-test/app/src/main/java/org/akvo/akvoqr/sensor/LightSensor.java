@@ -6,7 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import org.akvo.akvoqr.App;
+import org.akvo.akvoqr.util.App;
 
 import java.util.List;
 

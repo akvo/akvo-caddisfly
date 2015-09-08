@@ -19,6 +19,7 @@ import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.sensor.LightSensor;
+import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.core.CvType;

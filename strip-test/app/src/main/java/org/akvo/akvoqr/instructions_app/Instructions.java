@@ -2,8 +2,8 @@ package org.akvo.akvoqr.instructions_app;
 
 import android.content.res.TypedArray;
 
-import org.akvo.akvoqr.App;
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.util.App;
 
 import java.util.ArrayList;
 import java.util.HashMap;

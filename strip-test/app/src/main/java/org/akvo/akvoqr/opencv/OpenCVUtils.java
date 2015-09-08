@@ -4,11 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
-import org.akvo.akvoqr.App;
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.TestResult;
 import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.akvo.akvoqr.util.App;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -582,9 +581,6 @@ public class OpenCVUtils {
             }
 
         }
-
-        TestResult testResult = new TestResult();
-        testResult.setOriginal(orig);
 
         if(outermostContoursList.size()>0) {
             numPatchesFound = 0;
