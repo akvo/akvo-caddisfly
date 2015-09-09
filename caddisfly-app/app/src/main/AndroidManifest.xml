@@ -121,7 +121,6 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.TypeListActivity"
-            android:label="@string/calibrate"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity

@@ -61,16 +61,16 @@ public class FileHelper {
         String path = null;
         switch (type) {
             case APK:
-                path = FileUtil.getFilesStorageDir(true) + File.separator + DIR_APK;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true) + File.separator + DIR_APK;
                 break;
             case CALIBRATION:
-                path = FileUtil.getFilesStorageDir(false) + File.separator + DIR_CALIBRATION;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CALIBRATION;
                 break;
             case CONFIG:
-                path = FileUtil.getFilesStorageDir(false) + File.separator + DIR_CONFIG;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CONFIG;
                 break;
             case IMAGE:
-                path = FileUtil.getFilesStorageDir(false) + File.separator + DIR_IMAGE;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
                 break;
         }
         File dir = new File(path);

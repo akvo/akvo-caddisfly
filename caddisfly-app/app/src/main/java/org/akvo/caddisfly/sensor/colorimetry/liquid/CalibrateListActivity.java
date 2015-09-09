@@ -18,7 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +26,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -113,6 +114,17 @@ public class CalibrateListActivity extends BaseActivity
         setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName(
                 getResources().getConfiguration().locale.getLanguage()));
 
+        FloatingActionButton floatingActionButton =
+                (FloatingActionButton) findViewById(R.id.fabEditCalibration);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
+                saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
+            }
+        });
+
     }
 
     @Override
@@ -181,7 +193,7 @@ public class CalibrateListActivity extends BaseActivity
      */
     private void saveCalibration() {
 
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
 
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");

@@ -105,6 +105,15 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        findViewById(R.id.buttonCalibrate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        });
+
         upgradeOldFolderPath();
 
         checkForUpdate();
@@ -196,9 +205,13 @@ public class MainActivity extends BaseActivity {
     private void switchLayoutForDiagnosticOrUserMode() {
         if (AppPreferences.isDiagnosticMode(this)) {
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutTitle).setVisibility(View.GONE);
+            findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
         } else {
             if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
+                findViewById(R.id.layoutTitle).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
             }
         }
     }

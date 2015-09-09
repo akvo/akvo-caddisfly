@@ -53,13 +53,13 @@
     </style>
 
     <style name="Button.Orange">
-        <item name="colorButtonNormal">#9A0F53</item>
-        <item name="colorControlHighlight">#cc851b</item>
+        <item name="colorButtonNormal">#ef6f20</item>
+        <item name="colorControlHighlight">#c55b1a</item>
     </style>
 
-    <style name="Button.Blue">
-        <item name="colorButtonNormal">#ff16867d</item>
-        <item name="colorControlHighlight">#095f58</item>
+    <style name="Button.Blue" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#de00589b</item>
+        <item name="colorControlHighlight">#eb003f6f</item>
     </style>
 
     <style name="width_match_parent_max_tablet">

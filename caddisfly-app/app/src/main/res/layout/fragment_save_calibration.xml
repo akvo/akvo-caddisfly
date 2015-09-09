@@ -27,23 +27,20 @@
         android:id="@+id/editName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="16dp"
         android:hint="@string/name"
         android:inputType="textCapWords"
-
         android:maxLength="20" />
 
     <EditText
         android:id="@+id/editBatchCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/reagentBatch"
         android:inputType="textCapCharacters" />
 
@@ -51,10 +48,9 @@
         android:id="@+id/editExpiryDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:focusable="false"
         android:hint="@string/reagentExpiryDate"
         android:inputType="date" />

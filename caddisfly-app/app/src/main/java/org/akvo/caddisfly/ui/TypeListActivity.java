@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -36,9 +37,9 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
 
-        //need when changing language
+        //to refresh the title when language changes
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.calibrate));
+            getSupportActionBar().setTitle(getResources().getString(R.string.selectTest));
         }
     }
 
@@ -82,6 +83,23 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**

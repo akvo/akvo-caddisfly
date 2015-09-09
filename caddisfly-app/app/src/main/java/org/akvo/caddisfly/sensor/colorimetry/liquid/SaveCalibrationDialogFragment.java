@@ -20,11 +20,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +37,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -122,15 +123,18 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         });
 
         editName = (EditText) v.findViewById(R.id.editName);
-        editName.requestFocus();
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
+        if (AppPreferences.isDiagnosticMode(getActivity())) {
+            editName.requestFocus();
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        } else {
+            editName.setVisibility(View.GONE);
+        }
         editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.saveCalibration)
+                .setTitle(R.string.calibrationDetails)
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -232,7 +236,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
                 private boolean formEntryValid() {
 
-                    if (editName.getText().toString().trim().isEmpty()) {
+                    if (AppPreferences.isDiagnosticMode(getActivity()) &&
+                            editName.getText().toString().trim().isEmpty()) {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;
                     }

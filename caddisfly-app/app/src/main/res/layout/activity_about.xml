@@ -39,9 +39,9 @@
         android:gravity="center"
         android:text="@string/appName"
         android:textAllCaps="true"
-        android:textSize="28sp"
+        android:textSize="28dp"
         android:textStyle="bold"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="SpUsage" />
 
     <TextView
         android:layout_width="match_parent"
@@ -53,8 +53,7 @@
         android:text="@string/waterQualitySystem"
         android:textAllCaps="true"
         android:textSize="15sp"
-        android:textStyle="bold"
-        tools:ignore="UnusedAttribute" />
+        android:textStyle="bold" />
 
     <View
         android:layout_width="200dp"
@@ -72,8 +71,7 @@
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
         android:textSize="15sp"
-        android:textStyle="normal"
-        tools:ignore="UnusedAttribute" />
+        android:textStyle="normal" />
 
     <View
         android:layout_width="200dp"
@@ -90,8 +88,7 @@
         android:paddingTop="20dp"
         android:text="@string/companyOtherName"
         android:textSize="15sp"
-        android:textStyle="normal"
-        tools:ignore="UnusedAttribute" />
+        android:textStyle="normal" />
 
     <TextView
         android:layout_width="match_parent"
@@ -101,7 +98,6 @@
         android:paddingBottom="20dp"
         android:text="@string/copyrightMessage"
         android:textSize="15sp"
-        android:textStyle="normal"
-        tools:ignore="UnusedAttribute" />
+        android:textStyle="normal" />
 
 </LinearLayout>

@@ -170,4 +170,6 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
+    <string name="selectTest">Select Test</string>
+    <string name="calibrationDetails">Calibration Details</string>
 </resources>
