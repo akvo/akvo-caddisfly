@@ -154,7 +154,6 @@ public class StripTest{
             JSONObject object = new JSONObject(json);
             if(!object.isNull("strips"))
             {
-                System.out.println(object.toString(2));
                 stripsJson = object.getJSONArray("strips");
                 if(stripsJson!=null) {
                     stripObjects = new HashMap<>();

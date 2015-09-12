@@ -32,7 +32,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         activity = (CameraActivity) context;
 
-
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
         mHolder = getHolder();
@@ -63,7 +62,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         // If your preview can change or rotate, take care of those events here.
         // Make sure to stop the preview before resizing or reformatting it.
 
-        if (mHolder.getSurface() == null){
+        if (holder.getSurface() == null){
             // preview surface does not exist
             return;
         }
@@ -96,9 +95,11 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             return;
         }
         Camera.Size bestSize = null;
-        List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
+        List<Camera.Size> sizes = mCamera.getParameters().getSupportedPictureSizes();
         int maxWidth = 0;
         for(Camera.Size size: sizes) {
+            if(size.width>800)
+               continue;
             if (size.width > maxWidth) {
                 bestSize = size;
                 maxWidth = size.width;
@@ -122,7 +123,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         Point bestResolution = CameraConfigurationUtils.findBestPreviewSizeValue(mCamera.getParameters(), screenResolution);
         parameters.setPreviewSize(bestResolution.x, bestResolution.y);
 
-        System.out.println("***bestsize: " + bestResolution.x + ", " + bestResolution.y);
+        parameters.setPictureSize(bestSize.width, bestSize.height);
+//        parameters.setPictureFormat(ImageFormat.JPEG);
+        System.out.println("***bestsize: " + bestSize.width + ", " + bestSize.height);
 
         boolean canAutoFocus = false;
         boolean disableContinuousFocus = true;
@@ -153,8 +156,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         } catch (Exception e){
             Log.d("", "Error starting camera preview: " + e.getMessage());
         }
+
     }
-
-
 }
 

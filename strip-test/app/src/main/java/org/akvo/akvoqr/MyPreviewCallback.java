@@ -1,7 +1,9 @@
 package org.akvo.akvoqr;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -17,18 +19,12 @@ import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.sensor.LightSensor;
-import org.akvo.akvoqr.util.AssetsManager;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,43 +34,32 @@ import java.util.List;
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
     public static boolean firstTime = true;
-    FinderPatternFinder finderPatternFinder;
-    List<ResultPoint> resultPoints = new ArrayList<>();
-    FinderPatternInfo info;
-    List<FinderPattern> possibleCenters;
-    CameraViewListener listener;
-    Camera camera;
-    private static boolean isRunning = false;
+    private static MyPreviewCallback instance;
+    private boolean isRunning = false;
+    private final int messageRepeat = 0;
+    private FinderPatternFinder finderPatternFinder;
+    private List<ResultPoint> resultPoints = new ArrayList<>();
+    private List<FinderPattern> possibleCenters;
+    private FinderPatternInfo info;
+    private CameraViewListener listener;
+    private Camera camera;
+    private Camera.Size previewSize;
     private boolean focused = false;
     private boolean allOK = false;
-    Bitmap bitmap;
-    private ArrayList<Mat> mats;
     private Handler handler;
-    private Runnable runAtListener = new Runnable() {
+    private Runnable sendMessageRepeat = new Runnable() {
         @Override
         public void run() {
             if (listener != null) {
-
-                if(allOK) {
-                    if(bitmap!=null)
-                        listener.setBitmap(bitmap);
-                    else if(mats!=null)
-                        listener.sendMats(mats);
-                }
-                else {
-                    listener.getMessage(0);
-                }
+                listener.getMessage(messageRepeat);
             }
-            if(bitmap!=null)
-                bitmap.recycle();
         }
     };
-    private boolean testCalib = false;
+    private boolean finished;
 
     public static MyPreviewCallback getInstance(Context context) {
 
         return new MyPreviewCallback(context);
-
     }
 
     private MyPreviewCallback(Context context) {
@@ -99,270 +84,143 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
         this.camera = camera;
+        previewSize = camera.getParameters().getPreviewSize();
+//        System.out.println("***is Running: " + isRunning);
 
-        //System.out.println("***is Running: " + isRunning);
-        if (!isRunning) {
-            isRunning = true;
-            allOK = false;
-            focused = false;
-            possibleCenters = null;
+        allOK = false;
+        focused = false;
+        possibleCenters = null;
 
-            new BitmapTask().execute(data);
-        }
+        new BitmapTask().execute(data);
 
-    }
 
-    public FinderPatternInfo getInfo() {
-        return info;
-    }
-
-    public List<FinderPattern> getPossibleCenters() {
-        return possibleCenters;
     }
 
     private class BitmapTask extends AsyncTask<byte[], Void, Void> {
 
-        @Override
-        public void onCancelled()
-        {
-            //if(!isRunning)
-            cancel(false);
-            super.onCancelled();
-        }
+        byte[] data;
+
+        boolean qualityOK = true;
+
         @Override
         protected Void doInBackground(byte[]... params) {
 
+            data = params[0];
+            try {
 
-            byte[] data = params[0];
+                qualityOK = qualityChecks(data);
 
-            makeBitmap(data);
+                info = findPossibleCenters(data, previewSize);
 
+                if (possibleCenters != null && possibleCenters.size() == 4) {
+                    if (qualityOK) {
+
+                        listener.playSound();
+
+                        data = compressToJpeg(data);
+                        listener.sendData(data, ImageFormat.JPEG,
+                                camera.getParameters().getPreviewSize().width,
+                                camera.getParameters().getPreviewSize().height, info);
+                      // takePicture();
+
+                    }
+                } else {
+
+                    if (listener != null)
+                        listener.getMessage(messageRepeat);
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
             return null;
         }
 
+        @Override
         protected void onPostExecute(Void result) {
-            isRunning = false;
-            handler.post(runAtListener);
+            //do nothing
         }
-
     }
 
-    private void makeBitmap(byte[] data) {
+    private boolean qualityChecks(byte[] data) {
 
         focused = false;
+        Mat bgr;
+        int height = camera.getParameters().getPreviewSize().height;
+        int width = camera.getParameters().getPreviewSize().width;
+
         try {
 
-            //TODO CHECK EXPOSURE
-            int number = 10;
-            LightSensor lightSensor = new LightSensor();
-            lightSensor.start();
-            while (lightSensor.getLux()==-1 && number>0) {
+            //convert preview data to Mat object
+            bgr = new Mat(height, width, CvType.CV_8UC3);
+            Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
+            convert_mYuv.put(0, 0, data);
+            Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
-                number --;
-                try {
-                    Thread.sleep(100);
-                }
-                catch (InterruptedException e)
-                {
-                    Thread.currentThread().interrupt();
-                }
+            //CHECK EXPOSURE.
+            LightSensor lightSensor = new LightSensor();
+            if(lightSensor.hasLightSensor())
+            {
+                lightSensor.start();
+                double lux = lightSensor.getLux();
+                listener.showMaxLuminosity(lux);
             }
-            System.out.println("*** lux: " + lightSensor.getLux());
-            lightSensor.stop();
+            else {
+                // find maximum of L-channel
+                double maxLum = OpenCVUtils.getMaxLuminosity(bgr);
+                listener.showMaxLuminosity(maxLum);
+            }
 
             //TODO CHECK SHADOWS
 
-            listener.showProgress(0);
-            findPossibleCenters(data);
+            //if patterns are found, focus camera and return
+            //this is a workaround to give camera time to adjust exposure
+            //we assume that second time is immediately after first time, so patterns are found while the camera is
+            //focused correctly
 
-            if (possibleCenters != null && possibleCenters.size() > 3) {
+            double focusLaplacian = OpenCVUtils.focusLaplacian(bgr);
+            listener.showFocusValue(focusLaplacian);
 
-                //if patterns are found, focus camera and return
-                //this is a workaround to give camera time to adjust exposure
-                //we assume that second time is immediately after first time, so patterns are found while the camera is
-                //focused correctly
-
-                if (firstTime) {
-                    System.out.println("*** focussing!!!!!!!");
-                    while (!focused) {
-                        camera.autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                if (success) focused = true;
-                            }
-                        });
-                    }
-                    firstTime = false;
-                    return;
-                }
-                listener.dismissProgress();
-
-                listener.playSound();
-
-                for (FinderPattern pattern : possibleCenters) {
-                    System.out.println("***pattern estimated module size: " + pattern.getEstimatedModuleSize());
-                }
-
-                int pheight = camera.getParameters().getPreviewSize().height;
-                int pwidth = camera.getParameters().getPreviewSize().width;
-
-                //convert preview data to Mat object with highest possible quality
-                Mat mbgra = new Mat(pheight, pwidth, CvType.CV_8UC3);
-                Mat convert_mYuv = new Mat(pheight + pheight / 2, pwidth, CvType.CV_8UC1);
-                convert_mYuv.put(0, 0, data);
-                Imgproc.cvtColor(convert_mYuv, mbgra, Imgproc.COLOR_YUV2BGR_NV21, mbgra.channels());
-
-
-                //noOfModules: constant that holds the time estimated module size is to be multiplied by, used to 'cut out' image not showing finder patterns
-                //typical value is 3.5 as pattern is 1:1:3:1:1 which amounts to seven.
-                final float noOfModules = 0f;
-                final float adjustTL = noOfModules * possibleCenters.get(0).getEstimatedModuleSize();
-                final float adjustTR = noOfModules * possibleCenters.get(1).getEstimatedModuleSize();
-                final float adjustBL = noOfModules * possibleCenters.get(2).getEstimatedModuleSize();
-                final float adjustBR = noOfModules * possibleCenters.get(3).getEstimatedModuleSize();
-
-                //perspectiveTransform
-                Mat warp_dst = OpenCVUtils.perspectiveTransform(info, mbgra);
-
-                //find calibration patches
-                listener.showProgress(1);
-                Mat calMat = listener.getCalibratedImage(warp_dst);
-                listener.dismissProgress();
-
-                Mat dest;
-                Mat striparea = null;
-                if (calMat == null) {
-                    System.out.println("***calibration failed");
-                    dest = warp_dst.clone();
-                } else {
-                    dest = calMat.clone();
-                }
-
-                //show calibrated patches in gridview in ResultActivity
-//                ResultActivity.colors.clear();
-//
-//                for(Patch patch: patches) {
-//                    Point point1 = new Point(patch.x - patch.d/2, patch.y - patch.d/2);
-//                    Point point2 = new Point(patch.x + patch.d/2, patch.y + patch.d/2);
-//                    Core.rectangle(warp_dst, point1, point2, new Scalar(255, 0, 0, 255));
-//
-//                    int color = Color.rgb((int)patch.red,(int) patch.green,(int) patch.blue);
-//                    ResultActivity.colors.add(new ResultActivity.ColorDetected(color, patch.x));
-//                }
-
-                if (testCalib) {
-                    Imgproc.cvtColor(calMat, calMat, Imgproc.COLOR_BGR2RGBA);
-                    mats = new ArrayList<>();
-                    mats.add(calMat.clone());
-
-                    allOK = true;
-                    return;
-                }
-
-                //detect strip
-                Mat orig = new Mat();
-
-                double ratioW = 1;
-                double ratioH = 1;
-                String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
-                if (json != null) {
-
-                    double hsize = 1;
-                    double vsize = 1;
-                    JSONObject object = new JSONObject(json);
-                    if (!object.isNull("calData")) {
-                        JSONObject calData = object.getJSONObject("calData");
-                        hsize = calData.getDouble("hsize");
-                        vsize = calData.getDouble("vsize");
-                    }
-                    if (!object.isNull("stripAreaData")) {
-                        JSONObject stripAreaData = object.getJSONObject("stripAreaData");
-                        if (!stripAreaData.isNull("area")) {
-                            JSONArray area = stripAreaData.getJSONArray("area");
-                            if (area.length() == 4) {
-
-                                ratioW = dest.width() / hsize;
-                                ratioH = dest.height() / vsize;
-                                Point stripTopLeft = new Point(area.getDouble(0) * ratioW + 2,
-                                        area.getDouble(1) * ratioH + 2);
-                                Point stripBottomRight = new Point(area.getDouble(2) * ratioW - 2,
-                                        area.getDouble(3) * ratioH - 2);
-
-                                Rect roi = new Rect(stripTopLeft, stripBottomRight);
-                                striparea = dest.submat(roi);
-                                orig = warp_dst.submat(roi);
-                            }
+             if (focusLaplacian < 250) {
+                System.out.println("***focussing");
+                while (!focused) {
+                    camera.autoFocus(new Camera.AutoFocusCallback() {
+                        @Override
+                        public void onAutoFocus(boolean success, Camera camera) {
+                            if (success) focused = true;
                         }
-                    }
-                } else {
-//                float stripareaSize = 31; //mm
-//                float vertSize = 75; //mm
-//                float ratio = stripareaSize/vertSize;
-//                int stripH = (int)Math.round(dest.height() * ratio);
-//                Rect rect = new Rect(0, (int)Math.round(dest.height() - stripH), dest.width(), stripH);
-
+                    });
                 }
+                firstTime = false;
 
-                if (striparea != null) {
+           }
 
-                    StripTest stripTestBrand = StripTest.getInstance();
-                    StripTest.Brand brand = stripTestBrand.getBrand(listener.getBrand());
 
-                    listener.showProgress(2);
-                    Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
-                    listener.dismissProgress();
-
-                    if (strip != null) {
-                        listener.showProgress(3);
-
-                        mats = new ArrayList<>();
-//                        if (!orig.empty()) {
-//                            Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2RGBA);
-//                            mats.add(orig);
-//                        }
-                        Imgproc.cvtColor(strip, strip, Imgproc.COLOR_BGR2RGBA);
-                        //mats.add(striparea);
-                        mats.add(strip);
-
-                        listener.dismissProgress();
-                    } else {
-                        mats = new ArrayList<>();
-                        mats.add(striparea.clone());
-
-                        //draw a red cross over the image
-                        Imgproc.line(striparea, new Point(0, 0), new Point(striparea.cols(),
-                                striparea.rows()), new Scalar(255, 0, 0, 255), 2);
-                        Imgproc.line(striparea, new Point(0, striparea.rows()), new Point(striparea.cols(),
-                                0), new Scalar(255, 0, 0, 255), 2);
-
-                        mats.add(striparea);
-
-                    }
-                    listener.showProgress(4);
-                    listener.dismissProgress();
-
-                    allOK = true;
-
-                }
-            }
+            return true;
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            listener.dismissProgress();
 
-            allOK = false;
-
+            return false;
 
         }
     }
 
-    public void findPossibleCenters(byte[] data) {
-        if (camera != null) {
-            final Camera.Parameters parameters = camera.getParameters();
-            Camera.Size size = parameters.getPreviewSize();
+    public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
 
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                listener.showFinderPatterns(possibleCenters, size);
+            }
+        };
+        if (camera != null) {
+
+            FinderPatternInfo info = null;
             PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
                     size.height, 0, 0,
                     size.width,
@@ -386,20 +244,93 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 try {
 
-                    if (possibleCenters != null)
-                        possibleCenters = null;
-
                     info = finderPatternFinder.find(null);
-                    possibleCenters = finderPatternFinder.getPossibleCenters();
 
                 } catch (Exception e) {
-                    // ignore. this only means no patterns are detected.
+                    // this only means not all patterns (=4) are detected.
+                }
+                finally {
+
+                    possibleCenters = finderPatternFinder.getPossibleCenters();
+
+                    //remove centers that are to small in order to get rid of noise
+                    for(int i=0;i<possibleCenters.size();i++) {
+                        if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
+                            possibleCenters.remove(i);
+                            //System.out.println("***removed possible center no. " + i);
+                        }
+                    }
+                    //System.out.println("***possible centers size: " + possibleCenters.size());
+
+                    listener.showFinderPatterns(possibleCenters, camera.getParameters().getPreviewSize());
+                    
+                    return info;
                 }
             }
         }
+
+        return null;
     }
 
+    private byte[] compressToJpeg(byte[] data)
+    {
+        int format = camera.getParameters().getPreviewFormat();
+        int width = camera.getParameters().getPreviewSize().width;
+        int height = camera.getParameters().getPreviewSize().height;
 
+        if(format == ImageFormat.NV21) {
+            YuvImage yuvImage = new YuvImage(data, format, width, height, null);
+            Rect rect = new Rect(0, 0, width, height);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            yuvImage.compressToJpeg(rect, 100, baos);
+            return baos.toByteArray();
+        }
+
+        return null;
+    }
+
+    private void takePicture()
+    {
+                camera.takePicture(null, new Camera.PictureCallback() {
+                            @Override
+                            public void onPictureTaken(byte[] data, Camera camera) {
+                                if (data != null) {
+                                    System.out.println("***raw: " + data.length);
+                                    if(info!=null) {
+                                        listener.sendData(data, camera.getParameters().getPictureFormat(),
+                                                camera.getParameters().getPictureSize().width,
+                                                camera.getParameters().getPictureSize().height, info);
+                                    }
+                                }
+                                else
+                                {
+                                    System.out.println("***raw is null");
+                                }
+                            }
+
+                        },
+                        null,
+                        new Camera.PictureCallback() {
+                            @Override
+                            public void onPictureTaken(byte[] data, Camera camera) {
+                                if(data!=null)
+                                {
+                                    System.out.println("***jpeg: " + data.length);
+                                    if(info!=null) {
+                                        listener.sendData(data, camera.getParameters().getPictureFormat(),
+                                                camera.getParameters().getPictureSize().width,
+                                                camera.getParameters().getPictureSize().height, info);
+
+                                    }
+                                }
+                                else
+                                {
+                                    System.out.println("***jpeg is null");
+                                }
+                            }
+                        });
+
+    }
 
 
 }

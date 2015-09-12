@@ -6,7 +6,6 @@ import android.graphics.Color;
 
 import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.color.ColorDetected;
-import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.util.App;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -37,9 +36,6 @@ public class OpenCVUtils {
 
     public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize)
     {
-//        Point[] rotatedRectPoints = new Point[4];
-//        rotatedRect.points(rotatedRectPoints);
-
         Mat rot_mat;
         Mat cropped = new Mat();
 
@@ -70,36 +66,33 @@ public class OpenCVUtils {
         }
         return cropped;
     }
-    public static Mat perspectiveTransform(FinderPatternInfo info, Mat mbgra)
+    public static Mat perspectiveTransform(double[] topleft, double[] topright,
+            double[] bottomleft, double[] bottomright, Mat bgr)
     {
         List<Point> srcList = new ArrayList<>();
 
         //coordinates for the rect (the finder pattern centers)
-        srcList.add(new Point(info.getTopLeft().getX(),
-                info.getTopLeft().getY()));
-        srcList.add(new Point(info.getTopRight().getX(),
-                info.getTopRight().getY()));
-        srcList.add(new Point(info.getBottomLeft().getX(),
-                info.getBottomLeft().getY()));
-        srcList.add(new Point(info.getBottomRight().getX(),
-                info.getBottomRight().getY()));
+        srcList.add(new Point(topleft));
+        srcList.add(new Point(topright));
+        srcList.add(new Point(bottomleft));
+        srcList.add(new Point(bottomright));
 
-        System.out.println("***before sort:");
-        System.out.println("***topleft: " + srcList.get(0).x + " ," + srcList.get(0).y);
-        System.out.println("***topright: " + srcList.get(1).x + " ," + srcList.get(1).y);
-        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
-        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
+//        System.out.println("***before sort:");
+//        System.out.println("***topleft: " + srcList.get(0).x + " ," + srcList.get(0).y);
+//        System.out.println("***topright: " + srcList.get(1).x + " ," + srcList.get(1).y);
+//        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
+//        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
 
         //Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
         // so the result will be: top-left, bottom-left, top-right, bottom-right. Because top-left always has the lowest sum of x and y
         // and bottom-right always the highest
         Collections.sort(srcList, new PointComparator());
 
-        System.out.println("***after sort:");
-        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-        System.out.println("***bottomleft: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-        System.out.println("***topright: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
-        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
+//        System.out.println("***after sort:");
+//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
+//        System.out.println("***bottomleft: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
+//        System.out.println("***topright: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
+//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         //source quad
         //here we maintain the order: top-left, top-right, bottom-left, bottom-right
@@ -111,22 +104,22 @@ public class OpenCVUtils {
         //destination quad corresponding with srcQuad
         Point[] dstQuad = new Point[4];
         dstQuad[0] = new Point( 0,0 );
-        dstQuad[1] = new Point( mbgra.cols() - 1, 0 );
-        dstQuad[2] = new Point( 0, mbgra.rows() - 1 );
-        dstQuad[3] = new Point(mbgra.cols()-1, mbgra.rows()-1);
+        dstQuad[1] = new Point( bgr.cols() - 1, 0 );
+        dstQuad[2] = new Point( 0, bgr.rows() - 1 );
+        dstQuad[3] = new Point(bgr.cols()-1, bgr.rows()-1);
 
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
         MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
 
         //make a destination mat for a warp
-        Mat warp_dst = Mat.zeros(mbgra.rows(), mbgra.cols(), mbgra.type());
+        Mat warp_dst = Mat.zeros(bgr.rows(), bgr.cols(), bgr.type());
 
         //get a perspective transform matrix
         Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
 
         //do the warp
-        Imgproc.warpPerspective(mbgra, warp_dst,warp_mat, warp_dst.size());
+        Imgproc.warpPerspective(bgr, warp_dst,warp_mat, warp_dst.size());
 
         return warp_dst;
     }
@@ -805,7 +798,7 @@ public class OpenCVUtils {
 
 
 
-    public double focusStandardDev(Mat src)
+    public static double focusStandardDev(Mat src)
     {
         MatOfDouble mean = new MatOfDouble();
         MatOfDouble stddev = new MatOfDouble();
@@ -843,11 +836,10 @@ public class OpenCVUtils {
 
         focusMeasure = (sigma.val[0]*sigma.val[0]) / mu.val[0];
 
-
         return focusMeasure;
     }
 
-    public double focusLaplacian(Mat src) {
+    public static double focusLaplacian(Mat src) {
 
         int kernel_size = 3;
         int scale = 1;
@@ -877,10 +869,21 @@ public class OpenCVUtils {
 
                 }
             }
-            System.out.println("***maxLap: " + maxLap);
-
         }
         return maxLap;
+    }
+
+    public static double getMaxLuminosity(Mat bgr)
+    {
+        Mat Lab = new Mat();
+        List<Mat> channels = new ArrayList<>();
+        Imgproc.cvtColor(bgr, Lab, Imgproc.COLOR_RGB2Lab);
+        Core.split(Lab, channels);
+
+        //find min and max luminosity
+        Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+
+        return result.maxVal;
     }
 
     //enhance contrast

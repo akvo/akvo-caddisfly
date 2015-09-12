@@ -49,6 +49,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".instructions_app.InstructionListActivity" />
         </activity>
+        <activity
+            android:name=".DetectStripActivity"
+            android:label="@string/title_activity_detect_strip"
+            android:parentActivityName=".ChooseStripTestActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.akvo.akvoqr.ChooseStripTestActivity" />
+        </activity>
     </application>
 
 </manifest>

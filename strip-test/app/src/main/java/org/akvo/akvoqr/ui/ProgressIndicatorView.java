@@ -53,18 +53,20 @@ public class ProgressIndicatorView extends View {
     @Override
     public void onDraw(Canvas canvas)
     {
-        distance = canvas.getWidth()/totalSteps;
+        canvas.drawARGB(255, 0, 0, 0);
+        distance = canvas.getHeight()/totalSteps;
+
         for(int i=0;i < totalSteps;i++) {
             if(i < stepsTaken)
             {
-                canvas.drawRect(distance*(i-1) + (canvas.getHeight() / 3) * 2, canvas.getHeight()/2 - 5, distance * i, canvas.getHeight()/2 + 5, mediumbluePaint);
-                canvas.drawCircle(distance * i + canvas.getHeight() / 3, canvas.getHeight() / 2, canvas.getHeight() / 3, mediumbluePaint);
+                //canvas.drawRect(distance*(i-1) + (canvas.getWidth() / 3) * 2, canvas.getHeight()/2 - 5, distance * i, canvas.getHeight()/2 + 5, mediumbluePaint);
+                canvas.drawCircle(canvas.getWidth() / 2, distance * i + distance/2 , canvas.getWidth() / 3, mediumbluePaint);
 
             }
             else
             {
-                canvas.drawRect(distance*(i-1) + (canvas.getHeight() / 3) * 2, canvas.getHeight()/2 - 5, distance * i, canvas.getHeight()/2 + 5, lightbluePaint);
-                canvas.drawCircle(distance*i + canvas.getHeight()/3, canvas.getHeight() / 2, canvas.getHeight()/3, lightbluePaint);
+                //canvas.drawRect(distance*(i-1) + (canvas.getHeight() / 3) * 2, canvas.getHeight()/2 - 5, distance * i, canvas.getHeight()/2 + 5, lightbluePaint);
+                canvas.drawCircle(canvas.getWidth() / 2, distance*i + distance/2 , canvas.getWidth()/3, lightbluePaint);
             }
 
         }

@@ -24,4 +24,7 @@
         <item>@raw/futurebeep2</item>
 
     </array>
+    <string name="title_activity_detect_strip">DetectStripActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

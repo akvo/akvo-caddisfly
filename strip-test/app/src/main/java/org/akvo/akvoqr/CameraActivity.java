@@ -3,7 +3,8 @@ package org.akvo.akvoqr;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.ImageFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,13 +15,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.detector.FinderPattern;
+import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.opencv.core.Mat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by linda on 7/7/15.
@@ -31,13 +35,14 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private FrameLayout preview;
     private BaseCameraView mPreview;
     MyPreviewCallback previewCallback;
-    private String TAG = "CameraActivity";
-    private Intent intent;
+    private final String TAG = "CameraActivity";
     private android.os.Handler handler;
-    private TextView messageView;
+    private TextView messageLightView;
+    private TextView messageFocusView;
     private ProgressIndicatorView progressIndicatorView;
+    private FinderPatternIndicatorView finderPatternIndicatorView;
     private boolean testing = false;
-    private String brand;
+    private String brandName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,13 +51,17 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         if(getIntent().getStringExtra(Constant.BRAND)!=null)
         {
-            this.brand = getIntent().getStringExtra(Constant.BRAND);
+            this.brandName = getIntent().getStringExtra(Constant.BRAND);
         }
-        intent = new Intent(this, ResultActivity.class);
+
         handler = new Handler(Looper.getMainLooper());
 
-        messageView = (TextView) findViewById(R.id.camera_preview_messageView);
+        messageLightView = (TextView) findViewById(R.id.camera_preview_messageLightView);
+        messageFocusView = (TextView) findViewById(R.id.camera_preview_messageFocusView);
         progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
+        finderPatternIndicatorView =
+                (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
+
     }
 
     private void init()
@@ -67,7 +76,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             mPreview = new BaseCameraView(this, mCamera);
             preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.addView(mPreview);
-
         }
 
 
@@ -132,10 +140,22 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
+    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size)
+    {
+        Runnable showFinderPatternsRunnable = new Runnable() {
+            @Override
+            public void run() {
+                finderPatternIndicatorView.showPatterns(patterns, size);
+            }
+        };
+        handler.post(showFinderPatternsRunnable);
+    }
+    @Override
     public void getMessage(int what) {
-        if(mCamera!=null && !isFinishing()) {
+        if(mCamera!=null && mPreview!=null && !isFinishing()) {
             if (what == 0) {
 
+                if(previewCallback!=null)
                 mCamera.setOneShotPreviewCallback(previewCallback);
 
             } else {
@@ -146,31 +166,85 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
+    public void showFocusValue(final double value)
+    {
+        Runnable showMessage = new Runnable() {
+            @Override
+            public void run() {
+                if(messageFocusView !=null)
+                    messageFocusView.setText("Sharpness: " + value);
+            }
+        };
+        handler.post(showMessage);
+    }
+    @Override
+    public void showMaxLuminosity(final double value){
+
+        Runnable showMessage = new Runnable() {
+            @Override
+            public void run() {
+                if(messageLightView !=null)
+                    messageLightView.setText("Light: " + value);
+            }
+        };
+        handler.post(showMessage);
+    }
+
+    @Override
+    public void drawShadowBitmap(final Bitmap bitmap) {
+        Runnable showMessage = new Runnable() {
+            @Override
+            public void run() {
+
+                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                if(finderPatternIndicatorView!=null)
+                    finderPatternIndicatorView.setImageDrawable(drawable);
+            }
+        };
+        handler.post(showMessage);
+    }
+
+    @Override
     public void sendMats(ArrayList<Mat> mats)
     {
-
-        intent.putExtra(Constant.MAT, mats);
-        intent.putExtra(Constant.BRAND, brand);
-        startActivity(intent);
+//
+//        intent.putExtra(Constant.MAT, mats);
+//        intent.putExtra(Constant.BRAND, brandName);
+//        startActivity(intent);
 
         this.finish();
     }
 
     @Override
-    public void sendData(byte[] data, int format, int width, int height) {
+    public void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info) {
 
+//        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
+//        System.out.println("***info: " + info);
+//        System.out.println("***data: " + data.length);
         try {
-            System.out.println("***image format in CameraActivity: " + format +
-                    " data: " + data.length + "size: " + width + ", " + height);
+            Intent intent = new Intent(this, DetectStripActivity.class);
 
+            intent.putExtra(Constant.BRAND, brandName);
+            Bundle finderPatternBundle = new Bundle();
+            finderPatternBundle.putDoubleArray(Constant.TOPLEFT,
+                    new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()});
+            finderPatternBundle.putDoubleArray(Constant.TOPRIGHT,
+                    new double[]{info.getTopRight().getX(), info.getTopRight().getY()});
+            finderPatternBundle.putDoubleArray(Constant.BOTTOMLEFT,
+                    new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()});
+            finderPatternBundle.putDoubleArray(Constant.BOTTOMRIGHT,
+                    new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()});
 
-            intent.putExtra("data", data);
-            intent.putExtra("format", format);
-            intent.putExtra("width", width);
-            intent.putExtra("height", height);
-            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(Constant.DATA, data);
+            intent.putExtra(Constant.FORMAT, format);
+            intent.putExtra(Constant.WIDTH, width);
+            intent.putExtra(Constant.HEIGHT, height);
+            intent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
             startActivity(intent);
 
+            this.finish();
         }
         catch (Exception e)
         {
@@ -178,30 +252,36 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     }
 
-    @Override
-    public void setBitmap(Bitmap bitmap) {
-
-            double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
-            int width = 800;
-            int height = (int) Math.round(ratio * width);
-//            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
-//            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
-            try {
-                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-            sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
-
-            bitmap.recycle();
-
-            finish();
-
+    public void test()
+    {
+        startActivity(new Intent(this, ChooseStripTestActivity.class));
+        this.finish();
     }
+
+//    @Override
+//    public void setBitmap(Bitmap bitmap) {
+//
+//            double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
+//            int width = 800;
+//            int height = (int) Math.round(ratio * width);
+////            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
+////            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
+//            try {
+//                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+//            byte[] bitmapdata = bos.toByteArray();
+//
+//           // sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
+//
+//            bitmap.recycle();
+//
+//            finish();
+//
+//    }
 
     @Override
     public Mat getCalibratedImage(Mat mat)
@@ -221,8 +301,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             Runnable showMessage = new Runnable() {
                 @Override
                 public void run() {
-                    if(messageView!=null)
-                        messageView.setText("Looking for finder patterns.\nPlease hold camera above striptest.");
+                    if(messageLightView !=null)
+                        messageLightView.setText("Looking for finder patterns.\nPlease hold camera above striptest.");
                 }
             };
             handler.post(showMessage);
@@ -235,8 +315,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
                     progressIndicatorView.setStepsTaken(which);
 
-                    if(messageView!=null)
-                        messageView.setText("");
+                    if(messageLightView !=null)
+                        messageLightView.setText("");
 
                     if (progress == null) {
                         progress = new ProgressDialog(CameraActivity.this);
@@ -270,21 +350,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         handler.post(dismissProgress);
     }
 
-//
-//    private Runnable showProgress = new Runnable() {
-//
-//        @Override
-//        public void run() {
-//            if(progress==null)
-//            {
-//                progress = new ProgressDialog(CameraActivity.this);
-//                progress.setTitle(getString(R.string.calibrating));
-//                progress.setMessage(getString(R.string.please_wait));
-//                progress.show();
-//            }
-//        }
-//    };
-
     private Runnable dismissProgress = new Runnable() {
         @Override
         public void run() {
@@ -304,7 +369,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
-    public String getBrand() {
-        return brand;
+    public String getBrandName() {
+        return brandName;
     }
 }

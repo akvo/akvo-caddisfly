@@ -328,7 +328,13 @@ public class CalibrationCard{
         Mat lut = create1DLUT2(coeffB, coeffG, coeffR);
         Mat imgcorr = imgMat.clone();
 
-        Core.LUT(imgMat, lut, imgcorr);
+        try {
+            Core.LUT(imgMat, lut, imgcorr);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
         return imgcorr;
     }
 

@@ -8,8 +8,6 @@ import android.hardware.SensorManager;
 
 import org.akvo.akvoqr.util.App;
 
-import java.util.List;
-
 /**
  * Created by linda on 8/31/15.
  */
@@ -25,9 +23,6 @@ public class LightSensor implements SensorEventListener
         mSensorManager = (SensorManager) App.getMyApplicationContext().getSystemService(Context.SENSOR_SERVICE);
         lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_LIGHT);
-        for(Sensor sensor: deviceSensors)
-            System.out.println("*** sensor available: " + sensor.getName() + ", " + sensor.getType() + ", " + sensor.toString());
     }
 
     public void start()
@@ -42,9 +37,14 @@ public class LightSensor implements SensorEventListener
 
     }
 
+    public boolean hasLightSensor()
+    {
+        return mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!=null;
+    }
+
     public float getLux()
     {
-       return lux;
+        return lux;
     }
     @Override
     public void onSensorChanged(SensorEvent event) {

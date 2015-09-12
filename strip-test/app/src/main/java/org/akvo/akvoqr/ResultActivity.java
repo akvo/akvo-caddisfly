@@ -55,11 +55,11 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Intent intent = getIntent();
-        ArrayList<Mat> mats = (ArrayList<Mat>) intent.getSerializableExtra(Constant.MAT);
+        strip = (Mat) intent.getSerializableExtra(Constant.MAT);
         brandName = intent.getStringExtra(Constant.BRAND);
 
-        if(mats!=null) {
-            Mat mat = mats.get(0);
+        if(strip!=null) {
+
             layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
             /**
@@ -70,12 +70,12 @@ public class ResultActivity extends AppCompatActivity {
             brand = stripTestBrand.getBrand(brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
-            int matH = mat.height();
-            double ratioW = mat.width() / brand.getStripLenght();
-            Core.copyMakeBorder(mat, mat, 20, 20, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+            int matH = strip.height();
+            double ratioW = strip.width() / brand.getStripLenght();
+            Core.copyMakeBorder(strip, strip, 20, 20, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
             for(int i=0;i<patches.size();i++) {
-
+                Mat mat = strip.clone();
                 //show the name of the patch
                 String desc = patches.get(i).getDesc();
 
@@ -85,11 +85,10 @@ public class ResultActivity extends AppCompatActivity {
                 Point centerPatch = new Point(x,y);
 
                 //Draw a green circle around each patch and make a bitmap of the whole
-                strip = mat.clone();
-                Imgproc.circle(strip, centerPatch, (int) Math.ceil(matH * 0.8),
+                Imgproc.circle(mat, centerPatch, (int) Math.ceil(matH * 0.8),
                         new Scalar(0, 255, 0, 255), 2);
 
-                new BitmapTask(desc).execute(strip);
+                new BitmapTask(desc).execute(mat);
 
                 //make a submat around each center of the patch and get mean color
                 int minRow =(int)Math.round(Math.max(centerPatch.y - 7, 0));
@@ -121,35 +120,6 @@ public class ResultActivity extends AppCompatActivity {
                 });
 
             }
-
-            /*start obsolete code */
-            /* code that was used when Intent to start this Activity had a byte[] in Extra's
-             * to pass the image.
-             * now we put a Serializable Mat object in Extra's.
-             * I keep it here in case that does not work well and we need to fall back on Android standards.
-             */
-//            try {
-//                if (format == ImageFormat.NV21) {
-//
-//                    YuvImage yuvImage = new YuvImage(data, format, width, height, null);
-//                    Rect rect = new Rect(0, 0, width, height);
-//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                    yuvImage.compressToJpeg(rect, 100, baos);
-//                    byte[] jData = baos.toByteArray();
-//
-//                    bitmap = BitmapFactory.decodeByteArray(jData, 0, jData.length);
-//                } else if (format == ImageFormat.JPEG || format == ImageFormat.RGB_565) {
-//
-//                    bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//
-//            }
-
-            /* end obsolete code */
-
         }
     }
 

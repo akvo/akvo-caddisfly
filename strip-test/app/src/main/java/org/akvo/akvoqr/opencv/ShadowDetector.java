@@ -2,6 +2,7 @@ package org.akvo.akvoqr.opencv;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -10,6 +11,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by linda on 7/4/15.
@@ -19,7 +21,7 @@ public class ShadowDetector {
 
     public static Mat ShadowDetection(Mat bgr)
     {
-         Mat imageShadow = bgr.clone();
+        Mat imageShadow = bgr.clone();
 
         int iW = (int)Math.round(bgr.size().width);
         int iH = (int)Math.round(bgr.size().height);
@@ -99,7 +101,7 @@ public class ShadowDetector {
                 new Size(2 * dilation_size + 1, 2 * dilation_size + 1),
                 new Point(dilation_size, dilation_size));
         /// Apply the dilation operation to remove small areas
-         Imgproc.dilate( imageGray, imageGray, element );
+        Imgproc.dilate( imageGray, imageGray, element );
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
@@ -136,12 +138,12 @@ public class ShadowDetector {
     public static Mat test(Mat image)
     {
         Mat imageGray = new Mat();
-        Mat mHSVMat = new Mat();
+//        Mat mHSVMat = new Mat();
         Imgproc.cvtColor(image, imageGray, Imgproc.COLOR_RGB2GRAY);
-        Imgproc.cvtColor(image, mHSVMat, Imgproc.COLOR_RGB2HSV, 3);
+//        Imgproc.cvtColor(image, mHSVMat, Imgproc.COLOR_RGB2HSV, 3);
 
         Imgproc.threshold(imageGray, imageGray, 175, 255, Imgproc.THRESH_BINARY);
-        Core.inRange(imageGray, new Scalar(200, 255, 255), new Scalar(255, 255, 255), imageGray);
+//        Core.inRange(imageGray, new Scalar(200, 255, 255), new Scalar(255, 255, 255), imageGray);
 
 //        int dilation_size =2;
 //        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE,
@@ -161,18 +163,102 @@ public class ShadowDetector {
 
             double area = Imgproc.contourArea(contours.get(m));
 
-            System.out.println("***area: " + area);
-
             if(area>400 && area < image.size().width*image.size().height)
             {
 
                 //if (contours.get(m).rows() == 4) {
-                    Imgproc.drawContours(image, contours, m, colorRed, 2);
+                Imgproc.drawContours(image, contours, m, colorRed, 2);
                 //}
 
             }
         }
 
         return result;
+    }
+
+    /*
+        http://www.ijcsi.org/papers/IJCSI-10-4-2-270-273.pdf
+        To detect shadow first a RGB image has to be converted to
+    a LAB image. Then the  mean values of the pixels in L, A
+    and B planes of the image have to be computed separately.
+    Now if mean (A) + mean (B) ≤ 256, then the pixels with a
+    value in L ≤ (mean (L) –
+     standard deviation (L)/3) can be
+    classified  as  shadow  pixels  and  others  as  non-shadow
+    pixels.  Otherwise  the  pixels  with  lower  values  in  both  L
+    and B planes can be classified as shadow pixels and others
+    as non-shadow pixels [16].
+    */
+    public static void detectShadows(Mat bgr)
+    {
+        Mat Lab = new Mat();
+        List<Mat> channels = new ArrayList<>();
+
+        Imgproc.cvtColor(bgr, Lab, Imgproc.COLOR_RGB2Lab);
+        Core.split(Lab, channels);
+
+        Scalar meanL = Core.mean(channels.get(0));
+        Scalar meanA = Core.mean(channels.get(1));
+        Scalar meanB = Core.mean(channels.get(2));
+        MatOfDouble stddev = new MatOfDouble();
+        MatOfDouble meanLoutput = new MatOfDouble();
+
+        Core.meanStdDev(channels.get(0), meanLoutput, stddev);
+
+        double treshold;
+        Mat dst = new Mat();
+        ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+        Mat hierarchy = new Mat();
+
+        if((meanA.val[0] - 128) + (meanB.val[0] -128) < 256) {
+            treshold = meanLoutput.get(0, 0)[0] - stddev.get(0, 0)[0] / 5;
+            System.out.println("***treshold: " + treshold);
+
+            Imgproc.threshold(channels.get(0), channels.get(0), treshold, 255, Imgproc.THRESH_BINARY);
+
+            Imgproc.findContours(channels.get(0), contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            Scalar colorRed = new Scalar(0, 0, 255, 255);
+
+            for( int m = 0; m < contours.size(); m++ ) {
+
+                double area = Imgproc.contourArea(contours.get(m));
+
+                if(area>400 && area < bgr.size().width*bgr.size().height)
+                {
+                    Imgproc.drawContours(bgr, contours, m, colorRed, 2);
+
+                }
+            }
+        }
+        else {
+            double tresholdL = 200;
+            double tresholdB = 128;
+
+            System.out.println("***tresholdL: " + tresholdL);
+
+            Imgproc.threshold(channels.get(0), channels.get(0), tresholdL, 255, Imgproc.THRESH_BINARY);
+            Imgproc.threshold(channels.get(2), channels.get(2), tresholdB, 255, Imgproc.THRESH_BINARY);
+
+            Core.merge(channels, dst);
+
+            Mat gray = new Mat();
+            Imgproc.cvtColor(dst, gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.threshold(gray, gray, 254, 255, Imgproc.THRESH_BINARY);
+
+            Imgproc.findContours(gray, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            Scalar colorRed = new Scalar(0, 0, 255, 255);
+
+            for (int m = 0; m < contours.size(); m++) {
+
+                double area = Imgproc.contourArea(contours.get(m));
+
+                if (area > 400 && area < bgr.size().width * bgr.size().height) {
+                    Imgproc.drawContours(bgr, contours, m, colorRed, 2);
+
+                }
+            }
+        }
     }
 }
