@@ -67,10 +67,11 @@ public class OpenCVUtils {
         }
         return cropped;
     }
-    public static Mat perspectiveTransform(double[] topleft, double[] topright,
-            double[] bottomleft, double[] bottomright, Mat bgr)
+
+    public static List<Point> getOrderedPoints(double[] topleft, double[] topright,
+                                                    double[] bottomleft, double[] bottomright)
     {
-        List<Point> srcList = new ArrayList<>();
+        List<Point> srcList = new ArrayList<Point>();
 
         //coordinates for the rect (the finder pattern centers)
         srcList.add(new Point(topleft));
@@ -94,6 +95,14 @@ public class OpenCVUtils {
 //        System.out.println("***bottomleft: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
 //        System.out.println("***topright: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
 //        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
+
+        return srcList;
+    }
+    public static Mat perspectiveTransform(double[] topleft, double[] topright,
+            double[] bottomleft, double[] bottomright, Mat bgr)
+    {
+
+        List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
 
         //source quad
         //here we maintain the order: top-left, top-right, bottom-left, bottom-right
