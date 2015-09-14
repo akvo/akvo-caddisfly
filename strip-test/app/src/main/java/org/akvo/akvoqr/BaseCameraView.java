@@ -95,7 +95,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             return;
         }
         Camera.Size bestSize = null;
-        List<Camera.Size> sizes = mCamera.getParameters().getSupportedPictureSizes();
+        List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
         for(Camera.Size size: sizes) {
             if(size.width>800)
@@ -121,9 +121,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         Point screenResolution = new Point(screenWidth, screenHeight);
 
         Point bestResolution = CameraConfigurationUtils.findBestPreviewSizeValue(mCamera.getParameters(), screenResolution);
-        parameters.setPreviewSize(bestResolution.x, bestResolution.y);
+        parameters.setPreviewSize(bestSize.width, bestSize.height);
 
-        parameters.setPictureSize(bestSize.width, bestSize.height);
+       // parameters.setPictureSize(bestSize.width, bestSize.height);
 //        parameters.setPictureFormat(ImageFormat.JPEG);
         System.out.println("***bestsize: " + bestSize.width + ", " + bestSize.height);
 
