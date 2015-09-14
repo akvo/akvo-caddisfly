@@ -24,9 +24,9 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,26 +36,18 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.turbidity.TurbidityActivity;
 import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.DateUtil;
-import org.akvo.caddisfly.util.FileUtil;
-import org.akvo.caddisfly.util.NetworkUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
@@ -73,13 +65,16 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                         Toast.LENGTH_SHORT).show();
 
-                AppPreferences.disableDiagnosticMode(getBaseContext());
+                AppPreferences.disableDiagnosticMode();
 
                 switchLayoutForDiagnosticOrUserMode();
 
@@ -113,81 +108,6 @@ public class MainActivity extends BaseActivity {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
-
-        upgradeOldFolderPath();
-
-        checkForUpdate();
-    }
-
-    /**
-     * Upgrade folder names and paths created by previous version to new folder structure
-     */
-    //todo: upgrade stuff. To be removed eventually...
-    private void upgradeOldFolderPath() {
-
-        final String OLD_CALIBRATE_FOLDER_NAME = "calibrate";
-        final String OLD_FILES_FOLDER_NAME = "/com.ternup.caddisfly";
-        final String OLD_APP_EXTERNAL_PATH = "/org.akvo.caddisfly";
-
-        File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                OLD_FILES_FOLDER_NAME + File.separator + OLD_CALIBRATE_FOLDER_NAME);
-
-        boolean folderFixed = true;
-        File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                OLD_APP_EXTERNAL_PATH);
-
-        if (oldFolder.exists()) {
-
-            if (!newPath.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                newPath.mkdirs();
-            }
-
-            newPath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION);
-            if (!newPath.exists()) {
-                folderFixed = oldFolder.renameTo(newPath);
-            }
-        }
-
-        oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                OLD_FILES_FOLDER_NAME);
-        if (oldFolder.exists() && folderFixed) {
-            FileUtil.deleteFiles(Environment.getExternalStorageDirectory().getPath()
-                    + OLD_FILES_FOLDER_NAME);
-        }
-
-        if (newPath.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            newPath.renameTo(new File(Environment.getExternalStorageDirectory().getPath(), "Akvo Caddisfly"));
-        }
-
-    }
-
-    /**
-     * Check for update, but not more than once an hour
-     */
-    private void checkForUpdate() {
-
-        final Context mContext = this;
-
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                if (NetworkUtil.checkInternetConnection(mContext, false)) {
-                    long updateLastCheck = PreferencesUtil.getLong(mContext, R.string.lastUpdateCheckKey);
-
-                    // last update check date
-                    Calendar lastCheckDate = Calendar.getInstance();
-                    lastCheckDate.setTimeInMillis(updateLastCheck);
-
-                    Calendar currentDate = Calendar.getInstance();
-                    if (DateUtil.getHoursDifference(lastCheckDate, currentDate) > 0) {
-                        UpdateCheckTask updateCheckTask = new UpdateCheckTask(mContext, true);
-                        updateCheckTask.execute();
-                    }
-                }
-            }
-        }, 2000);
-
     }
 
     @Override
@@ -203,14 +123,14 @@ public class MainActivity extends BaseActivity {
      * Show the diagnostic mode layout
      */
     private void switchLayoutForDiagnosticOrUserMode() {
-        if (AppPreferences.isDiagnosticMode(this)) {
+        if (AppPreferences.isDiagnosticMode()) {
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutTitle).setVisibility(View.GONE);
+            findViewById(R.id.layoutSlogan).setVisibility(View.GONE);
             findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
         } else {
             if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
-                findViewById(R.id.layoutTitle).setVisibility(View.VISIBLE);
+                findViewById(R.id.layoutSlogan).setVisibility(View.VISIBLE);
                 findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
             }
         }
@@ -372,12 +292,6 @@ public class MainActivity extends BaseActivity {
 
                 final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
-
-                break;
-            case TURBIDITY_COLIFORMS:
-
-                final Intent turbidityIntent = new Intent(context, TurbidityActivity.class);
-                startActivityForResult(turbidityIntent, REQUEST_TEST);
 
                 break;
             case SENSOR:

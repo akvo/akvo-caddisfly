@@ -21,6 +21,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -36,6 +38,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ApiUtil.lockScreenOrientation(this);
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -50,21 +65,30 @@ public abstract class BaseActivity extends AppCompatActivity {
      * This serves as a visual indication as to what mode the app is running in
      */
     void changeActionBarStyleBasedOnCurrentMode() {
-        if (AppPreferences.isDiagnosticMode(this)) {
+        if (AppPreferences.isDiagnosticMode()) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
                         ContextCompat.getColor(this, R.color.diagnostic)));
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.diagnostic_status));
-                }
             }
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.diagnostic_status));
+            }
+            LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
+            if (layoutTitle != null) {
+                layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.diagnostic));
+            }
+
         } else {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
                         ContextCompat.getColor(this, R.color.action_bar)));
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
-                }
+            }
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
+            }
+            LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
+            if (layoutTitle != null) {
+                layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.action_bar));
             }
         }
     }

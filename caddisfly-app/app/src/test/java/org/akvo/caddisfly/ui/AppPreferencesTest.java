@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.content.Context;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -44,51 +43,36 @@ public class AppPreferencesTest {
     }
 
     @Test
-    public void checkIgnoreShake() {
-        checkDiagnosticPreference(R.string.ignoreShakeKey, false, "getIgnoreShake", true);
-    }
-
-    @Test
-    public void checkUseFlashMode() {
-        checkDiagnosticPreference(R.string.useFlashModeKey, false, "getUseFlashMode", true);
-    }
-
-    @Test
-    public void checkAutoFocus() {
-        checkDiagnosticPreference(R.string.autoFocusKey, false, "getAutoFocus", true);
-    }
-
-    @Test
     public void checkDebugMessagesKey() {
         checkDiagnosticPreference(R.string.showDebugMessagesKey, false, "getShowDebugMessages", true);
     }
 
     @Test
     public void checkSamplingTimes() {
-        assertEquals(6, AppPreferences.getSamplingTimes(RuntimeEnvironment.application));
+        assertEquals(6, AppPreferences.getSamplingTimes());
     }
 
     private void checkDiagnosticPreference(@StringRes int key, Object defaultValue,
                                            String methodName, Object newValue) {
         Method method;
         try {
-            method = AppPreferences.class.getDeclaredMethod(methodName, Context.class);
+            method = AppPreferences.class.getDeclaredMethod(methodName);
 
-            assertEquals(defaultValue, method.invoke(null, RuntimeEnvironment.application));
+            assertEquals(defaultValue, method.invoke(null));
 
-            AppPreferences.enableDiagnosticMode(RuntimeEnvironment.application);
-            assertEquals(defaultValue, method.invoke(null, RuntimeEnvironment.application));
+            AppPreferences.enableDiagnosticMode();
+            assertEquals(defaultValue, method.invoke(null));
 
             if (defaultValue instanceof Boolean) {
                 PreferencesUtil.setBoolean(RuntimeEnvironment.application, key, !(boolean) defaultValue);
-                assertEquals(!(boolean) defaultValue, method.invoke(null, RuntimeEnvironment.application));
+                assertEquals(!(boolean) defaultValue, method.invoke(null));
             } else if (defaultValue instanceof Integer) {
                 PreferencesUtil.setString(RuntimeEnvironment.application, key, newValue.toString());
-                assertEquals(newValue, method.invoke(null, RuntimeEnvironment.application));
+                assertEquals(newValue, method.invoke(null));
             }
 
-            AppPreferences.disableDiagnosticMode(RuntimeEnvironment.application);
-            assertEquals(defaultValue, method.invoke(null, RuntimeEnvironment.application));
+            AppPreferences.disableDiagnosticMode();
+            assertEquals(defaultValue, method.invoke(null));
         } catch (NoSuchMethodException e) {
             assertEquals("Error in method call, check method name", "<correctMethodName>", methodName);
         } catch (Exception e) {

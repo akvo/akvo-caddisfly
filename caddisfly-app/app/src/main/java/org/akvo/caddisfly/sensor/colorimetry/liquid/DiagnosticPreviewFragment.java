@@ -62,7 +62,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         sound = new SoundPoolPlayer(getActivity());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                AppPreferences.getUseCamera2Api(getActivity())) {
+                AppPreferences.getUseCamera2Api()) {
             mCameraDialog = Camera2DialogFragment.newInstance();
         } else {
             mCameraDialog = CameraDialogFragment.newInstance();
@@ -74,14 +74,14 @@ public class DiagnosticPreviewFragment extends DialogFragment {
             @Override
             public void onPictureTaken(byte[] bytes, boolean completed) {
 
-                mCameraDialog.dismiss();
-
                 sound.playShortResource(R.raw.beep);
+
+                mCameraDialog.dismiss();
 
                 Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
-                        !AppPreferences.getUseCamera2Api(getActivity())) {
+                        !AppPreferences.getUseCamera2Api()) {
 
                     Display display = getActivity().getWindowManager().getDefaultDisplay();
                     int rotation = 0;

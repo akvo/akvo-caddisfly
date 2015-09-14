@@ -16,24 +16,22 @@
 
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="actionBarStyle">@style/Theme.MyApp.ActionBar</item>
+        <item name="actionBarStyle">@style/Theme.App.ActionBar</item>
     </style>
 
-    <style name="Theme.MyApp.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="Theme.App.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="elevation">4dp</item>
     </style>
 
     <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowShowWallpaper">false</item>
         <item name="actionBarStyle">@style/Theme.Main.ActionBar</item>
     </style>
 

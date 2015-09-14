@@ -24,6 +24,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         return new SaveCalibrationDialogFragment();
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -123,7 +125,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         });
 
         editName = (EditText) v.findViewById(R.id.editName);
-        if (AppPreferences.isDiagnosticMode(getActivity())) {
+        if (AppPreferences.isDiagnosticMode()) {
             editName.requestFocus();
             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
@@ -206,27 +208,28 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         calibrationDetails.append("DeviceId: ");
                         calibrationDetails.append(ApiUtil.getEquipmentId(context));
 
-                        final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+                        if (!editName.getText().toString().trim().isEmpty()) {
+                            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
+                                    CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+                            File file = new File(path, editName.getText().toString());
 
-                        File file = new File(path, editName.getText().toString());
-
-                        if (file.exists()) {
-                            AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
-                                    R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            FileUtil.saveToFile(path, editName.getText().toString(),
-                                                    calibrationDetails.toString());
-                                            Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                            if (file.exists()) {
+                                AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
+                                        R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                FileUtil.saveToFile(path, editName.getText().toString(),
+                                                        calibrationDetails.toString());
+                                                Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
-                            );
-                        } else {
-                            FileUtil.saveToFile(path, editName.getText().toString(),
-                                    calibrationDetails.toString());
-                            Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                                );
+                            } else {
+                                FileUtil.saveToFile(path, editName.getText().toString(),
+                                        calibrationDetails.toString());
+                                Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         closeKeyboard(context, editName);
@@ -236,7 +239,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
                 private boolean formEntryValid() {
 
-                    if (AppPreferences.isDiagnosticMode(getActivity()) &&
+                    if (AppPreferences.isDiagnosticMode() &&
                             editName.getText().toString().trim().isEmpty()) {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;

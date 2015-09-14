@@ -15,89 +15,103 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
     android:orientation="vertical"
     tools:context=".ui.AboutActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:contentDescription="@null"
-        android:src="@drawable/logo" />
-
-    <TextView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:alpha="0.8"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:text="@string/appName"
-        android:textAllCaps="true"
-        android:textSize="28dp"
-        android:textStyle="bold"
-        tools:ignore="SpUsage" />
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat"
+        app:title="@string/about" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:alpha="0.7"
-        android:fontFamily="sans-serif-light"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingBottom="20dp"
-        android:text="@string/waterQualitySystem"
-        android:textAllCaps="true"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="200dp"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:alpha="0.3"
-        android:background="#ddbab0a0" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/textVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:textSize="15sp"
-        android:textStyle="normal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:alpha="0.8"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/appName"
+            android:textAllCaps="true"
+            android:textSize="28dp"
+            android:textStyle="bold"
+            tools:ignore="SpUsage" />
 
-    <View
-        android:layout_width="200dp"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:alpha="0.3"
-        android:background="#ddbab0a0" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/waterQualitySystem"
+            android:textAllCaps="true"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:text="@string/companyOtherName"
-        android:textSize="15sp"
-        android:textStyle="normal" />
+        <View
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:alpha="0.3"
+            android:background="#ddbab0a0" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:paddingBottom="20dp"
-        android:text="@string/copyrightMessage"
-        android:textSize="15sp"
-        android:textStyle="normal" />
+        <TextView
+            android:id="@+id/textVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:textSize="15sp"
+            android:textStyle="normal" />
 
+        <View
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:alpha="0.3"
+            android:background="#ddbab0a0" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="@string/companyOtherName"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/copyrightMessage"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+    </LinearLayout>
 </LinearLayout>

@@ -44,7 +44,6 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.UpdateCheckTask;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -52,7 +51,6 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtil;
-import org.akvo.caddisfly.util.NetworkUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -199,8 +197,6 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
-
         leaveDiagnosticMode();
 
         onView(withId(R.id.actionSettings)).perform(click());
@@ -252,25 +248,25 @@ public class EspressoTest
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
-            onView(withText(R.string.updateCheck)).perform(click());
-
-            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
-            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
-            mDevice.waitForWindowUpdate("", 1000);
-
-            //Enable Internet Dialog
-            takeScreenshot();
-
-            Espresso.pressBack();
-
-        }
+//        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
+//            onView(withText(R.string.updateCheck)).perform(click());
+//
+//            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
+//            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
+//            mDevice.waitForWindowUpdate("", 1000);
+//
+//            //Enable Internet Dialog
+//            takeScreenshot();
+//
+//            Espresso.pressBack();
+//
+//        }
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
+        goToMainScreen();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -289,15 +285,9 @@ public class EspressoTest
         onView(withText(String.format("%s. %s", getActivity().getString(R.string.calibrationIsInvalid),
                 getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
 
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
         leaveDiagnosticMode();
 
         sleep(4000);
-
-        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -316,15 +306,15 @@ public class EspressoTest
 
         saveCalibration();
 
-        mDevice.pressBack();
+        goToMainScreen();
 
-        mDevice.pressBack();
-
-        mDevice.pressBack();
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
         enterDiagnosticMode();
+
+        Espresso.pressBack();
 
         Espresso.pressBack();
 
@@ -342,13 +332,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
         leaveDiagnosticMode();
-
-        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -391,8 +375,6 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
-
         openSurveyInFlow();
 
         clickExternalSourceButton("useExternalSource");
@@ -409,8 +391,6 @@ public class EspressoTest
         mDevice.pressBack();
 
         startApp();
-
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -494,11 +474,11 @@ public class EspressoTest
 
     private void goToMainScreen() {
 
-        TextView button = (TextView) getCurrentActivity().findViewById(R.id.textOpenApp);
+        TextView button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
         while (button == null) {
             Espresso.pressBack();
             mDevice.waitForWindowUpdate("", 2000);
-            button = (TextView) getCurrentActivity().findViewById(R.id.textOpenApp);
+            button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
         }
     }
 
@@ -510,7 +490,7 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
+        goToMainScreen();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -523,18 +503,9 @@ public class EspressoTest
         onView(withId(R.id.actionSwatches)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
-
-        Espresso.pressBack();
-
-        onView(withId(R.id.actionSettings)).check(matches(isDisplayed()));
     }
 
     public void testIncompleteCalibration() {
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -562,7 +533,7 @@ public class EspressoTest
     }
 
     public void testChangeTestType() {
-        onView(withId(R.id.actionSettings)).perform(click());
+        //onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -595,13 +566,7 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
-
-        onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
-
         goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -615,13 +580,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
+        goToMainScreen();
 
         openSurveyInFlow();
 
@@ -679,9 +638,9 @@ public class EspressoTest
     }
 
     public void testCalibrateSensor() {
-        onView(withId(R.id.actionSettings)).perform(click());
+        //onView(withId(R.id.actionSettings)).perform(click());
 
-        onView(withText(R.string.calibrateSummary)).check(matches(isDisplayed()));
+        //onView(withText(R.string.calibrateSummary)).check(matches(isDisplayed()));
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -709,35 +668,36 @@ public class EspressoTest
 
         Espresso.pressBack();
 
+        Espresso.pressBack();
+
         onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
 
-        Espresso.pressBack();
     }
 
-    public void testCheckUpdate() {
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.updateCheck)).check(matches(isDisplayed()));
-
-        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
-
-        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
-
-            onView(withText(R.string.updateCheck)).perform(click());
-
-            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
-            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
-
-            Espresso.pressBack();
-
-        }
-
-        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
-
-        Espresso.pressBack();
-
-    }
+//    public void testCheckUpdate() {
+//
+//        onView(withId(R.id.actionSettings)).perform(click());
+//
+//        onView(withText(R.string.updateCheck)).check(matches(isDisplayed()));
+//
+//        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
+//
+//        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
+//
+//            onView(withText(R.string.updateCheck)).perform(click());
+//
+//            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
+//            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
+//
+//            Espresso.pressBack();
+//
+//        }
+//
+//        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
+//
+//        Espresso.pressBack();
+//
+//    }
 
     public void testDiagnosticMode() {
 
@@ -749,13 +709,11 @@ public class EspressoTest
             onView(withId(R.id.textVersion)).perform(click());
         }
 
-        Espresso.pressBack();
-
-        onView(withText(R.string.enableUserMode)).check(matches(isDisplayed()));
-
         goToMainScreen();
 
-        onView(withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.fabDisableDiagnostics)).check(matches(isDisplayed()));
+
+        goToMainScreen();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -819,7 +777,9 @@ public class EspressoTest
 
     private void leaveDiagnosticMode() {
 
-        onView(withText(R.string.enableUserMode)).perform(click());
+        goToMainScreen();
+
+        onView(withId(R.id.fabDisableDiagnostics)).perform(click());
 
     }
 
@@ -829,8 +789,6 @@ public class EspressoTest
     }
 
     private void startCalibrate(double value, int index) {
-
-        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -878,7 +836,7 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
+        goToMainScreen();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -892,13 +850,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
         leaveDiagnosticMode();
-
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -946,7 +898,7 @@ public class EspressoTest
 
         enterDiagnosticMode();
 
-        Espresso.pressBack();
+        goToMainScreen();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -960,13 +912,7 @@ public class EspressoTest
 
         sleep(2000);
 
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
         leaveDiagnosticMode();
-
-        onView(withText(R.string.toConductTestOpenApp)).check(matches(isDisplayed()));
 
         openSurveyInFlow();
 
@@ -986,7 +932,8 @@ public class EspressoTest
         onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(getActivity().getString(R.string.tryWithDilutedSample), 2)))
                 .check(matches(isCompletelyDisplayed()));
@@ -1071,8 +1018,6 @@ public class EspressoTest
 
     public void testRestartAppDuringAnalysis() {
 
-        onView(withId(R.id.actionSettings)).perform(click());
-
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
@@ -1118,45 +1063,6 @@ public class EspressoTest
 
         mCounter += 4;
 
-        final UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), true);
-
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = UpdateCheckTask.class.getDeclaredMethod("alertUpdateNotFound");
-                    method.setAccessible(true);
-                    method.invoke(updateCheckTask);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //Update not found
-        takeScreenshot();
-
-        onView(withId(android.R.id.button2)).perform(click());
-
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = UpdateCheckTask.class.getDeclaredMethod(
-                            "alertUpdateAvailable", String.class, String.class, String.class);
-                    method.setAccessible(true);
-                    method.invoke(updateCheckTask, "", "", "");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //Update available
-        takeScreenshot();
-
-        onView(withId(android.R.id.button2)).perform(click());
-
 //        getActivity().runOnUiThread(new Runnable() {
 //            public void run() {
 //                try {
@@ -1178,8 +1084,6 @@ public class EspressoTest
         startApp();
 
         getActivity();
-
-        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.calibrate)).perform(click());
 

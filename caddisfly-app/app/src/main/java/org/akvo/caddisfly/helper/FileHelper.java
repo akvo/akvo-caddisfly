@@ -35,7 +35,6 @@ public class FileHelper {
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
 
-
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may
      * not be in the app-specific External Storage. The caller cannot assume anything about
@@ -44,7 +43,8 @@ public class FileHelper {
      * @param type FileType to determine the type of resource attempting to use.
      * @return File representing the root directory for the given FileType.
      */
-    public static File getFilesDir(FileType type) {
+    @SuppressWarnings("SameParameterValue")
+    private static File getFilesDir(FileType type) {
         return getFilesDir(type, "");
     }
 

@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.preference;
 
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -37,16 +36,11 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.UpdateCheckTask;
-import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
-
-import java.util.Hashtable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -113,27 +107,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        final Preference startTurbidityTestPreference = findPreference("startColiformsTest");
-        if (startTurbidityTestPreference != null) {
-            startTurbidityTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-
-                    if (isCameraAvailable()) {
-                        Hashtable<String, String> namesHashTable = new Hashtable<>(1, 1);
-                        namesHashTable.put("en", "Coliforms");
-
-                        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(namesHashTable, "COLIF",
-                                "", CaddisflyApp.TestType.TURBIDITY_COLIFORMS, false,
-                                new String[]{}, new String[]{}));
-
-                        final Intent intent = new Intent(getActivity(), TurbidityStartActivity.class);
-                        startActivity(intent);
-                    }
-                    return true;
-                }
-            });
-        }
-
         Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -194,17 +167,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        Preference updatePreference = findPreference("checkUpdate");
-        if (updatePreference != null) {
-            updatePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    UpdateCheckTask updateCheckTask = new UpdateCheckTask(getActivity(), false);
-                    updateCheckTask.execute();
-                    return true;
-                }
-            });
-        }
-
         return rootView;
     }
 
@@ -242,5 +204,4 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         ListViewUtil.setListViewHeightBasedOnChildren(list, 0);
     }
-
 }

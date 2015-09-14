@@ -20,24 +20,86 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
     tools:context=".ui.MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/layoutTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            app:theme="@style/Base.Theme.AppCompat"
+            app:title="@string/appName" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonCalibrate"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableEnd="@drawable/arrow_right_light"
+                android:minHeight="80dp"
+                android:paddingStart="22dp"
+                android:text="@string/calibrate"
+                android:textAlignment="viewStart"
+                android:textColor="#e2e0e0"
+                android:theme="@style/Button.Blue"
+                tools:ignore="RtlSymmetry" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:background="#22003b69"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/waterQualityTest"
+                    android:textColor="#e2e0e0"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@string/toPerformWaterQualityTest"
+                    android:textColor="#e2e0e0"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutSlogan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:text="Water Quality"
+            android:text="@string/waterQuality"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#22007a8d"
             android:textSize="50dp"
@@ -47,8 +109,8 @@
     <RelativeLayout
         android:id="@+id/layoutDiagnostics"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/textDiagnostics"
@@ -81,59 +143,5 @@
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/buttonCalibrate"
-            style="@style/Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/arrow_right_light"
-            android:minHeight="80dp"
-            android:paddingStart="20dp"
-            android:text="@string/calibrate"
-            android:textAlignment="viewStart"
-            android:textColor="#e2e0e0"
-            android:theme="@style/Button.Blue"
-            tools:ignore="RtlSymmetry" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
-            android:background="#22003b69"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Performing a Test"
-                    android:textColor="#e2e0e0"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="8dp"
-                    android:text="To perform a water quality test, open Akvo FLOW app and fill the appropriate survey."
-                    android:textColor="#e2e0e0"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </FrameLayout>
-
-    </LinearLayout>
 </FrameLayout>
 

@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.util;
@@ -20,9 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorInfo;
-import org.akvo.caddisfly.model.HsvColor;
 import org.akvo.caddisfly.model.LabColor;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.XyzColor;
@@ -81,7 +79,7 @@ public final class ColorUtil {
         switch (DEFAULT_COLOR_MODEL) {
             case RGB:
                 //todo: remove this diagnostic code
-                return AppPreferences.getColorDistanceTolerance(CaddisflyApp.getApp().getApplicationContext());
+                return AppPreferences.getColorDistanceTolerance();
             //return MAX_COLOR_DISTANCE_RGB;
             case LAB:
                 return MAX_COLOR_DISTANCE_LAB;
@@ -269,10 +267,6 @@ public final class ColorUtil {
     public static ArrayList<Swatch> generateGradient(
             ArrayList<Swatch> swatches, ColorModel colorModel, double increment) {
 
-        if (colorModel == ColorModel.HSV) {
-            return getGradientHsvColor(swatches, 200);
-        }
-
         ArrayList<Swatch> list = new ArrayList<>();
 
         for (int i = 0; i < swatches.size() - 1; i++) {
@@ -440,63 +434,6 @@ public final class ColorUtil {
         return new XyzColor(x, y, z);
     }
 
-    // create gradient from yellow to red to black with 100 steps
-    //var gradient = hsvGradient(100, [{h:0.14, s:0.5, b:1}, {h:0, s:1, b:1}, {h:0, s:1, b:0}]);
-    // http://stackoverflow.com/questions/2593832/how-to-interpolate-hue-values-in-hsv-colour-space
-    @SuppressWarnings("SameParameterValue")
-    private static ArrayList<Swatch> getGradientHsvColor(ArrayList<Swatch> colors, int steps) {
-        int parts = colors.size() - 1;
-        ArrayList<Swatch> gradient = new ArrayList<>();
-        int gradientIndex = 0;
-        double increment = 0.01;
-        double partSteps = Math.floor(steps / parts);
-        double remainder = steps - (partSteps * parts);
-        for (int col = 0; col < parts; col++) {
-
-            double startValue = colors.get(col).getValue();
-
-            float[] hsvColor = new float[3];
-
-            Color.RGBToHSV(Color.red(colors.get(col).getColor()),
-                    Color.green(colors.get(col).getColor()),
-                    Color.blue(colors.get(col).getColor()), hsvColor);
-            HsvColor c1 = new HsvColor(hsvColor[0], hsvColor[1], hsvColor[2]);
-
-            Color.RGBToHSV(Color.red(colors.get(col + 1).getColor()),
-                    Color.green(colors.get(col + 1).getColor()),
-                    Color.blue(colors.get(col + 1).getColor()), hsvColor);
-            HsvColor c2 = new HsvColor(hsvColor[0], hsvColor[1], hsvColor[2]);
-
-            // determine clockwise and counter-clockwise distance between hues
-            double distCCW = (c1.h >= c2.h) ? c1.h - c2.h : 1 + c1.h - c2.h;
-            double distCW = (c1.h >= c2.h) ? 1 + c2.h - c1.h : c2.h - c1.h;
-
-            // ensure we get the right number of steps by adding remainder to final part
-            if (col == parts - 1) partSteps += remainder;
-
-            // make gradient for this part
-            for (int step = 0; step < partSteps; step++) {
-                double p = step / partSteps;
-                // interpolate h, s, b
-                float h = (float) ((distCW <= distCCW) ? c1.h + (distCW * p) : c1.h - (distCCW * p));
-                if (h < 0) h = 1 + h;
-                if (h > 1) h = h - 1;
-                float s = (float) ((1 - p) * c1.s + p * c2.s);
-                float v = (float) ((1 - p) * c1.v + p * c2.v);
-
-                hsvColor[0] = h;
-                hsvColor[1] = s;
-                hsvColor[2] = v;
-                // add to gradient array
-                gradient.add(gradientIndex, new Swatch(startValue + (step * increment),
-                        Color.HSVToColor(hsvColor)));
-
-                gradientIndex++;
-            }
-        }
-        return gradient;
-    }
-
     //https://github.com/StanfordHCI/c3/blob/master/java/src/edu/stanford/vis/color/LAB.java
     public static double getColorDistanceLab(LabColor x, LabColor y) {
         // adapted from Sharma et al's MATLAB implementation at
@@ -573,10 +510,14 @@ public final class ColorUtil {
         return Math.sqrt(dL * dL + dC * dC + dH * dH + RT * dC * dH);
     }
 
+//    public static double getColorDistanceLab(int color1, int color2) {
+//        return getColorDistanceLab(colorToLab(color1), colorToLab(color2));
+//    }
+
     /**
      * The different types of color models
      */
     public enum ColorModel {
-        RGB, LAB, HSV
+        RGB, LAB
     }
 }

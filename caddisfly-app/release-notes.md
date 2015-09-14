@@ -1,3 +1,16 @@
+v0.79 beta
+----------
+1. Main screen design changes
+2. Calibrate link moved to main screen
+3. 'Check update' link moved to Diagnostic settings
+4. Calibration details section added (WIP)
+5. Activity transition sliding animation added
+6. Buttons ripple effects added
+7. Diagnostic: Camera preview run test by placing phone face down
+8. Diagnostic: Camera preview single click to run test
+9. Diagnostic: Coliforms test added
+10. Diagnostic: Camera2 api testing
+
 v0.78 beta
 ----------
 1. Action bar style changed to theme default

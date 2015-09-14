@@ -182,24 +182,4 @@ public final class FileUtil {
         }
         return text.toString();
     }
-
-    /**
-     * Delete all files in a path
-     *
-     * @param path the path
-     */
-    public static void deleteFiles(String path) {
-
-        File file = new File(path);
-
-        if (file.exists()) {
-            String deleteCmd = "rm -r " + path;
-            Runtime runtime = Runtime.getRuntime();
-            try {
-                runtime.exec(deleteCmd);
-            } catch (IOException ignored) {
-            }
-        }
-    }
-
 }

@@ -41,7 +41,7 @@ public class AboutActivity extends BaseActivity {
             int clickCount = 0;
             @Override
             public void onClick(View view) {
-                if (!AppPreferences.isDiagnosticMode(getBaseContext())) {
+                if (!AppPreferences.isDiagnosticMode()) {
                     clickCount++;
 
                     //Turn on diagnostic mode if the user clicks on the version text 10 times
@@ -49,7 +49,7 @@ public class AboutActivity extends BaseActivity {
                         clickCount = 0;
                         Toast.makeText(getBaseContext(), getString(
                                 R.string.diagnosticModeEnabled), Toast.LENGTH_SHORT).show();
-                        AppPreferences.enableDiagnosticMode(getBaseContext());
+                        AppPreferences.enableDiagnosticMode();
 
                         changeActionBarStyleBasedOnCurrentMode();
                     }

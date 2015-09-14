@@ -50,8 +50,6 @@
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
-    <string name="noInternetConnection">No Internet Connection</string>
-    <string name="enableInternet">Check your network settings and try again</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
     <string name="pleaseEnterValue">Enter a value</string>
@@ -68,13 +66,8 @@
     <string name="errorTestNotAvailable">No configuration found for %1$s</string>
     <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
     <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
-    <string name="toConductTestOpenApp">Open Akvo FLOW to test a sample</string>
 
     <!--Settings Screen-->
-    <string name="calibrateSummary">Calibrate colorimeter or external sensors</string>
-    <string name="updateCheck">Check update</string>
-    <string name="updateSummary">Check if a new version is available</string>
-    <string name="displaysVersionNumber">Displays version information</string>
     <string name="language">Language</string>
 
     <!--Calibration Screen-->
@@ -118,32 +111,16 @@
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
 
-    <!--App update-->
-    <string name="update">Update</string>
-    <string name="updateCheckingFor">Checking for updates…</string>
-    <string name="noUpdate">No update</string>
-    <string name="updatedAlready">You already have the latest version of Akvo Caddisfly installed</string>
-    <string name="updateAvailable">Update available</string>
-    <string name="updateRequest">A new version of Akvo Caddisfly is available. Would you like to update now?</string>
-    <string name="updateFetching">Downloading Akvo Caddisfly update…</string>
-    <string name="notNow">Not now</string>
-    <string name="updateFailedNoInternet">Update failed. No internet connection</string>
-    <string name="updateFailed">Update failed</string>
-
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-
-    <!--Diagnostic Mode: Main Screen -->
-    <string name="enableUserMode">Enable User Mode</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
     <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
 
     <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveCalibration">Save Calibration</string>
     <string name="saveInvalidFileName">Invalid file name</string>
     <string name="fileAlreadyExists">File already exists</string>
     <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
@@ -158,9 +135,6 @@
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="testSensor">EC Sensor</string>
-    <string name="autoFocus">Auto Focus</string>
-    <string name="useFlashMode">Use Flash Mode</string>
-    <string name="ignoreShakeDuringAnalysis">Ignore shake during analysis</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
     <string name="fileSaved">File saved</string>
@@ -172,4 +146,7 @@
     <string name="required">Required</string>
     <string name="selectTest">Select Test</string>
     <string name="calibrationDetails">Calibration Details</string>
+    <string name="waterQualityTest">Water Quality Test</string>
+    <string name="waterQuality">Water Quality</string>
+    <string name="toPerformWaterQualityTest">To perform a water quality test, open Akvo FLOW app and fill in the appropriate survey.</string>
 </resources>

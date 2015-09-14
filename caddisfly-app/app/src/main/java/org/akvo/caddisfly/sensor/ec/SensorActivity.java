@@ -434,7 +434,7 @@ public class SensorActivity extends BaseActivity {
 
             String[] resultArray = result.split(",");
 
-            if (AppPreferences.getShowDebugMessages(this)) {
+            if (AppPreferences.getShowDebugMessages()) {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (debugToast == null) {

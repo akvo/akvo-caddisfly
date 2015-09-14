@@ -127,22 +127,7 @@
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.turbidity.TurbidityActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/appName"
-            android:screenOrientation="nosensor"
-            android:showOnLockScreen="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".sensor.turbidity.TurbidityStartActivity"
-            android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor" />
 
-        <receiver
-            android:name=".sensor.turbidity.TurbidityStartReceiver"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 
 </manifest>

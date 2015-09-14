@@ -36,7 +36,6 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -52,10 +51,8 @@ import java.util.TimerTask;
 public class CameraDialogFragment extends CameraDialog {
     private int mNumberOfPhotosToTake;
     private int mPhotoCurrentCount = 0;
-
     private boolean mCancelled = false;
     private Camera mCamera;
-
     // View to display the camera output.
     private CameraPreview mPreview;
 
@@ -71,37 +68,6 @@ public class CameraDialogFragment extends CameraDialog {
      */
     public static CameraDialogFragment newInstance() {
         return new CameraDialogFragment();
-    }
-
-    private static Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
-        final double ASPECT_TOLERANCE = 0.05;
-        double targetRatio = (double) w / h;
-        if (sizes == null) return null;
-
-        Camera.Size optimalSize = null;
-        double minDiff = Double.MAX_VALUE;
-
-        // Try to find an size match aspect ratio and size
-        for (Camera.Size size : sizes) {
-            double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-            if (Math.abs(size.height - h) < minDiff) {
-                optimalSize = size;
-                minDiff = Math.abs(size.height - h);
-            }
-        }
-
-        // Cannot find the one match the aspect ratio, ignore the requirement
-        if (optimalSize == null) {
-            minDiff = Double.MAX_VALUE;
-            for (Camera.Size size : sizes) {
-                if (Math.abs(size.height - h) < minDiff) {
-                    optimalSize = size;
-                    minDiff = Math.abs(size.height - h);
-                }
-            }
-        }
-        return optimalSize;
     }
 
     @Override
@@ -197,8 +163,8 @@ public class CameraDialogFragment extends CameraDialog {
 
         if (opened) {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-            FrameLayout preview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
-            preview.addView(mPreview);
+            FrameLayout layoutCameraPreview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
+            layoutCameraPreview.addView(mPreview);
 
             mPreview.startCameraPreview();
         }
@@ -240,11 +206,12 @@ public class CameraDialogFragment extends CameraDialog {
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         private final SurfaceHolder mHolder;
-
+        private List<Camera.Size> mSupportedPreviewSizes;
         private Camera mCamera;
 
         @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
+        private Camera.Size mPreviewSize;
 
         public CameraPreview(Context context) {
             super(context);
@@ -254,9 +221,18 @@ public class CameraDialogFragment extends CameraDialog {
         public CameraPreview(Context context, Camera camera) {
             super(context);
             setCamera(camera);
+            mCamera = camera;
+
+            // supported preview sizes
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+
+            // Install a SurfaceHolder.Callback so we get notified when the
+            // underlying surface is created and destroyed.
             mHolder = getHolder();
             mHolder.addCallback(this);
             mHolder.setKeepScreenOn(true);
+            // deprecated setting, but required on Android versions prior to 3.0
+            mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
 
         public void startCameraPreview() {
@@ -288,7 +264,7 @@ public class CameraDialogFragment extends CameraDialog {
 
             List<String> focusModes = parameters.getSupportedFocusModes();
 
-            if (AppPreferences.getAutoFocus(getContext())) {
+            if (AppPreferences.getAutoFocus()) {
                 // Force auto focus as per preference
                 if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -311,12 +287,12 @@ public class CameraDialogFragment extends CameraDialog {
                 parameters.setMeteringAreas(meteringAreas);
             }
 
-            if (parameters.getMaxNumFocusAreas() > 0) {
-                List<Camera.Area> focusAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-100, -100, 100, 100);
-                focusAreas.add(new Camera.Area(areaRect1, 1000));
-                parameters.setFocusAreas(focusAreas);
-            }
+//            if (parameters.getMaxNumFocusAreas() > 0) {
+//                List<Camera.Area> focusAreas = new ArrayList<>();
+//                Rect areaRect1 = new Rect(-100, -100, 100, 100);
+//                focusAreas.add(new Camera.Area(areaRect1, 1000));
+//                parameters.setFocusAreas(focusAreas);
+//            }
 
             List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
 
@@ -327,7 +303,7 @@ public class CameraDialogFragment extends CameraDialog {
                 }
             }
             if (mSupportedFlashModes != null) {
-                if (AppPreferences.getUseFlashMode(getContext())) {
+                if (AppPreferences.getUseFlashMode()) {
                     if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                     }
@@ -343,14 +319,9 @@ public class CameraDialogFragment extends CameraDialog {
         }
 
         public void surfaceCreated(SurfaceHolder holder) {
-            try {
-                if (mCamera != null) {
-                    mCamera.setPreviewDisplay(holder);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // empty. surfaceChanged will take care of stuff
         }
+
 
         public void surfaceDestroyed(SurfaceHolder holder) {
             if (mCamera != null) {
@@ -359,34 +330,89 @@ public class CameraDialogFragment extends CameraDialog {
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-
+            // If your preview can change or rotate, take care of those events here.
+            // Make sure to stop the preview before resizing or reformatting it.
             if (mHolder.getSurface() == null) {
+                // preview surface does not exist
                 return;
             }
 
+            // stop preview before making changes
+            try {
+                mCamera.stopPreview();
+            } catch (Exception e) {
+                // ignore: tried to stop a non-existent preview
+            }
+
+            // set preview size and make any resize, rotate or reformatting changes here
+            // start preview with new settings
             try {
                 Camera.Parameters parameters = mCamera.getParameters();
-
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-
-                List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-                Camera.Size optimalSize = getOptimalPreviewSize(sizes, w, h);
-                parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-
-//                for (Camera.Size size : sizes) {
-//                    if (size.width > 400 && size.width < 1000) {
-//                        parameters.setPreviewSize(size.width, size.height);
-//                        break;
-//                    }
-//                }
-                requestLayout();
-
+                parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
                 mCamera.setParameters(parameters);
+                mCamera.setDisplayOrientation(90);
+                mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            } catch (Exception ignored) {
+
             }
         }
+
+        private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+            final double ASPECT_TOLERANCE = 0.1;
+            double targetRatio = (double) h / w;
+
+            if (sizes == null)
+                return null;
+
+            Camera.Size optimalSize = null;
+            double minDiff = Double.MAX_VALUE;
+
+            for (Camera.Size size : sizes) {
+                double ratio = (double) size.height / size.width;
+                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                    continue;
+
+                if (Math.abs(size.height - h) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - h);
+                }
+            }
+
+            if (optimalSize == null) {
+                minDiff = Double.MAX_VALUE;
+                for (Camera.Size size : sizes) {
+                    if (Math.abs(size.height - h) < minDiff) {
+                        optimalSize = size;
+                        minDiff = Math.abs(size.height - h);
+                    }
+                }
+            }
+
+            return optimalSize;
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+            final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+
+            if (mSupportedPreviewSizes != null) {
+                mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+            }
+
+            float ratio;
+            if (mPreviewSize.height >= mPreviewSize.width)
+                ratio = (float) mPreviewSize.height / (float) mPreviewSize.width;
+            else
+                ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
+
+            // One of these methods should be used, second method squishes preview slightly
+            setMeasuredDimension(width, (int) (width * ratio));
+//        setMeasuredDimension((int) (width * ratio), height);
+        }
+
     }
 
     // Timer task for continuous triggering of preview callbacks

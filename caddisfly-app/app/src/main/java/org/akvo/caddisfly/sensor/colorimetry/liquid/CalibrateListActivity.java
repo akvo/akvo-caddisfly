@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -70,7 +71,7 @@ public class CalibrateListActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (AppPreferences.isDiagnosticMode(this)) {
+        if (AppPreferences.isDiagnosticMode()) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;
@@ -111,8 +112,8 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                getResources().getConfiguration().locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
+                getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
 
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) findViewById(R.id.fabEditCalibration);

@@ -25,23 +25,8 @@
             android:key="startTest"
             android:title="Colorimetric Test" />
         <Preference
-            android:key="startColiformsTest"
-            android:title="Coliforms Test" />
-        <Preference
             android:key="ecSensor"
             android:title="@string/testSensor" />
-        <CheckBoxPreference
-            android:key="@string/useCamera2Key"
-            android:title="@string/useCamera2" />
-        <CheckBoxPreference
-            android:key="@string/autoFocusKey"
-            android:title="@string/autoFocus" />
-        <CheckBoxPreference
-            android:key="@string/useFlashModeKey"
-            android:title="@string/useFlashMode" />
-        <CheckBoxPreference
-            android:key="@string/ignoreShakeKey"
-            android:title="@string/ignoreShakeDuringAnalysis" />
         <CheckBoxPreference
             android:key="showDebugMessages"
             android:title="@string/debuggingOn" />
@@ -62,9 +47,5 @@
             android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
-        <Preference
-            android:key="checkUpdate"
-            android:summary="@string/updateSummary"
-            android:title="@string/updateCheck" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

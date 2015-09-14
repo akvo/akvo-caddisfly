@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="appName">Akvo Caddisfly</string>
@@ -45,8 +45,6 @@
     <string name="coliforms" tools:ignore="UnusedResources">Coliformes</string>
     <!--Messages-->
     <string name="pleaseWait">Veuillez attendre…</string>
-    <string name="noInternetConnection">Pas de connexion internet</string>
-    <string name="enableInternet">Vérifiez vos paramètres de connexion et réessayez</string>
     <string name="notSupported">Non pris en charge</string>
     <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
     <string name="pleaseEnterValue">Entrer une valeur</string>
@@ -58,10 +56,6 @@
     <string name="errorCalibrationIncomplete">L\'étalonnage du %1$s est incomplet</string>
     <string name="doYouWantToCalibrate">Voulez-vous étalonner maintenant?</string>
     <!--Settings Screen-->
-    <string name="calibrateSummary">Etalonner le colorimètre ou les capteurs externes</string>
-    <string name="updateCheck">Rechercher des mises à jour</string>
-    <string name="updateSummary">Rechercher une nouvelle version d\'Akvo Caddisfly</string>
-    <string name="displaysVersionNumber">Afficher les informations sur les versions</string>
     <string name="language">Langue</string>
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
@@ -98,28 +92,14 @@
     <string name="suspendEcSensorInHigh">Placez le capteur de conductivité dans une solution de forte EC et entrez sa valeur théorique</string>
     <string name="calibrationSuccessful">Etalonnage réussi avec succès</string>
     <string name="sensorCalibrated">Le capteur d\'EC est étalonné</string>
-    <!--App update-->
-    <string name="update">Mettre à jour</string>
-    <string name="updateCheckingFor">Recherche de mises à jour…</string>
-    <string name="noUpdate">Aucune mise à jour disponible</string>
-    <string name="updatedAlready">La dernière version d\'Akvo Caddisfly est déjà installée</string>
-    <string name="updateAvailable">Mise à jour disponible</string>
-    <string name="updateRequest">Une nouvelle version d\'Akvo Caddisfly est disponible. Voulez-vous l\'installer maintenant?</string>
-    <string name="updateFetching">Téléchargement de la mise à jour…</string>
-    <string name="notNow">Pas maintenant</string>
-    <string name="updateFailedNoInternet">La mise à jour a échoué. Aucune connexion internet</string>
-    <string name="updateFailed">La mise à jour a échoué</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-    <!--Diagnostic Mode: Main Screen-->
-    <string name="enableUserMode">Activer le mode utilisateur</string>
     <!--Diagnostic Mode: Messages-->
     <string name="diagnosticModeEnabled">Mode diagnostique activé</string>
     <string name="diagnosticModeDisabled">Mode diagnostique désactivé</string>
     <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveCalibration">Enregistrer l\'étalonnage</string>
     <string name="saveInvalidFileName">Nom de fichier incorrect</string>
     <string name="fileAlreadyExists">Ce fichier existe déjà</string>
     <string name="doYouWantToOverwrite">Voulez-vous remplacer ce fichier?</string>
@@ -133,9 +113,6 @@
     <string name="diagnostics">Diagnostiques</string>
     <string name="cameraPreview">Caméra colorimétrique</string>
     <string name="testSensor">Capteur d\'EC</string>
-    <string name="autoFocus">Mise au point automatique</string>
-    <string name="useFlashMode">Utiliser le mode flash</string>
-    <string name="ignoreShakeDuringAnalysis">Ignorer les secousses pendant l\'analyse</string>
     <string name="debuggingOn">Afficher les messages de débogage</string>
     <string name="noSound">Eteindre le son</string>
     <string name="fileSaved">File saved</string>

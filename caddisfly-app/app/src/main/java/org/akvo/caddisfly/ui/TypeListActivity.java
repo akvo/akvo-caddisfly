@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
@@ -27,7 +28,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
-import org.akvo.caddisfly.sensor.turbidity.TurbidityStartActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
@@ -37,9 +37,13 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //to refresh the title when language changes
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getResources().getString(R.string.selectTest));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -72,14 +76,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                             });
                 } else {
                     alertFeatureNotSupported();
-                }
-                break;
-            case TURBIDITY_COLIFORMS:
-                //Only start the colorimetry calibration if the device has a camera flash
-                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
-                        R.string.ok, null)) {
-                    final Intent intent = new Intent(this, TurbidityStartActivity.class);
-                    startActivity(intent);
                 }
                 break;
         }

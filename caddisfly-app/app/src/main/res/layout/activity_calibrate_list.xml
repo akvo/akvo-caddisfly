@@ -14,168 +14,75 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Fluoride"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="22-Dec-2015"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Expiry: 22-Dec-2016 (345GHH)"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragmentCalibrateList"
+        android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutTitleBar"
+        android:layout_marginTop="10dp"
+        tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
+        tools:layout="@layout/fragment_calibrate_list" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabEditCalibration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/layoutTitleBar"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fap_margin"
+        android:layout_marginBottom="-26dp"
         android:layout_marginEnd="@dimen/fap_margin"
         android:src="@android:drawable/ic_menu_edit"
-        app:backgroundTint="@color/green" />
+        app:backgroundTint="@color/amber"
+        tools:ignore="RelativeOverlap" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="#f8f8f8"
-            app:cardElevation="1dp">
-
-            <fragment
-                android:id="@+id/fragmentCalibrateList"
-                android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
-                tools:layout="@layout/fragment_calibrate_list" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:cardBackgroundColor="#f8f8f8"
-            app:cardElevation="1dp"
-            app:contentPadding="20dp">
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:textColor="#239903"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text=""
-                        android:textSize="16sp" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="Calibration date"
-                        android:textColor="#5f5f5f"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="22 Dec 2015"
-                        android:textSize="16sp" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="Reagent expiry date"
-                        android:textColor="#5f5f5f"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="22 Dec 2016"
-                        android:textSize="16sp" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="Batch code"
-                        android:textColor="#5f5f5f"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="8dp"
-                        android:text="GFY2344"
-                        android:textSize="16sp" />
-
-                </TableRow>
-            </TableLayout>
-
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</FrameLayout>
+</RelativeLayout>

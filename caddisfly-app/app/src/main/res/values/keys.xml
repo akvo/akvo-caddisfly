@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="languageKey" translatable="false">language</string>
     <string name="systemLanguageKey" translatable="false">systemLanguage</string>
-
-    <string name="lastUpdateCheckKey" translatable="false">lastUpdateCheck</string>
-
     <string name="ignoreShakeKey" translatable="false">ignoreShake</string>
     <string name="autoFocusKey" translatable="false">autoFocus</string>
     <string name="diagnosticModeKey" translatable="false">diagnosticMode</string>
@@ -30,8 +27,4 @@
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>
     <string name="useCamera2Key" translateable="false">userCamera2</string>
-    <string name="cameraRepeatIntervalHourKey" translateable="false">cameraRepeatIntervalHour</string>
-    <string name="cameraRepeatIntervalMinuteKey" translateable="false">cameraRepeatIntervalMinute</string>
-    <string name="cameraRepeatImageCountKey" translateable="false">cameraRepeatImageCount</string>
-
 </resources>

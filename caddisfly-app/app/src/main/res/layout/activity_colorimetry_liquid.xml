@@ -14,190 +14,206 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/viewAnimator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layoutDilutions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:textAllCaps="false"
-            android:textSize="32sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            tools:text="Contaminant" />
-
-        <Button
-            android:id="@+id/buttonNoDilution"
-            style="@style/Button"
-            android:layout_marginBottom="15dp"
-            android:minHeight="80dp"
-            android:minWidth="300dp"
-            android:text="@string/noDilution"
-            android:theme="@style/Button.Green" />
-
-        <Button
-            android:id="@+id/buttonDilution1"
-            style="@style/Button"
-            android:layout_marginBottom="15dp"
-            android:minHeight="80dp"
-            android:minWidth="300dp"
-            android:text="@string/timesDilution"
-            android:theme="@style/Button.Green" />
-
-        <Button
-            android:id="@+id/buttonDilution2"
-            style="@style/Button"
-            android:minHeight="80dp"
-            android:minWidth="300dp"
-            android:text="@string/timesDilution"
-            android:theme="@style/Button.Green" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutInstructions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/textTitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:textAllCaps="false"
-            android:textSize="32sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            tools:text="Contaminant" />
-
-        <TextView
-            android:id="@+id/textResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:textAllCaps="false"
-            android:textSize="24sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            tools:text="0.00 ppm" />
-
-        <TextView
-            android:id="@+id/textDilution"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/amber"
-            android:gravity="center"
-            android:padding="7dp"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="70dp">
-
-            <Button
-                android:id="@+id/buttonStart"
-                style="@style/Button"
-                android:text="@string/start"
-                android:theme="@style/Button.Orange" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutWait"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat"
+        app:title="@string/appName" />
 
-        <TextView
-            android:id="@+id/textTitle3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:textAllCaps="false"
-            android:textSize="32sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            tools:text="Contaminant" />
-
-        <TextView
-            android:id="@+id/textDilution2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/amber"
-            android:gravity="center"
-            android:padding="7dp"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+    <ViewAnimator
+        android:id="@+id/viewAnimator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity">
 
         <LinearLayout
+            android:id="@+id/layoutDilutions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
+                android:id="@+id/textTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textSize="32sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                tools:text="Contaminant" />
+
+            <Button
+                android:id="@+id/buttonNoDilution"
+                style="@style/Button"
+                android:layout_marginBottom="15dp"
+                android:minHeight="80dp"
+                android:minWidth="300dp"
+                android:text="@string/noDilution"
+                android:theme="@style/Button.Green" />
+
+            <Button
+                android:id="@+id/buttonDilution1"
+                style="@style/Button"
+                android:layout_marginBottom="15dp"
+                android:minHeight="80dp"
+                android:minWidth="300dp"
+                android:text="@string/timesDilution"
+                android:theme="@style/Button.Green" />
+
+            <Button
+                android:id="@+id/buttonDilution2"
+                style="@style/Button"
+                android:minHeight="80dp"
+                android:minWidth="300dp"
+                android:text="@string/timesDilution"
+                android:theme="@style/Button.Green" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textTitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textSize="32sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                tools:text="Contaminant" />
+
+            <TextView
+                android:id="@+id/textResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textSize="24sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                tools:text="0.00 ppm" />
+
+            <TextView
+                android:id="@+id/textDilution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:background="@color/amber"
                 android:gravity="center"
-                android:text="@string/placeDeviceInStand"
-                android:textSize="22sp" />
+                android:padding="7dp"
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@null"
-                android:src="@drawable/minute" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:gravity="center"
-                android:text="@string/waitTillCameraSound"
-                android:textSize="22sp" />
+                android:orientation="vertical"
+                android:paddingBottom="70dp">
+
+                <Button
+                    android:id="@+id/buttonStart"
+                    style="@style/Button"
+                    android:text="@string/start"
+                    android:theme="@style/Button.Orange" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ViewAnimator>
+
+        <LinearLayout
+            android:id="@+id/layoutWait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textTitle3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textSize="32sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                tools:text="Contaminant" />
+
+            <TextView
+                android:id="@+id/textDilution2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/amber"
+                android:gravity="center"
+                android:padding="7dp"
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/placeDeviceInStand"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@null"
+                    android:src="@drawable/minute" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/waitTillCameraSound"
+                    android:textSize="22sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ViewAnimator>
+</LinearLayout>

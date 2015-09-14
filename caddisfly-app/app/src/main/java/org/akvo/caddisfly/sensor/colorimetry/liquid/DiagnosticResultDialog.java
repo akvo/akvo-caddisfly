@@ -262,10 +262,6 @@ public class DiagnosticResultDialog extends DialogFragment {
                             resultText = (TextView) rowView.findViewById(R.id.textRgbResult);
                             resultText.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
-                        case HSV:
-                            resultText = (TextView) rowView.findViewById(R.id.textHsvResult);
-                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
-                            break;
                     }
 
                     if (calibrationSteps == 5 && resultDetail.getColorModel() == ColorUtil.DEFAULT_COLOR_MODEL) {

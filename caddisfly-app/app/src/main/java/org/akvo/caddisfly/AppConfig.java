@@ -31,18 +31,4 @@ public class AppConfig {
      */
     public static final float SOUND_EFFECTS_VOLUME = 1f;
 
-    /**
-     * The url to check for update version
-     */
-    //todo: remove when app gets hosted on Play Store
-    public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
-
-    /**
-     * The expected size of the next update file to enable display of the progress bar.
-     * Used only if the update process cannot determine the size of the file to download
-     */
-    //todo: remove when app gets hosted on Play Store
-    public static final int UPDATE_FILE_TYPICAL_SIZE = 910000;
-
 }

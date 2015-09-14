@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.preference;
@@ -19,6 +19,7 @@ package org.akvo.caddisfly.preference;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
 import android.widget.ScrollView;
 
 import org.akvo.caddisfly.R;
@@ -34,7 +35,6 @@ public class SettingsActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setupActivity();
     }
 
@@ -48,9 +48,13 @@ public class SettingsActivity extends BaseActivity
 
         setContentView(R.layout.activity_settings);
 
-        //needed when changing language
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //to refresh the title when language changes
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         getFragmentManager().beginTransaction()
@@ -61,7 +65,7 @@ public class SettingsActivity extends BaseActivity
                 .replace(R.id.layoutContent2, new OtherPreferenceFragment())
                 .commit();
 
-        if (AppPreferences.isDiagnosticMode(this)) {
+        if (AppPreferences.isDiagnosticMode()) {
             getFragmentManager().beginTransaction()
                     .add(R.id.layoutContent3, new DiagnosticPreferenceFragment())
                     .commit();

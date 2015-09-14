@@ -23,10 +23,10 @@ android {
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 23
-        versionName "0.79 Beta"
-        versionCode 79
+        versionName "0.80 Beta"
+        versionCode 80
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

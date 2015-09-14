@@ -16,9 +16,8 @@
 
 package org.akvo.caddisfly.preference;
 
-import android.content.Context;
-
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -28,22 +27,22 @@ import org.akvo.caddisfly.util.PreferencesUtil;
  */
 public class AppPreferences {
 
-    public static boolean isDiagnosticMode(Context context) {
-        return PreferencesUtil.getBoolean(context, R.string.diagnosticModeKey, false);
+    public static boolean isDiagnosticMode() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
     }
 
-    public static void enableDiagnosticMode(Context context) {
-        PreferencesUtil.setBoolean(context, R.string.diagnosticModeKey, true);
+    public static void enableDiagnosticMode() {
+        PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, true);
     }
 
-    public static void disableDiagnosticMode(Context context) {
-        PreferencesUtil.setBoolean(context, R.string.diagnosticModeKey, false);
+    public static void disableDiagnosticMode() {
+        PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
     }
 
-    public static int getSamplingTimes(Context context) {
+    public static int getSamplingTimes() {
         int samplingTimes;
-        if (isDiagnosticMode(context)) {
-            samplingTimes = Integer.parseInt(PreferencesUtil.getString(context,
+        if (isDiagnosticMode()) {
+            samplingTimes = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                     R.string.samplingsTimeKey, String.valueOf(ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
             samplingTimes = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
@@ -52,43 +51,43 @@ public class AppPreferences {
         return samplingTimes + 1;
     }
 
-    public static int getColorDistanceTolerance(Context context) {
-        if (isDiagnosticMode(context)) {
-            return Integer.parseInt(PreferencesUtil.getString(context,
+    public static int getColorDistanceTolerance() {
+        if (isDiagnosticMode()) {
+            return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                     R.string.colorDistanceToleranceKey, String.valueOf(ColorUtil.MAX_COLOR_DISTANCE_RGB)));
         } else {
             return ColorUtil.MAX_COLOR_DISTANCE_RGB;
         }
     }
 
-    public static boolean isSoundOff(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.noSoundKey, false);
+    public static boolean isSoundOff() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
     }
 
-    public static boolean getAutoFocus(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.autoFocusKey, false);
+    public static boolean getAutoFocus() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.autoFocusKey, false);
     }
 
-    public static boolean getUseFlashMode(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.useFlashModeKey, false);
+    public static boolean getUseFlashMode() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
     }
 
-    public static boolean getIgnoreShake(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.ignoreShakeKey, false);
+    public static boolean getIgnoreShake() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreShakeKey, false);
     }
 
-    public static boolean getShowDebugMessages(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.showDebugMessagesKey, false);
+    public static boolean getShowDebugMessages() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
 
-    public static boolean getUseCamera2Api(Context context) {
-        return isDiagnosticMode(context) &&
-                PreferencesUtil.getBoolean(context, R.string.useCamera2Key, false);
+    public static boolean getUseCamera2Api() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useCamera2Key, false);
     }
 
 }
