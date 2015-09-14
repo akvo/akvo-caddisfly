@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.instructions_app;
+package org.akvo.akvoqr.choose_striptest;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.instructions_app.InstructionDetailFragment;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class InstructionListFragment extends ListFragment {
+public class ChooseStriptestListFragment extends ListFragment {
 
+    List<String> brandnames;
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -66,18 +68,21 @@ public class InstructionListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public InstructionListFragment() {
+    public ChooseStriptestListFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Instructions instructions = new Instructions();
-        List<Instructions.Instruction> instructionsList = instructions.getInstructions();
+        StripTest stripTest = StripTest.getInstance();
 
-        InstructionsAdapter adapter = new InstructionsAdapter(getActivity(),
-                R.layout.adapter_instructions, instructionsList);
+//        Instructions instructions = new Instructions();
+//        List<Instructions.Instruction> instructionsList = instructions.getInstructions();
+
+        brandnames = stripTest.getBrandsAsList();
+        ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),
+                R.layout.adapter_choose_striptest, brandnames);
 
         setListAdapter(adapter);
 
@@ -98,8 +103,6 @@ public class InstructionListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
-
-
     }
 
     @Override
@@ -112,8 +115,6 @@ public class InstructionListFragment extends ListFragment {
         }
 
         mCallbacks = (Callbacks) activity;
-
-
 
     }
 
@@ -132,7 +133,7 @@ public class InstructionListFragment extends ListFragment {
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
        // mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-        mCallbacks.onItemSelected(Instructions.instructions.get(position).id);
+        mCallbacks.onItemSelected(brandnames.get(position));
     }
 
     @Override

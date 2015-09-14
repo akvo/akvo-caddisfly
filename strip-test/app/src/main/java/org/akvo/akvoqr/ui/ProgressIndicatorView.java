@@ -15,7 +15,7 @@ public class ProgressIndicatorView extends View {
 
     private Paint lightbluePaint;
     private Paint mediumbluePaint;
-    private final int totalSteps = 4;
+    private int totalSteps = 1;
     private int stepsTaken = 0;
     private int distance;
 
@@ -39,6 +39,10 @@ public class ProgressIndicatorView extends View {
 
     }
 
+    public void  setTotalSteps(int totalSteps)
+    {
+        this.totalSteps = totalSteps;
+    }
     public void setStepsTaken(int steps)
     {
         this.stepsTaken = steps;

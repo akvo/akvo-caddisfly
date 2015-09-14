@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.os.Handler;
 
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
@@ -16,8 +15,6 @@ import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.HybridBinarizer;
 import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
-import org.akvo.akvoqr.detector.ResultPoint;
-import org.akvo.akvoqr.detector.ResultPointCallback;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.sensor.LightSensor;
 import org.opencv.core.CvType;
@@ -33,29 +30,37 @@ import java.util.List;
  */
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
-    public static boolean firstTime = true;
-    private static MyPreviewCallback instance;
-    private boolean isRunning = false;
+    //public static boolean firstTime = true;
+    private boolean isRunning = true;
     private final int messageRepeat = 0;
     private FinderPatternFinder finderPatternFinder;
-    private List<ResultPoint> resultPoints = new ArrayList<>();
     private List<FinderPattern> possibleCenters;
     private FinderPatternInfo info;
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
     private boolean focused = false;
-    private boolean allOK = false;
-    private Handler handler;
-    private Runnable sendMessageRepeat = new Runnable() {
+    private int countFrame = 0;
+
+    private Thread showFinderPatternThread = new Thread( new Runnable() {
         @Override
         public void run() {
-            if (listener != null) {
-                listener.getMessage(messageRepeat);
+
+            while (isRunning) {
+                if (listener != null && possibleCenters != null && previewSize != null) {
+
+                   // System.out.println("***possibleCenters: " + possibleCenters.size());
+                    listener.showFinderPatterns(possibleCenters, previewSize);
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
-    };
-    private boolean finished;
+    });
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -69,30 +74,23 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             throw new ClassCastException(" must implement cameraviewListener");
         }
 
-        handler = new Handler();
+        possibleCenters = new ArrayList<>();
+
+        showFinderPatternThread.start();
     }
-
-    final ResultPointCallback resultPointCallback = new ResultPointCallback() {
-        @Override
-        public void foundPossibleResultPoint(ResultPoint point) {
-            resultPoints.add(point);
-
-        }
-    };
 
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
-//        System.out.println("***is Running: " + isRunning);
 
-        allOK = false;
+        countFrame ++;
+        System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
+
         focused = false;
-        possibleCenters = null;
 
         new BitmapTask().execute(data);
-
 
     }
 
@@ -115,13 +113,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 if (possibleCenters != null && possibleCenters.size() == 4) {
                     if (qualityOK) {
 
+                        //isRunning = false;
+
                         listener.playSound();
 
                         data = compressToJpeg(data);
                         listener.sendData(data, ImageFormat.JPEG,
                                 camera.getParameters().getPreviewSize().width,
                                 camera.getParameters().getPreviewSize().height, info);
-                      // takePicture();
+                        // takePicture();
 
                     }
                 } else {
@@ -183,19 +183,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             double focusLaplacian = OpenCVUtils.focusLaplacian(bgr);
             listener.showFocusValue(focusLaplacian);
 
-             if (focusLaplacian < 250) {
+            if (focusLaplacian < 250) {
                 System.out.println("***focussing");
                 while (!focused) {
-                    camera.autoFocus(new Camera.AutoFocusCallback() {
-                        @Override
-                        public void onAutoFocus(boolean success, Camera camera) {
-                            if (success) focused = true;
-                        }
-                    });
+                    if (camera != null) {
+                        camera.autoFocus(new Camera.AutoFocusCallback() {
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+                                if (success) focused = true;
+                            }
+                        });
+                    }
                 }
-                firstTime = false;
+//                firstTime = false;
 
-           }
+            }
 
 
             return true;
@@ -240,7 +242,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
 
             if (bitMatrix != null) {
-                finderPatternFinder = new FinderPatternFinder(bitMatrix, resultPointCallback);
+                finderPatternFinder = new FinderPatternFinder(bitMatrix, null);
 
                 try {
 
@@ -254,16 +256,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     possibleCenters = finderPatternFinder.getPossibleCenters();
 
                     //remove centers that are to small in order to get rid of noise
-                    for(int i=0;i<possibleCenters.size();i++) {
-                        if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
-                            possibleCenters.remove(i);
-                            //System.out.println("***removed possible center no. " + i);
-                        }
-                    }
+//                    for(int i=0;i<possibleCenters.size();i++) {
+//                        if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
+//                            possibleCenters.remove(i);
+//                            //System.out.println("***removed possible center no. " + i);
+//                        }
+//                    }
                     //System.out.println("***possible centers size: " + possibleCenters.size());
 
-                    listener.showFinderPatterns(possibleCenters, camera.getParameters().getPreviewSize());
-                    
                     return info;
                 }
             }
@@ -291,44 +291,44 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
     private void takePicture()
     {
-                camera.takePicture(null, new Camera.PictureCallback() {
-                            @Override
-                            public void onPictureTaken(byte[] data, Camera camera) {
-                                if (data != null) {
-                                    System.out.println("***raw: " + data.length);
-                                    if(info!=null) {
-                                        listener.sendData(data, camera.getParameters().getPictureFormat(),
-                                                camera.getParameters().getPictureSize().width,
-                                                camera.getParameters().getPictureSize().height, info);
-                                    }
-                                }
-                                else
-                                {
-                                    System.out.println("***raw is null");
-                                }
+        camera.takePicture(null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        if (data != null) {
+                            System.out.println("***raw: " + data.length);
+                            if(info!=null) {
+                                listener.sendData(data, camera.getParameters().getPictureFormat(),
+                                        camera.getParameters().getPictureSize().width,
+                                        camera.getParameters().getPictureSize().height, info);
                             }
+                        }
+                        else
+                        {
+                            System.out.println("***raw is null");
+                        }
+                    }
 
-                        },
-                        null,
-                        new Camera.PictureCallback() {
-                            @Override
-                            public void onPictureTaken(byte[] data, Camera camera) {
-                                if(data!=null)
-                                {
-                                    System.out.println("***jpeg: " + data.length);
-                                    if(info!=null) {
-                                        listener.sendData(data, camera.getParameters().getPictureFormat(),
-                                                camera.getParameters().getPictureSize().width,
-                                                camera.getParameters().getPictureSize().height, info);
+                },
+                null,
+                new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        if(data!=null)
+                        {
+                            System.out.println("***jpeg: " + data.length);
+                            if(info!=null) {
+                                listener.sendData(data, camera.getParameters().getPictureFormat(),
+                                        camera.getParameters().getPictureSize().width,
+                                        camera.getParameters().getPictureSize().height, info);
 
-                                    }
-                                }
-                                else
-                                {
-                                    System.out.println("***jpeg is null");
-                                }
                             }
-                        });
+                        }
+                        else
+                        {
+                            System.out.println("***jpeg is null");
+                        }
+                    }
+                });
 
     }
 

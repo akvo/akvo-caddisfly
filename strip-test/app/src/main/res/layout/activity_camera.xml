@@ -23,6 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/activity_cameraProgressIndicatorView"
         android:id="@+id/activity_cameraMessagesLayout">
     <TextView
         android:layout_width="match_parent"

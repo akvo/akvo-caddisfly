@@ -2,24 +2,25 @@ package org.akvo.akvoqr;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
+import org.akvo.akvoqr.util.FileStorage;
 import org.opencv.core.Mat;
 
 import java.io.IOException;
@@ -43,6 +44,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private boolean testing = false;
     private String brandName;
+    private boolean hasTimeLapse;
+    private List<StripTest.Brand.Patch> patches;
+    private int numPatches;
+    private int patchCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,17 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
 
+        hasTimeLapse = StripTest.getInstance().getBrand(brandName).hasTimeLapse();
+        numPatches = StripTest.getInstance().getBrand(brandName).getPatches().size();
+        patches = StripTest.getInstance().getBrand(brandName).getPatches();
+        if(hasTimeLapse)
+        {
+            progressIndicatorView.setTotalSteps(numPatches);
+        }
+        else
+        {
+            progressIndicatorView.setVisibility(View.GONE);
+        }
     }
 
     private void init()
@@ -82,7 +98,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
     public void onPause()
     {
-        MyPreviewCallback.firstTime = true;
+        //MyPreviewCallback.firstTime = true;
         mCamera.setOneShotPreviewCallback(null);
 
         if(mCamera!=null) {
@@ -128,6 +144,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         {
             init();
         }
+        patchCount = 0;
         Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
     }
@@ -156,7 +173,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             if (what == 0) {
 
                 if(previewCallback!=null)
-                mCamera.setOneShotPreviewCallback(previewCallback);
+                    mCamera.setOneShotPreviewCallback(previewCallback);
 
             } else {
 
@@ -191,20 +208,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
-    public void drawShadowBitmap(final Bitmap bitmap) {
-        Runnable showMessage = new Runnable() {
-            @Override
-            public void run() {
-
-                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-                if(finderPatternIndicatorView!=null)
-                    finderPatternIndicatorView.setImageDrawable(drawable);
-            }
-        };
-        handler.post(showMessage);
-    }
-
-    @Override
     public void sendMats(ArrayList<Mat> mats)
     {
 //
@@ -216,15 +219,61 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
-    public void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info) {
+    public double getTimeLapseForPatch()
+    {
+        return patches.get(patchCount).getTimeLapse();
+    }
+
+    private Runnable startNextPreview = new Runnable() {
+        @Override
+        public void run() {
+            mCamera.setOneShotPreviewCallback(previewCallback);
+        }
+    };
+
+    private void storeData(final int patchCount, final byte[] data, final FinderPatternInfo info)
+    {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                FileStorage.writeByteArray(data, patchCount);
+                String json = FinderPatternInfoToJson.toJson(info);
+                System.out.println("*** info to json: "+ patchCount + " = " + json);
+                FileStorage.writeFinderPatternInfoJson(patchCount, json);
+            }
+        });
+        thread.setPriority(Thread.MIN_PRIORITY);
+        thread.start();
+    }
+    @Override
+    public void sendData(final byte[] data, int format, int width, int height, final FinderPatternInfo info) {
 
 //        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
 //        System.out.println("***info: " + info);
 //        System.out.println("***data: " + data.length);
-        try {
-            Intent intent = new Intent(this, DetectStripActivity.class);
+        Intent intent;
+        if(hasTimeLapse) {
+            if (patchCount < numPatches -1) {
 
-            intent.putExtra(Constant.BRAND, brandName);
+                storeData(patchCount, data, info);
+
+                patchCount++;
+
+                showProgress(patchCount);
+                handler.postDelayed(startNextPreview, (long) getTimeLapseForPatch() * 1000);
+
+                return;
+            }
+            intent = new Intent(this, DetectStripTimeLapseActivity.class);
+
+        }
+        else {
+
+            intent = new Intent(this, DetectStripActivity.class);
+            intent.putExtra(Constant.DATA, data);
+
             Bundle finderPatternBundle = new Bundle();
             finderPatternBundle.putDoubleArray(Constant.TOPLEFT,
                     new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()});
@@ -235,27 +284,25 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             finderPatternBundle.putDoubleArray(Constant.BOTTOMRIGHT,
                     new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()});
 
-            intent.putExtra(Constant.DATA, data);
+            intent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
+        }
+        try {
+            intent.putExtra(Constant.BRAND, brandName);
+
+
             intent.putExtra(Constant.FORMAT, format);
             intent.putExtra(Constant.WIDTH, width);
             intent.putExtra(Constant.HEIGHT, height);
-            intent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
+
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             startActivity(intent);
 
             this.finish();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    public void test()
-    {
-        startActivity(new Intent(this, ChooseStripTestActivity.class));
-        this.finish();
     }
 
 //    @Override
@@ -291,8 +338,21 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     }
 
-    private ProgressDialog progress;
     @Override
+    public void showProgress(final int which) {
+        Runnable showProgress = new Runnable() {
+
+            @Override
+            public void run() {
+
+                progressIndicatorView.setStepsTaken(which);
+
+            }
+        };
+        handler.post(showProgress);
+    }
+    private ProgressDialog progress;
+   /* @Override
     public void showProgress(final int which) {
 
 
@@ -343,7 +403,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             };
             handler.post(showProgress);
         }
-    }
+    }*/
 
     @Override
     public void dismissProgress() {

@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light" >
         <activity
-            android:name=".ChooseStripTestActivity"
+            android:name=".choose_striptest.ChooseStriptestListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,28 +34,37 @@
         </activity>
         <activity
             android:name=".CameraActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/title_activity_camera"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".instructions_app.InstructionListActivity"
+            android:name=".instructions_app.TabbedActivity"
             android:label="@string/title_instruction_list" >
         </activity>
         <activity
-            android:name=".instructions_app.InstructionDetailActivity"
+            android:name=".choose_striptest.ChooseStriptestDetailActivity"
             android:label="@string/title_instruction_detail"
-            android:parentActivityName=".instructions_app.InstructionListActivity" >
+            android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".instructions_app.InstructionListActivity" />
+                android:value=".choose_striptest.ChooseStriptestListActivity" />
         </activity>
         <activity
             android:name=".DetectStripActivity"
             android:label="@string/title_activity_detect_strip"
-            android:parentActivityName=".ChooseStripTestActivity" >
+            android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.akvo.akvoqr.ChooseStripTestActivity" />
+                android:value=".choose_striptest.ChooseStriptestListActivity" />
+        </activity>
+        <activity
+            android:name=".DetectStripTimeLapseActivity"
+            android:label="@string/title_activity_detect_strip"
+            android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".choose_striptest.ChooseStriptestListActivity" />
         </activity>
     </application>
 

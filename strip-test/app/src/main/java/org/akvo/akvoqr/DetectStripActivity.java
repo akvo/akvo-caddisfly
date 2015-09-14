@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.opencv.ShadowDetector;
-import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;
@@ -38,7 +38,7 @@ import java.util.List;
 public class DetectStripActivity extends AppCompatActivity {
 
     private Mat bgr;
-    //private Bitmap bitmap;
+    private Bitmap bitmap;
     private TextView textView0;
     private TextView textView1;
     private TextView textView2;
@@ -187,7 +187,8 @@ public class DetectStripActivity extends AppCompatActivity {
 
                     Mat bgra = new Mat(height, width, CvType.CV_8UC4);
                     bgr = new Mat();
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
                     Utils.bitmapToMat(bitmap, bgra);
                     System.out.println("***bgra_dst type I: " + CvType.typeToString(bgra.type()) + ", channels: " + bgra.channels());
 
@@ -249,6 +250,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     }
                 }
 
+                //detect shadows
                 if(warp_dst != null)
                 {
 
@@ -258,14 +260,13 @@ public class DetectStripActivity extends AppCompatActivity {
                     ShadowDetector.detectShadows(calarea);
 
                     //show bitmap with shadow contour in image view
-                    Imgproc.cvtColor(calarea, calarea, Imgproc.COLOR_BGR2RGBA);
+                    //Imgproc.cvtColor(calarea, calarea, Imgproc.COLOR_BGR2RGBA);
                     Bitmap bitmap = Bitmap.createBitmap(calarea.width(), calarea.height(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(calarea, bitmap);
                     showImage(0, bitmap);
 
                     publishProgress(0, true);
 
-                    //bitmap.recycle();
                 }
                 else
                 {

@@ -16,14 +16,16 @@
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":0
         },
         {
           "patchDesc":"Free Chlorine ppm",
           "patchPos":17.2,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":0
         }
       ],
       "instructions": ["Collect water sample",
@@ -48,7 +50,8 @@
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":0
         }
       ],
       "instructions": ["Move strip back and forward during 30 seconds in water"]
@@ -70,35 +73,40 @@
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":0
         },
         {
           "patchDesc":"Free Chlorine",
           "patchPos":17.2,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":5
         },
         {
           "patchDesc":"hardness",
           "patchPos":25,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":10
         },
         {
           "patchDesc":"alkalinity",
           "patchPos":40,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":15
         },
         {
           "patchDesc":"pH",
           "patchPos":60,
           "patchWidth": 5,
           "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10]
+          "ppmVals": [0,0.5,1,2,4,10],
+          "timeLapse":20
         }
       ],
       "instructions": ["Move strip back and forward during 30 seconds in water"]

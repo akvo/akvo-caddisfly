@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.instructions_app;
+package org.akvo.akvoqr.choose_striptest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,17 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.instructions_app.InstructionDetailFragment;
+import org.akvo.akvoqr.util.Constant;
 
 /**
  * An activity representing a single Instruction detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link InstructionListActivity}.
+ * in a {@link ChooseStriptestListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link InstructionDetailFragment}.
  */
-public class InstructionDetailActivity extends AppCompatActivity {
+public class ChooseStriptestDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +41,15 @@ public class InstructionDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(InstructionDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(InstructionDetailFragment.ARG_ITEM_ID));
-            InstructionDetailFragment fragment = new InstructionDetailFragment();
-            fragment.setArguments(arguments);
+
+            String brandname = getIntent().getStringExtra(Constant.BRAND);
+            ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
+
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.instruction_detail_container, fragment)
                     .commit();
+
+            getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandname).getName());
         }
     }
 
@@ -61,7 +64,7 @@ public class InstructionDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, InstructionListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, ChooseStriptestListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

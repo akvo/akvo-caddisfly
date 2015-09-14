@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.instructions_app;
+package org.akvo.akvoqr.choose_striptest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * Created by linda on 9/5/15.
  */
-public class InstructionsAdapter extends ArrayAdapter<Instructions.Instruction> {
+public class ChooseStriptestAdapter extends ArrayAdapter<String> {
 
-    private List<Instructions.Instruction> instructions;
+    private List<String> instructions;
     private int resource;
     private Context context;
 
-    public InstructionsAdapter(Context context, int resource, List<Instructions.Instruction> instructions) {
+    public ChooseStriptestAdapter(Context context, int resource, List<String> instructions) {
         super(context, resource);
 
         this.context = context;
@@ -52,14 +52,25 @@ public class InstructionsAdapter extends ArrayAdapter<Instructions.Instruction> 
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.textView.setText(instructions.get(position).getInstruction());
+        StripTest.Brand brand = StripTest.getInstance().getBrand(instructions.get(position));
+        List<StripTest.Brand.Patch> patches = brand.getPatches();
+        String subtext = "";
+        for(int i=0;i<patches.size();i++)
+        {
+            subtext += patches.get(i).getDesc() + ", ";
+        }
+        int indexLastSep = subtext.lastIndexOf(",");
+        subtext = subtext.substring(0, indexLastSep);
+        holder.textView.setText(brand.getName());
 
-        if(position==0) {
-            holder.imageView.setImageResource(R.drawable.progress_icon_top);
-        }
-        else {
-            holder.imageView.setImageResource(R.drawable.progress_icon_center);
-        }
+        holder.subtextView.setText(subtext);
+
+//        if(position==0) {
+//            holder.imageView.setImageResource(R.drawable.progress_icon_top);
+//        }
+//        else {
+//            holder.imageView.setImageResource(R.drawable.progress_icon_center);
+//        }
         return view;
 
     }
@@ -68,11 +79,14 @@ public class InstructionsAdapter extends ArrayAdapter<Instructions.Instruction> 
     {
         private ImageView imageView;
         private TextView textView;
+        private TextView subtextView;
 
         public ViewHolder(View v)
         {
             imageView = (ImageView) v.findViewById(R.id.adapter_instructionsImageView);
             textView = (TextView) v.findViewById(R.id.adapter_instructionsTextView);
+            subtextView = (TextView) v.findViewById(R.id.adapter_instructionsSubTextView);
+
         }
     }
 }

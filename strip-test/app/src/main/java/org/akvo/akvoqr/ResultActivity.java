@@ -19,10 +19,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.color.mColorComparator;
+import org.akvo.akvoqr.instructions_app.TabbedActivity;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.opencv.StripTest;
 import org.akvo.akvoqr.ui.CircleView;
 import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;
@@ -112,7 +113,7 @@ public class ResultActivity extends AppCompatActivity {
                 redo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intentRedo = new Intent(ResultActivity.this, ChooseStripTestActivity.class);
+                        Intent intentRedo = new Intent(ResultActivity.this, TabbedActivity.class);
                         intentRedo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intentRedo);
                         ResultActivity.this.finish();

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.util.App;
 import org.opencv.android.Utils;

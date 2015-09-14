@@ -1,6 +1,5 @@
 package org.akvo.akvoqr;
 
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -18,8 +17,6 @@ public interface CameraViewListener {
     void getMessage(int what);
 
     void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info);
-
-//    void setBitmap(Bitmap bitmap);
 
     void sendMats(ArrayList<Mat> mats);
 
@@ -39,7 +36,5 @@ public interface CameraViewListener {
 
     void showMaxLuminosity(double value);
 
-    void drawShadowBitmap(Bitmap bitmap);
-
-    void test();
+    double getTimeLapseForPatch();
 }

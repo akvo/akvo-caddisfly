@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.opencv;
+package org.akvo.akvoqr.choose_striptest;
 
 import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
@@ -17,8 +17,6 @@ import java.util.Set;
  */
 public class StripTest{
 
-    //    public enum brand{
-//        hach883738 };
     public static StripTest instance;
     private static JSONArray stripsJson;
     private static Map<String, JSONObject> stripObjects;
@@ -44,6 +42,15 @@ public class StripTest{
     public Set<String> getAllBrands()
     {
         return stripObjects.keySet();
+    }
+
+    public List<String> getBrandsAsList()
+    {
+       List<String> brandnames = new ArrayList<>();
+        for(String b: stripObjects.keySet()){
+            brandnames.add(b);
+        }
+       return brandnames;
     }
 
     public Brand getBrand(String brand)
@@ -76,9 +83,10 @@ public class StripTest{
                             String patchDesc = patchObj.getString("patchDesc");
                             int patchPos = patchObj.getInt("patchPos");
                             int patchWidth = patchObj.getInt("patchWidth");
+                            double timeLapse = patchObj.getDouble("timeLapse");
                             JSONArray ppmVals = patchObj.getJSONArray("ppmVals");
 
-                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, ppmVals));
+                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, timeLapse, ppmVals));
                         }
 
                     } catch (JSONException e) {
@@ -100,14 +108,6 @@ public class StripTest{
             return stripLenght;
         }
 
-//        public List<String> getPatchDescList() {
-//            return patchDescList;
-//        }
-
-//        public Map<String, JSONArray> getPpmValues() {
-//            return ppmValues;
-//        }
-
         public String getName() {
             return name;
         }
@@ -116,20 +116,34 @@ public class StripTest{
             return instructions;
         }
 
+        public boolean hasTimeLapse()
+        {
+            double totalTime = 0;
+            for(Patch patch: patches)
+            {
+                totalTime += patch.timeLapse;
+            }
+
+            return totalTime>0;
+        }
+
         public class Patch {
             int order;
             String desc;
             double width; //mm
             double height;//mm
             double position;//x in mm
+            double timeLapse; //seconds between this and previous patch
             JSONArray ppmValues;
 
-            public Patch(int order, String desc, double width, double height, double position, JSONArray ppmValues) {
+            public Patch(int order, String desc, double width, double height, double position,
+                         double timeLapse, JSONArray ppmValues) {
                 this.order = order;
                 this.desc = desc;
                 this.width = width;
                 this.height = height;
                 this.position = position;
+                this.timeLapse = timeLapse;
                 this.ppmValues = ppmValues;
             }
 
@@ -143,6 +157,10 @@ public class StripTest{
 
             public JSONArray getPpmValues() {
                 return ppmValues;
+            }
+
+            public double getTimeLapse() {
+                return timeLapse;
             }
         }
     }

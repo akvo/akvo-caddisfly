@@ -1,10 +1,12 @@
 package org.akvo.akvoqr.opencv;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -207,22 +209,32 @@ public class ShadowDetector {
 
         double treshold;
         Mat dst = new Mat();
+        MatOfPoint2f mMOP2f = new MatOfPoint2f();
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         Mat hierarchy = new Mat();
 
         if((meanA.val[0] - 128) + (meanB.val[0] -128) < 256) {
-            treshold = meanLoutput.get(0, 0)[0] - stddev.get(0, 0)[0] / 5;
-            System.out.println("***treshold: " + treshold);
+            treshold = meanLoutput.get(0, 0)[0] - stddev.get(0, 0)[0] / 3;
+            System.out.println("***SHADOW treshold: " + treshold);
 
             Imgproc.threshold(channels.get(0), channels.get(0), treshold, 255, Imgproc.THRESH_BINARY);
 
+            //Mat black = new Mat();
+            //Core.inRange(channels.get(0), new Scalar(250), new Scalar(255), black);
+
             Imgproc.findContours(channels.get(0), contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-            Scalar colorRed = new Scalar(0, 0, 255, 255);
+            Scalar colorRed = new Scalar(255, 0, 0, 255);
 
             for( int m = 0; m < contours.size(); m++ ) {
 
+                //make square
+                contours.get(m).convertTo(mMOP2f, CvType.CV_32FC2);
+                Imgproc.approxPolyDP(mMOP2f, mMOP2f, 0.01 * Imgproc.arcLength(mMOP2f, true), true);
+                mMOP2f.convertTo(contours.get(m), CvType.CV_32S);
+
                 double area = Imgproc.contourArea(contours.get(m));
+                System.out.println("***SHADOW area: " + area);
 
                 if(area>400 && area < bgr.size().width*bgr.size().height)
                 {

@@ -10,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.choose_striptest.ChooseStriptestDetailActivity;
+import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 
 /**
  * A fragment representing a single Instruction detail screen.
- * This fragment is either contained in a {@link InstructionListActivity}
- * in two-pane mode (on tablets) or a {@link InstructionDetailActivity}
+ * This fragment is either contained in a {@link ChooseStriptestListActivity}
+ * in two-pane mode (on tablets) or a {@link ChooseStriptestDetailActivity}
  * on handsets.
  */
 public class InstructionDetailFragment extends Fragment {
