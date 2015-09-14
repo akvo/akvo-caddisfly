@@ -35,6 +35,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
+
 public class DetectStripActivity extends AppCompatActivity {
 
     private Mat bgr;
@@ -138,6 +140,17 @@ public class DetectStripActivity extends AppCompatActivity {
 
     }
 
+    // the points are in the order top left, bottom left, top right, bottom right
+    private int getCode(Mat warp_dst, double mSize, List<Point> points){
+        double pixelWidthBetweenPatterns = Math.sqrt(Math.pow(points.get(1).x - points.get(3).x, 2) + Math.pow(points.get(1).y - points.get(3).y, 2));
+        int iWidth = warp_dst.cols();
+        int iHeight = warp_dst.rows();
+        double newMSize = mSize * iWidth / pixelWidthBetweenPatterns;
+        System.out.println("***new module size: " + newMSize);
+
+        return 1;
+    }
+
     private class DetectStripTask extends AsyncTask<Intent,Void,Void>
     {
         Intent intent;
@@ -159,6 +172,7 @@ public class DetectStripActivity extends AppCompatActivity {
                 int format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
                 int width = intent.getIntExtra(Constant.WIDTH, 0);
                 int height = intent.getIntExtra(Constant.HEIGHT, 0);
+                double mSize = intent.getDoubleExtra(Constant.MODULE_SIZE,0);
                 Bundle finderPatternBundle = intent.getBundleExtra(Constant.FINDERPATTERNBUNDLE);
                 double[] topleft = finderPatternBundle.getDoubleArray(Constant.TOPLEFT);
                 double[] topright = finderPatternBundle.getDoubleArray(Constant.TOPRIGHT);
@@ -203,6 +217,8 @@ public class DetectStripActivity extends AppCompatActivity {
 
                 Mat striparea = null;
                 Mat calarea = null;
+
+                int code = getCode(warp_dst, mSize, getOrderedPoints(topleft, topright, bottomleft, bottomright));
 
                 //detect strip
                 double ratioW = 1;

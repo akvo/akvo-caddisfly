@@ -49,7 +49,6 @@ public class LightSensor implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        System.out.println("***Light sensor changed");
         if(event.sensor.getType()==Sensor.TYPE_LIGHT) {
             lux = event.values[0];
         }

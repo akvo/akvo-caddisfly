@@ -282,7 +282,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         thread.start();
     }
     @Override
-    public void sendData(final byte[] data, int format, int width, int height, final FinderPatternInfo info) {
+    public void sendData(final byte[] data, int format, int width, int height, final FinderPatternInfo info, double mSize) {
 
 //        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
 //        System.out.println("***info: " + info);
@@ -322,11 +322,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
         try {
             intent.putExtra(Constant.BRAND, brandName);
-
-
             intent.putExtra(Constant.FORMAT, format);
             intent.putExtra(Constant.WIDTH, width);
             intent.putExtra(Constant.HEIGHT, height);
+            intent.putExtra(Constant.MODULE_SIZE, mSize);
 
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 

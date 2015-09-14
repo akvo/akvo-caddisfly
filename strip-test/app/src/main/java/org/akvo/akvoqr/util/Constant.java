@@ -11,6 +11,7 @@ public class Constant {
     public static final String WIDTH = "org.akvo.akvoqr.width";
     public static final String HEIGHT = "org.akvo.akvoqr.height";
     public static final String TOPLEFT = "org.akvo.akvoqr.topleft";
+    public static final String MODULE_SIZE = "org.akvo.akvoqr.modsize";
     public static final String TOPRIGHT = "org.akvo.akvoqr.topright";
     public static final String BOTTOMLEFT = "org.akvo.akvoqr.bottomleft";
     public static final String BOTTOMRIGHT = "org.akvo.akvoqr.bottomright";

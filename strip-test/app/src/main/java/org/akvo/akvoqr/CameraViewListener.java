@@ -16,7 +16,7 @@ public interface CameraViewListener {
 
     void getMessage(int what);
 
-    void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info);
+    void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info, double mSize);
 
     void sendMats(ArrayList<Mat> mats);
 

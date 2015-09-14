@@ -107,22 +107,27 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             try {
 
                 qualityOK = qualityChecks(data);
-
+                System.out.println("*** starting findPossibleCenters");
                 if(listener.start()) {
+                    System.out.println("*** really starting findPossibleCenters");
                     info = findPossibleCenters(data, previewSize);
                 }
 
+                System.out.println("*** check if we found some centers");
                 if (possibleCenters != null && possibleCenters.size() == 4) {
                     if (qualityOK) {
-
+                        System.out.println("*** have centers, now analysis");
                         //isRunning = false;
 
                         listener.playSound();
-
                         data = compressToJpeg(data);
+
+                        double avgModuleSize = 0.25 * (possibleCenters.get(0).getEstimatedModuleSize() + possibleCenters.get(1).getEstimatedModuleSize() +
+                                possibleCenters.get(2).getEstimatedModuleSize() + possibleCenters.get(3).getEstimatedModuleSize());
+
                         listener.sendData(data, ImageFormat.JPEG,
                                 camera.getParameters().getPreviewSize().width,
-                                camera.getParameters().getPreviewSize().height, info);
+                                camera.getParameters().getPreviewSize().height, info, avgModuleSize);
                         // takePicture();
 
                     }
@@ -188,6 +193,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if (focusLaplacian < 250) {
                 System.out.println("***focussing");
                 while (!focused) {
+                    System.out.println("***Trying to get focus");
                     if (camera != null) {
                         camera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
@@ -291,48 +297,48 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         return null;
     }
 
-    private void takePicture()
-    {
-        camera.takePicture(null, new Camera.PictureCallback() {
-                    @Override
-                    public void onPictureTaken(byte[] data, Camera camera) {
-                        if (data != null) {
-                            System.out.println("***raw: " + data.length);
-                            if(info!=null) {
-                                listener.sendData(data, camera.getParameters().getPictureFormat(),
-                                        camera.getParameters().getPictureSize().width,
-                                        camera.getParameters().getPictureSize().height, info);
-                            }
-                        }
-                        else
-                        {
-                            System.out.println("***raw is null");
-                        }
-                    }
-
-                },
-                null,
-                new Camera.PictureCallback() {
-                    @Override
-                    public void onPictureTaken(byte[] data, Camera camera) {
-                        if(data!=null)
-                        {
-                            System.out.println("***jpeg: " + data.length);
-                            if(info!=null) {
-                                listener.sendData(data, camera.getParameters().getPictureFormat(),
-                                        camera.getParameters().getPictureSize().width,
-                                        camera.getParameters().getPictureSize().height, info);
-
-                            }
-                        }
-                        else
-                        {
-                            System.out.println("***jpeg is null");
-                        }
-                    }
-                });
-
-    }
+//    private void takePicture()
+//    {
+//        camera.takePicture(null, new Camera.PictureCallback() {
+//                    @Override
+//                    public void onPictureTaken(byte[] data, Camera camera) {
+//                        if (data != null) {
+//                            System.out.println("***raw: " + data.length);
+//                            if(info!=null) {
+//                                listener.sendData(data, camera.getParameters().getPictureFormat(),
+//                                        camera.getParameters().getPictureSize().width,
+//                                        camera.getParameters().getPictureSize().height, info);
+//                            }
+//                        }
+//                        else
+//                        {
+//                            System.out.println("***raw is null");
+//                        }
+//                    }
+//
+//                },
+//                null,
+//                new Camera.PictureCallback() {
+//                    @Override
+//                    public void onPictureTaken(byte[] data, Camera camera) {
+//                        if(data!=null)
+//                        {
+//                            System.out.println("***jpeg: " + data.length);
+//                            if(info!=null) {
+//                                listener.sendData(data, camera.getParameters().getPictureFormat(),
+//                                        camera.getParameters().getPictureSize().width,
+//                                        camera.getParameters().getPictureSize().height, info);
+//
+//                            }
+//                        }
+//                        else
+//                        {
+//                            System.out.println("***jpeg is null");
+//                        }
+//                    }
+//                });
+//
+//    }
 
 
 }
