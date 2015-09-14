@@ -85,8 +85,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        countFrame ++;
-        System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
+        //countFrame ++;
+       // System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
 
         focused = false;
 
@@ -108,7 +108,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 qualityOK = qualityChecks(data);
 
-                info = findPossibleCenters(data, previewSize);
+                if(listener.start()) {
+                    info = findPossibleCenters(data, previewSize);
+                }
 
                 if (possibleCenters != null && possibleCenters.size() == 4) {
                     if (qualityOK) {

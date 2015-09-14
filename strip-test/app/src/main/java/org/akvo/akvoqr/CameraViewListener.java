@@ -37,4 +37,6 @@ public interface CameraViewListener {
     void showMaxLuminosity(double value);
 
     double getTimeLapseForPatch();
+
+    boolean start();
 }

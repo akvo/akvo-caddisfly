@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
@@ -48,6 +51,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private List<StripTest.Brand.Patch> patches;
     private int numPatches;
     private int patchCount = 0;
+    private boolean startButtonClicked = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,26 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         patches = StripTest.getInstance().getBrand(brandName).getPatches();
         if(hasTimeLapse)
         {
+            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
+            Button startButton = new Button(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            startButton.setText(getResources().getString(R.string.start));
+            startButton.setBackgroundResource(R.drawable.button_start_selector);
+
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setActivated(!v.isActivated());
+                    v.setOnClickListener(null);
+                    v.setVisibility(View.GONE);
+
+                    startButtonClicked = true;
+                }
+            });
+
+            relativeLayout.addView(startButton, params);
             progressIndicatorView.setTotalSteps(numPatches);
         }
         else
@@ -157,6 +181,11 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
+    public boolean start()
+    {
+        return startButtonClicked;
+    }
+    @Override
     public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size)
     {
         Runnable showFinderPatternsRunnable = new Runnable() {
@@ -221,7 +250,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public double getTimeLapseForPatch()
     {
-        return patches.get(patchCount).getTimeLapse();
+        if(patchCount>0) {
+            return patches.get(patchCount).getTimeLapse() - patches.get(patchCount-1).getTimeLapse();
+        }
+        else {
+            return patches.get(patchCount).getTimeLapse();
+        }
     }
 
     private Runnable startNextPreview = new Runnable() {
@@ -240,7 +274,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
                 FileStorage.writeByteArray(data, patchCount);
                 String json = FinderPatternInfoToJson.toJson(info);
-                System.out.println("*** info to json: "+ patchCount + " = " + json);
+                //System.out.println("*** info to json: "+ patchCount + " = " + json);
                 FileStorage.writeFinderPatternInfoJson(patchCount, json);
             }
         });
