@@ -432,6 +432,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
         //Extract the color from the photo which will be used for comparison
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
+        //Quality too low reject this result
+        if (photoColor.getQuality() < 20) {
+            return;
+        }
+
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         ArrayList<ResultDetail> results = new ArrayList<>();
@@ -539,7 +544,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError("Cartridge not placed correctly", ImageUtil.getBitmap(bytes));
+                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
                                 return;
@@ -597,10 +602,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
 
-        String message = getString(R.string.errorTestFailed);
+        String message = "";
 
         if (mResults.size() == 0) {
-            showError("Cartridge not placed correctly", ImageUtil.getBitmap(data));
+            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
         } else {
 
             double result = SwatchHelper.getAverageResult(mResults);
@@ -635,7 +640,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     saveImageForDiagnostics(data, result);
                     showDiagnosticResultDialog(false, result, color, true);
                 } else {
-                    finish();
+                    (new Handler()).postDelayed(new Runnable() {
+                        public void run() {
+                            finish();
+                        }
+                    }, 500);
                 }
             } else {
                 if (result < 0 || color == Color.TRANSPARENT) {
@@ -645,7 +654,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         saveImageForDiagnostics(data, result);
                         showDiagnosticResultDialog(true, 0, color, isCalibration);
                     } else {
-                        showError(message, ImageUtil.getBitmap(data));
+                        if (mIsCalibration) {
+                            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+                        } else {
+                            showError(getString(R.string.errorTestFailed), ImageUtil.getBitmap(data));
+                        }
                     }
                 } else {
 
@@ -655,7 +668,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         saveImageForDiagnostics(data, result);
                         showDiagnosticResultDialog(false, result, color, false);
                     } else {
-                        String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
+                        String title = CaddisflyApp.getApp().getCurrentTestInfo().
+                                getName(getResources().getConfiguration().locale.getLanguage());
 
                         if (mHighLevelsFound && mDilutionLevel < 2) {
                             sound.playShortResource(R.raw.beep_long);
@@ -669,7 +683,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                     break;
                             }
 
-                            HighLevelsDialogFragment mHighLevelsDialogFragment = HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
+                            HighLevelsDialogFragment mHighLevelsDialogFragment =
+                                    HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
                             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
                             Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");

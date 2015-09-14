@@ -48,15 +48,6 @@ public class SettingsActivity extends BaseActivity
 
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        //to refresh the title when language changes
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         getFragmentManager().beginTransaction()
                 .replace(R.id.layoutContent, new GeneralPreferenceFragment())
                 .commit();
@@ -72,6 +63,24 @@ public class SettingsActivity extends BaseActivity
         }
 
         mScrollView = (ScrollView) findViewById(R.id.scrollViewSettings);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        //to refresh the title when language changes
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+        }
     }
 
     @Override

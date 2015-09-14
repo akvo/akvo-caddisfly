@@ -44,10 +44,12 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -124,16 +126,20 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         });
 
+        editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
+        editBatchNumber.setText(PreferencesUtil.getString(context, R.string.batchNumberKey, ""));
+
         editName = (EditText) v.findViewById(R.id.editName);
         if (AppPreferences.isDiagnosticMode()) {
             editName.requestFocus();
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         } else {
             editName.setVisibility(View.GONE);
+            editBatchNumber.requestFocus();
         }
-        editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
+
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.calibrationDetails)
@@ -230,7 +236,16 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                         calibrationDetails.toString());
                                 Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            PreferencesUtil.setString(context, R.string.calibrationDateKey,
+                                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date()));
+                            PreferencesUtil.setString(context, R.string.expiryDateKey,
+                                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(calendar.getTime()));
+                            PreferencesUtil.setString(context, R.string.batchNumberKey,
+                                    editBatchNumber.getText().toString());
                         }
+
+                        ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
 
                         closeKeyboard(context, editName);
                         dismiss();
@@ -268,6 +283,10 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+    }
+
+    public interface CalibrationDetailsSavedListener {
+        void onCalibrationDetailsSaved();
     }
 
 }

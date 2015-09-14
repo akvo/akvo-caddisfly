@@ -22,12 +22,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,9 +66,12 @@ import java.util.Locale;
  * to listen for item selections.
  */
 public class CalibrateListActivity extends BaseActivity
-        implements CalibrateListFragment.Callbacks {
+        implements CalibrateListFragment.Callbacks,
+        SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
+    TextView textCalibrationDate;
+    TextView textSubtitle;
     private int mPosition;
 
     @Override
@@ -112,20 +117,41 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
+        textCalibrationDate = (TextView) findViewById(R.id.textCalibrationDate);
+        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
                 getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
 
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) findViewById(R.id.fabEditCalibration);
+
+        if (AppPreferences.isDiagnosticMode()) {
+            floatingActionButton.setBackgroundTintList(
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gradient_center)));
+        }
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
+                SaveCalibrationDialogFragment saveCalibrationDialogFragment =
+                        SaveCalibrationDialogFragment.newInstance();
                 saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
+
             }
         });
 
+        loadDetails();
+    }
+
+    private void loadDetails() {
+        textCalibrationDate.setText(PreferencesUtil.getString(this, R.string.calibrationDateKey, ""));
+        String date = PreferencesUtil.getString(this, R.string.expiryDateKey, "");
+        if (!date.isEmpty()) {
+            textSubtitle.setText(String.format("Expiry %s (%s)", date,
+                    PreferencesUtil.getString(this, R.string.batchNumberKey, "")));
+        }
     }
 
     @Override
@@ -374,4 +400,8 @@ public class CalibrateListActivity extends BaseActivity
         callback.handleMessage(null);
     }
 
+    @Override
+    public void onCalibrationDetailsSaved() {
+        loadDetails();
+    }
 }

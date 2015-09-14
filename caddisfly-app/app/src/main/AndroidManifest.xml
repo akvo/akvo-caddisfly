@@ -60,6 +60,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -89,7 +90,7 @@
             android:autoRemoveFromRecents="true"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>

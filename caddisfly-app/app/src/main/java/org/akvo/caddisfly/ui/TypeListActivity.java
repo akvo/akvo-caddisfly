@@ -20,7 +20,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
@@ -36,14 +35,15 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         //to refresh the title when language changes
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getResources().getString(R.string.selectTest));
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

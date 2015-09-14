@@ -103,7 +103,7 @@
     <string name="warning">Warning</string>
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
-    <string name="deviceConnectSensor">Please connect Akvo EC Sensor and try again</string>
+    <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
     <string name="lowEcMeasurement">Low EC Measurement</string>
     <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
     <string name="highEcMeasurement">High EC Measurement</string>
@@ -115,6 +115,14 @@
     <string name="waterQualitySystem">Water Quality System</string>
     <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
+
+
+    <string name="selectTest">Select Test</string>
+    <string name="calibrationDetails">Calibration Details</string>
+    <string name="waterQualityTest">Water Quality Test</string>
+    <string name="waterQuality">Water Quality</string>
+    <string name="toPerformWaterQualityTest">To perform a water quality test, open Akvo FLOW app and fill in the appropriate survey.</string>
+    <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
@@ -144,9 +152,4 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
-    <string name="selectTest">Select Test</string>
-    <string name="calibrationDetails">Calibration Details</string>
-    <string name="waterQualityTest">Water Quality Test</string>
-    <string name="waterQuality">Water Quality</string>
-    <string name="toPerformWaterQualityTest">To perform a water quality test, open Akvo FLOW app and fill in the appropriate survey.</string>
 </resources>

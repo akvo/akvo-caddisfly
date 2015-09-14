@@ -411,14 +411,14 @@ public class EspressoTest
         //Connect EC Sensor Screen
         takeScreenshot();
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        mDevice.pressBack();
 
         clickExternalSourceButton("next");
 
         //Temperature
         clickExternalSourceButton("useExternalSource");
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        mDevice.pressBack();
 
         clickExternalSourceButton("next");
 
@@ -822,7 +822,7 @@ public class EspressoTest
 
     }
 
-    public void testStartNoDilutionTest() {
+    public void disableTestStartNoDilutionTest() {
 
         saveLowLevelCalibration();
 
@@ -884,7 +884,7 @@ public class EspressoTest
 
     }
 
-    public void testStartHighLevelTest() {
+    public void disableTestStartHighLevelTest() {
 
         saveHighLevelCalibration();
 

@@ -15,62 +15,88 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     android:keepScreenOn="true"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".sensor.ec.SensorActivity">
 
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#eaeaea"
-        android:textSize="28sp"
-        tools:text="Contaminant" />
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/textCalibrationDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="Waiting for EC Sensor" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutConnection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutTitleBar"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
         android:visibility="visible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/deviceConnectSensor"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#fff"
-            android:textSize="22sp"
-            tools:ignore="UnusedAttribute" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:contentDescription="@null"
-            android:paddingBottom="20dp"
+            android:paddingBottom="24dp"
             android:src="@drawable/usb" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/deviceConnectSensor"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            tools:ignore="UnusedAttribute" />
 
         <Button
             android:id="@+id/buttonOk"
             style="@style/Button"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/backToSurvey"
-            android:theme="@style/Button.Orange" />
+            android:theme="@style/Button.Blue"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -79,8 +105,9 @@
         style="@android:style/Widget.Holo.Light.ProgressBar.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
+        android:layout_below="@+id/layoutTitleBar"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:indeterminate="true"
         android:indeterminateTint="#ffd8cd23"
         android:indeterminateTintMode="src_in"
@@ -91,7 +118,8 @@
         android:id="@+id/layoutResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
+        android:layout_below="@+id/layoutTitleBar"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -162,7 +190,7 @@
             style="@style/Button"
             android:layout_marginTop="33dp"
             android:text="@string/acceptResult"
-            android:theme="@style/Button.Orange" />
+            android:theme="@style/Button.Blue" />
 
     </LinearLayout>
 

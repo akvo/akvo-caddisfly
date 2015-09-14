@@ -23,20 +23,10 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="actionBarStyle">@style/Theme.App.ActionBar</item>
-    </style>
-
-    <style name="Theme.App.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="elevation">4dp</item>
     </style>
 
     <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="actionBarStyle">@style/Theme.Main.ActionBar</item>
-    </style>
-
-    <style name="Theme.Main.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="elevation">0dp</item>
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
@@ -48,7 +38,21 @@
     </style>
 
     <style name="DestructiveButton" parent="android:Widget.DeviceDefault.Button.Borderless">
-        <item name="android:textColor">@color/red</item>
+        <item name="android:textColor">@color/destructive</item>
+    </style>
+
+    <style name="floating_action_button_middle">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">-24dp</item>
+    </style>
+
+    <style name="floating_action_button">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginBottom">-16dp</item>
     </style>
 
 </resources>

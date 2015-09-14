@@ -27,4 +27,7 @@
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>
     <string name="useCamera2Key" translateable="false">userCamera2</string>
+    <string name="calibrationDateKey">calibrationDate</string>
+    <string name="expiryDateKey">expiryDate</string>
+    <string name="batchNumberKey">batchNumber</string>
 </resources>

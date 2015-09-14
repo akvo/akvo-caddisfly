@@ -38,7 +38,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ApiUtil.lockScreenOrientation(this);
-
     }
 
     @Override
@@ -81,14 +80,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
-                        ContextCompat.getColor(this, R.color.action_bar)));
+                        ContextCompat.getColor(this, R.color.primary)));
             }
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
             }
             LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
-                layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.action_bar));
+                layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
             }
         }
     }

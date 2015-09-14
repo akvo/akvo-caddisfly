@@ -14,166 +14,180 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/viewAnimator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:inAnimation="@anim/slide_in_right"
-    android:outAnimation="@anim/slide_out_left"
-    tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
-        style="@style/width_match_parent_max_tablet"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat"
+        app:title="@string/appName" />
+
+    <ViewAnimator
+        android:id="@+id/viewAnimator"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:textAllCaps="false"
-            android:textSize="40sp"
-            android:textStyle="normal"
-            android:visibility="visible"
-            tools:text="Contaminant" />
+        android:inAnimation="@anim/slide_in_right"
+        android:outAnimation="@anim/slide_out_left"
+        tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            style="@style/width_match_parent_max_tablet"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="70dp"
-            android:visibility="visible">
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:visibility="visible"
+                tools:text="Contaminant" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="70dp"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/buttonStartCalibrate"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start"
+                    android:theme="@style/Button.Green" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/width_match_parent_max_tablet"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:text="@string/lowEcMeasurement"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:labelFor="@+id/editLowValue"
+                android:lineSpacingExtra="8dp"
+                android:text="@string/suspendEcSensorInLow"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editLowValue"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="34sp"
+                tools:text="1234" />
 
             <Button
-                android:id="@+id/buttonStartCalibrate"
+                android:id="@+id/buttonCalibrateLow"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start"
-                android:theme="@style/Button.Green" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="@string/next"
+                android:theme="@style/Button.Green"
+                android:visibility="visible"
+                tools:ignore="UnusedAttribute" />
 
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        style="@style/width_match_parent_max_tablet"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            style="@style/width_match_parent_max_tablet"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="@string/lowEcMeasurement"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:labelFor="@+id/editLowValue"
-            android:lineSpacingExtra="8dp"
-            android:text="@string/suspendEcSensorInLow"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:text="@string/highEcMeasurement"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editLowValue"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:inputType="number"
-            android:maxLength="4"
-            android:textSize="34sp"
-            tools:text="1234" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:labelFor="@+id/editHighValue"
+                android:text="@string/suspendEcSensorInHigh"
+                android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/buttonCalibrateLow"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/next"
-            android:theme="@style/Button.Green"
-            android:visibility="visible"
-            tools:ignore="UnusedAttribute" />
+            <EditText
+                android:id="@+id/editHighValue"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textSize="34sp"
+                tools:text="123456" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonCalibrateHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="@string/calibrate"
+                android:textAllCaps="true"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:theme="@style/Button.Green"
+                android:visibility="visible"
+                tools:ignore="UnusedAttribute" />
 
-    <LinearLayout
-        style="@style/width_match_parent_max_tablet"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="@string/highEcMeasurement"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:labelFor="@+id/editHighValue"
-            android:text="@string/suspendEcSensorInHigh"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/editHighValue"
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:inputType="number"
-            android:maxLength="6"
-            android:textSize="34sp"
-            tools:text="123456" />
-
-        <Button
-            android:id="@+id/buttonCalibrateHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/calibrate"
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:theme="@style/Button.Green"
-            android:visibility="visible"
-            tools:ignore="UnusedAttribute" />
-
-    </LinearLayout>
-
-</ViewAnimator>
+        </LinearLayout>
+    </ViewAnimator>
+</LinearLayout>

@@ -20,15 +20,15 @@
     <color name="accent">#FF6E40</color>
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
-    <color name="text_tertiary">#ffffffff</color>
+
+    <color name="amber">#ff6f00</color>
+    <color name="error_background">#2afac900</color>
+    <color name="destructive">#ff0000</color>
+
     <color name="diagnostic">#ff0000</color>
     <color name="diagnostic_status">#e20101</color>
-    <color name="purple">#9A0F53</color>
-    <color name="action_bar">#388E3C</color>
-    <color name="amber">#ff6f00</color>
-    <color name="red">#ff0000</color>
-    <color name="error_background">#2afac900</color>
-    <color name="green">#388E3C</color>
-    <color name="lightBlue">#005ea6</color>
-    <color name="darkBlue">#003b69</color>
+
+    <color name="gradient_start">#003b69</color>
+    <color name="gradient_center">#005ea6</color>
+    <color name="gradient_end">#388E3C</color>
 </resources>

@@ -16,5 +16,5 @@
 
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="fap_margin">16dp</dimen>
+
 </resources>

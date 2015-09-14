@@ -14,31 +14,26 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<android.gesture.GestureOverlayView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gestureOverlayView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <fragment
+        android:id="@+id/fragmentTypeList"
+        android:name="org.akvo.caddisfly.ui.TypeListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        tools:context="org.akvo.caddisfly.ui.TypeListActivity"
+        tools:layout="@android:layout/list_content" />
+</LinearLayout>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primary"
-            app:theme="@style/Base.Theme.AppCompat" />
-
-        <fragment
-            android:id="@+id/fragmentTypeList"
-            android:name="org.akvo.caddisfly.ui.TypeListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="org.akvo.caddisfly.ui.TypeListActivity"
-            tools:layout="@android:layout/list_content" />
-    </LinearLayout>
-</android.gesture.GestureOverlayView>
