@@ -1,3 +1,22 @@
+v0.82 beta
+----------
+1. Fix: Sounds not playing fully
+2. Diagnostic: Fix: Invalid calibration file load error not showing
+
+v0.81 beta
+----------
+1. Design changes
+3. Save calibration details (WIP)
+
+v0.80 beta
+----------
+1. Attempt to detect the backdrop in the chamber
+2. Design changes
+3. Removed Update check feature
+4. Diagnostic: Beep sound added on preview test
+5. Diagnostic: Removed HSV color analysis
+6. Diagnostic: Removed Camera2 api preview
+
 v0.79 beta
 ----------
 1. Main screen design changes

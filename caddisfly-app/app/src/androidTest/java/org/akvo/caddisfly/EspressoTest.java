@@ -796,7 +796,7 @@ public class EspressoTest
 
         onData(is(instanceOf(Swatch.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(index).onChildView(withId(R.id.buttonColor))
+                .atPosition(index).onChildView(withId(R.id.textSwatch))
                 .check(matches(allOf(isDisplayed(), withText("?"))));
 
         onView(withText(String.format("%.2f ppm", value))).perform(click());
@@ -809,7 +809,7 @@ public class EspressoTest
 
         onData(is(instanceOf(Swatch.class)))
                 .inAdapterView(withId(android.R.id.list))
-                .atPosition(index).onChildView(withId(R.id.buttonColor))
+                .atPosition(index).onChildView(withId(R.id.textSwatch))
                 .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
 
 

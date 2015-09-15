@@ -327,23 +327,27 @@ public class CalibrateListActivity extends BaseActivity
                                             swatchList.add(swatch);
                                         }
 
-                                        Toast.makeText(getBaseContext(),
-                                                String.format(getString(R.string.calibrationLoaded), fileName),
-                                                Toast.LENGTH_SHORT).show();
+                                        if (swatchList.size() > 0) {
+                                            Toast.makeText(getBaseContext(),
+                                                    String.format(getString(R.string.calibrationLoaded), fileName),
+                                                    Toast.LENGTH_SHORT).show();
 
-                                        (new AsyncTask<Void, Void, Void>() {
-                                            @Override
-                                            protected Void doInBackground(Void... params) {
-                                                saveCalibratedSwatches(swatchList);
-                                                return null;
-                                            }
+                                            (new AsyncTask<Void, Void, Void>() {
+                                                @Override
+                                                protected Void doInBackground(Void... params) {
+                                                    saveCalibratedSwatches(swatchList);
+                                                    return null;
+                                                }
 
-                                            @Override
-                                            protected void onPostExecute(Void result) {
-                                                super.onPostExecute(result);
-                                                callback.handleMessage(null);
-                                            }
-                                        }).execute();
+                                                @Override
+                                                protected void onPostExecute(Void result) {
+                                                    super.onPostExecute(result);
+                                                    callback.handleMessage(null);
+                                                }
+                                            }).execute();
+                                        } else {
+                                            throw new Exception();
+                                        }
                                     }
                                 } catch (Exception ex) {
                                     AlertUtil.showError(context, R.string.error, getString(R.string.errorLoadingFile),

@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -65,7 +64,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
         TextView textHsv = (TextView) rowView.findViewById(R.id.textHsv);
         TextView textBrightness = (TextView) rowView.findViewById(R.id.textBrightness);
-        Button buttonColor = (Button) rowView.findViewById(R.id.buttonColor);
+        TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
         int color = swatch.getColor();
 
@@ -85,11 +84,11 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
         if (color == Color.TRANSPARENT || color == Color.BLACK) {
             //not calibrated so just show a '?' instead of color
-            buttonColor.setBackgroundColor(Color.argb(0, 10, 10, 10));
-            buttonColor.setText("?");
+            textSwatch.setBackgroundColor(Color.argb(0, 10, 10, 10));
+            textSwatch.setText("?");
         } else {
             //show the calibrated color
-            buttonColor.setBackgroundColor(color);
+            textSwatch.setBackgroundColor(color);
 
             //display additional information if we are in diagnostic mode
             if (AppPreferences.isDiagnosticMode()) {

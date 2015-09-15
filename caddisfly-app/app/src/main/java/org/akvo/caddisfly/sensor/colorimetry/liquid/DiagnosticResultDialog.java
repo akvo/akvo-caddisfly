@@ -170,14 +170,14 @@ public class DiagnosticResultDialog extends DialogFragment {
             if (rowView != null) {
                 TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-                Button button = (Button) rowView.findViewById(R.id.buttonColor);
+                TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
                 Result result = mResults.get(position);
 
                 imageView.setImageBitmap(result.getBitmap());
                 int color = result.getResults().get(0).getColor();
 
-                button.setBackgroundColor(color);
+                textSwatch.setBackgroundColor(color);
 
                 if (mIsCalibration) {
                     TableLayout colorModelHeading = (TableLayout) rowView.findViewById(R.id.tableHeading);
