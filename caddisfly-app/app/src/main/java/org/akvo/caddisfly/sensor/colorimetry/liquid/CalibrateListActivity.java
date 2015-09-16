@@ -54,8 +54,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.io.File;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -146,10 +148,14 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     private void loadDetails() {
-        textCalibrationDate.setText(PreferencesUtil.getString(this, R.string.calibrationDateKey, ""));
-        String date = PreferencesUtil.getString(this, R.string.expiryDateKey, "");
-        if (!date.isEmpty()) {
-            textSubtitle.setText(String.format("Expiry %s (%s)", date,
+        long calibrationDate = PreferencesUtil.getLong(this, R.string.calibrationDateKey);
+        if (calibrationDate >= 0) {
+            textCalibrationDate.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate)));
+        }
+        Long expiryDate = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
+        if (expiryDate >= 0) {
+            textSubtitle.setText(String.format("Expiry %s (%s)",
+                    new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(expiryDate)),
                     PreferencesUtil.getString(this, R.string.batchNumberKey, "")));
         }
     }
@@ -189,6 +195,12 @@ public class CalibrateListActivity extends BaseActivity
 
                 if (resultCode == Activity.RESULT_OK) {
                     saveCalibratedData(swatch, data.getIntExtra("color", 0));
+
+                    //Store the date and time of calibration
+                    Date calibrationDate = new Date();
+                    PreferencesUtil.setLong(this, R.string.calibrationDateKey, calibrationDate.getTime());
+                    textCalibrationDate.setText(
+                            new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(calibrationDate));
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()

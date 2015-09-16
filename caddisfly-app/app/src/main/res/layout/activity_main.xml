@@ -57,31 +57,26 @@
                 tools:ignore="RtlSymmetry" />
 
             <LinearLayout
+                android:id="@+id/layoutOpenApp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
-                android:background="#22003b69"
+                android:background="#10003b69"
                 android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/waterQualityTest"
-                    android:textColor="#e2e0e0"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                android:paddingBottom="30dp"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingTop="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/toPerformWaterQualityTest"
-                    android:textColor="#e2e0e0"
-                    android:textSize="16sp" />
+                    android:textColor="#f8c1d1e6"
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

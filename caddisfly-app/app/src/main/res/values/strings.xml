@@ -121,7 +121,7 @@
     <string name="calibrationDetails">Calibration Details</string>
     <string name="waterQualityTest">Water Quality Test</string>
     <string name="waterQuality">Water Quality</string>
-    <string name="toPerformWaterQualityTest">To perform a water quality test, open Akvo FLOW app and fill in the appropriate survey.</string>
+    <string name="toPerformWaterQualityTest">Open Akvo FLOW app to perform a water quality test via a survey form</string>
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
     <!--Diagnostic Mode: Messages -->
@@ -152,4 +152,9 @@
     <string name="reagentBatch">Reagent batch number</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
+    <string name="closing">Closing</string>
+    <string name="appWillClose">App will now close. Please open Akvo FLOW to perform a water quality test</string>
+    <string name="sensorCalibratedDateKey" />
+    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
+    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
 </resources>

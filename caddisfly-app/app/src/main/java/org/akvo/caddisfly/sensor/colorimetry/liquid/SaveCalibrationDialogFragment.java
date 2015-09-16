@@ -49,7 +49,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -236,14 +235,10 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                         calibrationDetails.toString());
                                 Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            PreferencesUtil.setString(context, R.string.calibrationDateKey,
-                                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date()));
-                            PreferencesUtil.setString(context, R.string.expiryDateKey,
-                                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(calendar.getTime()));
-                            PreferencesUtil.setString(context, R.string.batchNumberKey,
-                                    editBatchNumber.getText().toString());
                         }
+
+                        PreferencesUtil.setLong(context, R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
+                        PreferencesUtil.setString(context, R.string.batchNumberKey, editBatchNumber.getText().toString());
 
                         ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
 

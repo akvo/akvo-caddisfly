@@ -250,6 +250,8 @@ public class CameraDialogFragment extends CameraDialog {
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.Parameters parameters = mCamera.getParameters();
 
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
 
             List<String> supportedSceneModes = mCamera.getParameters().getSupportedSceneModes();
@@ -294,14 +296,20 @@ public class CameraDialogFragment extends CameraDialog {
 //                parameters.setFocusAreas(focusAreas);
 //            }
 
-            List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
+            //List<Camera.Size> supportedPictureSizes = parameters.getSupportedPictureSizes();
 
-            for (Camera.Size size : sizes) {
-                if (size.width > 400 && size.width < 1000) {
-                    parameters.setPictureSize(size.width, size.height);
-                    break;
-                }
-            }
+            parameters.setPictureSize(640, 480);
+
+//            parameters.setPictureSize(
+//                    supportedPictureSizes.get(supportedPictureSizes.size() - 1).width,
+//                    supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
+
+//            for (Camera.Size size : supportedPictureSizes) {
+//                if (size.width > 400 && size.width < 1000) {
+//                    parameters.setPictureSize(size.width, size.height);
+//                    break;
+//                }
+//            }
             if (mSupportedFlashModes != null) {
                 if (AppPreferences.getUseFlashMode()) {
                     if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {

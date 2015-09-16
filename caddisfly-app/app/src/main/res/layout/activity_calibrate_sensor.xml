@@ -29,6 +29,36 @@
         app:theme="@style/Base.Theme.AppCompat"
         app:title="@string/appName" />
 
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="Calibrated: 22-Dec-2015" />
+
+    </LinearLayout>
+
     <ViewAnimator
         android:id="@+id/viewAnimator"
         android:layout_width="match_parent"
@@ -48,18 +78,6 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:textAllCaps="false"
-                android:textSize="40sp"
-                android:textStyle="normal"
-                android:visibility="visible"
-                tools:text="Contaminant" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -76,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/start"
-                    android:theme="@style/Button.Green" />
+                    android:theme="@style/Button.Orange" />
 
             </LinearLayout>
         </LinearLayout>
@@ -95,43 +113,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:text="@string/lowEcMeasurement"
-                android:textAllCaps="true"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:labelFor="@+id/editLowValue"
                 android:lineSpacingExtra="8dp"
                 android:text="@string/suspendEcSensorInLow"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/editLowValue"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:inputType="number"
-                android:maxLength="4"
-                android:textSize="34sp"
-                tools:text="1234" />
+                android:gravity="center_horizontal">
 
-            <Button
-                android:id="@+id/buttonCalibrateLow"
-                style="@style/Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="@string/next"
-                android:theme="@style/Button.Green"
-                android:visibility="visible"
-                tools:ignore="UnusedAttribute" />
+                <EditText
+                    android:id="@+id/editLowValue"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textSize="34sp"
+                    tools:text="1234" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -145,16 +147,6 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:text="@string/highEcMeasurement"
-                android:textAllCaps="true"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -173,21 +165,6 @@
                 android:maxLength="6"
                 android:textSize="34sp"
                 tools:text="123456" />
-
-            <Button
-                android:id="@+id/buttonCalibrateHigh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="@string/calibrate"
-                android:textAllCaps="true"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:theme="@style/Button.Green"
-                android:visibility="visible"
-                tools:ignore="UnusedAttribute" />
-
         </LinearLayout>
     </ViewAnimator>
 </LinearLayout>

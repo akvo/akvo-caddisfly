@@ -47,6 +47,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
@@ -84,6 +85,20 @@ public class MainActivity extends BaseActivity {
                 final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        });
+
+        final Context context = this;
+        findViewById(R.id.layoutOpenApp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertUtil.showAlert(context, R.string.closing, R.string.appWillClose, R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        }, null);
             }
         });
     }
@@ -270,6 +285,12 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
 
+                long milliseconds = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
+                if (milliseconds <= new Date().getTime()) {
+                    alertCalibrationExpired();
+                    return;
+                }
+
                 final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
                 startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
 
@@ -287,6 +308,24 @@ public class MainActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    private void alertCalibrationExpired() {
+        String message = getString(R.string.errorCalibrationExpired,
+                CaddisflyApp.getApp().getCurrentTestInfo().getName(
+                        getResources().getConfiguration().locale.getLanguage()));
+        message = String.format("%s\r\n\r\n%s", message,
+                getString(R.string.orderFreshBatch));
+
+        AlertUtil.showAlert(this, R.string.cannotStartTest,
+                message, R.string.backToSurvey,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null
+        );
     }
 
     @Override
