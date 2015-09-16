@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +51,7 @@ public class DetectStripActivity extends AppCompatActivity {
     private ImageView imageView2;
     private Handler handler;
     private List<ProgressStep> steps = new ArrayList<>();
+    private ArrayList<Mat> mats = new ArrayList<>();
 
     private void setText(final int step) {
         Runnable setProgRunnable = new Runnable() {
@@ -333,8 +336,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     if (strip != null) {
 
 //                    Imgproc.cvtColor(strip, strip, Imgproc.COLOR_BGR2RGBA);
-                        resultIntent.putExtra(Constant.BRAND, brandname);
-                        resultIntent.putExtra(Constant.MAT, strip);
+                        mats.add(strip);
 
                     } else {
 
@@ -345,19 +347,21 @@ public class DetectStripActivity extends AppCompatActivity {
                         Imgproc.line(striparea, new Point(0, striparea.rows()), new Point(striparea.cols(),
                                 0), new Scalar(255, 0, 0, 255), 2);
 
-                        resultIntent.putExtra(Constant.MAT, striparea);
+                        mats.add(striparea);
 
                     }
                     bitmap2.recycle();
-                    // startActivity(resultIntent);
+
                 }
                 else{
                     publishProgress(2, false);
                 }
 
-
                 bitmap1.recycle();
 
+                resultIntent.putExtra(Constant.BRAND, brandname);
+
+                resultIntent.putExtra(Constant.MAT, mats);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -365,6 +369,18 @@ public class DetectStripActivity extends AppCompatActivity {
             }
 
             return null;
+        }
+        @Override
+        protected void onPostExecute(Void result)
+        {
+
+            Button toResultButton = (Button) findViewById(R.id.activity_detect_stripButtonResult);
+            toResultButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(resultIntent);
+                }
+            });
         }
 
         private void publishProgress(int id, boolean success)

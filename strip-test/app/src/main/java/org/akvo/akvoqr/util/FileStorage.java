@@ -2,6 +2,7 @@ package org.akvo.akvoqr.util;
 
 import android.content.Context;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -16,7 +17,7 @@ import java.io.InputStreamReader;
  */
 public class FileStorage {
 
-    public static void writeByteArray(byte[] data, int order)
+    public static boolean writeByteArray(byte[] data, int order)
     {
         String fileName = "data" + order +".txt";
 
@@ -24,22 +25,25 @@ public class FileStorage {
 
         try {
             outputStream = App.getMyApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            BufferedOutputStream bos = new BufferedOutputStream(outputStream);
             for (byte s : data) {
-                outputStream.write(s);
+                bos.write(s);
             }
+            bos.close();
             outputStream.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
-    public static byte[] readByteArray(int order)
-    {
+    public static byte[] readByteArray(int order) throws IOException {
         String fileName = "data" + order +".txt";
-        File file = new File(App.getMyApplicationContext().getFilesDir(), fileName);
-        byte[] data = new byte[(int) file.length()];
+        byte[] data;
         int c;
-        try {
+
             FileInputStream fis = App.getMyApplicationContext().openFileInput(fileName);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             while((c = fis.read()) != -1)
@@ -48,13 +52,12 @@ public class FileStorage {
 
             }
 
-            return baos.toByteArray();
+           data = baos.toByteArray();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        baos.close();
+        fis.close();
 
-        return null;
+        return data;
     }
 
     public static void writeFinderPatternInfoJson(int order, String json)

@@ -36,6 +36,7 @@
             android:name=".CameraActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/title_activity_camera"
+            android:noHistory="true"
             android:screenOrientation="landscape" >
         </activity>
         <activity

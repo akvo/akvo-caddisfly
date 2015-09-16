@@ -12,8 +12,11 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.choose_striptest.StripTest;
@@ -33,6 +36,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private LinearLayout linearLayout;
     private Handler handler;
+    private Button toResultsButton;
     private List<ProgressStep> steps = new ArrayList<>();
 
     private void showImage(final Bitmap bitmap) {
@@ -57,6 +62,19 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         };
         handler.post(showImageRunnable);
     }
+    private void showMessage(final String message) {
+
+        Runnable showMessageRunnable = new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = new TextView(DetectStripTimeLapseActivity.this);
+                textView.setText(message);
+                linearLayout.addView(textView);
+            }
+
+        };
+        handler.post(showMessageRunnable);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +82,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detect_strip_timelapse);
 
         linearLayout = (LinearLayout) findViewById(R.id.activity_detect_strip_timelapseLinearLayout);
+        toResultsButton = (Button) findViewById(R.id.activity_detect_strip_timelapseButtonToResults);
         handler = new Handler();
 
         new DetectStripTask().execute(getIntent());
@@ -102,6 +121,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
     {
         Intent intent;
         Intent resultIntent;
+        ArrayList<Mat> resultList = new ArrayList<>();
 
         protected void  onPreExecute()
         {
@@ -113,21 +133,50 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
             System.out.println("***start detect strip task");
 
             intent = params[0];
+            byte[] data;
 
             String brandname = intent.getStringExtra(Constant.BRAND);
+            resultIntent.putExtra(Constant.BRAND, brandname);
+
             int numPatches = StripTest.getInstance().getBrand(brandname).getPatches().size();
             for (int i = 0; i < numPatches; i++) {
 
                 try {
 
-                    byte[] data = FileStorage.readByteArray(i);
+                    showMessage("\nPatch no. " + i);
+
+                    showMessage("Reading data from storage...");
+
+                    data = FileStorage.readByteArray(i);
+                    //data = intent.getByteArrayExtra(Constant.DATA + i);
+
+                    if(data == null)
+                        throw new IOException("no data");
+
+                    System.out.println("***data DetectStrip: " + data.length);
+
+
+                }
+                catch (Exception e) {
+
+                    showMessage("No data for patch no.  " + i);
+                    continue;
+                }
+
+                try{
 
                     int format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
                     int width = intent.getIntExtra(Constant.WIDTH, 0);
                     int height = intent.getIntExtra(Constant.HEIGHT, 0);
 
+                    if(width == 0 || height == 0)
+                    {
+                        showMessage("No values for width or height");
+                        continue;
+                    }
                     String jsonInfo = FileStorage.readFinderPatternInfoJson(i);
                     if(jsonInfo==null) {
+                        showMessage("No info about finder patterns.");
                         continue;
                     }
 
@@ -140,8 +189,6 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     double[] topright = new double[]{tr.getDouble(0), tr.getDouble(1)};
                     double[] bottomleft = new double[]{bl.getDouble(0), bl.getDouble(1)};
                     double[] bottomright = new double[]{br.getDouble(0), br.getDouble(1)};
-
-                    System.out.println("***data DetectStrip: " + data.length);
 
                     if (format == ImageFormat.NV21) {
 
@@ -162,19 +209,37 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     } else if (format == ImageFormat.JPEG || format == ImageFormat.RGB_565) {
 
                         Mat bgra = new Mat(height, width, CvType.CV_8UC4);
-                        bgr = new Mat();
-                        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        System.out.println("***bgra type I: " + CvType.typeToString(bgra.type()) + ", channels: " + bgra.channels());
 
-                        Utils.bitmapToMat(bitmap, bgra);
-                        System.out.println("***bgra_dst type I: " + CvType.typeToString(bgra.type()) + ", channels: " + bgra.channels());
+                        bgr = new Mat();
+                        Bitmap bitmap;
+                        try {
+                            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        }
+                        catch (Exception e)
+                        {
+                            showMessage("Error converting data to bitmap");
+
+                            continue;
+                        }
+
+                        try {
+                            Utils.bitmapToMat(bitmap, bgra);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                            showMessage("Error making mat out of bitmap");
+                            continue;
+                        }
 
                         Imgproc.cvtColor(bgra, bgr, Imgproc.COLOR_BGRA2BGR);
-
-                        System.out.println("***bgr_dst type II: " + CvType.typeToString(bgr.type()) + ", channels: " + bgr.channels());
+                        System.out.println("***bgr type II: " + CvType.typeToString(bgr.type()) + ", channels: " + bgr.channels());
 
                     }
 
                     //perspectiveTransform
+                    showMessage("Straightening ...");
                     Mat warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, bgr);
 
                     Mat striparea = null;
@@ -227,6 +292,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     //detect shadows
                     if (warp_dst != null) {
 
+                        showMessage("Detecting shadows ...");
                         if (roiCalarea != null)
                             calarea = warp_dst.submat(roiCalarea);
 
@@ -236,6 +302,8 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     //find calibration patches
                     Mat dest;
                     try {
+
+                        showMessage("Calibrating ...");
                         //Calibration code works with 8UC3 images only.
                         // System.out.println("***warp_dst type: " + CvType.typeToString(warp_dst.type()) + ", channels: " + warp_dst.channels());
                         dest = getCalibratedImage(warp_dst);
@@ -249,15 +317,13 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     if (roiStriparea != null)
                         striparea = dest.submat(roiStriparea);
 
-                    resultIntent.putExtra(Constant.BRAND, brandname);
 
                     if (striparea != null) {
 
-                        Mat rgba = new Mat();
-                        Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGBA);
-                        Bitmap bitmap = Bitmap.createBitmap(striparea.width(), striparea.height(), Bitmap.Config.ARGB_8888);
-                        Utils.matToBitmap(rgba, bitmap);
-                        showImage(bitmap);
+                        showMessage("Cutting out strip...");
+//                          Bitmap bitmap = Bitmap.createBitmap(striparea.width(), striparea.height(), Bitmap.Config.ARGB_8888);
+//                        Utils.matToBitmap(rgba, bitmap);
+//                        showImage(bitmap);
 
                         StripTest stripTestBrand = StripTest.getInstance();
                         StripTest.Brand brand = stripTestBrand.getBrand(brandname);
@@ -266,10 +332,16 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                         if (strip != null) {
 
-                            resultIntent.putExtra(Constant.BRAND, brandname);
-                            resultIntent.putExtra(Constant.MAT, strip);
+                            Mat rgba = new Mat();
+                            Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGBA);
+
+                            resultList.add(rgba);
 
                         } else {
+
+                            showMessage("No strip found.");
+                            Mat rgba = new Mat();
+                            Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGBA);
 
                             //draw a red cross over the image
                             Imgproc.line(rgba, new Point(0, 0), new Point(rgba.cols(),
@@ -281,24 +353,37 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                         }
 
-                        // startActivity(resultIntent);
                     } else {
 
                     }
 
-
-
-
-
                 }catch(Exception e){
                     e.printStackTrace();
-
+                    showMessage("Unknown error occurred. Sorry.");
+                    continue;
                 }
             }
+
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
 
+            showMessage("\nFINISHED");
+            resultIntent.putExtra(Constant.MAT, resultList);
+
+            toResultsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(resultIntent);
+                    DetectStripTimeLapseActivity.this.finish();
+                }
+            });
+
+
+
+        }
     }
 
 

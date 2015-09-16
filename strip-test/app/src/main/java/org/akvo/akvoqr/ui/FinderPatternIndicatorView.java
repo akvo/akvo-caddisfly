@@ -40,15 +40,22 @@ public class FinderPatternIndicatorView extends SurfaceView {
 
     public void showPatterns(List<FinderPattern> patterns, Camera.Size size)
     {
-        if(patterns!=null) {
+
             this.patterns = patterns;
 
             if(size!=null) {
                 this.size = size;
             }
+
             invalidate();
-        }
+
     }
+
+    public void setColor(int color)
+    {
+        paint.setColor(color);
+    }
+
     @Override
     public void onDraw(Canvas canvas)
     {

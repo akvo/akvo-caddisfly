@@ -6,6 +6,8 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
@@ -25,13 +27,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by linda on 6/26/15.
  */
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
     //public static boolean firstTime = true;
-    private boolean isRunning = true;
+    private boolean isRunning = false;
     private final int messageRepeat = 0;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -41,26 +44,41 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private Camera.Size previewSize;
     private boolean focused = false;
     private int countFrame = 0;
+    private Handler handler;
 
-    private Thread showFinderPatternThread = new Thread( new Runnable() {
+    private Thread showFinderPatternThread = new Thread(
+            new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Looper.prepare();
+
+                        handler = new Handler();
+
+                        Looper.loop();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+    );
+
+    Runnable showFinderPatternRunnable = new Runnable() {
         @Override
         public void run() {
 
-            while (isRunning) {
-                if (listener != null && possibleCenters != null && previewSize != null) {
+            if (listener != null && possibleCenters != null && previewSize != null) {
 
-                   // System.out.println("***possibleCenters: " + possibleCenters.size());
-                    listener.showFinderPatterns(possibleCenters, previewSize);
-                }
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                // System.out.println("***possibleCenters: " + possibleCenters.size());
+                listener.showFinderPatterns(possibleCenters, previewSize);
             }
+           // handler.postDelayed(this, 1000);
+
         }
-    });
+    };
 
     public static MyPreviewCallback getInstance(Context context) {
 
@@ -77,6 +95,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         possibleCenters = new ArrayList<>();
 
         showFinderPatternThread.start();
+
     }
 
     @Override
@@ -85,12 +104,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        //countFrame ++;
-       // System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
+        countFrame ++;
 
         focused = false;
 
-        new BitmapTask().execute(data);
+        if(listener.start()) {
+            info = findPossibleCenters(data, previewSize);
+        }
+
+        if (!isRunning)
+            new BitmapTask().execute(data);
+
+
 
     }
 
@@ -103,21 +128,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         @Override
         protected Void doInBackground(byte[]... params) {
 
+            isRunning = true;
             data = params[0];
             try {
 
                 qualityOK = qualityChecks(data);
-                System.out.println("*** starting findPossibleCenters");
-                if(listener.start()) {
-                    System.out.println("*** really starting findPossibleCenters");
-                    info = findPossibleCenters(data, previewSize);
-                }
 
-                System.out.println("*** check if we found some centers");
+
+
+                //System.out.println("*** check if we found some centers");
                 if (possibleCenters != null && possibleCenters.size() == 4) {
                     if (qualityOK) {
-                        System.out.println("*** have centers, now analysis");
-                        //isRunning = false;
+                        // System.out.println("*** have centers, now analysis");
 
                         listener.playSound();
                         data = compressToJpeg(data);
@@ -128,7 +150,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         listener.sendData(data, ImageFormat.JPEG,
                                 camera.getParameters().getPreviewSize().width,
                                 camera.getParameters().getPreviewSize().height, info, avgModuleSize);
-                        // takePicture();
+
 
                     }
                 } else {
@@ -142,6 +164,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 e.printStackTrace();
 
             }
+            finally {
+                isRunning = false;
+            }
             return null;
         }
 
@@ -154,14 +179,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private boolean qualityChecks(byte[] data) {
 
         focused = false;
-        Mat bgr;
+
         int height = camera.getParameters().getPreviewSize().height;
         int width = camera.getParameters().getPreviewSize().width;
+        Mat bgr = new Mat(height, width, CvType.CV_8UC3);
 
         try {
 
             //convert preview data to Mat object
-            bgr = new Mat(height, width, CvType.CV_8UC3);
+
             Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
             convert_mYuv.put(0, 0, data);
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
@@ -192,8 +218,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             if (focusLaplacian < 250) {
                 System.out.println("***focussing");
-                while (!focused) {
-                    System.out.println("***Trying to get focus");
+                while (!focused && camera!=null) {
+                    // System.out.println("***Trying to get focus");
                     if (camera != null) {
                         camera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
@@ -216,18 +242,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             e.printStackTrace();
 
             return false;
-
         }
+        finally {
+            bgr.release();
+        }
+
     }
 
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                listener.showFinderPatterns(possibleCenters, size);
-            }
-        };
         if (camera != null) {
 
             FinderPatternInfo info = null;
@@ -271,7 +294,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                        }
 //                    }
                     //System.out.println("***possible centers size: " + possibleCenters.size());
+                    if (handler != null && possibleCenters != null && previewSize != null) {
+                        System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
+                        // handler.removeCallbacks(showFinderPatternRunnable);
+                        handler.post(showFinderPatternRunnable);
 
+                    }
                     return info;
                 }
             }
@@ -296,6 +324,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         return null;
     }
+
 
 //    private void takePicture()
 //    {

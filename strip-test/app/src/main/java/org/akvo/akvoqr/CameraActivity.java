@@ -2,8 +2,10 @@ package org.akvo.akvoqr;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -52,6 +54,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private int numPatches;
     private int patchCount = 0;
     private boolean startButtonClicked = false;
+    private Intent detectStripIntent;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         {
             this.brandName = getIntent().getStringExtra(Constant.BRAND);
         }
+
+        detectStripIntent = new Intent(this, DetectStripTimeLapseActivity.class);
 
         handler = new Handler(Looper.getMainLooper());
 
@@ -101,6 +107,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         else
         {
             progressIndicatorView.setVisibility(View.GONE);
+            startButtonClicked = true;
         }
     }
 
@@ -185,12 +192,17 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     {
         return startButtonClicked;
     }
+
     @Override
     public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size)
     {
         Runnable showFinderPatternsRunnable = new Runnable() {
             @Override
             public void run() {
+                if(patterns.size()==4)
+                    finderPatternIndicatorView.setColor(Color.RED);
+                else
+                    finderPatternIndicatorView.setColor(Color.YELLOW);
                 finderPatternIndicatorView.showPatterns(patterns, size);
             }
         };
@@ -240,9 +252,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void sendMats(ArrayList<Mat> mats)
     {
 //
-//        intent.putExtra(Constant.MAT, mats);
-//        intent.putExtra(Constant.BRAND, brandName);
-//        startActivity(intent);
+//        detectStripIntent.putExtra(Constant.MAT, mats);
+//        detectStripIntent.putExtra(Constant.BRAND, brandName);
+//        startActivity(detectStripIntent);
 
         this.finish();
     }
@@ -265,48 +277,69 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     };
 
-    private void storeData(final int patchCount, final byte[] data, final FinderPatternInfo info)
-    {
+    private class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        private int patchCount;
+        private byte[] data;
+        private FinderPatternInfo info;
 
-                FileStorage.writeByteArray(data, patchCount);
-                String json = FinderPatternInfoToJson.toJson(info);
-                //System.out.println("*** info to json: "+ patchCount + " = " + json);
-                FileStorage.writeFinderPatternInfoJson(patchCount, json);
-            }
-        });
-        thread.setPriority(Thread.MIN_PRIORITY);
-        thread.start();
+        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info) {
+            this.patchCount = patchCount;
+            this.data = data;
+            this.info = info;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            boolean written = FileStorage.writeByteArray(data, patchCount);
+            String json = FinderPatternInfoToJson.toJson(info);
+            FileStorage.writeFinderPatternInfoJson(patchCount, json);
+
+            return written;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean written) {
+            System.out.println("***data was written: " + written);
+        }
     }
     @Override
     public void sendData(final byte[] data, int format, int width, int height, final FinderPatternInfo info, double mSize) {
 
-//        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
+        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
 //        System.out.println("***info: " + info);
 //        System.out.println("***data: " + data.length);
-        Intent intent;
+
         if(hasTimeLapse) {
+
+            new StoreDataTask(patchCount, data, info).execute();
+
             if (patchCount < numPatches -1) {
 
-                storeData(patchCount, data, info);
-
                 patchCount++;
-
                 showProgress(patchCount);
+
+                Runnable clearFinderPatterns = new Runnable() {
+                    @Override
+                    public void run() {
+                        finderPatternIndicatorView.showPatterns(null, null);
+                    }
+                };
+                handler.postDelayed(clearFinderPatterns, 1000);
+
                 handler.postDelayed(startNextPreview, (long) getTimeLapseForPatch() * 1000);
 
                 return;
             }
-            intent = new Intent(this, DetectStripTimeLapseActivity.class);
+            patchCount++;
+            showProgress(patchCount);
 
         }
         else {
 
-            intent = new Intent(this, DetectStripActivity.class);
-            intent.putExtra(Constant.DATA, data);
+            detectStripIntent = new Intent(this, DetectStripActivity.class);
+            detectStripIntent.putExtra(Constant.DATA, data);
 
             Bundle finderPatternBundle = new Bundle();
             finderPatternBundle.putDoubleArray(Constant.TOPLEFT,
@@ -318,18 +351,19 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             finderPatternBundle.putDoubleArray(Constant.BOTTOMRIGHT,
                     new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()});
 
-            intent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
+            detectStripIntent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
         }
+
         try {
-            intent.putExtra(Constant.BRAND, brandName);
-            intent.putExtra(Constant.FORMAT, format);
-            intent.putExtra(Constant.WIDTH, width);
-            intent.putExtra(Constant.HEIGHT, height);
-            intent.putExtra(Constant.MODULE_SIZE, mSize);
+            detectStripIntent.putExtra(Constant.BRAND, brandName);
+            detectStripIntent.putExtra(Constant.FORMAT, format);
+            detectStripIntent.putExtra(Constant.WIDTH, width);
+            detectStripIntent.putExtra(Constant.HEIGHT, height);
+            detectStripIntent.putExtra(Constant.MODULE_SIZE, mSize);
 
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            startActivity(intent);
+            startActivity(detectStripIntent);
 
             this.finish();
         } catch (Exception e) {

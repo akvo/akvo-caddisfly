@@ -15,17 +15,67 @@
           "patchDesc":"Total Chlorine ppm - end pad",
           "patchPos":3.3,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":0
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
         },
         {
           "patchDesc":"Free Chlorine ppm",
           "patchPos":17.2,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":0
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":5,
+          "unit": "ppm"
         }
       ],
       "instructions": ["Collect water sample",
@@ -49,9 +99,34 @@
           "patchDesc":"pH",
           "patchPos":3.3,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":0
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":0,
+          "unit": ""
         }
       ],
       "instructions": ["Move strip back and forward during 30 seconds in water"]
@@ -72,41 +147,166 @@
           "patchDesc":"Total Chlorine",
           "patchPos":3.3,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":0
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
         },
         {
           "patchDesc":"Free Chlorine",
           "patchPos":17.2,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":5
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":3,
+          "unit": "ppm"
         },
         {
           "patchDesc":"hardness",
-          "patchPos":25,
+          "patchPos":30,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":10
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":5,
+          "unit": "ppm"
         },
         {
           "patchDesc":"alkalinity",
           "patchPos":40,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":15
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":7,
+          "unit": "ppm"
         },
         {
           "patchDesc":"pH",
-          "patchPos":60,
+          "patchPos":51,
           "patchWidth": 5,
-          "colours":[[244,244,255],[220,210,200],[]],
-          "ppmVals": [0,0.5,1,2,4,10],
-          "timeLapse":20
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130]
+            }
+          ],
+          "timeLapse":10,
+          "unit": ""
         }
       ],
       "instructions": ["Move strip back and forward during 30 seconds in water"]

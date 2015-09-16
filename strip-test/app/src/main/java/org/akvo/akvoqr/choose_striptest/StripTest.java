@@ -84,9 +84,10 @@ public class StripTest{
                             int patchPos = patchObj.getInt("patchPos");
                             int patchWidth = patchObj.getInt("patchWidth");
                             double timeLapse = patchObj.getDouble("timeLapse");
-                            JSONArray ppmVals = patchObj.getJSONArray("ppmVals");
+                            String unit = patchObj.getString("unit");
+                            JSONArray colours = patchObj.getJSONArray("colours");
 
-                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, timeLapse, ppmVals));
+                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
                         }
 
                     } catch (JSONException e) {
@@ -134,17 +135,19 @@ public class StripTest{
             double height;//mm
             double position;//x in mm
             double timeLapse; //seconds between this and previous patch
-            JSONArray ppmValues;
+            String unit;
+            JSONArray colours;
 
             public Patch(int order, String desc, double width, double height, double position,
-                         double timeLapse, JSONArray ppmValues) {
+                         double timeLapse, String unit, JSONArray colours) {
                 this.order = order;
                 this.desc = desc;
                 this.width = width;
                 this.height = height;
                 this.position = position;
                 this.timeLapse = timeLapse;
-                this.ppmValues = ppmValues;
+                this.unit = unit;
+                this.colours = colours;
             }
 
             public String getDesc() {
@@ -155,12 +158,23 @@ public class StripTest{
                 return position;
             }
 
-            public JSONArray getPpmValues() {
-                return ppmValues;
+            public JSONArray getColours() {
+                return colours;
             }
 
             public double getTimeLapse() {
                 return timeLapse;
+            }
+
+            public String getUnit() {
+                return unit;
+            }
+
+            public JSONArray getRGB(int index) throws JSONException {
+                return colours.getJSONObject(index).getJSONArray("rgb");
+            }
+            public double getValueForRGB(int index) throws JSONException {
+                return colours.getJSONObject(index).getDouble("value");
             }
         }
     }

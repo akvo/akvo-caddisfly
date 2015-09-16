@@ -124,7 +124,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
        // parameters.setPictureSize(bestSize.width, bestSize.height);
-//        parameters.setPictureFormat(ImageFormat.JPEG);
+        //parameters.setPreviewFormat(ImageFormat.NV21);
         System.out.println("***bestsize: " + bestSize.width + ", " + bestSize.height);
 
         boolean canAutoFocus = false;
