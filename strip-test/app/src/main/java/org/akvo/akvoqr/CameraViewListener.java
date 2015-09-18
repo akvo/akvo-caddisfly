@@ -16,7 +16,8 @@ public interface CameraViewListener {
 
     void getMessage(int what);
 
-    void sendData(byte[] data, int format, int width, int height, FinderPatternInfo info, double mSize);
+    void sendData(byte[] data, long timeMillis,
+                  int format, int width, int height, FinderPatternInfo info, double mSize);
 
     void sendMats(ArrayList<Mat> mats);
 
@@ -30,7 +31,7 @@ public interface CameraViewListener {
 
     String getBrandName();
 
-    void showFinderPatterns(List<FinderPattern> info, Camera.Size previewSize);
+    void showFinderPatterns(List<FinderPattern> info, Camera.Size previewSize, int color);
 
     void showFocusValue(double value);
 

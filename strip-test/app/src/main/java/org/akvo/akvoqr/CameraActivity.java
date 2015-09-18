@@ -2,7 +2,6 @@ package org.akvo.akvoqr;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -47,7 +46,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private TextView messageFocusView;
     private ProgressIndicatorView progressIndicatorView;
     private FinderPatternIndicatorView finderPatternIndicatorView;
-    private boolean testing = false;
     private String brandName;
     private boolean hasTimeLapse;
     private List<StripTest.Brand.Patch> patches;
@@ -98,11 +96,20 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                     v.setVisibility(View.GONE);
 
                     startButtonClicked = true;
+
+                    startCountdown();
                 }
             });
 
             relativeLayout.addView(startButton, params);
+
+            int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
             progressIndicatorView.setTotalSteps(numPatches);
+            progressIndicatorView.setDuration(duration);
+            progressIndicatorView.setPatches(patches);
+
+            TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
+            durationView.append(String.valueOf(duration) + " sec.");
         }
         else
         {
@@ -155,6 +162,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     {
         Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
+        if(handler!=null)
+            handler.removeCallbacks(startCountdownRunnable);
+
         super.onPause();
 
         super.onStop();
@@ -165,6 +175,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         super.onResume();
         if(mCamera!=null)
         {
+            Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+
             try {
                 mCamera.reconnect();
             } catch (IOException e) {
@@ -175,8 +187,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         {
             init();
         }
+
         patchCount = 0;
-        Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+
+        FileStorage.deleteAll();
+
+        //Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
     }
     public void onStart()
@@ -187,6 +203,29 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     }
 
+    private int timeLapsed = 0;
+    private long initTimeMillis;
+    private Runnable startCountdownRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            progressIndicatorView.setTimeLapsed(timeLapsed);
+            timeLapsed++;
+            handler.postDelayed(this, 1000);
+        }
+    };
+    private void startCountdown() {
+
+        timeLapsed = 0;
+        initTimeMillis = System.currentTimeMillis();
+
+        handler.post(startCountdownRunnable);
+
+        for(StripTest.Brand.Patch p: patches) {
+            handler.postDelayed(startNextPreview, (long) p.getTimeLapse() * 1000);
+        }
+
+    }
     @Override
     public boolean start()
     {
@@ -194,15 +233,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
 
     @Override
-    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size)
+    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
     {
         Runnable showFinderPatternsRunnable = new Runnable() {
             @Override
             public void run() {
-                if(patterns.size()==4)
-                    finderPatternIndicatorView.setColor(Color.RED);
-                else
-                    finderPatternIndicatorView.setColor(Color.YELLOW);
+                finderPatternIndicatorView.setColor(color);
                 finderPatternIndicatorView.showPatterns(patterns, size);
             }
         };
@@ -273,7 +309,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
-            mCamera.setOneShotPreviewCallback(previewCallback);
+            if(mCamera!=null && previewCallback!=null)
+                 mCamera.setOneShotPreviewCallback(previewCallback);
         }
     };
 
@@ -301,17 +338,32 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         @Override
         protected void onPostExecute(Boolean written) {
-            System.out.println("***data was written: " + written);
+//            System.out.println("***data was written: " + written);
         }
     }
     @Override
-    public void sendData(final byte[] data, int format, int width, int height, final FinderPatternInfo info, double mSize) {
+    public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
+                         final FinderPatternInfo info, double mSize) {
 
-        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
+//        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
 //        System.out.println("***info: " + info);
 //        System.out.println("***data: " + data.length);
 
         if(hasTimeLapse) {
+
+            //check if picture is taken on time for the patch
+            for(int i=0;i<patches.size();i++)
+            {
+                if(timeMillis < initTimeMillis + patches.get(i).getTimeLapse()*1000)
+                {
+                    //ignore
+                }
+                else
+                {
+                    patchCount = i;
+                }
+            }
+            System.out.println("***patch count: " + patchCount);
 
             new StoreDataTask(patchCount, data, info).execute();
 
@@ -327,8 +379,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                     }
                 };
                 handler.postDelayed(clearFinderPatterns, 1000);
-
-                handler.postDelayed(startNextPreview, (long) getTimeLapseForPatch() * 1000);
 
                 return;
             }

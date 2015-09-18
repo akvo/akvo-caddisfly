@@ -1,6 +1,7 @@
 package org.akvo.akvoqr;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
@@ -38,12 +39,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private final int messageRepeat = 0;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
+    private int finderPatternColor;
     private FinderPatternInfo info;
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
     private boolean focused = false;
-    private int countFrame = 0;
     private Handler handler;
 
     private Thread showFinderPatternThread = new Thread(
@@ -72,11 +73,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             if (listener != null && possibleCenters != null && previewSize != null) {
 
-                // System.out.println("***possibleCenters: " + possibleCenters.size());
-                listener.showFinderPatterns(possibleCenters, previewSize);
+                listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
             }
-           // handler.postDelayed(this, 1000);
-
         }
     };
 
@@ -104,22 +102,28 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        countFrame ++;
-
         focused = false;
+        finderPatternColor = Color.RED;
 
         if(listener.start()) {
             info = findPossibleCenters(data, previewSize);
+            if (possibleCenters != null && possibleCenters.size() == 4) {
+                camera.stopPreview();
+                listener.playSound();
+                finderPatternColor = Color.RED;
+                //handler.removeCallbacks(showFinderPatternRunnable);
+                handler.post(showFinderPatternRunnable);
+            }
         }
 
-        if (!isRunning)
-            new BitmapTask().execute(data);
+        new QualityChecksTask().execute(data);
 
-
+        //if (!isRunning)
+            new SendDataTask().execute(data);
 
     }
 
-    private class BitmapTask extends AsyncTask<byte[], Void, Void> {
+    private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
         byte[] data;
 
@@ -132,32 +136,36 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             data = params[0];
             try {
 
-                qualityOK = qualityChecks(data);
+                if (possibleCenters != null && possibleCenters.size() == 4)
+                {
+                    long timePictureTaken = System.currentTimeMillis();
+                    qualityOK = qualityChecks(data);
 
+                    if (qualityOK)
+                    {
 
-
-                //System.out.println("*** check if we found some centers");
-                if (possibleCenters != null && possibleCenters.size() == 4) {
-                    if (qualityOK) {
-                        // System.out.println("*** have centers, now analysis");
-
-                        listener.playSound();
                         data = compressToJpeg(data);
 
                         double avgModuleSize = 0.25 * (possibleCenters.get(0).getEstimatedModuleSize() + possibleCenters.get(1).getEstimatedModuleSize() +
                                 possibleCenters.get(2).getEstimatedModuleSize() + possibleCenters.get(3).getEstimatedModuleSize());
 
-                        listener.sendData(data, ImageFormat.JPEG,
+                        listener.sendData(data, timePictureTaken, ImageFormat.JPEG,
                                 camera.getParameters().getPreviewSize().width,
                                 camera.getParameters().getPreviewSize().height, info, avgModuleSize);
 
+                    }
+                    else
+                    {
+                        if (listener != null)
+                            listener.getMessage(messageRepeat);
 
                     }
-                } else {
-
+                    camera.startPreview();
+                }
+                else
+                {
                     if (listener != null)
                         listener.getMessage(messageRepeat);
-
 
                 }
             } catch (Exception e) {
@@ -166,6 +174,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
             finally {
                 isRunning = false;
+
             }
             return null;
         }
@@ -176,7 +185,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
+    private class QualityChecksTask extends AsyncTask<byte[], Void, Void>
+    {
+        @Override
+        protected Void doInBackground(byte[]... params) {
+            qualityChecks(params[0]);
+            return null;
+        }
+    }
     private boolean qualityChecks(byte[] data) {
+
+        if(camera==null)
+            return false;
 
         focused = false;
 
@@ -187,7 +207,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         try {
 
             //convert preview data to Mat object
-
             Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
             convert_mYuv.put(0, 0, data);
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
@@ -208,18 +227,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //TODO CHECK SHADOWS
 
-            //if patterns are found, focus camera and return
-            //this is a workaround to give camera time to adjust exposure
-            //we assume that second time is immediately after first time, so patterns are found while the camera is
-            //focused correctly
-
             double focusLaplacian = OpenCVUtils.focusLaplacian(bgr);
             listener.showFocusValue(focusLaplacian);
 
             if (focusLaplacian < 250) {
-                System.out.println("***focussing");
-                while (!focused && camera!=null) {
-                    // System.out.println("***Trying to get focus");
+
+                int count = 0;
+                while (!focused && camera!=null && count < 100) {
+
                     if (camera != null) {
                         camera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
@@ -228,14 +243,11 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             }
                         });
                     }
+                    count ++;
                 }
-//                firstTime = false;
-
             }
 
-
             return true;
-
         }
         catch (Exception e)
         {
@@ -295,8 +307,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                    }
                     //System.out.println("***possible centers size: " + possibleCenters.size());
                     if (handler != null && possibleCenters != null && previewSize != null) {
-                        System.out.println("***is Running: " + isRunning + " countFrame: " + countFrame);
-                        // handler.removeCallbacks(showFinderPatternRunnable);
+
                         handler.post(showFinderPatternRunnable);
 
                     }

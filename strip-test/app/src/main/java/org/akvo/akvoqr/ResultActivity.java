@@ -37,9 +37,6 @@ import java.util.List;
 
 public class ResultActivity extends AppCompatActivity {
 
-    //private JSONArray colours;
-    private boolean useLab = true;
-    private boolean useRGB = true;
     private String brandName;
     private StripTest.Brand brand;
     private ArrayList<Mat> mats;
@@ -59,10 +56,6 @@ public class ResultActivity extends AppCompatActivity {
 
             layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
-            /**
-             * TODO put values in strips.json in assets
-             * After we decide if quality of image used to gather colors is sufficient
-             */
             StripTest stripTestBrand = StripTest.getInstance();
             brand = stripTestBrand.getBrand(brandName);
 
@@ -70,51 +63,55 @@ public class ResultActivity extends AppCompatActivity {
 
             for(int i=0;i<patches.size();i++) {
 
-                if(brand.hasTimeLapse()) {
-                    if (i < mats.size()) {
-                        strip = mats.get(i).clone();
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else strip = mats.get(mats.size()-1).clone();
-
-                int matH = strip.height();
-                double ratioW = strip.width() / brand.getStripLenght();
-
-                Mat mat = new Mat();
-                Core.copyMakeBorder(strip, mat, 20, 20, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
-
-                //show the name of the patch
+                //the name of the patch
                 String desc = patches.get(i).getDesc();
 
-                //calculate center of patch in pixels
-                double x = patches.get(i).getPosition() * ratioW;
-                double y = mat.height() / 2;
-                Point centerPatch = new Point(x,y);
+                if (brand.hasTimeLapse()) {
+                    if (i < mats.size()) {
+                        strip = mats.get(i).clone();
+                    } else {
+                        continue;
+                    }
+                } else strip = mats.get(mats.size() - 1).clone();
 
-                //Draw a green circle around each patch and make a bitmap of the whole
-                Imgproc.circle(mat, centerPatch, (int) Math.ceil(matH * 0.8),
-                        new Scalar(0, 255, 0, 255), 2);
+                int matH = strip.height();
 
-                new BitmapTask(desc).execute(mat);
+                if(matH > 1) {
+                    double ratioW = strip.width() / brand.getStripLenght();
 
-                //make a submat around each center of the patch and get mean color
-                int minRow =(int)Math.round(Math.max(centerPatch.y - 7, 0));
-                int maxRow = (int)Math.round(Math.min(centerPatch.y + 7, mat.height()));
-                int minCol = (int)Math.round(Math.max(centerPatch.x - 7, 0));
-                int maxCol = (int)Math.round(Math.min(centerPatch.x + 7, mat.width()));
+                    Mat mat = new Mat();
+                    Core.copyMakeBorder(strip, mat, 20, 20, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
-                Mat submat = mat.submat(minRow, maxRow,
-                        minCol, maxCol);
+                    //calculate center of patch in pixels
+                    double x = patches.get(i).getPosition() * ratioW;
+                    double y = mat.height() / 2;
+                    Point centerPatch = new Point(x, y);
 
-                //set the colours needed to calculate ppm
-                JSONArray colours = patches.get(i).getColours();
-                String unit = patches.get(i).getUnit();
+                    //Draw a green circle around each patch and make a bitmap of the whole
+                    Imgproc.circle(mat, centerPatch, (int) Math.ceil(matH * 0.8),
+                            new Scalar(0, 255, 0, 255), 2);
+                    new BitmapTask(desc).execute(mat);
 
-                new ColorDetectedTask(unit, colours).execute(submat);
+                    //make a submat around center of the patch and get mean color
+                    int minRow = (int) Math.round(Math.max(centerPatch.y - 7, 0));
+                    int maxRow = (int) Math.round(Math.min(centerPatch.y + 7, mat.height()));
+                    int minCol = (int) Math.round(Math.max(centerPatch.x - 7, 0));
+                    int maxCol = (int) Math.round(Math.min(centerPatch.x + 7, mat.width()));
+
+                    Mat submat = mat.submat(minRow, maxRow,
+                            minCol, maxCol);
+
+                    //set the colours needed to calculate ppm
+                    JSONArray colours = patches.get(i).getColours();
+                    String unit = patches.get(i).getUnit();
+
+                    new ColorDetectedTask(unit, colours).execute(submat);
+                }
+                else
+                {
+                    new BitmapTask(desc).execute(strip);
+                }
+
 
                 Button save = (Button) findViewById(R.id.activity_resultButtonSave);
                 Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
@@ -125,7 +122,7 @@ public class ResultActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
-                        intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intentRedo);
                         ResultActivity.this.finish();
                     }
@@ -159,7 +156,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void>
     {
-        private Bitmap stripBitmap;
+        private Bitmap stripBitmap = null;
         private String desc;
 
         public BitmapTask(String desc)
@@ -170,7 +167,8 @@ public class ResultActivity extends AppCompatActivity {
         protected Void doInBackground(Mat... params) {
 
             Mat strip = params[0];
-            stripBitmap = makeBitmap(strip);
+            if(strip.rows()>1 && strip.cols()>1)
+                stripBitmap = makeBitmap(strip);
 
             return null;
         }
@@ -181,9 +179,19 @@ public class ResultActivity extends AppCompatActivity {
             descView.setText(desc);
             layout.addView(descView);
 
-            ImageView imageView = new ImageView(ResultActivity.this);
-            imageView.setImageBitmap(stripBitmap);
-            layout.addView(imageView);
+            if(stripBitmap!=null) {
+                ImageView imageView = new ImageView(ResultActivity.this);
+                imageView.setImageBitmap(stripBitmap);
+                layout.addView(imageView);
+            }
+            else
+            {
+                TextView nodataView = new TextView(ResultActivity.this);
+                nodataView.setText("no data");
+                nodataView.setBackgroundResource(R.drawable.background_white_black_line_bottom);
+                nodataView.setPadding(0,0,0,12);
+                layout.addView(nodataView);
+            }
         }
     }
 
@@ -213,6 +221,7 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Void result) {
+
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, null, false);
@@ -279,7 +288,7 @@ public class ResultActivity extends AppCompatActivity {
             int firstColorPos = 0;
             for(Pair p: labdaList)
             {
-               double l = Math.abs((double)p.second);
+                double l = Math.abs((double)p.second);
 
                 if( Math.abs(l - 0.5) < smallestL)
                 {
@@ -306,7 +315,7 @@ public class ResultActivity extends AppCompatActivity {
             // if labda is between 0 and 1, it is valid.
             if (0 < labda && labda < 1)
             {
-               return ppm;
+                return ppm;
             }
 
             if (labda > 1) //we have a very dark color. extrapolate.

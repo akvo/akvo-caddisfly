@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/camera_preview"
-         >
+        >
     </FrameLayout>
     <org.akvo.akvoqr.ui.FinderPatternIndicatorView
         android:layout_width="match_parent"
@@ -25,14 +25,14 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/activity_cameraProgressIndicatorView"
         android:id="@+id/activity_cameraMessagesLayout">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/camera_preview_messageLightView"
-        android:textColor="@color/lightblue"
-        android:background="#99000000"
-        android:layout_weight="1"
-        android:text="Light: "/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/camera_preview_messageLightView"
+            android:textColor="@color/lightblue"
+            android:background="#99000000"
+            android:layout_weight="1"
+            android:text="Light: "/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,5 +41,14 @@
             android:background="#99000000"
             android:layout_weight="1"
             android:text="Focus: "/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/camera_preview_messageDurationView"
+            android:textColor="@color/lightblue"
+            android:background="#99000000"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Duration: "/>
     </LinearLayout>
 </RelativeLayout>

@@ -128,6 +128,11 @@ public class StripTest{
             return totalTime>0;
         }
 
+        public double getDuration()
+        {
+            return patches.get(patches.size()-1).getTimeLapse();
+        }
+
         public class Patch {
             int order;
             String desc;

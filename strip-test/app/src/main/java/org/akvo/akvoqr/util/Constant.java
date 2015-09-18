@@ -16,4 +16,5 @@ public class Constant {
     public static final String BOTTOMLEFT = "org.akvo.akvoqr.bottomleft";
     public static final String BOTTOMRIGHT = "org.akvo.akvoqr.bottomright";
     public static final String FINDERPATTERNBUNDLE = "org.akvo.akvoqr.finderpatternbundle";
+    public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
 }

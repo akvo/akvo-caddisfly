@@ -12,7 +12,7 @@ import org.opencv.core.Mat;
 /**
  * Created by linda on 7/6/15.
  */
-public class BaseCameraActivity  extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
+public abstract class BaseCameraActivity  extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
 
     static{ System.loadLibrary("opencv_java3"); }
     static {

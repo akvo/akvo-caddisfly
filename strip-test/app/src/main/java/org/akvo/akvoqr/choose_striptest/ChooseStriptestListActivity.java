@@ -38,7 +38,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_instruction_list);
+        setContentView(R.layout.activity_choose_striptest_list);
 
         if (findViewById(R.id.instruction_detail_container) != null) {
             // The detail container view will be present only in the
