@@ -363,7 +363,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                     patchCount = i;
                 }
             }
-            System.out.println("***patch count: " + patchCount);
+           // System.out.println("***patch count: " + patchCount);
 
             new StoreDataTask(patchCount, data, info).execute();
 

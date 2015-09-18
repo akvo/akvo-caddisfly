@@ -181,8 +181,6 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                     showMessage("No data for patch no.  " + (i + 1));
-//                    int cols = (int) (Math.round(StripTest.getInstance().getBrand(brandname).getStripLenght()) * ratioW);
-//                    int rows = (int) (Math.round(StripTest.getInstance().getBrand(brandname).getStripHeight()) * ratioH);
                     Mat mat = Mat.zeros(1, 1, CvType.CV_8UC4);
                     resultList.add(mat);
                     continue;
@@ -262,7 +260,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                         if (strip != null) {
 
                             Mat rgba = new Mat();
-                            Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGBA);
+                            Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGB);
 
                             resultList.add(rgba);
 
@@ -270,7 +268,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                             showMessage("No strip found.");
                             Mat rgba = new Mat();
-                            Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGBA);
+                            Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGB);
 
                             //draw a red cross over the image
                             Imgproc.line(rgba, new Point(0, 0), new Point(rgba.cols(),
