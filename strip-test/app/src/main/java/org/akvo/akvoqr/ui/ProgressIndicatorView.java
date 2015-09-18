@@ -109,10 +109,10 @@ public class ProgressIndicatorView extends View {
         //patches
         for(int i=0;i < totalSteps;i++) {
 
-            Rect rect = new Rect(canvas.getWidth()/2 - 18,
+            Rect rect = new Rect(canvas.getWidth()/2 - 17,
                     (distance * i + distance/2),
-                    canvas.getWidth()/2 + 18,
-                    (distance * i) + distance/2 + 36);
+                    canvas.getWidth()/2 + 17,
+                    (distance * i) + distance/2 + 34);
 
             if(i < stepsTaken)
             {
@@ -124,7 +124,7 @@ public class ProgressIndicatorView extends View {
                 canvas.drawRect(rect, strokePaint);
             }
 
-            if(timeLapsed>0 && i>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
+            if(timeLapsed>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
             {
                 String countdown = String.valueOf(patches.get(i).getTimeLapse() - timeLapsed);
                 float textWidth = textPaint.measureText(countdown);
