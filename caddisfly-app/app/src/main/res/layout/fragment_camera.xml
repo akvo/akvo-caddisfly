@@ -16,8 +16,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:orientation="vertical"
     tools:context="org.akvo.caddisfly.sensor.CameraDialogFragment">
@@ -26,12 +26,5 @@
         android:id="@+id/layoutCameraPreview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/border"
-        android:gravity="center" />
 
 </RelativeLayout>

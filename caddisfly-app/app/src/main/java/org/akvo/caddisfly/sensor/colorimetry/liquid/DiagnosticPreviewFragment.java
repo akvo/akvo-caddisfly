@@ -38,7 +38,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.Camera2DialogFragment;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -61,12 +60,8 @@ public class DiagnosticPreviewFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_diagnostic_preview, container, false);
 
         sound = new SoundPoolPlayer(getActivity());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                AppPreferences.getUseCamera2Api()) {
-            mCameraDialog = Camera2DialogFragment.newInstance();
-        } else {
-            mCameraDialog = CameraDialogFragment.newInstance();
-        }
+
+        mCameraDialog = CameraDialogFragment.newInstance();
 
         final DiagnosticPreviewFragment currentDialog = this;
 

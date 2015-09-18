@@ -76,7 +76,7 @@
                     android:lineSpacingExtra="8dp"
                     android:text="@string/toPerformWaterQualityTest"
                     android:textColor="#f8c1d1e6"
-                    android:textSize="20sp" />
+                    android:textSize="19sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

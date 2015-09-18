@@ -19,10 +19,14 @@ package org.akvo.caddisfly.sensor;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,8 +42,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -51,10 +53,11 @@ import java.util.TimerTask;
 public class CameraDialogFragment extends CameraDialog {
     private int mNumberOfPhotosToTake;
     private int mPhotoCurrentCount = 0;
+    private long mSamplingDelay;
     private boolean mCancelled = false;
     private Camera mCamera;
     // View to display the camera output.
-    private CameraPreview mPreview;
+    private CameraPreview mCameraPreview;
 
     public CameraDialogFragment() {
         // Required empty public constructor
@@ -80,6 +83,7 @@ public class CameraDialogFragment extends CameraDialog {
         if (!safeCameraOpenInView(view)) {
             return null;
         }
+
         return view;
     }
 
@@ -94,9 +98,10 @@ public class CameraDialogFragment extends CameraDialog {
     @Override
     public void onStart() {
         super.onStart();
-        if (mCamera != null) {
-            mPreview.setCamera(mCamera);
-            mPreview.startCameraPreview();
+        if (mCamera != null && mCameraPreview != null) {
+            mCameraPreview.setCamera(mCamera);
+            //mCameraPreview.startCameraPreview();
+
         } else {
             String message = String.format("%s\r\n\r\n%s",
                     getString(R.string.cannotUseCamera),
@@ -124,10 +129,15 @@ public class CameraDialogFragment extends CameraDialog {
     public void takePictures(int count, long delay) {
         mNumberOfPhotosToTake = count;
         mPhotoCurrentCount = 0;
+        mSamplingDelay = delay;
 
-        Timer timer = new Timer();
-        TimeLapseTask task = new TimeLapseTask();
-        timer.schedule(task, delay, delay);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                takePicture();
+            }
+        }, delay);
     }
 
     private void takePicture() {
@@ -162,11 +172,11 @@ public class CameraDialogFragment extends CameraDialog {
         opened = (mCamera != null);
 
         if (opened) {
-            mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+            mCameraPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
             FrameLayout layoutCameraPreview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
-            layoutCameraPreview.addView(mPreview);
+            layoutCameraPreview.addView(mCameraPreview);
 
-            mPreview.startCameraPreview();
+            mCameraPreview.startCameraPreview();
         }
         return opened;
     }
@@ -193,9 +203,9 @@ public class CameraDialogFragment extends CameraDialog {
             mCamera.release();
             mCamera = null;
         }
-        if (mPreview != null) {
-            mPreview.destroyDrawingCache();
-            mPreview.mCamera = null;
+        if (mCameraPreview != null) {
+            mCameraPreview.destroyDrawingCache();
+            mCameraPreview.mCamera = null;
         }
     }
 
@@ -206,6 +216,7 @@ public class CameraDialogFragment extends CameraDialog {
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         private final SurfaceHolder mHolder;
+        private Paint circleStroke;
         private List<Camera.Size> mSupportedPreviewSizes;
         private Camera mCamera;
 
@@ -230,9 +241,17 @@ public class CameraDialogFragment extends CameraDialog {
             // underlying surface is created and destroyed.
             mHolder = getHolder();
             mHolder.addCallback(this);
-            mHolder.setKeepScreenOn(true);
+            //mHolder.setKeepScreenOn(true);
             // deprecated setting, but required on Android versions prior to 3.0
-            mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            //mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+            circleStroke = new Paint();
+            circleStroke.setColor(Color.YELLOW);
+            circleStroke.setStyle(Paint.Style.STROKE);
+            circleStroke.setStrokeWidth(5);
+
+            setWillNotDraw(false);
+
         }
 
         public void startCameraPreview() {
@@ -296,20 +315,6 @@ public class CameraDialogFragment extends CameraDialog {
 //                parameters.setFocusAreas(focusAreas);
 //            }
 
-            //List<Camera.Size> supportedPictureSizes = parameters.getSupportedPictureSizes();
-
-            parameters.setPictureSize(640, 480);
-
-//            parameters.setPictureSize(
-//                    supportedPictureSizes.get(supportedPictureSizes.size() - 1).width,
-//                    supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
-
-//            for (Camera.Size size : supportedPictureSizes) {
-//                if (size.width > 400 && size.width < 1000) {
-//                    parameters.setPictureSize(size.width, size.height);
-//                    break;
-//                }
-//            }
             if (mSupportedFlashModes != null) {
                 if (AppPreferences.getUseFlashMode()) {
                     if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
@@ -323,7 +328,28 @@ public class CameraDialogFragment extends CameraDialog {
             }
 
             mCamera.setDisplayOrientation(90);
-            mCamera.setParameters(parameters);
+
+            parameters.setPictureSize(640, 480);
+
+            try {
+                mCamera.setParameters(parameters);
+            } catch (Exception ex) {
+                List<Camera.Size> supportedPictureSizes = parameters.getSupportedPictureSizes();
+
+                parameters.setPictureSize(
+                        supportedPictureSizes.get(supportedPictureSizes.size() - 1).width,
+                        supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
+
+                for (Camera.Size size : supportedPictureSizes) {
+                    if (size.width > 400 && size.width < 1000) {
+                        parameters.setPictureSize(size.width, size.height);
+                        break;
+                    }
+                }
+
+                mCamera.setParameters(parameters);
+
+            }
         }
 
         public void surfaceCreated(SurfaceHolder holder) {
@@ -402,6 +428,17 @@ public class CameraDialogFragment extends CameraDialog {
         }
 
         @Override
+        protected void onDraw(Canvas canvas) {
+            int w = getWidth();
+            int h = getHeight();
+
+            canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
+
+            super.onDraw(canvas);
+
+        }
+
+        @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
@@ -416,22 +453,9 @@ public class CameraDialogFragment extends CameraDialog {
             else
                 ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
 
-            // One of these methods should be used, second method squishes preview slightly
+            //ratio = 1;
+
             setMeasuredDimension(width, (int) (width * ratio));
-//        setMeasuredDimension((int) (width * ratio), height);
-        }
-
-    }
-
-    // Timer task for continuous triggering of preview callbacks
-    private class TimeLapseTask extends TimerTask {
-        @Override
-        public void run() {
-            try {
-                takePicture();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -447,6 +471,13 @@ public class CameraDialogFragment extends CameraDialog {
                 if (!hasCompleted()) {
                     try {
                         camera.startPreview();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                takePicture();
+                            }
+                        }, mSamplingDelay);
                     } catch (Exception ignored) {
 
                     }

@@ -50,8 +50,6 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
-            android:clearTaskOnLaunch="true"
-            android:excludeFromRecents="true"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
             android:theme="@style/MainActivityTheme">
@@ -76,7 +74,6 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
-            android:finishOnTaskLaunch="true"
             android:label="@string/about"
             android:noHistory="true"
             android:parentActivityName=".preference.SettingsActivity"

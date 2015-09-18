@@ -40,8 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textTitle"
@@ -87,8 +86,7 @@
             android:id="@+id/layoutInstructions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textTitle2"
@@ -101,18 +99,6 @@
                 android:textStyle="normal"
                 android:visibility="visible"
                 tools:text="Contaminant" />
-
-            <TextView
-                android:id="@+id/textResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:textAllCaps="false"
-                android:textSize="24sp"
-                android:textStyle="normal"
-                android:visibility="visible"
-                tools:text="0.00 ppm" />
 
             <TextView
                 android:id="@+id/textDilution"
@@ -129,29 +115,47 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="70dp">
+                android:layout_height="240dp">
 
-                <Button
-                    android:id="@+id/buttonStart"
-                    style="@style/Button"
-                    android:text="@string/start"
-                    android:theme="@style/Button.Orange" />
-            </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/layoutCameraPreview"
+                    android:layout_width="240dp"
+                    android:layout_height="320dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-30dp" />
+
+                <org.akvo.caddisfly.widget.CrossHairView
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"
+                    android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Align chamber above and press Start"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonStart"
+                style="@style/Button"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/start"
+                android:theme="@style/Button.Orange" />
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutWait"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textTitle3"

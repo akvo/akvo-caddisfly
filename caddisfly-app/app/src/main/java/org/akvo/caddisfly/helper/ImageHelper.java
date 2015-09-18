@@ -109,115 +109,117 @@ public class ImageHelper {
     private static EdgePoint getEdgePoint(int angle, int x, int y, int radius, @NonNull Bitmap image, boolean drawPath) {
 
         int counter;
-        switch (angle) {
-            case 0:
-                counter = y;
-                for (int i = y - 1; i >= Math.max(0, y - radius); i--) {
-                    if (!isEdgePixel(image.getPixel(x, i))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(x, i, Color.WHITE);
+        if (x >= 0 && y >= 0) {
+            switch (angle) {
+                case 0:
+                    counter = y;
+                    for (int i = y - 1; i >= Math.max(0, y - radius); i--) {
+                        if (!isEdgePixel(image.getPixel(x, i))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(x, i, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
-            case 45:
-                counter = x;
-                int tempY = y;
-                for (int i = x; i < x + radius; i++) {
-                    if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, Math.max(0, tempY), Color.WHITE);
+                    return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
+                case 45:
+                    counter = x;
+                    int tempY = y;
+                    for (int i = x; i < x + radius; i++) {
+                        if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, Math.max(0, tempY), Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-            case 90:
-                counter = x;
-                for (int i = x; i < x + radius; i++) {
-                    if (!isEdgePixel(image.getPixel(i, y))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, y, Color.WHITE);
+                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
+                case 90:
+                    counter = x;
+                    for (int i = x; i < x + radius; i++) {
+                        if (!isEdgePixel(image.getPixel(i, y))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, y, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
-            case 135:
-                counter = x;
-                tempY = y;
-                for (int i = x; i < x + radius; i++) {
-                    if (!isEdgePixel(image.getPixel(i, tempY++))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, tempY, Color.WHITE);
+                    return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
+                case 135:
+                    counter = x;
+                    tempY = y;
+                    for (int i = x; i < x + radius; i++) {
+                        if (!isEdgePixel(image.getPixel(i, tempY++))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, tempY, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-            case 180:
-                counter = y;
-                for (int i = y; i < y + radius; i++) {
-                    if (!isEdgePixel(image.getPixel(x, i))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(x, i, Color.WHITE);
+                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
+                case 180:
+                    counter = y;
+                    for (int i = y; i < y + radius; i++) {
+                        if (!isEdgePixel(image.getPixel(x, i))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(x, i, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
-            case 225:
-                counter = x;
-                tempY = y;
-                for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                    if (!isEdgePixel(image.getPixel(i, tempY++))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, tempY, Color.WHITE);
+                    return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
+                case 225:
+                    counter = x;
+                    tempY = y;
+                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
+                        if (!isEdgePixel(image.getPixel(i, tempY++))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, tempY, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-            case 270:
-                counter = x;
-                for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                    if (!isEdgePixel(image.getPixel(i, y))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, y, Color.WHITE);
+                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
+                case 270:
+                    counter = x;
+                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
+                        if (!isEdgePixel(image.getPixel(i, y))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, y, Color.WHITE);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
-            case 315:
-                counter = x;
-                tempY = y;
-                for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                    if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
-                        counter = i;
-                        if (drawPath) {
-                            image.setPixel(i, Math.max(0, tempY), Color.RED);
+                    return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
+                case 315:
+                    counter = x;
+                    tempY = y;
+                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
+                        if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
+                            counter = i;
+                            if (drawPath) {
+                                image.setPixel(i, Math.max(0, tempY), Color.RED);
+                            }
+                        } else {
+                            break;
                         }
-                    } else {
-                        break;
                     }
-                }
-                return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
+                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
+            }
         }
 
         return new EdgePoint(null, 0);

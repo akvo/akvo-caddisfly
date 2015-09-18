@@ -286,7 +286,7 @@ public class MainActivity extends BaseActivity {
                 }
 
                 long milliseconds = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
-                if (milliseconds <= new Date().getTime()) {
+                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
                     alertCalibrationExpired();
                     return;
                 }

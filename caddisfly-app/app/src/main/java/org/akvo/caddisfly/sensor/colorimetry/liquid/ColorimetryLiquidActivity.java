@@ -58,7 +58,6 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.Camera2DialogFragment;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -78,6 +77,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         HighLevelsDialogFragment.MessageDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener {
     private final Handler delayHandler = new Handler();
+    CameraDialog mCameraDialog;
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -198,6 +198,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 mDilutionTextView.setText(R.string.noDilution);
                 mDilutionTextView1.setText(R.string.noDilution);
                 mViewAnimator.showNext();
+                startAlignmentCameraPreview();
             }
         });
 
@@ -209,6 +210,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 mDilutionTextView.setText(dilutionLabel);
                 mDilutionTextView1.setText(dilutionLabel);
                 mViewAnimator.showNext();
+                startAlignmentCameraPreview();
             }
         });
 
@@ -220,6 +222,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 mDilutionTextView.setText(dilutionLabel);
                 mDilutionTextView1.setText(dilutionLabel);
                 mViewAnimator.showNext();
+                startAlignmentCameraPreview();
             }
         });
 
@@ -227,6 +230,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
         findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mCameraDialog.stopCamera();
 
                 mViewAnimator.showNext();
 
@@ -246,10 +251,19 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 InitializeTest();
 
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
             }
         });
+
+
+    }
+
+    private void startAlignmentCameraPreview() {
+        mCameraDialog = CameraDialogFragment.newInstance();
+
+        getFragmentManager().beginTransaction()
+                .add(R.id.layoutCameraPreview, mCameraDialog)
+                .commit();
+
     }
 
     private void InitializeTest() {
@@ -278,6 +292,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 camera.release();
             }
         }
+
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                SensorManager.SENSOR_DELAY_UI);
+
     }
 
     /**
@@ -314,7 +332,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         releaseResources();
 
-        setAnimatorDisplayedChild(mViewAnimator, 1);
+        //setAnimatorDisplayedChild(mViewAnimator, 1);
 
         sound.playShortResource(R.raw.err);
 
@@ -365,12 +383,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        TextView textResult = ((TextView) findViewById(R.id.textResult));
-        if (mIsCalibration) {
-            textResult.setText(String.format("%.2f %s", mSwatchValue, testInfo.getUnit()));
-            textResult.setVisibility(View.VISIBLE);
-        } else {
-            textResult.setVisibility(View.GONE);
+//        TextView textResult = ((TextView) findViewById(R.id.textResult));
+        if (!mIsCalibration) {
+            //      textResult.setVisibility(View.GONE);
 
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(R.string.appName);
@@ -387,6 +402,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             );
         }
+        //else {
+        //          textResult.setText(String.format("%.2f %s", mSwatchValue, testInfo.getUnit()));
+        //        textResult.setVisibility(View.VISIBLE);
+        //}
 
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
@@ -401,6 +420,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         } else if (mIsCalibration || !testInfo.getCanUseDilution()) {
             releaseResources();
             setAnimatorDisplayedChild(mViewAnimator, 1);
+            startAlignmentCameraPreview();
         } else if (!mTestCompleted) {
             InitializeTest();
         }
@@ -500,18 +520,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                        AppPreferences.getUseCamera2Api()) {
-                    mCameraFragment = Camera2DialogFragment.newInstance();
-                } else {
-                    mCameraFragment = CameraDialogFragment.newInstance();
-                }
+                mCameraFragment = CameraDialogFragment.newInstance();
 
                 mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
                     @Override
                     public void onPictureTaken(byte[] bytes, boolean completed) {
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
-
 
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
                                 !AppPreferences.getUseCamera2Api()) {
@@ -789,7 +803,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     @Override
     public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration) {
-        setAnimatorDisplayedChild(mViewAnimator, 1);
+        //setAnimatorDisplayedChild(mViewAnimator, 1);
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();

@@ -1,3 +1,12 @@
+v0.84 beta
+----------
+1. Added preview on test start screen to align chamber for generic back case
+
+v0.83 beta
+----------
+1. Fix: Backdrop detection fixes
+2. Check if reagent has expired before running test
+
 v0.82 beta
 ----------
 1. Fix: Sounds not playing fully
