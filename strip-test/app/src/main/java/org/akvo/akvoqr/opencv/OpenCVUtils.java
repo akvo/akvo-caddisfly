@@ -301,6 +301,7 @@ public class OpenCVUtils {
 
         ColorDetected colorDetected = new ColorDetected(0);
         colorDetected.setRgb(mean);
+
         int color = Color.rgb((int)Math.round(mean.val[0]),(int)Math.round(mean.val[1]),
                 (int)Math.round(mean.val[2]));
 

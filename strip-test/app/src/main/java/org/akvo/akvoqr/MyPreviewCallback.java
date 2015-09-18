@@ -46,6 +46,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private Camera.Size previewSize;
     private boolean focused = false;
     private Handler handler;
+    private  LightSensor lightSensor;
 
     private Thread showFinderPatternThread = new Thread(
             new Runnable() {
@@ -94,6 +95,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         showFinderPatternThread.start();
 
+        lightSensor = new LightSensor();
+        lightSensor.start();
+
     }
 
     @Override
@@ -107,7 +111,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         if(listener.start()) {
             info = findPossibleCenters(data, previewSize);
-            if (possibleCenters != null && possibleCenters.size() == 4) {
+            if (info!= null && possibleCenters != null && possibleCenters.size() == 4) {
                 camera.stopPreview();
                 listener.playSound();
                 finderPatternColor = Color.RED;
@@ -119,9 +123,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         new QualityChecksTask().execute(data);
 
         //if (!isRunning)
-            new SendDataTask().execute(data);
+        new SendDataTask().execute(data);
 
     }
+
 
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
@@ -136,7 +141,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             data = params[0];
             try {
 
-                if (possibleCenters != null && possibleCenters.size() == 4)
+                if (info!=null && possibleCenters != null && possibleCenters.size() == 4)
                 {
                     long timePictureTaken = System.currentTimeMillis();
                     qualityOK = qualityChecks(data);
@@ -150,9 +155,11 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                                 possibleCenters.get(2).getEstimatedModuleSize() + possibleCenters.get(3).getEstimatedModuleSize());
 
                         listener.sendData(data, timePictureTaken, ImageFormat.JPEG,
-                                camera.getParameters().getPreviewSize().width,
-                                camera.getParameters().getPreviewSize().height, info, avgModuleSize);
+                                previewSize.width,
+                                previewSize.height, info, avgModuleSize);
 
+
+                        lightSensor.stop();
                     }
                     else
                     {
@@ -198,24 +205,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         if(camera==null)
             return false;
 
+        Mat bgr = null;
         focused = false;
-
-        int height = camera.getParameters().getPreviewSize().height;
-        int width = camera.getParameters().getPreviewSize().width;
-        Mat bgr = new Mat(height, width, CvType.CV_8UC3);
-
         try {
 
+            bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
+
             //convert preview data to Mat object
-            Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
+            Mat convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
             convert_mYuv.put(0, 0, data);
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
             //CHECK EXPOSURE.
-            LightSensor lightSensor = new LightSensor();
+
             if(lightSensor.hasLightSensor())
             {
-                lightSensor.start();
                 double lux = lightSensor.getLux();
                 listener.showMaxLuminosity(lux);
             }
@@ -256,7 +260,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             return false;
         }
         finally {
-            bgr.release();
+            if(bgr!=null)
+                bgr.release();
         }
 
     }
@@ -298,13 +303,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     possibleCenters = finderPatternFinder.getPossibleCenters();
 
-                    //remove centers that are to small in order to get rid of noise
-//                    for(int i=0;i<possibleCenters.size();i++) {
-//                        if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
-//                            possibleCenters.remove(i);
-//                            //System.out.println("***removed possible center no. " + i);
-//                        }
-//                    }
+                    //detect centers that are to small in order to get rid of noise
+                    for(int i=0;i<possibleCenters.size();i++) {
+                        if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
+                            return null;
+
+                        }
+                    }
                     //System.out.println("***possible centers size: " + possibleCenters.size());
                     if (handler != null && possibleCenters != null && previewSize != null) {
 

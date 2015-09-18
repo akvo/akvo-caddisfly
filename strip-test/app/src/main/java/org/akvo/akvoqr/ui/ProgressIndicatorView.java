@@ -124,7 +124,7 @@ public class ProgressIndicatorView extends View {
                 canvas.drawRect(rect, strokePaint);
             }
 
-            if( i>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
+            if(timeLapsed>0 && i>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
             {
                 String countdown = String.valueOf(patches.get(i).getTimeLapse() - timeLapsed);
                 float textWidth = textPaint.measureText(countdown);

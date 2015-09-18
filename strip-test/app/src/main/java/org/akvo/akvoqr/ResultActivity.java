@@ -248,7 +248,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 System.out.println("***stripColors has RGB");
                 pointC = colorDetected.getRgb().val;
-                //System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
+                System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
 
             }
 
