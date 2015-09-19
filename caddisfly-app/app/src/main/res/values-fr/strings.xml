@@ -13,6 +13,7 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="appName">Akvo Caddisfly</string>
     <!--Common-->
@@ -20,7 +21,6 @@
     <string name="retry">Réessayer</string>
     <string name="cancel">Annuler</string>
     <string name="start">Commencer</string>
-    <string name="next">Suivant</string>
     <string name="delete">Supprimer</string>
     <string name="error">Erreur</string>
     <string name="general">Général</string>

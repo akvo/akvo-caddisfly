@@ -36,7 +36,6 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
@@ -273,6 +272,8 @@ public class CameraDialogFragment extends CameraDialog {
 
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
 
+            parameters.setExposureCompensation(-2);
+
             List<String> supportedSceneModes = mCamera.getParameters().getSupportedSceneModes();
             if (supportedSceneModes != null && supportedSceneModes.contains(Camera.Parameters.SCENE_MODE_AUTO)) {
                 parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
@@ -285,20 +286,13 @@ public class CameraDialogFragment extends CameraDialog {
 
             List<String> focusModes = parameters.getSupportedFocusModes();
 
-            if (AppPreferences.getAutoFocus()) {
-                // Force auto focus as per preference
-                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-                }
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
             } else {
-
-                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
-                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
-                } else
-                    // Attempt to set focus to infinity if supported
-                    if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
-                        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-                    }
+                // Attempt to set focus to infinity if supported
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+                }
             }
 
             if (parameters.getMaxNumMeteringAreas() > 0) {
@@ -316,14 +310,8 @@ public class CameraDialogFragment extends CameraDialog {
 //            }
 
             if (mSupportedFlashModes != null) {
-                if (AppPreferences.getUseFlashMode()) {
-                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-                    }
-                } else {
-                    if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    }
+                if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 }
             }
 
@@ -348,7 +336,6 @@ public class CameraDialogFragment extends CameraDialog {
                 }
 
                 mCamera.setParameters(parameters);
-
             }
         }
 
@@ -452,8 +439,6 @@ public class CameraDialogFragment extends CameraDialog {
                 ratio = (float) mPreviewSize.height / (float) mPreviewSize.width;
             else
                 ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
-
-            //ratio = 1;
 
             setMeasuredDimension(width, (int) (width * ratio));
         }

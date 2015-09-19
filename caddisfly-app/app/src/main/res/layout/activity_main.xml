@@ -49,12 +49,12 @@
                 android:layout_marginTop="16dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
+                android:paddingEnd="16dp"
                 android:paddingStart="22dp"
                 android:text="@string/calibrate"
                 android:textAlignment="viewStart"
                 android:textColor="#e2e0e0"
-                android:theme="@style/Button.Blue"
-                tools:ignore="RtlSymmetry" />
+                android:theme="@style/Button.Blue" />
 
             <LinearLayout
                 android:id="@+id/layoutOpenApp"

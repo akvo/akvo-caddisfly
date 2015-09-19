@@ -36,8 +36,7 @@ public class ImageHelper {
         int sampleCount = 5;
         for (int sample = 0; sample < sampleCount; sample++) {
             edgePoints.clear();
-            //drawPath = sample == sampleCount - 1;
-            //drawPath = true;
+
             if (x < 0 || y < 0) {
                 return null;
             }

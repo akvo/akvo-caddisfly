@@ -77,7 +77,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         HighLevelsDialogFragment.MessageDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener {
     private final Handler delayHandler = new Handler();
-    CameraDialog mCameraDialog;
+    private CameraDialog mCameraDialog;
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -270,7 +270,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         mSensorManager.unregisterListener(mShakeDetector);
 
-        mIgnoreShake = AppPreferences.getIgnoreShake();
+        mIgnoreShake = false;
         mTestCompleted = false;
         mHighLevelsFound = false;
 
@@ -527,28 +527,24 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     public void onPictureTaken(byte[] bytes, boolean completed) {
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
-                                !AppPreferences.getUseCamera2Api()) {
-
-                            Display display = getWindowManager().getDefaultDisplay();
-                            int rotation = 0;
-                            switch (display.getRotation()) {
-                                case Surface.ROTATION_0:
-                                    rotation = 90;
-                                    break;
-                                case Surface.ROTATION_90:
-                                    rotation = 0;
-                                    break;
-                                case Surface.ROTATION_180:
-                                    rotation = 270;
-                                    break;
-                                case Surface.ROTATION_270:
-                                    rotation = 180;
-                                    break;
-                            }
-
-                            bitmap = ImageUtil.rotateImage(bitmap, rotation);
+                        Display display = getWindowManager().getDefaultDisplay();
+                        int rotation = 0;
+                        switch (display.getRotation()) {
+                            case Surface.ROTATION_0:
+                                rotation = 90;
+                                break;
+                            case Surface.ROTATION_90:
+                                rotation = 0;
+                                break;
+                            case Surface.ROTATION_180:
+                                rotation = 270;
+                                break;
+                            case Surface.ROTATION_270:
+                                rotation = 180;
+                                break;
                         }
+
+                        bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);

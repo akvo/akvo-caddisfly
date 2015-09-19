@@ -26,6 +26,7 @@ public abstract class CameraDialog extends DialogFragment {
 
     public abstract void takePictureSingle();
 
+    @SuppressWarnings("SameParameterValue")
     public abstract void takePictures(int count, long delay);
 
     public void setPictureTakenObserver(PictureTaken observer) {

@@ -30,11 +30,10 @@ import android.view.View;
 //http://stackoverflow.com/questions/20589267/draw-a-transparent-circle-onto-a-filled-android-canvas
 public class CrossHairView extends View {
 
-    Bitmap bitmap;
-    Canvas canvas;
-    Paint eraser;
-    Paint circleStroke;
-    int backgroundColor;
+    private final Paint clearPaint;
+    private final Paint circlePaint;
+    private final int backgroundColor;
+    private Bitmap bitmap;
 
     public CrossHairView(Context context) {
         this(context, null);
@@ -47,14 +46,14 @@ public class CrossHairView extends View {
     public CrossHairView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        circleStroke = new Paint();
-        circleStroke.setColor(Color.YELLOW);
-        circleStroke.setStyle(Paint.Style.STROKE);
-        circleStroke.setStrokeWidth(5);
+        circlePaint = new Paint();
+        circlePaint.setColor(Color.YELLOW);
+        circlePaint.setStyle(Paint.Style.STROKE);
+        circlePaint.setStrokeWidth(5);
 
-        eraser = new Paint();
-        eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        eraser.setAntiAlias(true);
+        clearPaint = new Paint();
+        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        clearPaint.setAntiAlias(true);
 
         TypedValue a = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.windowBackground, a, true);
@@ -66,13 +65,12 @@ public class CrossHairView extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    protected void onSizeChanged(int w, int h, int oldWidth, int oldHeight) {
 
-        if (w != oldw || h != oldh) {
+        if (w != oldWidth || h != oldHeight) {
             bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(bitmap);
         }
-        super.onSizeChanged(w, h, oldw, oldh);
+        super.onSizeChanged(w, h, oldWidth, oldHeight);
     }
 
     @Override
@@ -84,10 +82,9 @@ public class CrossHairView extends View {
 
         bitmap.eraseColor(Color.TRANSPARENT);
         canvas.drawColor(backgroundColor);
-        canvas.drawCircle(w / 2, h / 2, radius, eraser);
+        canvas.drawCircle(w / 2, h / 2, radius, clearPaint);
         canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
+        canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
         super.onDraw(canvas);
     }
-
 }

@@ -72,8 +72,8 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
-    TextView textCalibrationDate;
-    TextView textSubtitle;
+    private TextView textCalibrationDate;
+    private TextView textSubtitle;
     private int mPosition;
 
     @Override
@@ -154,9 +154,9 @@ public class CalibrateListActivity extends BaseActivity
         }
         Long expiryDate = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
         if (expiryDate >= 0) {
-            textSubtitle.setText(String.format("Expiry %s (%s)",
-                    new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(expiryDate)),
-                    PreferencesUtil.getString(this, R.string.batchNumberKey, "")));
+            textSubtitle.setText(String.format("%s Expiry %s",
+                    PreferencesUtil.getString(this, R.string.batchNumberKey, ""),
+                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
         }
     }
 

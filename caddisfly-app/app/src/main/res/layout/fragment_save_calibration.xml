@@ -43,7 +43,7 @@
         android:layout_marginTop="16dp"
         android:hint="@string/reagentBatch"
         android:inputType="textCapCharacters"
-        android:maxLength="14" />
+        android:maxLength="10" />
 
     <EditText
         android:id="@+id/editExpiryDate"

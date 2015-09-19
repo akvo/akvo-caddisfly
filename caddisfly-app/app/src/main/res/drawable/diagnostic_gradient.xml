@@ -19,7 +19,7 @@
     <gradient
         android:angle="90"
         android:centerColor="@color/gradient_center"
-        android:centerX="0.8"
+        android:centerX="0.85"
         android:endColor="@color/diagnostic"
         android:startColor="@color/gradient_start"
         android:type="linear" />

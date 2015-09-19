@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class CalibrateSensorActivity extends BaseActivity {
 
-    TextView textSubtitle;
+    private TextView textSubtitle;
     private D2xxManager ftManager;
     private FT_Device ftDev = null;
     private int DevCount = -1;

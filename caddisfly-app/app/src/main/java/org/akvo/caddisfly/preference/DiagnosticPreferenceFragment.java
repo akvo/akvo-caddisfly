@@ -22,11 +22,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -107,16 +105,17 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        Preference cameraPreviewPreference = findPreference("cameraPreview");
+        final Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-
-                    if (isCameraAvailable()) {
-                        CaddisflyApp.getApp().initializeCurrentTest();
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
-                        diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+                    if (getFragmentManager().findFragmentByTag("diagnosticPreviewFragment") == null) {
+                        if (isCameraAvailable()) {
+                            CaddisflyApp.getApp().initializeCurrentTest();
+                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+                            diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+                        }
                     }
                     return true;
                 }
@@ -133,15 +132,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     return true;
                 }
             });
-        }
-
-        Preference useCamera2 = findPreference(getString(R.string.useCamera2Key));
-        if (useCamera2 != null) {
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                PreferenceCategory preferenceCategory =
-                        (PreferenceCategory) findPreference("preferenceCategoryDiagnostics");
-                preferenceCategory.removePreference(useCamera2);
-            }
         }
 
         final EditTextPreference distancePreference =

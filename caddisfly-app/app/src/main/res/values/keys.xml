@@ -17,16 +17,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="languageKey" translatable="false">language</string>
     <string name="systemLanguageKey" translatable="false">systemLanguage</string>
-    <string name="ignoreShakeKey" translatable="false">ignoreShake</string>
-    <string name="autoFocusKey" translatable="false">autoFocus</string>
     <string name="diagnosticModeKey" translatable="false">diagnosticMode</string>
     <string name="showDebugMessagesKey" translatable="false">showDebugMessages</string>
     <string name="noSoundKey" translatable="false">noSound</string>
-    <string name="useFlashModeKey" translatable="false">useFlashMode</string>
     <string name="colorDistanceToleranceKey" translateable="false">colorDistanceTolerance</string>
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>
-    <string name="useCamera2Key" translateable="false">userCamera2</string>
     <string name="calibrationDateKey" translateable="false">calibrationDateTime</string>
     <string name="calibrationExpiryDateKey" translateable="false">calibrationExpiryDate</string>
     <string name="batchNumberKey" translateable="false">batchNumber</string>

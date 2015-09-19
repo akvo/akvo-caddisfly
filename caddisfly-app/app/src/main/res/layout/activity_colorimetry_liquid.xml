@@ -139,7 +139,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="Align chamber above and press Start"
+                android:text="@string/alignChamber"
                 android:textSize="18sp" />
 
             <Button

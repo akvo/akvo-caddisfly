@@ -65,29 +65,8 @@ public class AppPreferences {
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
     }
 
-    public static boolean getAutoFocus() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.autoFocusKey, false);
-    }
-
-    public static boolean getUseFlashMode() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
-    }
-
-    public static boolean getIgnoreShake() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreShakeKey, false);
-    }
-
     public static boolean getShowDebugMessages() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
-
-    public static boolean getUseCamera2Api() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useCamera2Key, false);
-    }
-
 }

@@ -24,7 +24,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
@@ -37,7 +36,6 @@ import android.view.Window;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -75,28 +73,24 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
                 Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
-                        !AppPreferences.getUseCamera2Api()) {
-
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    int rotation = 0;
-                    switch (display.getRotation()) {
-                        case Surface.ROTATION_0:
-                            rotation = 90;
-                            break;
-                        case Surface.ROTATION_90:
-                            rotation = 0;
-                            break;
-                        case Surface.ROTATION_180:
-                            rotation = 270;
-                            break;
-                        case Surface.ROTATION_270:
-                            rotation = 180;
-                            break;
-                    }
-
-                    bitmap = ImageUtil.rotateImage(bitmap, rotation);
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                int rotation = 0;
+                switch (display.getRotation()) {
+                    case Surface.ROTATION_0:
+                        rotation = 90;
+                        break;
+                    case Surface.ROTATION_90:
+                        rotation = 0;
+                        break;
+                    case Surface.ROTATION_180:
+                        rotation = 270;
+                        break;
+                    case Surface.ROTATION_270:
+                        rotation = 180;
+                        break;
                 }
+
+                bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
                 DiagnosticDetailsFragment diagnosticDetailsFragment =
                         DiagnosticDetailsFragment.newInstance(
