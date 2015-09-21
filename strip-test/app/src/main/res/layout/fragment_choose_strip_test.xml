@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="org.akvo.akvoqr.instructions_app.TabbedActivity.ChooseStripTestFragment">
+    tools:context="org.akvo.akvoqr.instructions_app.InstructionActivity.ChooseStripTestFragment">
 
     <TextView android:id="@+id/section_label"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:textColor="@android:color/white"
         android:gravity="center"
         android:paddingRight="10dp"
-        android:background="@color/mediumblue"
+        android:background="@drawable/button_blue_selector"
         android:drawableRight="@drawable/arrow_black_right_semi_transp_no9"
         android:id="@+id/fragment_choose_strip_testButton"
         android:layout_marginBottom="10dp"
@@ -52,11 +52,12 @@
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
         android:text="Instructions"
+        android:textColor="@android:color/white"
         android:layout_margin="0dp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:background="#ffa5d390"
-        android:drawableRight="@drawable/arrow_black_down"
+        android:drawableRight="@drawable/arrow_black_down_semi_transp_no9"
         android:id="@+id/fragment_choose_strip_testButtonInstruction"
         android:layout_below="@+id/fragment_choose_strip_testButton"/>
 </RelativeLayout>

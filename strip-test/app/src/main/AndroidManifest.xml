@@ -40,7 +40,7 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".instructions_app.TabbedActivity"
+            android:name=".instructions_app.InstructionActivity"
             android:label="@string/title_instruction_list" >
         </activity>
         <activity

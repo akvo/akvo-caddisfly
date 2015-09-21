@@ -22,6 +22,7 @@ import org.akvo.akvoqr.color.ColorDetected;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.ui.CircleView;
 import org.akvo.akvoqr.util.Constant;
+import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.opencv.android.Utils;
@@ -121,6 +122,8 @@ public class ResultActivity extends AppCompatActivity {
                 redo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        FileStorage.deleteAll();
                         Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
                         intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intentRedo);
@@ -237,11 +240,16 @@ public class ResultActivity extends AppCompatActivity {
         private double calculatePPMrgb(ColorDetected colorDetected) {
 
             List<Pair<Integer,Double>> labdaList = new ArrayList<>();
-            double ppm = 0;
+            double ppm = Double.MAX_VALUE;
             double[] pointA = null;
             double[] pointB = null;
             double[] pointC = null;
-            double labda;
+            double labda = 0;
+            double minLabdaAbs = Double.MAX_VALUE;
+            JSONArray rgb;
+            double distance;
+            double minDistance = Double.MAX_VALUE;
+
 
             // make pointC array
             if (colorDetected.getRgb() != null) {
@@ -252,7 +260,7 @@ public class ResultActivity extends AppCompatActivity {
 
             }
 
-            JSONArray rgb;
+
             for (int j = 0; j < colours.length() - 1; j++) {
 
                 // make points A and B
@@ -272,10 +280,29 @@ public class ResultActivity extends AppCompatActivity {
 
                 try
                 {
-                    if (pointA != null && pointB != null & pointC != null)
+                    if (pointA != null && pointB != null && pointC != null)
                     {
                         labda = getClosestPointOnLine(pointA, pointB, pointC);
+
+                        distance = getDistanceCtoAB(pointA, pointB, pointC, labda);
+
+                        // if labda is between 0 and 1, it is valid.
+                        if (0 < labda && labda < 1) {
+
+                            //choose shortest distance if more than one patch is valid
+                            if( distance < minDistance) {
+
+                                minDistance = distance;
+
+                                ppm = (1 - labda) * colours.getJSONObject(j).getDouble("value") + labda * colours.getJSONObject(j + 1).getDouble("value");
+                            }
+                        }
+
+                        //add value for labda to list for later use: extrapolate ppm
                         labdaList.add(new Pair(j, labda));
+
+                        System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
+
                     }
                 }
                 catch (Exception e) {
@@ -283,50 +310,28 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
 
-            //get labda closest to 0.5
-            double smallestL = Double.MAX_VALUE;
-            int firstColorPos = 0;
-            for(Pair p: labdaList)
+            if(ppm == Double.MAX_VALUE)
             {
-                double l = Math.abs((double)p.second);
+                //no labda between 0 and 1 is found: extrapolate ppm value
 
-                if( Math.abs(l - 0.5) < smallestL)
-                {
-                    smallestL = Math.abs(l - 0.5) ;
-                    firstColorPos = (int) p.first;
-                }
-
-                //System.out.println("***labda from list: " + p.second + " smallestL: " + smallestL);
-            }
-
-            labda = labdaList.get(firstColorPos).second;
-
-            try
-            {
-                ppm = (1 - labda) * colours.getJSONObject(firstColorPos).getDouble("value") + labda * colours.getJSONObject(firstColorPos + 1).getDouble("value");
-                //System.out.println("***RGB*** color patch no: " + firstColorPos + "  labda: " + labda + " ppm: " + ppm);
-
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-
-            // if labda is between 0 and 1, it is valid.
-            if (0 < labda && labda < 1)
-            {
-                return ppm;
-            }
-
-            if (labda > 1) //we have a very dark color. extrapolate.
-            {
                 try
                 {
-                    ppm = (1 - labda) * colours.getJSONObject(colours.length() - 2).getDouble("value") +
-                            labda * colours.getJSONObject(colours.length() - 1).getDouble("value");
+                    //find the lowest value for labda and calculate ppm with that
+                    for (int i = 0; i < labdaList.size(); i++) {
+                        labda = Math.abs(labdaList.get(i).second);
+                        if (labda < minLabdaAbs) {
 
-//                System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
-//                System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+                            minLabdaAbs = labda;
+                            if(labdaList.get(i).first < colours.length()) {
+                                ppm = (1 - labda) * colours.getJSONObject(labdaList.get(i).first).getDouble("value") +
+                                        labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
+                            }
+
+                            System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+
+                        }
+                    }
+                    System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
 
                 }
                 catch (JSONException e)
@@ -373,6 +378,30 @@ public class ResultActivity extends AppCompatActivity {
         double t = - numerator / denominator;
 
         return t;
+
+    }
+
+    private double getDistanceCtoAB(double[] pointA, double[] pointB, double[] pointC, double labda) throws Exception {
+
+
+        if(pointA.length<3 || pointB.length<3 || pointC.length<3)
+            throw new Exception("array lengths should all be 3");
+
+        double pxA = pointA[0];
+        double pyA = pointA[1];
+        double pzA = pointA[2];
+        double pxB = pointB[0];
+        double pyB = pointB[1];
+        double pzB = pointB[2];
+        double pxC = pointC[0];
+        double pyC = pointC[1];
+        double pzC = pointC[2];
+
+        double pxC1 = pxA * (1-labda) + labda*pxB;
+        double pyC1 = pyA * (1-labda) + labda*pyB;
+        double pzC1 = pzA * (1-labda) + labda*pzB;
+
+        return Math.sqrt(Math.pow(pxC1 - pxC, 2) + Math.pow(pyC1 - pyC, 2) + Math.pow(pzC1 - pzC, 2));
 
     }
 

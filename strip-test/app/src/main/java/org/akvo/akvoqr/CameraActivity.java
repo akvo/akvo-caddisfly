@@ -354,18 +354,20 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             //check if picture is taken on time for the patch
             for(int i=0;i<patches.size();i++)
             {
+                //if in time, store with current patchCount
                 if(timeMillis < initTimeMillis + patches.get(i).getTimeLapse()*1000)
                 {
-                    //ignore
+                    new StoreDataTask(patchCount, data, info).execute();
                 }
                 else
                 {
                     patchCount = i;
+                    new StoreDataTask(patchCount, data, info).execute();
+
                 }
             }
            // System.out.println("***patch count: " + patchCount);
 
-            new StoreDataTask(patchCount, data, info).execute();
 
             if (patchCount < numPatches -1) {
 

@@ -44,6 +44,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
+    private int previewFormat;
     private boolean focused = false;
     private Handler handler;
     private  LightSensor lightSensor;
@@ -105,6 +106,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
+        previewFormat = camera.getParameters().getPreviewFormat();
 
         focused = false;
         finderPatternColor = Color.RED;
@@ -326,13 +328,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
     private byte[] compressToJpeg(byte[] data)
     {
-        int format = camera.getParameters().getPreviewFormat();
-        int width = camera.getParameters().getPreviewSize().width;
-        int height = camera.getParameters().getPreviewSize().height;
+//        int format = camera.getParameters().getPreviewFormat();
+//        int width = camera.getParameters().getPreviewSize().width;
+//        int height = camera.getParameters().getPreviewSize().height;
 
-        if(format == ImageFormat.NV21) {
-            YuvImage yuvImage = new YuvImage(data, format, width, height, null);
-            Rect rect = new Rect(0, 0, width, height);
+        if(previewFormat == ImageFormat.NV21) {
+            YuvImage yuvImage = new YuvImage(data, previewFormat, previewSize.width, previewSize.height, null);
+            Rect rect = new Rect(0, 0, previewSize.width, previewSize.height);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             yuvImage.compressToJpeg(rect, 100, baos);
             return baos.toByteArray();
