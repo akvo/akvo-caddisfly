@@ -68,20 +68,24 @@ public class ResultActivity extends AppCompatActivity {
                 //the name of the patch
                 String desc = patches.get(i).getDesc();
 
-
+                //make sure we have a mat for this patch
                 if (i < mats.size()) {
                     strip = mats.get(i).clone();
                 } else {
                     continue;
                 }
 
-                int matH = strip.height();
-
-                if(matH > 1) {
+                //if the height of the strip is smaller than 1, it means that in DetectStripActivity there was
+                //no data for this patch (there a Mat.zeros object is added to the list of mats)
+                if(strip.height() > 1) {
                     double ratioW = strip.width() / brand.getStripLenght();
 
+                    //extend the strip with a border, so we can draw a circle around each patch that is
+                    //wider than the strip itself. That is just because it looks nice.
+                    //we make a new Mat object to be sure not to touch the original
+                    int borderSize = (int) Math.ceil(strip.height() * 0.5);
                     Mat mat = new Mat();
-                    Core.copyMakeBorder(strip, mat, 20, 20, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+                    Core.copyMakeBorder(strip, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
                     //calculate center of patch in pixels
                     double x = patches.get(i).getPosition() * ratioW;

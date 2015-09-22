@@ -7,11 +7,12 @@
         android:layout_height="wrap_content"
         android:padding="12sp"
         android:text="Please wait ... "
+        android:layout_alignParentTop="true"
         android:id="@+id/activity_detect_strip_timelapseWaitTextView"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/activity_detect_strip_timelapseWaitTextView"
         android:fillViewport="true"
         android:layout_above="@+id/activity_detect_strip_timelapseButtonLayout"
         android:id="@+id/activity_detect_strip_timelapseScrollView">

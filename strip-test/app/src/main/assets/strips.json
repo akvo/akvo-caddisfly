@@ -4,7 +4,6 @@
       "name": "Chlorine (ppm) and free chlorine (ppm)",
       "code": "strip-CL-101",
       "id": "336",
-      // "img": "strip-336.jpg",
       "brand": "HACH883738",
       "numPatch": 2,
       "length": 82.8,
@@ -41,7 +40,7 @@
               "rgb":[133, 101, 130]
             }
           ],
-          "timeLapse":10,
+          "timeLapse":0,
           "unit": "ppm"
         },
         {
@@ -88,7 +87,6 @@
       "name": "PH 4-9",
       "code": "strip-PH-4-9",
       "id": "337",
-      // "img": "strip-336.jpg",
       "brand": "HACH2745650",
       "numPatch": 1,
       "length": 82.8,
@@ -139,7 +137,6 @@
       "name": "5 in 1 Water Quality",
       "code": "strip-5-in-1",
       "id": "338",
-      // "img": "strip-336.jpg",
       "brand": "HACH2755250",
       "numPatch": 5,
       "length": 82.8,

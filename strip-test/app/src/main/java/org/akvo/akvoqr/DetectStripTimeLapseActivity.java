@@ -179,6 +179,8 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                     showMessage("No data for patch no.  " + (i + 1));
+                    //place a Mat object in result list. This is necessary for ResultActivity to work
+                    //because we are counting patches, not mats
                     Mat mat = Mat.zeros(1, 1, CvType.CV_8UC4);
                     resultList.add(mat);
                     continue;
