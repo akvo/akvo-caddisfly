@@ -147,7 +147,7 @@ public class ProgressIndicatorView extends View {
             for (int i = 0; i < patches.size(); i++) {
                 //System.out.println("***timeLapsed: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
                 if (timeLapsed < patches.get(i).getTimeLapse()) {
-                    System.out.println("***timeLapsed < patch timelapse: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
+                  //  System.out.println("***timeLapsed < patch timelapse: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
                 } else {
                     pos = i + 1;
                     // break;

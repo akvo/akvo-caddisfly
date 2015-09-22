@@ -23,11 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StartCameraActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
             android:name=".ResultActivity"
             android:label="@string/title_activity_result"
             android:screenOrientation="portrait" >
@@ -50,14 +45,6 @@
         <activity
             android:name=".choose_striptest.ChooseStriptestDetailActivity"
             android:label="@string/title_instruction_detail"
-            android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".choose_striptest.ChooseStriptestListActivity" />
-        </activity>
-        <activity
-            android:name=".DetectStripActivity"
-            android:label="@string/title_activity_detect_strip"
             android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

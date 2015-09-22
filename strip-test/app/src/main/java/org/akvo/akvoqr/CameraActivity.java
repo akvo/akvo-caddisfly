@@ -1,6 +1,5 @@
 package org.akvo.akvoqr;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
@@ -16,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
@@ -25,10 +23,8 @@ import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
-import org.opencv.core.Mat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +46,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private boolean hasTimeLapse;
     private List<StripTest.Brand.Patch> patches;
     private int numPatches;
-    private int patchCount = 0;
+    // private int patchCount = 0;
     private boolean startButtonClicked = false;
     private Intent detectStripIntent;
 
@@ -78,31 +74,32 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         hasTimeLapse = StripTest.getInstance().getBrand(brandName).hasTimeLapse();
         numPatches = StripTest.getInstance().getBrand(brandName).getPatches().size();
         patches = StripTest.getInstance().getBrand(brandName).getPatches();
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
+        Button startButton = new Button(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        startButton.setText(getResources().getString(R.string.start));
+        startButton.setBackgroundResource(R.drawable.button_start_selector);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setActivated(!v.isActivated());
+                v.setOnClickListener(null);
+                v.setVisibility(View.GONE);
+
+                startButtonClicked = true;
+
+                startCountdown();
+            }
+        });
+
+        relativeLayout.addView(startButton, params);
+
         if(hasTimeLapse)
         {
-            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
-            Button startButton = new Button(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT);
-            startButton.setText(getResources().getString(R.string.start));
-            startButton.setBackgroundResource(R.drawable.button_start_selector);
-
-            startButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setActivated(!v.isActivated());
-                    v.setOnClickListener(null);
-                    v.setVisibility(View.GONE);
-
-                    startButtonClicked = true;
-
-                    startCountdown();
-                }
-            });
-
-            relativeLayout.addView(startButton, params);
-
             int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
             progressIndicatorView.setTotalSteps(numPatches);
             progressIndicatorView.setDuration(duration);
@@ -114,7 +111,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         else
         {
             progressIndicatorView.setVisibility(View.GONE);
-            startButtonClicked = true;
+
         }
     }
 
@@ -136,7 +133,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
     public void onPause()
     {
-        //MyPreviewCallback.firstTime = true;
         mCamera.setOneShotPreviewCallback(null);
 
         if(mCamera!=null) {
@@ -152,7 +148,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             mPreview = null;
         }
         Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
-
 
         super.onPause();
 
@@ -187,8 +182,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         {
             init();
         }
-
-        patchCount = 0;
 
         FileStorage.deleteAll();
 
@@ -284,33 +277,11 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         handler.post(showMessage);
     }
 
-    @Override
-    public void sendMats(ArrayList<Mat> mats)
-    {
-//
-//        detectStripIntent.putExtra(Constant.MAT, mats);
-//        detectStripIntent.putExtra(Constant.BRAND, brandName);
-//        startActivity(detectStripIntent);
-
-        this.finish();
-    }
-
-    @Override
-    public double getTimeLapseForPatch()
-    {
-        if(patchCount>0) {
-            return patches.get(patchCount).getTimeLapse() - patches.get(patchCount-1).getTimeLapse();
-        }
-        else {
-            return patches.get(patchCount).getTimeLapse();
-        }
-    }
-
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
             if(mCamera!=null && previewCallback!=null)
-                 mCamera.setOneShotPreviewCallback(previewCallback);
+                mCamera.setOneShotPreviewCallback(previewCallback);
         }
     };
 
@@ -345,115 +316,51 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info, double mSize) {
 
-//        System.out.println("***data sendData w, h: " + width + ", " + height + " format: " + format);
-//        System.out.println("***info: " + info);
-//        System.out.println("***data: " + data.length);
+        int patchCount = 0;
 
-        if(hasTimeLapse) {
+        //check if picture is taken on time for the patch
+        //assumed is that some tests require time for color to develop
+        //reading may be done after that time, but not before
+        for(int i=0;i<patches.size();i++)
+        {
+            //System.out.println("***patchCount time diff milliseconds: " + (timeMillis  - (initTimeMillis + patches.get(i).getTimeLapse()*1000)));
 
-            //check if picture is taken on time for the patch
-            for(int i=0;i<patches.size();i++)
+            if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
             {
-                //if in time, store with current patchCount
-                if(timeMillis < initTimeMillis + patches.get(i).getTimeLapse()*1000)
-                {
-                    new StoreDataTask(patchCount, data, info).execute();
-                }
-                else
-                {
-                    patchCount = i;
-                    new StoreDataTask(patchCount, data, info).execute();
-
-                }
+                patchCount = i;
             }
-           // System.out.println("***patch count: " + patchCount);
-
-
-            if (patchCount < numPatches -1) {
-
-                patchCount++;
-                showProgress(patchCount);
-
-                Runnable clearFinderPatterns = new Runnable() {
-                    @Override
-                    public void run() {
-                        finderPatternIndicatorView.showPatterns(null, null);
-                    }
-                };
-                handler.postDelayed(clearFinderPatterns, 1000);
-
-                return;
-            }
-            patchCount++;
-            showProgress(patchCount);
-
-        }
-        else {
-
-            detectStripIntent = new Intent(this, DetectStripActivity.class);
-            detectStripIntent.putExtra(Constant.DATA, data);
-
-            Bundle finderPatternBundle = new Bundle();
-            finderPatternBundle.putDoubleArray(Constant.TOPLEFT,
-                    new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()});
-            finderPatternBundle.putDoubleArray(Constant.TOPRIGHT,
-                    new double[]{info.getTopRight().getX(), info.getTopRight().getY()});
-            finderPatternBundle.putDoubleArray(Constant.BOTTOMLEFT,
-                    new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()});
-            finderPatternBundle.putDoubleArray(Constant.BOTTOMRIGHT,
-                    new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()});
-
-            detectStripIntent.putExtra(Constant.FINDERPATTERNBUNDLE, finderPatternBundle);
         }
 
-        try {
-            detectStripIntent.putExtra(Constant.BRAND, brandName);
-            detectStripIntent.putExtra(Constant.FORMAT, format);
-            detectStripIntent.putExtra(Constant.WIDTH, width);
-            detectStripIntent.putExtra(Constant.HEIGHT, height);
-            detectStripIntent.putExtra(Constant.MODULE_SIZE, mSize);
+        //System.out.println("***patchCount: " + patchCount);
 
-            detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        new StoreDataTask(patchCount, data, info).execute();
 
-            startActivity(detectStripIntent);
+        showProgress(patchCount+1);
 
-            this.finish();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (patchCount < numPatches -1) {
+
+            Runnable clearFinderPatterns = new Runnable() {
+                @Override
+                public void run() {
+                    finderPatternIndicatorView.showPatterns(null, null);
+                }
+            };
+            handler.postDelayed(clearFinderPatterns, 1000);
+
+            return;
         }
 
-    }
+        detectStripIntent.putExtra(Constant.BRAND, brandName);
+        detectStripIntent.putExtra(Constant.FORMAT, format);
+        detectStripIntent.putExtra(Constant.WIDTH, width);
+        detectStripIntent.putExtra(Constant.HEIGHT, height);
+        detectStripIntent.putExtra(Constant.MODULE_SIZE, mSize);
 
-//    @Override
-//    public void setBitmap(Bitmap bitmap) {
-//
-//            double ratio = (double) bitmap.getHeight() / (double) bitmap.getWidth();
-//            int width = 800;
-//            int height = (int) Math.round(ratio * width);
-////            System.out.println("***bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
-////            System.out.println("***bitmap calc width: " + width + " height: " + height + " ratio: " + ratio);
-//            try {
-//                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
-//            byte[] bitmapdata = bos.toByteArray();
-//
-//           // sendData(bitmapdata, ImageFormat.RGB_565, bitmap.getWidth(), bitmap.getHeight());
-//
-//            bitmap.recycle();
-//
-//            finish();
-//
-//    }
+        detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-    @Override
-    public Mat getCalibratedImage(Mat mat)
-    {
-        CalibrationCard calibrationCard = new CalibrationCard();
-        return calibrationCard.calibrateImage(CameraActivity.this, mat);
+        startActivity(detectStripIntent);
+
+        this.finish();
 
     }
 
@@ -470,75 +377,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         };
         handler.post(showProgress);
     }
-    private ProgressDialog progress;
-   /* @Override
-    public void showProgress(final int which) {
-
-
-        if(which == 0)
-        {
-            Runnable showMessage = new Runnable() {
-                @Override
-                public void run() {
-                    if(messageLightView !=null)
-                        messageLightView.setText("Looking for finder patterns.\nPlease hold camera above striptest.");
-                }
-            };
-            handler.post(showMessage);
-        }
-        else {
-            Runnable showProgress = new Runnable() {
-
-                @Override
-                public void run() {
-
-                    progressIndicatorView.setStepsTaken(which);
-
-                    if(messageLightView !=null)
-                        messageLightView.setText("");
-
-                    if (progress == null) {
-                        progress = new ProgressDialog(CameraActivity.this);
-                        switch (which) {
-                            case 0:
-                                progress.setTitle("Looking for finder patterns");
-                                break;
-                            case 1:
-                                progress.setTitle(getString(R.string.calibrating));
-                                break;
-                            case 2:
-                                progress.setTitle("Detecting strip");
-                                break;
-                            case 3:
-                                progress.setTitle("Making bitmap");
-                                break;
-                            default:
-                                progress.setTitle("Finished");
-                        }
-                        progress.setMessage(getString(R.string.please_wait));
-                        progress.show();
-                    }
-                }
-            };
-            handler.post(showProgress);
-        }
-    }*/
-
-    @Override
-    public void dismissProgress() {
-        handler.post(dismissProgress);
-    }
-
-    private Runnable dismissProgress = new Runnable() {
-        @Override
-        public void run() {
-            if(progress!=null)
-            {
-                progress.dismiss();
-                progress=null;
-            }
-        }
-    };
 
     @Override
     public void playSound()
@@ -547,8 +385,5 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         mp.start();
     }
 
-    @Override
-    public String getBrandName() {
-        return brandName;
-    }
+
 }

@@ -43,7 +43,6 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
 
             String brandname = getIntent().getStringExtra(Constant.BRAND);
-            System.out.println("*** intent brandname: " + getIntent().getStringExtra(Constant.BRAND));
             if(brandname==null)
             {
                 finish();
