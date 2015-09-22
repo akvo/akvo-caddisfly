@@ -19,6 +19,7 @@
         android:layout_below="@+id/fragment_choose_strip_testButtonPerform"
         android:layout_above="@+id/fragment_choose_strip_testButtonInstruction"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"/>
 

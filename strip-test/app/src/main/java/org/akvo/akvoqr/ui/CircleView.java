@@ -26,7 +26,7 @@ public class CircleView extends View {
         super(context, attrs, defStyleAttr);
 
         this.paint = new Paint();
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
     }
 

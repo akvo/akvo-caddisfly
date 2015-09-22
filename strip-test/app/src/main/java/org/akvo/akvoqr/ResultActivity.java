@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
@@ -67,13 +68,12 @@ public class ResultActivity extends AppCompatActivity {
                 //the name of the patch
                 String desc = patches.get(i).getDesc();
 
-                if (brand.hasTimeLapse()) {
-                    if (i < mats.size()) {
-                        strip = mats.get(i).clone();
-                    } else {
-                        continue;
-                    }
-                } else strip = mats.get(mats.size() - 1).clone();
+
+                if (i < mats.size()) {
+                    strip = mats.get(i).clone();
+                } else {
+                    continue;
+                }
 
                 int matH = strip.height();
 
@@ -88,36 +88,27 @@ public class ResultActivity extends AppCompatActivity {
                     double y = mat.height() / 2;
                     Point centerPatch = new Point(x, y);
 
-                    //Draw a green circle around each patch and make a bitmap of the whole
-                    Imgproc.circle(mat, centerPatch, (int) Math.ceil(matH * 0.8),
-                            new Scalar(0, 255, 0, 255), 2);
-                    new BitmapTask(desc).execute(mat);
-
-                    //make a submat around center of the patch and get mean color
-                    int minRow = (int) Math.round(Math.max(centerPatch.y - 7, 0));
-                    int maxRow = (int) Math.round(Math.min(centerPatch.y + 7, mat.height()));
-                    int minCol = (int) Math.round(Math.max(centerPatch.x - 7, 0));
-                    int maxCol = (int) Math.round(Math.min(centerPatch.x + 7, mat.width()));
-
-                    Mat submat = mat.submat(minRow, maxRow,
-                            minCol, maxCol);
-
                     //set the colours needed to calculate ppm
                     JSONArray colours = patches.get(i).getColours();
                     String unit = patches.get(i).getUnit();
 
-                    new ColorDetectedTask(unit, colours).execute(submat);
+                    new BitmapTask(desc, centerPatch, colours, unit).execute(mat);
                 }
                 else
                 {
-                    new BitmapTask(desc).execute(strip);
+                    new BitmapTask(desc, null, null, null).execute(strip);
                 }
-
 
                 Button save = (Button) findViewById(R.id.activity_resultButtonSave);
                 Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
 
                 //TODO onclicklistener for save button
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(), "Thank you for using Akvo Caddisfly", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 redo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -159,189 +150,186 @@ public class ResultActivity extends AppCompatActivity {
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void>
     {
+
         private Bitmap stripBitmap = null;
         private String desc;
+        private Point centerPatch;
+        private JSONArray colours;
+        private String unit;
+        private ColorDetected colorDetected;
+        private double ppm;
 
-        public BitmapTask(String desc)
+        public BitmapTask(String desc, Point centerPatch, JSONArray colours, String unit)
         {
             this.desc = desc;
+            this.centerPatch = centerPatch;
+            this.colours = colours;
+            this.unit = unit;
         }
         @Override
         protected Void doInBackground(Mat... params) {
 
-            Mat strip = params[0];
-            if(strip.rows()>1 && strip.cols()>1)
-                stripBitmap = makeBitmap(strip);
+            Mat mat = params[0];
+
+            if(mat.height()<2)
+                return null;
+
+            int submatSize = 7;
+
+            //Draw a green circle around each patch and make a bitmap of the whole
+            Imgproc.circle(mat, centerPatch, (int) Math.ceil(mat.height() * 0.4),
+                    new Scalar(0, 255, 0, 255), 2);
+
+            stripBitmap = makeBitmap(mat);
+
+            //make a submat around center of the patch and get mean color
+            int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
+            int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
+            int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
+            int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
+
+            Mat patch = mat.submat(minRow, maxRow,
+                    minCol, maxCol);
+
+            colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
+
+            ppm = calculatePPMrgb(colorDetected, colours);
 
             return null;
         }
 
         protected void onPostExecute(Void result)
         {
-            TextView descView = new TextView(ResultActivity.this);
-            descView.setText(desc);
-            layout.addView(descView);
-
-            if(stripBitmap!=null) {
-                ImageView imageView = new ImageView(ResultActivity.this);
-                imageView.setImageBitmap(stripBitmap);
-                layout.addView(imageView);
-            }
-            else
-            {
-                TextView nodataView = new TextView(ResultActivity.this);
-                nodataView.setText("no data");
-                nodataView.setBackgroundResource(R.drawable.background_white_black_line_bottom);
-                nodataView.setPadding(0,0,0,12);
-                layout.addView(nodataView);
-            }
-        }
-    }
-
-    private class ColorDetectedTask extends AsyncTask<Mat, Void, Void> {
-        private ColorDetected colorDetected;
-        private Mat patch;
-        private double ppm;
-        private String unit;
-        private JSONArray colours;
-
-        public ColorDetectedTask(String unit, JSONArray colours) {
-            this.unit = unit;
-            this.colours = colours;
-        }
-
-
-        @Override
-        protected Void doInBackground(Mat... params) {
-
-            patch = params[0];
-
-            colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
-
-            ppm = calculatePPMrgb(colorDetected);
-
-            return null;
-        }
-
-        protected void onPostExecute(Void result) {
-
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, null, false);
-            CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
-            circleView.circleView(colorDetected.getColor());
 
-            TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
-            textView.setText(String.format("%.1f", ppm) + " " + unit);
-            layout.addView(result_ppm_layout);
+            TextView descView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutDescView);
+            descView.setText(desc);
 
-        }
+            if(stripBitmap!=null) {
+                ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
+                imageView.setImageBitmap(stripBitmap);
 
-        private double calculatePPMrgb(ColorDetected colorDetected) {
+                CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
+                circleView.circleView(colorDetected.getColor());
 
-            List<Pair<Integer,Double>> labdaList = new ArrayList<>();
-            double ppm = Double.MAX_VALUE;
-            double[] pointA = null;
-            double[] pointB = null;
-            double[] pointC = null;
-            double labda = 0;
-            double minLabdaAbs = Double.MAX_VALUE;
-            JSONArray rgb;
-            double distance;
-            double minDistance = Double.MAX_VALUE;
-
-
-            // make pointC array
-            if (colorDetected.getRgb() != null) {
-
-                pointC = colorDetected.getRgb().val;
-                System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
+                TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
+                textView.setText(String.format("%.1f", ppm) + " " + unit);
 
             }
-
-
-            for (int j = 0; j < colours.length() - 1; j++) {
-
-                // make points A and B
-                try
-                {
-                    rgb = colours.getJSONObject(j).getJSONArray("rgb");
-                    pointA = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
-
-                    rgb = colours.getJSONObject(j + 1).getJSONArray("rgb");
-                    pointB = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
-
-                }
-                catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-
-                try
-                {
-                    if (pointA != null && pointB != null && pointC != null)
-                    {
-                        labda = getClosestPointOnLine(pointA, pointB, pointC);
-
-                        distance = getDistanceCtoAB(pointA, pointB, pointC, labda);
-
-                        // if labda is between 0 and 1, it is valid.
-                        if (0 < labda && labda < 1) {
-
-                            //choose shortest distance if more than one patch is valid
-                            if( distance < minDistance) {
-
-                                minDistance = distance;
-
-                                ppm = (1 - labda) * colours.getJSONObject(j).getDouble("value") + labda * colours.getJSONObject(j + 1).getDouble("value");
-                            }
-                        }
-
-                        //add value for labda to list for later use: extrapolate ppm
-                        labdaList.add(new Pair(j, labda));
-
-                        System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
-
-                    }
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(ppm == Double.MAX_VALUE)
+            else
             {
-                //no labda between 0 and 1 is found: extrapolate ppm value
-
-                try
-                {
-                    //find the lowest value for labda and calculate ppm with that
-                    for (int i = 0; i < labdaList.size(); i++) {
-                        labda = Math.abs(labdaList.get(i).second);
-                        if (labda < minLabdaAbs) {
-
-                            minLabdaAbs = labda;
-                            if(labdaList.get(i).first < colours.length()) {
-                                ppm = (1 - labda) * colours.getJSONObject(labdaList.get(i).first).getDouble("value") +
-                                        labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
-                            }
-
-                            System.out.println("***SETTING VALUE FOR PPM: " + ppm);
-
-                        }
-                    }
-                    System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
-
-                }
-                catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
+                descView.append("\n\nno data");
             }
 
-            return ppm;
+            layout.addView(result_ppm_layout);
         }
     }
+
+    private double calculatePPMrgb(ColorDetected colorDetected, JSONArray colours) {
+
+        List<Pair<Integer,Double>> labdaList = new ArrayList<>();
+        double ppm = Double.MAX_VALUE;
+        double[] pointA = null;
+        double[] pointB = null;
+        double[] pointC = null;
+        double labda = 0;
+        double minLabdaAbs = Double.MAX_VALUE;
+        JSONArray rgb;
+        double distance;
+        double minDistance = Double.MAX_VALUE;
+
+        // make pointC array
+        if (colorDetected.getRgb() != null) {
+
+            pointC = colorDetected.getRgb().val;
+            System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
+
+        }
+
+        for (int j = 0; j < colours.length() - 1; j++) {
+
+            // make points A and B
+            try
+            {
+                rgb = colours.getJSONObject(j).getJSONArray("rgb");
+                pointA = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
+
+                rgb = colours.getJSONObject(j + 1).getJSONArray("rgb");
+                pointB = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
+
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            try
+            {
+                if (pointA != null && pointB != null && pointC != null)
+                {
+                    labda = getClosestPointOnLine(pointA, pointB, pointC);
+
+                    distance = getDistanceCtoAB(pointA, pointB, pointC, labda);
+
+                    // if labda is between 0 and 1, it is valid.
+                    if (0 < labda && labda < 1) {
+
+                        //choose shortest distance if more than one patch is valid
+                        if( distance < minDistance) {
+
+                            minDistance = distance;
+
+                            ppm = (1 - labda) * colours.getJSONObject(j).getDouble("value") + labda * colours.getJSONObject(j + 1).getDouble("value");
+                        }
+                    }
+
+                    //add value for labda to list for later use: extrapolate ppm
+                    labdaList.add(new Pair(j, labda));
+
+                    System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
+
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(ppm == Double.MAX_VALUE)
+        {
+            //no labda between 0 and 1 is found: extrapolate ppm value
+
+            try
+            {
+                //find the lowest value for labda and calculate ppm with that
+                for (int i = 0; i < labdaList.size(); i++) {
+                    labda = Math.abs(labdaList.get(i).second);
+                    if (labda < minLabdaAbs) {
+
+                        minLabdaAbs = labda;
+                        if(labdaList.get(i).first < colours.length()) {
+                            ppm = (1 - labda) * colours.getJSONObject(labdaList.get(i).first).getDouble("value") +
+                                    labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
+                        }
+
+                        System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+
+                    }
+                }
+                System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
+
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return ppm;
+    }
+
 
 
 

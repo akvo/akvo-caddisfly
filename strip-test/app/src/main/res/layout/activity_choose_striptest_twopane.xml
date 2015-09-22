@@ -13,7 +13,7 @@
         tools:context="org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity">
 
         <!--
-        This layout is a two-pane layout for the Instructions
+        This layout is a two-pane layout for the ChooseStriptest
         master/detail flow.
         See res/values-large/refs.xml and
         res/values-sw600dp/refs.xml for an example of layout aliases
@@ -34,26 +34,8 @@
             <fragment android:id="@+id/instruction_list"
                 android:name="org.akvo.akvoqr.choose_striptest.ChooseStriptestListFragment"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="match_parent"
                 tools:layout="@android:layout/list_content" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/path_right"/>
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="left"
-                android:text="@string/start"
-                android:id="@+id/activity_instruction_listStartButton"
-                android:background="@drawable/button_start_selector"/>
-            </LinearLayout>
 
         </LinearLayout>
 

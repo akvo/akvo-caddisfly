@@ -2,14 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/background_white_black_line_bottom">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_marginLeft="12sp"
+        android:textStyle="bold"
+        android:id="@+id/result_ppm_layoutDescView"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
+        android:scaleType="fitCenter"
+        android:id="@+id/result_ppm_layoutImageView"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="@drawable/background_white_black_line_bottom"
-        android:layout_marginBottom="@dimen/activity_vertical_margin">
+        >
         <org.akvo.akvoqr.ui.CircleView
             android:layout_width="@dimen/ppm_circle_area"
             android:layout_height="@dimen/ppm_circle_area"

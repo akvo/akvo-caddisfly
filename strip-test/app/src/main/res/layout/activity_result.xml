@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
     tools:context="org.akvo.akvoqr.ResultActivity">
 
     <ScrollView
@@ -30,7 +30,7 @@
             android:text="@string/save"
             android:layout_weight="1"
             android:id="@+id/activity_resultButtonSave"
-            android:background="@color/mediumblue"/>
+            android:background="@color/skyblue"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
