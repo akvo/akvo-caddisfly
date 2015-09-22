@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item >
         <shape
             android:shape="oval">
             <solid
                 android:color="#ffcccccc"/>
             <size
-                android:width="100dp"
-                android:height="100dp"/>
+                android:width="10dp"
+                android:height="10dp"/>
         </shape>
     </item>
     <item android:bottom="10dp"
@@ -18,15 +17,15 @@
         <shape
             android:shape="oval">
             <solid
-                android:color="@color/mediumblue"/>
+                android:color="@color/skyblue"/>
             <size
-                android:width="110dp"
-                android:height="110dp"/>
+                android:width="11dp"
+                android:height="11dp"/>
         </shape>
     </item>
-    <item android:bottom="25dp" android:top="25dp" android:right="25dp" android:left="45dp" >
+    <item android:bottom="40dp" android:top="35dp" android:right="45dp" android:left="65dp" >
         <inset
-            android:drawable="@drawable/arrow_black_right"
-            android:scaleWidth="5%"/>
+            android:drawable="@drawable/arrow_black_right_semi_transp_no9"
+            android:scaleWidth="100%"/>
     </item>
 </layer-list>

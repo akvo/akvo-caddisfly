@@ -112,6 +112,7 @@ public class InstructionActivity extends AppCompatActivity implements ActionBar.
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setActivated(!v.isActivated());
                 int itemid = Math.max(0, mViewPager.getCurrentItem()-1);
                 mViewPager.setCurrentItem(itemid);
             }
@@ -120,6 +121,7 @@ public class InstructionActivity extends AppCompatActivity implements ActionBar.
         arrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setActivated(!v.isActivated());
                 int itemid = Math.min(fragments.size() - 1, mViewPager.getCurrentItem()+1);
                 mViewPager.setCurrentItem(itemid);
             }

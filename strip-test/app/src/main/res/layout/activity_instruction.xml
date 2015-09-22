@@ -20,9 +20,10 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        android:src="@drawable/arrow_black_left_semi_transp"
+        android:src="@drawable/button_arrow_left_selector"
         android:layout_alignParentLeft="true"
         android:paddingLeft="12sp"
+        android:paddingRight="12sp"
         android:id="@+id/activity_instructionFooterArrowLeft"/>
     <org.akvo.akvoqr.instructions_app.InstructionFooterView
         android:layout_width="wrap_content"
@@ -34,8 +35,9 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/arrow_black_right_semi_transp"
+            android:src="@drawable/button_arrow_right_selector"
             android:layout_alignParentRight="true"
+            android:paddingLeft="12sp"
             android:paddingRight="12sp"
             android:id="@+id/activity_instructionFooterArrowRight"/>
     </RelativeLayout>

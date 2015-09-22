@@ -232,7 +232,7 @@ public class ResultActivity extends AppCompatActivity {
             circleView.circleView(colorDetected.getColor());
 
             TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
-            textView.setText(String.format("%.2f", ppm) + " " + unit);
+            textView.setText(String.format("%.1f", ppm) + " " + unit);
             layout.addView(result_ppm_layout);
 
         }
@@ -254,7 +254,6 @@ public class ResultActivity extends AppCompatActivity {
             // make pointC array
             if (colorDetected.getRgb() != null) {
 
-                System.out.println("***stripColors has RGB");
                 pointC = colorDetected.getRgb().val;
                 System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
 

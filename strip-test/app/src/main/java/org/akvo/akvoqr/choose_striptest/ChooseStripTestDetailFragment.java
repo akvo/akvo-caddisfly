@@ -51,7 +51,8 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
             Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
             button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
-            buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
+
+            Button buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
             buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
 
         }
@@ -69,6 +70,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            v.setActivated(!v.isActivated());
             Intent intent = new Intent(getActivity(), CameraActivity.class);
             intent.putExtra(Constant.BRAND, brand);
             startActivity(intent);
