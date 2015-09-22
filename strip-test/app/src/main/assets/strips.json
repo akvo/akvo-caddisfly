@@ -78,11 +78,11 @@
           "unit": "ppm"
         }
       ],
-      "instructions": ["Collect water sample",
-        "Click on Perform Test button",
-        "Move strip back and forward during 30 seconds in water",
-        "Remove excess water",
-        "Click Start button"]
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Move strip back and forward during 30 seconds in water", "png":"instruction_dip" },
+        {"text": "Remove excess water", "png":"instruction_remove_water"}
+      ]
     },
     {
       "name": "PH 4-9",
@@ -129,7 +129,11 @@
           "unit": ""
         }
       ],
-      "instructions": ["Move strip back and forward during 30 seconds in water"]
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Move strip back and forward during 30 seconds in water", "png":"instruction_dip" },
+        {"text": "Remove excess water", "png":"instruction_remove_water"}
+      ]
     },
     {
       "name": "5 in 1 Water Quality",
@@ -309,7 +313,11 @@
           "unit": ""
         }
       ],
-      "instructions": ["Move strip back and forward during 30 seconds in water"]
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Move strip back and forward during 30 seconds in water", "png":"instruction_dip" },
+        {"text": "Remove excess water", "png":"instruction_remove_water"}
+      ]
     }
 
   ]

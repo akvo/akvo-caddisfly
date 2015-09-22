@@ -43,13 +43,20 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
 
             String brandname = getIntent().getStringExtra(Constant.BRAND);
-            ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
+            System.out.println("*** intent brandname: " + getIntent().getStringExtra(Constant.BRAND));
+            if(brandname==null)
+            {
+                finish();
+            }
+            else {
+                ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.instruction_detail_container, fragment)
-                    .commit();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.instruction_detail_container, fragment)
+                        .commit();
 
-            getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandname).getName());
+                getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandname).getName());
+            }
         }
     }
 

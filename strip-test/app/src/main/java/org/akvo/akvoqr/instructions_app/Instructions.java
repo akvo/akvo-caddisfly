@@ -16,12 +16,13 @@ import java.util.Map;
 public class Instructions {
 
     public static List<Instruction> instructions;
-    public static Map<String, Instruction> INSTRUCTION_MAP = new HashMap<String, Instruction>();
+    public static Map<Integer, Instruction> INSTRUCTION_MAP = new HashMap<Integer, Instruction>();
     private static String[] instruction_text;
     private static TypedArray instruction_res;
 
     static
     {
+
         instruction_text = App.getMyApplicationContext().getResources().getStringArray(R.array.instructions);
         instruction_res = App.getMyApplicationContext().getResources().obtainTypedArray(R.array.instructions_res);
 
@@ -32,7 +33,7 @@ public class Instructions {
         {
             res = instruction_res.getResourceId(i, -1);
 
-            addInstructions(new Instruction(String.valueOf(i+1), res, instruction_text[i]));
+            addInstructions(new Instruction(i, res, instruction_text[i]));
         }
         instruction_res.recycle();
     }
@@ -48,11 +49,11 @@ public class Instructions {
 
     public static class Instruction
     {
-        public String id;
+        public int id;
         public String instruction;
         public int imageResId;
 
-        public Instruction(String id, int imageResId, String instruction)
+        public Instruction(int id, int imageResId, String instruction)
         {
             this.id = id;
             this.instruction = instruction;

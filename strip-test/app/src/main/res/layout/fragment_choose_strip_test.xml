@@ -16,24 +16,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_choose_strip_testImageView"
-        android:layout_below="@+id/fragment_choose_strip_testButtonInstruction"
+        android:layout_below="@+id/fragment_choose_strip_testButtonPerform"
+        android:layout_above="@+id/fragment_choose_strip_testButtonInstruction"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_choose_strip_testButtonInstruction">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_choose_strip_testTableLayout"
-            android:background="#ffe1f0d8"
-            android:visibility="visible"
-            >
-        </LinearLayout>
-    </ScrollView>
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/fragment_choose_strip_testButtonInstruction">-->
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/fragment_choose_strip_testTableLayout"-->
+            <!--android:background="#ffe1f0d8"-->
+            <!--android:visibility="visible"-->
+            <!-->-->
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,8 +43,8 @@
         android:gravity="center"
         android:paddingRight="10dp"
         android:background="@drawable/button_blue_selector"
-        android:drawableRight="@drawable/arrow_black_right_semi_transp_no9"
-        android:id="@+id/fragment_choose_strip_testButton"
+        android:drawableRight="@drawable/arrow_black_right_semi_transp"
+        android:id="@+id/fragment_choose_strip_testButtonPerform"
         android:layout_marginBottom="10dp"
         android:layout_alignParentTop="true"/>
 
@@ -57,7 +58,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:background="#ffa5d390"
-        android:drawableRight="@drawable/arrow_black_down_semi_transp_no9"
+        android:drawableRight="@drawable/arrow_black_right_semi_transp"
         android:id="@+id/fragment_choose_strip_testButtonInstruction"
-        android:layout_below="@+id/fragment_choose_strip_testButton"/>
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

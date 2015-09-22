@@ -12,10 +12,10 @@
     <string name="start">Start</string>
 
     <string-array name="instructions">
-    <item>Place strip inside black area</item>
+        <item>Place strip inside black area</item>
         <item>Make sure light is good</item>
         <item>After clicking \'Start\' button hold device over test. Make sure all finder patterns are in sight.</item>
-        <item>When you hear a sound, you can move the camera away from the test.</item>
+        <item>When you hear a sound, a picture is taken.</item>
     </string-array>
     <array name="instructions_res">
         <item>@drawable/instruction_place_strip</item>

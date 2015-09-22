@@ -1,7 +1,6 @@
 package org.akvo.akvoqr.choose_striptest;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.akvo.akvoqr.CameraActivity;
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.Locale;
 
@@ -24,16 +20,10 @@ import java.util.Locale;
  * Created by linda on 9/12/15.
  */
 public class ChooseStripTestDetailFragment extends Fragment {
-    /**
-     * This class assumes that there are .png images in res/drawable that have the same name
-     * as the String 'brand' in the JsonObject 'strip' in strips.json from assets
-     */
 
     private String brandName;
-    private LinearLayout linearLayout;
     private ImageView imageView;
     private Button buttonInstruction;
-    private boolean instructionsVisible = false;
 
     public static ChooseStripTestDetailFragment newInstance(String brandName) {
         ChooseStripTestDetailFragment fragment = new ChooseStripTestDetailFragment();
@@ -51,7 +41,6 @@ public class ChooseStripTestDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
         imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
-        linearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_choose_strip_testTableLayout);
 
         if(getArguments()!=null) {
 
@@ -60,7 +49,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
             int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName());
             imageView.setImageResource(resId);
 
-            Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButton);
+            Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
             button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
             buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
             buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
@@ -90,7 +79,6 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
     private class ShowInstructionsOnClickListener implements View.OnClickListener{
 
-
         private String brandName;
         public ShowInstructionsOnClickListener(String brandName)
         {
@@ -99,37 +87,10 @@ public class ChooseStripTestDetailFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if (!instructionsVisible) {
+            Intent intent = new Intent(getActivity(), InstructionActivity.class);
+            intent.putExtra(Constant.BRAND, brandName);
+            startActivity(intent);
 
-                linearLayout.removeAllViews();
-                StripTest.Brand brand = StripTest.getInstance().getBrand(brandName);
-                try {
-                    JSONArray instructions = brand.getInstructions();
-
-                    for(int i=0;i<instructions.length();i++) {
-                        TextView textView = new TextView(getActivity());
-
-                        textView.setText(i + ". " + instructions.getString(i));
-
-                        textView.setTextColor(Color.BLACK);
-
-                        linearLayout.addView(textView);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                imageView.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
-                instructionsVisible = true;
-                buttonInstruction.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_black_up, 0);
-            }
-            else {
-                linearLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-                instructionsVisible = false;
-                buttonInstruction.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_black_down,0);
-            }
         }
     }
 

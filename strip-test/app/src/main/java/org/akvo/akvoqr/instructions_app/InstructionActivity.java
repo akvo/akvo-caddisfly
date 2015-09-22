@@ -1,49 +1,77 @@
 package org.akvo.akvoqr.instructions_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.choose_striptest.ChooseStripTestDetailFragment;
+import org.akvo.akvoqr.choose_striptest.ChooseStriptestDetailActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.util.Constant;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
-public class TabbedActivity extends AppCompatActivity implements ActionBar.TabListener {
+public class InstructionActivity extends AppCompatActivity implements ActionBar.TabListener, InstructionsListener{
 
+    /**
+     * This class assumes that there are .png images in res/drawable that have the same name
+     * as the String 'brand' in the JsonObject 'strip' in strips.json from assets
+     */
 
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
-    StripTest stripTest;
+    InstructionFooterView footerView;
+    ImageView arrowLeft;
+    ImageView arrowRight;
+    JSONArray instructions;
 
-    List<ChooseStripTestDetailFragment> fragments = new ArrayList<>();
+    List<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_strip_test);
+        setContentView(R.layout.activity_instruction);
 
-        stripTest = StripTest.getInstance();
-        Set<String> allBrands = stripTest.getAllBrands();
-        for(String brandString: allBrands)
-        {
-            StripTest.Brand brand = stripTest.getBrand(brandString);
-            String brandName = brand.getName();
-            System.out.println("***brandname: " + brandName);
+        int countFragments = 0;
+        try {
+            StripTest.Brand brand = StripTest.getInstance().getBrand(getIntent().getStringExtra(Constant.BRAND));
+            instructions = brand.getInstructions();
 
-            fragments.add(ChooseStripTestDetailFragment.newInstance(brandString));
+            for(int i=0;i<instructions.length();i++) {
+                fragments.add(InstructionBrandDetailFragment.newInstance(countFragments));
+                countFragments ++;
+            }
+
+            for(int i=0;i< Instructions.INSTRUCTION_MAP.keySet().size();i++)
+            {
+                fragments.add(InstructionDetailFragment.newInstance(i));
+                countFragments ++;
+            }
+
+            footerView = (InstructionFooterView) findViewById(R.id.activity_instructionFooterView);
+            footerView.setNumSteps(countFragments);
+
+            arrowLeft = (ImageView) findViewById(R.id.activity_instructionFooterArrowLeft);
+            arrowRight = (ImageView) findViewById(R.id.activity_instructionFooterArrowRight);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Set up the action bar.
@@ -65,6 +93,7 @@ public class TabbedActivity extends AppCompatActivity implements ActionBar.TabLi
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                footerView.setActive(position);
             }
         });
 
@@ -79,6 +108,22 @@ public class TabbedActivity extends AppCompatActivity implements ActionBar.TabLi
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        arrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemid = Math.max(0, mViewPager.getCurrentItem()-1);
+                mViewPager.setCurrentItem(itemid);
+            }
+        });
+
+        arrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemid = Math.min(fragments.size() - 1, mViewPager.getCurrentItem()+1);
+                mViewPager.setCurrentItem(itemid);
+            }
+        });
     }
 
 
@@ -91,16 +136,21 @@ public class TabbedActivity extends AppCompatActivity implements ActionBar.TabLi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. Use NavUtils to allow users
+            // to navigate up one level in the application structure. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, ChooseStriptestDetailActivity.class);
+            intent.putExtra(Constant.BRAND, getIntent().getStringExtra(Constant.BRAND));
+            NavUtils.navigateUpTo(this, intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -127,8 +177,7 @@ public class TabbedActivity extends AppCompatActivity implements ActionBar.TabLi
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+
             return fragments.get(position);
         }
 
@@ -140,17 +189,25 @@ public class TabbedActivity extends AppCompatActivity implements ActionBar.TabLi
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            ChooseStripTestDetailFragment fragment = fragments.get(position);
-            String brandName = fragment.getArguments().getString(Constant.BRAND);
 
-            StripTest.Brand brand = StripTest.getInstance().getBrand(brandName);
-            String title = brand.getName();
-            if(title!=null) {
-                return title.toUpperCase(l);
-            }
-
-            return null;
+            return String.valueOf(position + 1).toUpperCase(l);
 
         }
+    }
+
+    //
+    @Override
+    public String getInstruction(int id) throws JSONException {
+        return instructions.getJSONObject(id).getString("text");
+    }
+
+    @Override
+    public int getInstructionRes(int id) throws JSONException
+    {
+        String resName =  instructions.getJSONObject(id).getString("png");
+
+        int res =  getResources().getIdentifier(resName, "drawable", getPackageName());
+
+        return res;
     }
 }
