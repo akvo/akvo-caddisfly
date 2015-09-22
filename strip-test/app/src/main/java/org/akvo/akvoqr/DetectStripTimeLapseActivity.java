@@ -139,7 +139,6 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         Mat striparea = null;
         Mat calarea = null;
 
-
         protected void onPreExecute() {
             resultIntent = new Intent(DetectStripTimeLapseActivity.this, ResultActivity.class);
         }
@@ -162,7 +161,6 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                 showMessage("No values for width or height");
                 return null;
             }
-
 
             for (int i = 0; i < numPatches; i++) {
 

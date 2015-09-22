@@ -319,7 +319,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         int patchCount = 0;
 
         //check if picture is taken on time for the patch
-        //assumed is that some tests require time for color to develop
+        //assumed is that some tests require time for a color to develop
         //reading may be done after that time, but not before
         for(int i=0;i<patches.size();i++)
         {
@@ -328,12 +328,11 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
             {
                 patchCount = i;
+                new StoreDataTask(patchCount, data, info).execute();
             }
         }
 
         //System.out.println("***patchCount: " + patchCount);
-
-        new StoreDataTask(patchCount, data, info).execute();
 
         showProgress(patchCount+1);
 
