@@ -37,7 +37,7 @@ import org.opencv.imgproc.Imgproc;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DetectStripTimeLapseActivity extends AppCompatActivity {
+public class DetectStripActivity extends AppCompatActivity {
 
     private Mat bgr;
     private Bitmap bitmap;
@@ -52,7 +52,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         Runnable showImageRunnable = new Runnable() {
             @Override
             public void run() {
-                ImageView imageView = new ImageView(DetectStripTimeLapseActivity.this);
+                ImageView imageView = new ImageView(DetectStripActivity.this);
                 imageView.setImageBitmap(bitmap);
                 linearLayout.addView(imageView);
             }
@@ -65,7 +65,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         Runnable showMessageRunnable = new Runnable() {
             @Override
             public void run() {
-                TextView textView = new TextView(DetectStripTimeLapseActivity.this);
+                TextView textView = new TextView(DetectStripActivity.this);
                 textView.setText(message);
                 linearLayout.addView(textView);
 
@@ -140,7 +140,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         Mat calarea = null;
 
         protected void onPreExecute() {
-            resultIntent = new Intent(DetectStripTimeLapseActivity.this, ResultActivity.class);
+            resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);
         }
 
         @Override
@@ -302,7 +302,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
             redoTestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(DetectStripTimeLapseActivity.this, ChooseStriptestListActivity.class);
+                    Intent intent = new Intent(DetectStripActivity.this, ChooseStriptestListActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
@@ -313,7 +313,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     startActivity(resultIntent);
-                    DetectStripTimeLapseActivity.this.finish();
+                    DetectStripActivity.this.finish();
                 }
             });
 

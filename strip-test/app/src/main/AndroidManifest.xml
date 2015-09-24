@@ -51,7 +51,7 @@
                 android:value=".choose_striptest.ChooseStriptestListActivity" />
         </activity>
         <activity
-            android:name=".DetectStripTimeLapseActivity"
+            android:name=".DetectStripActivity"
             android:label="@string/title_activity_detect_strip"
             android:parentActivityName=".choose_striptest.ChooseStriptestListActivity" >
             <meta-data

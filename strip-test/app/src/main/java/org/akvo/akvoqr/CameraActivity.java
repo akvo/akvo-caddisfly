@@ -61,7 +61,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             this.brandName = getIntent().getStringExtra(Constant.BRAND);
         }
 
-        detectStripIntent = new Intent(this, DetectStripTimeLapseActivity.class);
+        detectStripIntent = new Intent(this, DetectStripActivity.class);
 
         handler = new Handler(Looper.getMainLooper());
 
