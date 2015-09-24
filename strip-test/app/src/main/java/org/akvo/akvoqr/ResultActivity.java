@@ -110,7 +110,7 @@ public class ResultActivity extends AppCompatActivity {
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(v.getContext(), "Thank you for using Akvo Caddisfly", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -224,7 +224,7 @@ public class ResultActivity extends AppCompatActivity {
             }
             else
             {
-                descView.append("\n\nno data");
+                descView.append("\n\n" + getResources().getString(R.string.no_data));
             }
 
             layout.addView(result_ppm_layout);
@@ -248,7 +248,7 @@ public class ResultActivity extends AppCompatActivity {
         if (colorDetected.getRgb() != null) {
 
             pointC = colorDetected.getRgb().val;
-            System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
+            //System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
 
         }
 
@@ -292,7 +292,7 @@ public class ResultActivity extends AppCompatActivity {
                     //add value for labda to list for later use: extrapolate ppm
                     labdaList.add(new Pair(j, labda));
 
-                    System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
+                    //System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
 
                 }
             }
@@ -318,11 +318,11 @@ public class ResultActivity extends AppCompatActivity {
                                     labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
                         }
 
-                        System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+                       // System.out.println("***SETTING VALUE FOR PPM: " + ppm);
 
                     }
                 }
-                System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
+                //System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
 
             }
             catch (JSONException e)

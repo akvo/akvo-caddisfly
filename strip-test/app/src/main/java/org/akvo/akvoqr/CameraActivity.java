@@ -36,7 +36,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private FrameLayout preview;
     private BaseCameraView mPreview;
     MyPreviewCallback previewCallback;
-    private final String TAG = "CameraActivity";
+    private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private TextView messageLightView;
     private TextView messageFocusView;
@@ -98,6 +98,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         relativeLayout.addView(startButton, params);
 
+        TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
+
         if(hasTimeLapse)
         {
             int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
@@ -105,13 +107,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             progressIndicatorView.setDuration(duration);
             progressIndicatorView.setPatches(patches);
 
-            TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
-            durationView.append(String.valueOf(duration) + " sec.");
+            durationView.append(": " + String.valueOf(duration) + " " + getString(R.string.seconds_abbr));
         }
         else
         {
             progressIndicatorView.setVisibility(View.GONE);
-
+            durationView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -259,7 +260,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             @Override
             public void run() {
                 if(messageFocusView !=null)
-                    messageFocusView.setText("Sharpness: " + value);
+                    messageFocusView.setText(getString(R.string.focus) + ": " + String.format("%.0f",value) + " %");
             }
         };
         handler.post(showMessage);
@@ -271,7 +272,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             @Override
             public void run() {
                 if(messageLightView !=null)
-                    messageLightView.setText("Light: " + value);
+                    messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
             }
         };
         handler.post(showMessage);
@@ -318,9 +319,12 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         int patchCount = 0;
 
-        //check if picture is taken on time for the patch
-        //assumed is that some tests require time for a color to develop
-        //reading may be done after that time, but not before
+        //check if picture is taken on time for the patch.
+        //assumed is that some tests require time for a color to develop.
+        //reading may be done after that time, but not before.
+        //NB: in case a strip is designed in a manner where the order in time is different from the
+        //order in the json-array, this will not work. Patches with lower value for time-lapse
+        //should come before others.
         for(int i=0;i<patches.size();i++)
         {
             //System.out.println("***patchCount time diff milliseconds: " + (timeMillis  - (initTimeMillis + patches.get(i).getTimeLapse()*1000)));

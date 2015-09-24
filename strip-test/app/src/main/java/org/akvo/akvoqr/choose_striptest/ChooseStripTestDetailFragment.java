@@ -46,7 +46,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
             this.brandName = getArguments().getString(Constant.BRAND);
 
-            int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName());
+            int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName()); //NON-NLS
             imageView.setImageResource(resId);
 
             Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);

@@ -1,0 +1,49 @@
+<resources>
+    <string name="strips_json">strips_fr.json</string>
+
+    <string name="action_settings">Reglage</string>
+    <string name="app_name">AkvoQR</string>
+    <string name="calibrating">Calibrage</string>
+    <string name="cut_out_strip">Trouver la bande...</string>
+    <string name="detect_shadow">Chercher ombres...</string>
+    <string name="error_calibrating">Erreur calibrage</string>
+    <string name="error_conversion">Erreur converter couleurs</string>
+    <string name="error_cut_out_strip">Pas de bande trouvee.</string>
+    <string name="error_detect_shadow">Erreur trouver ombres.</string>
+    <string name="error_detection">Erreur detection.</string>
+    <string name="error_no_finder_pattern_info">Pas de motifs</string>
+    <string name="error_unknown">Erreur inconnu</string>
+    <string name="error_warp">Erreur transformer perspective.</string>
+    <string name="finished">FINI</string>
+    <string name="focus">Mise au point</string>
+    <string name="light">Lumiere</string>
+    <string name="no_data">Pas de donnees pour patch no.</string>
+    <string name="patch_no">Patch no.</string>
+    <string name="play_sound">Jouer</string>
+    <string name="please_wait">S.v.p. patienter...</string>
+    <string name="reading_data">Lire donnees...</string>
+    <string name="redo_test">De nouveau</string>
+    <string name="save">Saufgarder</string>
+    <string name="seconds_abbr">sec.</string>
+    <string name="start">Commencer</string>
+    <string name="thank_using_caddisfly">Merci pour choisir Akvo Caddisfly</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_detect_strip">Recherche</string>
+    <string name="title_activity_result">Resultats</string>
+    <string name="title_instruction_detail">Instruction Detail</string>
+    <string name="title_instruction_list">Instructions</string>
+    <string name="to_results">Aux resultats</string>
+    <string name="warp">Ajuster Perspective ...</string>
+    <string name="start_test">Commencer test</string>
+    <string name="duration">Temps</string>
+    <string name="instructions">Instructions</string>
+
+    <string-array name="instructions">
+        <item>Quand vous entendez ce son, une photo est prise.</item>
+    </string-array>
+    <array name="instructions_res">
+        <item>@raw/futurebeep2</item>
+    </array>
+
+
+</resources>

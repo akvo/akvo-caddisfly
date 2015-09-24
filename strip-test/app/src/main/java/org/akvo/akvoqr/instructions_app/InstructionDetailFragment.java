@@ -65,7 +65,7 @@ public class InstructionDetailFragment extends Fragment {
             }
             else if(getResources().getResourceTypeName(instruction.getImageResId()).equals("raw")) {
 
-                textView.append("\n\nPlay Sound");
+                textView.append("\n\n" + getResources().getString(R.string.play_sound));
                 imageView.setImageResource(R.drawable.button_play_sound);
                 imageView.setPadding(0,10,0,0);
                 imageView.setOnClickListener(new View.OnClickListener() {

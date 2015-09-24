@@ -32,7 +32,7 @@
             android:textColor="@color/lightblue"
             android:background="#99000000"
             android:layout_weight="1"
-            android:text="Light: "/>
+            android:text="@string/light"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:textColor="@color/lightblue"
             android:background="#99000000"
             android:layout_weight="1"
-            android:text="Focus: "/>
+            android:text="@string/focus"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,6 +49,6 @@
             android:background="#99000000"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="Duration: "/>
+            android:text="@string/duration"/>
     </LinearLayout>
 </RelativeLayout>

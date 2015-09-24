@@ -227,16 +227,16 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
             else {
                 // find maximum of L-channel
-                double maxLum = OpenCVUtils.getMaxLuminosity(bgr);
+                double maxLum =  (OpenCVUtils.getMaxLuminosity(bgr) / 255) * 100;
                 listener.showMaxLuminosity(maxLum);
             }
 
             //TODO CHECK SHADOWS
 
-            double focusLaplacian = OpenCVUtils.focusLaplacian(bgr);
+            double focusLaplacian = (OpenCVUtils.focusLaplacian(bgr) / 255) * 100;
             listener.showFocusValue(focusLaplacian);
 
-            if (focusLaplacian < 250) {
+            if (focusLaplacian < 225) {
 
                 int count = 0;
                 while (!focused && camera!=null && count < 100) {

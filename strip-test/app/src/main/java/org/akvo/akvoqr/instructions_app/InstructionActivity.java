@@ -206,7 +206,7 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
     {
         String resName =  instructions.getJSONObject(id).getString("png");
 
-        int res =  getResources().getIdentifier(resName, "drawable", getPackageName());
+        int res =  getResources().getIdentifier(resName, "drawable", getPackageName()); //NON-NLS
 
         return res;
     }

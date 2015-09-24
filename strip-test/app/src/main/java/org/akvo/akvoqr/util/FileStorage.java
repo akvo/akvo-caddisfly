@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 /**
  * Created by linda on 9/13/15.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class FileStorage {
 
     public static boolean writeByteArray(byte[] data, int order)

@@ -26,7 +26,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Perform Test"
+        android:text="@string/start_test"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:paddingRight="12sp"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
-        android:text="Instructions"
+        android:text="@string/instructions"
         android:textColor="@android:color/white"
         android:layout_margin="0dp"
         android:paddingRight="10dp"

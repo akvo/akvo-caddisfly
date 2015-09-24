@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * Created by linda on 7/23/15.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class OpenCVUtils {
 
     public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize)

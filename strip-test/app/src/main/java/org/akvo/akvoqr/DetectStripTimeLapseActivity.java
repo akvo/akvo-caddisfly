@@ -158,7 +158,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
             height = intent.getIntExtra(Constant.HEIGHT, 0);
 
             if (width == 0 || height == 0) {
-                showMessage("No values for width or height");
+
                 return null;
             }
 
@@ -166,19 +166,19 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                 try {
 
-                    showMessage("\nPatch no. " + (i + 1));
+                    showMessage("\n" + getString(R.string.patch_no) + (i + 1));
 
-                    showMessage("Reading data from storage...");
+                    showMessage(getString(R.string.reading_data));
 
                     data = FileStorage.readByteArray(i);
 
                     if (data == null)
-                        throw new IOException("no data");
+                        throw new IOException();
 
 
                 } catch (Exception e) {
 
-                    showMessage("No data for patch no.  " + (i + 1));
+                    showMessage(getString(R.string.no_data) + (i + 1));
                     //place a Mat object in result list. This is necessary for ResultActivity to work
                     //because we are counting patches, not mats
                     Mat mat = Mat.zeros(1, 1, CvType.CV_8UC4);
@@ -194,7 +194,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     }
                     catch (Exception e)
                     {
-                        showMessage("Could not convert to bgr.");
+                        showMessage(getString(R.string.error_conversion));
                         continue;
                     }
 
@@ -204,7 +204,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     }
                     catch (Exception e)
                     {
-                        showMessage("Warp failed.");
+                        showMessage(getString(R.string.error_warp));
                         continue;
                     }
 
@@ -214,33 +214,33 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     }
                     catch (Exception e)
                     {
-                        showMessage("Error in detection.");
+                        showMessage(getString(R.string.error_detection));
                         continue;
                     }
 
                     //detect shadows
                     try {
-                        showMessage("Detecting shadows ...");
+                        showMessage(getString(R.string.detect_shadow));
                         if (roiCalarea != null)
                             calarea = warp_dst.submat(roiCalarea);
 
                         ShadowDetector.detectShadows(calarea);
                     }
                     catch (Exception e){
-                        showMessage("Could not detect shadows.");
+                        showMessage(getString(R.string.error_detect_shadow));
                         continue;
                     }
 
                     //find calibration patches
                     try {
 
-                        showMessage("Calibrating ...");
+                        showMessage(getString(R.string.calibrating));
                         //Calibration code works with 8UC3 images only.
                         // System.out.println("***warp_dst type: " + CvType.typeToString(warp_dst.type()) + ", channels: " + warp_dst.channels());
                         cal_dest = getCalibratedImage(warp_dst);
 
                     } catch (Exception e) {
-                        showMessage("Calibration failed");
+                        showMessage(getString(R.string.error_calibrating));
                         cal_dest = warp_dst.clone();
                     }
 
@@ -250,7 +250,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                     if (striparea != null) {
 
-                        showMessage("Cutting out strip...");
+                        showMessage(getString(R.string.cut_out_strip));
 
                         StripTest stripTestBrand = StripTest.getInstance();
                         StripTest.Brand brand = stripTestBrand.getBrand(brandname);
@@ -266,7 +266,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                         } else {
 
-                            showMessage("No strip found.");
+                            showMessage(getString(R.string.error_cut_out_strip));
                             Mat rgba = new Mat();
                             Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGB);
 
@@ -283,11 +283,11 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    showMessage("Unknown error occurred. Sorry.");
+                    showMessage(getString(R.string.error_unknown));
                     continue;
                 }
             }
-            showMessage("\nFINISHED\n\n\n\n");
+            showMessage("\n\n" + getString(R.string.finished));
             return null;
         }
 
@@ -295,7 +295,7 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
 
             //hack to make the scrollview scroll
-            showMessage(" ");
+            showMessage("\n");
 
             resultIntent.putExtra(Constant.MAT, resultList);
 
@@ -307,6 +307,8 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            toResultsButton.setBackgroundColor(getResources().getColor(R.color.skyblue));
             toResultsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -351,21 +353,21 @@ public class DetectStripTimeLapseActivity extends AppCompatActivity {
         {
             String jsonInfo = FileStorage.readFinderPatternInfoJson(i);
             if (jsonInfo == null) {
-                showMessage("No info about finder patterns.");
+                showMessage(getString(R.string.error_no_finder_pattern_info));
 
             }
 
             JSONObject jsonObject = new JSONObject(jsonInfo);
-            JSONArray tl = jsonObject.getJSONArray("topleft");
-            JSONArray tr = jsonObject.getJSONArray("topright");
-            JSONArray bl = jsonObject.getJSONArray("bottomleft");
-            JSONArray br = jsonObject.getJSONArray("bottomright");
+            JSONArray tl = jsonObject.getJSONArray(Constant.TOPLEFT);
+            JSONArray tr = jsonObject.getJSONArray(Constant.TOPRIGHT);
+            JSONArray bl = jsonObject.getJSONArray(Constant.BOTTOMLEFT);
+            JSONArray br = jsonObject.getJSONArray(Constant.BOTTOMRIGHT);
             double[] topleft = new double[]{tl.getDouble(0), tl.getDouble(1)};
             double[] topright = new double[]{tr.getDouble(0), tr.getDouble(1)};
             double[] bottomleft = new double[]{bl.getDouble(0), bl.getDouble(1)};
             double[] bottomright = new double[]{br.getDouble(0), br.getDouble(1)};
 
-            showMessage("Straightening ...");
+            showMessage(getString(R.string.warp));
             warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, bgr);
 
         }

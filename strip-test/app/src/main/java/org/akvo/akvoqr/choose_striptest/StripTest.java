@@ -1,5 +1,7 @@
 package org.akvo.akvoqr.choose_striptest;
 
+import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.util.App;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -185,7 +187,8 @@ public class StripTest{
     }
     private static void fromJson()
     {
-        String json = AssetsManager.getInstance().loadJSONFromAsset("strips.json");
+        String filename = App.getMyApplicationContext().getString(R.string.strips_json);
+        String json = AssetsManager.getInstance().loadJSONFromAsset(filename);
         try {
 
             JSONObject object = new JSONObject(json);

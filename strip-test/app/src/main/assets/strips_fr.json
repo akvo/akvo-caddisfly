@@ -78,14 +78,14 @@
         }
       ],
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"}
+        {"text": "Prenez de l'eau dans un verre", "png": "instruction_collect_sample"},
+        {"text": "Preparez la test. Prenez soin que la lumiere est bonne.", "png": "instruction_light"},
+        {"text": "Mettez la bande dans l'eau. Faites le aller et venir pendant 30 secs. Ensuite, sechez la un peu. (p.e. placez la sur une serviette)", "png":"instruction_dip" },
+        {"text": "Mettez la bande dans le zone noir. ", "png": "instruction_place_strip"},
+        {"text": "Tenez camera stable sur la carte de test. Attendez pour obtenir lumiere et mise au point. Valeurs plus que 90% sont OK." , "png":"instruction_focus"},
+        {"text": "Appuyez 'Commencer' bouton.", "png": "instruction_start_button"},
+        {"text": "Prenez soin que tous les quatre coins sont visible.", "png": "instruction_finder_pattern"},
+        {"text": "Quand les motifs sont trouvees, vous verrez des circles rouge.", "png": "instruction_patterns_found"}
       ]
     },
     {
@@ -133,14 +133,14 @@
         }
       ],
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"}
+        {"text": "Prenez de l'eau dans un verre", "png": "instruction_collect_sample"},
+        {"text": "Preparez la test. Prenez soin que la lumiere est bonne.", "png": "instruction_light"},
+        {"text": "Mettez la bande dans l'eau. Faites le aller et venir pendant 30 secs. Ensuite, sechez la un peu. (p.e. placez la sur une serviette)", "png":"instruction_dip" },
+        {"text": "Mettez la bande dans le zone noir. ", "png": "instruction_place_strip"},
+        {"text": "Tenez camera stable sur la carte de test. Attendez pour obtenir lumiere et mise au point. Valeurs plus que 90% sont OK." , "png":"instruction_focus"},
+        {"text": "Appuyez 'Commencer' bouton.", "png": "instruction_start_button"},
+        {"text": "Prenez soin que tous les quatre coins sont visible.", "png": "instruction_finder_pattern"},
+        {"text": "Quand les motifs sont trouvees, vous verrez des circles rouge.", "png": "instruction_patterns_found"}
       ]
     },
     {
@@ -321,15 +321,15 @@
         }
       ],
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"},
-        {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed. When a patch is read, the small square indicating it becomes black.", "png":"instruction_progress"}
+        {"text": "Prenez de l'eau dans un verre", "png": "instruction_collect_sample"},
+        {"text": "Preparez la test. Prenez soin que la lumiere est bonne.", "png": "instruction_light"},
+        {"text": "Mettez la bande dans l'eau. Faites le aller et venir pendant 30 secs. Ensuite, sechez la un peu. (p.e. placez la sur une serviette)", "png":"instruction_dip" },
+        {"text": "Mettez la bande dans le zone noir. ", "png": "instruction_place_strip"},
+        {"text": "Tenez camera stable sur la carte de test. Attendez pour obtenir lumiere et mise au point. Valeurs plus que 90% sont OK." , "png":"instruction_focus"},
+        {"text": "Appuyez 'Commencer' bouton.", "png": "instruction_start_button"},
+        {"text": "Prenez soin que tous les quatre coins sont visible.", "png": "instruction_finder_pattern"},
+        {"text": "Quand les motifs sont trouvees, vous verrez des circles rouge.", "png": "instruction_patterns_found"},
+        {"text": "Ca prendra 25 sec. pourque alcalinite et pH seront prets. Quand pret, ils aussi seront marque noir", "png":"instruction_progress"}
       ]
     }
 

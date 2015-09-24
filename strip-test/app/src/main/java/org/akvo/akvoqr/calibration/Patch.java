@@ -3,6 +3,7 @@ package org.akvo.akvoqr.calibration;
 /**
  * Created by linda on 7/28/15.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class Patch {
     public int x;
     public int y;
