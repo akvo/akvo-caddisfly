@@ -332,7 +332,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         @Override
         protected void onPostExecute(Boolean written) {
-            System.out.println("***data was written: " + patchesCovered + written);
+            System.out.println("***data was written: " + patchCount + written);
 
             if(patchesCovered == patches.size()-1)
             {
@@ -347,7 +347,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info, double mSize) {
 
-        int patchCount = 0;
+       // int patchCount = 0;
 
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.
@@ -360,22 +360,22 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
             {
-                patchCount = i;
+                //patchCount = i;
 
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
 
-                new StoreDataTask(patchCount, data, info, format, width, height, mSize).execute();
+                new StoreDataTask(i, data, info, format, width, height, mSize).execute();
 
-                System.out.println("***patchCount: " + patchCount + " patchesCovered: " + patchesCovered);
+                System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
 
             }
         }
 
-        showProgress(patchCount+1);
+        showProgress(patchesCovered+1);
 
         //continue until all patches are covered
-        if (patchCount < numPatches -1) {
+        if (patchesCovered< numPatches -1) {
 
             Runnable clearFinderPatterns = new Runnable() {
                 @Override

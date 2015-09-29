@@ -327,8 +327,6 @@ public class DetectStripActivity extends AppCompatActivity {
                     //DetectStripActivity.this.finish();
                 }
             });
-
-
         }
 
         private void makeBGR() throws Exception

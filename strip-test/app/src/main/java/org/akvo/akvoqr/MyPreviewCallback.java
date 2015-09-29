@@ -117,7 +117,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 camera.stopPreview();
                 listener.playSound();
                 finderPatternColor = Color.RED;
-                //handler.removeCallbacks(showFinderPatternRunnable);
                 handler.post(showFinderPatternRunnable);
             }
         }
@@ -125,7 +124,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         new QualityChecksTask().execute(data);
 
         //if (!isRunning)
-        new SendDataTask().execute(data);
+        new SendDataTask(info).execute(data);
 
     }
 
@@ -133,8 +132,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
         byte[] data;
+        FinderPatternInfo info;
 
         boolean qualityOK = true;
+        public SendDataTask(FinderPatternInfo info)
+        {
+            this.info = info;
+        }
 
         @Override
         protected Void doInBackground(byte[]... params) {
