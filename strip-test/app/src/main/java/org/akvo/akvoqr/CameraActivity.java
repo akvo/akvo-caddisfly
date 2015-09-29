@@ -118,6 +118,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     private void init()
     {
+        Log.d(TAG, "init");
+
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
@@ -128,7 +130,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             mPreview = new BaseCameraView(this, mCamera);
             preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.addView(mPreview);
+
         }
+
 
 
     }
@@ -171,7 +175,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         super.onResume();
         if(mCamera!=null)
         {
-            Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+            Log.d(TAG, "mCamera is not null");
 
             try {
                 mCamera.reconnect();
@@ -181,12 +185,13 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
         else
         {
+
             init();
         }
 
         FileStorage.deleteAll();
 
-        //Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+        Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
     }
     public void onStart()
@@ -215,8 +220,11 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         handler.post(startCountdownRunnable);
 
-        for(StripTest.Brand.Patch p: patches) {
-            handler.postDelayed(startNextPreview, (long) p.getTimeLapse() * 1000);
+        for(int i=0;i< patches.size();i++) {
+            //there must be a timelapse between patches
+            if(i==0 || (i>0 && patches.get(i).getTimeLapse() - patches.get(i-1).getTimeLapse() > 0)) {
+                handler.postDelayed(startNextPreview, (long) patches.get(i).getTimeLapse() * 1000);
+            }
         }
 
     }
@@ -286,22 +294,36 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
     };
 
+    private static boolean written;
     private class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
         private int patchCount;
         private byte[] data;
         private FinderPatternInfo info;
+        private int format;
+        private int width;
+        private int height;
+        private double mSize;
 
-        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info) {
+        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info, int format, int width, int height, double mSize) {
             this.patchCount = patchCount;
             this.data = data;
             this.info = info;
+            this.format = format;
+            this.width = width;
+            this.height = height;
+            this.mSize = mSize;
+        }
+        @Override
+        protected void onPreExecute()
+        {
+            written = false;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            boolean written = FileStorage.writeByteArray(data, patchCount);
+            written = FileStorage.writeByteArray(data, patchCount);
             String json = FinderPatternInfoToJson.toJson(info);
             FileStorage.writeFinderPatternInfoJson(patchCount, json);
 
@@ -310,9 +332,17 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         @Override
         protected void onPostExecute(Boolean written) {
-//            System.out.println("***data was written: " + written);
+            System.out.println("***data was written: " + patchesCovered + written);
+
+            if(patchesCovered == patches.size()-1)
+            {
+                startDetectActivity(format, width, height, mSize);
+            }
         }
     }
+
+    //private int to keep track of preview data already stored
+    private int patchesCovered = -1;
     @Override
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info, double mSize) {
@@ -325,21 +355,26 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         //NB: in case a strip is designed in a manner where the order in time is different from the
         //order in the json-array, this will not work. Patches with lower value for time-lapse
         //should come before others.
-        for(int i=0;i<patches.size();i++)
+        for(int i=patchesCovered+1;i<patches.size();i++)
         {
-            //System.out.println("***patchCount time diff milliseconds: " + (timeMillis  - (initTimeMillis + patches.get(i).getTimeLapse()*1000)));
-
+            //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
             {
                 patchCount = i;
-                new StoreDataTask(patchCount, data, info).execute();
+
+                //...but we do not want to replace the already saved data with new
+                patchesCovered = i;
+
+                new StoreDataTask(patchCount, data, info, format, width, height, mSize).execute();
+
+                System.out.println("***patchCount: " + patchCount + " patchesCovered: " + patchesCovered);
+
             }
         }
 
-        //System.out.println("***patchCount: " + patchCount);
-
         showProgress(patchCount+1);
 
+        //continue until all patches are covered
         if (patchCount < numPatches -1) {
 
             Runnable clearFinderPatterns = new Runnable() {
@@ -353,6 +388,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             return;
         }
 
+    }
+    private void startDetectActivity(int format, int width, int height, double mSize)
+    {
+        //put Extras into intent
         detectStripIntent.putExtra(Constant.BRAND, brandName);
         detectStripIntent.putExtra(Constant.FORMAT, format);
         detectStripIntent.putExtra(Constant.WIDTH, width);
@@ -364,7 +403,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         startActivity(detectStripIntent);
 
         this.finish();
-
     }
 
     @Override

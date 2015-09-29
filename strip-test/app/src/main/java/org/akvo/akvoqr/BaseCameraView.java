@@ -23,7 +23,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     private Camera mCamera;
     private MyPreviewCallback previewCallback;
     private CameraActivity activity;
-    private Context context;
     private Camera.Parameters parameters;
 
     public BaseCameraView(Context context, Camera camera) {

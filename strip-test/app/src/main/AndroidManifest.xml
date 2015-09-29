@@ -58,6 +58,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".choose_striptest.ChooseStriptestListActivity" />
         </activity>
+
+        <service android:name=".StoreDataIntentService">
+
+        </service>
     </application>
 
 </manifest>

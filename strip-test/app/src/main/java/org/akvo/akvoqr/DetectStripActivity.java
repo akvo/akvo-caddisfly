@@ -138,6 +138,7 @@ public class DetectStripActivity extends AppCompatActivity {
         Mat cal_dest;
         Mat striparea = null;
         Mat calarea = null;
+        private boolean develop = true;
 
         protected void onPreExecute() {
             resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);
@@ -222,7 +223,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     try {
                         showMessage(getString(R.string.detect_shadow));
                         if (roiCalarea != null)
-                            calarea = warp_dst.submat(roiCalarea);
+                            calarea = warp_dst.submat(roiCalarea).clone();
 
                         ShadowDetector.detectShadows(calarea);
                     }
@@ -242,6 +243,16 @@ public class DetectStripActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         showMessage(getString(R.string.error_calibrating));
                         cal_dest = warp_dst.clone();
+                    }
+
+                    //show calibrated image
+                    if(develop) {
+                        Mat rgb = new Mat();
+                        Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_BGR2RGBA);
+                        Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(rgb, bitmap);
+                        Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                        showImage(bitmap);
                     }
 
                     if (roiStriparea != null)
@@ -276,7 +287,7 @@ public class DetectStripActivity extends AppCompatActivity {
                             Imgproc.line(rgba, new Point(0, rgba.rows()), new Point(rgba.cols(),
                                     0), new Scalar(255, 0, 0, 255), 2);
 
-                            resultIntent.putExtra(Constant.MAT, rgba);
+                            resultList.add(rgba);
 
                         }
                     }
@@ -313,7 +324,7 @@ public class DetectStripActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     startActivity(resultIntent);
-                    DetectStripActivity.this.finish();
+                    //DetectStripActivity.this.finish();
                 }
             });
 
@@ -346,6 +357,10 @@ public class DetectStripActivity extends AppCompatActivity {
                 Imgproc.cvtColor(bgra, bgr, Imgproc.COLOR_BGRA2BGR);
                 //System.out.println("***bgr type II: " + CvType.typeToString(bgr.type()) + ", channels: " + bgr.channels());
 
+                if(develop) {
+                    Bitmap scaledbitmap = Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                    showImage(scaledbitmap);
+                }
             }
         }
 

@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="15sp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
         android:id="@+id/result_ppm_layoutImageView"/>
     <LinearLayout
         android:layout_width="match_parent"
