@@ -222,7 +222,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         for(int i=0;i< patches.size();i++) {
             //there must be a timelapse between patches
-            if(i==0 || (i>0 && patches.get(i).getTimeLapse() - patches.get(i-1).getTimeLapse() > 0)) {
+            if(i>0 && patches.get(i).getTimeLapse() - patches.get(i-1).getTimeLapse() > 0) {
                 handler.postDelayed(startNextPreview, (long) patches.get(i).getTimeLapse() * 1000);
             }
         }
