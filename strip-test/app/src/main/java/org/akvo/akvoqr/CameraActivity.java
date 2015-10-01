@@ -9,9 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,7 +46,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private boolean hasTimeLapse;
     private List<StripTest.Brand.Patch> patches;
     private int numPatches;
-    // private int patchCount = 0;
+    private Button startButton;
     private boolean startButtonClicked = false;
     private Intent detectStripIntent;
 
@@ -74,29 +74,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         hasTimeLapse = StripTest.getInstance().getBrand(brandName).hasTimeLapse();
         numPatches = StripTest.getInstance().getBrand(brandName).getPatches().size();
         patches = StripTest.getInstance().getBrand(brandName).getPatches();
-
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
-        Button startButton = new Button(this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        startButton.setText(getResources().getString(R.string.start));
-        startButton.setBackgroundResource(R.drawable.button_start_selector);
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setActivated(!v.isActivated());
-                v.setOnClickListener(null);
-                v.setVisibility(View.GONE);
-
-                startButtonClicked = true;
-
-                startCountdown();
-            }
-        });
-
-        relativeLayout.addView(startButton, params);
 
         TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
 
@@ -228,6 +205,62 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
 
     }
+
+    @Override
+    public void setStartButtonVisibility(boolean show)
+    {
+        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
+        startButton = (Button) findViewById(R.id.activity_cameraStartButton);
+
+        final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
+        final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setActivated(!v.isActivated());
+                v.setOnClickListener(null);
+                v.setVisibility(View.GONE);
+
+                startButtonClicked = true;
+
+                startCountdown();
+            }
+        });
+
+        Runnable showRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if(!startButtonClicked) {
+                    startButton.setVisibility(View.VISIBLE);
+                }
+
+                exposureView.setImageResource(R.drawable.exposure_green);
+                focusView.setImageResource(R.drawable.focus_green);
+            }
+        };
+
+        Runnable hideRunnable = new Runnable() {
+            @Override
+            public void run() {
+                startButton.setVisibility(View.GONE);
+
+                exposureView.setImageResource(R.drawable.exposure_red);
+                focusView.setImageResource(R.drawable.focus_red);
+            }
+        };
+
+        if(show)
+        {
+            handler.post(showRunnable);
+        }
+        else
+        {
+            handler.post(hideRunnable);
+        }
+
+    }
     @Override
     public boolean start()
     {
@@ -249,10 +282,9 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void getMessage(int what) {
         if(mCamera!=null && mPreview!=null && !isFinishing()) {
-            if (what == 0) {
 
-                if(previewCallback!=null)
-                    mCamera.setOneShotPreviewCallback(previewCallback);
+            if (what == 0) {
+                handler.post(startNextPreview);
 
             } else {
 
@@ -289,12 +321,13 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
-            if(mCamera!=null && previewCallback!=null)
+            if(mCamera!=null && previewCallback!=null) {
+                mCamera.startPreview();
                 mCamera.setOneShotPreviewCallback(previewCallback);
+            }
         }
     };
 
-    private static boolean written;
     private class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
         private int patchCount;
@@ -314,25 +347,20 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             this.height = height;
             this.mSize = mSize;
         }
-        @Override
-        protected void onPreExecute()
-        {
-            written = false;
-        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            written = FileStorage.writeByteArray(data, patchCount);
+            FileStorage.writeByteArray(data, patchCount);
             String json = FinderPatternInfoToJson.toJson(info);
             FileStorage.writeFinderPatternInfoJson(patchCount, json);
 
-            return written;
+            return true;
         }
 
         @Override
         protected void onPostExecute(Boolean written) {
-            System.out.println("***data was written: " + patchCount + written);
+            //System.out.println("***data was written: " + patchCount + written);
 
             if(patchesCovered == patches.size()-1)
             {
@@ -347,7 +375,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info, double mSize) {
 
-       // int patchCount = 0;
 
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.
@@ -360,14 +387,13 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
             {
-                //patchCount = i;
 
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
 
                 new StoreDataTask(i, data, info, format, width, height, mSize).execute();
 
-                System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
+                //System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
 
             }
         }
@@ -380,6 +406,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             Runnable clearFinderPatterns = new Runnable() {
                 @Override
                 public void run() {
+                    mCamera.startPreview();
                     finderPatternIndicatorView.showPatterns(null, null);
                 }
             };

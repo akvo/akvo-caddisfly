@@ -34,8 +34,6 @@ import java.util.List;
  */
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
-    //public static boolean firstTime = true;
-    private boolean isRunning = false;
     private final int messageRepeat = 0;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -45,7 +43,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private Camera camera;
     private Camera.Size previewSize;
     private int previewFormat;
-    private boolean focused = false;
+    private boolean focused = true;
     private Handler handler;
     private  LightSensor lightSensor;
 
@@ -116,14 +114,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if (info!= null && possibleCenters != null && possibleCenters.size() == 4) {
                 camera.stopPreview();
                 listener.playSound();
-                finderPatternColor = Color.RED;
+                finderPatternColor = Color.parseColor("#f02cb673");
                 handler.post(showFinderPatternRunnable);
             }
         }
 
         new QualityChecksTask().execute(data);
 
-        //if (!isRunning)
         new SendDataTask(info).execute(data);
 
     }
@@ -143,7 +140,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         @Override
         protected Void doInBackground(byte[]... params) {
 
-            isRunning = true;
             data = params[0];
             try {
 
@@ -172,8 +168,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         if (listener != null)
                             listener.getMessage(messageRepeat);
 
+
                     }
-                    camera.startPreview();
+
                 }
                 else
                 {
@@ -181,14 +178,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         listener.getMessage(messageRepeat);
 
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
 
             }
-            finally {
-                isRunning = false;
 
-            }
             return null;
         }
 
@@ -202,17 +197,23 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     {
         @Override
         protected Void doInBackground(byte[]... params) {
-            qualityChecks(params[0]);
+
+            boolean ok = qualityChecks(params[0]);
+            listener.setStartButtonVisibility(ok);
+
             return null;
         }
     }
+
     private boolean qualityChecks(byte[] data) {
 
         if(camera==null)
             return false;
 
         Mat bgr = null;
-        focused = false;
+
+        boolean exposure;
+
         try {
 
             bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
@@ -223,16 +224,17 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
             //CHECK EXPOSURE.
-
             if(lightSensor.hasLightSensor())
             {
                 double lux = lightSensor.getLux();
                 listener.showMaxLuminosity(lux);
+                exposure = lux > 1000;
             }
             else {
                 // find maximum of L-channel
                 double maxLum =  (OpenCVUtils.getMaxLuminosity(bgr) / 255) * 100;
                 listener.showMaxLuminosity(maxLum);
+                exposure = maxLum > 90;
             }
 
             //TODO CHECK SHADOWS
@@ -240,8 +242,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             double focusLaplacian = (OpenCVUtils.focusLaplacian(bgr) / 255) * 100;
             listener.showFocusValue(focusLaplacian);
 
-            if (focusLaplacian < 225) {
 
+
+            if (focusLaplacian < 90) {
+                focused = false;
                 int count = 0;
                 while (!focused && camera!=null && count < 100) {
 
@@ -256,8 +260,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     count ++;
                 }
             }
+            else
+            {
+                focused = true;
+            }
 
-            return true;
+//            System.out.println("***focused: " + focused);
+//            System.out.println("***exposure: " + exposure);
+            return (focused && exposure);
         }
         catch (Exception e)
         {
@@ -273,8 +283,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     }
 
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
-
-        if (camera != null) {
 
             FinderPatternInfo info = null;
             PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
@@ -325,7 +333,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     return info;
                 }
             }
-        }
+
 
         return null;
     }

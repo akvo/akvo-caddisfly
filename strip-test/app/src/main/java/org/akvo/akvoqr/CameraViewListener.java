@@ -27,5 +27,7 @@ public interface CameraViewListener {
 
     void showMaxLuminosity(double value);
 
+    void setStartButtonVisibility(boolean show);
+
     boolean start();
 }

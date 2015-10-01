@@ -16,7 +16,7 @@
     <string name="error_warp">Warp failed.</string>
     <string name="finished">FINISHED</string>
     <string name="focus">Focus</string>
-    <string name="light">Light</string>
+    <string name="light">Exposure</string>
     <string name="no_data">No data for patch no.</string>
     <string name="patch_no">Patch no.</string>
     <string name="play_sound">Play Sound</string>

@@ -138,7 +138,7 @@ public class DetectStripActivity extends AppCompatActivity {
         Mat cal_dest;
         Mat striparea = null;
         Mat calarea = null;
-        private boolean develop = true;
+        private boolean develop = false;
 
         protected void onPreExecute() {
             resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);

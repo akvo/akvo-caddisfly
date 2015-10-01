@@ -2,7 +2,9 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.hardware.Camera;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -10,6 +12,7 @@ import android.view.SurfaceView;
 
 import org.akvo.akvoqr.detector.CameraConfigurationUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -142,6 +145,14 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         }
 
         CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+            List<Camera.Area> areas = new ArrayList<>();
+            Rect roi = new Rect(bestSize.width/3, bestSize.height/3, bestSize.width/3*2, bestSize.height/3*2);
+            areas.add(new Camera.Area(roi, 1));
+            parameters.setFocusAreas(areas);
+        }
 
         // start preview with new settings
         try {
