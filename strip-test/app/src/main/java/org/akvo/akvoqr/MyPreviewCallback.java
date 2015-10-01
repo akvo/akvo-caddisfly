@@ -226,7 +226,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             //CHECK EXPOSURE.
             if(lightSensor.hasLightSensor())
             {
-                double lux = lightSensor.getLux();
+                //the desired minimum lux is that of a brightly lit room indoors
+                double minLux = 3000;
+                double lux = (lightSensor.getLux() / minLux) * 100;
+
                 listener.showMaxLuminosity(lux);
                 exposure = lux > 1000;
             }

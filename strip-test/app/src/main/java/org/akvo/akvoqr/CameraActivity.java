@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
@@ -209,11 +208,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void setStartButtonVisibility(boolean show)
     {
-        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_cameraMainRelativeLayout);
         startButton = (Button) findViewById(R.id.activity_cameraStartButton);
-
-        final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
-        final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,9 +230,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                 if(!startButtonClicked) {
                     startButton.setVisibility(View.VISIBLE);
                 }
-
-                exposureView.setImageResource(R.drawable.exposure_green);
-                focusView.setImageResource(R.drawable.focus_green);
             }
         };
 
@@ -246,8 +238,6 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
             public void run() {
                 startButton.setVisibility(View.GONE);
 
-                exposureView.setImageResource(R.drawable.exposure_red);
-                focusView.setImageResource(R.drawable.focus_red);
             }
         };
 
@@ -296,23 +286,51 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     @Override
     public void showFocusValue(final double value)
     {
+        final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
+        final double minValue = 90;
+
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
+
                 if(messageFocusView !=null)
                     messageFocusView.setText(getString(R.string.focus) + ": " + String.format("%.0f",value) + " %");
+
+                if(value > minValue)
+                {
+                    focusView.setImageResource(R.drawable.focus_green);
+                }
+                else
+                {
+                    focusView.setImageResource(R.drawable.focus_red);
+                }
             }
         };
         handler.post(showMessage);
+
+
     }
     @Override
     public void showMaxLuminosity(final double value){
+
+        final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
+        final double minValue = 90;
 
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
                 if(messageLightView !=null)
                     messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
+
+                if(value > minValue)
+                {
+                    exposureView.setImageResource(R.drawable.exposure_green);
+                }
+                else
+                {
+                    exposureView.setImageResource(R.drawable.exposure_red);
+                }
+
             }
         };
         handler.post(showMessage);
