@@ -46,6 +46,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private boolean focused = true;
     private Handler handler;
     private  LightSensor lightSensor;
+    private final boolean DISABLE_CHECK = true;
 
     private Thread showFinderPatternThread = new Thread(
             new Runnable() {
@@ -270,7 +271,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
 //            System.out.println("***focused: " + focused);
 //            System.out.println("***exposure: " + exposure);
-            return (focused && exposure);
+            return (focused && exposure || DISABLE_CHECK);
         }
         catch (Exception e)
         {
