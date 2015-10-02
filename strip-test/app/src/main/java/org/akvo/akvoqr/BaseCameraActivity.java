@@ -14,7 +14,7 @@ import org.opencv.core.Mat;
  */
 public abstract class BaseCameraActivity  extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
 
-    static{ System.loadLibrary("opencv_java3"); }
+    //static{ System.loadLibrary("opencv_java3"); }
     static {
 
         if (!OpenCVLoader.initDebug()) {
@@ -46,7 +46,7 @@ public abstract class BaseCameraActivity  extends Activity implements CameraBrid
     @Override
     public void onResume() {
         super.onResume();
-        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
     }
 
     @Override

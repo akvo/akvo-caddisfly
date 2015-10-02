@@ -177,6 +177,7 @@ public class FinderPatternFinder {
     }
 
     FinderPattern[] patternInfo = selectBestPatterns();
+    //ResultPoint.orderBestPatterns(patternInfo);
 
     int code = decodeCallibrationCardCode(patternInfo);
 

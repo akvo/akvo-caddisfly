@@ -18,6 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+        android:scaleType="fitStart"
         android:id="@+id/fragment_instruction_detailImageView"/>
     </LinearLayout>

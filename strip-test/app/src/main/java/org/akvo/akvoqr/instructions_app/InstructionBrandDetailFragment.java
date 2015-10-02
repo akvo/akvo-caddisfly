@@ -1,6 +1,7 @@
 package org.akvo.akvoqr.instructions_app;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class InstructionBrandDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id"; //NON-NLS
     private String instructionText;
-    private int instructionRes;
+    private Drawable instructionDrawable;
     private InstructionsListener listener;
 
     public static InstructionBrandDetailFragment newInstance(int itemid)
@@ -46,7 +47,7 @@ public class InstructionBrandDetailFragment extends Fragment {
             int id = getArguments().getInt(ARG_ITEM_ID);
             try {
                 instructionText = listener.getInstruction(id);
-                instructionRes = listener.getInstructionRes(id);
+                instructionDrawable = listener.getInstructionRes(id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -77,9 +78,9 @@ public class InstructionBrandDetailFragment extends Fragment {
             textView.setText(instructionText);
         }
 
-        if(instructionRes != -1) {
+        if(instructionDrawable != null) {
             ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_instruction_detailImageView);
-            imageView.setImageResource(instructionRes);
+            imageView.setImageDrawable(instructionDrawable);
         }
 
         return rootView;

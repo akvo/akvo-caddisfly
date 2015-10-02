@@ -1,6 +1,7 @@
 package org.akvo.akvoqr.choose_striptest;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 /**
@@ -46,8 +49,24 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
             this.brandName = getArguments().getString(Constant.BRAND);
 
-            int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName()); //NON-NLS
-            imageView.setImageResource(resId);
+            //images in res/drawable
+//            int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName()); //NON-NLS
+//            imageView.setImageResource(resId);
+
+            //images in assets
+            try {
+                // get input stream
+                InputStream ims = getActivity().getAssets().open(brandName.toLowerCase(Locale.US)+".png");
+                // load image as Drawable
+                Drawable d = Drawable.createFromStream(ims, null);
+                // set image to ImageView
+                imageView.setImageDrawable(d);
+            }
+            catch(IOException ex) {
+                ex.printStackTrace();
+            }
+
+
 
             Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
             button.setOnClickListener(new ChooseBrandOnClickListener(brandName));

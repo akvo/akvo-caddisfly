@@ -1,6 +1,7 @@
 package org.akvo.akvoqr.instructions_app;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,8 @@ import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -202,12 +205,22 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
     }
 
     @Override
-    public int getInstructionRes(int id) throws JSONException
+    public Drawable getInstructionRes(int id) throws JSONException
     {
         String resName =  instructions.getJSONObject(id).getString("png");
-
         int res =  getResources().getIdentifier(resName, "drawable", getPackageName()); //NON-NLS
 
-        return res;
+        try {
+            // get input stream
+            InputStream ims = getAssets().open(resName.toLowerCase(Locale.US)+".png");
+            // load image as Drawable
+            Drawable d = Drawable.createFromStream(ims, null);
+            // set image to ImageView
+            return d;
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

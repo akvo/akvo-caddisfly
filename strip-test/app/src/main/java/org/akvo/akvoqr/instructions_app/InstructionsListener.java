@@ -1,5 +1,7 @@
 package org.akvo.akvoqr.instructions_app;
 
+import android.graphics.drawable.Drawable;
+
 import org.json.JSONException;
 
 /**
@@ -9,5 +11,5 @@ public interface InstructionsListener {
 
     String getInstruction(int id) throws JSONException;
 
-    int getInstructionRes(int id) throws JSONException;
+    Drawable getInstructionRes(int id) throws JSONException;
 }
