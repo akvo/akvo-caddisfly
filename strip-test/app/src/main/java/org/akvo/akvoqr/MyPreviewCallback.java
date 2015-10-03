@@ -18,8 +18,8 @@ import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.HybridBinarizer;
 import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
-import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.sensor.LightSensor;
+import org.akvo.akvoqr.util.PreviewUtils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -236,14 +236,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
             else {
                 // find maximum of L-channel
-                double maxLum =  (OpenCVUtils.getMaxLuminosity(bgr) / 255) * 100;
+                double maxLum =  (PreviewUtils.getMaxLuminosity(bgr) / 255) * 100;
                 listener.showMaxLuminosity(maxLum);
                 exposure = maxLum > 90;
             }
 
             //TODO CHECK SHADOWS
 
-            double focusLaplacian = (OpenCVUtils.focusLaplacian(bgr) / 255) * 100;
+            double focusLaplacian = (PreviewUtils.focusLaplacian(bgr) / 255) * 100;
             listener.showFocusValue(focusLaplacian);
 
 
