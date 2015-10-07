@@ -147,22 +147,33 @@ public class CalibrationCard{
         RealMatrix points = createWhitePointList(hls, calData);
 
         // create coefficient matrix
+        // the model is Luminosity = ax + bx^2 + cy + dy^2 + exy + f
         // third row is the constant 1
-        RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(),3);
+        RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(),6);
         coef.setColumnMatrix(0,points.getColumnMatrix(0));
-        coef.setColumnMatrix(1,points.getColumnMatrix(1));
+        coef.setColumnMatrix(2,points.getColumnMatrix(1));
+
+        //create constant, x^2, y^2 and xy terms
         for (int i = 0; i < points.getRowDimension(); i++){
-            coef.setEntry(i,2,1d);
+            coef.setEntry(i,1,Math.pow(coef.getEntry(i,0),2)); // x^2
+            coef.setEntry(i,3,Math.pow(coef.getEntry(i,2), 2)); // y^2
+            coef.setEntry(i,4,coef.getEntry(i,0) * coef.getEntry(i,2));
+            coef.setEntry(i,5,1d); // constant
         }
+
         RealVector L = points.getColumnVector(2);
         DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
         RealVector solution = solver.solve(L);
         float a = (float)solution.getEntry(0);
         float b = (float)solution.getEntry(1);
         float c = (float)solution.getEntry(2);
+        float d = (float)solution.getEntry(3);
+        float e = (float)solution.getEntry(4);
+        float f = (float)solution.getEntry(5);
+
 
         // compute mean (the luminosity value of the plane in the middle of the image)
-        float Lmean = (float) (a * calData.hsizePixel * 0.5 + b * calData.vsizePixel * 0.5 + c);
+        float Lmean = (float) (0.5 * a * pwidth + 0.5 * c * pheight + b * pwidth * pwidth / 3.0 + d * pheight * pheight / 3.0 + e * 0.25 * pheight * pwidth + f);
 
         // correct image
         // we do this per row. We tried to do it in one block, but there is no speed difference.
@@ -175,7 +186,7 @@ public class CalibrationCard{
             hls.get(i, 0, temp);
             ii3 = 0;
             for (ii = 0; ii < hlsCols; ii++){  //x
-                val = (int) Math.round((temp[ii3 + 1] & 0xFF) - (a * ii + b * i + c) + Lmean);
+                val = (int) Math.round((temp[ii3 + 1] & 0xFF) - (a * ii + b * ii * ii + c * i + d * i * i + e * i * ii + f) + Lmean);
                 val = capValue(val, 0, 255);
                 temp[ii3 + 1] = (byte) val;
                 ii3 += 3;
