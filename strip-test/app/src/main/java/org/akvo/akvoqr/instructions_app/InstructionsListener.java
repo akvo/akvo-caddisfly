@@ -11,5 +11,5 @@ public interface InstructionsListener {
 
     String getInstruction(int id) throws JSONException;
 
-    Drawable getInstructionRes(int id) throws JSONException;
+    Drawable getInstructionDrawable(int id) throws JSONException;
 }

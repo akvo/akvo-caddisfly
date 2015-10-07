@@ -82,11 +82,9 @@
         {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"}
-      ]
+        {"text": "Hold camera steady above strip. Wait for Exposure, Focus and Contrast to optimize. Values above 90% are OK." , "png":"instruction_quality_checks"},
+        {"text": "Press 'Start' button.", "png": "instruction_quality_checks"}
+        ]
     },
     {
       "name": "PH 4-9",
@@ -137,10 +135,8 @@
         {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"}
+        {"text": "Hold camera steady above strip. Wait for Exposure, Focus and Contrast to optimize. Values above 90% are OK." , "png":"instruction_quality_checks"},
+        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_quality_checks"}
       ]
     },
     {
@@ -325,11 +321,9 @@
         {"text": "Prepare for reading values. Make sure light is ok", "png": "instruction_light"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Hold camera steady above strip. Wait for Light and Focus to optimize. Values above 90% are OK." , "png":"instruction_focus"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"},
-        {"text": "Make sure all four finder patterns are within view.", "png": "instruction_finder_pattern"},
-        {"text": "If patterns are found, you here a sound and see red dots to indicate them", "png": "instruction_patterns_found"},
-        {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed. When a patch is read, the small square indicating it becomes black.", "png":"instruction_progress"}
+        {"text": "Hold camera steady above strip. Wait for Exposure, Focus and Contrast to optimize. Values above 90% are OK." , "png":"instruction_quality_checks"},
+        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_quality_checks"},
+       {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed. When a patch is read, the small square indicating it becomes black.", "png":"instruction_progress"}
       ]
     }
 

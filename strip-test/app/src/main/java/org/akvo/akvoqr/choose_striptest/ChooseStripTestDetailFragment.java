@@ -56,7 +56,8 @@ public class ChooseStripTestDetailFragment extends Fragment {
             //images in assets
             try {
                 // get input stream
-                InputStream ims = getActivity().getAssets().open(brandName.toLowerCase(Locale.US)+".png");
+                String path = getActivity().getResources().getString(R.string.striptest_images);
+                InputStream ims = getActivity().getAssets().open(path + "/" + brandName.toLowerCase(Locale.US)+".png");
                 // load image as Drawable
                 Drawable d = Drawable.createFromStream(ims, null);
                 // set image to ImageView
