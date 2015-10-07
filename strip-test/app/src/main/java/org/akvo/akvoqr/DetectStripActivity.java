@@ -21,7 +21,6 @@ import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.opencv.ShadowDetector;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -138,7 +137,7 @@ public class DetectStripActivity extends AppCompatActivity {
         Mat cal_dest;
         Mat striparea = null;
         Mat calarea = null;
-        private boolean develop = false;
+        private boolean develop = true;
 
         protected void onPreExecute() {
             resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);
@@ -220,17 +219,27 @@ public class DetectStripActivity extends AppCompatActivity {
                     }
 
                     //detect shadows
-                    try {
-                        showMessage(getString(R.string.detect_shadow));
-                        if (roiCalarea != null)
-                            calarea = warp_dst.submat(roiCalarea).clone();
+                   try {
+                        //showMessage(getString(R.string.detect_shadow));
+//                        if (roiCalarea != null) {
+//                            calarea = warp_dst.submat(roiCalarea).clone();
+//                            ShadowDetector.detectShadows(calarea);
+//                        }
+                       //PreviewUtils.getShadowValue(warp_dst);
+                       //Mat rgb = new Mat();
+                       //Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_BGR2RGBA);
+                       Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
+                       Utils.matToBitmap(warp_dst, bitmap);
+                       Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                       showImage(bitmap);
 
-                        ShadowDetector.detectShadows(calarea);
                     }
                     catch (Exception e){
                         showMessage(getString(R.string.error_detect_shadow));
                         continue;
-                    }
+                        }
+
+
 
                     //find calibration patches
                     try {

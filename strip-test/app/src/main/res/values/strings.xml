@@ -37,6 +37,7 @@
     <string name="start_test">Perform Test</string>
     <string name="duration">Duration:</string>
     <string name="instructions">Instructions</string>
+    <string name="contrast">Contrast</string>
 
     <string-array name="instructions">
         <item>When you hear a sound, a picture is taken.</item>
