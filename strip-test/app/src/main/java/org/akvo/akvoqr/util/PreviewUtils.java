@@ -13,6 +13,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -109,12 +110,18 @@ public class PreviewUtils {
         return result.maxVal;
     }
 
-    // method for shadow detection
+
+    /*method for shadow detection
+    * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
+    * @return : a percentage of how many lines have shadow.
+     */
     public static double getShadowValue(Mat warpMat) throws JSONException
     {
         //NB: warpMat should be bgr color scheme
         Mat workMat = warpMat.clone();
         Mat gray = new Mat();
+        List<Double> minValList = new ArrayList<>();
+        List<Double> maxValList = new ArrayList<>();
 
         //how much shadow do we tolerate?
         double maxDiff = 30;
@@ -156,7 +163,6 @@ public class PreviewUtils {
                     (int)Math.floor(ydiff));
 
             Mat submat = workMat.submat(whiteRect).clone();
-           // System.out.println("***shadow submat width, height: " + submat.width() + ", " + submat.height());
 
             //convert to gray
             Imgproc.cvtColor(submat, gray, Imgproc.COLOR_BGR2GRAY);
@@ -166,6 +172,12 @@ public class PreviewUtils {
 
             //get the min and max value of the gray mat
             Core.MinMaxLocResult minMaxLocResult = Core.minMaxLoc(gray);
+
+            //add min and max values to list for later cross-checking
+            minValList.add(minMaxLocResult.minVal);
+            maxValList.add(minMaxLocResult.maxVal);
+
+            //calculate the difference between min and max values
             double grayDiff = minMaxLocResult.maxVal - minMaxLocResult.minVal;
 
             //System.out.println("***shadow grayDiff: " + i + " = " + grayDiff);
@@ -204,9 +216,23 @@ public class PreviewUtils {
            */
         }
 
+        /*do a cross check */
+        //sort min and max values arraylist ascending
+        Collections.sort(minValList);
+        Collections.sort(maxValList);
+
+        //what is the difference between lowest and highest
+        double minValDiff = minValList.get(minValList.size()-1) - minValList.get(0);
+        double maxValDiff = maxValList.get(maxValList.size()-1) - maxValList.get(0);
+
+        //if difference is larger than maxDiff, we have a shadow
+        if(minValDiff > maxDiff || maxValDiff > maxDiff)
+        {
+            totalLinesWithShadow ++;
+        }
         workMat.release();
         gray.release();
 
-        return totalLinesWithShadow;
+        return totalLinesWithShadow/(lines.length()+2) * 100;
     }
 }

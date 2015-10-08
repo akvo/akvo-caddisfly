@@ -254,6 +254,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
 
             //DETECT SHADOWS
+            System.out.println("***xxx start shadow detection: ");
             double shadowPercentage = 101;
             if(info!=null) {
                 double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
@@ -263,10 +264,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
 
                 try {
-                    double shadowValue = PreviewUtils.getShadowValue(warp);
-                    shadowPercentage = (shadowValue/16) * 100;
+                    shadowPercentage = PreviewUtils.getShadowValue(warp);
+                    //shadowPercentage = (shadowValue/16) * 100;
 
-                    //System.out.println("***lines with shadows: " + shadowValue);
+                    System.out.println("***xxx lines with shadows: " + shadowPercentage);
                 }
                 catch (JSONException e)
                 {

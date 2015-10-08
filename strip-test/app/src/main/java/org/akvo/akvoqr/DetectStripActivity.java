@@ -191,9 +191,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     //make a blue, green, red Mat object from data
                     try {
                         makeBGR();
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         showMessage(getString(R.string.error_conversion));
                         continue;
                     }
@@ -201,9 +199,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     //perspectiveTransform
                     try {
                         warp(i);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         showMessage(getString(R.string.error_warp));
                         continue;
                     }
@@ -211,34 +207,23 @@ public class DetectStripActivity extends AppCompatActivity {
                     //divide into calibration and stripareas
                     try {
                         divideIntoCalibrationAndStripArea();
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         showMessage(getString(R.string.error_detection));
                         continue;
                     }
 
-                    //detect shadows
-                   try {
-                        //showMessage(getString(R.string.detect_shadow));
-//                        if (roiCalarea != null) {
-//                            calarea = warp_dst.submat(roiCalarea).clone();
-//                            ShadowDetector.detectShadows(calarea);
-//                        }
-                       //PreviewUtils.getShadowValue(warp_dst);
-                       //Mat rgb = new Mat();
-                       //Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_BGR2RGBA);
-                       Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
-                       Utils.matToBitmap(warp_dst, bitmap);
-                       Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                       showImage(bitmap);
+                    //save warped image to external storage
 
-                    }
-                    catch (Exception e){
-                        showMessage(getString(R.string.error_detect_shadow));
-                        continue;
+                    if (develop) {
+                        Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(warp_dst, bitmap);
+
+                        if (FileStorage.checkExternalMedia()) {
+                            FileStorage.writeToSDFile(bitmap);
                         }
-
+                        Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                        showImage(bitmap);
+                    }
 
 
                     //find calibration patches
@@ -255,7 +240,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     }
 
                     //show calibrated image
-                    if(develop) {
+                    if (develop) {
                         Mat rgb = new Mat();
                         Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_BGR2RGBA);
                         Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
@@ -299,8 +284,8 @@ public class DetectStripActivity extends AppCompatActivity {
                             resultList.add(rgba);
 
                         }
-                    }
 
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     showMessage(getString(R.string.error_unknown));
