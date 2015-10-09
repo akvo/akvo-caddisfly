@@ -180,7 +180,7 @@ public class FileStorage {
 
         File dir = new File (root.getAbsolutePath() + "/download/images_striptest");
         dir.mkdirs();
-        File file = new File(dir, "warp.png");
+        File file = new File(dir, "warp" + getNameForFile() +".png");
 
         try {
             FileOutputStream f = new FileOutputStream(file);
@@ -203,5 +203,29 @@ public class FileStorage {
         System.out.println("\n\nFile written to " + file);
     }
 
+    private static String getNameForFile()
+    {
+        File root = android.os.Environment.getExternalStorageDirectory();
+        File dir = new File (root.getAbsolutePath() + "/download/images_striptest");
+
+        File[] files = dir.listFiles();
+
+        int count=0;
+        String subfix="0";
+        for(File f: files)
+        {
+            try {
+                System.out.println("***file name: " + f.getName());
+                subfix = f.getName().substring(4, 5);
+                count = Integer.valueOf(subfix);
+            }
+            catch (Exception e)
+            {
+                return subfix;
+            }
+        }
+
+        return String.valueOf(count+1);
+    }
 
 }
