@@ -219,7 +219,8 @@ public class FileStorage {
             {
                 if(f.isFile()) {
 
-                    subfix = f.getName().substring(4, 5);
+                    int indexEnd = f.getName().indexOf(".");
+                    subfix = f.getName().substring(4, indexEnd);
                     if(Integer.valueOf(subfix) > maxCount) {
                         maxCount = Integer.valueOf(subfix);
                     }
