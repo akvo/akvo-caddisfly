@@ -210,22 +210,28 @@ public class FileStorage {
 
         File[] files = dir.listFiles();
 
-        int count=0;
-        String subfix="0";
+        int maxCount = 0;
+        String subfix;
+
         for(File f: files)
         {
-            try {
-                System.out.println("***file name: " + f.getName());
-                subfix = f.getName().substring(4, 5);
-                count = Integer.valueOf(subfix);
+            try
+            {
+                if(f.isFile()) {
+
+                    subfix = f.getName().substring(4, 5);
+                    if(Integer.valueOf(subfix) > maxCount) {
+                        maxCount = Integer.valueOf(subfix);
+                    }
+                }
             }
             catch (Exception e)
             {
-                return subfix;
+                continue;
             }
         }
 
-        return String.valueOf(count+1);
+        return String.valueOf(maxCount+1);
     }
 
 }
