@@ -114,7 +114,7 @@ public class ImageDetailFragment extends Fragment {
 
                 if(calmap!=null)
                 {
-                    FileStorage.writeToSDFile(calmap, fileName.substring(4,5));
+                    FileStorage.writeToSDFile(calmap, fileName);
                 }
             }
             catch (Exception e)

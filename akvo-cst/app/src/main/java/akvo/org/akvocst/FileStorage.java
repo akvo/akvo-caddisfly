@@ -96,7 +96,7 @@ public class FileStorage {
 
         File dir = new File (root.getAbsolutePath() + "/download/images_striptest/calibrated");
         dir.mkdirs();
-        File file = new File(dir, "cali" + imgId +".png");
+        File file = new File(dir, imgId);
 
         try {
             FileOutputStream f = new FileOutputStream(file);
