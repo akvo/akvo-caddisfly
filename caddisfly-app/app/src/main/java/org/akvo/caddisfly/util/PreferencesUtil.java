@@ -122,7 +122,7 @@ public class PreferencesUtil {
      * @param keyId   the key id
      * @return the stored long value
      */
-    private static long getLong(Context context, String keyId) {
+    public static long getLong(Context context, String keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(keyId, -1L);
@@ -146,7 +146,7 @@ public class PreferencesUtil {
      * @param context the context
      * @param keyId   the int key id
      */
-    private static void setLong(Context context, String keyId, long value) {
+    public static void setLong(Context context, String keyId, long value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
@@ -170,6 +170,21 @@ public class PreferencesUtil {
     }
 
     /**
+     * Gets a string value from preferences
+     *
+     * @param context      the context
+     * @param keyId        the key id
+     * @param defaultValue default value
+     * @return the stored string value
+     */
+    @SuppressWarnings("SameParameterValue")
+    public static String getString(Context context, String keyId, String defaultValue) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(keyId, defaultValue);
+    }
+
+    /**
      * Sets a string value to preferences
      *
      * @param context the context
@@ -180,6 +195,20 @@ public class PreferencesUtil {
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
         editor.putString(getKey(context, keyId), value);
+        editor.apply();
+    }
+
+    /**
+     * Sets a string value to preferences
+     *
+     * @param context the context
+     * @param keyId   the key id
+     */
+    public static void setString(Context context, String keyId, String value) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        Editor editor = sharedPreferences.edit();
+        editor.putString(keyId, value);
         editor.apply();
     }
 

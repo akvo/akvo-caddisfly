@@ -148,14 +148,22 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     private void loadDetails() {
-        long calibrationDate = PreferencesUtil.getLong(this, R.string.calibrationDateKey);
+        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.calibrationDateKey);
+        long calibrationDate = PreferencesUtil.getLong(this, key);
         if (calibrationDate >= 0) {
-            textCalibrationDate.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate)));
+            textCalibrationDate.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US)
+                    .format(new Date(calibrationDate)));
         }
-        Long expiryDate = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
+        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.calibrationExpiryDateKey);
+        Long expiryDate = PreferencesUtil.getLong(this, key);
+
+        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.batchNumberKey);
         if (expiryDate >= 0) {
             textSubtitle.setText(String.format("%s Expiry %s",
-                    PreferencesUtil.getString(this, R.string.batchNumberKey, ""),
+                    PreferencesUtil.getString(this, key, ""),
                     new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
         }
     }
@@ -198,7 +206,11 @@ public class CalibrateListActivity extends BaseActivity
 
                     //Store the date and time of calibration
                     Date calibrationDate = new Date();
-                    PreferencesUtil.setLong(this, R.string.calibrationDateKey, calibrationDate.getTime());
+
+                    String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                            R.string.calibrationDateKey);
+
+                    PreferencesUtil.setLong(this, key, calibrationDate.getTime());
                     textCalibrationDate.setText(
                             new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(calibrationDate));
                 }

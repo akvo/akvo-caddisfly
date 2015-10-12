@@ -250,7 +250,6 @@ public class CameraDialogFragment extends CameraDialog {
             circleStroke.setStrokeWidth(5);
 
             setWillNotDraw(false);
-
         }
 
         public void startCameraPreview() {
@@ -422,7 +421,6 @@ public class CameraDialogFragment extends CameraDialog {
             canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
 
             super.onDraw(canvas);
-
         }
 
         @Override

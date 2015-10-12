@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primary"
-            app:theme="@style/Base.Theme.AppCompat"
+            android:theme="@style/Base.Theme.AppCompat"
             app:title="@string/appName" />
 
         <LinearLayout
@@ -42,11 +42,40 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/buttonGotoSurvey"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/arrow_right_light"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="22dp"
+                android:text="@string/survey"
+                android:textAlignment="viewStart"
+                android:textColor="#e2e0e0"
+                android:theme="@style/Button.Blue" />
+
+            <Button
+                android:id="@+id/buttonEcSensor"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableEnd="@drawable/arrow_right_light"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="22dp"
+                android:text="@string/electricalConductivity"
+                android:textAlignment="viewStart"
+                android:textColor="#e2e0e0"
+                android:theme="@style/Button.Blue" />
+
+            <Button
                 android:id="@+id/buttonCalibrate"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -56,28 +85,6 @@
                 android:textColor="#e2e0e0"
                 android:theme="@style/Button.Blue" />
 
-            <LinearLayout
-                android:id="@+id/layoutOpenApp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:background="#10003b69"
-                android:orientation="vertical"
-                android:paddingBottom="30dp"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingTop="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="8dp"
-                    android:text="@string/toPerformWaterQualityTest"
-                    android:textColor="#f8c1d1e6"
-                    android:textSize="19sp" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

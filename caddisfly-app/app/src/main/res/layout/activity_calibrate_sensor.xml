@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
-        app:theme="@style/Base.Theme.AppCompat"
+        android:theme="@style/Base.Theme.AppCompat"
         app:title="@string/appName" />
 
     <LinearLayout
@@ -113,11 +113,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:labelFor="@+id/editLowValue"
-                android:lineSpacingExtra="8dp"
+                android:lineSpacingExtra="6dp"
                 android:text="@string/suspendEcSensorInLow"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,10 +151,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:labelFor="@+id/editHighValue"
+                android:lineSpacingExtra="6dp"
                 android:text="@string/suspendEcSensorInHigh"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <EditText
                 android:id="@+id/editHighValue"

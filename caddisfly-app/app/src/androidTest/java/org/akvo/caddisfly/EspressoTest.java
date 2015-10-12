@@ -153,7 +153,7 @@ public class EspressoTest
         }
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}));
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, true));
 
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
@@ -375,7 +375,9 @@ public class EspressoTest
 
         goToMainScreen();
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("useExternalSource");
 
@@ -392,7 +394,9 @@ public class EspressoTest
 
         startApp();
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("next");
 
@@ -507,7 +511,9 @@ public class EspressoTest
 
     public void testIncompleteCalibration() {
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("next");
 
@@ -582,7 +588,9 @@ public class EspressoTest
 
         goToMainScreen();
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("useExternalSource");
 
@@ -630,6 +638,10 @@ public class EspressoTest
 
         assertTrue("Unable to detect app", settingsApp != null);
 
+        gotoSurveyForm();
+    }
+
+    private void gotoSurveyForm() {
         clickListViewItem("Automated Tests");
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
             clickListViewItem(currentHashMap.get("createNewDataPoint"));
@@ -852,7 +864,9 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("useExternalSource");
 
@@ -914,7 +928,9 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        openSurveyInFlow();
+        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+
+        gotoSurveyForm();
 
         clickExternalSourceButton("useExternalSource");
 

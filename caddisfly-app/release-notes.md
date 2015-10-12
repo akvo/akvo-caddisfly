@@ -1,3 +1,19 @@
+v0.86 beta
+----------
+1. Added shared id, process and task affinity to launch in same process as FLOW
+2. Changed protocol for EC Sensor as per new specifications
+        R - Will return the current temperature and Compensated EC
+3. Fix calibration batch expiry save per test type (WIP)
+4. Added Survey button to main screen
+5. Added Electrical Conductivity button to main screen
+6. Changed EC Result screen to display only EC result or Temperature
+7. Diagnostic: Added Pesticide test
+8. Diagnostic: Added option to turn off detection of backdrop
+
+v0.85 beta
+----------
+1. Fix: Camera Preview circle
+
 v0.84 beta
 ----------
 1. Added preview on test start screen to align chamber for generic back case

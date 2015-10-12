@@ -17,11 +17,18 @@
 package org.akvo.caddisfly.sensor.ec;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,10 +36,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
-
-import com.ftdi.j2xx.D2xxManager;
-import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -43,207 +48,98 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity {
 
+    private static final String DEBUG_TAG = "SensorActivity";
+    // Notifications from UsbService will be received here.
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
+            {
+                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
+            {
+                Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
+            {
+                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
+            {
+                Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
+            {
+                Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
     private TextView textSubtitle;
-    private D2xxManager ftManager;
-    private FT_Device ftDev = null;
-    private int DevCount = -1;
-    private int currentIndex = -1;
-    private int baudRate; /*baud rate*/
-    private byte stopBit; /*1:1stop bits, 2:2 stop bits*/
-    private byte dataBit; /*8:8bit, 7: 7bit*/
-    private byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
-    private byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
     private Context mContext;
+    private UsbService usbService;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        createDeviceList();
-    }
+//    private Handler handler = new Handler();
+//    private String mReceivedData = "";
+//    private int mEcValue = -1;
+//    private MyHandler mHandler;
 
-    @Override
-    public void onStop() {
-        disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    private void createDeviceList() {
-        int tempDevCount = ftManager.createDeviceInfoList(this);
-        if (tempDevCount > 0) {
-            if (DevCount != tempDevCount) {
-                DevCount = tempDevCount;
-            }
-        } else {
-            DevCount = -1;
-            currentIndex = -1;
-        }
-    }
-
-    private void disconnect() {
-        DevCount = -1;
-        currentIndex = -1;
-        //bReadThreadGoing = false;
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            //usbService.setHandler(mHandler);
         }
 
-        if (ftDev != null) {
-            synchronized (this) {
-                if (ftDev.isOpen()) {
-                    ftDev.close();
-                }
-            }
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
         }
-    }
+    };
 
-    private void connect() {
-
-        createDeviceList();
-
-        if (DevCount < 1) {
-            return;
-        }
-
-        int openIndex = 0;
-        if (currentIndex != openIndex) {
-            if (null == ftDev) {
-                ftDev = ftManager.openByIndex(this, openIndex);
-            } else {
-                synchronized (this) {
-                    ftDev = ftManager.openByIndex(this, openIndex);
-                }
-            }
-        } else return;
-
-        if (ftDev == null) {
-            return;
-        }
-
-        if (ftDev.isOpen()) {
-            currentIndex = openIndex;
-        }
-        SetConfig(baudRate, dataBit, stopBit, parity, flowControl);
-
-    }
-
-    private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
-        if (ftDev == null || !ftDev.isOpen()) {
-            //device not open
-            return;
-        }
-
-        // configure our port
-        // reset to mode for 232 devices
-        ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
-
-        ftDev.setBaudRate(baud);
-
-        switch (dataBits) {
-            case 7:
-                dataBits = D2xxManager.FT_DATA_BITS_7;
-                break;
-            case 8:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-            default:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-        }
-
-        switch (stopBits) {
-            case 1:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-            case 2:
-                stopBits = D2xxManager.FT_STOP_BITS_2;
-                break;
-            default:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-        }
-
-        switch (parity) {
-            case 0:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-            case 1:
-                parity = D2xxManager.FT_PARITY_ODD;
-                break;
-            case 2:
-                parity = D2xxManager.FT_PARITY_EVEN;
-                break;
-            case 3:
-                parity = D2xxManager.FT_PARITY_MARK;
-                break;
-            case 4:
-                parity = D2xxManager.FT_PARITY_SPACE;
-                break;
-            default:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-        }
-
-        ftDev.setDataCharacteristics(dataBits, stopBits, parity);
-
-        short flowCtrlSetting;
-        switch (flowControl) {
-            case 0:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-            case 1:
-                flowCtrlSetting = D2xxManager.FT_FLOW_RTS_CTS;
-                break;
-            case 2:
-                flowCtrlSetting = D2xxManager.FT_FLOW_DTR_DSR;
-                break;
-            case 3:
-                flowCtrlSetting = D2xxManager.FT_FLOW_XON_XOFF;
-                break;
-            default:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-        }
-
-        ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
-    }
-
-    private void SendMessage(String data) {
-        if (ftDev == null || !ftDev.isOpen()) {
-            //device not open
-            return;
-        }
-
-        ftDev.setLatencyTimer((byte) 16);
-//		ftDev.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
-
-        byte[] OutData = data.getBytes();
-        ftDev.write(OutData, data.length());
-    }
-
-    /**
-     * Hot plug for plug in solution
-     * This is workaround before android 4.2 . Because BroadcastReceiver can not
-     * receive ACTION_USB_DEVICE_ATTACHED broadcast
-     */
     @Override
     public void onResume() {
         super.onResume();
-        DevCount = 0;
-        createDeviceList();
-        if (DevCount > 0) {
-            connect();
-            SetConfig(baudRate, dataBit, stopBit, parity, flowControl);
+        setFilters();  // Start listening notifications from UsbService
+
+        // Start UsbService(if it was not started before) and Bind it
+        startService(UsbService.class, usbConnection, null);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(mUsbReceiver);
+        unbindService(usbConnection);
+    }
+
+    private void setFilters() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED);
+        filter.addAction(UsbService.ACTION_NO_USB);
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED);
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
+        registerReceiver(mUsbReceiver, filter);
+    }
+
+    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+        Log.d(DEBUG_TAG, "Start Service");
+
+        if (!UsbService.SERVICE_CONNECTED) {
+            Intent startService = new Intent(this, service);
+            if (extras != null && !extras.isEmpty()) {
+                Set<String> keys = extras.keySet();
+                for (String key : keys) {
+                    String extra = extras.getString(key);
+                    startService.putExtra(key, extra);
+                }
+            }
+            startService(startService);
         }
+        Intent bindingIntent = new Intent(this, service);
+        bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -252,12 +148,6 @@ public class CalibrateSensorActivity extends BaseActivity {
         setContentView(R.layout.activity_calibrate_sensor);
 
         mContext = this;
-
-        try {
-            ftManager = D2xxManager.getInstance(this);
-        } catch (D2xxManager.D2xxException ex) {
-            ex.printStackTrace();
-        }
 
         final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
@@ -273,36 +163,20 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
-        baudRate = 9600;
-
-        stopBit = 1;
-
-        dataBit = 8;
-
-        parity = 0;
-
-        flowControl = 0;
-
-        if (ftDev == null || !ftDev.isOpen()) {
-            connect();
+//        if (!usbService.isUsbConnected()) {
+//            textSubtitle.setText(R.string.deviceConnectSensor);
+//        } else {
+        String calibratedDate = PreferencesUtil.getString(this, R.string.sensorCalibratedDateKey, "");
+        if (!calibratedDate.isEmpty()) {
+            textSubtitle.setText(String.format("Calibrated: %s", calibratedDate));
         }
-        if (ftDev == null || !ftDev.isOpen()) {
-            textSubtitle.setText(R.string.deviceConnectSensor);
-        } else {
-            String calibratedDate = PreferencesUtil.getString(this, R.string.sensorCalibratedDateKey, "");
-            if (!calibratedDate.isEmpty()) {
-                textSubtitle.setText(String.format("Calibrated: %s", calibratedDate));
-            }
-        }
+//        }
 
         final Context context = this;
         buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ftDev == null || !ftDev.isOpen()) {
-                    connect();
-                }
-                if (ftDev != null && ftDev.isOpen()) {
+                if (usbService.isUsbConnected()) {
 
                     final ProgressDialog dialog = ProgressDialog.show(mContext,
                             getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true);
@@ -338,31 +212,41 @@ public class CalibrateSensorActivity extends BaseActivity {
                                 (event.getAction() == KeyEvent.ACTION_DOWN))) {
                     if (validInput(editLowValue.getText().toString())) {
                         closeKeyboard(editLowValue);
-                        final ProgressDialog dialog = ProgressDialog.show(mContext,
-                                getString(R.string.pleaseWait), getString(R.string.calibrating), true);
-                        dialog.setCancelable(false);
-                        dialog.show();
 
-                        new Handler().postDelayed(new Runnable() {
+                        if (usbService.isUsbConnected()) {
+//                            if (mEcValue != -1) {
 
-                            @Override
-                            public void run() {
-                                String requestCommand = "L," + editLowValue.getText();
-                                SendMessage(requestCommand);
-                                (new Handler()).postDelayed(new Runnable() {
-                                    public void run() {
-                                        dialog.dismiss();
-                                        textSubtitle.setText(R.string.highEcMeasurement);
-                                        viewAnimator.showNext();
-                                        editHighValue.requestFocus();
-                                        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                                                Context.INPUT_METHOD_SERVICE);
-                                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                            final ProgressDialog dialog = ProgressDialog.show(mContext,
+                                    getString(R.string.pleaseWait), getString(R.string.calibrating), true);
+                            dialog.setCancelable(false);
+                            dialog.show();
 
-                                    }
-                                }, 1000);
-                            }
-                        }, 4000);
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    String requestCommand = "L," + editLowValue.getText();
+                                    usbService.write(requestCommand.getBytes());
+                                    (new Handler()).postDelayed(new Runnable() {
+                                        public void run() {
+                                            dialog.dismiss();
+                                            textSubtitle.setText(R.string.highEcMeasurement);
+                                            viewAnimator.showNext();
+                                            editHighValue.requestFocus();
+                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                                                    Context.INPUT_METHOD_SERVICE);
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                                        }
+                                    }, 1000);
+                                }
+                            }, 4000);
+//                            }else{
+//                                AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+//                            }
+                        } else {
+                            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+                        }
                     } else {
                         editLowValue.setError(getString(R.string.pleaseEnterValue));
                     }
@@ -377,38 +261,44 @@ public class CalibrateSensorActivity extends BaseActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (validInput(editHighValue.getText().toString())) {
                     closeKeyboard(editHighValue);
-                    final ProgressDialog dialog = ProgressDialog.show(mContext,
-                            getString(R.string.pleaseWait),
-                            getString(R.string.calibrating), true);
-                    dialog.setCancelable(false);
-                    dialog.show();
 
-                    new Handler().postDelayed(new Runnable() {
+                    if (usbService.isUsbConnected()) {
 
-                        @Override
-                        public void run() {
+                        final ProgressDialog dialog = ProgressDialog.show(mContext,
+                                getString(R.string.pleaseWait),
+                                getString(R.string.calibrating), true);
+                        dialog.setCancelable(false);
+                        dialog.show();
 
-                            String requestCommand = "H," + editHighValue.getText();
-                            SendMessage(requestCommand);
+                        new Handler().postDelayed(new Runnable() {
 
-                            requestCommand = "C";
-                            SendMessage(requestCommand);
-                            (new Handler()).postDelayed(new Runnable() {
-                                public void run() {
-                                    dialog.dismiss();
-                                    PreferencesUtil.setString(context, R.string.sensorCalibratedDateKey,
-                                            new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date()));
-                                    AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
-                                            R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    finish();
-                                                }
-                                            }, null);
-                                }
-                            }, 1000);
-                        }
-                    }, 4000);
+                            @Override
+                            public void run() {
+
+                                String requestCommand = "H," + editHighValue.getText();
+                                usbService.write(requestCommand.getBytes());
+                                requestCommand = "C";
+                                usbService.write(requestCommand.getBytes());
+                                (new Handler()).postDelayed(new Runnable() {
+                                    public void run() {
+                                        dialog.dismiss();
+                                        PreferencesUtil.setString(context, R.string.sensorCalibratedDateKey,
+                                                new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date()));
+                                        AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
+                                                R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        finish();
+                                                    }
+                                                }, null);
+                                    }
+                                }, 1000);
+                            }
+                        }, 4000);
+                    } else {
+                        AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+                    }
+
                 } else {
                     editHighValue.setError(getString(R.string.pleaseEnterValue));
                 }
@@ -443,5 +333,43 @@ public class CalibrateSensorActivity extends BaseActivity {
         super.onUserLeaveHint();
         finish();
     }
+
+//    private void requestResult() {
+//        Log.d(DEBUG_TAG, "Request Result");
+//        String data = "r";
+//        if (usbService != null && usbService.isUsbConnected()) {
+//            // if UsbService was correctly bound, Send data
+//            usbService.write(data.getBytes());
+//        } else {
+//            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+//        }
+//    }
+
+    /*
+     * This handler will be passed to UsbService.
+     * Data received from serial port is displayed through this handler
+     */
+//    private static class MyHandler extends Handler {
+//        private final WeakReference<CalibrateSensorActivity> mActivity;
+//
+//        public MyHandler(CalibrateSensorActivity activity) {
+//            mActivity = new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case UsbService.MESSAGE_FROM_SERIAL_PORT:
+//                    String data = (String) msg.obj;
+//                    CalibrateSensorActivity calibrateSensorActivity = mActivity.get();
+//                    if (calibrateSensorActivity != null) {
+//                        if (data.equals("\n")) {
+//                        } else {
+//                        }
+//                    }
+//                    break;
+//            }
+//        }
+//    }
 
 }

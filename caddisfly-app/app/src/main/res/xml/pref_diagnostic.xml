@@ -28,7 +28,10 @@
             android:key="ecSensor"
             android:title="@string/testSensor" />
         <CheckBoxPreference
-            android:key="showDebugMessages"
+            android:key="@string/noBackdropDetectionKey"
+            android:title="@string/noBackdropDetection" />
+        <CheckBoxPreference
+            android:key="@string/showDebugMessagesKey"
             android:title="@string/debuggingOn" />
         <CheckBoxPreference
             android:key="@string/noSoundKey"

@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.model;
@@ -36,10 +36,12 @@ public class TestInfo {
     private final CaddisflyApp.TestType testType;
     private final ArrayList<Integer> dilutions;
     private final boolean requiresCalibration;
+    private boolean isDiagnostic;
     private boolean mIsDirty;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
-                    boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray) {
+                    boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray,
+                    boolean isDiagnostic) {
         this.names = names;
         this.testType = testType;
         this.code = code;
@@ -47,6 +49,7 @@ public class TestInfo {
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
         this.requiresCalibration = requiresCalibration;
+        this.isDiagnostic = isDiagnostic;
 
         for (String range : swatchArray) {
             Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
@@ -131,6 +134,10 @@ public class TestInfo {
 
     public boolean getCanUseDilution() {
         return dilutions.size() > 1;
+    }
+
+    public boolean getIsDiagnostic() {
+        return isDiagnostic;
     }
 
     /**

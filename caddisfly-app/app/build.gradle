@@ -23,29 +23,34 @@ android {
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 23
-        versionName "0.85 Beta"
-        versionCode 85
+        versionName "0.86 Beta"
+        versionCode 86
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         caddisflyRelease {
-            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
-            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
-            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
-            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
         }
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.caddisflyRelease
+        }
+
         release {
             signingConfig signingConfigs.caddisflyRelease
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
+
     }
 
     packagingOptions {
@@ -71,4 +76,5 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+    compile files('libs/usbserial.jar')
 }

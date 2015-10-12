@@ -22,6 +22,11 @@ package org.akvo.caddisfly;
 public class AppConfig {
 
     /**
+     * To launch FLOW app
+     */
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
+
+    /**
      * The intent action string used to connect to external app
      */
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";

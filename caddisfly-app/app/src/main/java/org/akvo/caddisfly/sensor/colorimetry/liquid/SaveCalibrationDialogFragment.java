@@ -126,7 +126,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         });
 
         editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
-        editBatchNumber.setText(PreferencesUtil.getString(context, R.string.batchNumberKey, ""));
+
+        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.batchNumberKey);
+
+        editBatchNumber.setText(PreferencesUtil.getString(context, key, ""));
 
         editName = (EditText) v.findViewById(R.id.editName);
         if (AppPreferences.isDiagnosticMode()) {
@@ -237,8 +241,15 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                             }
                         }
 
-                        PreferencesUtil.setLong(context, R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
-                        PreferencesUtil.setString(context, R.string.batchNumberKey, editBatchNumber.getText().toString());
+                        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                                R.string.calibrationExpiryDateKey);
+
+                        PreferencesUtil.setLong(context, key, calendar.getTimeInMillis());
+
+                        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                                R.string.batchNumberKey);
+
+                        PreferencesUtil.setString(context, key, editBatchNumber.getText().toString());
 
                         ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
 

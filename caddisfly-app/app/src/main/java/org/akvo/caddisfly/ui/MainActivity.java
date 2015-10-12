@@ -30,6 +30,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
@@ -88,19 +89,38 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        final Context context = this;
-        findViewById(R.id.layoutOpenApp).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonEcSensor).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertUtil.showAlert(context, R.string.closing, R.string.appWillClose, R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        }, null);
+                CaddisflyApp.getApp().loadTestConfiguration("ECOND");
+                final Intent intent = new Intent(getBaseContext(), SensorActivity.class);
+                intent.putExtra("internal", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
+
+        Button startSurveyButton = (Button) findViewById(R.id.buttonGotoSurvey);
+        startSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSurvey();
+            }
+        });
+
+//        final Context context = this;
+//        findViewById(R.id.layoutOpenApp).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AlertUtil.showAlert(context, R.string.closing, R.string.appWillClose, R.string.ok,
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                finish();
+//                            }
+//                        }, null);
+//            }
+//        });
     }
 
     @Override
@@ -271,6 +291,32 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void startSurvey() {
+        Intent LaunchIntent = getPackageManager()
+                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        if (LaunchIntent == null) {
+            alertDependantAppNotFound();
+        } else {
+            startActivity(LaunchIntent);
+//            mShouldFinish = true;
+//
+//            (new Handler()).postDelayed(new Runnable() {
+//                public void run() {
+//                    if (mShouldFinish) {
+//                        finish();
+//                    }
+//                }
+//            }, 6000);
+        }
+    }
+
+    private void alertDependantAppNotFound() {
+        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtil.showMessage(this, R.string.notFound, message);
+    }
+
     /**
      * Start the appropriate test based on the current test type
      */
@@ -345,6 +391,14 @@ public class MainActivity extends BaseActivity {
             default:
         }
     }
+
+//    @Override
+//    protected void onUserLeaveHint() {
+//        super.onUserLeaveHint();
+//        if (mShouldFinish) {
+//            finish();
+//        }
+//    }
 
     /**
      * Alert message for calibration incomplete or invalid

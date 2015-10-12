@@ -28,6 +28,7 @@ import android.graphics.Rect;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ImageHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,10 +66,15 @@ public class ImageUtil {
         int centerX = bitmap.getWidth() / 2;
         int centerY = bitmap.getHeight() / 2;
         int radius = 140;
+        Point point;
 
-        Point point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
-        if (point == null) {
-            return null;
+        if (AppPreferences.getNoBackdropDetection()) {
+            point = new Point(centerX, centerY);
+        } else {
+            point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
+            if (point == null) {
+                return null;
+            }
         }
 
         bitmap.getPixels(pixels, 0, length,

@@ -16,7 +16,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.akvo.caddisfly">
+    package="org.akvo.caddisfly"
+    android:sharedUserId="org.akvo">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
@@ -45,6 +46,7 @@
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
+        android:process="org.akvo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
@@ -52,6 +54,7 @@
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
+            android:taskAffinity="org.akvo"
             android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -116,7 +119,8 @@
             android:name=".sensor.ec.CalibrateSensorActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ui.TypeListActivity"
             android:parentActivityName=".preference.SettingsActivity"
@@ -126,6 +130,9 @@
             android:label="@string/appName"
             android:screenOrientation="nosensor" />
 
+        <service
+            android:name="org.akvo.caddisfly.sensor.ec.UsbService"
+            android:enabled="true" />
     </application>
 
 </manifest>

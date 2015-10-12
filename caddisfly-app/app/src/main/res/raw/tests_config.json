@@ -50,17 +50,33 @@
       {
         "name": [
           {
-            "en": "EC Temperature"
+            "en": "Temperature"
           },
           {
-            "fr": "CE Température"
+            "fr": "Température"
           }
         ],
         "type": "2",
         "code": "tempe",
-        "unit": "°C",
+        "unit": "°Celsius",
         "calibrate": "false",
         "ranges": "0"
+      },
+      {
+        "name": [
+          {
+            "en": "Pesticides"
+          },
+          {
+            "fr": "Pesticides"
+          }
+        ],
+        "type": "0",
+        "code": "pesti",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,1,2,3,4",
+        "diagnostic": "true"
       }
     ]
   }

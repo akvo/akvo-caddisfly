@@ -79,7 +79,6 @@
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
     <string name="deviceConnected">Appareil connecté</string>
-    <string name="electricalConductivityResult">EC %1$s μS/cm</string>
     <string name="acceptResult">Accepter le résultat</string>
     <!--EC Sensor Calibration-->
     <string name="warning">Attention</string>

@@ -18,25 +18,24 @@ package org.akvo.caddisfly.sensor.ec;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
-import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.ftdi.j2xx.D2xxManager;
-import com.ftdi.j2xx.FT_Device;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -45,98 +44,151 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.lang.ref.WeakReference;
-import java.util.zip.CRC32;
+import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
-    private static final int readLength = 512;
-    private static final String ACTION_USB_PERMISSION = "org.akvo.caddisfly.USB_PERMISSION";
-    private static final int DEFAULT_BAUD_RATE = 9600;
-    private static final int REQUEST_DELAY = 4000;
-    private static final int INITIAL_DELAY = 1000;
+    private static final String DEBUG_TAG = "SensorActivity";
     private final StringBuilder mReadData = new StringBuilder();
-    private final WeakRefHandler handler = new WeakRefHandler(this);
-    private int byteCount = 0;
-    private boolean bReadThreadGoing = false;
+    private final Handler handler = new Handler();
+    private TestInfo mCurrentTestInfo;
     private Toast debugToast;
-    private D2xxManager ftManager;
-    private FT_Device ftDev = null;
-    private int DevCount = -1;
-    private int currentIndex = -1;
-    private byte stopBit; /*1:1stop bits, 2:2 stop bits*/
-    private byte dataBit; /*8:8bit, 7: 7bit*/
-    private byte parity;  /* 0: none, 1: odd, 2: even, 3: mark, 4: space*/
-    private byte flowControl; /*0:none, 1: flow control(CTS,RTS)*/
-    private byte[] readData;
-    private char[] readDataToText;
     private String mEc25Value = "";
     private String mTemperature = "";
-    private TextView mResultTextView;
-    private TextView mTemperatureTextView;
-    private TextView mEcValueTextView;
-    private Button mOkButton;
-    private LinearLayout mConnectionLayout;
-    private LinearLayout mResultLayout;
-    private ProgressBar mProgressBar;
-    private ImageView mTemperatureImageView;
-    private TextView mUnitsTextView;
-
-    //http://developer.android.com/guide/topics/connectivity/usb/host.html
+    private boolean mIsInternal = false;
+    private LinearLayout layoutConnection;
+    private LinearLayout layoutResult;
+    private ProgressBar progressWait;
+    private TextView textResult;
+    private TextView textTemperature;
+    private TextView textUnit;
+    private TextView textUnit2;
+    private Button buttonAcceptResult;
+    private TextView textSubtitle;
+    // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            switch (action) {
-                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-                    notifyUSBDeviceAttach();
-                    break;
-                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-                    notifyUSBDeviceDetach();
-                    break;
-                case ACTION_USB_PERMISSION:
-                    break;
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
+            {
+                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
+            {
+                Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                displayNotConnectedView();
+            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
+            {
+                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
+                displayNotConnectedView();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
+            {
+                Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
+                displayNotConnectedView();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
+            {
+                Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
+                displayNotConnectedView();
             }
         }
     };
-    private String mResult = "";
-    private int delay = INITIAL_DELAY;
-    private boolean mRunLoop;
-    private final Runnable mCommunicate = new Runnable() {
+    private String mReceivedData = "";
+    private UsbService usbService;
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            while (mRunLoop) {
-                try {
-                    Thread.sleep(delay);
-                } catch (final Exception ignored) {
-                }
-
-                SendMessage();
-                delay = REQUEST_DELAY;
-            }
+            requestResult();
+            handler.postDelayed(this, 2000);
         }
     };
+    private MyHandler mHandler;
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(mHandler);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setFilters();  // Start listening notifications from UsbService
+
+        // Start UsbService(if it was not started before) and Bind it
+        startService(UsbService.class, usbConnection, null);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+        unregisterReceiver(mUsbReceiver);
+        unbindService(usbConnection);
+    }
+
+    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+        Log.d(DEBUG_TAG, "Start Service");
+
+        if (!UsbService.SERVICE_CONNECTED) {
+            Intent startService = new Intent(this, service);
+            if (extras != null && !extras.isEmpty()) {
+                Set<String> keys = extras.keySet();
+                for (String key : keys) {
+                    String extra = extras.getString(key);
+                    startService.putExtra(key, extra);
+                }
+            }
+            startService(startService);
+        }
+        Intent bindingIntent = new Intent(this, service);
+        bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        handler.postDelayed(runnable, 500);
+    }
+
+    private void requestResult() {
+        Log.d(DEBUG_TAG, "Request Result");
+        String data = "r";
+        if (usbService != null && usbService.isUsbConnected()) {
+            // if UsbService was correctly bound, Send data
+            usbService.write(data.getBytes());
+        } else {
+            displayNotConnectedView();
+        }
+    }
+
+    private void setFilters() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED);
+        filter.addAction(UsbService.ACTION_NO_USB);
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED);
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
+        registerReceiver(mUsbReceiver, filter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            ftManager = D2xxManager.getInstance(this);
-        } catch (D2xxManager.D2xxException ex) {
-            ex.printStackTrace();
-        }
-
         setContentView(R.layout.activity_sensor);
 
-        mResultTextView = (TextView) findViewById(R.id.textResult);
-        mTemperatureTextView = (TextView) findViewById(R.id.textTemperature);
-        mEcValueTextView = (TextView) findViewById(R.id.textEcValue);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressWait);
-        mTemperatureImageView = (ImageView) findViewById(R.id.imageTemperature);
-        mUnitsTextView = (TextView) findViewById(R.id.textUnit);
+        mIsInternal = getIntent().getBooleanExtra("internal", false);
+        mHandler = new MyHandler(this);
 
-        final TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        Configuration conf = getResources().getConfiguration();
+        textResult = (TextView) findViewById(R.id.textResult);
+        textTemperature = (TextView) findViewById(R.id.textTemperature);
+        progressWait = (ProgressBar) findViewById(R.id.progressWait);
+        textUnit = (TextView) findViewById(R.id.textUnit);
+        textUnit2 = (TextView) findViewById(R.id.textUnit2);
+        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+
+        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         Button backButton = (Button) findViewById(R.id.buttonOk);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -147,16 +199,15 @@ public class SensorActivity extends BaseActivity {
             }
         });
 
-        mTemperatureImageView.setVisibility(View.GONE);
-        mUnitsTextView.setVisibility(View.GONE);
+        //textUnit.setVisibility(View.GONE);
 
-        mOkButton = (Button) findViewById(R.id.buttonAcceptResult);
-        mOkButton.setVisibility(View.INVISIBLE);
-        mOkButton.setOnClickListener(new View.OnClickListener() {
+        buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
+        buttonAcceptResult.setVisibility(View.INVISIBLE);
+        buttonAcceptResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getIntent());
-                if (currentTestInfo.getCode().equals("TEMPE")) {
+                if (mCurrentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
                     intent.putExtra("response", mEc25Value);
@@ -166,29 +217,15 @@ public class SensorActivity extends BaseActivity {
             }
         });
 
-        mConnectionLayout = (LinearLayout) findViewById(R.id.layoutConnection);
-        mResultLayout = (LinearLayout) findViewById(R.id.layoutResult);
+        layoutConnection = (LinearLayout) findViewById(R.id.layoutConnection);
+        layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
-        if (!currentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        Configuration config = getResources().getConfiguration();
+        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    currentTestInfo.getName(conf.locale.getLanguage()));
-
-            mUnitsTextView.setText(currentTestInfo.getUnit());
+                    mCurrentTestInfo.getName(config.locale.getLanguage()));
         }
 
-        //http://developer.android.com/guide/topics/connectivity/usb/host.html
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        registerReceiver(mUsbReceiver, filter);
-
-        readData = new byte[readLength];
-        readDataToText = new char[readLength];
-
-        stopBit = 1;
-        dataBit = 8;
-        parity = 0;
-        flowControl = 0;
     }
 
     @Override
@@ -201,235 +238,21 @@ public class SensorActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        createDeviceList();
-    }
-
-    @Override
-    public void onStop() {
-        disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        mRunLoop = false;
-        unregisterReceiver(mUsbReceiver);
-        super.onDestroy();
-    }
-
-    private void notifyUSBDeviceAttach() {
-        createDeviceList();
-    }
-
-    private void notifyUSBDeviceDetach() {
-        disconnect();
-        displayNotConnectedView();
-    }
-
-    private void createDeviceList() {
-        int tempDevCount = ftManager.createDeviceInfoList(this);
-        if (tempDevCount > 0) {
-            displayNotConnectedView();
-            if (DevCount != tempDevCount) {
-                DevCount = tempDevCount;
-                displayConnectedView();
-            }
-        } else {
-            displayNotConnectedView();
-            DevCount = -1;
-            currentIndex = -1;
-        }
-    }
-
-    private void disconnect() {
-        DevCount = -1;
-        currentIndex = -1;
-        bReadThreadGoing = false;
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (ftDev != null) {
-            synchronized (this) {
-                if (ftDev.isOpen()) {
-                    ftDev.close();
-                }
-            }
-        }
-    }
-
-    private void connect() {
-
-        int openIndex = 0;
-        if (currentIndex != openIndex) {
-            if (null == ftDev) {
-                ftDev = ftManager.openByIndex(this, openIndex);
-            } else {
-                synchronized (this) {
-                    ftDev = ftManager.openByIndex(this, openIndex);
-                }
-            }
-        } else {
-            return;
-        }
-
-        if (ftDev == null) {
-            return;
-        }
-
-        if (ftDev.isOpen()) {
-            currentIndex = openIndex;
-
-            if (!bReadThreadGoing) {
-                readThread read_thread = new readThread(handler);
-                read_thread.start();
-                bReadThreadGoing = true;
-            }
-        }
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
-        if (ftDev == null || !ftDev.isOpen()) {
-            //device not open
-            return;
-        }
-
-        // configure our port
-        // reset mode for 232 devices
-        ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
-
-        ftDev.setBaudRate(baud);
-
-        switch (dataBits) {
-            case 7:
-                dataBits = D2xxManager.FT_DATA_BITS_7;
-                break;
-            case 8:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-            default:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-        }
-
-        switch (stopBits) {
-            case 1:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-            case 2:
-                stopBits = D2xxManager.FT_STOP_BITS_2;
-                break;
-            default:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-        }
-
-        switch (parity) {
-            case 0:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-            case 1:
-                parity = D2xxManager.FT_PARITY_ODD;
-                break;
-            case 2:
-                parity = D2xxManager.FT_PARITY_EVEN;
-                break;
-            case 3:
-                parity = D2xxManager.FT_PARITY_MARK;
-                break;
-            case 4:
-                parity = D2xxManager.FT_PARITY_SPACE;
-                break;
-            default:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-        }
-
-        ftDev.setDataCharacteristics(dataBits, stopBits, parity);
-
-        short flowCtrlSetting;
-        switch (flowControl) {
-            case 0:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-            case 1:
-                flowCtrlSetting = D2xxManager.FT_FLOW_RTS_CTS;
-                break;
-            case 2:
-                flowCtrlSetting = D2xxManager.FT_FLOW_DTR_DSR;
-                break;
-            case 3:
-                flowCtrlSetting = D2xxManager.FT_FLOW_XON_XOFF;
-                break;
-            default:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-        }
-
-        ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
-
-        //Toast.makeText(this, "AppConfig done", Toast.LENGTH_SHORT).show();
-    }
-
-    private void SendMessage() {
-        if (ftDev == null || !ftDev.isOpen()) {
-            //device not open
-            return;
-        }
-
-        ftDev.setLatencyTimer((byte) 16);
-//		ftDev.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
-
-        String writeData = "r";
-        byte[] OutData = writeData.getBytes();
-        ftDev.write(OutData, writeData.length());
-    }
-
-    /**
-     * Hot plug for plug in solution
-     * This is workaround before android 4.2 . Because BroadcastReceiver can not
-     * receive ACTION_USB_DEVICE_ATTACHED broadcast
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        DevCount = 0;
-        createDeviceList();
-        if (DevCount > 0) {
-            connect();
-            SetConfig(DEFAULT_BAUD_RATE, dataBit, stopBit, parity, flowControl);
-        }
-        mRunLoop = true;
-        new Thread(mCommunicate).start();
-    }
-
     private void displayNotConnectedView() {
         mReadData.setLength(0);
-        mResultLayout.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
-        mTemperatureImageView.setVisibility(View.GONE);
-        mUnitsTextView.setVisibility(View.GONE);
-        mConnectionLayout.setVisibility(View.VISIBLE);
-        mOkButton.setVisibility(View.GONE);
-    }
-
-    private void displayConnectedView() {
-
-        mTemperatureImageView.setVisibility(View.GONE);
-        mUnitsTextView.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mConnectionLayout.setVisibility(View.GONE);
+        layoutResult.setVisibility(View.GONE);
+        progressWait.setVisibility(View.GONE);
+        //textUnit.setVisibility(View.GONE);
+        layoutConnection.setVisibility(View.VISIBLE);
+        buttonAcceptResult.setVisibility(View.GONE);
+        textSubtitle.setText(R.string.deviceConnectSensor);
     }
 
     private void displayResult(String value) {
 
-        //Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG).show();
+        Log.d(DEBUG_TAG, "display Result");
+        Configuration config = getResources().getConfiguration();
+
         String newline = System.getProperty("line.separator");
 
         value = value.trim();
@@ -457,118 +280,101 @@ public class SensorActivity extends BaseActivity {
                 });
             }
 
-            if (resultArray.length > 3) {
+            if (resultArray.length > 1) {
 
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
                 }
 
                 mTemperature = resultArray[0];
-                String mEcValue = resultArray[1];
-                mEc25Value = resultArray[2];
-                String crc = resultArray[3].trim();
+                mEc25Value = resultArray[1];
 
-                CRC32 crc32 = new CRC32();
-                crc32.update((mTemperature + "," + mEcValue + "," + mEc25Value).getBytes());
-                String crcValue = Long.toHexString(crc32.getValue());
+                double temperature = Double.parseDouble(mTemperature);
+                mTemperature = String.format("%.1f", temperature);
+                //mTemperature = mTemperature.replace(".0", "");
+                long ec25Value = Math.round(Double.parseDouble(mEc25Value));
 
-                if (crc.equals(crcValue)) {
-
-
-                    double temperature = Double.parseDouble(mTemperature);
-                    mTemperature = String.format("%.1f\u00B0C", temperature);
-                    mTemperature = mTemperature.replace(".0", "");
-                    long ec25Value = Math.round(Double.parseDouble(mEc25Value));
-                    if (ec25Value > -1) {
-                        mEc25Value = Long.toString(ec25Value);
-                    } else {
-                        mEc25Value = "";
-                    }
-                    double ecValue = Math.round(Double.parseDouble(mEcValue));
-
-                    mTemperatureTextView.setText(mTemperature);
-                    if (mEc25Value.isEmpty()) {
-                        mEcValueTextView.setText("");
-                        mResultTextView.setText("");
-                        mProgressBar.setVisibility(View.VISIBLE);
-                    } else {
-                        mResultTextView.setText(String.format("%d", ec25Value));
-                        mEcValueTextView.setText(String.format(getString(R.string.electricalConductivityResult), String.format("%.0f", ecValue)));
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-
-                    mResultLayout.setVisibility(View.VISIBLE);
-                    mConnectionLayout.setVisibility(View.GONE);
-                    mOkButton.setVisibility(View.VISIBLE);
-                    mTemperatureImageView.setVisibility(View.VISIBLE);
-                    mUnitsTextView.setVisibility(View.VISIBLE);
+                if (ec25Value > -1) {
+                    mEc25Value = Long.toString(ec25Value);
+                } else {
+                    mEc25Value = "";
                 }
 
+                if (mCurrentTestInfo.getCode().equals("TEMPE")) {
+                    textSubtitle.setText(R.string.sensorConnected);
+                    textResult.setText(mTemperature);
+                    if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                        textUnit.setText(mCurrentTestInfo.getUnit());
+                    }
+                    buttonAcceptResult.setVisibility(View.VISIBLE);
+                    progressWait.setVisibility(View.GONE);
+                } else {
+                    if (mEc25Value.isEmpty()) {
+                        textResult.setText("");
+                        progressWait.setVisibility(View.VISIBLE);
+                        //textUnit.setText("");
+                        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                            textUnit.setText(mCurrentTestInfo.getUnit());
+                        }
+                        buttonAcceptResult.setVisibility(View.GONE);
+                        textSubtitle.setText(R.string.dipSensorInSample);
+                    } else {
+                        textResult.setText(String.format("%d", ec25Value));
+                        progressWait.setVisibility(View.GONE);
+                        buttonAcceptResult.setVisibility(View.VISIBLE);
+                        textSubtitle.setText(R.string.sensorConnected);
+                        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                            textUnit.setText(mCurrentTestInfo.getUnit());
+                        }
+                    }
+                }
+
+                if (mIsInternal) {
+                    textTemperature.setText(mTemperature);
+                    textTemperature.setVisibility(View.VISIBLE);
+                    textUnit2.setVisibility(View.VISIBLE);
+                    buttonAcceptResult.setVisibility(View.GONE);
+                }
+
+                layoutResult.setVisibility(View.VISIBLE);
+                layoutConnection.setVisibility(View.GONE);
+                //textUnit.setVisibility(View.VISIBLE);
+
+                Log.d(DEBUG_TAG, "display result view");
             }
         }
-        mResult = "";
     }
 
-    @Override
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        finish();
-    }
+    /*
+     * This handler will be passed to UsbService.
+     * Data received from serial port is displayed through this handler
+     */
+    private static class MyHandler extends Handler {
+        private final WeakReference<SensorActivity> mActivity;
 
-    private static class WeakRefHandler extends Handler {
-        private final WeakReference<SensorActivity> ref;
-
-        public WeakRefHandler(SensorActivity ref) {
-            this.ref = new WeakReference<>(ref);
+        public MyHandler(SensorActivity activity) {
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            SensorActivity f = ref.get();
-            if (f.byteCount > 0) {
-                f.mResult += String.copyValueOf(f.readDataToText, 0, f.byteCount);
-                if (f.mResult.split(",").length > 3) {
-                    f.displayResult(f.mResult);
-                }
-            }
-        }
-    }
-
-    private class readThread extends Thread {
-        final Handler mHandler;
-
-        readThread(Handler h) {
-            mHandler = h;
-            this.setPriority(Thread.MIN_PRIORITY);
-        }
-
-        @Override
-        public void run() {
-            int i;
-
-            while (bReadThreadGoing) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ignored) {
-                }
-
-                synchronized (this) {
-                    byteCount = ftDev.getQueueStatus();
-                    if (byteCount > 0) {
-
-                        if (byteCount > readLength) {
-                            byteCount = readLength;
+            switch (msg.what) {
+                case UsbService.MESSAGE_FROM_SERIAL_PORT:
+                    String data = (String) msg.obj;
+                    SensorActivity sensorActivity = mActivity.get();
+                    if (sensorActivity != null) {
+                        if (data.equals("\n")) {
+                            Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
+                            sensorActivity.displayResult(sensorActivity.mReceivedData);
+                            sensorActivity.mReceivedData = "";
+                        } else {
+                            Log.d(DEBUG_TAG, "serial: " + data);
+                            sensorActivity.mReceivedData += data;
                         }
-
-                        ftDev.read(readData, byteCount);
-                        for (i = 0; i < byteCount; i++) {
-                            readDataToText[i] = (char) readData[i];
-                        }
-                        Message msg = mHandler.obtainMessage();
-                        mHandler.sendMessage(msg);
                     }
-                }
+                    break;
             }
         }
     }
+
 }

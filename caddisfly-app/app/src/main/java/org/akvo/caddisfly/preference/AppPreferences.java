@@ -65,6 +65,11 @@ public class AppPreferences {
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
     }
 
+    public static boolean getNoBackdropDetection() {
+        return isDiagnosticMode() &&
+                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionKey, false);
+    }
+
     public static boolean getShowDebugMessages() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);

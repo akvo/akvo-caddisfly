@@ -56,12 +56,16 @@ public class UsbConnectionActivity extends Activity {
                 //dismiss after the second message
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        } catch (Exception ignored) {
+
+                        }
                         finish();
                     }
-                }, 2000);
+                }, 1000);
             }
-        }, 2000);
+        }, 1000);
 
     }
 }

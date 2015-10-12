@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
-        app:theme="@style/Base.Theme.AppCompat"
+        android:theme="@style/Base.Theme.AppCompat"
         app:title="@string/settings" />
 
     <ScrollView
