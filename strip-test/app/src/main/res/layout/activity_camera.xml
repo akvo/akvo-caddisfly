@@ -62,7 +62,6 @@
             android:paddingLeft="5sp"
             android:paddingRight="5sp"
             android:background="@drawable/button_semi_transparent_grey_oval"
-
             android:layout_gravity="center_horizontal"
             android:text="@string/focus"/>
         <ImageView
@@ -71,7 +70,22 @@
             android:src="@drawable/focus_red"
             android:layout_gravity="center_horizontal"
             android:id="@+id/activity_cameraImageViewFocus"/>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/camera_preview_messageContrastView"
+            android:textColor="@android:color/white"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:background="@drawable/button_semi_transparent_grey_oval"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/contrast"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/contrast_red"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/activity_cameraImageViewContrast"/>
     </LinearLayout>
 
     <Button

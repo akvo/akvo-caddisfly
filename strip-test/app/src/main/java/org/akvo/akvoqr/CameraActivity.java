@@ -39,6 +39,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private android.os.Handler handler;
     private TextView messageLightView;
     private TextView messageFocusView;
+    private TextView messageContrastView;
     private ProgressIndicatorView progressIndicatorView;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
@@ -66,6 +67,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
         messageLightView = (TextView) findViewById(R.id.camera_preview_messageLightView);
         messageFocusView = (TextView) findViewById(R.id.camera_preview_messageFocusView);
+        messageContrastView = (TextView) findViewById(R.id.camera_preview_messageContrastView);
         progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
@@ -329,6 +331,37 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                 else
                 {
                     exposureView.setImageResource(R.drawable.exposure_red);
+                }
+
+            }
+        };
+        handler.post(showMessage);
+    }
+
+    @Override
+    public void showContrast(final double value){
+
+        final ImageView contrastView = (ImageView) findViewById(R.id.activity_cameraImageViewContrast);
+        final double minValue = 30;
+
+        Runnable showMessage = new Runnable() {
+            @Override
+            public void run() {
+                if(messageContrastView !=null) {
+                    messageContrastView.setText(getString(R.string.contrast));
+
+                    if(value<101)
+                    {
+                        messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
+                    }
+                }
+                if(value < minValue)
+                {
+                    contrastView.setImageResource(R.drawable.contrast_green);
+                }
+                else
+                {
+                    contrastView.setImageResource(R.drawable.contrast_red);
                 }
 
             }

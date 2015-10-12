@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by linda on 8/19/15.
@@ -31,19 +30,6 @@ public class StripTest{
             fromJson();
         }
         return instance;
-    }
-
-    public Map<String, JSONObject> getStripObjects() {
-        return stripObjects;
-    }
-
-    public JSONArray getStripsJson() {
-        return stripsJson;
-    }
-
-    public Set<String> getAllBrands()
-    {
-        return stripObjects.keySet();
     }
 
     public List<String> getBrandsAsList()
@@ -177,12 +163,6 @@ public class StripTest{
                 return unit;
             }
 
-            public JSONArray getRGB(int index) throws JSONException {
-                return colours.getJSONObject(index).getJSONArray("rgb");
-            }
-            public double getValueForRGB(int index) throws JSONException {
-                return colours.getJSONObject(index).getDouble("value");
-            }
         }
     }
     private static void fromJson()

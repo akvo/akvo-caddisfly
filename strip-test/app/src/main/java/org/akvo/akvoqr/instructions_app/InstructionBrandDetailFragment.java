@@ -47,7 +47,7 @@ public class InstructionBrandDetailFragment extends Fragment {
             int id = getArguments().getInt(ARG_ITEM_ID);
             try {
                 instructionText = listener.getInstruction(id);
-                instructionDrawable = listener.getInstructionRes(id);
+                instructionDrawable = listener.getInstructionDrawable(id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

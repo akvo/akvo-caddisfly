@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.instructions_app.InstructionDetailFragment;
 import org.akvo.akvoqr.util.Constant;
 
 /**
@@ -17,7 +16,7 @@ import org.akvo.akvoqr.util.Constant;
  * in a {@link ChooseStriptestListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link InstructionDetailFragment}.
+ * more than a {@link ChooseStripTestDetailFragment}.
  */
 public class ChooseStriptestDetailActivity extends AppCompatActivity {
 

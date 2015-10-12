@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.instructions_app.InstructionDetailFragment;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * A list fragment representing a list of Instructions. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link InstructionDetailFragment}.
+ * currently being viewed in a {@link ChooseStripTestDetailFragment}.
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
@@ -76,9 +75,6 @@ public class ChooseStriptestListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         StripTest stripTest = StripTest.getInstance();
-
-//        Instructions instructions = new Instructions();
-//        List<Instructions.Instruction> instructionsList = instructions.getInstructions();
 
         brandnames = stripTest.getBrandsAsList();
         ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),

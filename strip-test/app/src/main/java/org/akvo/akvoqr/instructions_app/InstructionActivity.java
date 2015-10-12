@@ -58,12 +58,6 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
                 countFragments ++;
             }
 
-            for(int i=0;i< Instructions.INSTRUCTION_MAP.keySet().size();i++)
-            {
-                fragments.add(InstructionDetailFragment.newInstance(i));
-                countFragments ++;
-            }
-
             footerView = (InstructionFooterView) findViewById(R.id.activity_instructionFooterView);
             footerView.setNumSteps(countFragments);
 
@@ -205,14 +199,17 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
     }
 
     @Override
-    public Drawable getInstructionRes(int id) throws JSONException
+    public Drawable getInstructionDrawable(int id) throws JSONException
     {
         String resName =  instructions.getJSONObject(id).getString("png");
-        int res =  getResources().getIdentifier(resName, "drawable", getPackageName()); //NON-NLS
+
+        String path = getResources().getString(R.string.instruction_images);
+
+        path = getPathToDrawable(path, resName);
 
         try {
             // get input stream
-            InputStream ims = getAssets().open(resName.toLowerCase(Locale.US)+".png");
+            InputStream ims = getAssets().open(path + "/" + resName.toLowerCase(Locale.US)+".png");
             // load image as Drawable
             Drawable d = Drawable.createFromStream(ims, null);
             // set image to ImageView
@@ -222,5 +219,24 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             ex.printStackTrace();
         }
         return null;
+    }
+
+    //change path to file in assets if file is available for locale
+    private String getPathToDrawable(String path, String resName)
+    {
+        String localeLanguage = Locale.getDefault().getLanguage();
+        try {
+
+            getAssets().open(path + "-" + localeLanguage + "/" + resName.toLowerCase(Locale.US) + ".png");
+
+            path += "-" + localeLanguage;
+        }
+        catch(IOException ex) {
+            //ignore
+        }
+        finally {
+            return path;
+        }
+
     }
 }

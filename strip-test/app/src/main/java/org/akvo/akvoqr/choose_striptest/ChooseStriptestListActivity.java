@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.instructions_app.InstructionDetailFragment;
 import org.akvo.akvoqr.util.Constant;
 
 
