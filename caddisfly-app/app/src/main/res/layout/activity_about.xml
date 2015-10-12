@@ -1,40 +1,48 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MergeRootFrame">
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical"
+    tools:context=".ui.AboutActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat"
+        app:title="@string/about" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
             android:contentDescription="@null"
             android:src="@drawable/logo" />
-
 
         <TextView
             android:layout_width="match_parent"
@@ -45,9 +53,9 @@
             android:gravity="center"
             android:text="@string/appName"
             android:textAllCaps="true"
-            android:textSize="28sp"
+            android:textSize="28dp"
             android:textStyle="bold"
-            tools:ignore="UnusedAttribute" />
+            tools:ignore="SpUsage" />
 
         <TextView
             android:layout_width="match_parent"
@@ -59,8 +67,7 @@
             android:text="@string/waterQualitySystem"
             android:textAllCaps="true"
             android:textSize="15sp"
-            android:textStyle="bold"
-            tools:ignore="UnusedAttribute" />
+            android:textStyle="bold" />
 
         <View
             android:layout_width="200dp"
@@ -78,8 +85,7 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:textSize="15sp"
-            android:textStyle="normal"
-            tools:ignore="UnusedAttribute" />
+            android:textStyle="normal" />
 
         <View
             android:layout_width="200dp"
@@ -96,8 +102,7 @@
             android:paddingTop="20dp"
             android:text="@string/companyOtherName"
             android:textSize="15sp"
-            android:textStyle="normal"
-            tools:ignore="UnusedAttribute" />
+            android:textStyle="normal" />
 
         <TextView
             android:layout_width="match_parent"
@@ -107,14 +112,6 @@
             android:paddingBottom="20dp"
             android:text="@string/copyrightMessage"
             android:textSize="15sp"
-            android:textStyle="normal"
-            tools:ignore="UnusedAttribute" />
-
+            android:textStyle="normal" />
     </LinearLayout>
-
-
-
-</FrameLayout>
-
-
-
+</LinearLayout>

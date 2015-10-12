@@ -1,46 +1,51 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.util.PreferenceCategoryCustom android:title="@string/diagnostics">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom
+        android:key="preferenceCategoryDiagnostics"
+        android:title="@string/diagnostics">
         <Preference
             android:key="cameraPreview"
             android:title="@string/cameraPreview" />
         <Preference
-            android:key="externalCamera"
-            android:title="@string/externalCamera" />
+            android:key="startTest"
+            android:title="Colorimetric Test" />
         <Preference
             android:key="ecSensor"
-            android:title="@string/testSensor">
-        </Preference>
-        <CheckBoxPreference
-            android:key="@string/autoFocusKey"
-            android:title="@string/autoFocus" />
-        <CheckBoxPreference
-            android:key="@string/useFlashModeKey"
-            android:title="@string/useFlashMode" />
-        <CheckBoxPreference
-            android:key="@string/ignoreShakeKey"
-            android:title="@string/ignoreShakeDuringAnalysis" />
+            android:title="@string/testSensor" />
         <CheckBoxPreference
             android:key="showDebugMessages"
             android:title="@string/debuggingOn" />
         <CheckBoxPreference
             android:key="@string/noSoundKey"
             android:title="@string/noSound" />
-
-    </org.akvo.caddisfly.util.PreferenceCategoryCustom>
+        <EditTextPreference
+            android:defaultValue="1"
+            android:dialogMessage="A number from 1 to 5"
+            android:key="@string/samplingsTimeKey"
+            android:maxLength="2"
+            android:numeric="integer"
+            android:title="Sampling times" />
+        <EditTextPreference
+            android:defaultValue="30"
+            android:dialogMessage="Enter a value below 400"
+            android:key="@string/colorDistanceToleranceKey"
+            android:maxLength="3"
+            android:numeric="integer"
+            android:title="Max color distance" />
+    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

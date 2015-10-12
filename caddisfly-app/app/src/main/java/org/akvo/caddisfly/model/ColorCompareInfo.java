@@ -18,32 +18,33 @@ package org.akvo.caddisfly.model;
 
 public class ColorCompareInfo {
 
-    private final int mResultColor;
-    private final int mMatchedColor;
-    private final double mDistance;
-    private final double mResult;
+    private final int resultColor;
+    private final int matchedColor;
+    private final double distance;
+    private final double result;
 
     public ColorCompareInfo(double result, int resultColor, int matchedColor, double distance) {
-        mResult = result;
-        mResultColor = resultColor;
-        mMatchedColor = matchedColor;
-        mDistance = distance;
+        this.result = result;
+        this.resultColor = resultColor;
+        this.matchedColor = matchedColor;
+        this.distance = distance;
     }
 
     public double getResult() {
-        return mResult;
+        return result;
     }
 
+    @SuppressWarnings("unused")
     public int getResultColor() {
-        return mResultColor;
+        return resultColor;
     }
 
     public int getMatchedColor() {
-        return mMatchedColor;
+        return matchedColor;
     }
 
     public double getDistance() {
-        return mDistance;
+        return distance;
     }
 
 }

@@ -1,24 +1,90 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/calibrate_list"
-    android:name="org.akvo.caddisfly.ui.CalibrateListFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.ui.CalibrateListActivity"
-    tools:layout="@android:layout/list_content" />
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/textCalibrationDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="22-Dec-2015" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="Expiry: 22-Dec-2016 (345GHH)" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragmentCalibrateList"
+        android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutTitleBar"
+        android:layout_marginTop="10dp"
+        tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
+        tools:layout="@layout/fragment_calibrate_list" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabEditCalibration"
+        style="@style/floating_action_button_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/layoutTitleBar"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_menu_edit"
+        app:backgroundTint="@color/amber"
+        app:borderWidth="0dp"
+        tools:ignore="RelativeOverlap" />
+
+</RelativeLayout>

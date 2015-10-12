@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.ui;
@@ -22,130 +22,92 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.Config;
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.MainApp;
-import org.akvo.caddisfly.util.AlertUtils;
-import org.akvo.caddisfly.util.ApiUtils;
-import org.akvo.caddisfly.util.DateUtils;
-import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.PreferencesUtils;
-import org.akvo.caddisfly.util.UpdateCheckTask;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
-    private static final int REQUEST_LANGUAGE = 2;
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    //    private TextView mWatchTextView;
-//    private TextView mDemoTextView;
-    private Boolean external = false;
-    private boolean mShouldFinish = false;
-    private String mLanguageCode;
+    //tracks whether this app was launched by an external app
+    private Boolean mIsExternalAppCall = false;
+    //tracks if the app should automatically close (after launching an external app)
+    //the language requested by the external app
+    private String mExternalAppLanguageCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ApiUtils.lockScreenOrientation(this);
-
-        MainApp.hasCameraFlash = ApiUtils.checkCameraFlash(this);
-
-        long updateLastCheck = PreferencesUtils.getLong(this, R.string.lastUpdateCheckKey);
-
-        // last update check date
-        Calendar lastCheckDate = Calendar.getInstance();
-        lastCheckDate.setTimeInMillis(updateLastCheck);
-
-        Calendar currentDate = Calendar.getInstance();
-        if (DateUtils.getDaysDifference(lastCheckDate, currentDate) > 0) {
-            UpdateCheckTask updateCheckTask = new UpdateCheckTask(this, true, MainApp.getVersion(this));
-            updateCheckTask.execute();
-
-        }
-
-        Button startSurveyButton = (Button) findViewById(R.id.surveyButton);
-        startSurveyButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startSurvey();
+                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                        Toast.LENGTH_SHORT).show();
+
+                AppPreferences.disableDiagnosticMode();
+
+                switchLayoutForDiagnosticOrUserMode();
+
+                changeActionBarStyleBasedOnCurrentMode();
             }
         });
 
-//        final Context context = this;
-//        final ActionButton trainingLinkButton = (ActionButton) findViewById(R.id.trainingVideoLink);
-//        trainingLinkButton.playShowAnimation();
-//        trainingLinkButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NetworkUtils.openWebBrowser(context, Config.TRAINING_VIDEO_LINK);
-//            }
-//        });
-//
-//        mWatchTextView = (TextView) findViewById(R.id.watchTextView);
-//        mDemoTextView = (TextView) findViewById(R.id.demoTextView);
-
-        final Button disableDeveloperButton = (Button) findViewById(R.id.disableDiagnosticButton);
-
-        disableDeveloperButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonCalibrate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled), Toast.LENGTH_LONG).show();
-                PreferencesUtils.setBoolean(getBaseContext(), R.string.diagnosticModeKey, false);
-
-                checkDiagnosticMode();
+                final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 
-
-        //todo: upgrade stuff. To be removed...
-        File oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                Config.OLD_FILES_FOLDER_NAME + File.separator + Config.OLD_CALIBRATE_FOLDER_NAME);
-
-        if (oldFolder.exists()) {
-            File newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    Config.APP_EXTERNAL_PATH);
-
-            if (!newPath.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                newPath.mkdirs();
+        final Context context = this;
+        findViewById(R.id.layoutOpenApp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertUtil.showAlert(context, R.string.closing, R.string.appWillClose, R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        }, null);
             }
+        });
+    }
 
-            newPath = new File(Environment.getExternalStorageDirectory().getPath() +
-                    Config.APP_EXTERNAL_PATH + File.separator + Config.CALIBRATE_FOLDER_NAME);
-            if (!newPath.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                oldFolder.renameTo(newPath);
-            }
-        }
-
-        oldFolder = new File(Environment.getExternalStorageDirectory().getPath() +
-                Config.OLD_FILES_FOLDER_NAME);
-        if (oldFolder.exists()) {
-            FileUtils.deleteFiles(Environment.getExternalStorageDirectory().getPath()
-                    + Config.OLD_FILES_FOLDER_NAME);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
     }
 
@@ -153,68 +115,70 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-//        mWatchTextView.measure(0, 0);
-//        mDemoTextView.measure(0, 0);
-//        float width = Math.max(mWatchTextView.getMeasuredWidth(), mDemoTextView.getMeasuredWidth());
-//        mDemoTextView.setWidth((int) width);
+        switchLayoutForDiagnosticOrUserMode();
 
-        checkDiagnosticMode();
-
-        CheckLocale(mLanguageCode);
-
+        setAppLanguage(mExternalAppLanguageCode);
     }
 
-    private void checkDiagnosticMode() {
-        boolean diagnosticMode = PreferencesUtils.getBoolean(this, R.string.diagnosticModeKey, false);
-        if (diagnosticMode) {
-            findViewById(R.id.diagnosticModeLayout).setVisibility(View.VISIBLE);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.diagnostic)));
-            }
-
+    /**
+     * Show the diagnostic mode layout
+     */
+    private void switchLayoutForDiagnosticOrUserMode() {
+        if (AppPreferences.isDiagnosticMode()) {
+            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutSlogan).setVisibility(View.GONE);
+            findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
         } else {
-            if (findViewById(R.id.diagnosticModeLayout).getVisibility() == View.VISIBLE) {
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
-                    findViewById(R.id.diagnosticModeLayout).setVisibility(View.GONE);
-                }
-                //Message msg = handler.obtainMessage();
-                //handler.sendMessage(msg);
+            if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
+                findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
+                findViewById(R.id.layoutSlogan).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
             }
         }
     }
 
-    private void CheckLocale(String languageCode) {
+    /**
+     * Sets the language of the app on start. The language can be one of system language, language
+     * set in the app preferences or language requested via the languageCode parameter
+     *
+     * @param languageCode If null uses language from app preferences else uses this value
+     */
+    private void setAppLanguage(String languageCode) {
         assert getApplicationContext() != null;
 
         Locale locale;
+
+        //the languages supported by the app
         String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
 
-        if (languageCode != null && !languageCode.isEmpty() &&
-                Arrays.asList(supportedLanguages).contains(languageCode)) {
-            locale = new Locale(languageCode);
-        } else {
+        //the current system language set in the device settings
+        String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
 
-            String previousSystemLanguage = PreferencesUtils.getString(this, R.string.systemLanguageKey, "");
-            Locale currentSystemLocale = Locale.getDefault();
+        //the language the system was set to the last time the app was run
+        String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
 
-            if (!previousSystemLanguage.equals(currentSystemLocale.getLanguage())
-                    && Arrays.asList(supportedLanguages).contains(currentSystemLocale.getLanguage())) {
-                locale = Locale.getDefault();
-                PreferencesUtils.setString(this, R.string.systemLanguageKey, locale.getLanguage());
-                PreferencesUtils.setString(this, R.string.languageKey, locale.getLanguage());
-            } else {
-                languageCode = PreferencesUtils.getString(this, R.string.languageKey, "");
-                if (languageCode.isEmpty()) {
-                    //no language was selected in the settings so use the device language
-                    locale = Locale.getDefault();
-                    Locale currentLocale = getResources().getConfiguration().locale;
-                    if (currentLocale.getLanguage().equals(locale.getLanguage())) {
-                        return;
-                    }
+        //if the system language was changed in the device settings then set that as the app language
+        if (!previousSystemLanguage.equals(currentSystemLanguage)
+                && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+            PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
+            PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
+        }
 
+        if (languageCode == null || !Arrays.asList(supportedLanguages).contains(languageCode)) {
+            //if requested language code is not supported then use language from preferences
+            languageCode = PreferencesUtil.getString(this, R.string.languageKey, "");
+            if (!Arrays.asList(supportedLanguages).contains(languageCode)) {
+                //no language was selected in the app settings so use the system language
+                String currentLanguage = getResources().getConfiguration().locale.getLanguage();
+                if (currentLanguage.equals(currentSystemLanguage)) {
+                    //app is already set to correct language
+                    return;
+                } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+                    //set to system language
+                    languageCode = currentSystemLanguage;
                 } else {
-                    locale = new Locale(languageCode);
+                    //no supported languages found just default to English
+                    languageCode = "en";
                 }
             }
         }
@@ -223,39 +187,24 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
 
-        if (!config.locale.equals(locale)) {
+        locale = new Locale(languageCode);
+
+        //if the app language is not already set to languageCode then set it now
+        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
+
             config.locale = locale;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 config.setLayoutDirection(locale);
             }
             res.updateConfiguration(config, dm);
 
-            if (!external) {
+            //if this session was launched from an external app then do not restart this app
+            if (!mIsExternalAppCall) {
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
             }
         }
     }
-
-    private void startSurvey() {
-        Intent LaunchIntent = getPackageManager()
-                .getLaunchIntentForPackage(Config.FLOW_SURVEY_PACKAGE_NAME);
-        if (LaunchIntent == null) {
-            AlertUtils.showMessage(this, R.string.error, R.string.errorAkvoFlowRequired);
-        } else {
-            startActivity(LaunchIntent);
-            mShouldFinish = true;
-
-            (new Handler()).postDelayed(new Runnable() {
-                public void run() {
-                    if (mShouldFinish) {
-                        finish();
-                    }
-                }
-            }, 6000);
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -271,11 +220,9 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.actionSettings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
-//            intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesGeneralFragment.class.getName() );
-//            intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, false );
-            startActivityForResult(intent, REQUEST_LANGUAGE);
+            startActivity(intent);
             return true;
         }
 
@@ -285,109 +232,100 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mShouldFinish = false;
 
         Intent intent = getIntent();
-        String action = intent.getAction();
         String type = intent.getType();
         String mQuestionTitle;
-        MainApp mainApp = (MainApp) getApplicationContext();
 
-        if (Config.FLOW_ACTION_EXTERNAL_SOURCE.equals(action) && type != null) {
+        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
-                external = true;
-                mQuestionTitle = getIntent().getStringExtra("questionTitle");
-                mLanguageCode = getIntent().getStringExtra("language");
+                mIsExternalAppCall = true;
+                mQuestionTitle = intent.getStringExtra("questionTitle");
 
-                String code = mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5));
-                mainApp.setSwatches(code);
+                //todo: fix FLOW to return language code
+                mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
 
-                if (mainApp.currentTestInfo == null) {
+                setAppLanguage(mExternalAppLanguageCode);
 
-                    String errorTitle;
-                    if (mQuestionTitle.length() > 0) {
-                        if (mQuestionTitle.length() > 30) {
-                            mQuestionTitle = mQuestionTitle.substring(0, 30);
-                        }
-                        errorTitle = mQuestionTitle;
-                    } else {
-                        errorTitle = getString(R.string.error);
-                    }
+                //Extract the 5 letter code in the question and load the test config
+                CaddisflyApp.getApp().loadTestConfiguration(
+                        mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
+                );
 
-                    AlertUtils.showAlert(this, errorTitle,
-                            R.string.errorTestNotAvailable,
+                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+                    alertTestTypeNotSupported(mQuestionTitle);
+                } else {
+                    if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                            R.string.backToSurvey,
                             new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(
-                                        DialogInterface dialogInterface,
-                                        int i) {
+                                public void onClick(DialogInterface dialogInterface, int i) {
                                     finish();
                                 }
-                            }, null
-                    );
-                } else {
-                    if (!MainApp.hasCameraFlash) {
-                        AlertUtils.showError(this, R.string.error,
-                                getString(R.string.errorCameraFlashRequired),
-                                null,
-                                R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                },
-                                null);
-                    } else {
+                            }
+                    )) {
                         startTest();
                     }
                 }
             }
         }
-
-        CheckLocale(mLanguageCode);
     }
 
+    /**
+     * Start the appropriate test based on the current test type
+     */
     private void startTest() {
         Context context = this;
-        MainApp mainApp = (MainApp) context.getApplicationContext();
-        if (mainApp.currentTestInfo.getType() == 0) {
+        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+        switch (caddisflyApp.getCurrentTestInfo().getType()) {
+            case COLORIMETRIC_LIQUID:
 
-            if (mainApp.getCalibrationErrorCount() > 0) {
-                Configuration conf = getResources().getConfiguration();
+                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
+                    alertCalibrationIncomplete();
+                    return;
+                }
 
-                AlertUtils.showAlert(context,
-                        mainApp.currentTestInfo.getName(conf.locale.getLanguage()),
-                        R.string.errorCalibrationIncomplete, R.string.calibrate,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface,
-                                    int i) {
-                                final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-                                startActivity(intent);
-                            }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface,
-                                    int i) {
-                                finish();
-                            }
-                        }
-                );
-                return;
-            }
+                long milliseconds = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
+                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+                    alertCalibrationExpired();
+                    return;
+                }
 
-            final Intent intent = new Intent(context, CameraSensorActivity.class);
-            //intent.setClass(context, CameraSensorActivity.class);
-            startActivityForResult(intent, REQUEST_TEST);
-        } else if (mainApp.currentTestInfo.getType() == 1) {
-            final Intent intent = new Intent(context, SensorActivity.class);
-            //intent.setClass(context, SensorActivity.class);
-            startActivityForResult(intent, REQUEST_TEST);
+                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
+                startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
+
+                break;
+            case COLORIMETRIC_STRIP:
+
+                final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
+                startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
+
+                break;
+            case SENSOR:
+
+                final Intent sensorIntent = new Intent(context, SensorActivity.class);
+                startActivityForResult(sensorIntent, REQUEST_TEST);
+
+                break;
         }
+    }
 
+    private void alertCalibrationExpired() {
+        String message = getString(R.string.errorCalibrationExpired,
+                CaddisflyApp.getApp().getCurrentTestInfo().getName(
+                        getResources().getConfiguration().locale.getLanguage()));
+        message = String.format("%s\r\n\r\n%s", message,
+                getString(R.string.orderFreshBatch));
+
+        AlertUtil.showAlert(this, R.string.cannotStartTest,
+                message, R.string.backToSurvey,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null
+        );
     }
 
     @Override
@@ -395,34 +333,85 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_LANGUAGE:
-                if (resultCode == Activity.RESULT_OK) {
-                    this.recreate();
-                }
-                break;
             case REQUEST_TEST:
                 if (resultCode == Activity.RESULT_OK) {
+                    //return the test result to the external app
                     Intent intent = new Intent(getIntent());
-                    //intent.putExtra("result", data.getDoubleExtra("result", -1));
-                    //intent.putExtra("questionId", mQuestionId);
                     intent.putExtra("response", data.getStringExtra("response"));
                     this.setResult(Activity.RESULT_OK, intent);
-                    finish();
-                } else {
-                    finish();
-                    //displayView(Config.CHECKLIST_SCREEN_INDEX, true);
                 }
+                finish();
                 break;
             default:
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        PreferencesUtils.setString(this, R.string.systemLanguageKey, Locale.getDefault().getLanguage());
+    /**
+     * Alert message for calibration incomplete or invalid
+     */
+    private void alertCalibrationIncomplete() {
+        String message = getString(R.string.errorCalibrationIncomplete,
+                CaddisflyApp.getApp().getCurrentTestInfo().getName(
+                        getResources().getConfiguration().locale.getLanguage()));
+        message = String.format("%s\r\n\r\n%s", message,
+                getString(R.string.doYouWantToCalibrate));
+
+        AlertUtil.showAlert(this, R.string.cannotStartTest,
+                message, R.string.calibrate,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(
+                            DialogInterface dialogInterface,
+                            int i) {
+                        final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
+                        startActivity(intent);
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(
+                            DialogInterface dialogInterface,
+                            int i) {
+                        finish();
+                    }
+                }
+        );
     }
 
+    /**
+     * Alert displayed when an unsupported contaminant test type was requested
+     *
+     * @param title the name of the test contaminant
+     */
+    private void alertTestTypeNotSupported(String title) {
+
+        //ensure we have short name to display as title
+        String itemName;
+        if (title.length() > 0) {
+            if (title.length() > 30) {
+                title = title.substring(0, 30);
+            }
+            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
+        } else {
+            itemName = getString(R.string.error);
+        }
+
+        String message = getString(R.string.errorTestNotAvailable, itemName);
+        message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
+
+        AlertUtil.showAlert(this, R.string.cannotStartTest, message,
+                R.string.backToSurvey,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null
+        );
+    }
+
+    /**
+     * Handler to restart the app after language has been changed
+     */
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;
 

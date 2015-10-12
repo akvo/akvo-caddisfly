@@ -1,44 +1,37 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="actionBarStyle">@style/Flow.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:actionBarSize">48dp</item>
-        <item name="actionBarSize">48dp</item>
     </style>
 
-    <!--http://stackoverflow.com/questions/27960435/change-elevation-of-actionbar-by-theme-->
-    <style name="Theme.MyApp.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="elevation">0dp</item>
-        <item name="android:textStyle">normal</item>
+    <style name="MainActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="Button" parent="@android:style/Widget.Button">
-        <item name="colorButtonNormal">@color/button_orange</item>
-        <item name="android:colorBackground">@color/button_orange</item>
-        <item name="android:background">@drawable/start_button</item>
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
@@ -48,23 +41,46 @@
         <item name="android:paddingStart">10dp</item>
         <item name="android:minWidth">200dp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:minHeight">50dp</item>
+        <item name="android:minHeight">70dp</item>
+    </style>
+
+    <style name="Button.Green">
+        <item name="colorButtonNormal">#009900</item>
+        <item name="colorControlHighlight">#027602</item>
+    </style>
+
+    <style name="Button.Orange">
+        <item name="colorButtonNormal">#ef6f20</item>
+        <item name="colorControlHighlight">#c55b1a</item>
+    </style>
+
+    <style name="Button.Blue" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#ea00589b</item>
+        <item name="colorControlHighlight">#ea003f6f</item>
     </style>
 
     <style name="width_match_parent_max_tablet">
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="Flow.ActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="elevation">0dp</item>
-        <item name="background">@color/action_bar</item>
-        <item name="logo">@drawable/action_logo</item>
-        <item name="displayOptions">useLogo|showHome|showTitle</item>
-        <item name="contentInsetStart">13dp</item>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">@color/text_tertiary</item>
+    <style name="AlertDialogCustom.Destructive" />
+
+    <style name="floating_action_button_middle">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginBottom">-40dp</item>
+    </style>
+
+    <style name="floating_action_button">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginBottom">-32dp</item>
     </style>
 
 </resources>

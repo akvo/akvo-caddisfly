@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
 
     <application
-        android:name=".app.MainApp"
+        android:name=".app.CaddisflyApp"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
-        android:logo="@drawable/ic_actionbar_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
@@ -40,12 +52,13 @@
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -55,23 +68,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".preference.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:noHistory="true"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.SensorActivity"
+            android:name=".sensor.ec.SensorActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.UsbConnectionActivity"
+            android:name=".sensor.UsbConnectionActivity"
+            android:autoRemoveFromRecents="true"
             android:label="@string/appName"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
@@ -81,36 +97,35 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".ui.CameraSensorActivity"
+            android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
             android:label="@string/calibrate"
-            android:parentActivityName=".ui.CalibrateListActivity"
+            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.CalibrateListActivity"
+            android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.SwatchActivity"
+            android:name=".sensor.colorimetry.liquid.DiagnosticSwatchActivity"
             android:label="@string/swatches"
-            android:screenOrientation="nosensor">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.CalibrateListActivity" />
-        </activity>
+            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:screenOrientation="nosensor" />
         <activity
-            android:name=".ui.CalibrateSensorActivity"
+            android:name=".sensor.ec.CalibrateSensorActivity"
             android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".ui.ExternalCameraActivity"
-            android:label="@string/appName" />
         <activity
             android:name=".ui.TypeListActivity"
-            android:label="@string/calibrate"
-            android:parentActivityName=".ui.SettingsActivity"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:label="@string/appName"
+            android:screenOrientation="nosensor" />
+
     </application>
 
 </manifest>

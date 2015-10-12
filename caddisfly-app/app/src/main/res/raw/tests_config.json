@@ -1,0 +1,67 @@
+{
+  "tests": {
+    "test": [
+      {
+        "name": [
+          {
+            "en": "Fluoride"
+          },
+          {
+            "fr": "Fluorure"
+          }
+        ],
+        "type": "0",
+        "code": "fluor",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,0.5,1,1.5,2",
+        "dilutions": "0,50,20"
+      },
+      {
+        "name": [
+          {
+            "en": "Free Chlorine"
+          },
+          {
+            "fr": "Chlore libre"
+          }
+        ],
+        "type": "0",
+        "code": "chlor",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,0.1,0.5,0.8,1.0"
+      },
+      {
+        "name": [
+          {
+            "en": "Electrical Conductivity"
+          },
+          {
+            "fr": "Conductivité Electrique"
+          }
+        ],
+        "type": "2",
+        "code": "econd",
+        "unit": "μS/cm",
+        "calibrate": "true",
+        "ranges": "0"
+      },
+      {
+        "name": [
+          {
+            "en": "EC Temperature"
+          },
+          {
+            "fr": "CE Température"
+          }
+        ],
+        "type": "2",
+        "code": "tempe",
+        "unit": "°C",
+        "calibrate": "false",
+        "ranges": "0"
+      }
+    ]
+  }
+}
