@@ -227,6 +227,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         Mat bgr = null;
         List<Double> maxLumList = new ArrayList<>();
+        List<Double> focusValList = new ArrayList<>();
         boolean exposure = false;
         boolean contrast ;
 
@@ -239,6 +240,31 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             convert_mYuv.put(0, 0, data);
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
+            //MAKE SUBMAT FOR EACH FINDER PATTERNS
+            if(possibleCenters!=null && possibleCenters.size()>0) {
+                for (int i = 0; i < possibleCenters.size(); i++) {
+                    double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
+
+                    double minX = Math.max(possibleCenters.get(i).getX() - 4 * esModSize, 0);
+                    double minY = Math.max(possibleCenters.get(i).getY() - 4 * esModSize, 0);
+                    double maxX = Math.min(possibleCenters.get(i).getX() + 4 * esModSize, bgr.width());
+                    double maxY = Math.min(possibleCenters.get(i).getY() + 4 * esModSize, bgr.height());
+                    Point topLeft = new Point(minX, minY);
+                    Point bottomRight = new Point(maxX, maxY);
+                    org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
+                    Mat posCentMat = bgr.submat(roi);
+
+                    // find maximum of L-channel
+                    double maxLum =  (PreviewUtils.getMaxLuminosity(posCentMat) / 255) * 100;
+                    maxLumList.add(maxLum);
+
+                    // find focus value
+                    double focusLaplacian = (PreviewUtils.focusLaplacian(posCentMat) / 255) * 100;
+                    focusValList.add(focusLaplacian);
+
+                }
+            }
+
             //CHECK EXPOSURE.
             if(lightSensor.hasLightSensor())
             {
@@ -247,24 +273,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 double lux = (lightSensor.getLux() / minLux) * 100;
 
                 listener.showMaxLuminosity(lux);
-                exposure = lux > 90;
+                exposure = lux > 70;
             }
             else
             {
-
-                if(possibleCenters!=null && possibleCenters.size()>0) {
-                    for (int i = 0; i < possibleCenters.size(); i++) {
-                        double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
-                        Point topLeft = new Point(possibleCenters.get(i).getX() - 4*esModSize, possibleCenters.get(i).getY()  - 4*esModSize);
-                        Point bottomRight = new Point(possibleCenters.get(i).getX() + 4*esModSize, possibleCenters.get(i).getY() + 4*esModSize);
-                        org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
-                        Mat posCentMat = bgr.submat(roi);
-
-                        // find maximum of L-channel
-                        double maxLum =  (PreviewUtils.getMaxLuminosity(posCentMat) / 255) * 100;
-                        maxLumList.add(maxLum);
-                    }
-                }
                 if(maxLumList.size()>0) {
                     Collections.sort(maxLumList);
                     listener.showMaxLuminosity(maxLumList.get(0));
@@ -295,23 +307,30 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             contrast = shadowPercentage < 30;
             listener.showContrast(shadowPercentage);
 
-            double focusLaplacian = (PreviewUtils.focusLaplacian(bgr) / 255) * 100;
-            listener.showFocusValue(focusLaplacian);
+            if(focusValList.size()>0) {
 
-            if (focusLaplacian < 90) {
-                focused = false;
-                int count = 0;
-                while (!focused && camera!=null && count < 100) {
+                Collections.sort(focusValList);
+                listener.showFocusValue(focusValList.get(0));
 
-                    if (camera != null) {
-                        camera.autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                if (success) focused = true;
-                            }
-                        });
+                if (focusValList.get(0) < 70) {
+                    focused = false;
+                    int count = 0;
+                    while (!focused && camera != null && count < 100) {
+
+                        if (camera != null) {
+                            camera.autoFocus(new Camera.AutoFocusCallback() {
+                                @Override
+                                public void onAutoFocus(boolean success, Camera camera) {
+                                    if (success) focused = true;
+                                }
+                            });
+                        }
+                        count++;
                     }
-                    count ++;
+                }
+                else
+                {
+                    focused = true;
                 }
             }
             else

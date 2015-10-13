@@ -280,7 +280,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showFocusValue(final double value)
     {
         final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
-        final double minValue = 90;
+        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -300,7 +300,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
         handler.post(showMessage);
-
 
     }
     @Override
