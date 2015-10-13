@@ -17,36 +17,23 @@
 package org.akvo.caddisfly.model;
 
 import android.graphics.Bitmap;
-import android.util.Pair;
 
 import java.util.ArrayList;
 
 public class Result {
-    private final double mValue;
-    private final int mColor;
-    private final Bitmap mBitmap;
-    private final ArrayList<Pair<String, Double>> mResults;
+    private final Bitmap bitmap;
+    private final ArrayList<ResultDetail> results;
 
-    public Result(double value, int color, Bitmap bitmap, ArrayList<Pair<String, Double>> results) {
-        mValue = value;
-        mColor = color;
-        mBitmap = bitmap;
-        mResults = results;
-    }
-
-    public double getValue() {
-        return mValue;
-    }
-
-    public int getColor() {
-        return mColor;
+    public Result(Bitmap bitmap, ArrayList<ResultDetail> results) {
+        this.bitmap = bitmap;
+        this.results = results;
     }
 
     public Bitmap getBitmap() {
-        return mBitmap;
+        return bitmap;
     }
 
-    public ArrayList<Pair<String, Double>> getResults() {
-        return mResults;
+    public ArrayList<ResultDetail> getResults() {
+        return results;
     }
 }

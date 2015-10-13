@@ -1,3 +1,75 @@
+v0.84 beta
+----------
+1. Added preview on test start screen to align chamber for generic back case
+
+v0.83 beta
+----------
+1. Fix: Backdrop detection fixes
+2. Check if reagent has expired before running test
+
+v0.82 beta
+----------
+1. Fix: Sounds not playing fully
+2. Diagnostic: Fix: Invalid calibration file load error not showing
+
+v0.81 beta
+----------
+1. Design changes
+3. Save calibration details (WIP)
+
+v0.80 beta
+----------
+1. Attempt to detect the backdrop in the chamber
+2. Design changes
+3. Removed Update check feature
+4. Diagnostic: Beep sound added on preview test
+5. Diagnostic: Removed HSV color analysis
+6. Diagnostic: Removed Camera2 api preview
+
+v0.79 beta
+----------
+1. Main screen design changes
+2. Calibrate link moved to main screen
+3. 'Check update' link moved to Diagnostic settings
+4. Calibration details section added (WIP)
+5. Activity transition sliding animation added
+6. Buttons ripple effects added
+7. Diagnostic: Camera preview run test by placing phone face down
+8. Diagnostic: Camera preview single click to run test
+9. Diagnostic: Coliforms test added
+10. Diagnostic: Camera2 api testing
+
+v0.78 beta
+----------
+1. Action bar style changed to theme default
+2. Start Survey button removed from main activity
+3. Removed app from recent task list
+4. Some style improvements
+5. Diagnostic: Battery level added to image file name
+6. Diagnostic: Calibration (C) or Test (T) info added image name
+
+v0.77 beta
+----------
+1. Diagnostic: Camera preview runs a test if device placed flat face down
+2. Diagnostic: Nearest matching color and distance displayed even if test fails
+
+v0.76 beta
+----------
+1. Fix: update download progress bar
+2. Calibration validation and error message
+3. Fix: White screen flash on app start
+4. External folder name changed to Akvo Caddisfly
+5. Update apk file save to internal folder instead of downloads
+6. Removed external usb camera code
+7. Fix: Alert window not dismissed on activity finish
+8. Dilution dialog changed to normal screen
+9. Download update apk file and validate checksum
+10. Diagnostic: Added device details, date and other info to calibration file save
+11. Diagnostic: Added reagent expiry date dialog to save calibration
+12. Diagnostic: Sampled image is saved to image folder
+13. Diagnostic: Display lab, rgb and hsv results
+14. Color hsv value displayed with swatches
+
 v0.75 beta
 ----------
 1. Change alpha to Beta in version number
@@ -5,6 +77,13 @@ v0.75 beta
 3. Fix: EC Sensor recording a -1 value
 4. Fix: Use dot (.) separator for app version number in locales using commas
 5. Fix: Too many decimal places being recorded. Change to two places
+6. Fix: Camera Preview should dismiss only on back button
+7. UI: Change Ok and Cancel button in update dialog to 'Update' and 'Not Now'
+8. Warning message added for EC Sensor calibrate
+9. Diagnostic: Sampling times option
+10. Diagnostic: Quick colorimetric test
+11. Diagnostic: Max color distance option
+12. Changes to text
 
 v0.74 alpha
 -----------
@@ -84,8 +163,8 @@ v0.65 alpha
 -----------
 1. lg low res issue: width parameter of picture taken set to be at least between 800 and 1400
 2. ui: display units along with range values on calibrate screen
-3. devmode: added take picture for testing
-4. devmode: no sound option
+3. Diagnostic: added take picture for testing
+4. Diagnostic: no sound option
 
 v0.64 alpha
 -----------
@@ -185,7 +264,7 @@ example:
 6. longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. swatch validation disabled
 8. removed reliance on separate developer app for enabling controls 
-9. link to demo video on vimeo
+9. link to demo video
 10. for now ec and ec temperature are two separate tests and thereby two questions in survey
 
 **known issues**

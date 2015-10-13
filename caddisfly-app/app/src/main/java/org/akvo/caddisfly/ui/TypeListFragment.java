@@ -19,20 +19,13 @@ package org.akvo.caddisfly.ui;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.Config;
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.adapter.TypeListAdapter;
-import org.akvo.caddisfly.app.MainApp;
+import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.FileUtils;
-import org.akvo.caddisfly.util.JsonUtils;
-import org.json.JSONException;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -55,57 +48,36 @@ public class TypeListFragment extends ListFragment {
     public TypeListFragment() {
     }
 
-    public static TypeListFragment newInstance() {
-        return new TypeListFragment();
-    }
-
-    private void setAdapter() {
-
-        Activity activity = getActivity();
-        MainApp mainApp = (MainApp) activity.getApplicationContext();
-        assert mainApp != null;
-
-        try {
-            final String path = Environment.getExternalStorageDirectory() + Config.CONFIG_FOLDER + Config.CONFIG_FILE;
-
-            File file = new File(path);
-            String text;
-
-            //Look for external json config file otherwise use the internal default one
-            if (file.exists()) {
-                text = FileUtils.loadTextFromFile(path);
-                //ignore file if it is old version
-                if (!text.contains("ranges")) {
-                    text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_json);
-                }
-            } else {
-                text = FileUtils.readRawTextFile(getActivity(), R.raw.tests_json);
-            }
-            mTests = JsonUtils.loadTests(text);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        assert mTests != null;
-        TypeListAdapter customList = new TypeListAdapter(getActivity(), mTests.toArray(new TestInfo[mTests.size()]));
-        setListAdapter(customList);
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAdapter();
+
+        mTests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+
+        //Only items that require calibration to be displayed in the list
+        for (int i = mTests.size() - 1; i >= 0; i--) {
+            if (!mTests.get(i).getRequiresCalibration()) {
+                mTests.remove(i);
+            }
+        }
+
+        //set the adapter with tests list
+        TestTypesAdapter testTypesAdapter = new TestTypesAdapter(getActivity(),
+                mTests.toArray(new TestInfo[mTests.size()]));
+        setListAdapter(testTypesAdapter);
     }
 
-
+    //todo: check deprecation of onAttach. Currently using Context instead of Activity fails on Samsung device
+    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Activity context) {
+        super.onAttach(context);
+
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }

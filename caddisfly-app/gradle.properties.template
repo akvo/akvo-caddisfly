@@ -1,0 +1,5 @@
+//add this with correct information into your ~/.gradle/gradle.properties file
+RELEASE_STORE_FILE=/path/to/keystore
+RELEASE_STORE_PASSWORD=*******
+RELEASE_KEY_ALIAS=********
+RELEASE_KEY_PASSWORD=********

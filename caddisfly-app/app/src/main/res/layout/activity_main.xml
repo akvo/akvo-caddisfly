@@ -1,73 +1,139 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient">
+    tools:context=".ui.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            app:theme="@style/Base.Theme.AppCompat"
+            app:title="@string/appName" />
+
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonCalibrate"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableEnd="@drawable/arrow_right_light"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="22dp"
+                android:text="@string/calibrate"
+                android:textAlignment="viewStart"
+                android:textColor="#e2e0e0"
+                android:theme="@style/Button.Blue" />
+
+            <LinearLayout
+                android:id="@+id/layoutOpenApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:background="#10003b69"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@string/toPerformWaterQualityTest"
+                    android:textColor="#f8c1d1e6"
+                    android:textSize="19sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/diagnosticModeLayout"
-        android:layout_width="500dp"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/disableDiagnosticButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:alpha="0.7"
-            android:background="@drawable/green_button"
-            android:text="@string/enableUserMode"
-            tools:ignore="RelativeOverlap" />
+        android:id="@+id/layoutSlogan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="560dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-90dp"
-            android:layout_marginStart="-90dp"
-            android:layout_marginTop="80dp"
+            android:layout_alignParentBottom="true"
             android:ellipsize="none"
-            android:rotation="-40"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="@string/waterQuality"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#22007a8d"
+            android:textSize="50dp"
+            tools:ignore="SpUsage" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutDiagnostics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/textDiagnostics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:ellipsize="none"
+            android:gravity="start"
             android:singleLine="true"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#3f052e2a"
-            android:textSize="230sp" />
+            android:textColor="#2a007a8d"
+            android:textSize="50dp"
+            tools:ignore="SpUsage" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/surveyButton"
-            style="@style/Button"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabDisableDiagnostics"
+            style="@style/floating_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_orange"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/startSurvey" />
+            android:layout_alignBottom="@+id/textDiagnostics"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-30dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:backgroundTint="@color/diagnostic"
+            tools:ignore="RelativeOverlap" />
     </RelativeLayout>
-</FrameLayout>
+</merge>
 

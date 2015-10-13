@@ -35,10 +35,12 @@ public class CalibrationData {
     public class Location {
         public Double x;
         public Double y;
+        public Boolean grayPatch;
 
-        public Location(Double x, Double y){
+        public Location(Double x, Double y, Boolean grayPatch){
             this.x = x;
             this.y = y;
+            this.grayPatch = grayPatch;
         }
     }
 
@@ -46,13 +48,12 @@ public class CalibrationData {
         public int R;
         public int G;
         public int B;
-        public Boolean grayPatch;
 
-        public CalValue(int R, int G, int B, Boolean grayPatch){
+        public CalValue(int R, int G, int B){
             this.R = R;
             this.G = G;
             this.B = B;
-            this.grayPatch = grayPatch;
+
         }
     }
 
@@ -71,13 +72,13 @@ public class CalibrationData {
         }
     }
 
-    public void addLocation(String label, Double x, Double y){
-        Location loc = new Location(x,y);
+    public void addLocation(String label, Double x, Double y, Boolean grayPatch){
+        Location loc = new Location(x,y,grayPatch);
         this.locations.put(label,loc);
     }
 
-    public void addCal(String label, int R, int G, int B, Boolean grayPatch){
-        CalValue calVal = new CalValue(R,G,B,grayPatch);
+    public void addCal(String label, int R, int G, int B){
+        CalValue calVal = new CalValue(R,G,B);
         this.calValues.put(label,calVal);
     }
 

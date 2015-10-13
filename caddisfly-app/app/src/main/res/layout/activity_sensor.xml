@@ -1,108 +1,132 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:wheel="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     android:keepScreenOn="true"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.akvo.caddisfly.ui.SensorActivity">
+    tools:context=".sensor.ec.SensorActivity">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#eaeaea"
-        android:textSize="28sp"
-        tools:text="Contaminant" />
-
-    <LinearLayout
-        android:id="@+id/connectionLayout"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:gravity="center_horizontal"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/primary"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:visibility="visible">
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
 
         <TextView
-            android:id="@+id/errorTextView"
+            android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            tools:text="Contaminant" />
+
+        <TextView
+            android:id="@+id/textCalibrationDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="Waiting for EC Sensor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutConnection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutTitleBar"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@null"
+            android:paddingBottom="24dp"
+            android:src="@drawable/usb" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="@string/deviceConnectSensor"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#fff"
-            android:textSize="22sp"
+            android:textSize="18sp"
             tools:ignore="UnusedAttribute" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@null"
-            android:paddingBottom="20dp"
-            android:src="@drawable/usb" />
-
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/buttonOk"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/button_orange"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/backToSurvey" />
+            android:layout_marginTop="20dp"
+            android:text="@string/backToSurvey"
+            android:theme="@style/Button.Blue"
+            android:visibility="gone" />
 
     </LinearLayout>
 
-    <com.pnikosis.materialishprogress.ProgressWheel
-        android:id="@+id/progress_wheel"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_below="@+id/titleTextView"
+    <ProgressBar
+        android:id="@+id/progressWait"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutTitleBar"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#ffd8cd23"
+        android:indeterminateTintMode="src_in"
         android:visibility="gone"
-        wheel:matProg_barColor="#ffd8cd23"
-        wheel:matProg_progressIndeterminate="true" />
+        tools:ignore="UnusedAttribute" />
 
     <LinearLayout
-        android:id="@+id/resultLayout"
+        android:id="@+id/layoutResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
+        android:layout_below="@+id/layoutTitleBar"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/resultTextView"
+            android:id="@+id/textResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-12dp"
@@ -112,7 +136,7 @@
             tools:text="20000" />
 
         <TextView
-            android:id="@+id/unitsTextView"
+            android:id="@+id/textUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.7"
@@ -127,11 +151,10 @@
             android:layout_marginTop="16dp">
 
             <ImageView
-                android:id="@+id/temperatureImageView"
+                android:id="@+id/imageTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:alpha="0.6"
                 android:contentDescription="@null"
@@ -143,7 +166,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/temperatureTextView"
+                    android:id="@+id/textTemperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -152,7 +175,7 @@
                     tools:text="24°C" />
 
                 <TextView
-                    android:id="@+id/ecValueTextView"
+                    android:id="@+id/textEcValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -163,15 +186,11 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/okButton"
+            android:id="@+id/buttonAcceptResult"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="33dp"
-            android:background="@drawable/start_button"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="@string/acceptResult" />
+            android:text="@string/acceptResult"
+            android:theme="@style/Button.Blue" />
 
     </LinearLayout>
 

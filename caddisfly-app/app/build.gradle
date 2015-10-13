@@ -1,98 +1,74 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 apply plugin: 'com.android.application'
-apply plugin: 'spoon'
+apply plugin: 'de.mobilej.unmock'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
-
-    packagingOptions {
-        exclude 'LICENSE.txt'
-    }
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 18
-        targetSdkVersion 22
-        versionName "Version Beta 0.75"
-        versionCode 75
+        targetSdkVersion 23
+        versionName "0.85 Beta"
+        versionCode 85
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
-        release
+        caddisflyRelease {
+            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
+            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
+            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
+            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.caddisflyRelease
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
     }
 
-    lintOptions {
-        abortOnError false
-        absolutePaths false
+    packagingOptions {
+        exclude 'LICENSE.txt'
     }
+}
 
-    buildscript {
-        apply plugin: 'de.mobilej.unmock'
-    }
-
-    unMock {
-        // URI to download the android-all.jar from. e.g. https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/
-        allAndroid =
-                'https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/4.3_r2-robolectric-0/android-all-4.3_r2-robolectric-0.jar'
-
-        // classes to keep
-        // matched by "startsWith" - you also need to include the dependencies manually
-        // if you start with an "-" the class will match by "equals" (and it will additionally  match
-        // inner classes of this class)
-        keep = [
-                "android.graphics.Color",
-                "android.graphics.Bitmap",
-                "android.os.BaseBundle",
-                "android.util.Pair"
-        ]
-    }
+unMock {
+    keep "android.graphics.Color"
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc3'
     testCompile 'org.assertj:assertj-core:1.7.0'
-    androidTestCompile 'com.android.support.test:runner:0.3'
+    testCompile 'org.robolectric:robolectric:3.0'
     androidTestCompile 'com.android.support.test:rules:0.3'
+    androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile 'com.android.support:support-annotations:23.0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    androidTestCompile "com.squareup.spoon:spoon-client:1.1.10"
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
-    compile 'com.pnikosis:materialish-progress:1.4'
 }
-
-def props = new Properties()
-props.load(new FileInputStream(rootProject.file("release.properties")))
-android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
-android.signingConfigs.release.storePassword props.keyStorePassword
-android.signingConfigs.release.keyAlias props.keyAlias
-android.signingConfigs.release.keyPassword props.keyAliasPassword

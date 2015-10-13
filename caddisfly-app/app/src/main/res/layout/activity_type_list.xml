@@ -1,24 +1,39 @@
 <!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/calibrate_list"
-    android:name="org.akvo.caddisfly.ui.TypeListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.ui.TypeListActivity"
-    tools:layout="@android:layout/list_content" />
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:theme="@style/Base.Theme.AppCompat" />
+
+    <fragment
+        android:id="@+id/fragmentTypeList"
+        android:name="org.akvo.caddisfly.ui.TypeListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.akvo.caddisfly.ui.TypeListActivity"
+        tools:layout="@android:layout/list_content" />
+</LinearLayout>
+

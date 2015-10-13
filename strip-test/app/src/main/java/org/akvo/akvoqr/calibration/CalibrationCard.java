@@ -47,14 +47,14 @@ public class CalibrationCard{
             JSONArray locJSON = calDataJSON.getJSONArray("locations");
             for(int i=0;i < locJSON.length();i++){
                 JSONObject loc = locJSON.getJSONObject(i);
-                calData.addLocation(loc.getString("l"),loc.getDouble("x"),loc.getDouble("y"));
+                calData.addLocation(loc.getString("l"),loc.getDouble("x"),loc.getDouble("y"),loc.getBoolean("gray"));
             }
 
             // colours
             JSONArray colJSON = calDataJSON.getJSONArray("calValues");
             for(int i=0;i < colJSON.length();i++){
                 JSONObject cal = colJSON.getJSONObject(i);
-                calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"), cal.getBoolean("gray"));
+                calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"));
             }
 
             // white lines
@@ -317,7 +317,7 @@ public class CalibrationCard{
         for (String label : calData.calValues.keySet()){
             CalibrationData.CalValue cal = calData.calValues.get(label);
             CalibrationData.Location loc = calData.locations.get(label);
-            if (cal.grayPatch){
+            if (loc.grayPatch){
                 //include this point
                 float[] BGRcol = measurePatch(imgMat,loc.x,loc.y,calData); // measure patch colour
                 obsB.add(BGRcol[0],cal.B);

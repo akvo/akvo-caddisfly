@@ -18,20 +18,20 @@ package org.akvo.caddisfly.model;
 
 public class ColorInfo {
 
-    private final int mColor;
-    private final double mQuality;
+    private final int color;
+    private final double quality;
 
     public ColorInfo(int color, double quality) {
-        mColor = color;
-        mQuality = quality;
+        this.color = color;
+        this.quality = quality;
     }
 
     public int getColor() {
-        return mColor;
+        return color;
     }
 
     public double getQuality() {
-        return mQuality;
+        return quality;
     }
 
 }

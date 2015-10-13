@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~  This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly
   ~
-  ~  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~  either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
   ~
-  ~  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~  See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
   ~
-  ~  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
 <resources>
 
-    <style name="Button" parent="@android:style/Widget.Button">
-        <item name="android:textStyle">bold</item>
-        <item name="android:colorButtonNormal">@color/button_orange</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:minWidth">200dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:minHeight">60dp</item>
-        <item name="android:elevation">1dp</item>
-        <item name="android:translationZ">1dp</item>
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="actionBarStyle">@style/Flow.ActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:actionBarSize">48dp</item>
-        <item name="actionBarSize">48dp</item>
-        <item name="android:elevation">0dp</item>
     </style>
 
-    <style name="AppTheme.Destructive">
+    <style name="MainActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/primary</item>
+    </style>
+
+    <style name="AlertDialogCustom.Destructive">
         <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>
     </style>
 
     <style name="DestructiveButton" parent="android:Widget.DeviceDefault.Button.Borderless">
-        <item name="android:textColor">@color/red</item>
+        <item name="android:textColor">@color/destructive</item>
+    </style>
+
+    <style name="floating_action_button_middle">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">-24dp</item>
+    </style>
+
+    <style name="floating_action_button">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">-16dp</item>
     </style>
 
 </resources>
