@@ -24,10 +24,12 @@ import org.akvo.akvoqr.util.PreviewUtils;
 import org.json.JSONException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -114,8 +116,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         FinderPatternInfo info;
         info = findPossibleCenters(data, previewSize);
 
+        // checks the quality of the image data, updates the icons, and if the
+        // quality is ok, shows the start button
         new QualityChecksTask(info).execute(data);
 
+        // if the start button has been clicked and the quality is ok, use this data
+        // to start the iamge processing activity.
         new SendDataTask(info).execute(data);
 
     }
@@ -143,8 +149,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 {
                     long timePictureTaken = System.currentTimeMillis();
 
-                    if(listener.start())
+                    if(listener.start()) // someone clicked the start button
                     {
+                        // final check if quality of image is ok, if not, abort
                         qualityOK = qualityChecks(data, info);
 
                         if (qualityOK)
@@ -156,12 +163,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                             data = compressToJpeg(data);
 
-                            double avgModuleSize = 0.25 * (possibleCenters.get(0).getEstimatedModuleSize() + possibleCenters.get(1).getEstimatedModuleSize() +
-                                    possibleCenters.get(2).getEstimatedModuleSize() + possibleCenters.get(3).getEstimatedModuleSize());
-
                             listener.sendData(data, timePictureTaken, ImageFormat.JPEG,
                                     previewSize.width,
-                                    previewSize.height, info, avgModuleSize);
+                                    previewSize.height, info);
 
                             lightSensor.stop();
                         }
@@ -222,9 +226,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             return false;
 
         Mat bgr = null;
-
-        boolean exposure;
-        boolean contrast;
+        List<Double> maxLumList = new ArrayList<>();
+        boolean exposure = false;
+        boolean contrast ;
 
         try {
 
@@ -239,18 +243,33 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if(lightSensor.hasLightSensor())
             {
                 //the desired minimum lux is that of a brightly lit room indoors
-                double minLux = 3000;
+                double minLux = 1000;
                 double lux = (lightSensor.getLux() / minLux) * 100;
 
                 listener.showMaxLuminosity(lux);
-                exposure = lux > 1000;
+                exposure = lux > 90;
             }
             else
             {
-                // find maximum of L-channel
-                double maxLum =  (PreviewUtils.getMaxLuminosity(bgr) / 255) * 100;
-                listener.showMaxLuminosity(maxLum);
-                exposure = maxLum > 90;
+
+                if(possibleCenters!=null && possibleCenters.size()>0) {
+                    for (int i = 0; i < possibleCenters.size(); i++) {
+                        double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
+                        Point topLeft = new Point(possibleCenters.get(i).getX() - 4*esModSize, possibleCenters.get(i).getY()  - 4*esModSize);
+                        Point bottomRight = new Point(possibleCenters.get(i).getX() + 4*esModSize, possibleCenters.get(i).getY() + 4*esModSize);
+                        org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
+                        Mat posCentMat = bgr.submat(roi);
+
+                        // find maximum of L-channel
+                        double maxLum =  (PreviewUtils.getMaxLuminosity(posCentMat) / 255) * 100;
+                        maxLumList.add(maxLum);
+                    }
+                }
+                if(maxLumList.size()>0) {
+                    Collections.sort(maxLumList);
+                    listener.showMaxLuminosity(maxLumList.get(0));
+                    exposure = maxLumList.get(0) > 70;
+                }
             }
 
             //DETECT SHADOWS
@@ -265,7 +284,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 try {
                     shadowPercentage = PreviewUtils.getShadowValue(warp);
-                    //shadowPercentage = (shadowValue/16) * 100;
 
                     System.out.println("***xxx lines with shadows: " + shadowPercentage);
                 }

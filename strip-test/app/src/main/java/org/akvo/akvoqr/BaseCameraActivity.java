@@ -15,15 +15,15 @@ import org.opencv.core.Mat;
 public abstract class BaseCameraActivity  extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
 
     //static{ System.loadLibrary("opencv_java3"); }
-    static {
-
-        if (!OpenCVLoader.initDebug()) {
-            Log.d("ERROR", "Unable to load OpenCV");
-
-        } else {
-            Log.d("SUCCESS", "OpenCV loaded");
-        }
-    }
+//    static {
+//
+//        if (!OpenCVLoader.initDebug()) {
+//            Log.d("ERROR", "Unable to load OpenCV");
+//
+//        } else {
+//            Log.d("SUCCESS", "OpenCV loaded");
+//        }
+//    }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override

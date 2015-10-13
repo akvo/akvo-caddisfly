@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,9 @@ import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +33,7 @@ import java.util.List;
 /**
  * Created by linda on 7/7/15.
  */
-public class CameraActivity extends BaseCameraActivity implements CameraViewListener{
+public class CameraActivity extends AppCompatActivity implements CameraViewListener{
 
     private Camera mCamera;
     private FrameLayout preview;
@@ -116,9 +120,10 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     }
     public void onPause()
     {
-        mCamera.setOneShotPreviewCallback(null);
 
         if(mCamera!=null) {
+
+            mCamera.setOneShotPreviewCallback(null);
 
             mCamera.stopPreview();
             mCamera.release();
@@ -150,22 +155,8 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
     public void onResume()
     {
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         super.onResume();
-        if(mCamera!=null)
-        {
-            Log.d(TAG, "mCamera is not null");
-
-            try {
-                mCamera.reconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-
-            init();
-        }
 
         FileStorage.deleteAll();
 
@@ -316,7 +307,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     public void showMaxLuminosity(final double value){
 
         final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
-        final double minValue = 90;
+        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -387,16 +378,14 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         private int format;
         private int width;
         private int height;
-        private double mSize;
 
-        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info, int format, int width, int height, double mSize) {
+        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info, int format, int width, int height) {
             this.patchCount = patchCount;
             this.data = data;
             this.info = info;
             this.format = format;
             this.width = width;
             this.height = height;
-            this.mSize = mSize;
         }
 
         @Override
@@ -415,7 +404,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
 
             if(patchesCovered == patches.size()-1)
             {
-                startDetectActivity(format, width, height, mSize);
+                startDetectActivity(format, width, height);
             }
         }
     }
@@ -424,7 +413,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
     private int patchesCovered = -1;
     @Override
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
-                         final FinderPatternInfo info, double mSize) {
+                         final FinderPatternInfo info) {
 
 
         //check if picture is taken on time for the patch.
@@ -442,7 +431,7 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
 
-                new StoreDataTask(i, data, info, format, width, height, mSize).execute();
+                new StoreDataTask(i, data, info, format, width, height).execute();
 
                 //System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
 
@@ -467,14 +456,13 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         }
 
     }
-    private void startDetectActivity(int format, int width, int height, double mSize)
+    private void startDetectActivity(int format, int width, int height)
     {
         //put Extras into intent
         detectStripIntent.putExtra(Constant.BRAND, brandName);
         detectStripIntent.putExtra(Constant.FORMAT, format);
         detectStripIntent.putExtra(Constant.WIDTH, width);
         detectStripIntent.putExtra(Constant.HEIGHT, height);
-        detectStripIntent.putExtra(Constant.MODULE_SIZE, mSize);
 
         detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -504,5 +492,35 @@ public class CameraActivity extends BaseCameraActivity implements CameraViewList
         mp.start();
     }
 
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i("", "OpenCV loaded successfully");
 
+                    if(mCamera!=null)
+                    {
+                        Log.d(TAG, "mCamera is not null");
+
+                        try {
+                            mCamera.reconnect();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else
+                    {
+                        init();
+                    }
+
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
 }

@@ -97,6 +97,8 @@ public class PreviewUtils {
         return maxLap;
     }
 
+
+
     public static double getMaxLuminosity(Mat bgr)
     {
         Mat Lab = new Mat();

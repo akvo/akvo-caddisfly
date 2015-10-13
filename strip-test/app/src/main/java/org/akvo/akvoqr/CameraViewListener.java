@@ -15,7 +15,7 @@ public interface CameraViewListener {
     void getMessage(int what);
 
     void sendData(byte[] data, long timeMillis,
-                  int format, int width, int height, FinderPatternInfo info, double mSize);
+                  int format, int width, int height, FinderPatternInfo info);
 
     void showProgress(int which);
 
