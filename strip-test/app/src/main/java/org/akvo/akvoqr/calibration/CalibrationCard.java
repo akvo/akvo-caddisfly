@@ -1,7 +1,5 @@
 package org.akvo.akvoqr.calibration;
 
-import android.content.Context;
-
 import org.akvo.akvoqr.util.AssetsManager;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
@@ -24,9 +22,21 @@ import java.util.List;
 // Performs the calibration of the image
 public class CalibrationCard{
     private final double ONE_OVER_NINE = 1.0/9;
+    private static CalibrationCard instance;
+    private static CalibrationData calData;
 
+    public static CalibrationCard getInstance(int versionNumber)
+    {
 
-    private CalibrationData readCalibrationFile(Context context){
+        if(instance==null) {
+            instance = new CalibrationCard();
+            calData = readCalibrationFile();
+        }
+
+        return instance;
+    }
+
+    private static CalibrationData readCalibrationFile(){
         CalibrationData calData = new CalibrationData();
         String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
         try {
@@ -105,11 +115,19 @@ public class CalibrationCard{
         return totLum / totNum;
     }
 
-    private RealMatrix createWhitePointList(Mat hls, CalibrationData calData) {
+    public double[][] createWhitePointArray(Mat hls)
+    {
+
         List<CalibrationData.WhiteLine> lines = calData.whiteLines;
         int numLines = lines.size() * 10; // on each line, we sample 10 points
         double[][] points = new double[numLines][3];
         int index = 0;
+
+        calData.hsizePixel = hls.cols();
+        double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
+        calData.vsizePixel = hls.rows();
+        double vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+
         for (CalibrationData.WhiteLine line : lines){
             double xStart = line.p[0];
             double yStart = line.p[1];
@@ -117,26 +135,33 @@ public class CalibrationCard{
             double yEnd = line.p[3];
             double xdiff = (xEnd - xStart) * ONE_OVER_NINE;
             double ydiff = (yEnd - yStart) * ONE_OVER_NINE;
-            int dp = (int) Math.round(line.width * calData.hfac * 0.5);
+            int dp = (int) Math.round(line.width * hfac * 0.5);
             if (dp == 0){
                 dp = 1; // minimum of one pixel
             }
+
             // sample line
             for (int i = 0; i <= 9 ; i++){
-                int xp = (int) Math.round((xStart + i * xdiff) * calData.hfac);
-                int yp = (int) Math.round((yStart + i * ydiff) * calData.vfac);
+                int xp = (int) Math.round((xStart + i * xdiff) * hfac);
+                int yp = (int) Math.round((yStart + i * ydiff) * vfac);
 
                 points[index * 10 + i][0] = xp;
                 points[index * 10 + i][1] = yp;
                 points[index * 10 + i][2] = getLuminosity(hls, xp, yp, dp);
             }
+
             index++;
         }
 
+        return points;
+    }
+    private RealMatrix createWhitePointMatrix(Mat hls) {
+
+        double[][] points = createWhitePointArray(hls);
         return MatrixUtils.createRealMatrix(points);
     }
 
-    public Mat doIlluminationCorrection(Mat imgMat, CalibrationData calData){
+    public Mat doIlluminationCorrection(Mat imgMat){
         // create HLS image for homogenous illumination calibration
         int pheight =  imgMat.rows();
         int pwidth = imgMat.cols();
@@ -144,7 +169,7 @@ public class CalibrationCard{
 
         Imgproc.cvtColor(imgMat, hls, Imgproc.COLOR_BGR2HLS_FULL, imgMat.channels());
 
-        RealMatrix points = createWhitePointList(hls, calData);
+        RealMatrix points = createWhitePointMatrix(hls);
 
         // create coefficient matrix
         // the model is Luminosity = ax + bx^2 + cy + dy^2 + exy + f
@@ -198,16 +223,21 @@ public class CalibrationCard{
         return imgMat;
     }
 
-    private float[] measurePatch(Mat imgMat, double x, double y, CalibrationData calData){
+    private float[] measurePatch(Mat imgMat, double x, double y){
         float[] BGRresult = new float[3];
         float totB = 0;
         float totG = 0;
         float totR = 0;
         int totNum = 0;
 
-        int xp = (int) Math.round(x * calData.hfac);
-        int yp = (int) Math.round(y * calData.vfac);
-        int dp = (int) Math.round(calData.patchSize * calData.hfac * 0.25);
+        calData.hsizePixel = imgMat.cols();
+        double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
+        calData.vsizePixel = imgMat.rows();
+        double vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+
+        int xp = (int) Math.round(x * hfac);
+        int yp = (int) Math.round(y * vfac);
+        int dp = (int) Math.round(calData.patchSize * hfac * 0.25);
         byte[] temp = new byte[(2 * dp + 1) * imgMat.channels()];
         int ii3;
         for (int i = -dp; i <= dp; i++){
@@ -308,7 +338,7 @@ public class CalibrationCard{
         return lutMat;
     }
 
-    private Mat do1DLUTCorrection(Mat imgMat, CalibrationData calData) {
+    private Mat do1DLUTCorrection(Mat imgMat) {
         final WeightedObservedPoints obsB = new WeightedObservedPoints();
         final WeightedObservedPoints obsG = new WeightedObservedPoints();
         final WeightedObservedPoints obsR = new WeightedObservedPoints();
@@ -319,7 +349,7 @@ public class CalibrationCard{
             CalibrationData.Location loc = calData.locations.get(label);
             if (loc.grayPatch){
                 //include this point
-                float[] BGRcol = measurePatch(imgMat,loc.x,loc.y,calData); // measure patch colour
+                float[] BGRcol = measurePatch(imgMat,loc.x,loc.y); // measure patch colour
                 obsB.add(BGRcol[0],cal.B);
                 obsG.add(BGRcol[1],cal.G);
                 obsR.add(BGRcol[2],cal.R);
@@ -349,7 +379,7 @@ public class CalibrationCard{
         return imgcorr;
     }
 
-    private Mat do3DLUTCorrection(Mat imgMat, CalibrationData calData) {
+    private Mat do3DLUTCorrection(Mat imgMat) {
         int total = calData.locations.keySet().size();
         RealMatrix coef = new Array2DRowRealMatrix(total,3);
         RealMatrix cal = new Array2DRowRealMatrix(total,3);
@@ -358,7 +388,7 @@ public class CalibrationCard{
         for (String label : calData.calValues.keySet()){
             CalibrationData.CalValue calv = calData.calValues.get(label);
             CalibrationData.Location loc = calData.locations.get(label);
-            float[] BGRcol = measurePatch(imgMat,loc.x,loc.y,calData); // measure patch colour
+            float[] BGRcol = measurePatch(imgMat,loc.x,loc.y); // measure patch colour
 
             coef.setEntry(index,0,BGRcol[0]);
             coef.setEntry(index,1,BGRcol[1]);
@@ -439,10 +469,16 @@ public class CalibrationCard{
         return imgMat;
     }
 
-    private void addPatch(Mat imgMat, Double x, Double y, CalibrationData.CalValue calValue,CalibrationData calData) {
-        int xp = (int) Math.round(x * calData.hfac);
-        int yp = (int) Math.round(y * calData.vfac);
-        int dp = (int) Math.round(calData.patchSize * calData.hfac * 0.150);
+    private void addPatch(Mat imgMat, Double x, Double y, CalibrationData.CalValue calValue) {
+
+        calData.hsizePixel = imgMat.cols();
+        double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
+        calData.vsizePixel = imgMat.rows();
+        double vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+
+        int xp = (int) Math.round(x * hfac);
+        int yp = (int) Math.round(y * vfac);
+        int dp = (int) Math.round(calData.patchSize * hfac * 0.150);
         for (int i = -dp; i <= dp; i++){
             for (int ii = -dp; ii <= dp; ii++){
                 byte[] col = new byte[3];
@@ -454,41 +490,36 @@ public class CalibrationCard{
         }
     }
 
-    private void addCalColours(Mat imgMat, CalibrationData calData) {
+    private void addCalColours(Mat imgMat) {
         for (String label : calData.locations.keySet()){
             CalibrationData.Location loc = calData.locations.get(label);
-            addPatch(imgMat,loc.x,loc.y,calData.calValues.get(label),calData);
+            addPatch(imgMat,loc.x,loc.y,calData.calValues.get(label));
         }
     }
 
-    public Mat calibrateImage(Context context, Mat imgMat){
+    public Mat calibrateImage(Mat imgMat){
         System.out.println("*** start of calibration");
         // read calibration info
         // System.out.println("*** about to read calibration file");
-        CalibrationData calData = readCalibrationFile(context);
 
         if(calData!=null) {
             try {
-                calData.hsizePixel = imgMat.cols();
-                calData.hfac = calData.hsizePixel / calData.hsize; // pixel per mm
-                calData.vsizePixel = imgMat.rows();
-                calData.vfac = calData.vsizePixel / calData.vsize; // pixel per mm
 
                 // illumination correction
                 System.out.println("*** ILLUM - starting illumination correction");
-                imgMat = doIlluminationCorrection(imgMat, calData);
+                imgMat = doIlluminationCorrection(imgMat);
 
                 // 1D LUT gray balance
                 System.out.println("*** ILLUM - starting gray balance");
-                imgMat = do1DLUTCorrection(imgMat, calData);
+                imgMat = do1DLUTCorrection(imgMat);
 
                 // 3D LUT color balance
                 System.out.println("*** ILLUM - starting 3D lut");
-                imgMat = do3DLUTCorrection(imgMat, calData);
+                imgMat = do3DLUTCorrection(imgMat);
 
                 // insert calibration colours in image
                 System.out.println("*** ILLUM - adding colours");
-                addCalColours(imgMat, calData);
+                addCalColours(imgMat);
 
                 System.out.println("*** end of calibration");
                 return imgMat;

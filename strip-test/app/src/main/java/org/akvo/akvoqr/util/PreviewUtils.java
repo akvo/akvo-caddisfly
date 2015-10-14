@@ -1,5 +1,6 @@
 package org.akvo.akvoqr.util;
 
+import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,7 +100,7 @@ public class PreviewUtils {
 
 
 
-    public static double getMaxLuminosity(Mat bgr)
+    public static double getDiffLuminosity(Mat bgr)
     {
         Mat Lab = new Mat();
         List<Mat> channels = new ArrayList<>();
@@ -109,15 +110,47 @@ public class PreviewUtils {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
-        return result.maxVal;
+        return result.maxVal - result.minVal;
     }
 
+    /*method for shadow detection
+   * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
+   * @return : the difference between min and max luminosity (HLS) values as a percentage of the max value for luminosity (=255).
+    */
+    public static double getContrastPercentage(Mat bgr) {
+        double minLum = Double.MAX_VALUE;
+        double maxLum = -Double.MAX_VALUE;
+
+        Mat hls = new Mat();
+        Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS);
+
+        CalibrationCard card = CalibrationCard.getInstance(1);
+
+        double[][] points = card.createWhitePointArray(hls);
+
+        for(int i=0; i< points.length; i++) {
+            double lum = points[i][2];
+
+            if(lum < minLum)
+            {
+                minLum = lum;
+            }
+            if(lum > maxLum)
+            {
+                maxLum = lum;
+            }
+        }
+
+       // System.out.println("***xxx minLum: " + minLum + " maxLum: " + maxLum);
+
+        return ((maxLum - minLum)/255) * 100;
+    }
 
     /*method for shadow detection
     * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
     * @return : a percentage of how many lines have shadow.
      */
-    public static double getShadowValue(Mat warpMat) throws JSONException
+    public static double getShadowPercentage(Mat warpMat) throws JSONException
     {
         //NB: warpMat should be bgr color scheme
         Mat workMat = warpMat.clone();

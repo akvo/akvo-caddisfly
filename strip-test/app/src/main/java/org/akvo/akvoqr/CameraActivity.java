@@ -280,7 +280,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showFocusValue(final double value)
     {
         final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
-        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -289,7 +288,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 if(messageFocusView !=null)
                     messageFocusView.setText(getString(R.string.focus) + ": " + String.format("%.0f",value) + " %");
 
-                if(value > minValue)
+                if(value > Constant.MIN_FOCUS_PERCENTAGE)
                 {
                     focusView.setImageResource(R.drawable.focus_green);
                 }
@@ -306,7 +305,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showMaxLuminosity(final double value){
 
         final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
-        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -314,7 +312,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 if(messageLightView !=null)
                     messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
 
-                if(value > minValue)
+                if(value > Constant.MIN_LUMINOSITY_PERCENTAGE)
                 {
                     exposureView.setImageResource(R.drawable.exposure_green);
                 }
@@ -332,7 +330,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showContrast(final double value){
 
         final ImageView contrastView = (ImageView) findViewById(R.id.activity_cameraImageViewContrast);
-        final double minValue = 30;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -345,7 +342,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                         messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
                     }
                 }
-                if(value < minValue)
+                if(value < Constant.MAX_SHADOW_PERCENTAGE)
                 {
                     contrastView.setImageResource(R.drawable.contrast_green);
                 }

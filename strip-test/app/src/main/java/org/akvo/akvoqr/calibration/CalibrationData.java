@@ -1,6 +1,5 @@
 package org.akvo.akvoqr.calibration;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +11,8 @@ import java.util.Map;
 public class CalibrationData {
     public int hsizePixel;
     public int vsizePixel;
-    public double hfac;
-    public double vfac;
+//    public double hfac;
+//    public double vfac;
     public String cardVersion;
     public String date;
     public String unit;
