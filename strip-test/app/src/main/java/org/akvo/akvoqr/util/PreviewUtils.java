@@ -110,40 +110,45 @@ public class PreviewUtils {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
+        System.out.println("*** diff lum: minval = " + result.minVal + " maxval = " + result.maxVal);
         return result.maxVal - result.minVal;
     }
 
     /*method for shadow detection
    * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
-   * @return : the difference between min and max luminosity (HLS) values as a percentage of the max value for luminosity (=255).
+   * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
     */
     public static double getContrastPercentage(Mat bgr) {
-        double minLum = Double.MAX_VALUE;
-        double maxLum = -Double.MAX_VALUE;
+
+        double sumLum = 0;
+        int count = 0;
 
         Mat hls = new Mat();
-        Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS);
+        Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS_FULL);
 
         CalibrationCard card = CalibrationCard.getInstance(1);
 
         double[][] points = card.createWhitePointArray(hls);
 
+        //get the sum total of luminosity values
         for(int i=0; i< points.length; i++) {
-            double lum = points[i][2];
+            sumLum += points[i][2];
+        }
 
-            if(lum < minLum)
+        double avgLum = sumLum/points.length;
+
+        for(int i=0; i < points.length; i++) {
+
+            double lum = points[i][2];
+            if((Math.abs(lum - avgLum)/255) * 100 > Constant.CONTRAST_DEVIATION_PERCENTAGE)
             {
-                minLum = lum;
-            }
-            if(lum > maxLum)
-            {
-                maxLum = lum;
+                count ++;
             }
         }
 
-       // System.out.println("***xxx minLum: " + minLum + " maxLum: " + maxLum);
-
-        return ((maxLum - minLum)/255) * 100;
+//        System.out.println("***zzz count =  " + count);
+//        System.out.println("***zzz count percentage =  " + ((double)count/points.length) * 100);
+        return ((double)count/points.length) * 100;
     }
 
     /*method for shadow detection

@@ -21,4 +21,5 @@ public class Constant {
     public static final double MIN_LUMINOSITY_PERCENTAGE = 70;
     public static final double MAX_SHADOW_PERCENTAGE = 30;
     public static final double MIN_FOCUS_PERCENTAGE = 70;
+    public static final double CONTRAST_DEVIATION_PERCENTAGE = 5;
 }

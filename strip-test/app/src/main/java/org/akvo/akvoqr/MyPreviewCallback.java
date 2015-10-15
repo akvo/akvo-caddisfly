@@ -50,6 +50,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private boolean focused = true;
     private Handler handler;
     private  LightSensor lightSensor;
+    double shadowPercentage = 101;
 
     private Thread showFinderPatternThread = new Thread(
             new Runnable() {
@@ -285,9 +286,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //            }
 
             //DETECT SHADOWS
-            System.out.println("***xxx start shadow detection: ");
-            double shadowPercentage = 101;
+            //System.out.println("***xxx start shadow detection: ");
+
             if(info!=null) {
+
                 double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
                 double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
                 double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
@@ -298,7 +300,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 {
                     //shadowPercentage = PreviewUtils.getShadowPercentage(warp);
                     shadowPercentage = PreviewUtils.getContrastPercentage(warp);
-                    System.out.println("***xxx lines with shadows: " + shadowPercentage);
+
                 }
                 catch (Exception e)
                 {
