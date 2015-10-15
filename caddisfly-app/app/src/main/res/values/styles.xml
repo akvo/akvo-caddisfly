@@ -56,8 +56,8 @@
     </style>
 
     <style name="Button.Blue" parent="Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ea00589b</item>
-        <item name="colorControlHighlight">#ea003f6f</item>
+        <item name="colorButtonNormal">#014b86</item>
+        <item name="colorControlHighlight">#ea013359</item>
     </style>
 
     <style name="width_match_parent_max_tablet">

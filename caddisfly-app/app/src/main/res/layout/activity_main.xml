@@ -46,13 +46,14 @@
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"
                 android:text="@string/survey"
                 android:textAlignment="viewStart"
-                android:textColor="#e2e0e0"
+                android:textColor="#e3e2e0e0"
                 android:theme="@style/Button.Blue" />
 
             <Button
@@ -60,14 +61,13 @@
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"
                 android:text="@string/electricalConductivity"
                 android:textAlignment="viewStart"
-                android:textColor="#e2e0e0"
+                android:textColor="#e3e2e0e0"
                 android:theme="@style/Button.Blue" />
 
             <Button
@@ -75,14 +75,13 @@
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"
                 android:text="@string/calibrate"
                 android:textAlignment="viewStart"
-                android:textColor="#e2e0e0"
+                android:textColor="#e3e2e0e0"
                 android:theme="@style/Button.Blue" />
 
         </LinearLayout>
