@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Flow.Theme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/flow_primary</item>
+        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorPrimary">@color/orange_main</item>
+        <item name="android:textColorPrimaryInverse">@color/orange_main</item>
+        <item name="android:textColor">@color/black_main</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:windowBackground">@color/background_main</item>
+        <item name="android:listViewStyle">@style/Flow.ListView</item>
+        <item name="primaryButtonStyle">@style/Flow.Button.Green</item>
+        <item name="dialogDestructiveButton">@style/Flow.Dialog.Destructive</item>
+        <item name="primaryBackgroundStyle">@color/orange_main</item>
+        <item name="toolbarHeight">@dimen/flow_toolbar_height</item>
+        <item name="toolbarMargin">@dimen/flow_toolbar_margin</item>
+        <item name="progressTint">@color/accent</item>
+    </style>
+
+    <style name="Flow.Theme.Main" parent="Flow.Theme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Flow.Dialog" parent="Theme.AppCompat.Light.Dialog"></style>
+
+    <style name="Flow.Dialog.Destructive">
+        <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>
+    </style>
+
+    <!--<style name="Flow.Dialog" parent="@android:style/Theme.Dialog">-->
+    <!--<item name="android:textColor">@color/white</item>-->
+    <!--<item name="android:listViewStyle">@style/Flow.ListView</item>-->
+    <!--</style>-->
+
+    <style name="Flow.Toolbar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="Flow.ToolbarTheme" parent="Flow.Theme">
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="Flow.ListView" parent="@android:style/Widget.ListView">
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@color/white</item>
+    </style>
+
+    <style name="large_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Flow.Button.Green" parent="large_button">
+        <item name="colorButtonNormal">@color/button_green</item>
+        <item name="colorControlHighlight">@color/button_green_selected</item>
+    </style>
+
+    <style name="Flow.Transparent" parent="Flow.Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

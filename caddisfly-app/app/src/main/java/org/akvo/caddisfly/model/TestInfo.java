@@ -149,4 +149,7 @@ public class TestInfo {
         return requiresCalibration;
     }
 
+    public boolean requiresCameraFlash() {
+        return testType == CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+    }
 }

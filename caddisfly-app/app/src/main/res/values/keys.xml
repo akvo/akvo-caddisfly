@@ -21,6 +21,7 @@
     <string name="showDebugMessagesKey" translatable="false">showDebugMessages</string>
     <string name="noSoundKey" translatable="false">noSound</string>
     <string name="noBackdropDetectionKey" translatable="false">noBackdropDetection</string>
+    <string name="noBackdropDetectionInUserModeKey">noBackdropDetectionInUserMode</string>
     <string name="colorDistanceToleranceKey" translateable="false">colorDistanceTolerance</string>
     <string name="samplingsTimeKey" translateable="false">samplingTimes</string>
     <string name="hasCameraFlashKey" translateable="false">hasCameraFlash</string>

@@ -32,7 +32,8 @@
         android:layout_marginTop="16dp"
         android:hint="@string/name"
         android:inputType="textCapWords"
-        android:maxLength="20" />
+        android:maxLength="20"
+        android:textColor="?android:textColor" />
 
     <EditText
         android:id="@+id/editBatchCode"
@@ -43,7 +44,8 @@
         android:layout_marginTop="8dp"
         android:hint="@string/reagentBatch"
         android:inputType="textCapCharacters"
-        android:maxLength="10" />
+        android:maxLength="10"
+        android:textColor="?android:textColor" />
 
     <EditText
         android:id="@+id/editExpiryDate"
@@ -54,6 +56,7 @@
         android:layout_marginTop="8dp"
         android:focusable="false"
         android:hint="@string/reagentExpiryDate"
-        android:inputType="date" />
+        android:inputType="date"
+        android:textColor="?android:textColor" />
 
 </LinearLayout>

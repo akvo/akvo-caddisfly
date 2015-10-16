@@ -46,22 +46,21 @@
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
-        android:process="org.akvo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/appName"
-            android:screenOrientation="nosensor"
-            android:taskAffinity="org.akvo"
-            android:theme="@style/MainActivityTheme">
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".ui.ExternalActionActivity"
+            android:theme="@style/Flow.Transparent">
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -72,23 +71,19 @@
         </activity>
         <activity
             android:name=".preference.SettingsActivity"
-            android:label="@string/settings"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/about"
             android:noHistory="true"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.ec.SensorActivity"
-            android:label="@string/appName"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
-            android:label="@string/appName"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
@@ -101,38 +96,39 @@
         </activity>
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
-            android:label="@string/calibrate"
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
-            android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".sensor.colorimetry.liquid.DiagnosticSwatchActivity"
-            android:label="@string/swatches"
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.ec.CalibrateSensorActivity"
-            android:label="@string/calibrate"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ui.TypeListActivity"
-            android:parentActivityName=".preference.SettingsActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="org.akvo.flow.action.sensorcalibrate" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
-            android:label="@string/appName"
             android:screenOrientation="nosensor" />
 
         <service
-            android:name="org.akvo.caddisfly.sensor.ec.UsbService"
+            android:name=".sensor.ec.UsbService"
             android:enabled="true" />
+
     </application>
 
 </manifest>

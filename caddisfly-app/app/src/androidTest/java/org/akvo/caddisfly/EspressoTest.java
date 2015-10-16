@@ -431,7 +431,7 @@ public class EspressoTest
 
         onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.backToSurvey)).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
         clickExternalSourceButton("next");
 

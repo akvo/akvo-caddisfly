@@ -24,6 +24,8 @@
     android:visibility="visible"
     tools:context="org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity">
 
+    <include layout="@layout/toolbar" />
+
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="match_parent"

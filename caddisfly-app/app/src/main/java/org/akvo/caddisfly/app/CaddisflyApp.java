@@ -105,16 +105,8 @@ public class CaddisflyApp extends Application {
             Camera camera = getCamera(context, onClickListener);
             try {
                 if (camera != null) {
-
                     hasCameraFlash = ApiUtil.hasCameraFlash(context, camera);
                     PreferencesUtil.setBoolean(context, R.string.hasCameraFlashKey, hasCameraFlash);
-
-                    if (!hasCameraFlash) {
-                        AlertUtil.showAlert(context, errorTitle,
-                                R.string.errorCameraFlashRequired,
-                                buttonText, onClickListener, null);
-
-                    }
                 }
             } finally {
                 if (camera != null) {
@@ -122,6 +114,13 @@ public class CaddisflyApp extends Application {
                 }
 
             }
+        }
+
+        if (!hasCameraFlash) {
+            AlertUtil.showAlert(context, errorTitle,
+                    R.string.errorCameraFlashRequired,
+                    buttonText, onClickListener, null);
+
         }
         return hasCameraFlash;
     }

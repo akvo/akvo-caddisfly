@@ -147,6 +147,12 @@ public class CalibrateListActivity extends BaseActivity
         loadDetails();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(R.string.calibrate);
+    }
+
     private void loadDetails() {
         String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.calibrationDateKey);

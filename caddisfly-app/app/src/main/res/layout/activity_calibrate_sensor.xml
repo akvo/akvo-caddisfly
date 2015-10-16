@@ -15,19 +15,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:theme="@style/Base.Theme.AppCompat"
-        app:title="@string/appName" />
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:id="@+id/layoutTitleBar"
@@ -131,6 +124,7 @@
                     android:layout_gravity="center_horizontal"
                     android:inputType="number"
                     android:maxLength="4"
+                    android:textColor="?android:textColor"
                     android:textSize="34sp"
                     tools:text="1234" />
             </LinearLayout>
@@ -164,6 +158,7 @@
                 android:layout_gravity="center_horizontal"
                 android:inputType="number"
                 android:maxLength="6"
+                android:textColor="?android:textColor"
                 android:textSize="34sp"
                 tools:text="123456" />
         </LinearLayout>

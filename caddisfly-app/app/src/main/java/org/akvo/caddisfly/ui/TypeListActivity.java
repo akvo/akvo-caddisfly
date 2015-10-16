@@ -40,11 +40,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        //to refresh the title when language changes
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.selectTest));
-        }
+        setTitle(R.string.selectTest);
     }
 
     @Override
@@ -72,6 +68,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                                 }
                             });
                 } else {

@@ -46,6 +46,8 @@ public class SettingsActivity extends BaseActivity
 
     private void setupActivity() {
 
+        setTitle(R.string.settings);
+
         setContentView(R.layout.activity_settings);
 
         getFragmentManager().beginTransaction()
@@ -76,10 +78,7 @@ public class SettingsActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        //to refresh the title when language changes
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-        }
+        setTitle(R.string.settings);
     }
 
     @Override

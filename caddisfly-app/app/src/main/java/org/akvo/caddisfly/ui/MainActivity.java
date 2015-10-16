@@ -17,8 +17,6 @@
 package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -36,30 +34,23 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
 
-    private static final int REQUEST_TEST = 1;
+    //private static final int REQUEST_TEST = 1;
     private final WeakRefHandler handler = new WeakRefHandler(this);
     //tracks whether this app was launched by an external app
     private Boolean mIsExternalAppCall = false;
-    //tracks if the app should automatically close (after launching an external app)
     //the language requested by the external app
-    private String mExternalAppLanguageCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,20 +98,6 @@ public class MainActivity extends BaseActivity {
                 startSurvey();
             }
         });
-
-//        final Context context = this;
-//        findViewById(R.id.layoutOpenApp).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AlertUtil.showAlert(context, R.string.closing, R.string.appWillClose, R.string.ok,
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                finish();
-//                            }
-//                        }, null);
-//            }
-//        });
     }
 
     @Override
@@ -129,6 +106,7 @@ public class MainActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+        setTitle(R.string.appName);
     }
 
     @Override
@@ -137,7 +115,7 @@ public class MainActivity extends BaseActivity {
 
         switchLayoutForDiagnosticOrUserMode();
 
-        setAppLanguage(mExternalAppLanguageCode);
+        setAppLanguage(null);
     }
 
     /**
@@ -249,47 +227,47 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Intent intent = getIntent();
-        String type = intent.getType();
-        String mQuestionTitle;
-
-        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
-            if ("text/plain".equals(type)) { //NON-NLS
-                mIsExternalAppCall = true;
-                mQuestionTitle = intent.getStringExtra("questionTitle");
-
-                //todo: fix FLOW to return language code
-                mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
-
-                setAppLanguage(mExternalAppLanguageCode);
-
-                //Extract the 5 letter code in the question and load the test config
-                CaddisflyApp.getApp().loadTestConfiguration(
-                        mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
-                );
-
-                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
-                    alertTestTypeNotSupported(mQuestionTitle);
-                } else {
-                    if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                            R.string.backToSurvey,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            }
-                    )) {
-                        startTest();
-                    }
-                }
-            }
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        Intent intent = getIntent();
+//        String type = intent.getType();
+//        String mQuestionTitle;
+//
+//        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
+//            if ("text/plain".equals(type)) { //NON-NLS
+//                mIsExternalAppCall = true;
+//                mQuestionTitle = intent.getStringExtra("questionTitle");
+//
+//                //todo: fix FLOW to return language code
+//                mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
+//
+//                setAppLanguage(mExternalAppLanguageCode);
+//
+//                //Extract the 5 letter code in the question and load the test config
+//                CaddisflyApp.getApp().loadTestConfiguration(
+//                        mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
+//                );
+//
+//                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+//                    alertTestTypeNotSupported(mQuestionTitle);
+//                } else {
+//                    if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+//                            R.string.backToSurvey,
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    finish();
+//                                }
+//                            }
+//                    )) {
+//                        startTest();
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private void startSurvey() {
         Intent LaunchIntent = getPackageManager()
@@ -298,15 +276,7 @@ public class MainActivity extends BaseActivity {
             alertDependantAppNotFound();
         } else {
             startActivity(LaunchIntent);
-//            mShouldFinish = true;
-//
-//            (new Handler()).postDelayed(new Runnable() {
-//                public void run() {
-//                    if (mShouldFinish) {
-//                        finish();
-//                    }
-//                }
-//            }, 6000);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 
@@ -317,83 +287,80 @@ public class MainActivity extends BaseActivity {
         AlertUtil.showMessage(this, R.string.notFound, message);
     }
 
-    /**
-     * Start the appropriate test based on the current test type
-     */
-    private void startTest() {
-        Context context = this;
-        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-        switch (caddisflyApp.getCurrentTestInfo().getType()) {
-            case COLORIMETRIC_LIQUID:
+//    /**
+//     * Start the appropriate test based on the current test type
+//     */
+//    private void startTest() {
+//        Context context = this;
+//        CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+//        switch (caddisflyApp.getCurrentTestInfo().getType()) {
+//            case COLORIMETRIC_LIQUID:
+//
+//                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
+//                    alertCalibrationIncomplete();
+//                    return;
+//                }
+//
+//                long milliseconds = PreferencesUtil.getLong(this, R.string.calibrationExpiryDateKey);
+//                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+//                    alertCalibrationExpired();
+//                    return;
+//                }
+//
+//                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
+//                startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
+//
+//                break;
+//            case COLORIMETRIC_STRIP:
+//
+//                final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
+//                startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
+//
+//                break;
+//            case SENSOR:
+//
+//                final Intent sensorIntent = new Intent(context, SensorActivity.class);
+//                startActivityForResult(sensorIntent, REQUEST_TEST);
+//
+//                break;
+//        }
+//    }
 
-                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
-                    alertCalibrationIncomplete();
-                    return;
-                }
+//    private void alertCalibrationExpired() {
+//        String message = getString(R.string.errorCalibrationExpired,
+//                CaddisflyApp.getApp().getCurrentTestInfo().getName(
+//                        getResources().getConfiguration().locale.getLanguage()));
+//        message = String.format("%s\r\n\r\n%s", message,
+//                getString(R.string.orderFreshBatch));
+//
+//        AlertUtil.showAlert(this, R.string.cannotStartTest,
+//                message, R.string.backToSurvey,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        finish();
+//                    }
+//                }, null
+//        );
+//    }
 
-                String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                        R.string.calibrationExpiryDateKey);
-
-                long milliseconds = PreferencesUtil.getLong(this, key);
-                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
-                    alertCalibrationExpired();
-                    return;
-                }
-
-                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
-                startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
-
-                break;
-            case COLORIMETRIC_STRIP:
-
-                final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
-                startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
-
-                break;
-            case SENSOR:
-
-                final Intent sensorIntent = new Intent(context, SensorActivity.class);
-                startActivityForResult(sensorIntent, REQUEST_TEST);
-
-                break;
-        }
-    }
-
-    private void alertCalibrationExpired() {
-        String message = getString(R.string.errorCalibrationExpired,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                        getResources().getConfiguration().locale.getLanguage()));
-        message = String.format("%s\r\n\r\n%s", message,
-                getString(R.string.orderFreshBatch));
-
-        AlertUtil.showAlert(this, R.string.cannotStartTest,
-                message, R.string.backToSurvey,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }, null
-        );
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQUEST_TEST:
-                if (resultCode == Activity.RESULT_OK) {
-                    //return the test result to the external app
-                    Intent intent = new Intent(getIntent());
-                    intent.putExtra("response", data.getStringExtra("response"));
-                    this.setResult(Activity.RESULT_OK, intent);
-                }
-                finish();
-                break;
-            default:
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        switch (requestCode) {
+//            case REQUEST_TEST:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    //return the test result to the external app
+//                    Intent intent = new Intent(getIntent());
+//                    intent.putExtra("response", data.getStringExtra("response"));
+//                    this.setResult(Activity.RESULT_OK, intent);
+//                }
+//                finish();
+//                break;
+//            default:
+//        }
+//    }
 
 //    @Override
 //    protected void onUserLeaveHint() {
@@ -403,68 +370,68 @@ public class MainActivity extends BaseActivity {
 //        }
 //    }
 
-    /**
-     * Alert message for calibration incomplete or invalid
-     */
-    private void alertCalibrationIncomplete() {
-        String message = getString(R.string.errorCalibrationIncomplete,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                        getResources().getConfiguration().locale.getLanguage()));
-        message = String.format("%s\r\n\r\n%s", message,
-                getString(R.string.doYouWantToCalibrate));
+//    /**
+//     * Alert message for calibration incomplete or invalid
+//     */
+//    private void alertCalibrationIncomplete() {
+//        String message = getString(R.string.errorCalibrationIncomplete,
+//                CaddisflyApp.getApp().getCurrentTestInfo().getName(
+//                        getResources().getConfiguration().locale.getLanguage()));
+//        message = String.format("%s\r\n\r\n%s", message,
+//                getString(R.string.doYouWantToCalibrate));
+//
+//        AlertUtil.showAlert(this, R.string.cannotStartTest,
+//                message, R.string.calibrate,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(
+//                            DialogInterface dialogInterface,
+//                            int i) {
+//                        final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
+//                        startActivity(intent);
+//                    }
+//                }, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(
+//                            DialogInterface dialogInterface,
+//                            int i) {
+//                        finish();
+//                    }
+//                }
+//        );
+//    }
 
-        AlertUtil.showAlert(this, R.string.cannotStartTest,
-                message, R.string.calibrate,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(
-                            DialogInterface dialogInterface,
-                            int i) {
-                        final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-                        startActivity(intent);
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(
-                            DialogInterface dialogInterface,
-                            int i) {
-                        finish();
-                    }
-                }
-        );
-    }
-
-    /**
-     * Alert displayed when an unsupported contaminant test type was requested
-     *
-     * @param title the name of the test contaminant
-     */
-    private void alertTestTypeNotSupported(String title) {
-
-        //ensure we have short name to display as title
-        String itemName;
-        if (title.length() > 0) {
-            if (title.length() > 30) {
-                title = title.substring(0, 30);
-            }
-            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
-        } else {
-            itemName = getString(R.string.error);
-        }
-
-        String message = getString(R.string.errorTestNotAvailable, itemName);
-        message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
-
-        AlertUtil.showAlert(this, R.string.cannotStartTest, message,
-                R.string.backToSurvey,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }, null
-        );
-    }
+//    /**
+//     * Alert displayed when an unsupported contaminant test type was requested
+//     *
+//     * @param title the name of the test contaminant
+//     */
+//    private void alertTestTypeNotSupported(String title) {
+//
+//        //ensure we have short name to display as title
+//        String itemName;
+//        if (title.length() > 0) {
+//            if (title.length() > 30) {
+//                title = title.substring(0, 30);
+//            }
+//            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
+//        } else {
+//            itemName = getString(R.string.error);
+//        }
+//
+//        String message = getString(R.string.errorTestNotAvailable, itemName);
+//        message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
+//
+//        AlertUtil.showAlert(this, R.string.cannotStartTest, message,
+//                R.string.backToSurvey,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        finish();
+//                    }
+//                }, null
+//        );
+//    }
 
     /**
      * Handler to restart the app after language has been changed

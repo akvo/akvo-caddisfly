@@ -124,6 +124,13 @@ public class SensorActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        setTitle("Sensor");
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(runnable);
@@ -232,7 +239,7 @@ public class SensorActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -343,6 +350,12 @@ public class SensorActivity extends BaseActivity {
                 Log.d(DEBUG_TAG, "display result view");
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     /*

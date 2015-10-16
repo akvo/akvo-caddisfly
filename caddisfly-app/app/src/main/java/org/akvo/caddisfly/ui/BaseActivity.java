@@ -16,13 +16,17 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -33,10 +37,12 @@ import org.akvo.caddisfly.util.ApiUtil;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private String mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //setTheme(R.style.Flow_Theme);
         ApiUtil.lockScreenOrientation(this);
     }
 
@@ -49,14 +55,37 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         changeActionBarStyleBasedOnCurrentMode();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+        }
+
+        setTitle(mTitle);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        TextView textTitle = (TextView) findViewById(R.id.textToolbarTitle);
+        if (textTitle != null && title != null) {
+            mTitle = title.toString();
+            textTitle.setText(title);
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        TextView textTitle = (TextView) findViewById(R.id.textToolbarTitle);
+        if (textTitle != null && titleId != 0) {
+            mTitle = getString(titleId);
+            textTitle.setText(titleId);
+        }
     }
 
     /**
@@ -69,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
                         ContextCompat.getColor(this, R.color.diagnostic)));
             }
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.diagnostic_status));
             }
             LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
@@ -78,17 +107,33 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
 
         } else {
+
+            TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            int color = typedValue.data;
+
             if (getSupportActionBar() != null) {
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
-                        ContextCompat.getColor(this, R.color.primary)));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
             }
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
-            }
+
             LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
-                layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+                layoutTitle.setBackgroundColor(color);
             }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+                color = typedValue.data;
+
+                getWindow().setStatusBarColor(color);
+            }
+
+            final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            if (upArrow != null) {
+                upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+            }
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
     }
 }

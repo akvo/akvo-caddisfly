@@ -100,6 +100,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     //pointer to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
+    private boolean mIsAlignmentCheck;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -117,11 +118,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
         if (getSupportActionBar() != null) {
             if (mIsCalibration) {
-                getSupportActionBar().setTitle(String.format("%s %.2f %s",
+                setTitle(String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
                         mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit()));
             } else {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                setTitle("Select Dilution");
+                //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         }
     }
@@ -182,6 +184,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         });
         mShakeDetector.minShakeAcceleration = 5;
         mShakeDetector.maxShakeDuration = 2000;
+        mSensorManager.unregisterListener(mShakeDetector);
 
         Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
         Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);
@@ -231,6 +234,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             @Override
             public void onClick(View view) {
 
+                mIsAlignmentCheck = false;
                 mCameraDialog.stopCamera();
 
                 mViewAnimator.showNext();
@@ -250,7 +254,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
 
                 InitializeTest();
-
+                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                        SensorManager.SENSOR_DELAY_UI);
             }
         });
 
@@ -260,13 +265,19 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void startAlignmentCameraPreview() {
         mCameraDialog = CameraDialogFragment.newInstance();
 
+        setTitle("Check Alignment");
+
         getFragmentManager().beginTransaction()
                 .add(R.id.layoutCameraPreview, mCameraDialog)
                 .commit();
 
+        mIsAlignmentCheck = true;
+
     }
 
     private void InitializeTest() {
+
+        setTitle("Analyzing");
 
         mSensorManager.unregisterListener(mShakeDetector);
 
@@ -292,10 +303,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 camera.release();
             }
         }
-
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                SensorManager.SENSOR_DELAY_UI);
-
     }
 
     /**
@@ -341,6 +348,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         InitializeTest();
+                        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                                SensorManager.SENSOR_DELAY_UI);
+
                     }
                 },
                 new DialogInterface.OnClickListener() {
@@ -830,12 +840,22 @@ public class ColorimetryLiquidActivity extends BaseActivity
         } else if (retry) {
             mCameraFragment.dismiss();
             InitializeTest();
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
         } else {
             if (cancelled) {
                 Intent intent = new Intent(getIntent());
                 this.setResult(Activity.RESULT_CANCELED, intent);
             }
             releaseResources();
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mIsAlignmentCheck) {
             finish();
         }
     }

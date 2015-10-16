@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
@@ -114,7 +115,12 @@ public class AlertUtil {
 
         AlertDialog.Builder builder;
         if (isDestructive) {
-            builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom_Destructive);
+
+            TypedArray a = context.obtainStyledAttributes(R.styleable.BaseActivity);
+            int style = a.getResourceId(R.styleable.BaseActivity_dialogDestructiveButton, 0);
+            a.recycle();
+
+            builder = new AlertDialog.Builder(context, style);
         } else {
             builder = new AlertDialog.Builder(context);
         }

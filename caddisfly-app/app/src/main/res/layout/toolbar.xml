@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
 <!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
@@ -14,21 +17,25 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.TypeListActivity">
+    android:layout_height="?toolbarHeight"
+    android:layout_marginTop="?toolbarMargin"
+    android:background="?colorPrimary"
+    android:title=""
+    app:titleTextColor="?colorPrimary"
+    tools:showIn="@layout/activity_main">
 
-    <include layout="@layout/toolbar" />
-
-    <fragment
-        android:id="@+id/fragmentTypeList"
-        android:name="org.akvo.caddisfly.ui.TypeListFragment"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textToolbarTitle"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:context="org.akvo.caddisfly.ui.TypeListActivity"
-        tools:layout="@android:layout/list_content" />
-</LinearLayout>
+        android:gravity="center_vertical"
+        android:textColor="?android:textColorPrimaryInverse"
+        android:textSize="19sp" />
+</android.support.v7.widget.Toolbar>
 
+        

@@ -26,13 +26,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primary"
-            android:theme="@style/Base.Theme.AppCompat"
-            app:title="@string/appName" />
+        <include layout="@layout/toolbar" />
 
         <LinearLayout
             android:id="@+id/mainLayout"
@@ -46,7 +40,7 @@
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/arrow_right_light"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"

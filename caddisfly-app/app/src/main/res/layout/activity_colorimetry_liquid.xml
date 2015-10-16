@@ -15,19 +15,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:theme="@style/Base.Theme.AppCompat"
-        app:title="@string/appName" />
+    <include layout="@layout/toolbar" />
 
     <ViewAnimator
         android:id="@+id/viewAnimator"
@@ -62,7 +55,7 @@
                 android:minHeight="80dp"
                 android:minWidth="300dp"
                 android:text="@string/noDilution"
-                android:theme="@style/Button.Green" />
+                android:theme="?primaryButtonStyle" />
 
             <Button
                 android:id="@+id/buttonDilution1"
@@ -71,7 +64,7 @@
                 android:minHeight="80dp"
                 android:minWidth="300dp"
                 android:text="@string/timesDilution"
-                android:theme="@style/Button.Green" />
+                android:theme="?primaryButtonStyle" />
 
             <Button
                 android:id="@+id/buttonDilution2"
@@ -79,7 +72,7 @@
                 android:minHeight="80dp"
                 android:minWidth="300dp"
                 android:text="@string/timesDilution"
-                android:theme="@style/Button.Green" />
+                android:theme="?primaryButtonStyle" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,7 +140,7 @@
                 style="@style/Button"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/start"
-                android:theme="@style/Button.Orange" />
+                android:theme="?primaryButtonStyle" />
 
         </LinearLayout>
 

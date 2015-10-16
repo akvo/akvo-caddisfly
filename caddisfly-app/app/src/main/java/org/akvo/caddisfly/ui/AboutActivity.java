@@ -32,8 +32,6 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        setTitle(R.string.about);
-
         TextView productView = (TextView) findViewById(R.id.textVersion);
         productView.setText(CaddisflyApp.getAppVersion(this));
 
@@ -56,5 +54,11 @@ public class AboutActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(R.string.about);
     }
 }

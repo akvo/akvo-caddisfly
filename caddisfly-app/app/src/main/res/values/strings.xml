@@ -158,4 +158,5 @@
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample liquid</string>
+    <string name="noBackdropDetectionInUserMode">No backdrop detection in User Mode</string>
 </resources>

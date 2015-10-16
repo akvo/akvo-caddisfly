@@ -70,6 +70,10 @@ public class AppPreferences {
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionKey, false);
     }
 
+    public static boolean getNoBackdropDetectionInUserMode() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionInUserModeKey, false);
+    }
+
     public static boolean getShowDebugMessages() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
