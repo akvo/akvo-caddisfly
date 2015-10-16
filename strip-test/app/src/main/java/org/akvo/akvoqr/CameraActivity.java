@@ -52,6 +52,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private int numPatches;
     private Button startButton;
     private boolean startButtonClicked = false;
+    private int countQualityCheckIteration = 0;
+    private int countQualityCheckResult = 0;
     private Intent detectStripIntent;
 
 
@@ -199,8 +201,27 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
+    public void setCountQualityCheckResult(int count)
+    {
+        countQualityCheckIteration ++;
+        countQualityCheckResult += count;
+    }
+
+    public void setCountQualityCheckResultZero()
+    {
+        countQualityCheckResult = 0;
+    }
+
+    @Override
+    public void setCountQualityCheckIterationZero()
+    {
+        countQualityCheckIteration = 0;
+    }
+
+    @Override
     public void setStartButtonVisibility(boolean show)
     {
+
         startButton = (Button) findViewById(R.id.activity_cameraStartButton);
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +247,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
+
         Runnable hideRunnable = new Runnable() {
             @Override
             public void run() {
@@ -234,9 +256,32 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        if(show)
+//        Runnable warnRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                getMessage(1);
+//                handler.removeCallbacks(startNextPreview);
+//                CustomDialog cd = new CustomDialog();
+//                AlertDialog dialog = cd.createDialog(CameraActivity.this);
+//
+//                dialog.show();
+//            }
+//        };
+
+//        System.out.println("***countQualityCheckResult: " + countQualityCheckResult +
+//        " countQualityCheckIteration: " + countQualityCheckIteration);
+
+        if(countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT)
         {
             handler.post(showRunnable);
+        }
+        else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
+        {
+            handler.post(hideRunnable);
+            setCountQualityCheckResultZero();
+            setCountQualityCheckIterationZero();
+            //handler.post(warnRunnable);
         }
         else
         {
@@ -271,6 +316,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             } else {
 
+                handler.removeCallbacks(startNextPreview);
                 mCamera.setOneShotPreviewCallback(null);
             }
         }

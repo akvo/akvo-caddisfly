@@ -342,6 +342,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 focused = true;
             }
 
+            //count results only if checks have taken place
+            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+                listener.setCountQualityCheckResult(focused && exposure && contrast ? 1 : 0);
+            }
             return (focused && exposure && contrast);
         }
         catch (Exception e)

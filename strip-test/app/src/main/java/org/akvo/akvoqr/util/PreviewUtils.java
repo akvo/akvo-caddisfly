@@ -110,7 +110,8 @@ public class PreviewUtils {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
-        System.out.println("*** diff lum: minval = " + result.minVal + " maxval = " + result.maxVal);
+        //System.out.println("*** diff lum: minval = " + result.minVal + " maxval = " + result.maxVal);
+
         return result.maxVal - result.minVal;
     }
 

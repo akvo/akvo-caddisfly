@@ -32,4 +32,10 @@ public interface CameraViewListener {
     void setStartButtonVisibility(boolean show);
 
     boolean start();
+
+    void setCountQualityCheckResult(int count);
+
+    void setCountQualityCheckResultZero();
+
+    void setCountQualityCheckIterationZero();
 }
