@@ -20,8 +20,8 @@ import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.sensor.LightSensor;
+import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.PreviewUtils;
-import org.json.JSONException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -50,6 +50,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private boolean focused = true;
     private Handler handler;
     private  LightSensor lightSensor;
+    double shadowPercentage = 101;
 
     private Thread showFinderPatternThread = new Thread(
             new Runnable() {
@@ -255,7 +256,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     Mat posCentMat = bgr.submat(roi);
 
                     // find maximum of L-channel
-                    double maxLum =  (PreviewUtils.getMaxLuminosity(posCentMat) / 255) * 100;
+                    double maxLum =  (PreviewUtils.getDiffLuminosity(posCentMat) / 255) * 100;
                     maxLumList.add(maxLum);
 
                     // find focus value
@@ -266,53 +267,56 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
 
             //CHECK EXPOSURE.
-            if(lightSensor.hasLightSensor())
-            {
-                //the desired minimum lux is that of a brightly lit room indoors
-                double minLux = 1000;
-                double lux = (lightSensor.getLux() / minLux) * 100;
-
-                listener.showMaxLuminosity(lux);
-                exposure = lux > 70;
-            }
-            else
-            {
+//            if(lightSensor.hasLightSensor())
+//            {
+//                //the desired minimum lux is that of a brightly lit room indoors
+//                double minLux = 1000;
+//                double lux = (lightSensor.getLux() / minLux) * 100;
+//
+//                listener.showMaxLuminosity(lux);
+//                exposure = lux > 70;
+//            }
+//            else
+//            {
                 if(maxLumList.size()>0) {
                     Collections.sort(maxLumList);
                     listener.showMaxLuminosity(maxLumList.get(0));
-                    exposure = maxLumList.get(0) > 70;
+                    exposure = maxLumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
                 }
-            }
+//            }
 
             //DETECT SHADOWS
-            System.out.println("***xxx start shadow detection: ");
-            double shadowPercentage = 101;
+            //System.out.println("***xxx start shadow detection: ");
+
             if(info!=null) {
+
                 double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
                 double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
                 double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
                 double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
                 Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
 
-                try {
-                    shadowPercentage = PreviewUtils.getShadowValue(warp);
+                try
+                {
+                    //shadowPercentage = PreviewUtils.getShadowPercentage(warp);
+                    shadowPercentage = PreviewUtils.getContrastPercentage(warp);
 
-                    System.out.println("***xxx lines with shadows: " + shadowPercentage);
                 }
-                catch (JSONException e)
+                catch (Exception e)
                 {
                     e.printStackTrace();
                 }
             }
-            contrast = shadowPercentage < 30;
+            contrast = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
             listener.showContrast(shadowPercentage);
 
+            //FOCUS
             if(focusValList.size()>0) {
 
                 Collections.sort(focusValList);
                 listener.showFocusValue(focusValList.get(0));
 
-                if (focusValList.get(0) < 70) {
+                if (focusValList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
                     focused = false;
                     int count = 0;
                     while (!focused && camera != null && count < 100) {
@@ -338,6 +342,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 focused = true;
             }
 
+            //count results only if checks have taken place
+            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+                listener.setCountQualityCheckResult(focused && exposure && contrast ? 1 : 0);
+            }
             return (focused && exposure && contrast);
         }
         catch (Exception e)

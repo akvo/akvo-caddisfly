@@ -116,8 +116,8 @@ public class DetectStripActivity extends AppCompatActivity {
 
     public Mat getCalibratedImage(Mat mat)
     {
-        CalibrationCard calibrationCard = new CalibrationCard();
-        return calibrationCard.calibrateImage(this, mat);
+        CalibrationCard calibrationCard = CalibrationCard.getInstance(1);
+        return calibrationCard.calibrateImage(mat);
 
     }
 

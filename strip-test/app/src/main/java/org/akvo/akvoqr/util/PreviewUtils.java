@@ -1,5 +1,6 @@
 package org.akvo.akvoqr.util;
 
+import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,7 +100,7 @@ public class PreviewUtils {
 
 
 
-    public static double getMaxLuminosity(Mat bgr)
+    public static double getDiffLuminosity(Mat bgr)
     {
         Mat Lab = new Mat();
         List<Mat> channels = new ArrayList<>();
@@ -109,15 +110,53 @@ public class PreviewUtils {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
 
-        return result.maxVal;
+        //System.out.println("*** diff lum: minval = " + result.minVal + " maxval = " + result.maxVal);
+
+        return result.maxVal - result.minVal;
     }
 
+    /*method for shadow detection
+   * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
+   * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
+    */
+    public static double getContrastPercentage(Mat bgr) {
+
+        double sumLum = 0;
+        int count = 0;
+
+        Mat hls = new Mat();
+        Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS_FULL);
+
+        CalibrationCard card = CalibrationCard.getInstance(1);
+
+        double[][] points = card.createWhitePointArray(hls);
+
+        //get the sum total of luminosity values
+        for(int i=0; i< points.length; i++) {
+            sumLum += points[i][2];
+        }
+
+        double avgLum = sumLum/points.length;
+
+        for(int i=0; i < points.length; i++) {
+
+            double lum = points[i][2];
+            if((Math.abs(lum - avgLum)/255) * 100 > Constant.CONTRAST_DEVIATION_PERCENTAGE)
+            {
+                count ++;
+            }
+        }
+
+//        System.out.println("***zzz count =  " + count);
+//        System.out.println("***zzz count percentage =  " + ((double)count/points.length) * 100);
+        return ((double)count/points.length) * 100;
+    }
 
     /*method for shadow detection
     * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
     * @return : a percentage of how many lines have shadow.
      */
-    public static double getShadowValue(Mat warpMat) throws JSONException
+    public static double getShadowPercentage(Mat warpMat) throws JSONException
     {
         //NB: warpMat should be bgr color scheme
         Mat workMat = warpMat.clone();

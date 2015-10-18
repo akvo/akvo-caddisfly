@@ -52,6 +52,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private int numPatches;
     private Button startButton;
     private boolean startButtonClicked = false;
+    private int countQualityCheckIteration = 0;
+    private int countQualityCheckResult = 0;
     private Intent detectStripIntent;
 
 
@@ -199,8 +201,27 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
+    public void setCountQualityCheckResult(int count)
+    {
+        countQualityCheckIteration ++;
+        countQualityCheckResult += count;
+    }
+
+    public void setCountQualityCheckResultZero()
+    {
+        countQualityCheckResult = 0;
+    }
+
+    @Override
+    public void setCountQualityCheckIterationZero()
+    {
+        countQualityCheckIteration = 0;
+    }
+
+    @Override
     public void setStartButtonVisibility(boolean show)
     {
+
         startButton = (Button) findViewById(R.id.activity_cameraStartButton);
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +247,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
+
         Runnable hideRunnable = new Runnable() {
             @Override
             public void run() {
@@ -234,9 +256,32 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        if(show)
+//        Runnable warnRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                getMessage(1);
+//                handler.removeCallbacks(startNextPreview);
+//                CustomDialog cd = new CustomDialog();
+//                AlertDialog dialog = cd.createDialog(CameraActivity.this);
+//
+//                dialog.show();
+//            }
+//        };
+
+//        System.out.println("***countQualityCheckResult: " + countQualityCheckResult +
+//        " countQualityCheckIteration: " + countQualityCheckIteration);
+
+        if(countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT)
         {
             handler.post(showRunnable);
+        }
+        else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
+        {
+            handler.post(hideRunnable);
+            setCountQualityCheckResultZero();
+            setCountQualityCheckIterationZero();
+            //handler.post(warnRunnable);
         }
         else
         {
@@ -271,6 +316,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             } else {
 
+                handler.removeCallbacks(startNextPreview);
                 mCamera.setOneShotPreviewCallback(null);
             }
         }
@@ -280,7 +326,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showFocusValue(final double value)
     {
         final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
-        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -289,7 +334,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 if(messageFocusView !=null)
                     messageFocusView.setText(getString(R.string.focus) + ": " + String.format("%.0f",value) + " %");
 
-                if(value > minValue)
+                if(value > Constant.MIN_FOCUS_PERCENTAGE)
                 {
                     focusView.setImageResource(R.drawable.focus_green);
                 }
@@ -306,7 +351,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showMaxLuminosity(final double value){
 
         final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
-        final double minValue = 70;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -314,7 +358,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 if(messageLightView !=null)
                     messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
 
-                if(value > minValue)
+                if(value > Constant.MIN_LUMINOSITY_PERCENTAGE)
                 {
                     exposureView.setImageResource(R.drawable.exposure_green);
                 }
@@ -332,7 +376,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showContrast(final double value){
 
         final ImageView contrastView = (ImageView) findViewById(R.id.activity_cameraImageViewContrast);
-        final double minValue = 30;
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -345,7 +388,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                         messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
                     }
                 }
-                if(value < minValue)
+                if(value < Constant.MAX_SHADOW_PERCENTAGE)
                 {
                     contrastView.setImageResource(R.drawable.contrast_green);
                 }
