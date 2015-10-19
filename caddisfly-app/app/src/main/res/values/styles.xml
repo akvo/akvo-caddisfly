@@ -27,6 +27,7 @@
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Orange</item>
+        <item name="secondaryButtonStyle">@style/AppTheme.Button.Cyan</item>
         <item name="primaryBackgroundStyle">@color/gradient_center</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
@@ -78,6 +79,11 @@
     <style name="AppTheme.Button.Orange">
         <item name="colorButtonNormal">#ef6f20</item>
         <item name="colorControlHighlight">#c55b1a</item>
+    </style>
+
+    <style name="AppTheme.Button.Cyan">
+        <item name="colorButtonNormal">#016786</item>
+        <item name="colorControlHighlight">#004e66</item>
     </style>
 
     <style name="Button.Blue">

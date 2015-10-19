@@ -1027,7 +1027,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.textDilution2), withText(R.string.noDilution)))
+        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
         sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
@@ -1052,7 +1052,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
         sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
@@ -1076,7 +1076,7 @@ public class EspressoTest
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.textDilution2), withText(String.format(getActivity()
+        onView(allOf(withId(R.id.textDilution), withText(String.format(getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
         //Test Progress Screen

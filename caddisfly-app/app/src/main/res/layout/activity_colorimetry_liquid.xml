@@ -26,7 +26,7 @@
         android:id="@+id/layoutTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="?colorPrimary"
         android:orientation="vertical"
         android:paddingBottom="20dp"
         android:paddingEnd="10dp"
@@ -80,11 +80,11 @@
                 android:id="@+id/buttonNoDilution"
                 style="@style/Button"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:minHeight="70dp"
                 android:minWidth="300dp"
                 android:text="@string/noDilution"
-                android:theme="?primaryButtonStyle" />
+                android:theme="?secondaryButtonStyle" />
 
             <Button
                 android:id="@+id/buttonDilution1"
@@ -93,7 +93,7 @@
                 android:minHeight="70dp"
                 android:minWidth="300dp"
                 android:text="@string/timesDilution"
-                android:theme="?primaryButtonStyle" />
+                android:theme="?secondaryButtonStyle" />
 
             <Button
                 android:id="@+id/buttonDilution2"
@@ -101,7 +101,7 @@
                 android:minHeight="70dp"
                 android:minWidth="300dp"
                 android:text="@string/timesDilution"
-                android:theme="?primaryButtonStyle" />
+                android:theme="?secondaryButtonStyle" />
         </LinearLayout>
 
         <LinearLayout
@@ -153,17 +153,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@null"
                     android:src="@drawable/place_device" />
-
             </LinearLayout>
 
-            <!--<View-->
+            <!--<ProgressBar-->
+            <!--android:id="@+id/progressWait"-->
+            <!--style="?android:attr/progressBarStyleHorizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:indeterminate="true"-->
+            <!--android:indeterminateTint="#e6da06"-->
+            <!--android:indeterminateTintMode="src_in"-->
+            <!--android:scaleY="2"-->
+            <!--android:background="?colorPrimary"-->
+            <!--tools:ignore="UnusedAttribute" />-->
+            <!--<TextView-->
+            <!--android:text="Waiting..."-->
+            <!--android:textColor="#d6f6fdf6"-->
+            <!--android:textSize="17sp"-->
+            <!--android:paddingStart="15dp"-->
+            <!--android:paddingEnd="5dp"-->
+            <!--android:paddingTop="10dp"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
-            <!--android:background="#fff" />-->
+            <!--android:background="?colorPrimary" />-->
         </LinearLayout>
     </ViewAnimator>
 </LinearLayout>

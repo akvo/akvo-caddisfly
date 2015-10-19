@@ -21,9 +21,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -89,8 +92,12 @@ public class ExternalActionActivity extends BaseActivity {
                 );
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(mQuestionTitle));
                     alertTestTypeNotSupported(mQuestionTitle);
                 } else {
+                    Configuration config = getResources().getConfiguration();
+                    ((TextView) findViewById(R.id.textTitle)).setText(
+                            CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
                     if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
                             CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
                                     R.string.ok,
@@ -276,18 +283,7 @@ public class ExternalActionActivity extends BaseActivity {
      */
     private void alertTestTypeNotSupported(String title) {
 
-        //ensure we have short name to display as title
-        String itemName;
-        if (title.length() > 0) {
-            if (title.length() > 30) {
-                title = title.substring(0, 30);
-            }
-            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
-        } else {
-            itemName = getString(R.string.error);
-        }
-
-        String message = getString(R.string.errorTestNotAvailable, itemName);
+        String message = getString(R.string.errorTestNotAvailable, getTestName(title));
         message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message,
@@ -305,6 +301,21 @@ public class ExternalActionActivity extends BaseActivity {
                     }
                 }
         );
+    }
+
+    @NonNull
+    private String getTestName(String title) {
+        //ensure we have short name to display as title
+        String itemName;
+        if (title.length() > 0) {
+            if (title.length() > 30) {
+                title = title.substring(0, 30);
+            }
+            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
+        } else {
+            itemName = getString(R.string.error);
+        }
+        return itemName;
     }
 
     /**

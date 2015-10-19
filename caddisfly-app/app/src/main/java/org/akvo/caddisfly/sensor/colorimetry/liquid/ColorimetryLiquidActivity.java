@@ -258,17 +258,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
         setTitle("Check Alignment");
         textSubtitle.setText(R.string.alignChamber);
 
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                getFragmentManager().beginTransaction()
-                        .add(R.id.layoutCameraPreview, mCameraDialog)
-                        .commit();
-
-            }
-        }, 500);
+        getFragmentManager().beginTransaction()
+                .add(R.id.layoutCameraPreview, mCameraDialog)
+                .commit();
 
         mIsAlignmentCheck = true;
-
     }
 
     private void InitializeTest() {

@@ -17,6 +17,7 @@
 <resources>
     <declare-styleable name="BaseActivity">
         <attr name="primaryButtonStyle" format="reference" />
+        <attr name="secondaryButtonStyle" format="reference" />
         <attr name="dialogDestructiveButton" format="reference" />
         <attr name="primaryBackgroundStyle" format="reference" />
         <attr name="toolbarHeight" format="dimension" />
