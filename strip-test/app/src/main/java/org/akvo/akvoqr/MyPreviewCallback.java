@@ -290,7 +290,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if(focusList.size() > 0) {
                 Collections.sort(focusList);
                 listener.showFocusValue(focusList.get(0));
-                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
+                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE)
+                {
                     focused = false;
                     int count = 0;
                     // TODO Check if this actually focusses the camera.
@@ -304,7 +305,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         count++;
                     }
                 }
+                else
+                {
+                    focused = true;
+                }
             } else {
+
                 listener.showFocusValue(0);
             }
 
@@ -339,10 +345,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         //count results only if checks have taken place
             if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+                System.out.println("start button: " + focused + " " +  exposureQualOk + "  " + shadowQualOk);
                 listener.setCountQualityCheckResult(focused && exposureQualOk && shadowQualOk ? 1 : 0);
             }
 
-        return (focused && exposureQualOk && shadowQualOk);
+        return true;
+       // return (focused && exposureQualOk && shadowQualOk);
 
 //        try {
 //
