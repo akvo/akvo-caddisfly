@@ -227,100 +227,72 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             return false;
 
         Mat bgr = null;
-        List<Double> maxLumList = new ArrayList<>();
-        List<Double> focusValList = new ArrayList<>();
-        boolean exposure = false;
-        boolean contrast ;
+        List<Double> lumList = new ArrayList<>();
+        List<Double> focusList = new ArrayList<>();
+
+        boolean exposureQualOk = false;
+        boolean shadowQualOk = false;
+
+        double lumDiff;
+        double laplacian;
+        double lumQual;
+        double focusQual;
 
         try {
+            if (possibleCenters != null && possibleCenters.size() > 0) {
+                bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
-            bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
+                //convert preview data to Mat object
+                Mat convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
+                convert_mYuv.put(0, 0, data);
+                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
-            //convert preview data to Mat object
-            Mat convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
-            convert_mYuv.put(0, 0, data);
-            Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
-
-            //MAKE SUBMAT FOR EACH FINDER PATTERNS
-            if(possibleCenters!=null && possibleCenters.size()>0) {
+                Mat src_gray = new Mat();
                 for (int i = 0; i < possibleCenters.size(); i++) {
                     double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
 
+                    // find top left and bottom right coordinates of finder pattern
                     double minX = Math.max(possibleCenters.get(i).getX() - 4 * esModSize, 0);
                     double minY = Math.max(possibleCenters.get(i).getY() - 4 * esModSize, 0);
                     double maxX = Math.min(possibleCenters.get(i).getX() + 4 * esModSize, bgr.width());
                     double maxY = Math.min(possibleCenters.get(i).getY() + 4 * esModSize, bgr.height());
                     Point topLeft = new Point(minX, minY);
                     Point bottomRight = new Point(maxX, maxY);
+
+                    // make grayscale submat of finder pattern
                     org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
-                    Mat posCentMat = bgr.submat(roi);
+                    Imgproc.cvtColor(bgr.submat(roi), src_gray, Imgproc.COLOR_BGR2GRAY);
 
-                    // find maximum of L-channel
-                    double maxLum =  (PreviewUtils.getDiffLuminosity(posCentMat) / 255) * 100;
-                    maxLumList.add(maxLum);
+                    lumDiff = PreviewUtils.getDiffLuminosity(src_gray);
+                    laplacian = PreviewUtils.focusLaplacian1(src_gray);
 
-                    // find focus value
-                    double focusLaplacian = (PreviewUtils.focusLaplacian(posCentMat) / 255) * 100;
-                    focusValList.add(focusLaplacian);
+                    lumQual = 100 * lumDiff / 255;
+                    lumList.add(lumQual);
 
+                    // correct the focus quality parameter for the total luminosity range of the finder pattern
+                    // the factor of 0.5 means that 100% corresponds to the pattern goes from black to white within 2 pixels
+                    focusQual = 100 * (laplacian / (0.5 * lumDiff));
+                    focusList.add(focusQual);
                 }
             }
 
-            //CHECK EXPOSURE.
-//            if(lightSensor.hasLightSensor())
-//            {
-//                //the desired minimum lux is that of a brightly lit room indoors
-//                double minLux = 1000;
-//                double lux = (lightSensor.getLux() / minLux) * 100;
-//
-//                listener.showMaxLuminosity(lux);
-//                exposure = lux > 70;
-//            }
-//            else
-//            {
-                if(maxLumList.size()>0) {
-                    Collections.sort(maxLumList);
-                    listener.showMaxLuminosity(maxLumList.get(0));
-                    exposure = maxLumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
-                }
-//            }
-
-            //DETECT SHADOWS
-            //System.out.println("***xxx start shadow detection: ");
-
-            if(info!=null) {
-
-                double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
-                double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
-                double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
-                double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-                Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
-
-                try
-                {
-                    //shadowPercentage = PreviewUtils.getShadowPercentage(warp);
-                    shadowPercentage = PreviewUtils.getContrastPercentage(warp);
-
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+            //update quality icon exposure
+            if(lumList.size()>0) {
+                Collections.sort(lumList);
+                listener.showMaxLuminosity(lumList.get(0));
+                exposureQualOk = lumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
             }
-            contrast = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
-            listener.showContrast(shadowPercentage);
 
-            //FOCUS
-            if(focusValList.size()>0) {
-
-                Collections.sort(focusValList);
-                listener.showFocusValue(focusValList.get(0));
-
-                if (focusValList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
+            // update quality icon of the focus
+            // if focus is too low, do another round of focussing
+            if(focusList.size() > 0) {
+                Collections.sort(focusList);
+                listener.showFocusValue(focusList.get(0));
+                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
                     focused = false;
                     int count = 0;
+                    // TODO Check if this actually focusses the camera.
                     while (!focused && camera != null && count < 100) {
-
                         if (camera != null) {
                             camera.autoFocus(new Camera.AutoFocusCallback() {
                                 @Override
@@ -332,32 +304,170 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         count++;
                     }
                 }
-                else
+            }
+
+            // DETECT SHADOWS
+            if(info!=null) {
+                double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
+                double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
+                double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
+                double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
+                Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
+
+                try
                 {
-                    focused = true;
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
             }
-            else
-            {
-                focused = true;
-            }
 
-            //count results only if checks have taken place
-            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
-                listener.setCountQualityCheckResult(focused && exposure && contrast ? 1 : 0);
-            }
-            return (focused && exposure && contrast);
-        }
-        catch (Exception e)
-        {
+            shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+            listener.showShadow(shadowPercentage);
+
+        }  catch (Exception e) {
             e.printStackTrace();
-
             return false;
-        }
-        finally {
+        } finally {
             if(bgr!=null)
                 bgr.release();
         }
+
+        //count results only if checks have taken place
+            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+                listener.setCountQualityCheckResult(focused && exposureQualOk && shadowQualOk ? 1 : 0);
+            }
+
+        return (focused && exposureQualOk && shadowQualOk);
+
+//        try {
+//
+//            bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
+//
+//            //convert preview data to Mat object
+//            Mat convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
+//            convert_mYuv.put(0, 0, data);
+//            Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
+//
+//            //MAKE SUBMAT FOR EACH FINDER PATTERNS
+//            if(possibleCenters!=null && possibleCenters.size()>0) {
+//                for (int i = 0; i < possibleCenters.size(); i++) {
+//                    double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
+//
+//                    double minX = Math.max(possibleCenters.get(i).getX() - 4 * esModSize, 0);
+//                    double minY = Math.max(possibleCenters.get(i).getY() - 4 * esModSize, 0);
+//                    double maxX = Math.min(possibleCenters.get(i).getX() + 4 * esModSize, bgr.width());
+//                    double maxY = Math.min(possibleCenters.get(i).getY() + 4 * esModSize, bgr.height());
+//                    Point topLeft = new Point(minX, minY);
+//                    Point bottomRight = new Point(maxX, maxY);
+//                    org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
+//                    Mat posCentMat = bgr.submat(roi);
+//
+//                    // find maximum of L-channel
+//                    double maxLum =  (PreviewUtils.getDiffLuminosity(posCentMat) / 255) * 100;
+//                    maxLumList.add(maxLum);
+//
+//                    // find focus value
+//                    double focusLaplacian = (PreviewUtils.focusLaplacian(posCentMat) / 255) * 100;
+//                    focusValList.add(focusLaplacian);
+//
+//                }
+//            }
+//
+//            //CHECK EXPOSURE.
+////            if(lightSensor.hasLightSensor())
+////            {
+////                //the desired minimum lux is that of a brightly lit room indoors
+////                double minLux = 1000;
+////                double lux = (lightSensor.getLux() / minLux) * 100;
+////
+////                listener.showMaxLuminosity(lux);
+////                exposure = lux > 70;
+////            }
+////            else
+////            {
+//                if(maxLumList.size()>0) {
+//                    Collections.sort(maxLumList);
+//                    listener.showMaxLuminosity(maxLumList.get(0));
+//                    exposure = maxLumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
+//                }
+////            }
+//
+//            //DETECT SHADOWS
+//            //System.out.println("***xxx start shadow detection: ");
+//
+//            if(info!=null) {
+//
+//                double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
+//                double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
+//                double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
+//                double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
+//                Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
+//
+//                try
+//                {
+//                    //shadowPercentage = PreviewUtils.getShadowPercentage(warp);
+//                    shadowPercentage = PreviewUtils.getContrastPercentage(warp);
+//
+//                }
+//                catch (Exception e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//            contrast = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+//            listener.showShadow(shadowPercentage);
+//
+//            //FOCUS
+//            if(focusValList.size()>0) {
+//
+//                Collections.sort(focusValList);
+//                listener.showFocusValue(focusValList.get(0));
+//
+//                if (focusValList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
+//                    focused = false;
+//                    int count = 0;
+//                    while (!focused && camera != null && count < 100) {
+//
+//                        if (camera != null) {
+//                            camera.autoFocus(new Camera.AutoFocusCallback() {
+//                                @Override
+//                                public void onAutoFocus(boolean success, Camera camera) {
+//                                    if (success) focused = true;
+//                                }
+//                            });
+//                        }
+//                        count++;
+//                    }
+//                }
+//                else
+//                {
+//                    focused = true;
+//                }
+//            }
+//            else
+//            {
+//                focused = true;
+//            }
+//
+//            //count results only if checks have taken place
+//            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+//                listener.setCountQualityCheckResult(focused && exposure && contrast ? 1 : 0);
+//            }
+//            return (focused && exposure && contrast);
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//
+//            return false;
+//        }
+//        finally {
+//            if(bgr!=null)
+//                bgr.release();
+//        }
 
     }
 

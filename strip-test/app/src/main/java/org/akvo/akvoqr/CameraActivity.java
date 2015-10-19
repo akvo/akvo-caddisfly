@@ -373,7 +373,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public void showContrast(final double value){
+    public void showShadow(final double value){
 
         final ImageView contrastView = (ImageView) findViewById(R.id.activity_cameraImageViewContrast);
 

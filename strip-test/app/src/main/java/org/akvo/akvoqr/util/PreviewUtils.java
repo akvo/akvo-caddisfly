@@ -23,95 +23,115 @@ import java.util.List;
 public class PreviewUtils {
 
 
-    public static double focusStandardDev(Mat src)
-    {
-        MatOfDouble mean = new MatOfDouble();
-        MatOfDouble stddev = new MatOfDouble();
+//    public static double focusStandardDev(Mat src)
+//    {
+//        MatOfDouble mean = new MatOfDouble();
+//        MatOfDouble stddev = new MatOfDouble();
+//
+//        Core.meanStdDev(src, mean, stddev);
+//
+//        Scalar mu = new Scalar(0);
+//        Scalar sigma = new Scalar(0);
+//
+//        double focusMeasure = 0;
+//
+//        for(int i=0;i<mean.rows();i++) {
+//            for (int j = 0; j < mean.cols(); j++) {
+//                double[] d = mean.get(i, j);
+//                if (d[0] > 0 ) {
+//                    mu = new Scalar(d);
+//                }
+//                System.out.println("***mu: " + mu.toString());
+//
+//            }
+//        }
+//
+//        for(int i=0;i<stddev.rows();i++)
+//        {
+//            for(int j=0; j< stddev.cols();j++)
+//            {
+//                double[] d = stddev.get(i,j);
+//                if(d[0] > 0) {
+//                    sigma = new Scalar(d);
+//                }
+//                System.out.println("***sigma: " + sigma.toString());
+//
+//            }
+//        }
+//
+//        focusMeasure = (sigma.val[0]*sigma.val[0]) / mu.val[0];
+//
+//        return focusMeasure;
+//    }
 
-        Core.meanStdDev(src, mean, stddev);
 
-        Scalar mu = new Scalar(0);
-        Scalar sigma = new Scalar(0);
+//        System.out.println("*** start ****************************************");
+//        for (int j = 0; j < cols - 1; j++){
+//            System.out.println("*** point:" + (temp[j] & 0xFF));
+//        }
 
-        double focusMeasure = 0;
 
-        for(int i=0;i<mean.rows();i++) {
-            for (int j = 0; j < mean.cols(); j++) {
-                double[] d = mean.get(i, j);
-                if (d[0] > 0 ) {
-                    mu = new Scalar(d);
-                }
-                System.out.println("***mu: " + mu.toString());
+//
+//        for (int i = 0; i < src_gray.rows(); i++){
+//            src_gray.get(i, 0, temp);
+//            for (int j = 0; j < cols - 1; j++){
+//                diff = Math.abs(temp[j] & 0xFF - temp[j + 1] & 0xFF);
+//                if (diff > maxDiff){
+//                    maxDiff = diff;
+//                    System.out.println("*** max changing!");
+//                    System.out.println("*** point 1:" + (temp[j] & 0xFF) + ", point 2:" + (temp[j+1] & 0xFF);
+//                    System.out.println("*** diff:" + diff + ", max diff:" + maxDiff);
+//                }
+//            }
+//        }
+//        return maxDiff;
+//    }
 
+//    public static double focusLaplacian(Mat src_gray) {
+//
+//        int kernel_size = 3;
+//        int scale = 1;
+//        int delta = 0;
+//        int ddepth = CvType.CV_8UC1;
+//        double maxLap = -32767;
+//
+//        Mat dst = new Mat();
+//
+//        Imgproc.Laplacian(src_gray, dst, ddepth, kernel_size, scale, delta, Core.BORDER_DEFAULT);
+//
+//        if (!dst.empty()) {
+//            Core.MinMaxLocResult result = Core.minMaxLoc(dst);
+//            maxLap = result.maxVal;
+//        }
+//        return maxLap;
+//    }
+
+    public static double focusLaplacian1(Mat src_gray) {
+        double maxDiff = 0.0;
+        double diff;
+        byte[] temp = new byte[src_gray.cols()];
+        int cols = src_gray.cols();
+
+        // only sample the line in the middle of the finder pattern
+        src_gray.get(Math.round(src_gray.rows() / 2), 0, temp);
+
+        for (int j = 0; j < cols - 1; j++){
+            diff = Math.abs((temp[j] & 0xFF) - (temp[j + 1] & 0xFF));
+            if (diff > maxDiff){
+                maxDiff = diff;
             }
         }
-
-        for(int i=0;i<stddev.rows();i++)
-        {
-            for(int j=0; j< stddev.cols();j++)
-            {
-                double[] d = stddev.get(i,j);
-                if(d[0] > 0) {
-                    sigma = new Scalar(d);
-                }
-                System.out.println("***sigma: " + sigma.toString());
-
-            }
-        }
-
-        focusMeasure = (sigma.val[0]*sigma.val[0]) / mu.val[0];
-
-        return focusMeasure;
+        return maxDiff;
     }
 
-    public static double focusLaplacian(Mat src) {
 
-        int kernel_size = 3;
-        int scale = 1;
-        int delta = 0;
-        int ddepth = CvType.CV_8UC1;
-        double maxLap = -32767;
-
-        Mat src_gray = new Mat();
-        Mat dst = new Mat();
-
-        Imgproc.GaussianBlur(src, src, new Size(3, 3), 0, 0, Core.BORDER_DEFAULT);
-        Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
-
-        Imgproc.Laplacian(src_gray, dst, ddepth, kernel_size, scale, delta, Core.BORDER_DEFAULT);
-
-        if (!dst.empty()) {
-
-            for (int i = 0; i < dst.rows(); i++) {
-
-                for (int j = 0; j < dst.cols(); j++) {
-
-                    double[] pixelData = dst.get(i, j);
-                    if (pixelData != null && pixelData.length > 0) {
-                        if (pixelData[0] > maxLap)
-                            maxLap = pixelData[0];
-                    }
-
-                }
-            }
-        }
-        return maxLap;
-    }
-
-
-
-    public static double getDiffLuminosity(Mat bgr)
+    public static double getDiffLuminosity(Mat src_gray)
     {
         Mat Lab = new Mat();
         List<Mat> channels = new ArrayList<>();
-        Imgproc.cvtColor(bgr, Lab, Imgproc.COLOR_RGB2Lab);
-        Core.split(Lab, channels);
 
         //find min and max luminosity
-        Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
-
-        //System.out.println("*** diff lum: minval = " + result.minVal + " maxval = " + result.maxVal);
-
+        Core.MinMaxLocResult result = Core.minMaxLoc(src_gray);
         return result.maxVal - result.minVal;
     }
 
@@ -119,7 +139,7 @@ public class PreviewUtils {
    * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
    * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
     */
-    public static double getContrastPercentage(Mat bgr) {
+    public static double getShadowPercentage(Mat bgr) {
 
         double sumLum = 0;
         int count = 0;
@@ -136,12 +156,13 @@ public class PreviewUtils {
             sumLum += points[i][2];
         }
 
-        double avgLum = sumLum/points.length;
+        double avgLum = sumLum / points.length;
+        double avgLumReciproc = 1.0 / avgLum;
 
         for(int i=0; i < points.length; i++) {
 
             double lum = points[i][2];
-            if((Math.abs(lum - avgLum)/255) * 100 > Constant.CONTRAST_DEVIATION_PERCENTAGE)
+            if((Math.abs(lum - avgLum) * avgLumReciproc) > Constant.CONTRAST_DEVIATION_FRACTION)
             {
                 count ++;
             }
@@ -149,131 +170,131 @@ public class PreviewUtils {
 
 //        System.out.println("***zzz count =  " + count);
 //        System.out.println("***zzz count percentage =  " + ((double)count/points.length) * 100);
-        return ((double)count/points.length) * 100;
+        return ((double)count / points.length) * 100;
     }
 
-    /*method for shadow detection
-    * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
-    * @return : a percentage of how many lines have shadow.
-     */
-    public static double getShadowPercentage(Mat warpMat) throws JSONException
-    {
-        //NB: warpMat should be bgr color scheme
-        Mat workMat = warpMat.clone();
-        Mat gray = new Mat();
-        List<Double> minValList = new ArrayList<>();
-        List<Double> maxValList = new ArrayList<>();
-
-        //how much shadow do we tolerate?
-        double maxDiff = 30;
-        double totalLinesWithShadow = 0;
-
-        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
-        JSONObject calObj = new JSONObject(json);
-
-        JSONObject calData = calObj.getJSONObject("calData");
-        double hsize = calData.getDouble("hsize");
-        double vsize = calData.getDouble("vsize");
-        double hratio = warpMat.width()/hsize;
-        double vratio = warpMat.height()/vsize;
-
-        JSONObject whiteData = calObj.getJSONObject("whiteData");
-        JSONArray lines = whiteData.getJSONArray("lines");
-
-        JSONArray pArr;
-        for(int i=0; i < lines.length(); i++)
-        {
-            JSONObject lineObj = lines.getJSONObject(i);
-            pArr = lineObj.getJSONArray("p");
-            double width = lineObj.getDouble("width");
-
-            //if line is vertical, xdiff will be zero. Then we take the value of width to be the xdiff
-            //subtract x values
-            double xdiff = Math.max(width * hratio, (pArr.getDouble(2) - pArr.getDouble(0)) * hratio);
-
-            //if line is horizontal, ydiff will be zero. Then we take the value of width to be the ydiff
-            //subtract y values
-            double ydiff = Math.max(width * vratio, (pArr.getDouble(3) - pArr.getDouble(1))*vratio);
-
-
-            //create rectangle to make a submat
-            Rect whiteRect = new Rect(
-                    (int)Math.floor(pArr.getDouble(0) * hratio),
-                    (int)Math.floor(pArr.getDouble(1) * vratio),
-                    (int)Math.floor(xdiff),
-                    (int)Math.floor(ydiff));
-
-            Mat submat = workMat.submat(whiteRect).clone();
-
-            //convert to gray
-            Imgproc.cvtColor(submat, gray, Imgproc.COLOR_BGR2GRAY);
-
-            //blur the image to exclude noise
-            Imgproc.medianBlur(gray, gray, 5);
-
-            //get the min and max value of the gray mat
-            Core.MinMaxLocResult minMaxLocResult = Core.minMaxLoc(gray);
-
-            //add min and max values to list for later cross-checking
-            minValList.add(minMaxLocResult.minVal);
-            maxValList.add(minMaxLocResult.maxVal);
-
-            //calculate the difference between min and max values
-            double grayDiff = minMaxLocResult.maxVal - minMaxLocResult.minVal;
-
-            //System.out.println("***shadow grayDiff: " + i + " = " + grayDiff);
-
-            //if the difference between min gray and max gray is higher than maxDiff
-            //we have a shadow
-            if(grayDiff > maxDiff)
-            {
-                totalLinesWithShadow ++;
-            }
-
-            //visualise for debugging purposes
-           /* Point point1 = new Point((int)Math.floor(pArr.getDouble(0) * hratio),
-                    (int)Math.floor(pArr.getDouble(1) * vratio));
-            Point point2 = new Point((int)Math.floor(pArr.getDouble(2) * hratio),
-                    (int)Math.floor(pArr.getDouble(3) * vratio));
-
-            Imgproc.rectangle(warpMat, point1, point2, new Scalar(0, 0, 255, 255), 1);
-            //visualise min and max
-            Point minLoc = new Point(minMaxLocResult.minLoc.x + (pArr.getDouble(0) * hratio),
-                    minMaxLocResult.minLoc.y + (pArr.getDouble(1) * vratio));
-            Point maxLoc = new Point(minMaxLocResult.maxLoc.x + (pArr.getDouble(2) * hratio),
-                    minMaxLocResult.maxLoc.y);
-
-            Scalar color;
-            if(xdiff>ydiff)
-            {
-               color = new Scalar(255, 0, 255, 255);
-            }
-            else
-            {
-               color = new Scalar(0, 255, 255, 255);
-            }
-            Imgproc.circle(warpMat, minLoc, 5, new Scalar(0, 255, 0, 255), -1);
-           Imgproc.circle(warpMat, maxLoc, 10, color, -1);
-           */
-        }
-
-        /*do a cross check */
-        //sort min and max values arraylist ascending
-        Collections.sort(minValList);
-        Collections.sort(maxValList);
-
-        //what is the difference between lowest and highest
-        double minValDiff = minValList.get(minValList.size()-1) - minValList.get(0);
-        double maxValDiff = maxValList.get(maxValList.size()-1) - maxValList.get(0);
-
-        //if difference is larger than maxDiff, we have a shadow
-        if(minValDiff > maxDiff || maxValDiff > maxDiff)
-        {
-            totalLinesWithShadow ++;
-        }
-        workMat.release();
-        gray.release();
-
-        return totalLinesWithShadow/(lines.length()+2) * 100;
-    }
+//    /*method for shadow detection
+//    * @param Mat : a 'cut-out' of the test card between the centers of the finder patterns.
+//    * @return : a percentage of how many lines have shadow.
+//     */
+//    public static double getShadowPercentage(Mat warpMat) throws JSONException
+//    {
+//        //NB: warpMat should be bgr color scheme
+//        Mat workMat = warpMat.clone();
+//        Mat gray = new Mat();
+//        List<Double> minValList = new ArrayList<>();
+//        List<Double> maxValList = new ArrayList<>();
+//
+//        //how much shadow do we tolerate?
+//        double maxDiff = 30;
+//        double totalLinesWithShadow = 0;
+//
+//        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
+//        JSONObject calObj = new JSONObject(json);
+//
+//        JSONObject calData = calObj.getJSONObject("calData");
+//        double hsize = calData.getDouble("hsize");
+//        double vsize = calData.getDouble("vsize");
+//        double hratio = warpMat.width()/hsize;
+//        double vratio = warpMat.height()/vsize;
+//
+//        JSONObject whiteData = calObj.getJSONObject("whiteData");
+//        JSONArray lines = whiteData.getJSONArray("lines");
+//
+//        JSONArray pArr;
+//        for(int i=0; i < lines.length(); i++)
+//        {
+//            JSONObject lineObj = lines.getJSONObject(i);
+//            pArr = lineObj.getJSONArray("p");
+//            double width = lineObj.getDouble("width");
+//
+//            //if line is vertical, xdiff will be zero. Then we take the value of width to be the xdiff
+//            //subtract x values
+//            double xdiff = Math.max(width * hratio, (pArr.getDouble(2) - pArr.getDouble(0)) * hratio);
+//
+//            //if line is horizontal, ydiff will be zero. Then we take the value of width to be the ydiff
+//            //subtract y values
+//            double ydiff = Math.max(width * vratio, (pArr.getDouble(3) - pArr.getDouble(1))*vratio);
+//
+//
+//            //create rectangle to make a submat
+//            Rect whiteRect = new Rect(
+//                    (int)Math.floor(pArr.getDouble(0) * hratio),
+//                    (int)Math.floor(pArr.getDouble(1) * vratio),
+//                    (int)Math.floor(xdiff),
+//                    (int)Math.floor(ydiff));
+//
+//            Mat submat = workMat.submat(whiteRect).clone();
+//
+//            //convert to gray
+//            Imgproc.cvtColor(submat, gray, Imgproc.COLOR_BGR2GRAY);
+//
+//            //blur the image to exclude noise
+//            Imgproc.medianBlur(gray, gray, 5);
+//
+//            //get the min and max value of the gray mat
+//            Core.MinMaxLocResult minMaxLocResult = Core.minMaxLoc(gray);
+//
+//            //add min and max values to list for later cross-checking
+//            minValList.add(minMaxLocResult.minVal);
+//            maxValList.add(minMaxLocResult.maxVal);
+//
+//            //calculate the difference between min and max values
+//            double grayDiff = minMaxLocResult.maxVal - minMaxLocResult.minVal;
+//
+//            //System.out.println("***shadow grayDiff: " + i + " = " + grayDiff);
+//
+//            //if the difference between min gray and max gray is higher than maxDiff
+//            //we have a shadow
+//            if(grayDiff > maxDiff)
+//            {
+//                totalLinesWithShadow ++;
+//            }
+//
+//            //visualise for debugging purposes
+//           /* Point point1 = new Point((int)Math.floor(pArr.getDouble(0) * hratio),
+//                    (int)Math.floor(pArr.getDouble(1) * vratio));
+//            Point point2 = new Point((int)Math.floor(pArr.getDouble(2) * hratio),
+//                    (int)Math.floor(pArr.getDouble(3) * vratio));
+//
+//            Imgproc.rectangle(warpMat, point1, point2, new Scalar(0, 0, 255, 255), 1);
+//            //visualise min and max
+//            Point minLoc = new Point(minMaxLocResult.minLoc.x + (pArr.getDouble(0) * hratio),
+//                    minMaxLocResult.minLoc.y + (pArr.getDouble(1) * vratio));
+//            Point maxLoc = new Point(minMaxLocResult.maxLoc.x + (pArr.getDouble(2) * hratio),
+//                    minMaxLocResult.maxLoc.y);
+//
+//            Scalar color;
+//            if(xdiff>ydiff)
+//            {
+//               color = new Scalar(255, 0, 255, 255);
+//            }
+//            else
+//            {
+//               color = new Scalar(0, 255, 255, 255);
+//            }
+//            Imgproc.circle(warpMat, minLoc, 5, new Scalar(0, 255, 0, 255), -1);
+//           Imgproc.circle(warpMat, maxLoc, 10, color, -1);
+//           */
+//        }
+//
+//        /*do a cross check */
+//        //sort min and max values arraylist ascending
+//        Collections.sort(minValList);
+//        Collections.sort(maxValList);
+//
+//        //what is the difference between lowest and highest
+//        double minValDiff = minValList.get(minValList.size()-1) - minValList.get(0);
+//        double maxValDiff = maxValList.get(maxValList.size()-1) - maxValList.get(0);
+//
+//        //if difference is larger than maxDiff, we have a shadow
+//        if(minValDiff > maxDiff || maxValDiff > maxDiff)
+//        {
+//            totalLinesWithShadow ++;
+//        }
+//        workMat.release();
+//        gray.release();
+//
+//        return totalLinesWithShadow/(lines.length()+2) * 100;
+//    }
 }
