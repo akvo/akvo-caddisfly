@@ -18,9 +18,10 @@ public class Constant {
     public static final String BOTTOMRIGHT = "org.akvo.akvoqr.bottomright";
     public static final String FINDERPATTERNBUNDLE = "org.akvo.akvoqr.finderpatternbundle";
     public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
-    public static final double MIN_LUMINOSITY_PERCENTAGE = 70;
-    public static final double MAX_SHADOW_PERCENTAGE = 30;
+    public static final double MIN_LUMINOSITY_PERCENTAGE = 60;
+    public static final double MAX_SHADOW_PERCENTAGE = 10;
     public static final double MIN_FOCUS_PERCENTAGE = 70;
     public static final double CONTRAST_DEVIATION_FRACTION = 0.05;
+    public static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
     public static final int COUNT_QUALITY_CHECK_LIMIT = 10;
 }

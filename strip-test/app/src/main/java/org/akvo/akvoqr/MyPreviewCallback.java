@@ -277,10 +277,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
 
             //update quality icon exposure
-            if(lumList.size()>0) {
+            if(lumList.size() > 0) {
                 Collections.sort(lumList);
                 listener.showMaxLuminosity(lumList.get(0));
                 exposureQualOk = lumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
+            } else {
+                listener.showMaxLuminosity(0);
             }
 
             // update quality icon of the focus
@@ -293,21 +295,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     int count = 0;
                     // TODO Check if this actually focusses the camera.
                     while (!focused && camera != null && count < 100) {
-                        if (camera != null) {
-                            camera.autoFocus(new Camera.AutoFocusCallback() {
+                        camera.autoFocus(new Camera.AutoFocusCallback() {
                                 @Override
                                 public void onAutoFocus(boolean success, Camera camera) {
                                     if (success) focused = true;
                                 }
                             });
-                        }
                         count++;
                     }
                 }
+            } else {
+                listener.showFocusValue(0);
             }
 
             // DETECT SHADOWS
-            if(info!=null) {
+            if(info != null) {
                 double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
                 double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
                 double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
