@@ -20,13 +20,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -40,11 +37,9 @@ import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 
-public class ExternalActionActivity extends Activity {
+public class ExternalActionActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
     private final WeakRefHandler handler = new WeakRefHandler(this);
@@ -56,6 +51,15 @@ public class ExternalActionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_action);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        setTitle(R.string.appName);
     }
 
     @Override
@@ -77,7 +81,7 @@ public class ExternalActionActivity extends Activity {
                 //todo: fix FLOW to return language code
                 mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
 
-                //setAppLanguage(mExternalAppLanguageCode);
+                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 
                 //Extract the 5 letter code in the question and load the test config
                 CaddisflyApp.getApp().loadTestConfiguration(
@@ -118,7 +122,13 @@ public class ExternalActionActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
                     }
-                }, null
+                }, null,
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }
         );
     }
 
@@ -135,8 +145,7 @@ public class ExternalActionActivity extends Activity {
         message = String.format("%s\r\n\r\n%s", message,
                 getString(R.string.doYouWantToCalibrate));
 
-        AlertUtil.showAlert(this, R.string.cannotStartTest,
-                message, R.string.calibrate,
+        AlertUtil.showAlert(this, R.string.cannotStartTest, message, R.string.calibrate,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -152,6 +161,13 @@ public class ExternalActionActivity extends Activity {
                         activity.setResult(Activity.RESULT_CANCELED);
                         finish();
                     }
+                },
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        activity.setResult(Activity.RESULT_CANCELED);
+                        finish();
+                    }
                 }
         );
     }
@@ -160,76 +176,7 @@ public class ExternalActionActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        setAppLanguage(mExternalAppLanguageCode);
-    }
-
-    /**
-     * Sets the language of the app on start. The language can be one of system language, language
-     * set in the app preferences or language requested via the languageCode parameter
-     *
-     * @param languageCode If null uses language from app preferences else uses this value
-     */
-    private void setAppLanguage(String languageCode) {
-        assert getApplicationContext() != null;
-
-        Locale locale;
-
-        //the languages supported by the app
-        String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
-
-        //the current system language set in the device settings
-        String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
-
-        //the language the system was set to the last time the app was run
-        String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
-
-        //if the system language was changed in the device settings then set that as the app language
-        if (!previousSystemLanguage.equals(currentSystemLanguage)
-                && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
-            PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
-            PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
-        }
-
-        if (languageCode == null || !Arrays.asList(supportedLanguages).contains(languageCode)) {
-            //if requested language code is not supported then use language from preferences
-            languageCode = PreferencesUtil.getString(this, R.string.languageKey, "");
-            if (!Arrays.asList(supportedLanguages).contains(languageCode)) {
-                //no language was selected in the app settings so use the system language
-                String currentLanguage = getResources().getConfiguration().locale.getLanguage();
-                if (currentLanguage.equals(currentSystemLanguage)) {
-                    //app is already set to correct language
-                    return;
-                } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
-                    //set to system language
-                    languageCode = currentSystemLanguage;
-                } else {
-                    //no supported languages found just default to English
-                    languageCode = "en";
-                }
-            }
-        }
-
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration config = res.getConfiguration();
-
-        locale = new Locale(languageCode);
-
-        //if the app language is not already set to languageCode then set it now
-        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
-
-            config.locale = locale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                config.setLayoutDirection(locale);
-            }
-            res.updateConfiguration(config, dm);
-
-            //if this session was launched from an external app then do not restart this app
-            if (!mIsExternalAppCall) {
-                Message msg = handler.obtainMessage();
-                handler.sendMessage(msg);
-            }
-        }
+        CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
     }
 
     /**
@@ -256,6 +203,7 @@ public class ExternalActionActivity extends Activity {
                 }
 
                 final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
+                colorimetricLiquidIntent.putExtra("isExternal", mIsExternalAppCall);
                 startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
 
                 break;
@@ -267,11 +215,40 @@ public class ExternalActionActivity extends Activity {
                 break;
             case SENSOR:
 
-                final Intent sensorIntent = new Intent(context, SensorActivity.class);
-                startActivityForResult(sensorIntent, REQUEST_TEST);
-
+                //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
+                boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
+                if (hasOtg) {
+                    final Intent sensorIntent = new Intent(context, SensorActivity.class);
+                    startActivityForResult(sensorIntent, REQUEST_TEST);
+                } else {
+                    alertFeatureNotSupported();
+                }
                 break;
         }
+    }
+
+    /**
+     * Alert shown when a feature is not supported by the device
+     */
+    private void alertFeatureNotSupported() {
+        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtil.showAlert(this, R.string.notSupported, message,
+                R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null,
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }
+        );
     }
 
     @Override
@@ -320,7 +297,13 @@ public class ExternalActionActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
                     }
-                }, null
+                }, null,
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }
         );
     }
 

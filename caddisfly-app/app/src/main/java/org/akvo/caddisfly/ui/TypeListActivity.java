@@ -59,7 +59,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 break;
             case SENSOR:
                 //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
-                boolean hasOtg = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
+                boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     AlertUtil.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
                             R.string.calibrate, R.string.cancel, true,
@@ -70,7 +70,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                                 }
-                            });
+                            }, null);
                 } else {
                     alertFeatureNotSupported();
                 }

@@ -82,8 +82,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private double mSwatchValue;
     private int mDilutionLevel = 0;
     private DiagnosticResultDialog mResultFragment;
-    private TextView mDilutionTextView;
-    private TextView mDilutionTextView1;
+    private TextView textDilution;
     private SoundPoolPlayer sound;
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
@@ -101,6 +100,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
     private boolean mIsAlignmentCheck;
+    private TextView textSubtitle;
 
     @SuppressWarnings("SameParameterValue")
     private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
@@ -118,12 +118,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
         if (getSupportActionBar() != null) {
             if (mIsCalibration) {
-                setTitle(String.format("%s %.2f %s",
+                String subTitle = String.format("%s %.2f %s",
                         getResources().getString(R.string.calibrate),
-                        mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit()));
+                        mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
+                textDilution.setText(subTitle);
+                //textDilution1.setText(subTitle);
             } else {
                 setTitle("Select Dilution");
-                //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         }
     }
@@ -139,16 +140,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         sound = new SoundPoolPlayer(this);
 
-        mDilutionTextView = (TextView) findViewById(R.id.textDilution);
-        mDilutionTextView1 = (TextView) findViewById(R.id.textDilution2);
-
-        if (!mIsCalibration && CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
-            mDilutionTextView.setVisibility(View.VISIBLE);
-            mDilutionTextView1.setVisibility(View.VISIBLE);
-        } else {
-            mDilutionTextView.setVisibility(View.GONE);
-            mDilutionTextView1.setVisibility(View.GONE);
-        }
+        textDilution = (TextView) findViewById(R.id.textDilution);
+        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
         mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
@@ -198,8 +191,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             @Override
             public void onClick(View view) {
                 mDilutionLevel = 0;
-                mDilutionTextView.setText(R.string.noDilution);
-                mDilutionTextView1.setText(R.string.noDilution);
+                textDilution.setText(R.string.noDilution);
                 mViewAnimator.showNext();
                 startAlignmentCameraPreview();
             }
@@ -210,8 +202,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             public void onClick(View view) {
                 mDilutionLevel = 1;
                 String dilutionLabel = String.format(getString(R.string.timesDilution), 2);
-                mDilutionTextView.setText(dilutionLabel);
-                mDilutionTextView1.setText(dilutionLabel);
+                textDilution.setText(dilutionLabel);
                 mViewAnimator.showNext();
                 startAlignmentCameraPreview();
             }
@@ -222,13 +213,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
             public void onClick(View view) {
                 mDilutionLevel = 2;
                 String dilutionLabel = String.format(getString(R.string.timesDilution), 5);
-                mDilutionTextView.setText(dilutionLabel);
-                mDilutionTextView1.setText(dilutionLabel);
+                textDilution.setText(dilutionLabel);
                 mViewAnimator.showNext();
                 startAlignmentCameraPreview();
             }
         });
-
 
         findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,22 +243,29 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
 
                 InitializeTest();
+
+                textSubtitle.setText(R.string.placeDevice);
+
                 mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                         SensorManager.SENSOR_DELAY_UI);
             }
         });
-
-
     }
 
     private void startAlignmentCameraPreview() {
         mCameraDialog = CameraDialogFragment.newInstance();
 
         setTitle("Check Alignment");
+        textSubtitle.setText(R.string.alignChamber);
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.layoutCameraPreview, mCameraDialog)
-                .commit();
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.layoutCameraPreview, mCameraDialog)
+                        .commit();
+
+            }
+        }, 500);
 
         mIsAlignmentCheck = true;
 
@@ -277,7 +273,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     private void InitializeTest() {
 
-        setTitle("Analyzing");
+        setTitle("Analysis");
 
         mSensorManager.unregisterListener(mShakeDetector);
 
@@ -356,12 +352,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(getIntent());
-                        setResult(Activity.RESULT_CANCELED, intent);
                         releaseResources();
+                        setResult(Activity.RESULT_CANCELED);
                         finish();
                     }
-                }
+                }, null
         );
     }
 
@@ -412,18 +407,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             );
         }
-        //else {
-        //          textResult.setText(String.format("%.2f %s", mSwatchValue, testInfo.getUnit()));
-        //        textResult.setVisibility(View.VISIBLE);
-        //}
 
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
 
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.textTitle2)).setText(testInfo.getName(conf.locale.getLanguage()));
-        ((TextView) findViewById(R.id.textTitle3)).setText(testInfo.getName(conf.locale.getLanguage()));
 
         if (testInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
@@ -449,7 +438,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
                     }
-                }, null);
+                }, null, null);
     }
 
     /**
@@ -790,20 +779,17 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
         releaseResources();
-        Intent intent = new Intent(getIntent());
-        this.setResult(Activity.RESULT_CANCELED, intent);
         if (alertDialogToBeDestroyed != null) {
             alertDialogToBeDestroyed.dismiss();
         }
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 
     @Override
     public void onBackPressed() {
-        releaseResources();
-        Intent intent = new Intent(getIntent());
-        this.setResult(Activity.RESULT_CANCELED, intent);
         super.onBackPressed();
+        releaseResources();
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
@@ -843,11 +829,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                     SensorManager.SENSOR_DELAY_UI);
         } else {
-            if (cancelled) {
-                Intent intent = new Intent(getIntent());
-                this.setResult(Activity.RESULT_CANCELED, intent);
-            }
             releaseResources();
+            if (cancelled) {
+                setResult(Activity.RESULT_CANCELED);
+            }
             finish();
         }
     }

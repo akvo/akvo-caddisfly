@@ -23,20 +23,20 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="primaryButtonStyle">@style/AppTheme.Button.Orange</item>
         <item name="dialogDestructiveButton">@style/AppTheme.Dialog.Destructive</item>
         <item name="primaryBackgroundStyle">@color/gradient_center</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/secondary_accent</item>
+        <item name="progressTintInverse">@color/accent</item>
     </style>
 
     <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-    </style>
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog"></style>
 
     <style name="AppTheme.Dialog.Destructive">
         <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>

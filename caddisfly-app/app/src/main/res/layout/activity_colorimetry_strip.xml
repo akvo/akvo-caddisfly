@@ -55,7 +55,7 @@
         style="@style/Button"
         android:layout_marginTop="10dp"
         android:text="@string/backToSurvey"
-        android:theme="@style/Button.Orange" />
+        android:theme="?primaryButtonStyle" />
 
 </LinearLayout>
 

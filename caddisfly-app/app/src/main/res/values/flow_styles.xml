@@ -22,9 +22,9 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/orange_main</item>
         <item name="android:textColorPrimaryInverse">@color/orange_main</item>
+        <item name="android:textColorSecondaryInverse">@color/white</item>
         <item name="android:textColor">@color/black_main</item>
         <item name="android:windowContentOverlay">@null</item>
-
         <item name="android:windowBackground">@color/background_main</item>
         <item name="android:listViewStyle">@style/Flow.ListView</item>
         <item name="primaryButtonStyle">@style/Flow.Button.Green</item>
@@ -39,11 +39,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="Flow.Dialog" parent="Theme.AppCompat.Light.Dialog"></style>
+    <style name="Flow.Dialog" parent="Theme.AppCompat.Light.Dialog" />
 
-    <style name="Flow.Dialog.Destructive">
-        <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>
-    </style>
+    <style name="Flow.Dialog.Destructive" />
 
     <!--<style name="Flow.Dialog" parent="@android:style/Theme.Dialog">-->
     <!--<item name="android:textColor">@color/white</item>-->

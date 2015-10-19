@@ -77,8 +77,7 @@
     <string name="tryRecalibrating">Try recalibrating</string>
 
     <!--Test Progress Screen-->
-    <string name="placeDeviceInStand">Place the phone face down on a flat surface</string>
-    <string name="waitTillCameraSound">and wait for test to complete</string>
+    <string name="placeDevice">Place device face down on a flat surface</string>
     <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
     <string name="errorTestFailed">Solution color out of range. Check cartridge placement</string>
 
@@ -95,7 +94,6 @@
 
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connecting to Device</string>
-    <string name="deviceConnected">Device Connected</string>
     <string name="acceptResult">Accept Result</string>
 
     <!--EC Sensor Calibration-->
@@ -145,18 +143,20 @@
     <string name="fileSaved">File saved</string>
     <string name="calibrationLoaded">%1$s loaded</string>
     <string name="name">Name</string>
-    <string name="reagentExpiryDate">Reagent expiry date</string>
-    <string name="reagentBatch">Reagent batch number</string>
+    <string name="reagentExpiry">Reagent expiry</string>
+    <string name="reagentBatch">Reagent batch</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
     <string name="sensorCalibratedDateKey" />
     <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
-    <string name="alignChamber">Align chamber above and press Start</string>
+    <string name="alignChamber">Align chamber and press Start</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="survey">Survey</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample liquid</string>
     <string name="noBackdropDetectionInUserMode">No backdrop detection in User Mode</string>
+    <string name="selectDilution">Select amount of dilution</string>
+    <string name="title_activity_usb_connected">UsbConnectedActivity</string>
 </resources>

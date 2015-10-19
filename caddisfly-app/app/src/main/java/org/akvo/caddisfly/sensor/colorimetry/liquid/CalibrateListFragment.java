@@ -31,6 +31,9 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
+
+import java.util.Date;
 
 /**
  * A list fragment representing a list of Calibrate items.
@@ -68,8 +71,19 @@ public class CalibrateListFragment extends ListFragment {
 
         setListAdapter(calibrationsAdapter);
 
-        //Display error if calibration is completed but invalid
-        if (ColorUtil.isCalibrationComplete(currentTestInfo.getSwatches()) &&
+        validateCalibration();
+    }
+
+    private void validateCalibration() {
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        String key = String.format("%s_%s", currentTestInfo.getCode(),
+                R.string.calibrationExpiryDateKey);
+        long milliseconds = PreferencesUtil.getLong(getActivity(), key);
+        if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+            textCalibrationError.setText(String.format("%s. %s", "Expired", "Recalibrate with fresh reagent"));
+            textCalibrationError.setVisibility(View.VISIBLE);
+        } else if (ColorUtil.isCalibrationComplete(currentTestInfo.getSwatches()) &&
+                //Display error if calibration is completed but invalid
                 !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
@@ -118,6 +132,10 @@ public class CalibrateListFragment extends ListFragment {
         super.onListItemClick(listView, view, position, id);
 
         mCallbacks.onItemSelected(position);
+    }
+
+    public void refresh() {
+        validateCalibration();
     }
 
     /**

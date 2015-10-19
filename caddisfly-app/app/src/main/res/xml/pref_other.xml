@@ -17,8 +17,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/other">
 
-
-    <Preference
+        <Preference
             android:key="about"
             android:title="@string/about">
             <intent

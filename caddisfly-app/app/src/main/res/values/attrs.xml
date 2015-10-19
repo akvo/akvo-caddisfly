@@ -22,5 +22,6 @@
         <attr name="toolbarHeight" format="dimension" />
         <attr name="toolbarMargin" format="dimension" />
         <attr name="progressTint" format="color" />
+        <attr name="progressTintInverse" format="color" />
     </declare-styleable>
 </resources>

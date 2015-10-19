@@ -113,7 +113,7 @@ public class CameraDialogFragment extends CameraDialog {
                             dialogInterface.dismiss();
                             dismiss();
                         }
-                    }, null);
+                    }, null, null);
         }
     }
 

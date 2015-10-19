@@ -13,7 +13,6 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly"
@@ -51,16 +50,16 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
-            android:screenOrientation="nosensor">
+            android:label="@string/appName"
+            android:screenOrientation="nosensor"
+            android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.ExternalActionActivity"
-            android:theme="@style/Flow.Transparent">
+        <activity android:name=".ui.ExternalActionActivity">
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -82,19 +81,6 @@
             android:name=".sensor.ec.SensorActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.UsbConnectionActivity"
-            android:autoRemoveFromRecents="true"
-            android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
@@ -114,13 +100,7 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ui.TypeListActivity"
-            android:screenOrientation="nosensor">
-            <intent-filter>
-                <action android:name="org.akvo.flow.action.sensorcalibrate" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:screenOrientation="nosensor" />

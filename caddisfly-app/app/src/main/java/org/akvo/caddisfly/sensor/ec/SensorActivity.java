@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,15 +57,29 @@ public class SensorActivity extends BaseActivity {
     private String mEc25Value = "";
     private String mTemperature = "";
     private boolean mIsInternal = false;
-    private LinearLayout layoutConnection;
     private LinearLayout layoutResult;
     private ProgressBar progressWait;
     private TextView textResult;
     private TextView textTemperature;
     private TextView textUnit;
-    private TextView textUnit2;
     private Button buttonAcceptResult;
     private TextView textSubtitle;
+    private String mReceivedData = "";
+    private UsbService usbService;
+    private MyHandler mHandler;
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(mHandler);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
+        }
+    };
+    private ImageView imageUsbConnection;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -91,26 +106,12 @@ public class SensorActivity extends BaseActivity {
             }
         }
     };
-    private String mReceivedData = "";
-    private UsbService usbService;
+
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             requestResult();
             handler.postDelayed(this, 2000);
-        }
-    };
-    private MyHandler mHandler;
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            usbService = null;
         }
     };
 
@@ -138,6 +139,7 @@ public class SensorActivity extends BaseActivity {
         unbindService(usbConnection);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         Log.d(DEBUG_TAG, "Start Service");
 
@@ -155,7 +157,7 @@ public class SensorActivity extends BaseActivity {
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        handler.postDelayed(runnable, 500);
+        handler.postDelayed(runnable, 100);
     }
 
     private void requestResult() {
@@ -192,21 +194,11 @@ public class SensorActivity extends BaseActivity {
         textTemperature = (TextView) findViewById(R.id.textTemperature);
         progressWait = (ProgressBar) findViewById(R.id.progressWait);
         textUnit = (TextView) findViewById(R.id.textUnit);
-        textUnit2 = (TextView) findViewById(R.id.textUnit2);
+        TextView textUnit2 = (TextView) findViewById(R.id.textUnit2);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);
 
         mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        Button backButton = (Button) findViewById(R.id.buttonOk);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
-            }
-        });
-
-        //textUnit.setVisibility(View.GONE);
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
@@ -224,13 +216,20 @@ public class SensorActivity extends BaseActivity {
             }
         });
 
-        layoutConnection = (LinearLayout) findViewById(R.id.layoutConnection);
         layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
         Configuration config = getResources().getConfiguration();
         if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName(config.locale.getLanguage()));
+        }
+
+        if (mIsInternal) {
+            textTemperature.setVisibility(View.VISIBLE);
+            textUnit2.setVisibility(View.VISIBLE);
+        } else {
+            textTemperature.setVisibility(View.GONE);
+            textUnit2.setVisibility(View.GONE);
         }
 
     }
@@ -247,10 +246,9 @@ public class SensorActivity extends BaseActivity {
 
     private void displayNotConnectedView() {
         mReadData.setLength(0);
-        layoutResult.setVisibility(View.GONE);
         progressWait.setVisibility(View.GONE);
-        //textUnit.setVisibility(View.GONE);
-        layoutConnection.setVisibility(View.VISIBLE);
+        layoutResult.animate().alpha(0f).setDuration(500);
+        imageUsbConnection.animate().alpha(0.9f).setDuration(1000);
         buttonAcceptResult.setVisibility(View.GONE);
         textSubtitle.setText(R.string.deviceConnectSensor);
     }
@@ -338,14 +336,11 @@ public class SensorActivity extends BaseActivity {
 
                 if (mIsInternal) {
                     textTemperature.setText(mTemperature);
-                    textTemperature.setVisibility(View.VISIBLE);
-                    textUnit2.setVisibility(View.VISIBLE);
                     buttonAcceptResult.setVisibility(View.GONE);
                 }
 
-                layoutResult.setVisibility(View.VISIBLE);
-                layoutConnection.setVisibility(View.GONE);
-                //textUnit.setVisibility(View.VISIBLE);
+                layoutResult.animate().alpha(1f).setDuration(500);
+                imageUsbConnection.animate().alpha(0f).setDuration(500);
 
                 Log.d(DEBUG_TAG, "display result view");
             }

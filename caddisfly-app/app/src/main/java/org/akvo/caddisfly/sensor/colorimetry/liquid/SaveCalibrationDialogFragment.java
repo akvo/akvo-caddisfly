@@ -49,6 +49,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -88,7 +89,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         @SuppressLint("InflateParams")
         View v = i.inflate(R.layout.fragment_save_calibration, null);
 
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -97,17 +98,33 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 String date = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(calendar.getTime());
-                editExpiryDate.setText(String.format("%s (Reagent expiry)", date));
+                editExpiryDate.setText(date);
             }
         };
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(context, date,
+        editExpiryDate = (EditText) v.findViewById(R.id.editExpiryDate);
+
+        editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
+
+        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.batchNumberKey);
+
+        editBatchNumber.setText(PreferencesUtil.getString(context, key, ""));
+
+        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.calibrationExpiryDateKey);
+        long expiryDate = PreferencesUtil.getLong(getContext(), key);
+        if (expiryDate >= 0) {
+            calendar.setTimeInMillis(expiryDate);
+
+            editExpiryDate.setText(new SimpleDateFormat("dd-MMM-yyyy", Locale.US)
+                    .format(new Date(expiryDate)));
+        }
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
-        //datePickerDialog.setTitle(R.string.reagentExpiryDate);
-
-        editExpiryDate = (EditText) v.findViewById(R.id.editExpiryDate);
 
         editExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -124,13 +141,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 datePickerDialog.show();
             }
         });
-
-        editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
-
-        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.batchNumberKey);
-
-        editBatchNumber.setText(PreferencesUtil.getString(context, key, ""));
 
         editName = (EditText) v.findViewById(R.id.editName);
         if (AppPreferences.isDiagnosticMode()) {
@@ -232,7 +242,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                                         calibrationDetails.toString());
                                                 Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
                                             }
-                                        }
+                                        }, null
                                 );
                             } else {
                                 FileUtil.saveToFile(path, editName.getText().toString(),

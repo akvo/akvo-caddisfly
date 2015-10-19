@@ -168,10 +168,19 @@ public class CalibrateListActivity extends BaseActivity
         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.batchNumberKey);
         if (expiryDate >= 0) {
-            textSubtitle.setText(String.format("%s Expiry %s",
+            textSubtitle.setText(String.format("%s. Expiry %s",
                     PreferencesUtil.getString(this, key, ""),
                     new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
         }
+
+        CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
+
+        if (calibrateListFragment != null) {
+            calibrateListFragment.refresh();
+        }
+
+
     }
 
     @Override
@@ -387,7 +396,7 @@ public class CalibrateListActivity extends BaseActivity
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
                                                 }
-                                            }, null);
+                                            }, null, null);
 
                                 }
                             }
@@ -417,7 +426,7 @@ public class CalibrateListActivity extends BaseActivity
                                                 alertDialog.dismiss();
                                                 Toast.makeText(getBaseContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
                                             }
-                                        });
+                                        }, null);
                                 return true;
                             }
                         });

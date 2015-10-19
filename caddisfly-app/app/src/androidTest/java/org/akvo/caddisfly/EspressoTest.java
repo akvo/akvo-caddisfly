@@ -66,6 +66,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -75,12 +76,13 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
 
+
 @SuppressWarnings("unused")
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private static final String mCurrentLanguage = "en";
     private static final boolean mTakeScreenshots = false;
+    private static String mCurrentLanguage = "en";
     private static int mCounter = 0;
     private final HashMap<String, String> stringHashMapEN = new HashMap<>();
     private final HashMap<String, String> stringHashMapFR = new HashMap<>();
@@ -128,29 +130,19 @@ public class EspressoTest
     public void setUp() throws Exception {
         super.setUp();
 
-        stringHashMapEN.put("language", "English");
-        stringHashMapEN.put("fluoride", "Fluoride");
-        stringHashMapEN.put("chlorine", "Free Chlorine");
-        stringHashMapEN.put("electricalConductivity", "Electrical Conductivity");
-        stringHashMapEN.put("unnamedDataPoint", "Unnamed data point");
-        stringHashMapEN.put("createNewDataPoint", "CREATE NEW DATA POINT");
-        stringHashMapEN.put("useExternalSource", "Use External Source");
-        stringHashMapEN.put("next", "Next");
+        addString("language", "English", "Français");
+        addString("otherLanguage", "Français", "English");
+        addString("fluoride", "Fluoride", "Fluorure");
+        addString("chlorine", "Free Chlorine", "Chlore libre");
+        addString("survey", "Survey", "Survey");
+        addString("electricalConductivity", "Electrical Conductivity", "Conductivité Electrique");
+        addString("unnamedDataPoint", "Unnamed data point", "Donnée non nommée");
+        addString("createNewDataPoint", "Add Data Point", "CRÉER UN NOUVEAU POINT");
+        addString("useExternalSource", "Use External Source", "Utiliser source externe");
+        addString("next", "Next", "Suivant");
 
-        stringHashMapFR.put("language", "Français");
-        stringHashMapFR.put("fluoride", "Fluorure");
-        stringHashMapFR.put("chlorine", "Chlore libre");
-        stringHashMapFR.put("electricalConductivity", "Conductivité Electrique");
-        stringHashMapFR.put("unnamedDataPoint", "Donnée non nommée");
-        stringHashMapFR.put("createNewDataPoint", "CRÉER UN NOUVEAU POINT");
-        stringHashMapFR.put("useExternalSource", "Utiliser source externe");
-        stringHashMapFR.put("next", "Suivant");
-
-        if (mCurrentLanguage.equals("en")) {
-            currentHashMap = stringHashMapEN;
-        } else {
-            currentHashMap = stringHashMapFR;
-        }
+        mCurrentLanguage = "en";
+        changeLanguage(mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, true));
@@ -178,6 +170,20 @@ public class EspressoTest
 
         goToMainScreen();
 
+    }
+
+    private void addString(String key, String englishText, String frenchText) {
+        stringHashMapEN.put(key, englishText);
+        stringHashMapFR.put(key, frenchText);
+    }
+
+    private void changeLanguage(String languageCode) {
+        mCurrentLanguage = languageCode;
+        if (languageCode.equals("en")) {
+            currentHashMap = stringHashMapEN;
+        } else {
+            currentHashMap = stringHashMapFR;
+        }
     }
 
     @SuppressWarnings("EmptyMethod")
@@ -375,7 +381,7 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -394,7 +400,7 @@ public class EspressoTest
 
         startApp();
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -486,6 +492,54 @@ public class EspressoTest
         }
     }
 
+    public void testEC() {
+
+        goToMainScreen();
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withText(R.string.electricalConductivity)).perform(click());
+
+        onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        onView(withContentDescription(getActivity()
+                .getString(R.string.deviceConnectSensor))).check(matches(isDisplayed()));
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(R.string.electricalConductivity)).perform(click());
+
+        try {
+            onView(withText(R.string.warning)).check(matches(isDisplayed()));
+
+            onView(withText(R.string.calibrate)).perform(click());
+
+            onView(withId(R.id.buttonStartCalibrate)).perform(click());
+
+            onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
+
+            onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+
+            onView(withId(android.R.id.button2)).perform(click());
+
+        } catch (Exception ex) {
+            String message = String.format("%s\r\n\r\n%s", getActivity().getString(R.string.phoneDoesNotSupport),
+                    getActivity().getString(R.string.pleaseContactSupport));
+
+            onView(withText(message)).check(matches(isDisplayed()));
+
+            onView(withText(R.string.ok)).perform(click());
+        }
+    }
+
     public void testSwatches() {
 
         onView(withId(R.id.actionSettings)).perform(click());
@@ -511,7 +565,7 @@ public class EspressoTest
 
     public void testIncompleteCalibration() {
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -588,7 +642,7 @@ public class EspressoTest
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -642,11 +696,27 @@ public class EspressoTest
     }
 
     private void gotoSurveyForm() {
-        clickListViewItem("Automated Tests");
+        //clickListViewItem("Automated Tests");
+        //onView(withText("Automated Tests")).perform(click());
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
-            clickListViewItem(currentHashMap.get("createNewDataPoint"));
+            //openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+            // click on 'Add Note' button
+            UiObject addButton = mDevice.findObject(new UiSelector()
+                    .descriptionContains(currentHashMap.get("createNewDataPoint")));
+
+            try {
+                if (addButton.exists() && addButton.isEnabled()) {
+                    addButton.click();
+                }
+            } catch (UiObjectNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            // onView(withContentDescription(currentHashMap.get("createNewDataPoint"))).perform(click());
+            //clickListViewItem(currentHashMap.get("createNewDataPoint"));
         }
-        clickListViewItem("All Tests");
+        //clickListViewItem("All Tests");
     }
 
     public void testCalibrateSensor() {
@@ -735,36 +805,49 @@ public class EspressoTest
 
     }
 
-    public void testLanguage4() {
-        onView(withId(R.id.actionSettings))
-                .perform(click());
-
-//        onView(withText(R.string.language))
-//                .check(matches(not(isDisplayed())))
-//                .perform(scrollTo())
-//                .check(matches(isDisplayed()))
-//                .perform(scrollTo());
-
-        onView(withText(R.string.language))
-                .perform(click());
-
-        onData(hasToString(startsWith("Français"))).perform(click());
+    public void testLanguageFrench() {
+        languageTest("fr");
     }
 
-    public void testLanguage5() {
-        onView(withId(R.id.actionSettings))
-                .perform(click());
+    public void testLanguageEnglish() {
+        languageTest("en");
+    }
 
-//        onView(withText(R.string.language))
-//                .check(matches(not(isDisplayed())))
-//                .perform(scrollTo())
-//                .check(matches(isDisplayed()))
-//                .perform(scrollTo());
+    private void languageTest(String language) {
+        onView(withId(R.id.actionSettings)).perform(click());
 
-        onView(withText(R.string.language))
-                .perform(click());
+        changeLanguage(language);
 
-        onData(hasToString(startsWith("English"))).perform(click());
+        try {
+            onView(withText(currentHashMap.get("language"))).perform(click());
+            onData(hasToString(startsWith(currentHashMap.get("otherLanguage")))).perform(click());
+            onView(withId(R.id.actionSettings)).perform(click());
+        } catch (Exception ignored) {
+        }
+
+        onView(withText(R.string.language)).perform(click());
+
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+
+        onView(withText(currentHashMap.get("survey"))).perform(click());
+
+        mDevice.pressBack();
+
+        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+
+        mDevice.pressBack();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        Espresso.pressBack();
+
+        onView(withText(currentHashMap.get("language"))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+
+        onView(withText(currentHashMap.get("language"))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
     }
 
     private void resetLanguage() {
@@ -776,7 +859,6 @@ public class EspressoTest
 
         onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
     }
-
 
     private void enterDiagnosticMode() {
 
@@ -864,7 +946,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -928,7 +1010,7 @@ public class EspressoTest
 
         leaveDiagnosticMode();
 
-        onView(withId(R.id.buttonGotoSurvey)).perform(click());
+        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -1240,10 +1322,13 @@ public class EspressoTest
         listView.waitForExists(5000);
         UiObject listViewItem;
         try {
-            listView.scrollTextIntoView(name);
-            listViewItem = listView.getChildByText(new UiSelector()
-                    .className(android.widget.TextView.class.getName()), "" + name + "");
-            listViewItem.click();
+            if (listView.scrollTextIntoView(name)) {
+                listViewItem = listView.getChildByText(new UiSelector()
+                        .className(android.widget.TextView.class.getName()), "" + name + "");
+                listViewItem.click();
+            } else {
+                return false;
+            }
         } catch (UiObjectNotFoundException e) {
             return false;
         }

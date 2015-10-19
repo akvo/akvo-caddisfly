@@ -1,3 +1,17 @@
+v0.89 beta
+----------
+1. Fix camera flash check for mobiles without flash
+2. Disable feature for auto detect of USB device
+3. Style and theme refactoring
+
+v0.88 beta
+----------
+1. Release for QA
+
+v0.87 beta
+----------
+1. Style changes for main screen
+
 v0.86 beta
 ----------
 1. Added shared id, process and task affinity to launch in same process as FLOW

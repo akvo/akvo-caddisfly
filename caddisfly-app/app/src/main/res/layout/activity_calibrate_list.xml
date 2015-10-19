@@ -31,7 +31,8 @@
         android:orientation="vertical"
         android:paddingBottom="20dp"
         android:paddingEnd="10dp"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        tools:ignore="UnknownIdInLayout">
 
         <TextView
             android:id="@+id/textTitle"
@@ -56,8 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#d6f6fdf6"
-            android:textSize="16sp"
-            tools:text="Expiry: 22-Dec-2016 (345GHH)" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <fragment

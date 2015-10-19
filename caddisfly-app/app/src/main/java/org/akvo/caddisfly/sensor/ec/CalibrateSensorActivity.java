@@ -125,6 +125,7 @@ public class CalibrateSensorActivity extends BaseActivity {
         registerReceiver(mUsbReceiver, filter);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         Log.d(DEBUG_TAG, "Start Service");
 
@@ -291,7 +292,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         finish();
                                                     }
-                                                }, null);
+                                                }, null, null);
                                     }
                                 }, 1000);
                             }

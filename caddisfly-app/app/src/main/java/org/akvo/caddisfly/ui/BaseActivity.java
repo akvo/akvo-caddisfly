@@ -16,9 +16,7 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -42,7 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.Flow_Theme);
         ApiUtil.lockScreenOrientation(this);
     }
 
@@ -128,12 +125,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
                 getWindow().setStatusBarColor(color);
             }
-
-            final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            if (upArrow != null) {
-                upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
-            }
-            getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
     }
 }

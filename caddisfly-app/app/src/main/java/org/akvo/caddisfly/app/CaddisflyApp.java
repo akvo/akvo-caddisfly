@@ -20,8 +20,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.hardware.Camera;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.StringRes;
+import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -33,6 +39,7 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class CaddisflyApp extends Application {
@@ -68,7 +75,7 @@ public class CaddisflyApp extends Application {
                     context.getString(R.string.tryRestarting));
 
             AlertUtil.showError(context, R.string.cameraBusy,
-                    message, null, R.string.ok, onClickListener, null);
+                    message, null, R.string.ok, onClickListener, null, null);
             return null;
         }
 
@@ -81,7 +88,7 @@ public class CaddisflyApp extends Application {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             AlertUtil.showAlert(context, R.string.cameraNotAvailable,
                     R.string.cameraRequired,
-                    R.string.ok, onClickListener, null);
+                    R.string.ok, onClickListener, null, null);
             return false;
         }
         return true;
@@ -94,6 +101,7 @@ public class CaddisflyApp extends Application {
      * @param onClickListener positive button listener
      * @return true if camera flash exists otherwise false
      */
+    @SuppressWarnings("SameParameterValue")
     public static boolean hasFeatureCameraFlash(Context context, @StringRes int errorTitle,
                                                 @StringRes int buttonText,
                                                 DialogInterface.OnClickListener onClickListener) {
@@ -119,7 +127,7 @@ public class CaddisflyApp extends Application {
         if (!hasCameraFlash) {
             AlertUtil.showAlert(context, errorTitle,
                     R.string.errorCameraFlashRequired,
-                    buttonText, onClickListener, null);
+                    buttonText, onClickListener, null, null);
 
         }
         return hasCameraFlash;
@@ -231,6 +239,75 @@ public class CaddisflyApp extends Application {
         for (Swatch swatch : testInfo.getSwatches()) {
             String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
             swatch.setColor(PreferencesUtil.getInt(this.getApplicationContext(), key, 0));
+        }
+    }
+
+    /**
+     * Sets the language of the app on start. The language can be one of system language, language
+     * set in the app preferences or language requested via the languageCode parameter
+     *
+     * @param languageCode If null uses language from app preferences else uses this value
+     */
+    public void setAppLanguage(String languageCode, boolean isExternal, Handler handler) {
+        assert getApplicationContext() != null;
+
+        Locale locale;
+
+        //the languages supported by the app
+        String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
+
+        //the current system language set in the device settings
+        String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
+
+        //the language the system was set to the last time the app was run
+        String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
+
+        //if the system language was changed in the device settings then set that as the app language
+        if (!previousSystemLanguage.equals(currentSystemLanguage)
+                && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+            PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
+            PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
+        }
+
+        if (languageCode == null || !Arrays.asList(supportedLanguages).contains(languageCode)) {
+            //if requested language code is not supported then use language from preferences
+            languageCode = PreferencesUtil.getString(this, R.string.languageKey, "");
+            if (!Arrays.asList(supportedLanguages).contains(languageCode)) {
+                //no language was selected in the app settings so use the system language
+                String currentLanguage = getResources().getConfiguration().locale.getLanguage();
+                if (currentLanguage.equals(currentSystemLanguage)) {
+                    //app is already set to correct language
+                    return;
+                } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+                    //set to system language
+                    languageCode = currentSystemLanguage;
+                } else {
+                    //no supported languages found just default to English
+                    languageCode = "en";
+                }
+            }
+        }
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration config = res.getConfiguration();
+
+        locale = new Locale(languageCode);
+
+        //if the app language is not already set to languageCode then set it now
+        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
+
+            config.locale = locale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLayoutDirection(locale);
+            }
+            res.updateConfiguration(config, dm);
+
+            //if this session was launched from an external app then do not restart this app
+            if (!isExternal) {
+                Message msg = handler.obtainMessage();
+                handler.sendMessage(msg);
+            }
         }
     }
 

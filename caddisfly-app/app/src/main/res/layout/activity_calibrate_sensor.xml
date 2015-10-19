@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/start"
-                    android:theme="@style/Button.Orange" />
+                    android:theme="?primaryButtonStyle" />
 
             </LinearLayout>
         </LinearLayout>

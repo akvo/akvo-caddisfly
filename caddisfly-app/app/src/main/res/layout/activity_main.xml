@@ -36,12 +36,13 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buttonGotoSurvey"
+                android:id="@+id/buttonSurvey"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/arrow_right_light"
+                android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"
@@ -56,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/arrow_right_light"
+                android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"
@@ -70,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/arrow_right_light"
+                android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="22dp"

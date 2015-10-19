@@ -63,8 +63,7 @@
     <string name="calibrationIsInvalid">Etalonnage invalide</string>
     <string name="tryRecalibrating">Essayez d\'étalonner à nouveau</string>
     <!--Test Progress Screen-->
-    <string name="placeDeviceInStand">Placez le téléphone sur une surface plane, face vers le bas</string>
-    <string name="waitTillCameraSound">et attendez jusqu\'à la fin du test</string>
+    <string name="placeDevice">Placez le téléphone sur une surface plane, face vers le bas</string>
     <string name="errorTestInterrupted">Le test s\'est interrompu. Ne déplacez pas le téléphone pendant la durée du test</string>
     <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
     <!--Result Screen-->
@@ -78,7 +77,6 @@
     <string name="timesDilution" tools:ignore="PluralsCandidate">Dilution par %1$d</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
-    <string name="deviceConnected">Appareil connecté</string>
     <string name="acceptResult">Accepter le résultat</string>
     <!--EC Sensor Calibration-->
     <string name="warning">Attention</string>

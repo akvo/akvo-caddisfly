@@ -44,7 +44,6 @@ public class ColorimetryStripActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     @Override

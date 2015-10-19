@@ -20,7 +20,8 @@
     android:layout_height="match_parent"
     android:background="?primaryBackgroundStyle"
     android:keepScreenOn="true"
-    tools:context=".sensor.ec.SensorActivity">
+    tools:context=".sensor.ec.SensorActivity"
+    tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar" />
 
@@ -56,33 +57,17 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutConnection"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/imageUsbConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/layoutTitleBar"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@null"
-            android:paddingBottom="24dp"
-            android:src="@drawable/usb" />
-
-        <Button
-            android:id="@+id/buttonOk"
-            style="@style/Button"
-            android:layout_marginTop="20dp"
-            android:text="@string/backToSurvey"
-            android:theme="@style/Button.Blue"
-            android:visibility="gone" />
-
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:alpha="0"
+        android:contentDescription="@string/deviceConnectSensor"
+        android:paddingBottom="24dp"
+        android:src="@drawable/usb" />
 
     <ProgressBar
         android:id="@+id/progressWait"
@@ -103,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutTitleBar"
         android:layout_marginTop="20dp"
+        android:alpha="0"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -113,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="?android:textColorSecondaryInverse"
             android:textSize="70sp"
             tools:text="20000" />
 
@@ -121,11 +108,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
-            android:alpha="0.7"
+            android:alpha="0.4"
             android:shadowColor="#cccccc"
             android:shadowRadius="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#6c6c6c"
+            android:textColor="?android:textColorSecondaryInverse"
             tools:text="Celsius" />
 
         <TextView
@@ -133,9 +120,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="?android:textColorSecondaryInverse"
             android:textSize="66sp"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:text="24" />
 
         <TextView
@@ -143,12 +131,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
-            android:alpha="0.7"
+            android:alpha="0.4"
             android:shadowColor="#cccccc"
             android:shadowRadius="1"
             android:text="@string/celsius"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#6c6c6c"
+            android:textColor="?android:textColorSecondaryInverse"
             android:visibility="gone" />
 
         <Button

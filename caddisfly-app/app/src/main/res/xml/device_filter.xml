@@ -17,6 +17,6 @@
 <resources>
 
   <!-- 0x2341 / Arduino -->
-  <!--<usb-device vendor-id="9025" />-->
+  <usb-device vendor-id="9025" />
 
 </resources>

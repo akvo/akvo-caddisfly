@@ -79,6 +79,7 @@ public class SettingsActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
 
         setTitle(R.string.settings);
+
     }
 
     @Override
@@ -118,6 +119,5 @@ public class SettingsActivity extends BaseActivity
         super.onResume();
         PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
                 .registerOnSharedPreferenceChangeListener(this);
-
     }
 }

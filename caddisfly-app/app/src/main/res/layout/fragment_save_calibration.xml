@@ -35,17 +35,39 @@
         android:maxLength="20"
         android:textColor="?android:textColor" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:labelFor="@+id/editBatchCode"
+        android:text="@string/reagentBatch"
+        android:textColor="#434343"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/editBatchCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/reagentBatch"
         android:inputType="textCapCharacters"
         android:maxLength="10"
         android:textColor="?android:textColor" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:labelFor="@+id/editExpiryDate"
+        android:text="@string/reagentExpiry"
+        android:textColor="#434343"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editExpiryDate"
@@ -53,9 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
         android:focusable="false"
-        android:hint="@string/reagentExpiryDate"
         android:inputType="date"
         android:textColor="?android:textColor" />
 

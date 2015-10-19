@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.preference;
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -72,6 +71,5 @@ public class OtherPreferenceFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         ListViewUtil.setListViewHeightBasedOnChildren(list, 0);
     }
-
 
 }
