@@ -82,8 +82,8 @@
     </style>
 
     <style name="AppTheme.Button.Cyan">
-        <item name="colorButtonNormal">#016786</item>
-        <item name="colorControlHighlight">#004e66</item>
+        <item name="colorButtonNormal">#027e94</item>
+        <item name="colorControlHighlight">#005463</item>
     </style>
 
     <style name="Button.Blue">

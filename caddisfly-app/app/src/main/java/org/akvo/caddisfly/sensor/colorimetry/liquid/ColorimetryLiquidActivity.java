@@ -250,10 +250,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         SensorManager.SENSOR_DELAY_UI);
             }
         });
+
+        mCameraDialog = CameraDialogFragment.newInstance();
     }
 
     private void startAlignmentCameraPreview() {
-        mCameraDialog = CameraDialogFragment.newInstance();
 
         setTitle("Check Alignment");
         textSubtitle.setText(R.string.alignChamber);

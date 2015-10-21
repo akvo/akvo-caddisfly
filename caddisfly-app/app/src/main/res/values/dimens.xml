@@ -24,5 +24,4 @@
 
     <dimen name="flow_toolbar_height">52dp</dimen>
     <dimen name="flow_toolbar_margin">-5dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

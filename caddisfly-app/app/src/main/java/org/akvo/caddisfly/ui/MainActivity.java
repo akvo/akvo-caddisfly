@@ -167,12 +167,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startSurvey() {
-        Intent LaunchIntent = getPackageManager()
+        Intent intent = getPackageManager()
                 .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
-        if (LaunchIntent == null) {
+        if (intent == null) {
             alertDependantAppNotFound();
         } else {
-            startActivity(LaunchIntent);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }

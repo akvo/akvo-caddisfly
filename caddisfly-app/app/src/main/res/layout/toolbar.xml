@@ -25,8 +25,7 @@
     android:layout_height="?toolbarHeight"
     android:layout_marginTop="?toolbarMargin"
     android:background="?colorPrimary"
-    android:title=""
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:titleTextColor="?colorPrimary"
     tools:showIn="@layout/activity_main">
 

@@ -25,5 +25,9 @@
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
 
+        <Preference
+            android:key="notices"
+            android:title="@string/softwareNotices" />
+
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

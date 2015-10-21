@@ -249,7 +249,6 @@ public class CaddisflyApp extends Application {
      * @param languageCode If null uses language from app preferences else uses this value
      */
     public void setAppLanguage(String languageCode, boolean isExternal, Handler handler) {
-        assert getApplicationContext() != null;
 
         Locale locale;
 

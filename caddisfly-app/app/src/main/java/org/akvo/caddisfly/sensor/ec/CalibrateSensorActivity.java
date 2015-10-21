@@ -79,17 +79,10 @@ public class CalibrateSensorActivity extends BaseActivity {
     private TextView textSubtitle;
     private Context mContext;
     private UsbService usbService;
-
-//    private Handler handler = new Handler();
-//    private String mReceivedData = "";
-//    private int mEcValue = -1;
-//    private MyHandler mHandler;
-
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
-            //usbService.setHandler(mHandler);
         }
 
         @Override
@@ -97,6 +90,7 @@ public class CalibrateSensorActivity extends BaseActivity {
             usbService = null;
         }
     };
+    private EditText mCurrentEditText;
 
     @Override
     public void onResume() {
@@ -105,7 +99,6 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         // Start UsbService(if it was not started before) and Bind it
         startService(UsbService.class, usbConnection, null);
-
     }
 
     @Override
@@ -144,6 +137,19 @@ public class CalibrateSensorActivity extends BaseActivity {
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private void setEditTextFocus(EditText editText, boolean isFocused) {
+        editText.setCursorVisible(isFocused);
+        editText.setFocusable(isFocused);
+        editText.setFocusableInTouchMode(isFocused);
+
+        if (isFocused) {
+            editText.requestFocus();
+        }
+
+        mCurrentEditText = editText;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,14 +171,10 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
-//        if (!usbService.isUsbConnected()) {
-//            textSubtitle.setText(R.string.deviceConnectSensor);
-//        } else {
         String calibratedDate = PreferencesUtil.getString(this, R.string.sensorCalibratedDateKey, "");
         if (!calibratedDate.isEmpty()) {
             textSubtitle.setText(String.format("Calibrated: %s", calibratedDate));
         }
-//        }
 
         final Context context = this;
         buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +194,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                             textSubtitle.setText(R.string.lowEcMeasurement);
                             viewAnimator.showNext();
 
-                            editLowValue.requestFocus();
+                            setEditTextFocus(editLowValue, true);
                             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                                     Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -234,7 +236,8 @@ public class CalibrateSensorActivity extends BaseActivity {
                                             dialog.dismiss();
                                             textSubtitle.setText(R.string.highEcMeasurement);
                                             viewAnimator.showNext();
-                                            editHighValue.requestFocus();
+                                            setEditTextFocus(editHighValue, true);
+
                                             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                                                     Context.INPUT_METHOD_SERVICE);
                                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -243,9 +246,6 @@ public class CalibrateSensorActivity extends BaseActivity {
                                     }, 1000);
                                 }
                             }, 4000);
-//                            }else{
-//                                AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
-//                            }
                         } else {
                             AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
                         }
@@ -322,15 +322,18 @@ public class CalibrateSensorActivity extends BaseActivity {
     }
 
     private void closeKeyboard(EditText input) {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        if (input != null) {
+            InputMethodManager imm = (InputMethodManager) this.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                closeKeyboard(mCurrentEditText);
                 onBackPressed();
                 return true;
         }
@@ -341,45 +344,7 @@ public class CalibrateSensorActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        closeKeyboard(mCurrentEditText);
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
-
-//    private void requestResult() {
-//        Log.d(DEBUG_TAG, "Request Result");
-//        String data = "r";
-//        if (usbService != null && usbService.isUsbConnected()) {
-//            // if UsbService was correctly bound, Send data
-//            usbService.write(data.getBytes());
-//        } else {
-//            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
-//        }
-//    }
-
-    /*
-     * This handler will be passed to UsbService.
-     * Data received from serial port is displayed through this handler
-     */
-//    private static class MyHandler extends Handler {
-//        private final WeakReference<CalibrateSensorActivity> mActivity;
-//
-//        public MyHandler(CalibrateSensorActivity activity) {
-//            mActivity = new WeakReference<>(activity);
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-//                    String data = (String) msg.obj;
-//                    CalibrateSensorActivity calibrateSensorActivity = mActivity.get();
-//                    if (calibrateSensorActivity != null) {
-//                        if (data.equals("\n")) {
-//                        } else {
-//                        }
-//                    }
-//                    break;
-//            }
-//        }
-//    }
-
 }

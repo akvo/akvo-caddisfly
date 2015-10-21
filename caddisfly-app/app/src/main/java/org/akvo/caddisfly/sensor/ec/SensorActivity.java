@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,7 +48,7 @@ import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
-    private static final String DEBUG_TAG = "SensorActivity";
+    //private static final String DEBUG_TAG = "SensorActivity";
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private TestInfo mCurrentTestInfo;
@@ -141,7 +140,7 @@ public class SensorActivity extends BaseActivity {
 
     @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        Log.d(DEBUG_TAG, "Start Service");
+        //Log.d(DEBUG_TAG, "Start Service");
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);
@@ -161,7 +160,7 @@ public class SensorActivity extends BaseActivity {
     }
 
     private void requestResult() {
-        Log.d(DEBUG_TAG, "Request Result");
+        //Log.d(DEBUG_TAG, "Request Result");
         String data = "r";
         if (usbService != null && usbService.isUsbConnected()) {
             // if UsbService was correctly bound, Send data
@@ -255,7 +254,7 @@ public class SensorActivity extends BaseActivity {
 
     private void displayResult(String value) {
 
-        Log.d(DEBUG_TAG, "display Result");
+        //Log.d(DEBUG_TAG, "display Result");
         Configuration config = getResources().getConfiguration();
 
         String newline = System.getProperty("line.separator");
@@ -342,7 +341,7 @@ public class SensorActivity extends BaseActivity {
                 layoutResult.animate().alpha(1f).setDuration(500);
                 imageUsbConnection.animate().alpha(0f).setDuration(500);
 
-                Log.d(DEBUG_TAG, "display result view");
+                //Log.d(DEBUG_TAG, "display result view");
             }
         }
     }
@@ -372,17 +371,17 @@ public class SensorActivity extends BaseActivity {
                     SensorActivity sensorActivity = mActivity.get();
                     if (sensorActivity != null) {
                         if (data.equals("\n")) {
-                            Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
+                            //Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
                             sensorActivity.displayResult(sensorActivity.mReceivedData);
                             sensorActivity.mReceivedData = "";
                         } else {
-                            Log.d(DEBUG_TAG, "serial: " + data);
+                            //Log.d(DEBUG_TAG, "serial: *" + data + "*");
                             sensorActivity.mReceivedData += data;
+                            //Log.d(DEBUG_TAG, "serial result: " + sensorActivity.mReceivedData);
                         }
                     }
                     break;
             }
         }
     }
-
 }

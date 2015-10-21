@@ -81,8 +81,7 @@ public class ExternalActionActivity extends BaseActivity {
                 mIsExternalAppCall = true;
                 mQuestionTitle = intent.getStringExtra("questionTitle");
 
-                //todo: fix FLOW to return language code
-                mExternalAppLanguageCode = intent.getStringExtra("language").substring(0, 2).toLowerCase();
+                mExternalAppLanguageCode = intent.getStringExtra("language");
 
                 CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 

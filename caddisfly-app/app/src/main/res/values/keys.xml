@@ -28,4 +28,5 @@
     <string name="calibrationDateKey" translateable="false">calibrationDateTime</string>
     <string name="calibrationExpiryDateKey" translateable="false">calibrationExpiryDate</string>
     <string name="batchNumberKey" translateable="false">batchNumber</string>
+    <string name="sensorCalibratedDateKey" translateable="false">sensorCalibratedDate</string>
 </resources>

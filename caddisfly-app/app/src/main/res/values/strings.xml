@@ -35,7 +35,10 @@
     <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
-    <string name="version" tools:ignore="UnusedResources">Version</string>
+    <string name="name">Name</string>
+    <string name="version">Version</string>
+    <string name="deleted">Deleted</string>
+    <string name="required">Required</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
@@ -69,12 +72,15 @@
 
     <!--Settings Screen-->
     <string name="language">Language</string>
+    <string name="softwareNotices">Software notices</string>
 
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
     <string name="pleaseContactSupport">Please contact technical support</string>
     <string name="calibrationIsInvalid">Invalid calibration</string>
     <string name="tryRecalibrating">Try recalibrating</string>
+    <string name="reagentExpiry">Reagent expiry</string>
+    <string name="reagentBatch">Reagent batch</string>
 
     <!--Test Progress Screen-->
     <string name="placeDevice">Place device face down on a flat surface</string>
@@ -89,6 +95,7 @@
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--Dilution Selection Dialog-->
+    <string name="selectDilution">Select amount of dilution</string>
     <string name="noDilution">No Dilution</string>
     <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d Times Dilution</string>
 
@@ -107,6 +114,13 @@
     <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
+    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
+    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
+    <string name="alignChamber">Align chamber and press Start</string>
+    <string name="survey">Survey</string>
+    <string name="celsius">°Celsius</string>
+    <string name="sensorConnected">Sensor connected</string>
+    <string name="dipSensorInSample">Dip sensor in sample liquid</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>
@@ -133,30 +147,15 @@
     <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
     <string name="deleteConfirm">Selected items will be deleted</string>
     <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
+    <string name="fileSaved">File saved</string>
+    <string name="calibrationLoaded">%1$s loaded</string>
 
     <!--Diagnostic Mode: Settings-->
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="testSensor">EC Sensor</string>
+    <string name="noBackdropDetectionInUserMode">No backdrop detection in User Mode</string>
+    <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
-    <string name="fileSaved">File saved</string>
-    <string name="calibrationLoaded">%1$s loaded</string>
-    <string name="name">Name</string>
-    <string name="reagentExpiry">Reagent expiry</string>
-    <string name="reagentBatch">Reagent batch</string>
-    <string name="deleted">Deleted</string>
-    <string name="required">Required</string>
-    <string name="sensorCalibratedDateKey" />
-    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
-    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
-    <string name="alignChamber">Align chamber and press Start</string>
-    <string name="noBackdropDetection">No backdrop detection</string>
-    <string name="survey">Survey</string>
-    <string name="celsius">°Celsius</string>
-    <string name="sensorConnected">Sensor connected</string>
-    <string name="dipSensorInSample">Dip sensor in sample liquid</string>
-    <string name="noBackdropDetectionInUserMode">No backdrop detection in User Mode</string>
-    <string name="selectDilution">Select amount of dilution</string>
-    <string name="title_activity_usb_connected">UsbConnectedActivity</string>
 </resources>

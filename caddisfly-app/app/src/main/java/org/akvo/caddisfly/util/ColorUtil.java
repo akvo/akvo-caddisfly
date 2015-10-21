@@ -204,7 +204,6 @@ public final class ColorUtil {
                 return getColorDistanceLab(colorToLab(color1), colorToLab(color2));
 
             default:
-                //todo: create a hsv distance. currently using rgb
                 return getColorDistanceRgb(color1, color2);
         }
     }
@@ -236,7 +235,6 @@ public final class ColorUtil {
                         > MAX_SAMPLING_COLOR_DISTANCE_LAB;
 
             default:
-                //todo: create a hsv distance. currently using rgb
                 return getColorDistanceRgb(color1, color2) > MIN_COLOR_DISTANCE_RGB;
         }
     }
@@ -252,7 +250,6 @@ public final class ColorUtil {
                         < MIN_COLOR_DISTANCE_LAB;
 
             default:
-                //todo: create a hsv distance. currently using rgb
                 return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
         }
     }

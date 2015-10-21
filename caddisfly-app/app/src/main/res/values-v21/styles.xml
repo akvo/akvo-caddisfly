@@ -37,7 +37,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog"></style>
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog" />
 
     <style name="AppTheme.Dialog.Destructive">
         <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>

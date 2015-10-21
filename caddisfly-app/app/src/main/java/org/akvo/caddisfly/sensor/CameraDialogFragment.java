@@ -99,8 +99,6 @@ public class CameraDialogFragment extends CameraDialog {
         super.onStart();
         if (mCamera != null && mCameraPreview != null) {
             mCameraPreview.setCamera(mCamera);
-            //mCameraPreview.startCameraPreview();
-
         } else {
             String message = String.format("%s\r\n\r\n%s",
                     getString(R.string.cannotUseCamera),

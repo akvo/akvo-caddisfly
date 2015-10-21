@@ -1,3 +1,16 @@
+v0.91 beta
+----------
+1. Release for Beta
+2. Added software licences dialog
+3. Fix: Expect 2 letter language code from FLOW
+
+v0.90 beta
+----------
+1. Change of 'Waiting for phone placement' illustration
+2. Fixes in expiry date edit dialog
+3. Fix rotation double instance issue on activities
+4. Style and refactorings
+
 v0.89 beta
 ----------
 1. Fix camera flash check for mobiles without flash
