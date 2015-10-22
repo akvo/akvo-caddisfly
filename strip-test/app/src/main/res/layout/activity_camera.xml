@@ -4,18 +4,33 @@
     android:layout_height="fill_parent"
     android:id="@+id/activity_cameraMainRelativeLayout">
 
-    <FrameLayout
+    <org.akvo.akvoqr.ui.PreviewFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:id="@+id/camera_preview"
         >
-    </FrameLayout>
+    </org.akvo.akvoqr.ui.PreviewFrameLayout>
     <org.akvo.akvoqr.ui.FinderPatternIndicatorView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:background="@android:color/transparent"
         android:id="@+id/activity_cameraFinderPatternIndicatorView"
         />
+    <View
+        android:id="@+id/transparent_window"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent" />
+
+    <View
+        android:id="@+id/black_bottom_box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/transparent_window"
+        android:background="@android:color/background_dark"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,6 +39,7 @@
         android:textColor="@color/lightblue"
         android:background="#99000000"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/transparent_window"
         android:gravity="right"
         android:text="@string/duration"/>
     <org.akvo.akvoqr.ui.ProgressIndicatorView
@@ -37,6 +53,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/transparent_window"
         android:id="@+id/activity_cameraMessagesLayout">
         <TextView
             android:layout_width="wrap_content"
@@ -53,6 +71,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/exposure_red"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:id="@+id/activity_cameraImageViewExposure"/>
         <TextView
             android:layout_width="wrap_content"
@@ -69,6 +88,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/focus_red"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:id="@+id/activity_cameraImageViewFocus"/>
         <TextView
             android:layout_width="wrap_content"
@@ -85,6 +105,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/contrast_red"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:id="@+id/activity_cameraImageViewContrast"/>
     </LinearLayout>
 
@@ -92,7 +113,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/start_button"
-        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:id="@+id/activity_cameraStartButton"
         android:visibility="invisible"/>
 </RelativeLayout>

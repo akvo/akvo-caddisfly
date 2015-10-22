@@ -33,7 +33,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/title_activity_camera"
             android:noHistory="true"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".instructions_app.InstructionActivity"

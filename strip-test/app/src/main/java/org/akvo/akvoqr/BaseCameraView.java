@@ -1,11 +1,9 @@
 package org.akvo.akvoqr;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,7 +22,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private MyPreviewCallback previewCallback;
     private CameraActivity activity;
     private Camera.Parameters parameters;
 
@@ -41,7 +38,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        previewCallback = MyPreviewCallback.getInstance(context);
 
     }
 
@@ -49,7 +45,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
             mCamera.setPreviewDisplay(holder);
-            mCamera.startPreview();
+
         } catch (Exception e) {
             Log.d("", "Error setting camera preview: " + e.getMessage());
         }
@@ -84,6 +80,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         // set preview size and make any resize, rotate or
         // reformatting changes here
+
         try {
             parameters = mCamera.getParameters();
         }
@@ -96,44 +93,33 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         {
             return;
         }
+
+
         Camera.Size bestSize = null;
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
         for(Camera.Size size: sizes) {
-            if(size.width>800)
+            System.out.println("***supported preview sizes w, h: " + size.width + ", " + size.height);
+            if(size.width>1300)
                continue;
             if (size.width > maxWidth) {
                 bestSize = size;
                 maxWidth = size.width;
             }
-
-            double ratio = (double)size.width/(double)size.height;
-            System.out.println("***supported size: " + size.width + ", " + size.height + " ratio: " + String.format("%.2f", ratio));
-
         }
-        System.out.print("***standard preview size: " + parameters.getPreviewSize().width + " , " + parameters.getPreviewSize().height);
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int screenHeight = displaymetrics.heightPixels;
-        int screenWidth = displaymetrics.widthPixels;
-
-        System.out.println("***size w,h: " + screenWidth + ", " + screenHeight);
-
-        Point screenResolution = new Point(screenWidth, screenHeight);
-
-        Point bestResolution = CameraConfigurationUtils.findBestPreviewSizeValue(mCamera.getParameters(), screenResolution);
+        //portrait mode
+        mCamera.setDisplayOrientation(90);
+        //parameters.setRotation(90);
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
-       // parameters.setPictureSize(bestSize.width, bestSize.height);
         //parameters.setPreviewFormat(ImageFormat.NV21);
-        System.out.println("***bestsize: " + bestSize.width + ", " + bestSize.height);
 
         boolean canAutoFocus = false;
         boolean disableContinuousFocus = true;
         List<String> modes = mCamera.getParameters().getSupportedFocusModes();
         for(String s: modes) {
-            System.out.println("***supported mode: " + s);
+
             if(s.equals(Camera.Parameters.FOCUS_MODE_AUTO))
             {
                 canAutoFocus = true;
@@ -158,10 +144,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         try {
 
             mCamera.setParameters(parameters);
-            mCamera.setPreviewDisplay(mHolder);
-            mCamera.startPreview();
+            mCamera.setPreviewDisplay(holder);
 
-            mCamera.setOneShotPreviewCallback(previewCallback);
+            activity.getMessage(0);
 
         } catch (Exception e){
             Log.d("", "Error starting camera preview: " + e.getMessage());

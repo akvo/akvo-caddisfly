@@ -11,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
@@ -20,6 +20,7 @@ import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
+import org.akvo.akvoqr.ui.PreviewFrameLayout;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -36,7 +37,7 @@ import java.util.List;
 public class CameraActivity extends AppCompatActivity implements CameraViewListener{
 
     private Camera mCamera;
-    private FrameLayout preview;
+    private PreviewFrameLayout preview;
     private BaseCameraView mPreview;
     MyPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
@@ -102,7 +103,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     private void init()
     {
-        Log.d(TAG, "init");
 
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
@@ -112,9 +112,26 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         if(mCamera!=null) {
             // Create our Preview view and set it as the content of our activity.
             mPreview = new BaseCameraView(this, mCamera);
-            preview = (FrameLayout) findViewById(R.id.camera_preview);
+            preview = (PreviewFrameLayout) findViewById(R.id.camera_preview);
+            preview.removeAllViews();
             preview.addView(mPreview);
 
+            //find the transparent view in which to show part of the preview
+            final View transView = findViewById(R.id.transparent_window);
+
+            //enlarge the transparent view based on a factor of its width
+            transView.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    RelativeLayout.LayoutParams params;
+                    params = (RelativeLayout.LayoutParams) transView.getLayoutParams();
+                    params.height = (int) Math.round(transView.getWidth() * Constant.CROP_CAMERAVIEW_FACTOR);
+                    transView.setLayoutParams(params);
+                    transView.postInvalidate();
+
+                }
+            });
         }
 
 
@@ -405,6 +422,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
+
             if(mCamera!=null && previewCallback!=null) {
                 mCamera.startPreview();
                 mCamera.setOneShotPreviewCallback(previewCallback);
