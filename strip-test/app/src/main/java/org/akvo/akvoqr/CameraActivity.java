@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +21,6 @@ import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
-import org.akvo.akvoqr.ui.PreviewFrameLayout;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -37,7 +37,7 @@ import java.util.List;
 public class CameraActivity extends AppCompatActivity implements CameraViewListener{
 
     private Camera mCamera;
-    private PreviewFrameLayout preview;
+    private FrameLayout preview;
     private BaseCameraView mPreview;
     MyPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
@@ -112,7 +112,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         if(mCamera!=null) {
             // Create our Preview view and set it as the content of our activity.
             mPreview = new BaseCameraView(this, mCamera);
-            preview = (PreviewFrameLayout) findViewById(R.id.camera_preview);
+            preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.removeAllViews();
             preview.addView(mPreview);
 
