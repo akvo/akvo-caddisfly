@@ -40,7 +40,9 @@ import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import  android.support.test.espresso.contrib.PickerActions;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -53,6 +55,7 @@ import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.FileUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.io.File;
@@ -63,9 +66,12 @@ import java.util.HashMap;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -451,47 +457,6 @@ public class EspressoTest
 
     }
 
-    private void startApp() {
-        // Start from the home screen
-        mDevice.pressHome();
-        mDevice.waitForWindowUpdate("", 2000);
-        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
-        allAppsButton.click();
-        mDevice.waitForWindowUpdate("", 2000);
-
-        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-        appViews.setAsHorizontalList();
-
-        UiObject settingsApp = null;
-        try {
-            String appName = "Akvo Caddisfly";
-            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (settingsApp != null) {
-                settingsApp.clickAndWaitForNewWindow();
-            }
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
-
-        assertTrue("Unable to detect app", settingsApp != null);
-    }
-
-    private void goToMainScreen() {
-
-        TextView button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
-        while (button == null) {
-            Espresso.pressBack();
-            mDevice.waitForWindowUpdate("", 2000);
-            button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
-        }
-    }
-
     public void testEC() {
 
         goToMainScreen();
@@ -662,63 +627,6 @@ public class EspressoTest
 
     }
 
-    private void openSurveyInFlow() {
-        // Start from the home screen
-        mDevice.pressHome();
-        mDevice.waitForWindowUpdate("", 2000);
-        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
-        allAppsButton.click();
-        mDevice.waitForWindowUpdate("", 2000);
-
-        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-        appViews.setAsHorizontalList();
-
-        UiObject settingsApp = null;
-        try {
-            String appName = "Akvo FLOW";
-            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (settingsApp != null) {
-                settingsApp.clickAndWaitForNewWindow();
-            }
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
-
-        assertTrue("Unable to detect app", settingsApp != null);
-
-        gotoSurveyForm();
-    }
-
-    private void gotoSurveyForm() {
-        //clickListViewItem("Automated Tests");
-        //onView(withText("Automated Tests")).perform(click());
-        if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
-            //openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-
-            // click on 'Add Note' button
-            UiObject addButton = mDevice.findObject(new UiSelector()
-                    .descriptionContains(currentHashMap.get("createNewDataPoint")));
-
-            try {
-                if (addButton.exists() && addButton.isEnabled()) {
-                    addButton.click();
-                }
-            } catch (UiObjectNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            // onView(withContentDescription(currentHashMap.get("createNewDataPoint"))).perform(click());
-            //clickListViewItem(currentHashMap.get("createNewDataPoint"));
-        }
-        //clickListViewItem("All Tests");
-    }
-
     public void testCalibrateSensor() {
         //onView(withId(R.id.actionSettings)).perform(click());
 
@@ -756,31 +664,6 @@ public class EspressoTest
 
     }
 
-//    public void testCheckUpdate() {
-//
-//        onView(withId(R.id.actionSettings)).perform(click());
-//
-//        onView(withText(R.string.updateCheck)).check(matches(isDisplayed()));
-//
-//        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
-//
-//        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
-//
-//            onView(withText(R.string.updateCheck)).perform(click());
-//
-//            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
-//            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
-//
-//            Espresso.pressBack();
-//
-//        }
-//
-//        onView(withText(R.string.updateSummary)).check(matches(isDisplayed()));
-//
-//        Espresso.pressBack();
-//
-//    }
-
     public void testDiagnosticMode() {
 
         onView(withId(R.id.actionSettings)).perform(click());
@@ -811,6 +694,229 @@ public class EspressoTest
 
     public void testLanguageEnglish() {
         languageTest("en");
+    }
+
+    public void testStartCalibrate() {
+        startCalibrate(2, 4);
+    }
+
+    public void testRestartAppDuringAnalysis() {
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        sleep(500);
+
+        onView(withId(R.id.buttonStart)).perform(click());
+
+        mDevice.pressHome();
+
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        sleep(3000);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        clickListViewItem("Automated Tests");
+
+    }
+
+    public void testZErrors() {
+
+        mCounter += 4;
+
+//        getActivity().runOnUiThread(new Runnable() {
+//            public void run() {
+//                try {
+//                    Method method = MainActivity.class.getDeclaredMethod("alertCameraFlashNotAvailable");
+//                    method.setAccessible(true);
+//                    method.invoke(getActivity());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    assertEquals(e.getMessage(), 0, 1);
+//                }
+//            }
+//        });
+//
+//        //No flash
+//        takeScreenshot();
+//
+//        onView(withId(android.R.id.button1)).perform(click());
+
+        startApp();
+
+        getActivity();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        final Activity typeListActivity = getCurrentActivity();
+        typeListActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
+                    method.setAccessible(true);
+                    method.invoke(typeListActivity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Error loading config
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        final Activity activity = getCurrentActivity();
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                    method.setAccessible(true);
+                    method.invoke(activity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    assertEquals(e.getMessage(), 0, 1);
+                }
+            }
+        });
+
+        //Error loading config
+        takeScreenshot();
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        goToMainScreen();
+
+    }
+
+    public void testExpiryDate(){
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        enterDiagnosticMode();
+
+        Espresso.pressBack();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        sleep(4000);
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menuLoad)).perform(click());
+
+        sleep(2000);
+
+        onView(withText("TestValid")).perform(click());
+
+        sleep(2000);
+
+        leaveDiagnosticMode();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(2015, 8, 25));
+
+        onView(withText("OK")).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("QWERT 123#*@!"), closeSoftKeyboard());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
+                getActivity().getString(R.string.recalibateWithNewReagent))))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withText(R.string.cancel)).perform(click());
+
+        goToMainScreen();
+
+        onView(withId(R.id.buttonSurvey)).perform(click());
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton("useExternalSource");
+
+        sleep(2000);
+
+        String message = String.format("%s\r\n\r\n%s",
+                getActivity().getString(R.string.errorCalibrationExpired),
+                getActivity().getString(R.string.orderFreshBatch));
+
+        onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.ok)).perform(click());
+
+        startApp();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(2025, 8, 25));
+
+        onView(withText("OK")).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
+                getActivity().getString(R.string.recalibateWithNewReagent))))).check(matches(not(isDisplayed())));
+
+        goToMainScreen();
+
+        onView(withId(R.id.buttonSurvey)).perform(click());
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton("useExternalSource");
+
+        sleep(2000);
+
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
+
     }
 
     private void languageTest(String language) {
@@ -877,11 +983,6 @@ public class EspressoTest
 
     }
 
-    public void testStartCalibrate() {
-
-        startCalibrate(2, 4);
-    }
-
     private void startCalibrate(double value, int index) {
 
         onView(withText(R.string.calibrate)).perform(click());
@@ -906,7 +1007,6 @@ public class EspressoTest
                 .atPosition(index).onChildView(withId(R.id.textSwatch))
                 .check(matches(allOf(isDisplayed(), not(withBackgroundColor(Color.rgb(10, 10, 10))), withText(isEmpty()))));
 
-
         Espresso.pressBack();
 
         Espresso.pressBack();
@@ -916,7 +1016,7 @@ public class EspressoTest
 
     }
 
-    public void disableTestStartNoDilutionTest() {
+    private void disableTestStartNoDilutionTest() {
 
         saveLowLevelCalibration();
 
@@ -980,7 +1080,7 @@ public class EspressoTest
 
     }
 
-    public void disableTestStartHighLevelTest() {
+    private void disableTestStartHighLevelTest() {
 
         saveHighLevelCalibration();
 
@@ -1102,6 +1202,104 @@ public class EspressoTest
 
     }
 
+    private void startApp() {
+        // Start from the home screen
+        mDevice.pressHome();
+        mDevice.waitForWindowUpdate("", 2000);
+        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
+        allAppsButton.click();
+        mDevice.waitForWindowUpdate("", 2000);
+
+        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+        appViews.setAsHorizontalList();
+
+        UiObject settingsApp = null;
+        try {
+            String appName = "Akvo Caddisfly";
+            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (settingsApp != null) {
+                settingsApp.clickAndWaitForNewWindow();
+            }
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        assertTrue("Unable to detect app", settingsApp != null);
+    }
+
+    private void goToMainScreen() {
+
+        TextView button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
+        while (button == null) {
+            Espresso.pressBack();
+            mDevice.waitForWindowUpdate("", 2000);
+            button = (TextView) getCurrentActivity().findViewById(R.id.buttonCalibrate);
+        }
+    }
+
+    private void openSurveyInFlow() {
+        // Start from the home screen
+        mDevice.pressHome();
+        mDevice.waitForWindowUpdate("", 2000);
+        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
+        allAppsButton.click();
+        mDevice.waitForWindowUpdate("", 2000);
+
+        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+        appViews.setAsHorizontalList();
+
+        UiObject settingsApp = null;
+        try {
+            String appName = "Akvo FLOW";
+            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (settingsApp != null) {
+                settingsApp.clickAndWaitForNewWindow();
+            }
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        assertTrue("Unable to detect app", settingsApp != null);
+
+        gotoSurveyForm();
+    }
+
+    private void gotoSurveyForm() {
+        //clickListViewItem("Automated Tests");
+        //onView(withText("Automated Tests")).perform(click());
+        if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
+            //openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+            // click on 'Add Note' button
+            UiObject addButton = mDevice.findObject(new UiSelector()
+                    .descriptionContains(currentHashMap.get("createNewDataPoint")));
+
+            try {
+                if (addButton.exists() && addButton.isEnabled()) {
+                    addButton.click();
+                }
+            } catch (UiObjectNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            // onView(withContentDescription(currentHashMap.get("createNewDataPoint"))).perform(click());
+            //clickListViewItem(currentHashMap.get("createNewDataPoint"));
+        }
+        //clickListViewItem("All Tests");
+    }
+
     private void clickExternalSourceButton(String buttonText) {
         try {
 
@@ -1114,122 +1312,12 @@ public class EspressoTest
         }
     }
 
-    public void testRestartAppDuringAnalysis() {
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
-
-        sleep(500);
-
-        onView(withId(R.id.buttonStart)).perform(click());
-
-        mDevice.pressHome();
-
-        try {
-            mDevice.pressRecentApps();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        sleep(3000);
-
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
-
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
-
-        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
-
-        mDevice.waitForWindowUpdate("", 2000);
-
-        clickListViewItem("Automated Tests");
-
-    }
-
     private void sleep(int time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void testZErrors() {
-
-        mCounter += 4;
-
-//        getActivity().runOnUiThread(new Runnable() {
-//            public void run() {
-//                try {
-//                    Method method = MainActivity.class.getDeclaredMethod("alertCameraFlashNotAvailable");
-//                    method.setAccessible(true);
-//                    method.invoke(getActivity());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    assertEquals(e.getMessage(), 0, 1);
-//                }
-//            }
-//        });
-//
-//        //No flash
-//        takeScreenshot();
-//
-//        onView(withId(android.R.id.button1)).perform(click());
-
-        startApp();
-
-        getActivity();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        final Activity typeListActivity = getCurrentActivity();
-        typeListActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
-                    method.setAccessible(true);
-                    method.invoke(typeListActivity);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //Error loading config
-        takeScreenshot();
-
-        onView(withId(android.R.id.button2)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
-
-        final Activity activity = getCurrentActivity();
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
-                    method.setAccessible(true);
-                    method.invoke(activity);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    assertEquals(e.getMessage(), 0, 1);
-                }
-            }
-        });
-
-        //Error loading config
-        takeScreenshot();
-
-        onView(withId(android.R.id.button1)).perform(click());
-
-        goToMainScreen();
-
     }
 
     private void saveCalibration() {
@@ -1284,7 +1372,6 @@ public class EspressoTest
                         + "1.5=254  0  0\n"
                         + "2.0=224  0  0\n");
     }
-
 
     private Activity getCurrentActivity() {
         getInstrumentation().waitForIdleSync();

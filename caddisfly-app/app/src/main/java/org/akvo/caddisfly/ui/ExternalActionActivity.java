@@ -115,10 +115,8 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     private void alertCalibrationExpired() {
-        String message = getString(R.string.errorCalibrationExpired,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                        getResources().getConfiguration().locale.getLanguage()));
-        message = String.format("%s\r\n\r\n%s", message,
+
+        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorCalibrationExpired),
                 getString(R.string.orderFreshBatch));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest,

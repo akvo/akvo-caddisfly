@@ -158,4 +158,9 @@
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expired">Expired</string>
+    <string name="recalibateWithNewReagent">Recalibrate with fresh reagent</string>
 </resources>

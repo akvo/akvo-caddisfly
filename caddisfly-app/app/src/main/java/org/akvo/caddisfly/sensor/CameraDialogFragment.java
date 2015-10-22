@@ -228,7 +228,7 @@ public class CameraDialogFragment extends CameraDialog {
 
         public CameraPreview(Context context, Camera camera) {
             super(context);
-            setCamera(camera);
+            //setCamera(camera);
             mCamera = camera;
 
             // supported preview sizes

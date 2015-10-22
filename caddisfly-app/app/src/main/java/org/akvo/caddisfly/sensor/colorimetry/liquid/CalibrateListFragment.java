@@ -80,7 +80,8 @@ public class CalibrateListFragment extends ListFragment {
                 R.string.calibrationExpiryDateKey);
         long milliseconds = PreferencesUtil.getLong(getActivity(), key);
         if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
-            textCalibrationError.setText(String.format("%s. %s", "Expired", "Recalibrate with fresh reagent"));
+            textCalibrationError.setText(String.format("%s. %s", getString(R.string.expired),
+                    getString(R.string.recalibateWithNewReagent)));
             textCalibrationError.setVisibility(View.VISIBLE);
         } else if (ColorUtil.isCalibrationComplete(currentTestInfo.getSwatches()) &&
                 //Display error if calibration is completed but invalid

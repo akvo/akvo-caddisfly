@@ -79,6 +79,7 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.ec.SensorActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"

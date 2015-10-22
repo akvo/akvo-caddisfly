@@ -14,57 +14,43 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
-import android.app.DialogFragment;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.webkit.WebView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.CameraDialogFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticesDialogFragment extends DialogFragment {
+public class CameraAlignmentFragment extends Fragment {
 
 
-    public NoticesDialogFragment() {
+    public CameraAlignmentFragment() {
         // Required empty public constructor
     }
 
-    public static NoticesDialogFragment newInstance() {
-        return new NoticesDialogFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_TITLE, 0);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_notices_dialog, container, false);
-
-        WebView webView = (WebView) view.findViewById(R.id.webNotices);
-        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        webView.loadUrl("file:///android_asset/open_source_licenses.html");
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_camera_alignment, container, false);
     }
 
     @Override
-    public void onResume() {
-        WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        getDialog().getWindow().setAttributes(params);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        CameraDialogFragment mCameraDialog = CameraDialogFragment.newInstance();
 
-        super.onResume();
+        getFragmentManager().beginTransaction()
+                .add(R.id.layoutCameraAlignment, mCameraDialog)
+                .commit();
     }
 }

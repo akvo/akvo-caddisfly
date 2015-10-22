@@ -48,7 +48,7 @@ import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
-    //private static final String DEBUG_TAG = "SensorActivity";
+    private static final String DEBUG_TAG = "SensorActivity";
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private TestInfo mCurrentTestInfo;
@@ -254,6 +254,10 @@ public class SensorActivity extends BaseActivity {
 
     private void displayResult(String value) {
 
+        if (value.startsWith(".") || value.startsWith(",")) {
+            return;
+        }
+
         //Log.d(DEBUG_TAG, "display Result");
         Configuration config = getResources().getConfiguration();
 
@@ -370,15 +374,23 @@ public class SensorActivity extends BaseActivity {
                     String data = (String) msg.obj;
                     SensorActivity sensorActivity = mActivity.get();
                     if (sensorActivity != null) {
-                        if (data.equals("\n")) {
-                            //Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
+
+                        sensorActivity.mReceivedData += data;
+                        if (sensorActivity.mReceivedData.contains("\r\n")) {
                             sensorActivity.displayResult(sensorActivity.mReceivedData);
                             sensorActivity.mReceivedData = "";
-                        } else {
-                            //Log.d(DEBUG_TAG, "serial: *" + data + "*");
-                            sensorActivity.mReceivedData += data;
-                            //Log.d(DEBUG_TAG, "serial result: " + sensorActivity.mReceivedData);
                         }
+
+//                        if (data.contains("\r\n") || sensorActivity.mReceivedData.contains("\r\n")) {
+//                            //Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
+//                            sensorActivity.mReceivedData += data;
+//                            sensorActivity.displayResult(sensorActivity.mReceivedData);
+//                            sensorActivity.mReceivedData = "";
+//                        } else {
+//                            //Log.d(DEBUG_TAG, "serial: *" + data + "*");
+//
+//                            //Log.d(DEBUG_TAG, "serial result: " + sensorActivity.mReceivedData);
+//                        }
                     }
                     break;
             }

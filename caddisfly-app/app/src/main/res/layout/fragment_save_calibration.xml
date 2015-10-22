@@ -43,7 +43,7 @@
         android:layout_marginTop="16dp"
         android:labelFor="@+id/editBatchCode"
         android:text="@string/reagentBatch"
-        android:textColor="#434343"
+        android:textColor="#5c5c5c"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
         android:layout_marginTop="8dp"
         android:labelFor="@+id/editExpiryDate"
         android:text="@string/reagentExpiry"
-        android:textColor="#434343"
+        android:textColor="#5c5c5c"
         android:textSize="16sp"
         android:textStyle="bold" />
 

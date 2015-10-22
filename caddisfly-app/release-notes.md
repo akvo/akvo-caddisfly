@@ -1,3 +1,7 @@
+v0.92 beta
+----------
+Fix screen flash when camera alignment preview is started
+
 v0.91 beta
 ----------
 1. Release for Beta

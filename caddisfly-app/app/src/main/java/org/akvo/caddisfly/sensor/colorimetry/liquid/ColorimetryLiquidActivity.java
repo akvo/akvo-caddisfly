@@ -193,7 +193,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 mDilutionLevel = 0;
                 textDilution.setText(R.string.noDilution);
                 mViewAnimator.showNext();
-                startAlignmentCameraPreview();
             }
         });
 
@@ -204,7 +203,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 String dilutionLabel = String.format(getString(R.string.timesDilution), 2);
                 textDilution.setText(dilutionLabel);
                 mViewAnimator.showNext();
-                startAlignmentCameraPreview();
+                //startAlignmentCameraPreview();
             }
         });
 
@@ -215,7 +214,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 String dilutionLabel = String.format(getString(R.string.timesDilution), 5);
                 textDilution.setText(dilutionLabel);
                 mViewAnimator.showNext();
-                startAlignmentCameraPreview();
+                //startAlignmentCameraPreview();
             }
         });
 
@@ -409,12 +408,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
 
+        startAlignmentCameraPreview();
+
         if (testInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
         } else if (mIsCalibration || !testInfo.getCanUseDilution()) {
             releaseResources();
             setAnimatorDisplayedChild(mViewAnimator, 1);
-            startAlignmentCameraPreview();
         } else if (!mTestCompleted) {
             InitializeTest();
         }

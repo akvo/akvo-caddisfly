@@ -140,7 +140,6 @@ public class CalibrateListActivity extends BaseActivity
                 SaveCalibrationDialogFragment saveCalibrationDialogFragment =
                         SaveCalibrationDialogFragment.newInstance();
                 saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
-
             }
         });
 
@@ -179,8 +178,6 @@ public class CalibrateListActivity extends BaseActivity
         if (calibrateListFragment != null) {
             calibrateListFragment.refresh();
         }
-
-
     }
 
     @Override
