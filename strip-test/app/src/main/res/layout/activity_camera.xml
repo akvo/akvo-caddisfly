@@ -4,13 +4,13 @@
     android:layout_height="fill_parent"
     android:id="@+id/activity_cameraMainRelativeLayout">
 
-    <org.akvo.akvoqr.ui.PreviewFrameLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:id="@+id/camera_preview"
         >
-    </org.akvo.akvoqr.ui.PreviewFrameLayout>
+    </FrameLayout>
     <org.akvo.akvoqr.ui.FinderPatternIndicatorView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
