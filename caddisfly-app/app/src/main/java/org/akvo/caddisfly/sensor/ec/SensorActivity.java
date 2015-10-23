@@ -48,7 +48,7 @@ import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
-    private static final String DEBUG_TAG = "SensorActivity";
+    //private static final String DEBUG_TAG = "SensorActivity";
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private TestInfo mCurrentTestInfo;

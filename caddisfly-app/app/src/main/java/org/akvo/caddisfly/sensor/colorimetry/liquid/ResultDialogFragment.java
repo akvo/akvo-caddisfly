@@ -1,17 +1,17 @@
 /*
- *  Copyright (C) Stichting Akvo (Akvo Foundation)
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- *  This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly
  *
- *  Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- *  the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- *  either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
  *
- *  Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
  *
- *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
@@ -68,24 +68,24 @@ public class ResultDialogFragment extends DialogFragment {
                 String.format("%.0f", result) : String.format("%.2f", result));
 
         //display dilution information
-        TextView dilutionTextView = (TextView) view.findViewById(R.id.textDilution);
+        TextView textDilution = (TextView) view.findViewById(R.id.textDilution);
         int dilutionLevel = getArguments().getInt("dilution", -1);
 
-        dilutionTextView.setVisibility(View.VISIBLE);
+        textDilution.setVisibility(View.VISIBLE);
 
         //todo: remove hard coding of dilution levels
         switch (dilutionLevel) {
             case 0:
-                dilutionTextView.setText(R.string.noDilution);
+                textDilution.setText(R.string.noDilution);
                 break;
             case 1:
-                dilutionTextView.setText(String.format(getString(R.string.timesDilution), 2));
+                textDilution.setText(String.format(getString(R.string.timesDilution), 2));
                 break;
             case 2:
-                dilutionTextView.setText(String.format(getString(R.string.timesDilution), 5));
+                textDilution.setText(String.format(getString(R.string.timesDilution), 5));
                 break;
             default:
-                dilutionTextView.setVisibility(View.GONE);
+                textDilution.setVisibility(View.GONE);
                 break;
         }
 

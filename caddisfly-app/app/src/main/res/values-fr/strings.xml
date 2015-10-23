@@ -91,7 +91,6 @@
     <string name="sensorCalibrated">Le capteur d\'EC est étalonné</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
-    <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <!--Diagnostic Mode: Messages-->
     <string name="diagnosticModeEnabled">Mode diagnostique activé</string>

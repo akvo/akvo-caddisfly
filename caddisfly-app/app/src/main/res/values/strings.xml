@@ -72,7 +72,6 @@
 
     <!--Settings Screen-->
     <string name="language">Language</string>
-    <string name="softwareNotices">Software notices</string>
 
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
@@ -81,6 +80,8 @@
     <string name="tryRecalibrating">Try recalibrating</string>
     <string name="reagentExpiry">Reagent expiry</string>
     <string name="reagentBatch">Reagent batch</string>
+    <string name="expired">Expired</string>
+    <string name="calibrateWithNewReagent">Recalibrate with fresh reagent</string>
 
     <!--Test Progress Screen-->
     <string name="placeDevice">Place device face down on a flat surface</string>
@@ -124,9 +125,8 @@
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>
-    <string name="companyOtherName">Akvo Foundation</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-
+    <string name="legalInformation">Legal Information</string>
 
     <string name="selectTest">Select Test</string>
     <string name="calibrationDetails">Calibration Details</string>
@@ -159,8 +159,4 @@
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="expired">Expired</string>
-    <string name="recalibateWithNewReagent">Recalibrate with fresh reagent</string>
 </resources>

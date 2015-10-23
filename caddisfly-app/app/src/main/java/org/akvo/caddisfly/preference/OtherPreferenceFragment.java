@@ -28,7 +28,6 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.ui.NoticesDialogFragment;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 public class OtherPreferenceFragment extends PreferenceFragment {
@@ -53,17 +52,6 @@ public class OtherPreferenceFragment extends PreferenceFragment {
         if (aboutPreference != null) {
             aboutPreference.setSummary(String.format("%s %s", getString(R.string.version),
                     CaddisflyApp.getAppVersion(getActivity())));
-        }
-
-        Preference sensorPreference = findPreference("notices");
-        if (sensorPreference != null) {
-            sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
-                    dialog.show(getFragmentManager(), "NoticesDialog");
-                    return true;
-                }
-            });
         }
 
         return rootView;

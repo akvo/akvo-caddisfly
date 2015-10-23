@@ -61,7 +61,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
     private final Calendar calendar = Calendar.getInstance();
     private EditText editName = null;
-    private EditText editBatchNumber = null;
+    private EditText editBatchCode = null;
     private EditText editExpiryDate;
 
     public SaveCalibrationDialogFragment() {
@@ -87,7 +87,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         LayoutInflater i = getActivity().getLayoutInflater();
 
         @SuppressLint("InflateParams")
-        View v = i.inflate(R.layout.fragment_save_calibration, null);
+        View view = i.inflate(R.layout.fragment_save_calibration, null);
 
         final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -102,14 +102,14 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         };
 
-        editExpiryDate = (EditText) v.findViewById(R.id.editExpiryDate);
+        editExpiryDate = (EditText) view.findViewById(R.id.editExpiryDate);
 
-        editBatchNumber = (EditText) v.findViewById(R.id.editBatchCode);
+        editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
         String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.batchNumberKey);
 
-        editBatchNumber.setText(PreferencesUtil.getString(context, key, ""));
+        editBatchCode.setText(PreferencesUtil.getString(context, key, ""));
 
         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.calibrationExpiryDateKey);
@@ -142,12 +142,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         });
 
-        editName = (EditText) v.findViewById(R.id.editName);
+        editName = (EditText) view.findViewById(R.id.editName);
         if (AppPreferences.isDiagnosticMode()) {
             editName.requestFocus();
         } else {
             editName.setVisibility(View.GONE);
-            editBatchNumber.requestFocus();
+            editBatchCode.requestFocus();
         }
 
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
@@ -172,7 +172,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         }
                 );
 
-        b.setView(v);
+        b.setView(view);
         return b.create();
     }
 
@@ -211,7 +211,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(calendar.getTime()));
                         calibrationDetails.append("\n");
                         calibrationDetails.append("ReagentBatch: ");
-                        calibrationDetails.append(editBatchNumber.getText().toString());
+                        calibrationDetails.append(editBatchCode.getText().toString());
                         calibrationDetails.append("\n");
                         calibrationDetails.append("Version: ");
                         calibrationDetails.append(CaddisflyApp.getAppVersion(context));
@@ -259,7 +259,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                                 R.string.batchNumberKey);
 
-                        PreferencesUtil.setString(context, key, editBatchNumber.getText().toString());
+                        PreferencesUtil.setString(context, key, editBatchCode.getText().toString());
 
                         ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
 
@@ -275,8 +275,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;
                     }
-                    if (editBatchNumber.getText().toString().trim().isEmpty()) {
-                        editBatchNumber.setError(getString(R.string.required));
+                    if (editBatchCode.getText().toString().trim().isEmpty()) {
+                        editBatchCode.setError(getString(R.string.required));
                         return false;
                     }
 

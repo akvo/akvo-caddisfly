@@ -32,11 +32,22 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        TextView productView = (TextView) findViewById(R.id.textVersion);
-        productView.setText(CaddisflyApp.getAppVersion(this));
 
-        productView.setOnClickListener(new View.OnClickListener() {
+        TextView buttonSoftwareNotices = (TextView) findViewById(R.id.buttonSoftwareNotices);
+        buttonSoftwareNotices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
+                dialog.show(getFragmentManager(), "NoticesDialog");
+            }
+        });
+
+        TextView textVersion = (TextView) findViewById(R.id.textVersion);
+        textVersion.setText(CaddisflyApp.getAppVersion(this));
+
+        textVersion.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;
+
             @Override
             public void onClick(View view) {
                 if (!AppPreferences.isDiagnosticMode()) {

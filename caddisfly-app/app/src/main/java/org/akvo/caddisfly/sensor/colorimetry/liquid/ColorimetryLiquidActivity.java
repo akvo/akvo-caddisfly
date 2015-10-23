@@ -691,9 +691,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                     HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
                             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                            Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                            if (prev != null) {
-                                ft.remove(prev);
+                            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+                            if (fragment != null) {
+                                ft.remove(fragment);
                             }
                             mHighLevelsDialogFragment.setCancelable(false);
                             mHighLevelsDialogFragment.show(ft, "resultDialog");
@@ -704,9 +704,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                     mDilutionLevel, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                            Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                            if (prev != null) {
-                                ft.remove(prev);
+                            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+                            if (fragment != null) {
+                                ft.remove(fragment);
                             }
                             mResultDialogFragment.setCancelable(false);
                             mResultDialogFragment.show(ft, "resultDialog");

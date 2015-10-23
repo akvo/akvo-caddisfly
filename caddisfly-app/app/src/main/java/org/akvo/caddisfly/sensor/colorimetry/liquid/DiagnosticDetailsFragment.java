@@ -67,8 +67,8 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         Button buttonColorExtract = (Button) view.findViewById(R.id.buttonColorExtract);
         Button buttonSwatchColor = (Button) view.findViewById(R.id.buttonSwatchColor);
 
-        TextView textColorRgb = (TextView) view.findViewById(R.id.textExtractedRgb);
-        TextView swatchRgbValue = (TextView) view.findViewById(R.id.textSwatchRgb);
+        TextView textExtractedRgb = (TextView) view.findViewById(R.id.textExtractedRgb);
+        TextView textSwatchRgb = (TextView) view.findViewById(R.id.textSwatchRgb);
         TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
         TextView textDistance = (TextView) view.findViewById(R.id.textDistance);
         TextView textQuality = (TextView) view.findViewById(R.id.textQuality);
@@ -95,7 +95,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
             int swatchColor = resultDetail.getMatchedColor();
             textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
             buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
-            swatchRgbValue.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
+            textSwatchRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
 
             textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
 
@@ -108,7 +108,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
 
             buttonColorExtract.setBackgroundColor(color);
 
-            textColorRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
+            textExtractedRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
         }
 
         return view;

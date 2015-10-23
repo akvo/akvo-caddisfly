@@ -125,15 +125,15 @@ public class CalibrateListActivity extends BaseActivity
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
                 getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
 
-        FloatingActionButton floatingActionButton =
+        FloatingActionButton fabEditCalibration =
                 (FloatingActionButton) findViewById(R.id.fabEditCalibration);
 
         if (AppPreferences.isDiagnosticMode()) {
-            floatingActionButton.setBackgroundTintList(
+            fabEditCalibration.setBackgroundTintList(
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gradient_center)));
         }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        fabEditCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

@@ -30,23 +30,16 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:contentDescription="@null"
-            android:src="@drawable/logo" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="-20dp"
             android:alpha="0.8"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="@string/appName"
-            android:textAllCaps="true"
-            android:textSize="28dp"
+            android:textAllCaps="false"
+            android:textSize="30dp"
             android:textStyle="bold"
             tools:ignore="SpUsage" />
 
@@ -56,18 +49,11 @@
             android:alpha="0.7"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:paddingBottom="20dp"
             android:text="@string/waterQualitySystem"
             android:textAllCaps="true"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="200dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:alpha="0.3"
-            android:background="#ddbab0a0" />
+            android:textSize="14dp"
+            android:textStyle="bold"
+            tools:ignore="SpUsage" />
 
         <TextView
             android:id="@+id/textVersion"
@@ -75,36 +61,40 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:textSize="15sp"
-            android:textStyle="normal" />
+            android:padding="10dp"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            tools:text="Version 1.0" />
 
-        <View
-            android:layout_width="200dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:alpha="0.3"
-            android:background="#ddbab0a0" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:paddingTop="20dp"
-            android:text="@string/companyOtherName"
-            android:textSize="15sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:paddingBottom="20dp"
             android:text="@string/copyrightMessage"
             android:textSize="15sp"
             android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/buttonSoftwareNotices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="15dp"
+            android:paddingTop="5dp"
+            android:text="@string/legalInformation"
+            android:textColor="@color/button_cyan"
+            android:textSize="15sp" />
+
     </LinearLayout>
 </LinearLayout>

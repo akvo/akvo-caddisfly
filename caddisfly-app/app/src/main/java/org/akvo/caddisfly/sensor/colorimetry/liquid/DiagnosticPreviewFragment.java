@@ -100,9 +100,9 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-                if (prev != null) {
-                    ft.remove(prev);
+                Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+                if (fragment != null) {
+                    ft.remove(fragment);
                 }
 
                 diagnosticDetailsFragment.setCancelable(true);

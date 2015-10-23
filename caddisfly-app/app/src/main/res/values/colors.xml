@@ -15,9 +15,9 @@
   -->
 
 <resources>
-    <color name="primary">#388E3C</color>
-    <color name="primary_dark">#317c34</color>
-    <color name="accent">#FF6E40</color>
+    <color name="primary">#ff6f00</color>
+    <color name="primary_dark">#ed6801</color>
+    <color name="accent">#388E3C</color>
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
     <color name="windowBackground">#f7fdfd</color>
@@ -44,7 +44,10 @@
     <color name="orange_main">#e17e26</color>
 
     <!-- Buttons -->
-    <color name="button_green">#00a79d</color>
-    <color name="button_green_selected">#007f77</color>
+    <color name="button_green">#388E3C</color>
+    <color name="button_green_selected">#317c34</color>
+
+    <color name="button_cyan">#00a79d</color>
+    <!--<color name="button_cyan_selected">#007f77</color>-->
 
 </resources>

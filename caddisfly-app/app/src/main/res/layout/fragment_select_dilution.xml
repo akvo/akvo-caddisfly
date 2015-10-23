@@ -14,46 +14,39 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionFragment">
 
-    <LinearLayout
-        android:id="@+id/layoutDilutions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    <Button
+        android:id="@+id/buttonNoDilution"
+        style="@style/Button"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
+        android:minHeight="70dp"
+        android:minWidth="300dp"
+        android:text="@string/noDilution"
+        android:theme="?secondaryButtonStyle" />
 
-        <Button
-            android:id="@+id/buttonNoDilution"
-            style="@style/Button"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="25dp"
-            android:minHeight="70dp"
-            android:minWidth="300dp"
-            android:text="@string/noDilution"
-            android:theme="?secondaryButtonStyle" />
+    <Button
+        android:id="@+id/buttonDilution1"
+        style="@style/Button"
+        android:layout_marginBottom="10dp"
+        android:minHeight="70dp"
+        android:minWidth="300dp"
+        android:text="@string/timesDilution"
+        android:theme="?secondaryButtonStyle" />
 
-        <Button
-            android:id="@+id/buttonDilution1"
-            style="@style/Button"
-            android:layout_marginBottom="10dp"
-            android:minHeight="70dp"
-            android:minWidth="300dp"
-            android:text="@string/timesDilution"
-            android:theme="?secondaryButtonStyle" />
+    <Button
+        android:id="@+id/buttonDilution2"
+        style="@style/Button"
+        android:minHeight="70dp"
+        android:minWidth="300dp"
+        android:text="@string/timesDilution"
+        android:theme="?secondaryButtonStyle" />
 
-        <Button
-            android:id="@+id/buttonDilution2"
-            style="@style/Button"
-            android:minHeight="70dp"
-            android:minWidth="300dp"
-            android:text="@string/timesDilution"
-            android:theme="?secondaryButtonStyle" />
-    </LinearLayout>
-
-
-</FrameLayout>
+</LinearLayout>

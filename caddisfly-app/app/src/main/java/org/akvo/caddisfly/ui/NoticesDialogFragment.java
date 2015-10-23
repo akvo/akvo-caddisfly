@@ -52,9 +52,9 @@ public class NoticesDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_notices_dialog, container, false);
 
-        WebView webView = (WebView) view.findViewById(R.id.webNotices);
-        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        webView.loadUrl("file:///android_asset/open_source_licenses.html");
+        WebView webNotices = (WebView) view.findViewById(R.id.webNotices);
+        webNotices.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        webNotices.loadUrl("file:///android_asset/open_source_licenses.html");
         return view;
     }
 

@@ -25,7 +25,6 @@ import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
@@ -88,8 +87,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        Button startSurveyButton = (Button) findViewById(R.id.buttonSurvey);
-        startSurveyButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonSurvey).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startSurvey();

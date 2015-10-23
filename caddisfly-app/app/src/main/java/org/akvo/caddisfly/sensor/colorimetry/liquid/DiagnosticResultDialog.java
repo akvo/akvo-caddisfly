@@ -81,25 +81,25 @@ public class DiagnosticResultDialog extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.dialog_diagnostic_result, container, false);
 
-        ListView resultList = (ListView) view.findViewById(R.id.listResults);
-        resultList.setAdapter(new ResultListAdapter());
+        ListView listResults = (ListView) view.findViewById(R.id.listResults);
+        listResults.setAdapter(new ResultListAdapter());
 
         boolean allowRetry = getArguments().getBoolean("retry");
         int mColor = getArguments().getInt("color");
 
         mIsCalibration = getArguments().getBoolean("calibration");
 
-        Button cancelButton = (Button) view.findViewById(R.id.buttonCancel);
-        Button retryButton = (Button) view.findViewById(R.id.buttonRetry);
-        Button okButton = (Button) view.findViewById(R.id.buttonOk);
+        Button buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
+        Button buttonRetry = (Button) view.findViewById(R.id.buttonRetry);
+        Button buttonOk = (Button) view.findViewById(R.id.buttonOk);
 
         //if allowRetry is true then this is an error show retry button
         if (allowRetry) {
             getDialog().setTitle(R.string.error);
-            cancelButton.setVisibility(View.VISIBLE);
-            retryButton.setVisibility(View.VISIBLE);
-            okButton.setVisibility(View.GONE);
-            cancelButton.setOnClickListener(new View.OnClickListener() {
+            buttonCancel.setVisibility(View.VISIBLE);
+            buttonRetry.setVisibility(View.VISIBLE);
+            buttonOk.setVisibility(View.GONE);
+            buttonCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -109,7 +109,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 }
             });
 
-            retryButton.setOnClickListener(new View.OnClickListener() {
+            buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -126,11 +126,11 @@ public class DiagnosticResultDialog extends DialogFragment {
                 getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
             }
 
-            cancelButton.setVisibility(View.GONE);
-            retryButton.setVisibility(View.GONE);
-            okButton.setVisibility(View.VISIBLE);
+            buttonCancel.setVisibility(View.GONE);
+            buttonRetry.setVisibility(View.GONE);
+            buttonOk.setVisibility(View.VISIBLE);
 
-            okButton.setOnClickListener(new View.OnClickListener() {
+            buttonOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -168,7 +168,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             View rowView = inflater.inflate(R.layout.row_info, parent, false);
 
             if (rowView != null) {
-                TextView rgbText = (TextView) rowView.findViewById(R.id.textRgb);
+                TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
                 TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
@@ -189,16 +189,16 @@ public class DiagnosticResultDialog extends DialogFragment {
                 int g = Color.green(color);
                 int b = Color.blue(color);
 
-                rgbText.setText(String.format("%d  %d  %d", r, g, b));
+                textRgb.setText(String.format("%d  %d  %d", r, g, b));
 
-                ListView resultList = (ListView) rowView.findViewById(R.id.listResults);
+                ListView listResults = (ListView) rowView.findViewById(R.id.listResults);
 
                 if (mIsCalibration) {
                     // Hide the results table and show only the color
-                    resultList.setVisibility(View.GONE);
+                    listResults.setVisibility(View.GONE);
                 } else {
                     // Show the results table
-                    resultList.setAdapter(new ResultsDetailsAdapter(result.getResults()));
+                    listResults.setAdapter(new ResultsDetailsAdapter(result.getResults()));
                 }
             }
             return rowView;
@@ -248,24 +248,24 @@ public class DiagnosticResultDialog extends DialogFragment {
             TextView textCalibrationSteps = (TextView) rowView.findViewById(R.id.textCalibrationSteps);
             textCalibrationSteps.setText(String.format("%s step", calibrationSteps));
 
-            TextView resultText = null;
+            TextView textResult = null;
 
             for (ResultDetail resultDetail : mResults) {
                 if (resultDetail.getResult() > -1 && resultDetail.getCalibrationSteps() == calibrationSteps) {
 
                     switch (resultDetail.getColorModel()) {
                         case LAB:
-                            resultText = (TextView) rowView.findViewById(R.id.textLabResult);
-                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
+                            textResult = (TextView) rowView.findViewById(R.id.textLabResult);
+                            textResult.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
                         case RGB:
-                            resultText = (TextView) rowView.findViewById(R.id.textRgbResult);
-                            resultText.setText(String.format("%.2f", resultDetail.getResult()));
+                            textResult = (TextView) rowView.findViewById(R.id.textRgbResult);
+                            textResult.setText(String.format("%.2f", resultDetail.getResult()));
                             break;
                     }
 
                     if (calibrationSteps == 5 && resultDetail.getColorModel() == ColorUtil.DEFAULT_COLOR_MODEL) {
-                        resultText.setTypeface(Typeface.DEFAULT_BOLD);
+                        textResult.setTypeface(Typeface.DEFAULT_BOLD);
                     }
                 }
             }

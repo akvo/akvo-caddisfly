@@ -83,7 +83,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.object.HasToString.hasToString;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class EspressoTest
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -856,12 +856,12 @@ public class EspressoTest
         onView(withText(R.string.save)).perform(click());
 
         onView(withId(R.id.editBatchCode))
-                .perform(typeText("QWERT 123#*@!"), closeSoftKeyboard());
+                .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
 
         onView(withText(R.string.save)).perform(click());
 
         onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
-                getActivity().getString(R.string.recalibateWithNewReagent))))).check(matches(isDisplayed()));
+                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(isDisplayed()));
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -903,7 +903,7 @@ public class EspressoTest
         onView(withText(R.string.save)).perform(click());
 
         onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
-                getActivity().getString(R.string.recalibateWithNewReagent))))).check(matches(not(isDisplayed())));
+                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(not(isDisplayed())));
 
         goToMainScreen();
 
@@ -916,6 +916,26 @@ public class EspressoTest
         sleep(2000);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
+
+    }
+
+    public void testSoftwareNotices(){
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        onView(withText(R.string.legalInformation)).check(matches(isDisplayed())).perform(click());
+
+        onView(withId(R.id.webNotices)).check(matches(isDisplayed()));
+
+        Espresso.pressBack();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.language)).perform(click());
+
+        onView(withText(R.string.cancel)).perform(click());
 
     }
 
