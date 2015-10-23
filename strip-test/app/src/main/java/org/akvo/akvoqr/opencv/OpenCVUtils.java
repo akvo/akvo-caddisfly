@@ -77,15 +77,18 @@ public class OpenCVUtils {
 //        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
 //        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
 
-        //Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-        // so the result will be: top-left, bottom-left, top-right, bottom-right. Because top-left always has the lowest sum of x and y
-        // and bottom-right always the highest
+        /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
+        * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
+        * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
+        * Because top-left always has the lowest sum of x and y
+        * and bottom-right always the highest, they always come first and last.
+        */
         Collections.sort(srcList, new PointComparator());
 
 //        System.out.println("***after sort:");
 //        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-//        System.out.println("***bottomleft: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-//        System.out.println("***topright: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
+//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
+//        System.out.println("***third: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
 //        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         return srcList;
@@ -97,18 +100,44 @@ public class OpenCVUtils {
         List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
 
         //source quad
-        //here we maintain the order: top-left, top-right, bottom-left, bottom-right
         Point[] srcQuad = new Point[4];
-        srcQuad[0]=srcList.get(0);
-        srcQuad[1]=srcList.get(2);
-        srcQuad[2]=srcList.get(1);
-        srcQuad[3]=srcList.get(3);
         //destination quad corresponding with srcQuad
         Point[] dstQuad = new Point[4];
-        dstQuad[0] = new Point( 0,0 );
-        dstQuad[1] = new Point( bgr.cols() - 1, 0 );
-        dstQuad[2] = new Point( 0, bgr.rows() - 1 );
-        dstQuad[3] = new Point(bgr.cols()-1, bgr.rows()-1);
+
+        //second and third Points in the list are top-right and bottom-left, but there order changes
+        //depending on if portrait or landscape
+        if(srcList.get(1).x > srcList.get(2).x) //it is portrait view
+        {
+            //clockwise: top-left, top-right, bottom-right, bottom-left
+            srcQuad[0]=srcList.get(0);
+            srcQuad[1]=srcList.get(1);
+            srcQuad[2]=srcList.get(3);
+            srcQuad[3]=srcList.get(2);
+
+            //Because camera is in portrait mode, we need to alter the order of the positions:
+            //rotating clockwise 90 degrees, bottom-left becomes top-left, top-left becomes top-right, etc.
+            dstQuad[0] = new Point( bgr.cols() - 1, 0 );
+            dstQuad[1] = new Point(bgr.cols()-1, bgr.rows()-1);
+            dstQuad[2] = new Point( 0, bgr.rows() - 1 );
+            dstQuad[3] = new Point( 0,0 );
+
+        }
+        else
+        {
+            //clockwise: top-left, top-right, bottom-right, bottom-left
+            srcQuad[0]=srcList.get(0);
+            srcQuad[1]=srcList.get(2);
+            srcQuad[2]=srcList.get(3);
+            srcQuad[3]=srcList.get(1);
+
+            dstQuad[0] = new Point( 0,0 );
+            dstQuad[1] = new Point( bgr.cols() - 1, 0 );
+            dstQuad[2] = new Point(bgr.cols()-1, bgr.rows()-1);
+            dstQuad[3] = new Point( 0, bgr.rows() - 1 );
+
+        }
+
+
 
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);

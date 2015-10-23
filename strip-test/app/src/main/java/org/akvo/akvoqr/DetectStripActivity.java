@@ -39,7 +39,6 @@ import java.util.ArrayList;
 public class DetectStripActivity extends AppCompatActivity {
 
     private Mat bgr;
-    private Bitmap bitmap;
     private LinearLayout linearLayout;
     private Handler handler;
     private Button toResultsButton;
@@ -376,6 +375,8 @@ public class DetectStripActivity extends AppCompatActivity {
 
             showMessage(getString(R.string.warp));
             warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, bgr);
+            //Because camera is in portrait mode, we need to 'rotate' the finder pattern positions
+            //warp_dst = OpenCVUtils.perspectiveTransform(bottomleft, topleft, bottomright, topright,  bgr);
 
         }
 
