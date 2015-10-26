@@ -19,7 +19,7 @@
     <string name="error_warp">Warp failed.</string>
     <string name="finished">FINISHED</string>
     <string name="focus">Focus</string>
-    <string name="light">Exposure</string>
+    <string name="light">Brightness</string>
     <string name="no_data">No data for patch no.</string>
     <string name="patch_no">Patch no.</string>
     <string name="play_sound">Play Sound</string>
@@ -40,7 +40,7 @@
     <string name="start_test">Perform Test</string>
     <string name="duration">Duration:</string>
     <string name="instructions">Instructions</string>
-    <string name="contrast">Contrast</string>
+    <string name="contrast">Shadows</string>
 
     <string-array name="instructions">
         <item>When you hear a sound, a picture is taken.</item>

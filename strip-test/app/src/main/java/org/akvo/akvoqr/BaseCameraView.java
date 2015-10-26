@@ -140,6 +140,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setFocusAreas(areas);
         }
 
+       //flashmode
+        switchFlashMode();
+
         // start preview with new settings
         try {
 
@@ -152,6 +155,13 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             Log.d("", "Error starting camera preview: " + e.getMessage());
         }
 
+    }
+
+    private void switchFlashMode()
+    {
+        String flashmode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)?
+                Camera.Parameters.FLASH_MODE_TORCH: Camera.Parameters.FLASH_MODE_OFF;
+        parameters.setFlashMode(flashmode);
     }
 }
 

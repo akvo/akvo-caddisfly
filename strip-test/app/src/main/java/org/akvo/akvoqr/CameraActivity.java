@@ -99,6 +99,20 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             progressIndicatorView.setVisibility(View.GONE);
             durationView.setVisibility(View.INVISIBLE);
         }
+
+        //use brightness view as a button to switch on and off the flash
+        ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
+        exposureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mPreview.surfaceChanged(mPreview.getHolder(), mCamera.getParameters().getPreviewFormat(),
+                        mCamera.getParameters().getPreviewSize().width,
+                        mCamera.getParameters().getPreviewSize().height);
+            }
+        });
+
+
     }
 
     private void init()

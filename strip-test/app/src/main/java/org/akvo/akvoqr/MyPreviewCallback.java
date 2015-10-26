@@ -355,8 +355,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
 
-        System.out.println("***size width: " + size.width + " height: " + size.height);
-
         FinderPatternInfo info = null;
         PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
