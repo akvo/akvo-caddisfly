@@ -32,11 +32,13 @@ import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.AlignmentActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
@@ -192,6 +194,10 @@ public class ExternalActionActivity extends BaseActivity {
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case COLORIMETRIC_LIQUID:
 
+                if (ApiUtil.isCameraInUse(this, this)) {
+                    return;
+                }
+
                 if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
                     alertCalibrationIncomplete();
                     return;
@@ -206,9 +212,14 @@ public class ExternalActionActivity extends BaseActivity {
                     return;
                 }
 
-                final Intent colorimetricLiquidIntent = new Intent(context, ColorimetryLiquidActivity.class);
-                colorimetricLiquidIntent.putExtra("isExternal", mIsExternalAppCall);
-                startActivityForResult(colorimetricLiquidIntent, REQUEST_TEST);
+                final Intent intent = new Intent();
+                intent.putExtra("isExternal", mIsExternalAppCall);
+                if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
+                    intent.setClass(context, SelectDilutionActivity.class);
+                } else {
+                    intent.setClass(context, AlignmentActivity.class);
+                }
+                startActivityForResult(intent, REQUEST_TEST);
 
                 break;
             case COLORIMETRIC_STRIP:

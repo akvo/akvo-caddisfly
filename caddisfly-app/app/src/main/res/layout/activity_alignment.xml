@@ -18,7 +18,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.AlignmentActivity">
 
     <include layout="@layout/toolbar" />
 
@@ -63,18 +64,37 @@
 
     </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutWait"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/layoutInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:contentDescription="@null"
-                android:src="@drawable/place_device" />
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
+
+            <FrameLayout
+                android:id="@+id/layoutCameraPreview"
+                android:layout_width="240dp"
+                android:layout_height="320dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-30dp" />
+
+            <org.akvo.caddisfly.widget.CrossHairView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonStart"
+            style="@style/Button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/start"
+            android:theme="?primaryButtonStyle" />
+
+    </LinearLayout>
 </LinearLayout>

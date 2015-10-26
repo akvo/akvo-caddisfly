@@ -787,6 +787,8 @@ public class EspressoTest
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
+        onView(withId(R.id.buttonStart)).perform(click());
+
         final Activity activity = getCurrentActivity();
         activity.runOnUiThread(new Runnable() {
             public void run() {

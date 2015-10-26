@@ -18,6 +18,7 @@ package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -28,6 +29,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 
 /**
  * Utility functions for api related actions
@@ -126,6 +128,31 @@ public final class ApiUtil {
             number = "No equipment Id";
         }
         return number;
+    }
+
+
+    public static boolean isCameraInUse(Context context, final Activity activity) {
+        Camera camera = null;
+        try {
+            camera = CaddisflyApp.getCamera(context, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    if (activity != null) {
+                        activity.finish();
+                    }
+                }
+            });
+
+        } catch (Exception ignored) {
+        }
+
+        if (camera != null) {
+            camera.release();
+            return false;
+        }
+
+        return true;
     }
 
 

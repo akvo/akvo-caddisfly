@@ -47,6 +47,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -195,14 +196,16 @@ public class CalibrateListActivity extends BaseActivity
         mPosition = id;
         Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
-        final Intent intent = new Intent();
-        intent.setClass(this, ColorimetryLiquidActivity.class);
-        intent.putExtra("isCalibration", true);
-        intent.putExtra("swatchValue", swatch.getValue());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, REQUEST_CALIBRATE);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        if (!ApiUtil.isCameraInUse(this, null)) {
+            final Intent intent = new Intent(getIntent());
+            intent.setClass(getBaseContext(), AlignmentActivity.class);
+            intent.putExtra("isCalibration", true);
+            intent.putExtra("swatchValue", swatch.getValue());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivityForResult(intent, REQUEST_CALIBRATE);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
     }
 
     @Override

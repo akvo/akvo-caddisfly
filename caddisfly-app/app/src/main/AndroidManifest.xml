@@ -13,7 +13,6 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -110,6 +109,8 @@
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />
 
+        <activity android:name=".sensor.colorimetry.liquid.SelectDilutionActivity" />
+        <activity android:name=".sensor.colorimetry.liquid.AlignmentActivity"></activity>
     </application>
 
 </manifest>

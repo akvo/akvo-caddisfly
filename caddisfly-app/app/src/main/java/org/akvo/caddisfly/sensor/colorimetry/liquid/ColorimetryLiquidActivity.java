@@ -25,10 +25,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
@@ -40,12 +38,8 @@ import android.os.PowerManager;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -77,7 +71,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         HighLevelsDialogFragment.MessageDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener {
     private final Handler delayHandler = new Handler();
-    private CameraDialog mCameraDialog;
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -88,7 +81,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private boolean mWaitingForStillness = false;
-    private ViewAnimator mViewAnimator;
     private CameraDialog mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
@@ -99,19 +91,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     //pointer to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
-    private boolean mIsAlignmentCheck;
-    private TextView textSubtitle;
-
-    @SuppressWarnings("SameParameterValue")
-    private static void setAnimatorDisplayedChild(ViewAnimator viewAnimator, int whichChild) {
-        Animation inAnimation = viewAnimator.getInAnimation();
-        Animation outAnimation = viewAnimator.getOutAnimation();
-        viewAnimator.setInAnimation(null);
-        viewAnimator.setOutAnimation(null);
-        viewAnimator.setDisplayedChild(whichChild);
-        viewAnimator.setInAnimation(inAnimation);
-        viewAnimator.setOutAnimation(outAnimation);
-    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -122,9 +101,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         getResources().getString(R.string.calibrate),
                         mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                 textDilution.setText(subTitle);
-                //textDilution1.setText(subTitle);
-            } else {
-                setTitle("Select Dilution");
             }
         }
     }
@@ -135,15 +111,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         setContentView(R.layout.activity_colorimetry_liquid);
 
+        setTitle("Analysis");
+
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
 
         sound = new SoundPoolPlayer(this);
 
         textDilution = (TextView) findViewById(R.id.textDilution);
-        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
-
-        mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
+        TextView textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
         //Set up the shake detector
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -179,95 +155,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mShakeDetector.maxShakeDuration = 2000;
         mSensorManager.unregisterListener(mShakeDetector);
 
-        Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
-        Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);
-        Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
+        textSubtitle.setText(R.string.placeDevice);
 
-        //todo: remove hardcoding of dilution times
-        percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
-        percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
-
-        noDilutionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDilutionLevel = 0;
-                textDilution.setText(R.string.noDilution);
-                mViewAnimator.showNext();
-            }
-        });
-
-        percentButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDilutionLevel = 1;
-                String dilutionLabel = String.format(getString(R.string.timesDilution), 2);
-                textDilution.setText(dilutionLabel);
-                mViewAnimator.showNext();
-                //startAlignmentCameraPreview();
-            }
-        });
-
-        percentButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDilutionLevel = 2;
-                String dilutionLabel = String.format(getString(R.string.timesDilution), 5);
-                textDilution.setText(dilutionLabel);
-                mViewAnimator.showNext();
-                //startAlignmentCameraPreview();
-            }
-        });
-
-        findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mIsAlignmentCheck = false;
-                mCameraDialog.stopCamera();
-
-                mViewAnimator.showNext();
-
-                acquireWakeLock();
-
-                // disable the key guard when device wakes up and shake alert is displayed
-                getWindow().setFlags(
-                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                );
-
-
-                InitializeTest();
-
-                textSubtitle.setText(R.string.placeDevice);
-
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                        SensorManager.SENSOR_DELAY_UI);
-            }
-        });
-
-        mCameraDialog = CameraDialogFragment.newInstance();
-    }
-
-    private void startAlignmentCameraPreview() {
-
-        setTitle("Check Alignment");
-        textSubtitle.setText(R.string.alignChamber);
-
-        getFragmentManager().beginTransaction()
-                .add(R.id.layoutCameraPreview, mCameraDialog)
-                .commit();
-
-        mIsAlignmentCheck = true;
     }
 
     private void InitializeTest() {
-
-        setTitle("Analysis");
 
         mSensorManager.unregisterListener(mShakeDetector);
 
@@ -277,23 +169,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         mWaitingForStillness = true;
 
-        final Context context = this;
-        Camera camera = null;
-        try {
-            camera = CaddisflyApp.getCamera(context, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    releaseResources();
-                    dialogInterface.dismiss();
-                    finish();
-                }
-            });
-        } finally {
-            if (camera != null) {
-                camera.release();
-            }
+        if (ApiUtil.isCameraInUse(this, null)) {
+            releaseResources();
+            finish();
         }
+
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                SensorManager.SENSOR_DELAY_UI);
     }
+
 
     /**
      * Acquire a wake lock to prevent the screen from turning off during the analysis process
@@ -329,8 +213,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         releaseResources();
 
-        //setAnimatorDisplayedChild(mViewAnimator, 1);
-
         sound.playShortResource(R.raw.err);
 
         alertDialogToBeDestroyed = AlertUtil.showError(this, R.string.error, message, bitmap, R.string.retry,
@@ -338,8 +220,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         InitializeTest();
-                        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                                SensorManager.SENSOR_DELAY_UI);
+//                        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+//                                SensorManager.SENSOR_DELAY_UI);
 
                     }
                 },
@@ -379,6 +261,19 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onStart();
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
+        mDilutionLevel = getIntent().getIntExtra("dilution", 0);
+
+        switch (mDilutionLevel) {
+            case 0:
+                textDilution.setText(R.string.noDilution);
+                break;
+            case 1:
+                textDilution.setText(String.format(getString(R.string.timesDilution), 2));
+                break;
+            case 2:
+                textDilution.setText(String.format(getString(R.string.timesDilution), 5));
+                break;
+        }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -402,19 +297,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
             );
         }
 
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
+        Configuration conf = getResources().getConfiguration();
 
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
 
-        startAlignmentCameraPreview();
-
         if (testInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
-        } else if (mIsCalibration || !testInfo.getCanUseDilution()) {
-            releaseResources();
-            setAnimatorDisplayedChild(mViewAnimator, 1);
         } else if (!mTestCompleted) {
             InitializeTest();
         }
@@ -766,7 +655,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 onBackPressed();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -790,7 +678,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     @Override
     public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration) {
-        //setAnimatorDisplayedChild(mViewAnimator, 1);
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
@@ -811,9 +698,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
             HighLevelsDialogFragment mHighLevelsDialogFragment = HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-            Fragment prev = getFragmentManager().findFragmentByTag("resultDialog");
-            if (prev != null) {
-                ft.remove(prev);
+            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+            if (fragment != null) {
+                ft.remove(fragment);
             }
             mHighLevelsDialogFragment.setCancelable(false);
             mHighLevelsDialogFragment.show(ft, "resultDialog");
@@ -821,21 +708,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
         } else if (retry) {
             mCameraFragment.dismiss();
             InitializeTest();
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                    SensorManager.SENSOR_DELAY_UI);
+//            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+//                    SensorManager.SENSOR_DELAY_UI);
         } else {
             releaseResources();
             if (cancelled) {
                 setResult(Activity.RESULT_CANCELED);
             }
-            finish();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mIsAlignmentCheck) {
             finish();
         }
     }
