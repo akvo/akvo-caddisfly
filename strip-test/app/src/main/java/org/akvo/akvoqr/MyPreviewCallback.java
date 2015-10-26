@@ -360,8 +360,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         FinderPatternInfo info = null;
         PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
-                (int) Math.round(size.width * Constant.CROP_CAMERAVIEW_FACTOR),
-                size.height, false);
+                (int) Math.round(size.height * Constant.CROP_CAMERAVIEW_FACTOR),
+                size.height,
+                false);
 
         BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
 
