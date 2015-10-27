@@ -16,25 +16,6 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Flow.Theme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/flow_primary</item>
-        <item name="colorPrimaryDark">@android:color/background_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/orange_main</item>
-        <item name="android:textColorPrimaryInverse">@color/orange_main</item>
-        <item name="android:textColorSecondaryInverse">@color/white</item>
-        <item name="android:textColor">@color/black_main</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/background_main</item>
-        <item name="android:listViewStyle">@style/Flow.ListView</item>
-        <item name="primaryButtonStyle">@style/Flow.Button.Green</item>
-        <item name="dialogDestructiveButton">@style/Flow.Dialog.Destructive</item>
-        <item name="primaryBackgroundStyle">@color/orange_main</item>
-        <item name="toolbarHeight">@dimen/flow_toolbar_height</item>
-        <item name="toolbarMargin">@dimen/flow_toolbar_margin</item>
-        <item name="progressTint">@color/accent</item>
-    </style>
-
     <style name="Flow.Theme.Main" parent="Flow.Theme">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

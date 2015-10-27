@@ -60,6 +60,10 @@ public class AppPreferences {
         }
     }
 
+    public static boolean isSaveImagesOn() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
+    }
+
     public static boolean isSoundOff() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);

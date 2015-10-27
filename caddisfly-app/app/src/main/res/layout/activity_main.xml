@@ -24,6 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?primaryBackgroundStyle"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar" />
@@ -32,7 +33,6 @@
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient"
             android:orientation="vertical">
 
             <Button
@@ -48,8 +48,8 @@
                 android:paddingStart="22dp"
                 android:text="@string/survey"
                 android:textAlignment="viewStart"
-                android:textColor="#e3e2e0e0"
-                android:theme="@style/Button.Blue" />
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle" />
 
             <Button
                 android:id="@+id/buttonEcSensor"
@@ -63,8 +63,8 @@
                 android:paddingStart="22dp"
                 android:text="@string/electricalConductivity"
                 android:textAlignment="viewStart"
-                android:textColor="#e3e2e0e0"
-                android:theme="@style/Button.Blue" />
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle" />
 
             <Button
                 android:id="@+id/buttonCalibrate"
@@ -78,8 +78,8 @@
                 android:paddingStart="22dp"
                 android:text="@string/calibrate"
                 android:textAlignment="viewStart"
-                android:textColor="#e3e2e0e0"
-                android:theme="@style/Button.Blue" />
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle" />
 
         </LinearLayout>
     </LinearLayout>

@@ -20,18 +20,21 @@
     <color name="accent">#388E3C</color>
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
+    <color name="text_tertiary">#e3e2e0e0</color>
     <color name="windowBackground">#f7fdfd</color>
+    <color name="primary_background">#014378</color>
+
+    //Orange Theme
+    <color name="primary_orange">#2C2A74</color>
+    <color name="primary_dark_orange">#252363</color>
+    <color name="primary_accent_orange">#388E3C</color>
+    <color name="primary_background_orange">#DE8929</color>
+    <color name="text_tertiary_orange">#6c4314</color>
 
     <color name="amber">#ff6f00</color>
     <color name="secondary_accent">#ffeb3b</color>
-    <color name="error_background">#2afac900</color>
-    <color name="destructive">#ff0000</color>
-
-    <color name="diagnostic">#ff0000</color>
-    <color name="diagnostic_status">#e20101</color>
 
     <color name="gradient_start">#003b69</color>
-    <color name="gradient_center">#014378</color>
 
     <color name="flow_primary">#2d2d2d</color>
 
@@ -49,5 +52,11 @@
 
     <color name="button_cyan">#00a79d</color>
     <!--<color name="button_cyan_selected">#007f77</color>-->
+
+    <color name="error_background">#2afac900</color>
+    <color name="destructive">#ff0000</color>
+    <color name="diagnostic">#ff0000</color>
+    <color name="diagnostic_status">#e20101</color>
+
 
 </resources>

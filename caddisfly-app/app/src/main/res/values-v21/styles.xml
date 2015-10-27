@@ -26,14 +26,11 @@
         <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="dialogDestructiveButton">@style/AppTheme.Dialog.Destructive</item>
-        <item name="primaryBackgroundStyle">@color/gradient_center</item>
+        <item name="primaryBackgroundStyle">@color/primary_background</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/secondary_accent</item>
         <item name="progressTintInverse">@color/accent</item>
-    </style>
-
-    <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
@@ -59,22 +56,6 @@
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_marginBottom">-16dp</item>
-    </style>
-
-    <style name="Button" parent="Widget.AppCompat.Button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingEnd">10dp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:minWidth">200dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:elevation">0dp</item>
-        <item name="android:minHeight">65dp</item>
     </style>
 
 </resources>

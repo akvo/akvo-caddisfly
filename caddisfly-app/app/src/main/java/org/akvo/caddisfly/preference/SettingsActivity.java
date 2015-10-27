@@ -87,6 +87,11 @@ public class SettingsActivity extends BaseActivity
         if (getApplicationContext().getString(R.string.languageKey).equals(s)) {
             finish();
         }
+
+        if ("theme".equals(s)) {
+            finish();
+        }
+
     }
 
     @Override

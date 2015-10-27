@@ -13,6 +13,7 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -45,13 +46,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.Orange"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:theme="@style/MainActivityTheme">
+            android:theme="@style/AppTheme.Orange.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -105,12 +106,13 @@
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:screenOrientation="nosensor" />
 
+        <activity android:name=".sensor.colorimetry.liquid.SelectDilutionActivity" />
+        <activity android:name=".sensor.colorimetry.liquid.AlignmentActivity" />
+
         <service
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />
 
-        <activity android:name=".sensor.colorimetry.liquid.SelectDilutionActivity" />
-        <activity android:name=".sensor.colorimetry.liquid.AlignmentActivity"></activity>
     </application>
 
 </manifest>

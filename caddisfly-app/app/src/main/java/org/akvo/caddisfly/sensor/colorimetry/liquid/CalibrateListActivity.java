@@ -131,7 +131,7 @@ public class CalibrateListActivity extends BaseActivity
 
         if (AppPreferences.isDiagnosticMode()) {
             fabEditCalibration.setBackgroundTintList(
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gradient_center)));
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_background)));
         }
 
         fabEditCalibration.setOnClickListener(new View.OnClickListener() {

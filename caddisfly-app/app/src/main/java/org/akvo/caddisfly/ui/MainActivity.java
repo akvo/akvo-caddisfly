@@ -34,13 +34,13 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
 
 public class MainActivity extends BaseActivity {
 
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    //the language requested by the external app
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +122,11 @@ public class MainActivity extends BaseActivity {
         switchLayoutForDiagnosticOrUserMode();
 
         CaddisflyApp.getApp().setAppLanguage(null, false, handler);
+
+        if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
+            PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
+            handler.sendEmptyMessage(0);
+        }
     }
 
     /**
@@ -131,12 +136,12 @@ public class MainActivity extends BaseActivity {
         if (AppPreferences.isDiagnosticMode()) {
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSlogan).setVisibility(View.GONE);
-            findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
+            //findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
         } else {
             if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
                 findViewById(R.id.layoutSlogan).setVisibility(View.VISIBLE);
-                findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
+                //findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
             }
         }
     }

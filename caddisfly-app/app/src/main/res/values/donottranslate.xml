@@ -30,5 +30,16 @@
     <string name="lab">LAB</string>
     <string name="rgb">RGB</string>
     <string name="hsv">HSV</string>
+    <string name="saveImages">Save images and data</string>
+
+    <string-array name="themes">
+        <item>Blue App Bar</item>
+        <item>Orange App Bar</item>
+    </string-array>
+
+    <string-array name="theme_codes">
+        <item>Blue</item>
+        <item>Orange</item>
+    </string-array>
 
 </resources>

@@ -25,5 +25,14 @@
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
 
+        <ListPreference
+            android:defaultValue="en"
+            android:dialogTitle="Select Theme"
+            android:entries="@array/themes"
+            android:entryValues="@array/theme_codes"
+            android:key="theme"
+            android:summary="%s"
+            android:title="Theme" />
+
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

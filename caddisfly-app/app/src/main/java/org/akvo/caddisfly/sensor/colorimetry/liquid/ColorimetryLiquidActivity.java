@@ -529,8 +529,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
             if (isCalibration && color != Color.TRANSPARENT) {
                 sound.playShortResource(R.raw.done);
-                if (AppPreferences.isDiagnosticMode()) {
+
+                if (AppPreferences.isSaveImagesOn()) {
                     saveImageForDiagnostics(data, result);
+                }
+
+                if (AppPreferences.isDiagnosticMode()) {
                     showDiagnosticResultDialog(false, result, color, true);
                 } else {
                     (new Handler()).postDelayed(new Runnable() {
@@ -541,10 +545,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 }
             } else {
                 if (result < 0 || color == Color.TRANSPARENT) {
+                    if (AppPreferences.isSaveImagesOn()) {
+                        saveImageForDiagnostics(data, result);
+                    }
+
                     if (AppPreferences.isDiagnosticMode()) {
                         sound.playShortResource(R.raw.err);
-                        //save the image for diagnostics
-                        saveImageForDiagnostics(data, result);
                         showDiagnosticResultDialog(true, 0, color, isCalibration);
                     } else {
                         if (mIsCalibration) {
@@ -555,10 +561,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     }
                 } else {
 
+                    if (AppPreferences.isSaveImagesOn()) {
+                        saveImageForDiagnostics(data, result);
+                    }
+
                     if (AppPreferences.isDiagnosticMode()) {
                         sound.playShortResource(R.raw.done);
-                        //save the image for diagnostics
-                        saveImageForDiagnostics(data, result);
                         showDiagnosticResultDialog(false, result, color, false);
                     } else {
                         String title = CaddisflyApp.getApp().getCurrentTestInfo().

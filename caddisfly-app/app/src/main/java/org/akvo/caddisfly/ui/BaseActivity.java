@@ -23,24 +23,48 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * The base activity with common functions
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private final static String THEME_BLUE = "Blue";
+    private final static String THEME_ORANGE = "Orange";
     private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateTheme();
         ApiUtil.lockScreenOrientation(this);
+    }
+
+    public void updateTheme() {
+
+        String theme = PreferencesUtil.getString(this, "theme", "Blue");
+
+        if (theme.equals(THEME_BLUE)) {
+            setTheme(R.style.AppTheme_Blue);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark));
+            }
+        } else if (theme.equals(THEME_ORANGE)) {
+            setTheme(R.style.AppTheme_Orange);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark_orange));
+            }
+        }
     }
 
     @Override

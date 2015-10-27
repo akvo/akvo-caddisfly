@@ -29,4 +29,6 @@
     <string name="calibrationExpiryDateKey" translateable="false">calibrationExpiryDate</string>
     <string name="batchNumberKey" translateable="false">batchNumber</string>
     <string name="sensorCalibratedDateKey" translateable="false">sensorCalibratedDate</string>
+    <string name="themeChangedKey">themeChanged</string>
+    <string name="saveImagesKey">saveImages</string>
 </resources>
