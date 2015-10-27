@@ -1,20 +1,11 @@
 package org.akvo.akvoqr.util;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfDouble;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -140,7 +131,7 @@ public class PreviewUtils {
    * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
    *  points with luminosity with a larger difference than Constant.CONTRAST_MAX_DEVIATION_PERCENTAGE count 10 times in the result.
     */
-    public static double getShadowPercentage(Mat bgr) {
+    public static double getShadowPercentage(Mat bgr, int versionNumber) {
 
         double sumLum = 0;
         int countDev = 0;
@@ -150,7 +141,7 @@ public class PreviewUtils {
         Mat hls = new Mat();
         Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS_FULL);
 
-        CalibrationCard card = CalibrationCard.getInstance(1);
+        CalibrationCard card = CalibrationCard.getInstance(versionNumber);
 
         double[][] points = card.createWhitePointArray(hls);
 
@@ -203,7 +194,7 @@ public class PreviewUtils {
 //        double maxDiff = 30;
 //        double totalLinesWithShadow = 0;
 //
-//        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
+//        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration1.json");
 //        JSONObject calObj = new JSONObject(json);
 //
 //        JSONObject calData = calObj.getJSONObject("calData");

@@ -28,14 +28,14 @@ public final class FinderPatternInfo {
   private final FinderPattern bottomRight;
   private final FinderPattern topLeft;
   private final FinderPattern topRight;
-  private final int code;
+  //private final int code;
 
-  public FinderPatternInfo(FinderPattern[] patternCenters, int code) {
+  public FinderPatternInfo(FinderPattern[] patternCenters) {
     this.bottomLeft = patternCenters[0];
     this.topLeft = patternCenters[1];
     this.topRight = patternCenters[2];
     this.bottomRight = patternCenters[3];
-    this.code = code;
+    //this.code = code;
   }
 
 

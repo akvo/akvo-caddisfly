@@ -225,9 +225,9 @@ public class Detector {
    * @param bottomLeft detected bottom-left finder pattern center
    * @return estimated module size
    */
-  protected final float calculateModuleSize(ResultPoint topLeft,
-                                            ResultPoint topRight,
-                                            ResultPoint bottomLeft) {
+  public final float calculateModuleSize(ResultPoint topLeft,
+                                         ResultPoint topRight,
+                                         ResultPoint bottomLeft) {
     // Take the average
     return (calculateModuleSizeOneWay(topLeft, topRight) +
         calculateModuleSizeOneWay(topLeft, bottomLeft)) / 2.0f;

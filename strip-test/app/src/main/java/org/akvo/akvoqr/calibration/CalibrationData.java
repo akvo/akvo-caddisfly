@@ -16,19 +16,19 @@ public class CalibrationData {
     public String cardVersion;
     public String date;
     public String unit;
-    public Double patchSize;
-    public Double hsize;
-    public Double vsize;
+    public double patchSize;
+    public double hsize;
+    public double vsize;
     public Map<String,Location> locations;
     public Map<String,CalValue> calValues;
     public List<WhiteLine> whiteLines;
-    public Double[] stripArea;
+    public double[] stripArea;
 
     public CalibrationData(){
         this.locations = new HashMap<String,Location>();
         this.calValues = new HashMap<String,CalValue>();
         this.whiteLines = new ArrayList<WhiteLine>();
-        this.stripArea = new Double[4];
+        this.stripArea = new double[4];
     }
 
     public class Location {

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -42,7 +43,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
-    //private FinderPatternInfo info;
+    private int versionNumber = CalibrationCard.CODE_NOT_FOUND;
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
@@ -297,11 +298,11 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     // TODO Check if this actually focusses the camera.
                     while (!focused && camera != null && count < 100) {
                         camera.autoFocus(new Camera.AutoFocusCallback() {
-                                @Override
-                                public void onAutoFocus(boolean success, Camera camera) {
-                                    if (success) focused = true;
-                                }
-                            });
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+                                if (success) focused = true;
+                            }
+                        });
                         count++;
                     }
                 }
@@ -324,7 +325,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 try
                 {
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp);
+                    //if(versionNumber!=CalibrationCard.CODE_NOT_FOUND)//temporary hack to make it work without proper version number
+                        shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    System.out.println("***versionNumber 2: " + versionNumber);
                 }
                 catch (Exception e)
                 {
@@ -344,10 +347,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
 
         //count results only if checks have taken place
-            if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
-                //System.out.println("start button: " + focused + " " +  exposureQualOk + "  " + shadowQualOk);
-                listener.setCountQualityCheckResult(focused && exposureQualOk && shadowQualOk ? 1 : 0);
-            }
+        if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
+            //System.out.println("start button: " + focused + " " +  exposureQualOk + "  " + shadowQualOk);
+            listener.setCountQualityCheckResult(focused && exposureQualOk && shadowQualOk ? 1 : 0);
+        }
 
         return true;
 
@@ -382,6 +385,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 info = finderPatternFinder.find(null);
 
+
             } catch (Exception e) {
                 // this only means not all patterns (=4) are detected.
             }
@@ -401,7 +405,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     handler.post(showFinderPatternRunnable);
 
+                    try {
+                        if (possibleCenters.size() == 4) {
+                            versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
+                            System.out.println("***versionNumber: " + versionNumber);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
+
                 return info;
             }
         }

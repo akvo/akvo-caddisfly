@@ -1,5 +1,10 @@
 package org.akvo.akvoqr.calibration;
 
+import org.akvo.akvoqr.detector.BitMatrix;
+import org.akvo.akvoqr.detector.Detector;
+import org.akvo.akvoqr.detector.FinderPattern;
+import org.akvo.akvoqr.detector.MathUtils;
+import org.akvo.akvoqr.detector.ResultPoint;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
@@ -15,79 +20,101 @@ import org.json.JSONObject;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.List;
 
+import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
+
 // Performs the calibration of the image
 public class CalibrationCard{
+    public static final int CODE_NOT_FOUND = 1;//temporary hack to work with current test card, was -1
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
     private static CalibrationData calData;
+    private static int calVersionNumber = 1;//CODE_NOT_FOUND;
+
+    //Constructor to use if versionNumber is set previously or does not matter
+    public static CalibrationCard getInstance()
+    {
+        return getInstance(calVersionNumber);
+    }
 
     public static CalibrationCard getInstance(int versionNumber)
     {
-
         if(instance==null) {
             instance = new CalibrationCard();
-            calData = readCalibrationFile();
         }
+
+       // if(calVersionNumber!=versionNumber) {
+            calVersionNumber = versionNumber;
+            calData = readCalibrationFile();
+       // }
 
         return instance;
     }
 
     private static CalibrationData readCalibrationFile(){
-        CalibrationData calData = new CalibrationData();
-        String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
+
+        String calFileName = "calibration" + calVersionNumber + ".json";
+        String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
+
         try {
-            JSONObject obj = new JSONObject(json);
 
-            // general data
-            calData.date = obj.getString("date");
-            calData.cardVersion = obj.getString("cardVersion");
-            calData.unit = obj.getString("unit");
+            CalibrationData calData = new CalibrationData();
 
-            // sizes
-            JSONObject calDataJSON = obj.getJSONObject("calData");
-            calData.patchSize = calDataJSON.getDouble("patchSize");
-            calData.hsize = calDataJSON.getDouble("hsize");
-            calData.vsize = calDataJSON.getDouble("vsize");
+            if(json!=null) {
+                JSONObject obj = new JSONObject(json);
 
-            // locations
-            JSONArray locJSON = calDataJSON.getJSONArray("locations");
-            for(int i=0;i < locJSON.length();i++){
-                JSONObject loc = locJSON.getJSONObject(i);
-                calData.addLocation(loc.getString("l"),loc.getDouble("x"),loc.getDouble("y"),loc.getBoolean("gray"));
+                // general data
+                calData.date = obj.getString("date");
+                calData.cardVersion = obj.getString("cardVersion");
+                calData.unit = obj.getString("unit");
+
+                // sizes
+                JSONObject calDataJSON = obj.getJSONObject("calData");
+                calData.patchSize = calDataJSON.getDouble("patchSize");
+                calData.hsize = calDataJSON.getDouble("hsize");
+                calData.vsize = calDataJSON.getDouble("vsize");
+
+                // locations
+                JSONArray locJSON = calDataJSON.getJSONArray("locations");
+                for (int i = 0; i < locJSON.length(); i++) {
+                    JSONObject loc = locJSON.getJSONObject(i);
+                    calData.addLocation(loc.getString("l"), loc.getDouble("x"), loc.getDouble("y"), loc.getBoolean("gray"));
+                }
+
+                // colours
+                JSONArray colJSON = calDataJSON.getJSONArray("calValues");
+                for (int i = 0; i < colJSON.length(); i++) {
+                    JSONObject cal = colJSON.getJSONObject(i);
+                    calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"));
+                }
+
+                // white lines
+                JSONArray linesJSON = obj.getJSONObject("whiteData").getJSONArray("lines");
+                for (int i = 0; i < linesJSON.length(); i++) {
+                    JSONObject line = linesJSON.getJSONObject(i);
+                    JSONArray p = line.getJSONArray("p");
+                    calData.addWhiteLine(p.getDouble(0), p.getDouble(1), p.getDouble(2), p.getDouble(3), line.getDouble("width"));
+                }
+
+                // strip area
+                JSONArray stripArea = obj.getJSONObject("stripAreaData").getJSONArray("area");
+                calData.stripArea[0] = stripArea.getDouble(0);
+                calData.stripArea[1] = stripArea.getDouble(1);
+                calData.stripArea[2] = stripArea.getDouble(2);
+                calData.stripArea[3] = stripArea.getDouble(3);
+
+                System.out.println("*** parsing complete: " + calData.toString());
+
+                return calData;
             }
 
-            // colours
-            JSONArray colJSON = calDataJSON.getJSONArray("calValues");
-            for(int i=0;i < colJSON.length();i++){
-                JSONObject cal = colJSON.getJSONObject(i);
-                calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"));
-            }
-
-            // white lines
-            JSONArray linesJSON = obj.getJSONObject("whiteData").getJSONArray("lines");
-            for(int i=0;i < linesJSON.length();i++){
-                JSONObject line = linesJSON.getJSONObject(i);
-                JSONArray p = line.getJSONArray("p");
-                calData.addWhiteLine(p.getDouble(0), p.getDouble(1), p.getDouble(2), p.getDouble(3), line.getDouble("width"));
-            }
-
-            // strip area
-            JSONArray stripArea = obj.getJSONObject("stripAreaData").getJSONArray("area");
-            calData.stripArea[0] = stripArea.getDouble(0);
-            calData.stripArea[1] = stripArea.getDouble(1);
-            calData.stripArea[2] = stripArea.getDouble(2);
-            calData.stripArea[3] = stripArea.getDouble(3);
-
-            System.out.println("*** parsing complete: " + calData.toString());
-            return calData;
         } catch (JSONException e) {
             System.out.println("*** problem parsing JSON:" + e.toString());
-            // TODO handle unable to read calibration file
-            e.printStackTrace();
+
         }
 
         return null;
@@ -531,5 +558,172 @@ public class CalibrationCard{
             }
         }
         return null;
+    }
+
+    /**
+     * find and decode the code of the callibration card
+     * The code is stored as a simple barcode. It starts 4.5 modules from the center of the bottom left finder pattern
+     * and extends to module 29.5.
+     * It has 12 bits, of 2 modules wide each.
+     * It starts and ends with a 1 bit.
+     * The remaining 10 bits are interpreted as a 9 bit number with the last bit as parity bit.
+     *
+     * @param patternInfo
+     */
+    public static int decodeCallibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
+        // order points
+        if (patternInfo.size() == 4) {
+            double[] p1 = new double[]{patternInfo.get(0).getX(), patternInfo.get(0).getY()};
+            double[] p2 = new double[]{patternInfo.get(1).getX(), patternInfo.get(1).getY()};
+            double[] p3 = new double[]{patternInfo.get(2).getX(), patternInfo.get(2).getY()};
+            double[] p4 = new double[]{patternInfo.get(3).getX(), patternInfo.get(3).getY()};
+
+            // sort points in order top-left, bottom-left, top-right, bottom-right
+            List<Point> points = getOrderedPoints(p1,p2,p3,p4);
+
+            //if camera is in portrait mode, bottomLeft is third in the sorted list
+//            ResultPoint bottomLeft = new ResultPoint((float) points.get(2).x,(float) points.get(2).y);
+//            ResultPoint bottomRight = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
+
+            //because camera is in portrait mode, we need bottom-right and top-right patterns:
+            //the version number barcode lies next to bottom-right
+            ResultPoint bottomLeft = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
+            ResultPoint bottomRight = new ResultPoint((float) points.get(1).x,(float) points.get(1).y);
+
+            // get estimated module size
+            Detector detector = new Detector(image);
+            float modSizeHor = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
+
+            // go from one finder pattern to the other,
+            //because camera is in portrait mode, we need to shift x and y
+            double lrx = -bottomRight.getX() + bottomLeft.getX();
+            double lry = -bottomRight.getY() + bottomLeft.getY();
+            double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
+                    bottomRight.getX(), bottomRight.getY());
+
+            // check if left and right are ok
+            if (lry < 0) {
+                System.out.println("***decodeCallibrationCard lry < 0");
+                return CODE_NOT_FOUND;
+            }
+
+            // create vector of length 1 pixel, in the direction of the bottomRight finder pattern
+            lrx /= hNorm;
+            lry /= hNorm;
+
+            // sample line into new row
+            boolean[] bits = new boolean[image.getWidth()];
+            int index = 0;
+            double px = bottomLeft.getX();
+            double py = bottomLeft.getY();
+            try {
+                while (px < bottomRight.getX() && px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()) {
+                    bits[index] = image.get((int) Math.round(px), (int) Math.round(py));
+                    px += lrx;
+                    py += lry; //TODO we need to move up from bottom to top, not from left to right
+                    index++;
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("***decodeCallibrationCard error sample line into new row");
+                e.printStackTrace();
+                return CODE_NOT_FOUND;
+            }
+
+            // starting index: 4.5 modules in the direction of the bottom right finder pattern
+            // end index: our pattern ends at module 17, so we take 25 to be sure.
+            int startIndex = (int) Math.round(4.5 * modSizeHor / lrx);
+            int endIndex = (int) Math.round(25 * modSizeHor / lrx);
+
+            // determine start of pattern: first black bit. Approach from the left
+            try {
+                int startI = startIndex;
+                while (startI < endIndex && !bits[startI]) {
+                    startI++;
+                }
+
+                // determine end of pattern: last black bit. Approach from the right
+                int endI = endIndex;
+                while (endI > startI && !bits[endI]){
+                    endI--;
+                }
+
+                int lengthPattern = endI - startI + 1;
+
+                // sanity check on length of pattern.
+                // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
+                // which is too small.
+                if (lengthPattern < 20) {
+                    System.out.println("***decodeCallibrationCard lengthPattern < 20");
+                    return CODE_NOT_FOUND;
+                }
+
+                double pWidth = lengthPattern / 12.0;
+
+                // determine bits by majority voting
+                int[] bitVote = new int[12];
+                for (int i = 0; i < 12; i++){
+                    bitVote[i] = 0;
+                }
+
+                int bucket;
+                for (int i = startI; i <= endI; i++){
+                    bucket = (int) Math.round(Math.floor((i - startI) / pWidth));
+                    bitVote[bucket] += bits[i] ? 1 : -1;
+                }
+
+                // translate into information bits. Skip first and last, which are always 1
+                boolean[] bitResult = new boolean[10]; // will contain the information bits
+                for (int i = 1; i < 11; i++){
+                    bitResult[i - 1] = bitVote[i] > 0;
+                }
+
+                // check parity bit
+                if (parity(bitResult) != bitResult[9]) {
+                    System.out.println("***decodeCallibrationCard parity(bitResult) != bitResult[9]");
+                    return CODE_NOT_FOUND;
+                }
+
+                // compute result
+                int code = 0;
+                int count = 0;
+                for (int i = 8; i >= 0; i--){
+                    if (bitResult[i]){
+                        code += (int) Math.pow(2,count);
+                    }
+                    count ++;
+                }
+
+                return code;
+            }
+            catch (Exception e)
+            {
+                System.out.println("***decodeCallibrationCard error ");
+                e.printStackTrace();
+                return CODE_NOT_FOUND;
+            }
+        }
+        else {
+            System.out.println("***decodeCallibrationCard finder patterns < 4");
+            return CODE_NOT_FOUND;
+        }
+    }
+
+    /**
+     * Compute even parity, where last bit is the even parity bit
+     */
+    private static boolean parity(boolean[] bits){
+        int oneCount = 0;
+        for (int i = 0; i < bits.length - 1; i++) {  // skip parity bit in calculation of parity
+            if (bits[i]) {
+                oneCount++;
+            }
+        }
+        return oneCount % 2 != 0; // returns true if parity is odd
+    }
+
+    public static CalibrationData getCalData() {
+        return calData;
     }
 }

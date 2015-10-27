@@ -17,16 +17,12 @@
 package org.akvo.akvoqr.detector;
 
 
-import org.opencv.core.Point;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
 
 /**
  * <p>This class attempts to find finder patterns in a QR Code. Finder patterns are the square
@@ -37,7 +33,7 @@ import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
  * @author Sean Owen
  */
 public class FinderPatternFinder {
-  private static final int CODE_NOT_FOUND = -1;
+
   private static final int CENTER_QUORUM = 2;
   protected static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
   protected static final int MAX_MODULES = 84; // this is the height of our calibration card
@@ -179,143 +175,7 @@ public class FinderPatternFinder {
     FinderPattern[] patternInfo = selectBestPatterns();
     //ResultPoint.orderBestPatterns(patternInfo);
 
-    int code = decodeCallibrationCardCode(patternInfo);
-
-    return new FinderPatternInfo(patternInfo,code);
-  }
-
-  /**
-   * find and decode the code of the callibration card
-   * The code is stored as a simple barcode. It starts 4.5 modules from the center of the bottom left finder pattern
-   * and extends to module 29.5.
-   * It has 12 bits, of 2 modules wide each.
-   * It starts and ends with a 1 bit.
-   * The remaining 10 bits are interpreted as a 9 bit number with the last bit as parity bit.
-   *
-   * @param patternInfo
-   */
-  private int decodeCallibrationCardCode(FinderPattern[] patternInfo) {
-    // order points
-    if (patternInfo.length == 4) {
-      double[] p1 = new double[]{patternInfo[0].getX(), patternInfo[0].getY()};
-      double[] p2 = new double[]{patternInfo[1].getX(), patternInfo[1].getY()};
-      double[] p3 = new double[]{patternInfo[2].getX(), patternInfo[2].getY()};
-      double[] p4 = new double[]{patternInfo[3].getX(), patternInfo[3].getY()};
-
-      // sort points in order top-left, bottom-left, top-right, bottom-right
-      List<Point> points = getOrderedPoints(p1,p2,p3,p4);
-
-      ResultPoint bottomLeft = new ResultPoint((float) points.get(1).x,(float) points.get(1).y);
-      ResultPoint bottomRight = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
-
-      // get estimated module size
-      Detector detector = new Detector(image);
-      float modSizeHor = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
-
-      // go from one finder pattern to the other,
-      double lrx = bottomRight.getX() - bottomLeft.getX();
-      double lry = bottomRight.getY() - bottomLeft.getY();
-      double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(), bottomRight.getX(), bottomRight.getY());
-
-      // check if left and right are ok
-      if (lrx < 0) {
-        return CODE_NOT_FOUND;
-      }
-
-      // create vector of length 1 pixel, in the direction of the bottomRight finder pattern
-      lrx /= hNorm;
-      lry /= hNorm;
-
-      // sample line into new row
-      boolean[] bits = new boolean[image.getWidth()];
-      int index = 0;
-      double px = bottomLeft.getX();
-      double py = bottomLeft.getY();
-      while (px < bottomRight.getX() && px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()){
-        bits[index] = image.get((int) Math.round(px),(int) Math.round(py));
-        px += lrx;
-        py += lry;
-        index++;
-      }
-
-      // starting index: 4.5 modules in the direction of the bottom right finder pattern
-      // end index: our pattern ends at module 17, so we take 25 to be sure.
-      int startIndex = (int) Math.round(4.5 * modSizeHor / lrx);
-      int endIndex = (int) Math.round(25 * modSizeHor / lrx);
-
-      // determine start of pattern: first black bit. Approach from the left
-      int startI = startIndex;
-      while (startI < endIndex && !bits[startI]){
-        startI++;
-      }
-
-      // determine end of pattern: last black bit. Approach from the right
-      int endI = endIndex;
-      while (endI > startI && !bits[endI]){
-        endI--;
-      }
-
-      int lengthPattern = endI - startI + 1;
-
-      // sanity check on length of pattern.
-      // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels, which is too small.
-      if (lengthPattern < 20) {
-        return CODE_NOT_FOUND;
-      }
-      
-      double pWidth = lengthPattern / 12.0;
-
-      // determine bits by majority voting
-      int[] bitVote = new int[12];
-      for (int i = 0; i < 12; i++){
-        bitVote[i] = 0;
-      }
-
-      int bucket;
-      for (int i = startI; i <= endI; i++){
-        bucket = (int) Math.round(Math.floor((i - startI) / pWidth));
-        bitVote[bucket] += bits[i] ? 1 : -1;
-      }
-
-      // translate into information bits. Skip first and last, which are always 1
-      boolean[] bitResult = new boolean[10]; // will contain the information bits
-      for (int i = 1; i < 11; i++){
-        bitResult[i - 1] = bitVote[i] > 0;
-      }
-
-      // check parity bit
-      if (parity(bitResult) != bitResult[9]) {
-        return CODE_NOT_FOUND;
-      }
-
-      // compute result
-      int code = 0;
-      int count = 0;
-      for (int i = 8; i >= 0; i--){
-        if (bitResult[i]){
-          code += (int) Math.pow(2,count);
-        }
-        count ++;
-      }
-
-      return code;
-    }
-    else {
-      return CODE_NOT_FOUND;
-    }
-  }
-
-  /**
-   * Compute even parity, where last bit is the even parity bit
-   */
-  private static boolean parity(boolean[] bits){
-    int oneCount = 0;
-    for (int i = 0; i < bits.length - 1; i++) {  // skip parity bit in calculation of parity
-      if (bits[i]) {
-        oneCount++;
-      }
-    }
-    return oneCount % 2 != 0; // returns true if parity is odd
+    return new FinderPatternInfo(patternInfo);
   }
 
   /**

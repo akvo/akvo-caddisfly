@@ -18,10 +18,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.util.AssetsManager;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
@@ -115,7 +115,7 @@ public class DetectStripActivity extends AppCompatActivity {
 
     public Mat getCalibratedImage(Mat mat)
     {
-        CalibrationCard calibrationCard = CalibrationCard.getInstance(1);
+        CalibrationCard calibrationCard = CalibrationCard.getInstance();
         return calibrationCard.calibrateImage(mat);
 
     }
@@ -375,70 +375,37 @@ public class DetectStripActivity extends AppCompatActivity {
 
             showMessage(getString(R.string.warp));
             warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, bgr);
-            //Because camera is in portrait mode, we need to 'rotate' the finder pattern positions
-            //warp_dst = OpenCVUtils.perspectiveTransform(bottomleft, topleft, bottomright, topright,  bgr);
 
         }
 
         private void divideIntoCalibrationAndStripArea() throws Exception{
-            //detect strip
 
-            String json = AssetsManager.getInstance().loadJSONFromAsset("calibration.json");
-            if (warp_dst!=null && json != null) {
+            CalibrationData data = CalibrationCard.getCalData();
 
+            if (warp_dst!=null && data != null) {
 
-                double hsize = 1;
-                double vsize = 1;
-                JSONObject object = new JSONObject(json);
-                if (!object.isNull("calData")) {
-                    JSONObject calData = object.getJSONObject("calData");
-                    hsize = calData.getDouble("hsize");
-                    vsize = calData.getDouble("vsize");
+                double hsize = data.hsize;
+                double vsize = data.vsize;
+                double[] area = data.stripArea;
+
+                if (area.length == 4) {
+
+                    ratioW = warp_dst.width() / hsize;
+                    ratioH = warp_dst.height() / vsize;
+                    Point stripTopLeft = new Point(area[0] * ratioW + 2,
+                            area[1] * ratioH + 2);
+                    Point stripBottomRight = new Point(area[2] * ratioW - 2,
+                            area[3] * ratioH - 2);
+
+                    //striparea rect
+                    roiStriparea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
+
+                    //calarea rect
+                    roiCalarea = new org.opencv.core.Rect(new Point(0, 0),
+                            new Point(warp_dst.width(), area[1] * ratioH));
+
                 }
-                if (!object.isNull("stripAreaData")) {
-                    JSONObject stripAreaData = object.getJSONObject("stripAreaData");
-                    if (!stripAreaData.isNull("area")) {
-                        JSONArray area = stripAreaData.getJSONArray("area");
-                        if (area.length() == 4) {
-
-                            ratioW = warp_dst.width() / hsize;
-                            ratioH = warp_dst.height() / vsize;
-                            Point stripTopLeft = new Point(area.getDouble(0) * ratioW + 2,
-                                    area.getDouble(1) * ratioH + 2);
-                            Point stripBottomRight = new Point(area.getDouble(2) * ratioW - 2,
-                                    area.getDouble(3) * ratioH - 2);
-
-                            //striparea rect
-                            roiStriparea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
-
-                            //calarea rect
-                            roiCalarea = new org.opencv.core.Rect(new Point(0, 0), new Point(warp_dst.width(), area.getDouble(1) * ratioH));
-
-                        }
-                    }
-                }
-
             }
         }
-
-
     }
-
-    private class ProgressStep
-    {
-        int id;
-        boolean success;
-        String text;
-
-        public ProgressStep(int id, String text){
-            this.id = id;
-            this.text = text;
-        }
-
-        public void setSuccess(boolean success) {
-            this.success = success;
-        }
-    }
-
-
 }

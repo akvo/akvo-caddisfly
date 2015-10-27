@@ -85,11 +85,11 @@ public class OpenCVUtils {
         */
         Collections.sort(srcList, new PointComparator());
 
-//        System.out.println("***after sort:");
-//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-//        System.out.println("***third: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
-//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
+        System.out.println("***after sort:");
+        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
+        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
+        System.out.println("***third: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
+        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         return srcList;
     }
