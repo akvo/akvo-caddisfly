@@ -33,13 +33,17 @@
     <string name="saveImages">Save images and data</string>
 
     <string-array name="themes">
-        <item>Blue App Bar</item>
-        <item>Orange App Bar</item>
+        <item>Orange \'n Blue</item>
+        <item>Akvo Blue \'n Orange</item>
+        <item>Akvo Orange \'n Blue</item>
+        <item>Akvo FLOW</item>
     </string-array>
 
     <string-array name="theme_codes">
-        <item>Blue</item>
         <item>Orange</item>
+        <item>Blue</item>
+        <item>OrangeBlue</item>
+        <item>Flow</item>
     </string-array>
 
 </resources>

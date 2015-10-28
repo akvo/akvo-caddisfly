@@ -38,10 +38,11 @@ public class TestInfo {
     private final boolean requiresCalibration;
     private boolean isDiagnostic;
     private boolean mIsDirty;
+    private int monthsValid;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray,
-                    boolean isDiagnostic) {
+                    boolean isDiagnostic, int monthsValid) {
         this.names = names;
         this.testType = testType;
         this.code = code;
@@ -50,6 +51,7 @@ public class TestInfo {
         dilutions = new ArrayList<>();
         this.requiresCalibration = requiresCalibration;
         this.isDiagnostic = isDiagnostic;
+        this.monthsValid = monthsValid;
 
         for (String range : swatchArray) {
             Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
@@ -64,8 +66,8 @@ public class TestInfo {
     public TestInfo() {
         names = null;
         testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
-        code = "";
-        unit = "";
+        this.code = "";
+        this.unit = "";
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
         this.requiresCalibration = false;
@@ -151,5 +153,9 @@ public class TestInfo {
 
     public boolean requiresCameraFlash() {
         return testType == CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+    }
+
+    public int getMonthsValid() {
+        return monthsValid;
     }
 }

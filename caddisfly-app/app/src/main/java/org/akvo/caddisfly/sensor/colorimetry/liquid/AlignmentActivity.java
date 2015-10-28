@@ -66,20 +66,20 @@ public class AlignmentActivity extends BaseActivity {
                     getIntent().getDoubleExtra("swatchValue", 0),
                     CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             ((TextView) findViewById(R.id.textDilution)).setText(subTitle);
-        }
-
-        int dilutionLevel = getIntent().getIntExtra("dilution", 0);
-        TextView textDilution = (TextView) findViewById(R.id.textDilution);
-        switch (dilutionLevel) {
-            case 0:
-                textDilution.setText(R.string.noDilution);
-                break;
-            case 1:
-                textDilution.setText(String.format(getString(R.string.timesDilution), 2));
-                break;
-            case 2:
-                textDilution.setText(String.format(getString(R.string.timesDilution), 5));
-                break;
+        } else {
+            int dilutionLevel = getIntent().getIntExtra("dilution", 0);
+            TextView textDilution = (TextView) findViewById(R.id.textDilution);
+            switch (dilutionLevel) {
+                case 0:
+                    textDilution.setText(R.string.noDilution);
+                    break;
+                case 1:
+                    textDilution.setText(String.format(getString(R.string.timesDilution), 2));
+                    break;
+                case 2:
+                    textDilution.setText(String.format(getString(R.string.timesDilution), 5));
+                    break;
+            }
         }
     }
 
@@ -95,7 +95,6 @@ public class AlignmentActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .add(R.id.layoutCameraPreview, mCameraDialog)
                 .commit();
-
     }
 
     @Override
@@ -128,5 +127,12 @@ public class AlignmentActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

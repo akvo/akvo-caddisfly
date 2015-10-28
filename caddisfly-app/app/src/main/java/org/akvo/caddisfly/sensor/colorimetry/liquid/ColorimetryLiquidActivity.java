@@ -716,8 +716,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         } else if (retry) {
             mCameraFragment.dismiss();
             InitializeTest();
-//            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-//                    SensorManager.SENSOR_DELAY_UI);
         } else {
             releaseResources();
             if (cancelled) {

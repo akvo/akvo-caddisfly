@@ -21,7 +21,7 @@
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
     <color name="text_tertiary">#e3e2e0e0</color>
-    <color name="windowBackground">#f7fdfd</color>
+    <color name="window_background">#f7fdfd</color>
     <color name="primary_background">#014378</color>
 
     //Orange Theme
@@ -30,17 +30,22 @@
     <color name="primary_accent_orange">#388E3C</color>
     <color name="primary_background_orange">#DE8929</color>
     <color name="text_tertiary_orange">#6c4314</color>
+    <color name="window_background_orange">#f7fdfd</color>
 
+    //Flow Theme
+    <color name="window_background_flow">#fffef2e7</color>
+    <color name="primary_dark_flow">#000000</color>
+    <color name="card_background">#fff6ee</color>
+
+    <color name="cyan">#027e94</color>
     <color name="amber">#ff6f00</color>
+    <color name="white">#ffffff</color>
+
     <color name="secondary_accent">#ffeb3b</color>
 
     <color name="gradient_start">#003b69</color>
 
     <color name="flow_primary">#2d2d2d</color>
-
-    <color name="white">#ffffff</color>
-
-    <color name="background_main">#fffef2e7</color>
 
     <color name="black_main">#000000</color>
 

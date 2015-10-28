@@ -20,13 +20,15 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="cardBackgroundColor">@color/window_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="primaryButtonColor">@color/accent</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Blue</item>
         <item name="longButtonText">@color/text_tertiary</item>
@@ -41,13 +43,15 @@
         <item name="colorPrimary">@color/primary_orange</item>
         <item name="colorPrimaryDark">@color/primary_dark_orange</item>
         <item name="colorAccent">@color/primary_accent_orange</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/window_background_flow</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="primaryButtonColor">@color/primary_accent_orange</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Orange</item>
         <item name="longButtonText">@color/text_tertiary_orange</item>
@@ -58,22 +62,49 @@
         <item name="progressTintInverse">@color/accent</item>
     </style>
 
+    <style name="AppTheme.OrangeBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_background_orange</item>
+        <item name="colorPrimaryDark">@color/primary_background_orange</item>
+        <item name="colorAccent">@color/primary_accent_orange</item>
+        <item name="textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="android:textColorSecondaryInverse">@color/white</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:windowBackground">@color/window_background_flow</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="primaryButtonColor">@color/primary_accent_orange</item>
+        <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="longButtonStyle">@style/AppTheme.Button.Blue</item>
+        <item name="longButtonText">@color/text_tertiary</item>
+        <item name="primaryBackgroundStyle">@color/primary_orange</item>
+        <item name="toolbarHeight">@dimen/toolbar_height</item>
+        <item name="toolbarMargin">@dimen/toolbar_margin</item>
+        <item name="progressTint">@color/secondary_accent</item>
+        <item name="progressTintInverse">@color/accent</item>
+    </style>
+
     <style name="AppTheme.Orange.Main">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="Flow.Theme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Flow" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/flow_primary</item>
-        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorPrimaryDark">@color/primary_dark_flow</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/orange_main</item>
+        <item name="textColorPrimary">@color/orange_main</item>
         <item name="android:textColorPrimaryInverse">@color/orange_main</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
         <item name="android:textColor">@color/black_main</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/background_main</item>
+        <item name="android:windowBackground">@color/window_background_flow</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
         <item name="android:listViewStyle">@style/Flow.ListView</item>
-        <item name="primaryButtonStyle">@style/Flow.Button.Green</item>
+        <item name="primaryButtonColor">@color/cyan</item>
+        <item name="primaryButtonStyle">@style/AppTheme.Button.Cyan</item>
+        <item name="longButtonStyle">@style/AppTheme.Button.Orange</item>
+        <item name="longButtonText">@color/text_tertiary_orange</item>
         <item name="dialogDestructiveButton">@style/Flow.Dialog.Destructive</item>
         <item name="primaryBackgroundStyle">@color/orange_main</item>
         <item name="toolbarHeight">@dimen/flow_toolbar_height</item>

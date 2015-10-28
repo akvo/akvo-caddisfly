@@ -36,6 +36,7 @@
     <string name="version" tools:ignore="UnusedResources">Version</string>
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
+    <string name="survey">Enquête</string>
     <!--External-->
     <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Conductivité Electrique</string>

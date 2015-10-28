@@ -15,7 +15,8 @@
         "unit": "ppm",
         "calibrate": "true",
         "ranges": "0,0.5,1,1.5,2",
-        "dilutions": "0,50,20"
+        "dilutions": "0,50,20",
+        "monthsValid": "12"
       },
       {
         "name": [
@@ -30,7 +31,8 @@
         "code": "chlor",
         "unit": "ppm",
         "calibrate": "true",
-        "ranges": "0,0.1,0.5,0.8,1.0"
+        "ranges": "0,0.1,0.5,0.8,1.0",
+        "monthsValid": "24"
       },
       {
         "name": [
@@ -76,7 +78,8 @@
         "unit": "ppm",
         "calibrate": "true",
         "ranges": "0,1,2,3,4",
-        "diagnostic": "true"
+        "diagnostic": "true",
+        "monthsValid": "6"
       }
     ]
   }

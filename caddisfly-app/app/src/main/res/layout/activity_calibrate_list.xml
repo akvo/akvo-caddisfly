@@ -78,7 +78,7 @@
         android:layout_alignBottom="@+id/layoutTitleBar"
         android:layout_alignParentEnd="true"
         android:src="@android:drawable/ic_menu_edit"
-        app:backgroundTint="@color/button_green"
+        app:backgroundTint="?primaryButtonColor"
         app:borderWidth="0dp"
         tools:ignore="RelativeOverlap" />
 

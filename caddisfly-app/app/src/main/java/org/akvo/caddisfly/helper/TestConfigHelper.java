@@ -134,6 +134,12 @@ public final class TestConfigHelper {
                         isDiagnostic = item.getString("diagnostic").equalsIgnoreCase("true");
                     }
 
+                    //Load the ranges
+                    int monthsValid = 6;
+                    if (item.has("monthsValid")) {
+                        monthsValid = item.getInt("monthsValid");
+                    }
+
                     //Create TestInfo object
                     tests.add(new TestInfo(
                             namesHashTable,
@@ -143,7 +149,7 @@ public final class TestConfigHelper {
                             //if calibrate not specified then default to true otherwise use specified value
                             !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
                             rangesArray,
-                            dilutionsArray, isDiagnostic));
+                            dilutionsArray, isDiagnostic, monthsValid));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

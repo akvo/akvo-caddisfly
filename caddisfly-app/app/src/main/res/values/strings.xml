@@ -39,6 +39,7 @@
     <string name="version">Version</string>
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
+    <string name="survey">Survey</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
@@ -118,7 +119,6 @@
     <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="alignChamber">Align chamber and press Start</string>
-    <string name="survey">Survey</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample liquid</string>

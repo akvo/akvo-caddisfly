@@ -46,7 +46,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Orange"
+        android:theme="@style/AppTheme.Flow"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
@@ -100,14 +100,17 @@
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
+            android:name=".sensor.colorimetry.liquid.SelectDilutionActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.liquid.AlignmentActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".ui.TypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:screenOrientation="nosensor" />
-
-        <activity android:name=".sensor.colorimetry.liquid.SelectDilutionActivity" />
-        <activity android:name=".sensor.colorimetry.liquid.AlignmentActivity" />
 
         <service
             android:name=".sensor.ec.UsbService"

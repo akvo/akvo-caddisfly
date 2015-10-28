@@ -151,7 +151,7 @@ public class EspressoTest
         changeLanguage(mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, true));
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, true, 12));
 
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());

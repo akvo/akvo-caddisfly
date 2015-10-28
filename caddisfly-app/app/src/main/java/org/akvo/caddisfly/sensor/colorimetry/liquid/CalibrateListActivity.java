@@ -73,6 +73,7 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
+    FloatingActionButton fabEditCalibration;
     private TextView textCalibrationDate;
     private TextView textSubtitle;
     private int mPosition;
@@ -126,7 +127,7 @@ public class CalibrateListActivity extends BaseActivity
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
                 getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
 
-        FloatingActionButton fabEditCalibration =
+        fabEditCalibration =
                 (FloatingActionButton) findViewById(R.id.fabEditCalibration);
 
         if (AppPreferences.isDiagnosticMode()) {
@@ -151,6 +152,12 @@ public class CalibrateListActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setTitle(R.string.calibrate);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fabEditCalibration.setEnabled(true);
     }
 
     private void loadDetails() {
@@ -193,6 +200,8 @@ public class CalibrateListActivity extends BaseActivity
      */
     @Override
     public void onItemSelected(int id) {
+
+        fabEditCalibration.setEnabled(false);
         mPosition = id;
         Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
@@ -263,6 +272,7 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
 
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
+
     }
 
     /**

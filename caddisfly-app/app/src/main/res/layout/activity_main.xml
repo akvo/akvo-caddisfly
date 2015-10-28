@@ -84,25 +84,25 @@
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/layoutSlogan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/layoutSlogan"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="16dp">-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:ellipsize="none"
-            android:gravity="center_horizontal"
-            android:singleLine="true"
-            android:text="@string/waterQuality"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#22007a8d"
-            android:textSize="50dp"
-            tools:ignore="SpUsage" />
-    </RelativeLayout>
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:ellipsize="none"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:singleLine="true"-->
+    <!--android:text="@string/waterQuality"-->
+    <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+    <!--android:textColor="#22007a8d"-->
+    <!--android:textSize="50dp"-->
+    <!--tools:ignore="SpUsage" />-->
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/layoutDiagnostics"

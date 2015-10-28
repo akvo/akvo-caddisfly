@@ -301,8 +301,13 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        closeKeyboard(getActivity(), editBatchCode);
+    }
+
     public interface CalibrationDetailsSavedListener {
         void onCalibrationDetailsSaved();
     }
-
 }

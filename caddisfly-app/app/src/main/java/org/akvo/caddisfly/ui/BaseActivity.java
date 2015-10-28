@@ -39,12 +39,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private final static String THEME_BLUE = "Blue";
     private final static String THEME_ORANGE = "Orange";
+    private final static String THEME_ORANGE_BLUE = "OrangeBlue";
+    private final static String THEME_FLOW = "Flow";
     private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateTheme();
+        changeActionBarStyleBasedOnCurrentMode();
         ApiUtil.lockScreenOrientation(this);
     }
 
@@ -52,19 +55,30 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         String theme = PreferencesUtil.getString(this, "theme", "Blue");
 
-        if (theme.equals(THEME_BLUE)) {
-            setTheme(R.style.AppTheme_Blue);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark));
-            }
-        } else if (theme.equals(THEME_ORANGE)) {
-            setTheme(R.style.AppTheme_Orange);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark_orange));
-            }
+        switch (theme) {
+            case THEME_BLUE:
+                setTheme(R.style.AppTheme_Blue);
+                break;
+            case THEME_ORANGE:
+                setTheme(R.style.AppTheme_Orange);
+                break;
+            case THEME_ORANGE_BLUE:
+                setTheme(R.style.AppTheme_OrangeBlue);
+                break;
+            case THEME_FLOW:
+                setTheme(R.style.AppTheme_Flow);
+                break;
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
+
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
+        int windowBackground = typedValue.data;
+        getWindow().setBackgroundDrawable(new ColorDrawable(windowBackground));
+
     }
 
     @Override
