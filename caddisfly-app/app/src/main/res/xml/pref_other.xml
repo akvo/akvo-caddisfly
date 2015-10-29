@@ -26,7 +26,7 @@
         </Preference>
 
         <ListPreference
-            android:defaultValue="en"
+            android:defaultValue="Orange"
             android:dialogTitle="Select Theme"
             android:entries="@array/themes"
             android:entryValues="@array/theme_codes"

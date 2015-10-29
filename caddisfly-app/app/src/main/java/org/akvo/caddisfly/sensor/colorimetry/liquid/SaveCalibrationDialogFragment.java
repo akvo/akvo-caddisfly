@@ -126,6 +126,13 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
 
+        Calendar date = Calendar.getInstance();
+        datePickerDialog.getDatePicker().setMinDate(date.getTimeInMillis());
+
+
+        date.add(Calendar.MONTH, CaddisflyApp.getApp().getCurrentTestInfo().getMonthsValid());
+        datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
+
         editExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -284,6 +291,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         editExpiryDate.setError(getString(R.string.required));
                         return false;
                     }
+
                     return true;
                 }
             });

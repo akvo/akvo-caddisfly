@@ -28,15 +28,6 @@
             android:key="ecSensor"
             android:title="@string/testSensor" />
         <CheckBoxPreference
-            android:key="@string/noBackdropDetectionInUserModeKey"
-            android:title="@string/noBackdropDetectionInUserMode" />
-        <CheckBoxPreference
-            android:key="@string/noBackdropDetectionKey"
-            android:title="@string/noBackdropDetection" />
-        <CheckBoxPreference
-            android:key="@string/saveImagesKey"
-            android:title="@string/saveImages" />
-        <CheckBoxPreference
             android:key="@string/showDebugMessagesKey"
             android:title="@string/debuggingOn" />
         <CheckBoxPreference

@@ -46,7 +46,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Flow"
+        android:theme="@style/AppTheme.Orange"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"

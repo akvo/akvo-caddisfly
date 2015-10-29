@@ -40,6 +40,29 @@
     </style>
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_background</item>
+        <item name="colorPrimaryDark">@color/primary_background</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="android:textColorSecondaryInverse">@color/white</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="cardBackgroundColor">@color/window_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="primaryButtonColor">@color/accent</item>
+        <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
+        <item name="longButtonStyle">@style/AppTheme.Button.Orange</item>
+        <item name="longButtonText">@color/text_tertiary_orange</item>
+        <item name="primaryBackgroundStyle">@color/primary</item>
+        <item name="toolbarHeight">@dimen/toolbar_height</item>
+        <item name="toolbarMargin">@dimen/toolbar_margin</item>
+        <item name="progressTint">@color/secondary_accent</item>
+        <item name="progressTintInverse">@color/accent</item>
+    </style>
+
+    <style name="AppTheme.BlueOrange" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_orange</item>
         <item name="colorPrimaryDark">@color/primary_dark_orange</item>
         <item name="colorAccent">@color/primary_accent_orange</item>

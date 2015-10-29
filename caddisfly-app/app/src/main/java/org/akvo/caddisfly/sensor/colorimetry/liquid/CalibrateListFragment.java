@@ -52,12 +52,13 @@ public class CalibrateListFragment extends ListFragment {
         public void onItemSelected(int id) {
         }
     };
-
+    private static final long MIN_DELAY_MILLIS = 2000;
     /**
      * The fragment's current callback object, which is notified of list item clicks
      */
     private Callbacks mCallbacks = sDummyCallbacks;
     private TextView textCalibrationError;
+    private long mLastClickTime;
 
     public CalibrateListFragment() {
     }
@@ -131,8 +132,12 @@ public class CalibrateListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-
-        mCallbacks.onItemSelected(position);
+        long lastClickTime = mLastClickTime;
+        long now = System.currentTimeMillis();
+        mLastClickTime = now;
+        if (now - lastClickTime >= MIN_DELAY_MILLIS) {
+            mCallbacks.onItemSelected(position);
+        }
     }
 
     public void refresh() {

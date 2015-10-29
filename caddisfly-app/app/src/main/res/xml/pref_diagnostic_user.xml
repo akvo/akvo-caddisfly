@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly
@@ -14,13 +14,15 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <gradient
-        android:angle="90"
-        android:centerColor="@color/primary_background_orange"
-        android:centerX="0.85"
-        android:endColor="@color/primary_background_orange"
-        android:startColor="@color/gradient_start"
-        android:type="linear" />
-</shape>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <org.akvo.caddisfly.preference.PreferenceCategoryCustom
+        android:key="preferenceCategoryDiagnostics"
+        android:title="@string/diagnosticsUser">
+        <CheckBoxPreference
+            android:key="@string/noBackdropDetectionKey"
+            android:title="@string/noBackdropDetection" />
+        <CheckBoxPreference
+            android:key="@string/saveImagesKey"
+            android:title="@string/saveImages" />
+    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
+</PreferenceScreen>

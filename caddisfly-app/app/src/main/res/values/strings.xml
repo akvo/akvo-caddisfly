@@ -130,7 +130,6 @@
 
     <string name="selectTest">Select Test</string>
     <string name="calibrationDetails">Calibration Details</string>
-    <string name="waterQuality">Water Quality</string>
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
     <!--Diagnostic Mode: Messages -->
@@ -154,9 +153,10 @@
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="testSensor">EC Sensor</string>
-    <string name="noBackdropDetectionInUserMode">No backdrop detection in User Mode</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
+    <string name="diagnosticsUser">Diagnostics in User Mode</string>
+    <string name="expires">Expires</string>
 
 </resources>

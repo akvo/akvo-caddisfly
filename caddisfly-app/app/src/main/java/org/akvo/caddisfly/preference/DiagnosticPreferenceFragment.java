@@ -59,7 +59,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
         final EditTextPreference sampleTimesPreference =

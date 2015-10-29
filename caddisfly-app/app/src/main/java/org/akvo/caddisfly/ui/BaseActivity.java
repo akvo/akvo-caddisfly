@@ -38,7 +38,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private final static String THEME_BLUE = "Blue";
-    private final static String THEME_ORANGE = "Orange";
+    private final static String THEME_BLUE_ORANGE = "BlueOrange";
     private final static String THEME_ORANGE_BLUE = "OrangeBlue";
     private final static String THEME_FLOW = "Flow";
     private String mTitle;
@@ -51,22 +51,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         ApiUtil.lockScreenOrientation(this);
     }
 
-    public void updateTheme() {
+    private void updateTheme() {
 
-        String theme = PreferencesUtil.getString(this, "theme", "Blue");
+        String theme = PreferencesUtil.getString(this, "theme", "Orange");
 
         switch (theme) {
             case THEME_BLUE:
                 setTheme(R.style.AppTheme_Blue);
                 break;
-            case THEME_ORANGE:
-                setTheme(R.style.AppTheme_Orange);
+            case THEME_BLUE_ORANGE:
+                setTheme(R.style.AppTheme_BlueOrange);
                 break;
             case THEME_ORANGE_BLUE:
                 setTheme(R.style.AppTheme_OrangeBlue);
                 break;
             case THEME_FLOW:
                 setTheme(R.style.AppTheme_Flow);
+                break;
+            default:
+                setTheme(R.style.AppTheme_Orange);
                 break;
         }
 

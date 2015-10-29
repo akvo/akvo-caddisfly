@@ -34,6 +34,7 @@
 
     <string-array name="themes">
         <item>Orange \'n Blue</item>
+        <item>Blue \'n Orange</item>
         <item>Akvo Blue \'n Orange</item>
         <item>Akvo Orange \'n Blue</item>
         <item>Akvo FLOW</item>
@@ -42,6 +43,7 @@
     <string-array name="theme_codes">
         <item>Orange</item>
         <item>Blue</item>
+        <item>BlueOrange</item>
         <item>OrangeBlue</item>
         <item>Flow</item>
     </string-array>

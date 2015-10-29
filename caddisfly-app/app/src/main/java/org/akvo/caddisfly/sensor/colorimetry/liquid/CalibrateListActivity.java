@@ -73,8 +73,8 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
-    FloatingActionButton fabEditCalibration;
-    private TextView textCalibrationDate;
+    private FloatingActionButton fabEditCalibration;
+    private TextView textSubtitle1;
     private TextView textSubtitle;
     private int mPosition;
 
@@ -121,7 +121,7 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        textCalibrationDate = (TextView) findViewById(R.id.textCalibrationDate);
+        textSubtitle1 = (TextView) findViewById(R.id.textSubtitle1);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
@@ -161,24 +161,33 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     private void loadDetails() {
+//        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+//                R.string.calibrationDateKey);
+//        long calibrationDate = PreferencesUtil.getLong(this, key);
+
         String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.calibrationDateKey);
-        long calibrationDate = PreferencesUtil.getLong(this, key);
-        if (calibrationDate >= 0) {
-            textCalibrationDate.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US)
-                    .format(new Date(calibrationDate)));
-        }
-        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.calibrationExpiryDateKey);
         Long expiryDate = PreferencesUtil.getLong(this, key);
 
+        textSubtitle1.setText(String.format("%s: %s", getString(R.string.expires),
+                new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+
+//        String date = "";
+//        if (calibrationDate >= 0) {
+//            date = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US)
+//                    .format(new Date(calibrationDate)) + " ";
+//        }
+//
+//        textSubtitle1.setText(String.format("%sExpires: %s",
+//                date,
+//                new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+
         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.batchNumberKey);
-        if (expiryDate >= 0) {
-            textSubtitle.setText(String.format("%s. Expiry %s",
-                    PreferencesUtil.getString(this, key, ""),
-                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
-        }
+
+//        if (expiryDate >= 0) {
+        textSubtitle.setText(String.format("%s", PreferencesUtil.getString(this, key, "")));
+        //      }
 
         CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
@@ -235,7 +244,7 @@ public class CalibrateListActivity extends BaseActivity
                             R.string.calibrationDateKey);
 
                     PreferencesUtil.setLong(this, key, calibrationDate.getTime());
-                    textCalibrationDate.setText(
+                    textSubtitle1.setText(
                             new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(calibrationDate));
                 }
 

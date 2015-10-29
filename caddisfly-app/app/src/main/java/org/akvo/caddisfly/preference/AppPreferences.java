@@ -60,26 +60,24 @@ public class AppPreferences {
         }
     }
 
-    public static boolean isSaveImagesOn() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
-    }
-
     public static boolean isSoundOff() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
-    }
-
-    public static boolean getNoBackdropDetection() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionKey, false);
-    }
-
-    public static boolean getNoBackdropDetectionInUserMode() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionInUserModeKey, false);
     }
 
     public static boolean getShowDebugMessages() {
         return isDiagnosticMode() &&
                 PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
+
+    //Diagnostic in user mode
+    public static boolean getNoBackdropDetection() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionKey, false);
+    }
+
+    //Diagnostic in user mode
+    public static boolean isSaveImagesOn() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
+    }
+
 }

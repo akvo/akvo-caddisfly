@@ -64,6 +64,12 @@ public class SettingsActivity extends BaseActivity
                     .commit();
         }
 
+        if (AppPreferences.isDiagnosticMode()) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.layoutContent4, new DiagnosticUserPreferenceFragment())
+                    .commit();
+        }
+
         mScrollView = (ScrollView) findViewById(R.id.scrollViewSettings);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

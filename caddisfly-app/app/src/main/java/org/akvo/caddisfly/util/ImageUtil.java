@@ -68,7 +68,7 @@ public class ImageUtil {
         int radius = 140;
         Point point;
 
-        if (AppPreferences.getNoBackdropDetection() || AppPreferences.getNoBackdropDetectionInUserMode()) {
+        if (AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
             point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);

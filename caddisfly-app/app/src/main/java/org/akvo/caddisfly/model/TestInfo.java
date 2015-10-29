@@ -38,7 +38,7 @@ public class TestInfo {
     private final boolean requiresCalibration;
     private boolean isDiagnostic;
     private boolean mIsDirty;
-    private int monthsValid;
+    private int monthsValid = 12;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray,

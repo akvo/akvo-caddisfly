@@ -43,7 +43,7 @@
         android:layout_marginTop="16dp"
         android:labelFor="@+id/editBatchCode"
         android:text="@string/reagentBatch"
-        android:textColor="#5c5c5c"
+        android:textColor="#999999"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -53,8 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:inputType="textCapCharacters"
-        android:maxLength="10"
+        android:inputType="textCapWords"
+        android:maxLength="30"
+        android:paddingTop="3dp"
         android:textColor="?android:textColor" />
 
     <TextView
@@ -65,7 +66,7 @@
         android:layout_marginTop="8dp"
         android:labelFor="@+id/editExpiryDate"
         android:text="@string/reagentExpiry"
-        android:textColor="#5c5c5c"
+        android:textColor="#999999"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -77,6 +78,7 @@
         android:layout_marginRight="4dp"
         android:focusable="false"
         android:inputType="date"
+        android:paddingTop="3dp"
         android:textColor="?android:textColor" />
 
 </LinearLayout>
