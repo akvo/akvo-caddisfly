@@ -113,9 +113,15 @@ public class DetectStripActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Mat getCalibratedImage(Mat mat)
+    public Mat getCalibratedImage(Mat mat) throws Exception
     {
+        System.out.println("***version number detect: " + CalibrationCard.calVersionNumber);
+
         CalibrationCard calibrationCard = CalibrationCard.getInstance();
+        if(CalibrationCard.calVersionNumber==CalibrationCard.CODE_NOT_FOUND)
+        {
+            throw new Exception("no version number set.");
+        }
         return calibrationCard.calibrateImage(mat);
 
     }
@@ -234,6 +240,8 @@ public class DetectStripActivity extends AppCompatActivity {
                         cal_dest = getCalibratedImage(warp_dst);
 
                     } catch (Exception e) {
+                        System.out.println("cal. failed: " + e.getMessage());
+                        e.printStackTrace();
                         showMessage(getString(R.string.error_calibrating));
                         cal_dest = warp_dst.clone();
                     }

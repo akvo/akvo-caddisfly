@@ -29,11 +29,11 @@ import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
 
 // Performs the calibration of the image
 public class CalibrationCard{
-    public static final int CODE_NOT_FOUND = 1;//temporary hack to work with current test card, was -1
+    public static final int CODE_NOT_FOUND = -1;//temporary hack to work with current test card, was -1
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
     private static CalibrationData calData;
-    private static int calVersionNumber = 1;//CODE_NOT_FOUND;
+    public static int calVersionNumber = CODE_NOT_FOUND;
 
     //Constructor to use if versionNumber is set previously or does not matter
     public static CalibrationCard getInstance()
@@ -45,12 +45,13 @@ public class CalibrationCard{
     {
         if(instance==null) {
             instance = new CalibrationCard();
+
         }
 
-       // if(calVersionNumber!=versionNumber) {
+        if(calVersionNumber!=versionNumber) {
             calVersionNumber = versionNumber;
             calData = readCalibrationFile();
-       // }
+        }
 
         return instance;
     }
@@ -60,11 +61,12 @@ public class CalibrationCard{
         String calFileName = "calibration" + calVersionNumber + ".json";
         String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
-        try {
+        if(json!=null) {
+            try {
 
-            CalibrationData calData = new CalibrationData();
+                CalibrationData calData = new CalibrationData();
 
-            if(json!=null) {
+
                 JSONObject obj = new JSONObject(json);
 
                 // general data
@@ -110,13 +112,13 @@ public class CalibrationCard{
                 System.out.println("*** parsing complete: " + calData.toString());
 
                 return calData;
+
+
+            } catch (JSONException e) {
+                System.out.println("*** problem parsing JSON:" + e.toString());
+
             }
-
-        } catch (JSONException e) {
-            System.out.println("*** problem parsing JSON:" + e.toString());
-
         }
-
         return null;
     }
 
@@ -365,45 +367,64 @@ public class CalibrationCard{
         return lutMat;
     }
 
-    private Mat do1DLUTCorrection(Mat imgMat) {
+    private Mat do1DLUTCorrection(Mat imgMat) throws Exception{
+
+        if(calData==null)
+            throw new Exception("no calibration data.");
+
         final WeightedObservedPoints obsB = new WeightedObservedPoints();
         final WeightedObservedPoints obsG = new WeightedObservedPoints();
         final WeightedObservedPoints obsR = new WeightedObservedPoints();
 
         // iterate over all patches
-        for (String label : calData.calValues.keySet()){
-            CalibrationData.CalValue cal = calData.calValues.get(label);
-            CalibrationData.Location loc = calData.locations.get(label);
-            if (loc.grayPatch){
-                //include this point
-                float[] BGRcol = measurePatch(imgMat,loc.x,loc.y); // measure patch colour
-                obsB.add(BGRcol[0],cal.B);
-                obsG.add(BGRcol[1],cal.G);
-                obsR.add(BGRcol[2],cal.R);
+        try {
+            for (String label : calData.calValues.keySet()) {
+                CalibrationData.CalValue cal = calData.calValues.get(label);
+                CalibrationData.Location loc = calData.locations.get(label);
+                if (loc.grayPatch) {
+                    //include this point
+                    float[] BGRcol = measurePatch(imgMat, loc.x, loc.y); // measure patch colour
+                    obsB.add(BGRcol[0], cal.B);
+                    obsG.add(BGRcol[1], cal.G);
+                    obsR.add(BGRcol[2], cal.R);
+                }
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new Exception("Gray balance: error iterating over all patches.");
         }
         // Instantiate a second-degree polynomial fitter.
         final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(2);
 
         // Retrieve fitted parameters (coefficients of the polynomial function).
         // order of coefficients is (c + bx + ax^2), so [c,b,a]
-        final double[] coeffB = fitter.fit(obsB.toList());
-        final double[] coeffG = fitter.fit(obsG.toList());
-        final double[] coeffR = fitter.fit(obsR.toList());
-
-        // create lookup table
-//        Mat lut = create1DLUT(coeffB, coeffG, coeffR);
-        Mat lut = create1DLUT2(coeffB, coeffG, coeffR);
-        Mat imgcorr = imgMat.clone();
-
         try {
-            Core.LUT(imgMat, lut, imgcorr);
+            final double[] coeffB = fitter.fit(obsB.toList());
+            final double[] coeffG = fitter.fit(obsG.toList());
+            final double[] coeffR = fitter.fit(obsR.toList());
+
+            // create lookup table
+            Mat lut = create1DLUT2(coeffB, coeffG, coeffR);
+            Mat imgcorr = imgMat.clone();
+
+            try {
+                Core.LUT(imgMat, lut, imgcorr);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                throw new Exception("Gray balance: error in LUT.");
+            }
+            return imgcorr;
         }
         catch (Exception e)
         {
-            return null;
+            e.printStackTrace();
+            throw new Exception("Gray balance: error retrieving fitted parameters.");
         }
-        return imgcorr;
+
     }
 
     private Mat do3DLUTCorrection(Mat imgMat) {
@@ -524,38 +545,38 @@ public class CalibrationCard{
         }
     }
 
-    public Mat calibrateImage(Mat imgMat){
+    public Mat calibrateImage(Mat imgMat) throws Exception{
+
         System.out.println("*** start of calibration");
-        // read calibration info
-        // System.out.println("*** about to read calibration file");
 
         if(calData!=null) {
-            try {
 
-                // illumination correction
+            // illumination correction
+            if(imgMat!=null) {
                 System.out.println("*** ILLUM - starting illumination correction");
                 imgMat = doIlluminationCorrection(imgMat);
+            }
 
-                // 1D LUT gray balance
+            // 1D LUT gray balance
+            if(imgMat!=null) {
                 System.out.println("*** ILLUM - starting gray balance");
                 imgMat = do1DLUTCorrection(imgMat);
-
-                // 3D LUT color balance
+            }
+            // 3D LUT color balance
+            if(imgMat!=null) {
                 System.out.println("*** ILLUM - starting 3D lut");
                 imgMat = do3DLUTCorrection(imgMat);
+            }
 
-                // insert calibration colours in image
+            // insert calibration colours in image
+            if(imgMat!=null) {
                 System.out.println("*** ILLUM - adding colours");
                 addCalColours(imgMat);
+            }
 
-                System.out.println("*** end of calibration");
-                return imgMat;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                return null;
-            }
+            System.out.println("*** end of calibration");
+            return imgMat;
+
         }
         return null;
     }
@@ -611,11 +632,11 @@ public class CalibrationCard{
             //because camera is in portrait mode, we need to shift x and y
             double lrx = bottomRight.getX() - bottomLeft.getX();
             double lry = bottomRight.getY() - bottomLeft.getY();
-            System.out.println("*** distances:" + bottomLeft.getX() + "," + bottomLeft.getY() + "," + bottomRight.getX() + "," + bottomRight.getY());
-            System.out.println("*** " + lrx + "," + lry);
+//            System.out.println("*** distances:" + bottomLeft.getX() + "," + bottomLeft.getY() + "," + bottomRight.getX() + "," + bottomRight.getY());
+//            System.out.println("*** " + lrx + "," + lry);
             double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
                     bottomRight.getX(), bottomRight.getY());
-            System.out.println("*** " + lrx + "," + lry + "," + hNorm);
+//            System.out.println("*** " + lrx + "," + lry + "," + hNorm);
 
             // check if left and right are ok
             if (lry > 0) {
@@ -638,7 +659,7 @@ public class CalibrationCard{
                     px += lrx;
                     py += lry;
                     index++;
-                    System.out.println("*** position: " + px + "," + py);
+//                    System.out.println("*** position: " + px + "," + py);
                 }
             }
             catch (Exception e)
