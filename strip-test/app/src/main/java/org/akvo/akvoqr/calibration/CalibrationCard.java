@@ -567,6 +567,19 @@ public class CalibrationCard{
      * It has 12 bits, of 2 modules wide each.
      * It starts and ends with a 1 bit.
      * The remaining 10 bits are interpreted as a 9 bit number with the last bit as parity bit.
+     * Position barcode:
+     * _________________________________________________________
+     * |                                                        |
+     * |________________                                        |
+     * ||0             1|                                       |
+     * ||               |                                       |
+     * ||               |                                       |
+     * ||               |                                       |
+     * ||               |                                       |
+     * ||              b|                                       |
+     * ||              b|                                       |
+     * ||2_____________3|                                       |
+     * |________________________________________________________|
      *
      * @param patternInfo
      */
@@ -592,18 +605,21 @@ public class CalibrationCard{
 
             // get estimated module size
             Detector detector = new Detector(image);
-            float modSizeHor = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
+            float modSize = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
 
             // go from one finder pattern to the other,
             //because camera is in portrait mode, we need to shift x and y
-            double lrx = -bottomRight.getX() + bottomLeft.getX();
-            double lry = -bottomRight.getY() + bottomLeft.getY();
+            double lrx = bottomRight.getX() - bottomLeft.getX();
+            double lry = bottomRight.getY() - bottomLeft.getY();
+            System.out.println("*** distances:" + bottomLeft.getX() + "," + bottomLeft.getY() + "," + bottomRight.getX() + "," + bottomRight.getY());
+            System.out.println("*** " + lrx + "," + lry);
             double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
                     bottomRight.getX(), bottomRight.getY());
+            System.out.println("*** " + lrx + "," + lry + "," + hNorm);
 
             // check if left and right are ok
-            if (lry < 0) {
-                System.out.println("***decodeCallibrationCard lry < 0");
+            if (lry > 0) {
+                System.out.println("***decodeCallibrationCard lry > 0");
                 return CODE_NOT_FOUND;
             }
 
@@ -612,16 +628,17 @@ public class CalibrationCard{
             lry /= hNorm;
 
             // sample line into new row
-            boolean[] bits = new boolean[image.getWidth()];
+            boolean[] bits = new boolean[image.getHeight()];
             int index = 0;
             double px = bottomLeft.getX();
             double py = bottomLeft.getY();
             try {
-                while (px < bottomRight.getX() && px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()) {
+                while (px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()) {
                     bits[index] = image.get((int) Math.round(px), (int) Math.round(py));
                     px += lrx;
-                    py += lry; //TODO we need to move up from bottom to top, not from left to right
+                    py += lry;
                     index++;
+                    System.out.println("*** position: " + px + "," + py);
                 }
             }
             catch (Exception e)
@@ -633,8 +650,8 @@ public class CalibrationCard{
 
             // starting index: 4.5 modules in the direction of the bottom right finder pattern
             // end index: our pattern ends at module 17, so we take 25 to be sure.
-            int startIndex = (int) Math.round(4.5 * modSizeHor / lrx);
-            int endIndex = (int) Math.round(25 * modSizeHor / lrx);
+            int startIndex = (int) Math.abs(Math.round(4.5 * modSize / lry));
+            int endIndex = (int) Math.abs(Math.round(25 * modSize / lry));
 
             // determine start of pattern: first black bit. Approach from the left
             try {
