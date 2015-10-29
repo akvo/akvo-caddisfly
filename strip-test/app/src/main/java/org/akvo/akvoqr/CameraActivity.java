@@ -21,6 +21,7 @@ import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
+import org.akvo.akvoqr.ui.LevelView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -375,7 +376,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
             }
         };
-        handler.post(showMessage);
+        if(handler!=null) {
+            handler.post(showMessage);
+        }
 
     }
     @Override
@@ -400,7 +403,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             }
         };
-        handler.post(showMessage);
+
+        if(handler!=null) {
+            handler.post(showMessage);
+        }
     }
 
     @Override
@@ -430,9 +436,29 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             }
         };
-        handler.post(showMessage);
+
+        if(handler!=null) {
+            handler.post(showMessage);
+        }
     }
 
+    @Override
+    public void showLevel(final float[] angles)
+    {
+        final LevelView levelView = (LevelView) findViewById(R.id.activity_cameraImageViewLevel);
+
+        Runnable levelRunnable = new Runnable() {
+            @Override
+            public void run() {
+                levelView.setAngles(angles);
+            }
+        };
+
+        if(handler!=null)
+        {
+            handler.post(levelRunnable);
+        }
+    }
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {

@@ -1,11 +1,15 @@
 package org.akvo.akvoqr.util;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -302,4 +306,48 @@ public class PreviewUtils {
 //
 //        return totalLinesWithShadow/(lines.length()+2) * 100;
 //    }
+
+    //method to calculate angle the camera has to the test card
+    public static float[] getAngle(FinderPatternInfo info)
+    {
+
+        //sort the patterns
+        //in portrait mode the result will be: topleft-topright-bottomleft-bottomright
+        List<Point> points = sortFinderPatternInfo(info);
+
+        //angle in vertical direction of the device (= horizontal in preview data)
+        //between topleft and topright
+        double distanceTopHor = points.get(1).x - points.get(0).x;
+        double distanceTopVer = points.get(1).y - points.get(0).y;
+        float atan2Top = (float) Math.atan2(distanceTopVer, distanceTopHor);
+
+        System.out.println("***atan2Top: " + atan2Top + " deg.: " + Math.toDegrees(atan2Top));
+
+        //angle in horizontal direction of the device (= vertical in preview)
+        //between topleft and bottomleft
+        double distanceLeftHor = points.get(2).x - points.get(0).x;
+        double distanceLeftVer = points.get(2).y - points.get(0).y;
+        float atan2Left = (float) Math.atan2(distanceLeftHor, distanceLeftVer); //switch hor and ver to make it approach zero
+
+        System.out.println("***atan2Left: " + atan2Left + " deg.: " + Math.toDegrees(atan2Left));
+
+        float atan2 = (float) Math.atan2(distanceLeftVer, distanceTopHor);
+
+        System.out.println("***atan2: " + atan2 + " deg.: " + Math.toDegrees(atan2));
+
+        return new float[]{(float) Math.toDegrees(atan2Top), (float) Math.toDegrees(atan2Left)};
+    }
+
+    public static List<Point> sortFinderPatternInfo(FinderPatternInfo info)
+    {
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(info.getTopRight().getX(),  info.getTopRight().getY()));
+        points.add(new Point(info.getTopLeft().getX(), info.getTopLeft().getY()));
+        points.add(new Point(info.getBottomLeft().getX(), info.getBottomLeft().getY()));
+        points.add(new Point(info.getBottomRight().getX(), info.getBottomRight().getY()));
+
+        Collections.sort(points, new OpenCVUtils.PointComparator());
+
+        return points;
+    }
 }

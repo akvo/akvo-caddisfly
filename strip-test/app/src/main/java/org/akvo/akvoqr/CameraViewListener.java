@@ -29,6 +29,8 @@ public interface CameraViewListener {
 
     void showShadow(double value);
 
+    void showLevel(float[] angles);
+
     void setStartButtonVisibility(boolean show);
 
     boolean start();

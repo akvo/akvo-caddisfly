@@ -107,6 +107,22 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:id="@+id/activity_cameraImageViewContrast"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/camera_preview_messageLevelView"
+            android:textColor="@android:color/white"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:background="@drawable/button_semi_transparent_grey_oval"
+            android:layout_gravity="center_horizontal"
+            android:text="Level"/>
+        <org.akvo.akvoqr.ui.LevelView
+            android:layout_width="48dip"
+            android:layout_height="48dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:id="@+id/activity_cameraImageViewLevel"/>
     </LinearLayout>
 
     <Button

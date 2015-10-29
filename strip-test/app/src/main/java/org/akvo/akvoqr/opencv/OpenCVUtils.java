@@ -77,22 +77,30 @@ public class OpenCVUtils {
 //        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
 //        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
 
-        /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
+
+        return getOrderedPoints(srcList);
+    }
+
+     /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
         * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
         * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
         * Because top-left always has the lowest sum of x and y
         * and bottom-right always the highest, they always come first and last.
         */
+    public static List<Point> getOrderedPoints(List<Point> srcList)
+    {
         Collections.sort(srcList, new PointComparator());
 
         System.out.println("***after sort:");
         System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
         System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-        System.out.println("***third: " + srcList.get(2).x +" ,"+ srcList.get(2).y);
+        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
         System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         return srcList;
     }
+
+
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
             double[] bottomleft, double[] bottomright, Mat bgr)
     {

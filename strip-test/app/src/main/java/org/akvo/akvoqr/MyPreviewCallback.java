@@ -338,6 +338,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
             listener.showShadow(shadowPercentage);
 
+            //GET ANGLE
+            if(info!=null)
+            {
+                float[] angles = PreviewUtils.getAngle(info);
+
+                listener.showLevel(angles);
+                //the sum of the angles should approach zero: then the camera is hold even with the card
+
+            }
         }  catch (Exception e) {
             e.printStackTrace();
             return false;
