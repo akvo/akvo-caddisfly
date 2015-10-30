@@ -61,7 +61,7 @@ public class OpenCVUtils {
     }
 
     public static List<Point> getOrderedPoints(double[] topleft, double[] topright,
-                                                    double[] bottomleft, double[] bottomright)
+                                               double[] bottomleft, double[] bottomright)
     {
         List<Point> srcList = new ArrayList<Point>();
 
@@ -81,12 +81,12 @@ public class OpenCVUtils {
         return getOrderedPoints(srcList);
     }
 
-     /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-        * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
-        * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
-        * Because top-left always has the lowest sum of x and y
-        * and bottom-right always the highest, they always come first and last.
-        */
+    /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
+       * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
+       * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
+       * Because top-left always has the lowest sum of x and y
+       * and bottom-right always the highest, they always come first and last.
+       */
     public static List<Point> getOrderedPoints(List<Point> srcList)
     {
         Collections.sort(srcList, new PointComparator());
@@ -102,8 +102,9 @@ public class OpenCVUtils {
 
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
-            double[] bottomleft, double[] bottomright, Mat bgr)
+                                           double[] bottomleft, double[] bottomright, Mat bgr)
     {
+
 
         List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
 
@@ -145,8 +146,6 @@ public class OpenCVUtils {
 
         }
 
-
-
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
         MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
@@ -159,6 +158,13 @@ public class OpenCVUtils {
 
         //do the warp
         Imgproc.warpPerspective(bgr, warp_dst,warp_mat, warp_dst.size());
+
+        //dst width and height taken from the position of the finder patterns
+        double dstWidth = srcList.get(2).y - srcList.get(0).y;
+        double dstHeight = srcList.get(1).x - srcList.get(0).x;
+        Size dstSize = new Size(dstWidth, dstHeight);
+
+        Imgproc.resize(warp_dst, warp_dst, dstSize);
 
         return warp_dst;
     }

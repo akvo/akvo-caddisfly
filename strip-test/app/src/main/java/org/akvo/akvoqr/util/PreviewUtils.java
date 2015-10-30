@@ -323,7 +323,7 @@ public class PreviewUtils {
         double distanceTopVer = points.get(1).y - points.get(0).y;
         float atan2Top = (float) Math.atan2(distanceTopVer, distanceTopHor);
 
-        System.out.println("***atan2Top: " + atan2Top + " deg.: " + Math.toDegrees(atan2Top));
+        //System.out.println("***atan2Top: " + atan2Top + " deg.: " + Math.toDegrees(atan2Top));
 
         //angle in horizontal direction of the device (= vertical in preview)
         //between topleft and bottomleft
@@ -331,11 +331,7 @@ public class PreviewUtils {
         double distanceLeftVer = points.get(2).y - points.get(0).y;
         float atan2Left = (float) Math.atan2(distanceLeftHor, distanceLeftVer); //switch hor and ver to make it approach zero
 
-        System.out.println("***atan2Left: " + atan2Left + " deg.: " + Math.toDegrees(atan2Left));
-
-        float atan2 = (float) Math.atan2(distanceLeftVer, distanceTopHor);
-
-        System.out.println("***atan2: " + atan2 + " deg.: " + Math.toDegrees(atan2));
+        //System.out.println("***atan2Left: " + atan2Left + " deg.: " + Math.toDegrees(atan2Left));
 
         return new float[]{(float) Math.toDegrees(atan2Top), (float) Math.toDegrees(atan2Left)};
     }
