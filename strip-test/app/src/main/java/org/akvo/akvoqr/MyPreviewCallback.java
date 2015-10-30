@@ -231,8 +231,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         List<Double> lumList = new ArrayList<>();
         List<Double> focusList = new ArrayList<>();
 
-        boolean exposureQualOk = false;
+        boolean luminosityQualOk                                                                                                                      = false;
         boolean shadowQualOk = false;
+        boolean levelQualOk = false;
 
         double lumDiff;
         double laplacian;
@@ -281,7 +282,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             if(lumList.size() > 0) {
                 Collections.sort(lumList);
                 listener.showMaxLuminosity(lumList.get(0));
-                exposureQualOk = lumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
+                luminosityQualOk = lumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
             } else {
                 listener.showMaxLuminosity(0);
             }
@@ -326,8 +327,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 try
                 {
                     //if(versionNumber!=CalibrationCard.CODE_NOT_FOUND)//temporary hack to make it work without proper version number
-                        shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
-                    System.out.println("***versionNumber 2: " + versionNumber);
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    //System.out.println("***versionNumber 2: " + versionNumber);
                 }
                 catch (Exception e)
                 {
@@ -339,14 +340,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             listener.showShadow(shadowPercentage);
 
             //GET ANGLE
-            if(info!=null)
-            {
+            if(info!=null) {
                 float[] angles = PreviewUtils.getAngle(info);
 
                 listener.showLevel(angles);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
-
+                levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < 2 * Constant.MAX_LEVEL_DIFF;
             }
+
         }  catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -357,8 +358,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         //count results only if checks have taken place
         if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
-            //System.out.println("start button: " + focused + " " +  exposureQualOk + "  " + shadowQualOk);
-            listener.setCountQualityCheckResult(focused && exposureQualOk && shadowQualOk ? 1 : 0);
+            //System.out.println("start button: " + focused + " " +  luminosityQualOk + "  " + shadowQualOk);
+            listener.setCountQualityCheckResult(focused && luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0);
         }
 
         return true;

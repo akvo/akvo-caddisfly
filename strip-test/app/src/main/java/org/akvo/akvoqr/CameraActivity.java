@@ -311,7 +311,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
         {
             handler.post(hideRunnable);
-            setCountQualityCheckResultZero();
+           // setCountQualityCheckResultZero();
             setCountQualityCheckIterationZero();
             //handler.post(warnRunnable);
         }

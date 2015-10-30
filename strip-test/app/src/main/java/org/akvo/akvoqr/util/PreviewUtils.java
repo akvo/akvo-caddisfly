@@ -310,6 +310,8 @@ public class PreviewUtils {
     //method to calculate angle the camera has to the test card
     public static float[] getAngle(FinderPatternInfo info)
     {
+        if(info==null)
+            return null;
 
         //sort the patterns
         //in portrait mode the result will be: topleft-topright-bottomleft-bottomright

@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.util.Constant;
 
 /**
  * Created by linda on 10/27/15.
@@ -19,7 +20,6 @@ public class LevelView extends View {
 
     float[] angles;
     Paint redPaint;
-    Paint greenPaint;
     Bitmap arrowBitmap;
     Bitmap arrowBitmapOK;
     BitmapDrawable arrowDrawable;
@@ -40,9 +40,6 @@ public class LevelView extends View {
         redPaint.setStyle(Paint.Style.STROKE);
         redPaint.setStrokeWidth(3);
 
-        greenPaint = new Paint(redPaint);
-        greenPaint.setColor(Color.GREEN);
-
         arrowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.level);
         arrowBitmapOK = BitmapFactory.decodeResource(context.getResources(), R.drawable.level_ok);
 
@@ -59,12 +56,12 @@ public class LevelView extends View {
             if(degrees!=0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                canvas.drawBitmap(arrowBitmap, 0, 0, greenPaint);
+                canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
                 canvas.restore();
             }
             else
             {
-                canvas.drawBitmap(arrowBitmapOK, 0, 0, greenPaint);
+                canvas.drawBitmap(arrowBitmapOK, 0, 0, redPaint);
             }
         }
         else
@@ -87,20 +84,20 @@ public class LevelView extends View {
         float degrees = 0f;
 
 
-        if(angles[0] < -0.9)
+        if(angles[0] < -Constant.MAX_LEVEL_DIFF)
         {
             degrees = -90;
         }
-        else if(angles[0] > 0.9)
+        else if(angles[0] > Constant.MAX_LEVEL_DIFF)
         {
             degrees = 90;
         }
 
-        if(angles[1] < -0.9)
+        if(angles[1] < -Constant.MAX_LEVEL_DIFF)
         {
             degrees = 1;
         }
-        else if(angles[1] > 0.9)
+        else if(angles[1] > Constant.MAX_LEVEL_DIFF)
         {
             degrees = 180;
         }
