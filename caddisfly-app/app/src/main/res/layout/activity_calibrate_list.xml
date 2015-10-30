@@ -27,9 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:background="@color/primary"
+        android:background="?colorPrimary"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:paddingEnd="10dp"
         android:paddingStart="20dp"
         tools:ignore="UnknownIdInLayout">
@@ -49,10 +49,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#d6f6fdf6"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Batch Name Number" />
 
         <TextView
             android:id="@+id/textSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="22-Dec-2015" />
+
+        <TextView
+            android:id="@+id/textSubtitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#d6f6fdf6"

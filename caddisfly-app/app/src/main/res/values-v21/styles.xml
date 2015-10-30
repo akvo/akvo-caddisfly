@@ -26,8 +26,6 @@
         <item name="primaryBackgroundStyle">@color/primary_background</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
-        <item name="progressTint">@color/secondary_accent</item>
-        <item name="progressTintInverse">@color/accent</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog" />
@@ -48,10 +46,11 @@
     </style>
 
     <style name="floating_action_button">
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginBottom">-16dp</item>
+        <item name="android:layout_marginBottom">-8dp</item>
     </style>
 
 </resources>

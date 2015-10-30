@@ -40,6 +40,7 @@
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
     <string name="survey">Survey</string>
+    <string name="expires">Expires</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
@@ -156,7 +157,6 @@
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
-    <string name="diagnosticsUser">Diagnostics in User Mode</string>
-    <string name="expires">Expires</string>
+    <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
 
 </resources>

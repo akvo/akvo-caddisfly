@@ -135,13 +135,9 @@ public class MainActivity extends BaseActivity {
     private void switchLayoutForDiagnosticOrUserMode() {
         if (AppPreferences.isDiagnosticMode()) {
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
-            //findViewById(R.id.layoutSlogan).setVisibility(View.GONE);
-            //findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.diagnostic_gradient);
         } else {
             if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
-                //findViewById(R.id.layoutSlogan).setVisibility(View.VISIBLE);
-                //findViewById(R.id.mainLayout).setBackgroundResource(R.drawable.gradient);
             }
         }
     }

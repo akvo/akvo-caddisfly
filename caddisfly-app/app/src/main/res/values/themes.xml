@@ -17,9 +17,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme.Orange" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorAccent">@color/cyan</item>
         <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
@@ -28,21 +28,21 @@
         <item name="cardBackgroundColor">@color/window_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
-        <item name="primaryButtonColor">@color/accent</item>
+        <item name="primaryButtonColor">@color/cyan</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Blue</item>
         <item name="longButtonText">@color/text_tertiary</item>
         <item name="primaryBackgroundStyle">@color/primary_background</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
-        <item name="progressTint">@color/secondary_accent</item>
-        <item name="progressTintInverse">@color/accent</item>
+        <item name="progressTint">@color/yellow</item>
+        <item name="progressTintInverse">@color/yellow</item>
     </style>
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_background</item>
         <item name="colorPrimaryDark">@color/primary_background</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/green</item>
         <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
@@ -51,15 +51,15 @@
         <item name="cardBackgroundColor">@color/window_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
-        <item name="primaryButtonColor">@color/accent</item>
+        <item name="primaryButtonColor">@color/green</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Orange</item>
         <item name="longButtonText">@color/text_tertiary_orange</item>
-        <item name="primaryBackgroundStyle">@color/primary</item>
+        <item name="primaryBackgroundStyle">@color/orange</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
-        <item name="progressTint">@color/secondary_accent</item>
-        <item name="progressTintInverse">@color/accent</item>
+        <item name="progressTint">@color/green</item>
+        <item name="progressTintInverse">@color/green</item>
     </style>
 
     <style name="AppTheme.BlueOrange" parent="Theme.AppCompat.Light.NoActionBar">
@@ -81,8 +81,8 @@
         <item name="primaryBackgroundStyle">@color/primary_background_orange</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
-        <item name="progressTint">@color/secondary_accent</item>
-        <item name="progressTintInverse">@color/accent</item>
+        <item name="progressTint">@color/yellow</item>
+        <item name="progressTintInverse">@color/yellow</item>
     </style>
 
     <style name="AppTheme.OrangeBlue" parent="Theme.AppCompat.Light.NoActionBar">
@@ -104,8 +104,8 @@
         <item name="primaryBackgroundStyle">@color/primary_orange</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
-        <item name="progressTint">@color/secondary_accent</item>
-        <item name="progressTintInverse">@color/accent</item>
+        <item name="progressTint">@color/green</item>
+        <item name="progressTintInverse">@color/green</item>
     </style>
 
     <style name="AppTheme.Orange.Main">
@@ -115,7 +115,7 @@
     <style name="AppTheme.Flow" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/flow_primary</item>
         <item name="colorPrimaryDark">@color/primary_dark_flow</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/cyan</item>
         <item name="textColorPrimary">@color/orange_main</item>
         <item name="android:textColorPrimaryInverse">@color/orange_main</item>
         <item name="android:textColorSecondaryInverse">@color/white</item>
@@ -132,6 +132,6 @@
         <item name="primaryBackgroundStyle">@color/orange_main</item>
         <item name="toolbarHeight">@dimen/flow_toolbar_height</item>
         <item name="toolbarMargin">@dimen/flow_toolbar_margin</item>
-        <item name="progressTint">@color/accent</item>
+        <item name="progressTint">@color/green</item>
     </style>
 </resources>

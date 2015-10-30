@@ -42,6 +42,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -74,8 +75,9 @@ public class CalibrateListActivity extends BaseActivity
 
     private final int REQUEST_CALIBRATE = 100;
     private FloatingActionButton fabEditCalibration;
-    private TextView textSubtitle1;
     private TextView textSubtitle;
+    private TextView textSubtitle1;
+    private TextView textSubtitle2;
     private int mPosition;
 
     @Override
@@ -106,7 +108,7 @@ public class CalibrateListActivity extends BaseActivity
                 loadCalibration(callback);
                 return true;
             case R.id.menuSave:
-                saveCalibration();
+                showEditCalibrationDetailsDialog();
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -121,8 +123,9 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        textSubtitle1 = (TextView) findViewById(R.id.textSubtitle1);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        textSubtitle1 = (TextView) findViewById(R.id.textSubtitle1);
+        textSubtitle2 = (TextView) findViewById(R.id.textSubtitle2);
 
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
                 getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
@@ -138,14 +141,18 @@ public class CalibrateListActivity extends BaseActivity
         fabEditCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                SaveCalibrationDialogFragment saveCalibrationDialogFragment =
-                        SaveCalibrationDialogFragment.newInstance();
-                saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
+                showEditCalibrationDetailsDialog();
             }
         });
 
         loadDetails();
+    }
+
+    private void showEditCalibrationDetailsDialog() {
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        SaveCalibrationDialogFragment saveCalibrationDialogFragment =
+                SaveCalibrationDialogFragment.newInstance();
+        saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
     @Override
@@ -161,33 +168,28 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     private void loadDetails() {
-//        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-//                R.string.calibrationDateKey);
-//        long calibrationDate = PreferencesUtil.getLong(this, key);
 
-        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.calibrationExpiryDateKey);
+        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+
+        String key = String.format("%s_%s", testCode, getString(R.string.calibrationDateKey));
+        long calibrationDate = PreferencesUtil.getLong(this, key);
+
+        if (calibrationDate >= 0) {
+            textSubtitle1.setText(String.format("%s: %s", getString(R.string.calibrated),
+                    new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate))));
+        }
+
+        key = String.format("%s_%s", testCode, getString(R.string.calibrationExpiryDateKey));
         Long expiryDate = PreferencesUtil.getLong(this, key);
 
-        textSubtitle1.setText(String.format("%s: %s", getString(R.string.expires),
-                new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+        if (expiryDate >= 0) {
+            textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
+                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+        }
 
-//        String date = "";
-//        if (calibrationDate >= 0) {
-//            date = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US)
-//                    .format(new Date(calibrationDate)) + " ";
-//        }
-//
-//        textSubtitle1.setText(String.format("%sExpires: %s",
-//                date,
-//                new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+        key = String.format("%s_%s", testCode, getString(R.string.batchNumberKey));
 
-        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.batchNumberKey);
-
-//        if (expiryDate >= 0) {
         textSubtitle.setText(String.format("%s", PreferencesUtil.getString(this, key, "")));
-        //      }
 
         CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
@@ -210,9 +212,32 @@ public class CalibrateListActivity extends BaseActivity
     @Override
     public void onItemSelected(int id) {
 
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+//        String key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationDateKey));
+//        long calibrationDate = PreferencesUtil.getLong(this, key);
+        //Show calibration details dialog if this is an incomplete calibration from more than an hour ago
+//        Calendar currentDate = Calendar.getInstance();
+//        if (currentDate.getTimeInMillis() - calibrationDate > 1000 * 60 * 1) {
+//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.batchNumberKey));
+//            PreferencesUtil.removeKey(this, key);
+//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationExpiryDateKey));
+//            PreferencesUtil.removeKey(this, key);
+//            showEditCalibrationDetailsDialog();
+//            return;
+//        }
+
+        //Show edit calibration details dialog if required
+        String key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationExpiryDateKey));
+        Long expiryDate = PreferencesUtil.getLong(this, key);
+        if (expiryDate <= 0) {
+            showEditCalibrationDetailsDialog();
+            return;
+        }
+
         fabEditCalibration.setEnabled(false);
         mPosition = id;
-        Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
+        Swatch swatch = currentTestInfo.getSwatch(mPosition);
 
         if (!ApiUtil.isCameraInUse(this, null)) {
             final Intent intent = new Intent(getIntent());
@@ -236,16 +261,18 @@ public class CalibrateListActivity extends BaseActivity
 
                 if (resultCode == Activity.RESULT_OK) {
                     saveCalibratedData(swatch, data.getIntExtra("color", 0));
+                }
 
-                    //Store the date and time of calibration
+                //Save date if this is the first swatch calibrated
+                if (SwatchHelper.getCalibratedSwatchCount(
+                        CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) == 1) {
+
                     Date calibrationDate = new Date();
 
                     String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                            R.string.calibrationDateKey);
+                            getString(R.string.calibrationDateKey));
 
                     PreferencesUtil.setLong(this, key, calibrationDate.getTime());
-                    textSubtitle1.setText(
-                            new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(calibrationDate));
                 }
 
                 ((CalibrateListFragment) getSupportFragmentManager()
@@ -270,18 +297,6 @@ public class CalibrateListActivity extends BaseActivity
             swatch.setColor(resultColor);
             PreferencesUtil.setInt(getApplicationContext(), colorKey, resultColor);
         }
-    }
-
-    /**
-     * Save the current calibration to a text file
-     */
-    private void saveCalibration() {
-
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
-
-        saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
-
     }
 
     /**

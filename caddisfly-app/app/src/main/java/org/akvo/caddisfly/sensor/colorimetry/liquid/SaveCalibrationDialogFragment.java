@@ -107,12 +107,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
         String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.batchNumberKey);
+                getString(R.string.batchNumberKey));
 
         editBatchCode.setText(PreferencesUtil.getString(context, key, ""));
 
         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                R.string.calibrationExpiryDateKey);
+                getString(R.string.calibrationExpiryDateKey));
         long expiryDate = PreferencesUtil.getLong(getContext(), key);
         if (expiryDate >= 0) {
             calendar.setTimeInMillis(expiryDate);
@@ -127,10 +127,16 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 calendar.get(Calendar.DAY_OF_MONTH));
 
         Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY, date.getMinimum(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE, date.getMinimum(Calendar.MINUTE));
+        date.set(Calendar.SECOND, date.getMinimum(Calendar.SECOND));
+        date.set(Calendar.MILLISECOND, date.getMinimum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMinDate(date.getTimeInMillis());
-
-
         date.add(Calendar.MONTH, CaddisflyApp.getApp().getCurrentTestInfo().getMonthsValid());
+        date.set(Calendar.HOUR_OF_DAY, date.getMaximum(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE, date.getMaximum(Calendar.MINUTE));
+        date.set(Calendar.SECOND, date.getMaximum(Calendar.SECOND));
+        date.set(Calendar.MILLISECOND, date.getMaximum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
 
         editExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -259,12 +265,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         }
 
                         String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                                R.string.calibrationExpiryDateKey);
+                                getString(R.string.calibrationExpiryDateKey));
 
                         PreferencesUtil.setLong(context, key, calendar.getTimeInMillis());
 
                         key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                                R.string.batchNumberKey);
+                                getString(R.string.batchNumberKey));
 
                         PreferencesUtil.setString(context, key, editBatchCode.getText().toString());
 

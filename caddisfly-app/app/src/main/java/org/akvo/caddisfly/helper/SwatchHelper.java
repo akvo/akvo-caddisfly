@@ -200,6 +200,18 @@ public final class SwatchHelper {
         //return !(calculateSlope(swatches) < 20 || calculateSlope(swatches) > 40);
     }
 
+    public static int getCalibratedSwatchCount(ArrayList<Swatch> swatches) {
+
+        int count = 0;
+        for (Swatch swatch1 : swatches) {
+            if (swatch1.getColor() == Color.TRANSPARENT || swatch1.getColor() == Color.BLACK) {
+                break;
+            }
+            count += 1;
+        }
+        return count;
+    }
+
     /**
      * Returns an average color from a list of results
      * If any color does not closely match the rest of the colors then it returns 0
@@ -271,7 +283,7 @@ public final class SwatchHelper {
     /**
      * Returns the average of a list of values
      *
-     * @param results       the results
+     * @param results the results
      * @return the average value
      */
     public static double getAverageResult(ArrayList<Result> results) {

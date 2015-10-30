@@ -32,6 +32,19 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                        Toast.LENGTH_SHORT).show();
+
+                AppPreferences.disableDiagnosticMode();
+
+                switchLayoutForDiagnosticOrUserMode();
+
+                changeActionBarStyleBasedOnCurrentMode();
+            }
+        });
 
         TextView buttonSoftwareNotices = (TextView) findViewById(R.id.buttonSoftwareNotices);
         buttonSoftwareNotices.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +74,8 @@ public class AboutActivity extends BaseActivity {
                         AppPreferences.enableDiagnosticMode();
 
                         changeActionBarStyleBasedOnCurrentMode();
+
+                        switchLayoutForDiagnosticOrUserMode();
                     }
                 }
             }
@@ -71,5 +86,24 @@ public class AboutActivity extends BaseActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setTitle(R.string.about);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switchLayoutForDiagnosticOrUserMode();
+    }
+
+    /**
+     * Show the diagnostic mode layout
+     */
+    private void switchLayoutForDiagnosticOrUserMode() {
+        if (AppPreferences.isDiagnosticMode()) {
+            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
+        } else {
+            if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
+                findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
+            }
+        }
     }
 }
