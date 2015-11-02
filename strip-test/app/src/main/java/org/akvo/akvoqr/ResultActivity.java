@@ -263,12 +263,13 @@ public class ResultActivity extends AppCompatActivity {
 
             //start test
             Locale l = Locale.US;
-            System.out.println("***test color RGB: " + String.format(l, "%.2f",testColorsList[testCount].val[0]) +
-                    ", " + String.format(l, "%.2f",testColorsList[testCount].val[1]) + ", "+
-                    String.format(l, "%.2f",testColorsList[testCount].val[2]));
+            System.out.print("***test color RGB,");
+            System.out.print(testCount + "," + String.format(l, "%.2f", testColorsList[testCount].val[0]) +
+                    ", " + String.format(l, "%.2f", testColorsList[testCount].val[1]) + ", " +
+                    String.format(l, "%.2f", testColorsList[testCount].val[2]) + ",");
 
-            System.out.println("***RGB C : "+  String.format(l, "%.2f", pointC[0]) + ", "
-                    + String.format(l, "%.2f",pointC[1]) + ", " + String.format(l, "%.2f",pointC[2]));
+            System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
+                    + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
 
 
             try {
@@ -276,7 +277,8 @@ public class ResultActivity extends AppCompatActivity {
                 pointA = testColorsList[testCount].val;
 
                 distance = getDistanceBetween2Points3D(pointA, pointC);
-                System.out.println("***RGB*** color patch no: " + testCount + " distance: " + distance);
+                System.out.print("," + distance);
+                System.out.println(",***");
 
             } catch (Exception e) {
                 e.printStackTrace();

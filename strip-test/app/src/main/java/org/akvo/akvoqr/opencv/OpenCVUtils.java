@@ -45,16 +45,20 @@ public class OpenCVUtils {
         }
         // get the rotation matrix
         rot_mat = Imgproc.getRotationMatrix2D(rotatedRect.center, angle, 1.0);
+
         // perform the affine transformation
         Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
+
         // crop the resulting image
         if(!warp_rotate_dst.empty()) {
             Point centerBrand = new Point(
                     rotatedRect.center.x + (rotatedRect.size.width - brandSize.width)/2,
-                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/2);
+                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/4);
+
             System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
                     + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
-                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/2);
+                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/4);
+
             Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
         }
         return cropped;

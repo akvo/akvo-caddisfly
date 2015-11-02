@@ -141,12 +141,11 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
        //flashmode
         switchFlashMode();
 
-        System.out.println("***min Exposure compensation: " + parameters.getMinExposureCompensation());
-        System.out.println("***max Exposure compensation: " + parameters.getMaxExposureCompensation());
-
+        //exposure compensation
+//        System.out.println("***min Exposure compensation: " + parameters.getMinExposureCompensation());
+//        System.out.println("***max Exposure compensation: " + parameters.getMaxExposureCompensation());
         parameters.setExposureCompensation(5);
-
-        System.out.println("***Exposure compensation: " + parameters.getExposureCompensation());
+//        System.out.println("***Exposure compensation: " + parameters.getExposureCompensation());
 
         // start preview with new settings
         try {
