@@ -113,7 +113,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         });
 
-
     }
 
     private void init()
@@ -148,10 +147,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
             });
         }
-
-
-
     }
+
     public void onPause()
     {
 
@@ -288,19 +285,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-//        Runnable warnRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                getMessage(1);
-//                handler.removeCallbacks(startNextPreview);
-//                CustomDialog cd = new CustomDialog();
-//                AlertDialog dialog = cd.createDialog(CameraActivity.this);
-//
-//                dialog.show();
-//            }
-//        };
-
 //        System.out.println("***countQualityCheckResult: " + countQualityCheckResult +
 //        " countQualityCheckIteration: " + countQualityCheckIteration);
 
@@ -313,7 +297,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             handler.post(hideRunnable);
            // setCountQualityCheckResultZero();
             setCountQualityCheckIterationZero();
-            //handler.post(warnRunnable);
+
         }
         else
         {

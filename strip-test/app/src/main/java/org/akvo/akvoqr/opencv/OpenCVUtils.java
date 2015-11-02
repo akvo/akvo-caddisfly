@@ -91,11 +91,11 @@ public class OpenCVUtils {
     {
         Collections.sort(srcList, new PointComparator());
 
-        System.out.println("***after sort:");
-        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
-        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
+//        System.out.println("***after sort:");
+//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
+//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
+//        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
+//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         return srcList;
     }
@@ -103,6 +103,7 @@ public class OpenCVUtils {
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
                                            double[] bottomleft, double[] bottomright, Mat bgr)
+            throws Exception
     {
 
 
@@ -164,7 +165,10 @@ public class OpenCVUtils {
         double dstHeight = srcList.get(1).x - srcList.get(0).x;
         Size dstSize = new Size(dstWidth, dstHeight);
 
-        Imgproc.resize(warp_dst, warp_dst, dstSize);
+        if(warp_dst!=null) {
+            if(dstHeight > 0 && dstWidth > 0)
+                Imgproc.resize(warp_dst, warp_dst, dstSize);
+        }
 
         return warp_dst;
     }
@@ -193,9 +197,9 @@ public class OpenCVUtils {
         }
         Collections.sort(maxVals);
 
-        System.out.println("***lowest maxVal: " + maxVals.get(0));
+//        System.out.println("***lowest maxVal: " + maxVals.get(0));
 
-        System.out.println("***start submat");
+//        System.out.println("***start submat");
         for(int c=0; c<lab.cols()-4; c+=4) {
             Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
 
@@ -226,7 +230,7 @@ public class OpenCVUtils {
             }
             submat.release();
         }
-        System.out.println("***end submat");
+//        System.out.println("***end submat");
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfPoint innermostContours = new MatOfPoint();
@@ -286,10 +290,10 @@ public class OpenCVUtils {
             Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
             Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
 
-            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
-            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
-            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
+//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
 
             //demo
 //            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
@@ -312,9 +316,9 @@ public class OpenCVUtils {
                 Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
 
                 Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
-                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
-                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
-                        + " height: " + rotated.size().height);
+//                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
+//                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
+//                        + " height: " + rotated.size().height);
 
                 Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
 
