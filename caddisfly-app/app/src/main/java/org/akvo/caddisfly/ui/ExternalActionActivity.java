@@ -203,10 +203,9 @@ public class ExternalActionActivity extends BaseActivity {
                     return;
                 }
 
-                String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                long milliseconds = PreferencesUtil.getLong(this,
+                        CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                         R.string.calibrationExpiryDateKey);
-
-                long milliseconds = PreferencesUtil.getLong(this, key);
                 if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
                     alertCalibrationExpired();
                     return;

@@ -59,6 +59,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -74,6 +75,7 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
+    SaveCalibrationDialogFragment saveCalibrationDialogFragment;
     private FloatingActionButton fabEditCalibration;
     private TextView textSubtitle;
     private TextView textSubtitle1;
@@ -135,7 +137,7 @@ public class CalibrateListActivity extends BaseActivity
 
         if (AppPreferences.isDiagnosticMode()) {
             fabEditCalibration.setBackgroundTintList(
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_background)));
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.cyan)));
         }
 
         fabEditCalibration.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +152,7 @@ public class CalibrateListActivity extends BaseActivity
 
     private void showEditCalibrationDetailsDialog() {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        SaveCalibrationDialogFragment saveCalibrationDialogFragment =
-                SaveCalibrationDialogFragment.newInstance();
+        saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
@@ -171,25 +172,21 @@ public class CalibrateListActivity extends BaseActivity
 
         String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
 
-        String key = String.format("%s_%s", testCode, getString(R.string.calibrationDateKey));
-        long calibrationDate = PreferencesUtil.getLong(this, key);
+        long calibrationDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey);
 
         if (calibrationDate >= 0) {
             textSubtitle1.setText(String.format("%s: %s", getString(R.string.calibrated),
                     new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate))));
         }
 
-        key = String.format("%s_%s", testCode, getString(R.string.calibrationExpiryDateKey));
-        Long expiryDate = PreferencesUtil.getLong(this, key);
+        Long expiryDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey);
 
         if (expiryDate >= 0) {
             textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
                     new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
         }
 
-        key = String.format("%s_%s", testCode, getString(R.string.batchNumberKey));
-
-        textSubtitle.setText(String.format("%s", PreferencesUtil.getString(this, key, "")));
+        textSubtitle.setText(PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""));
 
         CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
@@ -227,15 +224,20 @@ public class CalibrateListActivity extends BaseActivity
 //            return;
 //        }
 
+        fabEditCalibration.setEnabled(false);
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                fabEditCalibration.setEnabled(true);
+            }
+        }, 500);
+
         //Show edit calibration details dialog if required
-        String key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationExpiryDateKey));
-        Long expiryDate = PreferencesUtil.getLong(this, key);
+        Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
         if (expiryDate <= 0) {
             showEditCalibrationDetailsDialog();
             return;
         }
 
-        fabEditCalibration.setEnabled(false);
         mPosition = id;
         Swatch swatch = currentTestInfo.getSwatch(mPosition);
 
@@ -259,24 +261,24 @@ public class CalibrateListActivity extends BaseActivity
 
                 Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
+                long calibratedDate = PreferencesUtil.getLong(this,
+                        CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                        R.string.calibrationDateKey);
+
                 if (resultCode == Activity.RESULT_OK) {
                     saveCalibratedData(swatch, data.getIntExtra("color", 0));
+
+                    //Save date if this is the first swatch calibrated
+                    if (calibratedDate < 0 || SwatchHelper.getCalibratedSwatchCount(
+                            CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) == 1) {
+                        PreferencesUtil.setLong(this, CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                                R.string.calibrationDateKey, Calendar.getInstance().getTimeInMillis());
+                    }
+
+                    ((CalibrateListFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.fragmentCalibrateList)).setAdapter();
                 }
 
-                //Save date if this is the first swatch calibrated
-                if (SwatchHelper.getCalibratedSwatchCount(
-                        CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) == 1) {
-
-                    Date calibrationDate = new Date();
-
-                    String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                            getString(R.string.calibrationDateKey));
-
-                    PreferencesUtil.setLong(this, key, calibrationDate.getTime());
-                }
-
-                ((CalibrateListFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.fragmentCalibrateList)).setAdapter();
                 break;
         }
     }

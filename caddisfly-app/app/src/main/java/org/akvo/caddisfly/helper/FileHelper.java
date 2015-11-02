@@ -30,7 +30,6 @@ public class FileHelper {
     // Files
     private static final String CONFIG_FILE = "tests.json";
     // Folders
-    private static final String DIR_APK = "apk"; // App upgrades
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
@@ -60,9 +59,6 @@ public class FileHelper {
     public static File getFilesDir(FileType type, String subPath) {
         String path = null;
         switch (type) {
-            case APK:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true) + File.separator + DIR_APK;
-                break;
             case CALIBRATION:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CALIBRATION;
                 break;
@@ -110,6 +106,6 @@ public class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        APK, CALIBRATION, IMAGE, CONFIG
+        CALIBRATION, IMAGE, CONFIG
     }
 }

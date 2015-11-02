@@ -34,6 +34,7 @@ public class AlignmentActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
     private CameraDialog mCameraDialog;
+    private boolean mTestStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class AlignmentActivity extends BaseActivity {
 
                 final Intent intent = new Intent(getIntent());
                 intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-
+                mTestStarted = true;
                 startActivityForResult(intent, REQUEST_TEST);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
@@ -132,7 +133,9 @@ public class AlignmentActivity extends BaseActivity {
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        setResult(Activity.RESULT_CANCELED);
-        finish();
+        if (!mTestStarted) {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
     }
 }

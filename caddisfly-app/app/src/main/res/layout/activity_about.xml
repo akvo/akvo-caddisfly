@@ -99,7 +99,7 @@
                 android:paddingBottom="15dp"
                 android:paddingTop="5dp"
                 android:text="@string/legalInformation"
-                android:textColor="@color/button_cyan"
+                android:textColor="@color/cyan"
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -121,12 +121,11 @@
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
-            android:paddingBottom="8dp"
             android:singleLine="true"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2a007a8d"
-            android:textSize="50dp"
+            android:textSize="46dp"
             tools:ignore="SpUsage" />
 
         <android.support.design.widget.FloatingActionButton
@@ -136,6 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textDiagnostics"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
             android:src="@android:drawable/ic_menu_revert"
             app:backgroundTint="@color/diagnostic"
             tools:ignore="RelativeOverlap" />

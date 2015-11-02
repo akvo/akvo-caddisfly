@@ -82,6 +82,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
         final Context context = getActivity();
 
         LayoutInflater i = getActivity().getLayoutInflater();
@@ -106,14 +107,9 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
-        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                getString(R.string.batchNumberKey));
+        editBatchCode.setText(PreferencesUtil.getString(context, testCode, R.string.batchNumberKey, ""));
 
-        editBatchCode.setText(PreferencesUtil.getString(context, key, ""));
-
-        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                getString(R.string.calibrationExpiryDateKey));
-        long expiryDate = PreferencesUtil.getLong(getContext(), key);
+        long expiryDate = PreferencesUtil.getLong(getContext(), testCode, R.string.calibrationExpiryDateKey);
         if (expiryDate >= 0) {
             calendar.setTimeInMillis(expiryDate);
 
@@ -143,6 +139,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
+                    closeKeyboard(getContext(), editBatchCode);
                     datePickerDialog.show();
                 }
             }
@@ -151,6 +148,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         editExpiryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                closeKeyboard(getContext(), editBatchCode);
                 datePickerDialog.show();
             }
         });
@@ -264,15 +262,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                             }
                         }
 
-                        String key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                                getString(R.string.calibrationExpiryDateKey));
+                        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                        PreferencesUtil.setLong(context, testCode,
+                                R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
 
-                        PreferencesUtil.setLong(context, key, calendar.getTimeInMillis());
-
-                        key = String.format("%s_%s", CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
-                                getString(R.string.batchNumberKey));
-
-                        PreferencesUtil.setString(context, key, editBatchCode.getText().toString());
+                        PreferencesUtil.setString(context, testCode,
+                                R.string.batchNumberKey, editBatchCode.getText().toString());
 
                         ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
 

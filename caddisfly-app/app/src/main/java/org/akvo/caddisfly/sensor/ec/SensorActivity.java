@@ -250,6 +250,12 @@ public class SensorActivity extends BaseActivity {
         imageUsbConnection.animate().alpha(0.9f).setDuration(1000);
         buttonAcceptResult.setVisibility(View.GONE);
         textSubtitle.setText(R.string.deviceConnectSensor);
+
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                finish();
+            }
+        }, 4000);
     }
 
     private void displayResult(String value) {

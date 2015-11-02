@@ -1,6 +1,11 @@
 v0.92 beta
 ----------
-Fix screen flash when camera alignment preview is started
+1. UX Change: Expiry date must be entered before calibration
+2. Reagent expiry date should be within the date range defined in json config
+3. Theme colors changed to Orange and Blue
+4. Settings: Theme option to experiment with different UI colors
+5. Fix screen flash when camera alignment preview is started
+6. Auto app update feature if not installed from Play store
 
 v0.91 beta
 ----------

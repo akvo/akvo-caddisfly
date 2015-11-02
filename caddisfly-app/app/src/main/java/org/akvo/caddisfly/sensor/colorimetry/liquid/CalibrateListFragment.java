@@ -52,7 +52,7 @@ public class CalibrateListFragment extends ListFragment {
         public void onItemSelected(int id) {
         }
     };
-    private static final long MIN_DELAY_MILLIS = 2000;
+    private static final long MIN_DELAY_MILLIS = 1000;
     /**
      * The fragment's current callback object, which is notified of list item clicks
      */
@@ -77,9 +77,7 @@ public class CalibrateListFragment extends ListFragment {
 
     private void validateCalibration() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        String key = String.format("%s_%s", currentTestInfo.getCode(),
-                R.string.calibrationExpiryDateKey);
-        long milliseconds = PreferencesUtil.getLong(getActivity(), key);
+        long milliseconds = PreferencesUtil.getLong(getActivity(), currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
         if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
             textCalibrationError.setText(String.format("%s. %s", getString(R.string.expired),
                     getString(R.string.calibrateWithNewReagent)));

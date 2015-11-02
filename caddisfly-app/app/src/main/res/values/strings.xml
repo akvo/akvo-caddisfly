@@ -133,6 +133,10 @@
     <string name="calibrationDetails">Calibration Details</string>
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
+    <!--Update-->
+    <string name="updateAvailable">A new version of the Akvo Caddisfly is available. Do you want to update now?</string>
+    <string name="notNow">Not now</string>
+
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
     <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
@@ -158,5 +162,8 @@
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
+    <string name="update">Update</string>
+    <string name="updateFailed">Update failed</string>
+    <string name="deviceConnected">Device connected</string>
 
 </resources>

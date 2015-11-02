@@ -22,6 +22,11 @@ package org.akvo.caddisfly;
 public class AppConfig {
 
     /**
+     * Set if this build is distributed as an apk or via store
+     */
+    public static final boolean IS_NON_MARKET_BUILD = false;
+
+    /**
      * To launch FLOW app
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
@@ -35,5 +40,11 @@ public class AppConfig {
      * The sound volume for the beeps and other sound effects
      */
     public static final float SOUND_EFFECTS_VOLUME = 1f;
+
+    /**
+     * The url to check for update version
+     */
+    public static final String UPDATE_CHECK_URL
+            = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
 
 }

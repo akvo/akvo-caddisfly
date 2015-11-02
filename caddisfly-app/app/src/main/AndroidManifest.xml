@@ -79,7 +79,6 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.ec.SensorActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
@@ -112,9 +111,25 @@
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:screenOrientation="nosensor" />
 
+        <activity
+            android:name=".sensor.UsbConnectionActivity"
+            android:autoRemoveFromRecents="true"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+
         <service
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />
+
+        <service android:name=".helper.UpdateIntentService" />
 
     </application>
 

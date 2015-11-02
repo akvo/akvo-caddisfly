@@ -122,10 +122,28 @@ public class PreferencesUtil {
      * @param keyId   the key id
      * @return the stored long value
      */
-    public static long getLong(Context context, String keyId) {
+    public static long getLong(Context context, String code, @StringRes int keyId) {
+        String key = String.format("%s_%s", code, getKey(context, keyId));
+        return getLong(context, key);
+    }
+
+    /**
+     * Gets a long value from preferences
+     *
+     * @param context the context
+     * @param key     the key id
+     * @return the stored long value
+     */
+    public static long getLong(Context context, String key) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        return sharedPreferences.getLong(keyId, -1L);
+        return sharedPreferences.getLong(key, -1L);
+    }
+
+
+    public static void setLong(Context context, String code, @StringRes int keyId, long value) {
+        String key = String.format("%s_%s", code, getKey(context, keyId));
+        setLong(context, key, value);
     }
 
     /**
@@ -144,13 +162,13 @@ public class PreferencesUtil {
      * Sets a long value to preferences
      *
      * @param context the context
-     * @param keyId   the int key id
+     * @param key     the int key id
      */
-    public static void setLong(Context context, String keyId, long value) {
+    public static void setLong(Context context, String key, long value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
-        editor.putLong(keyId, value);
+        editor.putLong(key, value);
         editor.apply();
     }
 
@@ -184,6 +202,11 @@ public class PreferencesUtil {
         return sharedPreferences.getString(keyId, defaultValue);
     }
 
+    public static String getString(Context context, String code, @StringRes int keyId, String defaultValue) {
+        String key = String.format("%s_%s", code, getKey(context, keyId));
+        return getString(context, key, defaultValue);
+    }
+
     /**
      * Sets a string value to preferences
      *
@@ -196,6 +219,11 @@ public class PreferencesUtil {
         Editor editor = sharedPreferences.edit();
         editor.putString(getKey(context, keyId), value);
         editor.apply();
+    }
+
+    public static void setString(Context context, String code, @StringRes int keyId, String value) {
+        String key = String.format("%s_%s", code, getKey(context, keyId));
+        setString(context, key, value);
     }
 
     /**
@@ -216,7 +244,7 @@ public class PreferencesUtil {
      * Removes the key from the preferences
      *
      * @param context the context
-     * @param key   the key id
+     * @param key     the key id
      */
     public static void removeKey(Context context, String key) {
         SharedPreferences sharedPreferences = PreferenceManager

@@ -20,10 +20,7 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="primaryButtonStyle">@style/AppTheme.Button.Green</item>
-        <item name="secondaryButtonStyle">@style/AppTheme.Button.Green</item>
         <item name="dialogDestructiveButton">@style/AppTheme.Dialog.Destructive</item>
-        <item name="primaryBackgroundStyle">@color/primary_background</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
     </style>

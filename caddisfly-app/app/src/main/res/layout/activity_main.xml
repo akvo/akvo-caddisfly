@@ -80,36 +80,15 @@
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
-
         </LinearLayout>
     </LinearLayout>
-
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/layoutSlogan"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="16dp">-->
-
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:ellipsize="none"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:singleLine="true"-->
-    <!--android:text="@string/waterQuality"-->
-    <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-    <!--android:textColor="#22007a8d"-->
-    <!--android:textSize="50dp"-->
-    <!--tools:ignore="SpUsage" />-->
-    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/layoutDiagnostics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:visibility="gone">
+        android:paddingBottom="16dp"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textDiagnostics"
@@ -120,12 +99,11 @@
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
-            android:paddingBottom="8dp"
             android:singleLine="true"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2a007a8d"
-            android:textSize="50dp"
+            android:textSize="46dp"
             tools:ignore="SpUsage" />
 
         <android.support.design.widget.FloatingActionButton
@@ -135,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textDiagnostics"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="0dp"
             android:src="@android:drawable/ic_menu_revert"
             app:backgroundTint="@color/diagnostic"
             tools:ignore="RelativeOverlap" />
