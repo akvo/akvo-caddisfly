@@ -120,14 +120,11 @@ public class PreviewUtils {
     }
 
 
-    public static double getDiffLuminosity(Mat src_gray)
+    public static double[] getDiffLuminosity(Mat src_gray)
     {
-        Mat Lab = new Mat();
-        List<Mat> channels = new ArrayList<>();
-
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(src_gray);
-        return result.maxVal - result.minVal;
+        return new double[]{ result.minVal, result.maxVal};
     }
 
     /*method for shadow detection

@@ -26,4 +26,7 @@ public class Constant {
     public static final int COUNT_QUALITY_CHECK_LIMIT = 10;
     public static final double CROP_CAMERAVIEW_FACTOR = 0.66;
     public static final float MAX_LEVEL_DIFF = 2f;
+    public static final double MIN_LUM_LOWER = 20;
+    public static final double MAX_LUM_ABS = 254;
+    public static final double MIN_LUM_UPPER = 254;
 }
