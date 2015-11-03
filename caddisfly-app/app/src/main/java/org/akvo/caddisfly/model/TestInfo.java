@@ -41,8 +41,8 @@ public class TestInfo {
     private int monthsValid = 12;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
-                    boolean requiresCalibration, String[] swatchArray, String[] dilutionsArray,
-                    boolean isDiagnostic, int monthsValid) {
+                    boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
+                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid) {
         this.names = names;
         this.testType = testType;
         this.code = code;
@@ -53,9 +53,22 @@ public class TestInfo {
         this.isDiagnostic = isDiagnostic;
         this.monthsValid = monthsValid;
 
-        for (String range : swatchArray) {
-            Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f, Color.TRANSPARENT);
+        for (int i = 0; i < swatchArray.length; i++) {
+
+            String range = swatchArray[i];
+            int defaultColor = Color.TRANSPARENT;
+            if (defaultColorsArray.length > i) {
+                String hexColor = defaultColorsArray[i].trim();
+                if (!hexColor.contains("#")) {
+                    hexColor = "#" + hexColor;
+                }
+                defaultColor = Color.parseColor(hexColor);
+            }
+
+            Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f,
+                    Color.TRANSPARENT, defaultColor);
             addSwatch(swatch);
+
         }
 
         for (String dilution : dilutionsArray) {

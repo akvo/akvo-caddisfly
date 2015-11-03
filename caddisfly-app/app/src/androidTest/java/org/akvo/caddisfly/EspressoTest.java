@@ -60,6 +60,7 @@ import org.hamcrest.TypeSafeMatcher;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.DecimalFormatSymbols;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -148,7 +149,7 @@ public class EspressoTest
         changeLanguage(mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, true, 12));
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{},new String[]{}, true, 12));
 
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
@@ -256,20 +257,6 @@ public class EspressoTest
         takeScreenshot();
 
         onView(withId(android.R.id.button2)).perform(click());
-
-//        if (!NetworkUtil.checkInternetConnection(getActivity(), false)) {
-//            onView(withText(R.string.updateCheck)).perform(click());
-//
-//            onView(withText(R.string.noInternetConnection)).check(matches(isDisplayed()));
-//            onView(withText(R.string.enableInternet)).check(matches(isDisplayed()));
-//            mDevice.waitForWindowUpdate("", 1000);
-//
-//            //Enable Internet Dialog
-//            takeScreenshot();
-//
-//            Espresso.pressBack();
-//
-//        }
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -886,8 +873,11 @@ public class EspressoTest
 
         onView(withId(R.id.editExpiryDate)).perform(click());
 
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);
         onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
-                .perform(PickerActions.setDate(2015, 8, 25));
+                .perform(PickerActions.setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+                        date.get(Calendar.DATE)));
 
         onView(withId(android.R.id.button1)).perform(click());
 
@@ -899,7 +889,7 @@ public class EspressoTest
         onView(withText(R.string.save)).perform(click());
 
         onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
-                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(isDisplayed()));
+                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 

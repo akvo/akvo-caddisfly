@@ -44,10 +44,10 @@ public class ColorUtilTest extends TestCase {
     }
 
     public void testAutoGenerateColors() throws Exception {
-        TestInfo testInfo = new TestInfo(namesHashTable, item.getString("code").toUpperCase(), item.getString("unit"), type, !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"), rangesArray, dilutionsArray, isDiagnostic, monthsValid);
+        TestInfo testInfo = new TestInfo();
 
         for (int i = 0; i < 5; i++) {
-            Swatch swatch = new Swatch(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT);
+            Swatch swatch = new Swatch(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT, Color.TRANSPARENT);
             testInfo.addSwatch(swatch);
         }
 

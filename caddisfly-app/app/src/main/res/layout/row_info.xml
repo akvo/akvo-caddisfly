@@ -129,7 +129,7 @@
     <ListView
         android:id="@+id/listResults"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
         android:clickable="false"
         android:gravity="center"
         android:horizontalSpacing="10dp"

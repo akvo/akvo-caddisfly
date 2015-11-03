@@ -1,3 +1,10 @@
+v0.93 beta
+----------
+1. Added default colors for swatches in json config
+2. Validate calibration against default colors
+3. Redirect to Play store if update available
+4. Diagnostic: display color distance values for failed color matches
+
 v0.92 beta
 ----------
 1. UX Change: Expiry date must be entered before calibration
@@ -6,6 +13,7 @@ v0.92 beta
 4. Settings: Theme option to experiment with different UI colors
 5. Fix screen flash when camera alignment preview is started
 6. Auto app update feature if not installed from Play store
+7. Diagnostic: Added user mode settings group
 
 v0.91 beta
 ----------

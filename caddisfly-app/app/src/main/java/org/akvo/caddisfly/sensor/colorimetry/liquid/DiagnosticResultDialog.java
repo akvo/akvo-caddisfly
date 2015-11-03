@@ -215,7 +215,7 @@ public class DiagnosticResultDialog extends DialogFragment {
         }
 
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         public Object getItem(int position) {
@@ -235,12 +235,15 @@ public class DiagnosticResultDialog extends DialogFragment {
             int calibrationSteps = 2;
             switch (position) {
                 case 0:
-                    calibrationSteps = 2;
+                    calibrationSteps = 1;
                     break;
                 case 1:
-                    calibrationSteps = 3;
+                    calibrationSteps = 2;
                     break;
                 case 2:
+                    calibrationSteps = 3;
+                    break;
+                case 3:
                     calibrationSteps = 5;
                     break;
             }
@@ -251,16 +254,28 @@ public class DiagnosticResultDialog extends DialogFragment {
             TextView textResult = null;
 
             for (ResultDetail resultDetail : mResults) {
-                if (resultDetail.getResult() > -1 && resultDetail.getCalibrationSteps() == calibrationSteps) {
+                if (resultDetail.getCalibrationSteps() == calibrationSteps) {
 
                     switch (resultDetail.getColorModel()) {
                         case LAB:
                             textResult = (TextView) rowView.findViewById(R.id.textLabResult);
-                            textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                            if (resultDetail.getResult() > -1) {
+                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                            } else {
+                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
+                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
+                                textResult.setTextSize(14);
+                            }
                             break;
                         case RGB:
                             textResult = (TextView) rowView.findViewById(R.id.textRgbResult);
-                            textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                            if (resultDetail.getResult() > -1) {
+                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                            } else {
+                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
+                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
+                                textResult.setTextSize(14);
+                            }
                             break;
                     }
 

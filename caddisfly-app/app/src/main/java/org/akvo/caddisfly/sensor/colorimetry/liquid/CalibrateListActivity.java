@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -75,7 +76,6 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private final int REQUEST_CALIBRATE = 100;
-    SaveCalibrationDialogFragment saveCalibrationDialogFragment;
     private FloatingActionButton fabEditCalibration;
     private TextView textSubtitle;
     private TextView textSubtitle1;
@@ -152,7 +152,7 @@ public class CalibrateListActivity extends BaseActivity
 
     private void showEditCalibrationDetailsDialog() {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
+        SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
@@ -175,8 +175,7 @@ public class CalibrateListActivity extends BaseActivity
         long calibrationDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey);
 
         if (calibrationDate >= 0) {
-            textSubtitle1.setText(String.format("%s: %s", getString(R.string.calibrated),
-                    new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate))));
+            textSubtitle1.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate)));
         }
 
         Long expiryDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey);
@@ -233,7 +232,7 @@ public class CalibrateListActivity extends BaseActivity
 
         //Show edit calibration details dialog if required
         Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
-        if (expiryDate <= 0) {
+        if (expiryDate < Calendar.getInstance().getTimeInMillis()) {
             showEditCalibrationDetailsDialog();
             return;
         }
@@ -273,6 +272,7 @@ public class CalibrateListActivity extends BaseActivity
                             CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) == 1) {
                         PreferencesUtil.setLong(this, CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                                 R.string.calibrationDateKey, Calendar.getInstance().getTimeInMillis());
+                        loadDetails();
                     }
 
                     ((CalibrateListFragment) getSupportFragmentManager()
@@ -398,7 +398,7 @@ public class CalibrateListActivity extends BaseActivity
                                         for (String rgb : calibrationDetails) {
                                             String[] values = rgb.split("=");
                                             Swatch swatch = new Swatch(stringToDouble(values[0]),
-                                                    ColorUtil.getColorFromRgb(values[1]));
+                                                    ColorUtil.getColorFromRgb(values[1]), Color.TRANSPARENT);
                                             swatchList.add(swatch);
                                         }
 

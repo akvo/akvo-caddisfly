@@ -65,6 +65,11 @@
         <item name="colorControlHighlight">#ea013359</item>
     </style>
 
+    <style name="AppTheme.Button.BlueDark">
+        <item name="colorButtonNormal">#2f2c80</item>
+        <item name="colorControlHighlight">#252363</item>
+    </style>
+
     <style name="width_match_parent_max_tablet">
         <item name="android:layout_width">match_parent</item>
     </style>

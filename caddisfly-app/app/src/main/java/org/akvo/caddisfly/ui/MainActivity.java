@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -45,6 +44,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.NetUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,11 +55,11 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends BaseActivity {
 
-    //private static final long UPDATE_CHECK_INTERVAL = 1000 * 60 * 60 * 4; // 4 hours
-    private static final long UPDATE_CHECK_INTERVAL = 1000 * 60; // 4 hours
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private UpdateCheckReceiver receiver;
     private DownloadReceiver downloadReceiver;
@@ -105,29 +105,48 @@ public class MainActivity extends BaseActivity {
         PreferencesUtil.setLong(context, R.string.lastUpdateCheckKey, Calendar.getInstance().getTimeInMillis());
 
         if (file != null) {
-            String fileChecksum = getMD5Checksum(file.getPath());
-            String checksum = PreferencesUtil.getString(context, "updateChecksum", "");
-            if (fileChecksum == null || !fileChecksum.equals(checksum)) {
-                //delete the file if the checksum does not match
-                // noinspection ResultOfMethodCallIgnored
-                file.delete();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(R.string.update);
-                builder.setMessage(R.string.updateAvailable)
-                        .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton(R.string.notNow, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                builder.create().show();
+
+            int versionCode = 0;
+            try {
+                versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            int fileVersion;
+            Pattern pattern = Pattern.compile("(\\d+).apk");
+            Matcher matcher = pattern.matcher(file.getName());
+            if (matcher.find()) {
+                fileVersion = Integer.parseInt(matcher.group(1));
+                if (fileVersion > versionCode) {
+                    String fileChecksum = getMD5Checksum(file.getPath());
+                    String checksum = PreferencesUtil.getString(context, "updateChecksum", "");
+                    if (fileChecksum == null || !fileChecksum.equals(checksum)) {
+                        //delete the file if the checksum does not match
+                        // noinspection ResultOfMethodCallIgnored
+                        file.delete();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(R.string.update);
+                        builder.setMessage(R.string.updateAvailable)
+                                .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
+                                    }
+                                })
+                                .setNegativeButton(R.string.notNow, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        builder.create().show();
+                    }
+                } else {
+                    // noinspection ResultOfMethodCallIgnored
+                    file.delete();
+                }
             }
         }
     }
@@ -184,17 +203,12 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        if (AppConfig.IS_NON_MARKET_BUILD) {
+        long updateLastCheck = PreferencesUtil.getLong(this, R.string.lastUpdateCheckKey);
+        Calendar currentDate = Calendar.getInstance();
 
-            long updateLastCheck = PreferencesUtil.getLong(this, R.string.lastUpdateCheckKey);
+        if (AppConfig.USE_CUSTOM_AUTO_UPDATE) {
 
-            // last update check date
-            Calendar lastCheckDate = Calendar.getInstance();
-            lastCheckDate.setTimeInMillis(updateLastCheck);
-
-            Calendar currentDate = Calendar.getInstance();
-
-            if (currentDate.getTimeInMillis() - updateLastCheck > UPDATE_CHECK_INTERVAL) {
+            if (currentDate.getTimeInMillis() - updateLastCheck > AppConfig.UPDATE_CHECK_INTERVAL) {
 
                 downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
                 Cursor cursor = downloadManager.query(new DownloadManager.Query());
@@ -235,17 +249,64 @@ public class MainActivity extends BaseActivity {
                 }
 
                 if (!isDownloaded) {
-                    IntentFilter filter = new IntentFilter(UpdateCheckReceiver.PROCESS_RESPONSE);
-                    filter.addCategory(Intent.CATEGORY_DEFAULT);
-                    receiver = new UpdateCheckReceiver();
-                    registerReceiver(receiver, filter);
-
-                    //if (NetworkUtil.isNetworkAvailable(this)) {
-                    Intent msgIntent = new Intent(this, UpdateIntentService.class);
-                    startService(msgIntent);
-                    //}
+                    checkForUpdate();
                 }
             }
+        } else {
+
+            if (currentDate.getTimeInMillis() - updateLastCheck > AppConfig.UPDATE_CHECK_INTERVAL) {
+
+                int versionCode = 0;
+                try {
+                    versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                if (PreferencesUtil.getInt(getBaseContext(), "serverVersionCode", 0) > versionCode) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(R.string.update);
+
+                    String packageName = "";
+                    try {
+                        packageName = getPackageManager().getPackageInfo(getPackageName(), 0).packageName;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    final Uri marketUrl = Uri.parse("market://details?id=" + packageName);
+                    builder.setMessage(R.string.updateAvailable)
+                            .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    PreferencesUtil.setLong(getBaseContext(), R.string.lastUpdateCheckKey,
+                                            Calendar.getInstance().getTimeInMillis());
+
+                                    startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                                }
+                            })
+                            .setNegativeButton(R.string.notNow, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    PreferencesUtil.setLong(getBaseContext(), R.string.lastUpdateCheckKey,
+                                            Calendar.getInstance().getTimeInMillis());
+                                }
+                            });
+                    builder.create().show();
+                } else {
+                    checkForUpdate();
+                }
+            }
+        }
+    }
+
+    private void checkForUpdate() {
+        if (NetUtil.isNetworkAvailable(this)) {
+            IntentFilter filter = new IntentFilter(UpdateCheckReceiver.PROCESS_RESPONSE);
+            filter.addCategory(Intent.CATEGORY_DEFAULT);
+            receiver = new UpdateCheckReceiver();
+            registerReceiver(receiver, filter);
+
+            Intent msgIntent = new Intent(this, UpdateIntentService.class);
+            startService(msgIntent);
         }
     }
 
@@ -347,11 +408,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onDestroy() {
-        if (AppConfig.IS_NON_MARKET_BUILD) {
-            try {
-                unregisterReceiver(receiver);
-            } catch (Exception ignored) {
-            }
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception ignored) {
+        }
+        if (AppConfig.USE_CUSTOM_AUTO_UPDATE) {
             try {
                 unregisterReceiver(downloadReceiver);
             } catch (Exception ignored) {
@@ -399,49 +460,48 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            PreferencesUtil.setLong(context, R.string.lastUpdateCheckKey, Calendar.getInstance().getTimeInMillis());
-
-            String responseMessage = intent.getStringExtra(UpdateIntentService.RESPONSE_MESSAGE);
-            JSONObject responseObj;
             try {
-                responseObj = new JSONObject(responseMessage);
-                int serverVersion = responseObj.getInt("version");
-                int versionCode = 0;
+                JSONObject jsonMessage = new JSONObject(intent.getStringExtra(UpdateIntentService.RESPONSE_MESSAGE));
+                if (jsonMessage.has("version")) {
+                    int serverVersion = jsonMessage.getInt("version");
+                    PreferencesUtil.setInt(context, "serverVersionCode", serverVersion);
+                    PreferencesUtil.setLong(context, R.string.lastUpdateCheckKey, Calendar.getInstance().getTimeInMillis());
 
-                PackageInfo pInfo;
-                try {
-                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    versionCode = pInfo.versionCode;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
+                    if (AppConfig.USE_CUSTOM_AUTO_UPDATE) {
+                        int versionCode = 0;
+                        try {
+                            versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
 
-                if (serverVersion > versionCode) {
-                    final String location = responseObj.getString("fileName");
-                    String checksum = responseObj.getString("md5Checksum");
-                    PreferencesUtil.setString(context, "updateChecksum", checksum);
-                    //String versionName = responseObj.getString("versionName");
+                        if (serverVersion > versionCode) {
+                            final String location = jsonMessage.getString("fileName");
+                            String checksum = jsonMessage.getString("md5Checksum");
+                            PreferencesUtil.setString(context, "updateChecksum", checksum);
+                            //String versionName = jsonMessage.getString("versionName");
 
-                    downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                    Uri Download_Uri = Uri.parse(location);
-                    DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
-                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-                    request.setAllowedOverRoaming(false);
-                    request.setTitle(getString(R.string.appName));
-                    String fileName = location.substring(location.lastIndexOf('/') + 1);
-                    request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, fileName);
+                            downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                            Uri Download_Uri = Uri.parse(location);
+                            DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
+                            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+                            request.setAllowedOverRoaming(false);
+                            request.setTitle(getString(R.string.appName));
+                            String fileName = location.substring(location.lastIndexOf('/') + 1);
+                            request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, fileName);
 
-                    try {
-                        unregisterReceiver(downloadReceiver);
-                    } catch (Exception ignored) {
+                            try {
+                                unregisterReceiver(downloadReceiver);
+                            } catch (Exception ignored) {
+                            }
+
+                            IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+                            downloadReceiver = new DownloadReceiver();
+                            registerReceiver(downloadReceiver, filter);
+
+                            PreferencesUtil.setLong(context, "downloadReference", downloadManager.enqueue(request));
+                        }
                     }
-
-                    IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-                    downloadReceiver = new DownloadReceiver();
-                    registerReceiver(downloadReceiver, filter);
-
-                    PreferencesUtil.setLong(context, "downloadReference", downloadManager.enqueue(request));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

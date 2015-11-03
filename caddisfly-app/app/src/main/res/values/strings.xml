@@ -94,7 +94,7 @@
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
     <string name="highContamination">High Contamination</string>
-    <string name="highLevelsFound">%1$s contamination is very high</string>
+    <string name="highLevelsFound">%1$s content is very high</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--Dilution Selection Dialog-->
@@ -163,7 +163,6 @@
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="update">Update</string>
-    <string name="updateFailed">Update failed</string>
     <string name="deviceConnected">Device connected</string>
 
 </resources>

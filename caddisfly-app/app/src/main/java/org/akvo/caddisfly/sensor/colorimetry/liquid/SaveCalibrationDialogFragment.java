@@ -123,6 +123,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 calendar.get(Calendar.DAY_OF_MONTH));
 
         Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);
         date.set(Calendar.HOUR_OF_DAY, date.getMinimum(Calendar.HOUR_OF_DAY));
         date.set(Calendar.MINUTE, date.getMinimum(Calendar.MINUTE));
         date.set(Calendar.SECOND, date.getMinimum(Calendar.SECOND));

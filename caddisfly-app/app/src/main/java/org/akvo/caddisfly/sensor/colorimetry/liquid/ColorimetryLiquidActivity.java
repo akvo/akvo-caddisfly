@@ -38,6 +38,7 @@ import android.os.PowerManager;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -348,30 +349,38 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (AppPreferences.isDiagnosticMode()) {
             ArrayList<Swatch> swatches = new ArrayList<>();
 
+            //1 step analysis
+            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
+
+            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.LAB));
+
+            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.RGB));
+
+            swatches.clear();
             //add only the first and last swatch for a 2 step analysis
             swatches.add(testInfo.getSwatches().get(0));
             swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
 
-            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
+            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.LAB));
 
-            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
+            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             //add the middle swatch for a 3 step analysis
             swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
 
-            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.LAB));
+            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.LAB));
 
-            results.add(SwatchHelper.analyzeColor(photoColor, swatches, ColorUtil.ColorModel.RGB));
+            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             //use all the swatches for an all steps analysis
-            results.add(SwatchHelper.analyzeColor(photoColor,
+            results.add(SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
                     CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.RGB));
 
-            results.add(SwatchHelper.analyzeColor(photoColor,
+            results.add(SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
                     CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.LAB));
         }
 
-        results.add(0, SwatchHelper.analyzeColor(photoColor,
+        results.add(0, SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
                 CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL));
 
         Result result = new Result(bitmap, results);
@@ -592,6 +601,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (fragment != null) {
                                 ft.remove(fragment);
                             }
+
+                            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
+
                             mHighLevelsDialogFragment.setCancelable(false);
                             mHighLevelsDialogFragment.show(ft, "resultDialog");
 
@@ -605,6 +617,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (fragment != null) {
                                 ft.remove(fragment);
                             }
+
+                            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
+
                             mResultDialogFragment.setCancelable(false);
                             mResultDialogFragment.show(ft, "resultDialog");
                         }
@@ -710,6 +725,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
             if (fragment != null) {
                 ft.remove(fragment);
             }
+
+            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
+
             mHighLevelsDialogFragment.setCancelable(false);
             mHighLevelsDialogFragment.show(ft, "resultDialog");
 

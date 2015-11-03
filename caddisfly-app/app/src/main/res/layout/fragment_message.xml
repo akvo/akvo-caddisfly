@@ -20,7 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#eeba5f16"
+    android:background="@color/orange_dark"
     android:minWidth="320dp"
     android:orientation="vertical"
     tools:ignore="Overdraw">
@@ -29,14 +29,13 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:textColor="#fff"
-        android:textSize="23sp"
+        android:textSize="21sp"
         android:textStyle="bold"
-        tools:text="Fluoride" />
-
+        tools:text="@string/highContamination" />
 
     <TextView
         android:id="@+id/textDilution"
@@ -56,8 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_marginStart="3dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="@string/highLevelsFound" />
 
             <TextView
@@ -84,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="@string/tryWithDilutedSample" />
 
         </LinearLayout>
@@ -94,7 +93,7 @@
             style="@style/Button"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/ok"
             android:textAllCaps="true"
             android:theme="?primaryButtonStyle" />

@@ -86,9 +86,8 @@ public class DiagnosticDetailsFragment extends DialogFragment {
                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         if (currentTestInfo != null) {
-            ResultDetail resultDetail = SwatchHelper.analyzeColor(photoColor,
-                    currentTestInfo.getSwatches(),
-                    ColorUtil.ColorModel.RGB);
+            ResultDetail resultDetail = SwatchHelper.analyzeColor(currentTestInfo.getSwatches().size(),
+                    photoColor, currentTestInfo.getSwatches(), ColorUtil.ColorModel.RGB);
 
             double result = resultDetail.getResult();
             int color = resultDetail.getColor();

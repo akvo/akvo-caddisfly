@@ -59,6 +59,7 @@ public final class FileUtil {
      * @param internal true for app specific resources, false otherwise
      * @return The root directory for this kind of resources
      */
+    @SuppressWarnings("SameParameterValue")
     public static String getFilesStorageDir(Context context, boolean internal) {
         if (internal) {
             String state = Environment.getExternalStorageState();

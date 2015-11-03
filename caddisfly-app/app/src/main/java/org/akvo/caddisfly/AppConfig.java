@@ -22,9 +22,9 @@ package org.akvo.caddisfly;
 public class AppConfig {
 
     /**
-     * Set if this build is distributed as an apk or via store
+     * Set auto update if this build is not distributed via Play store
      */
-    public static final boolean IS_NON_MARKET_BUILD = false;
+    public static final boolean USE_CUSTOM_AUTO_UPDATE = false;
 
     /**
      * To launch FLOW app
@@ -46,5 +46,10 @@ public class AppConfig {
      */
     public static final String UPDATE_CHECK_URL
             = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
+
+    /**
+     * Update check interval
+     */
+    public static final long UPDATE_CHECK_INTERVAL = 21600000; // 6 hours
 
 }

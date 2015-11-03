@@ -284,11 +284,11 @@ public final class ColorUtil {
                                 colorToLab(endColor), steps, j));
                 }
 
-                list.add(new Swatch(startValue + (j * increment), color));
+                list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
             }
         }
         list.add(new Swatch(swatches.get(swatches.size() - 1).getValue(),
-                swatches.get(swatches.size() - 1).getColor()));
+                swatches.get(swatches.size() - 1).getColor(), Color.TRANSPARENT));
 
         return list;
     }

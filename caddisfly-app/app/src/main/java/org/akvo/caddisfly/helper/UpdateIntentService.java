@@ -31,7 +31,6 @@ import java.net.URLConnection;
 
 public class UpdateIntentService extends IntentService {
 
-    public static final String REQUEST_STRING = "myRequest";
     public static final String RESPONSE_MESSAGE = "myResponseMessage";
     private static final int CONNECT_TIMEOUT = 3000;
     private static final int READ_TIMEOUT = 30000;

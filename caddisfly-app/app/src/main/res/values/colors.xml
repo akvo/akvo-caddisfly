@@ -21,12 +21,8 @@
     <color name="window_background">#f7fdfd</color>
 
     //Akvo Orange Blue
-    <color name="primary_orange">#2C2A74</color>
-    <color name="primary_dark_orange">#252363</color>
     <color name="primary_accent_orange">#388E3C</color>
-    <color name="primary_background_orange">#DE8929</color>
     <color name="text_tertiary_orange">#6c4314</color>
-    <color name="window_background_orange">#f7fdfd</color>
 
     //Flow
     <color name="window_background_flow">#fffef2e7</color>
@@ -46,7 +42,9 @@
     <color name="orange_dark">#ed6801</color>
 
     <color name="akvo_orange">#DE8929</color>
+    <color name="akvo_orange_dark">#c77b25</color>
     <color name="akvo_dark_blue">#2C2A74</color>
+    <color name="akvo_dark_blue_dark">#252363</color>
 
     <color name="orange_main">#e17e26</color>
 

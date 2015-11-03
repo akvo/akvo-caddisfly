@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.helper;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
@@ -49,7 +50,7 @@ public final class SwatchHelper {
      * @param photoColor The color to compare
      * @param swatches   The range of colors to compare against
      */
-    public static ResultDetail analyzeColor(ColorInfo photoColor, ArrayList<Swatch> swatches,
+    public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, ArrayList<Swatch> swatches,
                                             ColorUtil.ColorModel colorModel) {
 
         //Find the color that matches the photoColor from the calibrated colorRange
@@ -72,7 +73,7 @@ public final class SwatchHelper {
             resultDetail.setResult(colorCompareInfo.getResult());
         }
         resultDetail.setColorModel(colorModel);
-        resultDetail.setCalibrationSteps(swatches.size());
+        resultDetail.setCalibrationSteps(steps);
         resultDetail.setMatchedColor(colorCompareInfo.getMatchedColor());
         resultDetail.setDistance(colorCompareInfo.getDistance());
 
@@ -191,6 +192,12 @@ public final class SwatchHelper {
             for (Swatch swatch2 : swatches) {
                 if (swatch1 != swatch2 && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
+                    return false;
+                }
+            }
+
+            if (swatch1.getDefaultColor() != Color.TRANSPARENT) {
+                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > 150) {
                     return false;
                 }
             }
@@ -325,4 +332,21 @@ public final class SwatchHelper {
         return bd.doubleValue();
     }
 
+    public static void generateSwatches(ArrayList<Swatch> swatches, ArrayList<Swatch> testSwatches) {
+        //int[] greenArray = new int[]{0, 11, 16, 40, 26};
+        //int[] blueArray = new int[]{0, -61, -81, -40, -19};
+
+        int[] greenArray = new int[]{0, 13, 8, 3, 19};
+        int[] blueArray = new int[]{0, -57, -40, -34, -21};
+
+        int green = Color.green(testSwatches.get(0).getColor());
+        int blue = Color.blue(testSwatches.get(0).getColor());
+        for (int i = 0; i < testSwatches.size(); i++) {
+            swatches.add(new Swatch(testSwatches.get(i).getValue(),
+                    Color.rgb(255, Math.max(0, green += greenArray[i]), Math.max(0, blue += blueArray[i])),
+                    Color.TRANSPARENT));
+
+            Log.d("Swatches", swatches.get(i).getValue() + ":" + ColorUtil.getColorRgbString(swatches.get(i).getColor()));
+        }
+    }
 }

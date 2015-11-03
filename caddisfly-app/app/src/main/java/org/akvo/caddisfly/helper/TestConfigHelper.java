@@ -140,6 +140,13 @@ public final class TestConfigHelper {
                         monthsValid = item.getInt("monthsValid");
                     }
 
+                    String[] defaultColorsArray = new String[0];
+                    if (item.has("defaultColors")) {
+                        String defaultColors = item.getString("defaultColors");
+                        defaultColorsArray = defaultColors.split(",");
+                    }
+
+
                     //Create TestInfo object
                     tests.add(new TestInfo(
                             namesHashTable,
@@ -148,7 +155,7 @@ public final class TestConfigHelper {
                             type,
                             //if calibrate not specified then default to true otherwise use specified value
                             !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
-                            rangesArray,
+                            rangesArray, defaultColorsArray,
                             dilutionsArray, isDiagnostic, monthsValid));
 
                 } catch (JSONException e) {

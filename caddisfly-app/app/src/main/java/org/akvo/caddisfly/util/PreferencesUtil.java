@@ -202,6 +202,7 @@ public class PreferencesUtil {
         return sharedPreferences.getString(keyId, defaultValue);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, String code, @StringRes int keyId, String defaultValue) {
         String key = String.format("%s_%s", code, getKey(context, keyId));
         return getString(context, key, defaultValue);
@@ -221,6 +222,7 @@ public class PreferencesUtil {
         editor.apply();
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void setString(Context context, String code, @StringRes int keyId, String value) {
         String key = String.format("%s_%s", code, getKey(context, keyId));
         setString(context, key, value);
