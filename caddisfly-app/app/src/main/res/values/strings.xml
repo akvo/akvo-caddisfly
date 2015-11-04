@@ -134,8 +134,8 @@
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
     <!--Update-->
-    <string name="updateAvailable">A new version of the Akvo Caddisfly is available. Do you want to update now?</string>
-    <string name="notNow">Not now</string>
+    <string name="updateAvailable">A new version of Akvo Caddisfly is available. Do you want to update now?</string>
+    <string name="remindLater">Later</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
@@ -157,7 +157,6 @@
     <!--Diagnostic Mode: Settings-->
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
-    <string name="testSensor">EC Sensor</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>

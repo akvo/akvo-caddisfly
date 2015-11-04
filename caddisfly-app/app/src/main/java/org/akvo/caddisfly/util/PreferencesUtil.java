@@ -140,7 +140,6 @@ public class PreferencesUtil {
         return sharedPreferences.getLong(key, -1L);
     }
 
-
     public static void setLong(Context context, String code, @StringRes int keyId, long value) {
         String key = String.format("%s_%s", code, getKey(context, keyId));
         setLong(context, key, value);

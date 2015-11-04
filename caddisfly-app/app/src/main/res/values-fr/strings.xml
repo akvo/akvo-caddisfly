@@ -109,7 +109,6 @@
     <!--Diagnostic Mode: Settings-->
     <string name="diagnostics">Diagnostiques</string>
     <string name="cameraPreview">Caméra colorimétrique</string>
-    <string name="testSensor">Capteur d\'EC</string>
     <string name="debuggingOn">Afficher les messages de débogage</string>
     <string name="noSound">Eteindre le son</string>
     <string name="fileSaved">File saved</string>

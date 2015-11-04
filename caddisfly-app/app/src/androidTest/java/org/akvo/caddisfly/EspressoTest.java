@@ -455,6 +455,56 @@ public class EspressoTest
 
     }
 
+    public void testOutOfSequence() {
+
+        saveOutOfSequence();
+
+        goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        enterDiagnosticMode();
+
+        goToMainScreen();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        sleep(4000);
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menuLoad)).perform(click());
+
+        sleep(2000);
+
+        onView(withText("OutOfSequence")).perform(click());
+
+        sleep(2000);
+
+        onView(withText(String.format("%s. %s", getActivity().getString(R.string.calibrationIsInvalid),
+                getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.menuLoad)).perform(click());
+
+        sleep(2000);
+
+        onView(withText("TestValid")).perform(click());
+
+        sleep(2000);
+
+        onView(withText(String.format("%s. %s", getActivity().getString(R.string.calibrationIsInvalid),
+                getActivity().getString(R.string.tryRecalibrating)))).check(matches(not(isDisplayed())));
+
+        sleep(2000);
+
+        leaveDiagnosticMode();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+    }
+
     public void testEC() {
 
         goToMainScreen();
@@ -889,7 +939,7 @@ public class EspressoTest
         onView(withText(R.string.save)).perform(click());
 
         onView(withText((String.format("%s. %s", getActivity().getString(R.string.expired),
-                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(not(isDisplayed())));
+                getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(isDisplayed()));
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -1347,13 +1397,11 @@ public class EspressoTest
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
         FileUtil.saveToFile(path,
-                "TestValid", "0.0=255  88  177\n"
-                        + "0.5=255  110  15\n"
-                        + "1.0=255  139  137\n"
-                        + "1.5=253  174  74\n"
-                        + "2.0=244  180  86\n"
-                        + "2.5=236  172  81\n"
-                        + "3.0=254  169  61\n");
+                "TestValid", "0.0=255  38  186\n"
+                        + "0.5=255  51  129\n"
+                        + "1.0=255  59  89\n"
+                        + "1.5=255  62  55\n"
+                        + "2.0=255  81  34\n");
     }
 
     private void saveInvalidCalibration() {
@@ -1368,6 +1416,18 @@ public class EspressoTest
                         + "2.0=253  174  76\n"
                         + "2.5=236  172  81\n"
                         + "3.0=254  169  61\n");
+    }
+
+    private void saveOutOfSequence() {
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
+                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+
+        FileUtil.saveToFile(path,
+                "OutOfSequence", "0.0=255  38  186\n"
+                        + "0.5=255  51  129\n"
+                        + "1.0=255  62  55\n"
+                        + "1.5=255  59  89\n"
+                        + "2.0=255  81  34\n");
     }
 
     private void saveHighLevelCalibration() {

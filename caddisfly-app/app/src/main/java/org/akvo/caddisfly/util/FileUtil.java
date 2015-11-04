@@ -25,11 +25,13 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 /**
@@ -85,15 +87,22 @@ public final class FileUtil {
         File file = new File(folder, name);
 
         try {
-            if (file.createNewFile()) {
-                FileWriter filewriter = new FileWriter(file);
-                BufferedWriter out = new BufferedWriter(filewriter);
-
-                out.write(data);
-
-                out.close();
-                filewriter.close();
+            if (!file.exists()) {
+                try {
+                    //noinspection ResultOfMethodCallIgnored
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            FileWriter filewriter = new FileWriter(file);
+            BufferedWriter out = new BufferedWriter(filewriter);
+
+            out.write(data);
+
+            out.close();
+            filewriter.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,5 +191,40 @@ public final class FileUtil {
             return null;
         }
         return text.toString();
+    }
+
+
+    //http://stackoverflow.com/questions/13152736/how-to-generate-an-md5-checksum-for-a-file-in-android
+    public static String getMD5Checksum(String filePath) {
+        String returnVal = "";
+        InputStream input = null;
+        try {
+            input = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            MessageDigest md5Hash = MessageDigest.getInstance("MD5");
+            int numRead = 0;
+            while (numRead != -1) {
+                numRead = input.read(buffer);
+                if (numRead > 0) {
+                    md5Hash.update(buffer, 0, numRead);
+                }
+            }
+            input.close();
+
+            byte[] md5Bytes = md5Hash.digest();
+            for (byte md5Byte : md5Bytes) {
+                returnVal += Integer.toString((md5Byte & 0xff) + 0x100, 16).substring(1);
+            }
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return returnVal.toUpperCase();
     }
 }

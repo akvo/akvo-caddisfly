@@ -25,6 +25,7 @@ import android.graphics.Point;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -155,5 +156,26 @@ public final class ApiUtil {
         return true;
     }
 
+    public static int getAppVersionCode(Context context) {
+        int versionCode = 0;
+        try {
+            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
 
+    public static boolean isStoreVersion(Context context) {
+        boolean result = false;
+
+        try {
+            String installer = context.getPackageManager()
+                    .getInstallerPackageName(context.getPackageName());
+            result = !TextUtils.isEmpty(installer);
+        } catch (Throwable ignored) {
+        }
+
+        return result;
+    }
 }

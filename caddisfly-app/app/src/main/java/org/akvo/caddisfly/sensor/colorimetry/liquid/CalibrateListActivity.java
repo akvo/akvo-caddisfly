@@ -51,6 +51,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -104,6 +105,7 @@ public class CalibrateListActivity extends BaseActivity
                                 getSupportFragmentManager()
                                         .findFragmentById(R.id.fragmentCalibrateList);
                         fragment.setAdapter();
+                        loadDetails();
                         return true;
                     }
                 };
@@ -390,7 +392,35 @@ public class CalibrateListActivity extends BaseActivity
                                     if (calibrationDetails != null) {
 
                                         for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
-                                            if (!calibrationDetails.get(i).contains("=")) {
+                                            String line = calibrationDetails.get(i);
+                                            if (!line.contains("=")) {
+                                                String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                                                if (line.contains("Calibrated:")) {
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                                                            "yyyy-MM-dd HH:mm");
+                                                    if (date != null) {
+                                                        calendar.setTime(date);
+                                                        PreferencesUtil.setLong(context, testCode,
+                                                                R.string.calibrationDateKey, calendar.getTimeInMillis());
+                                                    }
+                                                }
+                                                if (line.contains("ReagentExpiry:")) {
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                                                            "yyyy-MM-dd");
+                                                    if (date != null) {
+                                                        calendar.setTime(date);
+                                                        PreferencesUtil.setLong(context, testCode,
+                                                                R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
+                                                    }
+                                                }
+
+                                                if (line.contains("ReagentBatch:")) {
+                                                    String batch = line.substring(line.indexOf(":") + 1).trim();
+                                                    PreferencesUtil.setString(context, testCode,
+                                                            R.string.batchNumberKey, batch);
+                                                }
                                                 calibrationDetails.remove(i);
                                             }
                                         }
@@ -433,7 +463,6 @@ public class CalibrateListActivity extends BaseActivity
                                                     dialog.dismiss();
                                                 }
                                             }, null, null);
-
                                 }
                             }
                         }

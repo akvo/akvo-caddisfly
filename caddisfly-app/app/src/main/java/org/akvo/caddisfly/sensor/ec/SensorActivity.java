@@ -251,11 +251,13 @@ public class SensorActivity extends BaseActivity {
         buttonAcceptResult.setVisibility(View.GONE);
         textSubtitle.setText(R.string.deviceConnectSensor);
 
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                finish();
-            }
-        }, 4000);
+        if (!mIsInternal) {
+            (new Handler()).postDelayed(new Runnable() {
+                public void run() {
+                    finish();
+                }
+            }, 4000);
+        }
     }
 
     private void displayResult(String value) {

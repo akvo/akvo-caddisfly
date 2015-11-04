@@ -197,7 +197,7 @@ public final class SwatchHelper {
             }
 
             if (swatch1.getDefaultColor() != Color.TRANSPARENT) {
-                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > 150) {
+                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > 130) {
                     return false;
                 }
             }

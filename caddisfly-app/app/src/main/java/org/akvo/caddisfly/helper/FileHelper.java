@@ -32,6 +32,7 @@ public class FileHelper {
     // Folders
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
+    private static final String DIR_DOWNLOAD = "Download"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
 
     /**
@@ -64,6 +65,9 @@ public class FileHelper {
                 break;
             case CONFIG:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CONFIG;
+                break;
+            case DOWNLOAD:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true) + File.separator + DIR_DOWNLOAD;
                 break;
             case IMAGE:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
@@ -106,6 +110,6 @@ public class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, IMAGE, CONFIG
+        CALIBRATION, CONFIG, DOWNLOAD, IMAGE
     }
 }

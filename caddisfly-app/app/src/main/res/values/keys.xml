@@ -31,4 +31,5 @@
     <string name="themeChangedKey" translateable="false">themeChanged</string>
     <string name="saveImagesKey" translateable="false">saveImages</string>
     <string name="lastUpdateCheckKey" translateable="false">lastUpdateCheck</string>
+    <string name="updateInfoDateKey">updateInfoDate</string>
 </resources>

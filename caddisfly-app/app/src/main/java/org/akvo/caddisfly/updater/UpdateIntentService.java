@@ -14,13 +14,12 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.helper;
+package org.akvo.caddisfly.updater;
 
 import android.app.IntentService;
 import android.content.Intent;
 
 import org.akvo.caddisfly.AppConfig;
-import org.akvo.caddisfly.ui.MainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -63,7 +62,7 @@ public class UpdateIntentService extends IntentService {
         }
 
         Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction(MainActivity.UpdateCheckReceiver.PROCESS_RESPONSE);
+        broadcastIntent.setAction(UpdateCheckReceiver.PROCESS_RESPONSE);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(RESPONSE_MESSAGE, responseMessage);
         sendBroadcast(broadcastIntent);

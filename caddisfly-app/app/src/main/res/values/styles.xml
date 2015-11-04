@@ -51,8 +51,18 @@
     </style>
 
     <style name="AppTheme.Button.Orange">
-        <item name="colorButtonNormal">#e7881d</item>
-        <item name="colorControlHighlight">#c97619</item>
+        <item name="colorButtonNormal">@color/orange_button</item>
+        <item name="colorControlHighlight">@color/orange_button_dark</item>
+    </style>
+
+    <style name="AppTheme.Button.AkvoOrange">
+        <item name="colorButtonNormal">@color/akvo_orange_button</item>
+        <item name="colorControlHighlight">@color/akvo_orange_button_dark</item>
+    </style>
+
+    <style name="AppTheme.Button.FlowOrange">
+        <item name="colorButtonNormal">@color/flow_orange_button</item>
+        <item name="colorControlHighlight">@color/flow_orange_button_dark</item>
     </style>
 
     <style name="AppTheme.Button.Cyan">
@@ -66,7 +76,7 @@
     </style>
 
     <style name="AppTheme.Button.BlueDark">
-        <item name="colorButtonNormal">#2f2c80</item>
+        <item name="colorButtonNormal">#322f89</item>
         <item name="colorControlHighlight">#252363</item>
     </style>
 
@@ -107,5 +117,9 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
+
+    <style name="AppTheme.Orange.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Orange.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

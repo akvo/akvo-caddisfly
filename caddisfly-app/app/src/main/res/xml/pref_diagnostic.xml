@@ -24,9 +24,6 @@
         <Preference
             android:key="startTest"
             android:title="Colorimetric Test" />
-        <Preference
-            android:key="ecSensor"
-            android:title="@string/testSensor" />
         <CheckBoxPreference
             android:key="@string/showDebugMessagesKey"
             android:title="@string/debuggingOn" />

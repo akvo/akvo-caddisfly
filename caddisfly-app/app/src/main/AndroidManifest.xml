@@ -47,7 +47,7 @@
         android:label="@string/appName"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Orange"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/appName"
@@ -110,7 +110,6 @@
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
@@ -125,11 +124,24 @@
                 android:resource="@xml/device_filter" />
         </activity>
 
+        <activity
+            android:name=".updater.UpdateActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Translucent" />
+
         <service
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />
+        <service android:name=".updater.UpdateIntentService" />
 
-        <service android:name=".helper.UpdateIntentService" />
+        <!--<receiver-->
+        <!--android:name=".helper.DownloadReceiver"-->
+        <!--android:enabled="true"-->
+        <!--android:exported="true">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
 
     </application>
 
