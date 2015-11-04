@@ -279,7 +279,7 @@
               "rgb":[133, 101, 130]
             }
           ],
-          "timeLapse":20,
+          "timeLapse":0,
           "unit": "ppm"
         },
         {
@@ -312,7 +312,7 @@
               "rgb":[133, 101, 130]
             }
           ],
-          "timeLapse":25,
+          "timeLapse":0,
           "unit": ""
         }
       ],

@@ -35,6 +35,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ResultActivity extends AppCompatActivity {
@@ -44,6 +45,16 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Mat> mats;
     private Mat strip;
     private LinearLayout layout;
+    private Scalar[] testColorsList = new Scalar[]
+            {
+                    new Scalar(255, 232.21, 168.64), //light yellow
+                    new Scalar(208.83, 218.83, 150.51), //light green
+                    new Scalar(255, 168.51, 161.92), //medium pink
+                    new Scalar(200.30, 169.03, 181.46), //lilac
+                    new Scalar(239.90, 117.48, 142.37) //dark pink
+
+            };
+    private int testCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +74,7 @@ public class ResultActivity extends AppCompatActivity {
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
-            for(int i=0;i<patches.size();i++) {
+            for (int i = 0; i < patches.size(); i++) {
 
                 //the name of the patch
                 String desc = patches.get(i).getDesc();
@@ -77,7 +88,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 //if the height of the strip is smaller than 1, it means that in DetectStripActivity there was
                 //no data for this patch (there a Mat.zeros object is added to the list of mats)
-                if(strip.height() > 1) {
+                if (strip.height() > 1) {
                     double ratioW = strip.width() / brand.getStripLenght();
 
                     //extend the strip with a border, so we can draw a circle around each patch that is
@@ -96,38 +107,39 @@ public class ResultActivity extends AppCompatActivity {
                     JSONArray colours = patches.get(i).getColours();
                     String unit = patches.get(i).getUnit();
 
+                    //testing
+                    System.out.println("***Start ppm calculation: " + i);
+
                     new BitmapTask(desc, centerPatch, colours, unit).execute(mat);
-                }
-                else
-                {
+                } else {
                     new BitmapTask(desc, null, null, null).execute(strip);
                 }
 
-                Button save = (Button) findViewById(R.id.activity_resultButtonSave);
-                Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
-
-                //TODO onclicklistener for save button
-                save.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                redo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        FileStorage.deleteAll();
-                        Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
-                        intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intentRedo);
-                        ResultActivity.this.finish();
-                    }
-                });
-
             }
         }
+
+        Button save = (Button) findViewById(R.id.activity_resultButtonSave);
+        Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
+
+        //TODO onclicklistener for save button
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        redo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FileStorage.deleteAll();
+                Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
+                intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentRedo);
+                ResultActivity.this.finish();
+            }
+        });
     }
 
     private Bitmap makeBitmap(Mat mat)
@@ -238,7 +250,7 @@ public class ResultActivity extends AppCompatActivity {
         double[] pointA = null;
         double[] pointB = null;
         double[] pointC = null;
-        double labda = 0;
+        double labda;
         double minLabdaAbs = Double.MAX_VALUE;
         JSONArray rgb;
         double distance;
@@ -248,8 +260,32 @@ public class ResultActivity extends AppCompatActivity {
         if (colorDetected.getRgb() != null) {
 
             pointC = colorDetected.getRgb().val;
-            //System.out.println("***RGB C : " + pointC[0] + ", " + pointC[1] + ", " + pointC[2]);
 
+            //start test
+            Locale l = Locale.US;
+            System.out.print("***test color RGB,");
+            System.out.print(testCount + "," + String.format(l, "%.2f", testColorsList[testCount].val[0]) +
+                    ", " + String.format(l, "%.2f", testColorsList[testCount].val[1]) + ", " +
+                    String.format(l, "%.2f", testColorsList[testCount].val[2]) + ",");
+
+            System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
+                    + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
+
+
+            try {
+
+                pointA = testColorsList[testCount].val;
+
+                distance = getDistanceBetween2Points3D(pointA, pointC);
+                System.out.print("," + distance);
+                System.out.println(",***");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            testCount ++;
+            //end test
         }
 
         for (int j = 0; j < colours.length() - 1; j++) {
@@ -292,7 +328,8 @@ public class ResultActivity extends AppCompatActivity {
                     //add value for labda to list for later use: extrapolate ppm
                     labdaList.add(new Pair(j, labda));
 
-                    //System.out.println("***RGB*** color patch no: " + j + " distance: " + distance + "  labda: " + labda + " ppm: " + ppm);
+//                    System.out.println("***RGB*** color patch no: " + j + " distance: " + distance +
+//                            "  labda: " + labda + " ppm: " + ppm);
 
                 }
             }
@@ -318,7 +355,7 @@ public class ResultActivity extends AppCompatActivity {
                                     labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
                         }
 
-                       // System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+                        // System.out.println("***SETTING VALUE FOR PPM: " + ppm);
 
                     }
                 }
@@ -393,6 +430,19 @@ public class ResultActivity extends AppCompatActivity {
         double pzC1 = pzA * (1-labda) + labda*pzB;
 
         return Math.sqrt(Math.pow(pxC1 - pxC, 2) + Math.pow(pyC1 - pyC, 2) + Math.pow(pzC1 - pzC, 2));
+
+    }
+
+    private double getDistanceBetween2Points3D(double[] pointA, double[] pointB)
+    {
+        double pxA = pointA[0];
+        double pyA = pointA[1];
+        double pzA = pointA[2];
+        double pxB = pointB[0];
+        double pyB = pointB[1];
+        double pzB = pointB[2];
+
+        return Math.sqrt(Math.pow(pxB - pxA, 2) + Math.pow(pyB - pyA, 2) + Math.pow(pzB - pzA, 2));
 
     }
 

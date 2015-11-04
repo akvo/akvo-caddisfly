@@ -45,23 +45,27 @@ public class OpenCVUtils {
         }
         // get the rotation matrix
         rot_mat = Imgproc.getRotationMatrix2D(rotatedRect.center, angle, 1.0);
+
         // perform the affine transformation
         Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
+
         // crop the resulting image
         if(!warp_rotate_dst.empty()) {
             Point centerBrand = new Point(
                     rotatedRect.center.x + (rotatedRect.size.width - brandSize.width)/2,
-                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/2);
+                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/4);
+
             System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
                     + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
-                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/2);
+                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/4);
+
             Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
         }
         return cropped;
     }
 
     public static List<Point> getOrderedPoints(double[] topleft, double[] topright,
-                                                    double[] bottomleft, double[] bottomright)
+                                               double[] bottomleft, double[] bottomright)
     {
         List<Point> srcList = new ArrayList<Point>();
 
@@ -81,29 +85,31 @@ public class OpenCVUtils {
         return getOrderedPoints(srcList);
     }
 
-     /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-        * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
-        * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
-        * Because top-left always has the lowest sum of x and y
-        * and bottom-right always the highest, they always come first and last.
-        */
+    /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
+       * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
+       * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
+       * Because top-left always has the lowest sum of x and y
+       * and bottom-right always the highest, they always come first and last.
+       */
     public static List<Point> getOrderedPoints(List<Point> srcList)
     {
         Collections.sort(srcList, new PointComparator());
 
-        System.out.println("***after sort:");
-        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
-        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
+//        System.out.println("***after sort:");
+//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
+//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
+//        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
+//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
 
         return srcList;
     }
 
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
-            double[] bottomleft, double[] bottomright, Mat bgr)
+                                           double[] bottomleft, double[] bottomright, Mat bgr)
+            throws Exception
     {
+
 
         List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
 
@@ -145,8 +151,6 @@ public class OpenCVUtils {
 
         }
 
-
-
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
         MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
@@ -159,6 +163,16 @@ public class OpenCVUtils {
 
         //do the warp
         Imgproc.warpPerspective(bgr, warp_dst,warp_mat, warp_dst.size());
+
+        //dst width and height taken from the position of the finder patterns
+        double dstWidth = srcList.get(2).y - srcList.get(0).y;
+        double dstHeight = srcList.get(1).x - srcList.get(0).x;
+        Size dstSize = new Size(dstWidth, dstHeight);
+
+        if(warp_dst!=null) {
+            if(dstHeight > 0 && dstWidth > 0)
+                Imgproc.resize(warp_dst, warp_dst, dstSize);
+        }
 
         return warp_dst;
     }
@@ -187,9 +201,9 @@ public class OpenCVUtils {
         }
         Collections.sort(maxVals);
 
-        System.out.println("***lowest maxVal: " + maxVals.get(0));
+//        System.out.println("***lowest maxVal: " + maxVals.get(0));
 
-        System.out.println("***start submat");
+//        System.out.println("***start submat");
         for(int c=0; c<lab.cols()-4; c+=4) {
             Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
 
@@ -220,7 +234,7 @@ public class OpenCVUtils {
             }
             submat.release();
         }
-        System.out.println("***end submat");
+//        System.out.println("***end submat");
 
         ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         MatOfPoint innermostContours = new MatOfPoint();
@@ -280,10 +294,10 @@ public class OpenCVUtils {
             Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
             Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
 
-            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
-            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
-            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
+//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
 
             //demo
 //            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
@@ -306,9 +320,9 @@ public class OpenCVUtils {
                 Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
 
                 Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
-                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
-                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
-                        + " height: " + rotated.size().height);
+//                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
+//                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
+//                        + " height: " + rotated.size().height);
 
                 Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
 

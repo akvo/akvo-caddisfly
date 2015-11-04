@@ -1,7 +1,6 @@
 package org.akvo.akvoqr;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.SurfaceView;
 
 import org.akvo.akvoqr.detector.CameraConfigurationUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,7 +99,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         for(Camera.Size size: sizes) {
             System.out.println("***supported preview sizes w, h: " + size.width + ", " + size.height);
             if(size.width>1300)
-               continue;
+                continue;
             if (size.width > maxWidth) {
                 bestSize = size;
                 maxWidth = size.width;
@@ -110,7 +108,8 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         //portrait mode
         mCamera.setDisplayOrientation(90);
-        //parameters.setRotation(90);
+
+        //preview size
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
         //parameters.setPreviewFormat(ImageFormat.NV21);
@@ -132,16 +131,15 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        //flashmode
+        //switchFlashMode();
 
-            List<Camera.Area> areas = new ArrayList<>();
-            Rect roi = new Rect(bestSize.width/3, bestSize.height/3, bestSize.width/3*2, bestSize.height/3*2);
-            areas.add(new Camera.Area(roi, 1));
-            parameters.setFocusAreas(areas);
+        //white balance
+        if(parameters.getWhiteBalance()!=null)
+        {
+            //TODO check if this optimise the code
+            parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_DAYLIGHT);
         }
-
-       //flashmode
-        switchFlashMode();
 
         // start preview with new settings
         try {
@@ -157,11 +155,65 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     }
 
-    private void switchFlashMode()
+    public void switchFlashMode()
     {
+        if(mCamera==null)
+            return;
+        parameters = mCamera.getParameters();
+
         String flashmode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)?
                 Camera.Parameters.FLASH_MODE_TORCH: Camera.Parameters.FLASH_MODE_OFF;
         parameters.setFlashMode(flashmode);
+
+        mCamera.setParameters(parameters);
+    }
+
+    //exposure compensation
+    private static int direction = 1;
+    public void adjustExposure(int goOnInSameDirection)
+    {
+        if(mCamera==null)
+            return;
+        parameters = mCamera.getParameters();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            parameters.setAutoExposureLock(true);
+            mCamera.setParameters(parameters);
+        }
+
+
+        int ec = parameters.getExposureCompensation();
+        if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
+        {
+            direction = -direction;
+        }
+
+        int compPlus = Math.min(parameters.getMaxExposureCompensation(), parameters.getExposureCompensation() + 1);
+        int compMinus = Math.max(parameters.getMinExposureCompensation(), parameters.getExposureCompensation() - 1);
+        int currentDirection = direction==1? compPlus: compMinus;
+        int differentDirection = currentDirection==compMinus? compPlus: compMinus;
+
+        if(goOnInSameDirection > 0)
+        {
+            parameters.setExposureCompensation(currentDirection);
+        }
+        else if(goOnInSameDirection < 0)
+        {
+            parameters.setExposureCompensation(differentDirection);
+        }
+        else if(goOnInSameDirection == 0) {
+            parameters.setExposureCompensation(0);
+        }
+
+//        System.out.println("***min Exposure compensation: " + parameters.getMinExposureCompensation());
+//        System.out.println("***max Exposure compensation: " + parameters.getMaxExposureCompensation());
+        System.out.println("***Exposure compensation direction: " + goOnInSameDirection);
+        System.out.println("***Exposure compensation: " + parameters.getExposureCompensation());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            parameters.setAutoExposureLock(false);
+        }
+        mCamera.setParameters(parameters);
     }
 }
 

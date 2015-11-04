@@ -14,6 +14,8 @@ public interface CameraViewListener {
 
     void getMessage(int what);
 
+    void setExposureCompensation(int goOnInSameDirection);
+
     void sendData(byte[] data, long timeMillis,
                   int format, int width, int height, FinderPatternInfo info);
 
@@ -25,7 +27,7 @@ public interface CameraViewListener {
 
     void showFocusValue(double value);
 
-    void showMaxLuminosity(double value);
+    void showMaxLuminosity(boolean ok, double value);
 
     void showShadow(double value);
 
@@ -40,4 +42,6 @@ public interface CameraViewListener {
     void setCountQualityCheckResultZero();
 
     void setCountQualityCheckIterationZero();
+
+    void resetSurfaceHolder();
 }

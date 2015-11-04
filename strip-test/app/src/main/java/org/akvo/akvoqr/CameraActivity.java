@@ -107,12 +107,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void onClick(View v) {
 
-                mPreview.surfaceChanged(mPreview.getHolder(), mCamera.getParameters().getPreviewFormat(),
-                        mCamera.getParameters().getPreviewSize().width,
-                        mCamera.getParameters().getPreviewSize().height);
+                mPreview.switchFlashMode();
             }
         });
-
 
     }
 
@@ -148,10 +145,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
             });
         }
-
-
-
     }
+
     public void onPause()
     {
 
@@ -233,6 +228,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
+    public void resetSurfaceHolder()
+    {
+        mPreview.surfaceChanged(mPreview.getHolder(), mCamera.getParameters().getPreviewFormat(),
+                mCamera.getParameters().getPreviewSize().width,
+                mCamera.getParameters().getPreviewSize().height);
+    }
+    @Override
     public void setCountQualityCheckResult(int count)
     {
         countQualityCheckIteration ++;
@@ -288,19 +290,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-//        Runnable warnRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                getMessage(1);
-//                handler.removeCallbacks(startNextPreview);
-//                CustomDialog cd = new CustomDialog();
-//                AlertDialog dialog = cd.createDialog(CameraActivity.this);
-//
-//                dialog.show();
-//            }
-//        };
-
 //        System.out.println("***countQualityCheckResult: " + countQualityCheckResult +
 //        " countQualityCheckIteration: " + countQualityCheckIteration);
 
@@ -311,9 +300,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
         {
             handler.post(hideRunnable);
-            setCountQualityCheckResultZero();
+           // setCountQualityCheckResultZero();
             setCountQualityCheckIterationZero();
-            //handler.post(warnRunnable);
+
         }
         else
         {
@@ -382,7 +371,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     }
     @Override
-    public void showMaxLuminosity(final double value){
+    public void showMaxLuminosity(final boolean ok, final double value){
 
         final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
 
@@ -392,7 +381,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 if(messageLightView !=null)
                     messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
 
-                if(value > Constant.MIN_LUMINOSITY_PERCENTAGE)
+                if(ok)
                 {
                     exposureView.setImageResource(R.drawable.exposure_green);
                 }
@@ -459,6 +448,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             handler.post(levelRunnable);
         }
     }
+
+    @Override
+    public void setExposureCompensation(int goOnInSameDirection)
+    {
+        mPreview.adjustExposure(goOnInSameDirection);
+    }
+
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
