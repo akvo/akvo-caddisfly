@@ -202,7 +202,7 @@ public class CalibrationCard{
 
         // create coefficient matrix
         // the model is Luminosity = ax + bx^2 + cy + dy^2 + exy + f
-        // third row is the constant 1
+        // 6th row is the constant 1
         RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(),6);
         coef.setColumnMatrix(0,points.getColumnMatrix(0));
         coef.setColumnMatrix(2,points.getColumnMatrix(1));
