@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -51,10 +52,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private int previewFormat;
     private boolean focused = true;
     private Handler handler;
+    private Handler focusHandler;
     private  LightSensor lightSensor;
     double shadowPercentage = 101;
-    double lumDiff = 0;
-    double lumQual = 100;
     LinkedList<Double> lumTrack = new LinkedList<>();
 
     private Thread showFinderPatternThread = new Thread(
@@ -65,6 +65,25 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         Looper.prepare();
 
                         handler = new Handler();
+
+                        Looper.loop();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+    );
+    private Thread focusThread = new Thread(
+            new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Looper.prepare();
+
+                        focusHandler = new Handler();
 
                         Looper.loop();
                     }
@@ -88,6 +107,47 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
     };
 
+    private Runnable focusRunnable =  new Runnable() {
+        @Override
+        public void run() {
+
+            //set focus area to where finder patterns are
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+                if(possibleCenters!=null) {
+                    List<Camera.Area> areas = new ArrayList<>();
+                    for (int i = 0; i < possibleCenters.size(); i++) {
+
+                        FinderPattern fp = possibleCenters.get(i);
+                        Rect focusArea = new Rect((int) Math.round(fp.getX() - fp.getEstimatedModuleSize()), (int) Math.round(fp.getY() - fp.getEstimatedModuleSize()),
+                                (int) Math.round(fp.getX() + fp.getEstimatedModuleSize()), (int) Math.round(fp.getY() + fp.getEstimatedModuleSize()));
+
+                        areas.add(new Camera.Area(focusArea, 1));
+                    }
+
+                    try {
+                        Camera.Parameters parameters = camera.getParameters();
+                        parameters.setFocusAreas(areas);
+                        camera.setParameters(parameters);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("***Exception setting parameters in focusRunnable.");
+                        e.printStackTrace();
+
+                    }
+                }
+            }
+
+            camera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    //System.out.println("***focused = " + success);
+                    focused = success;
+                }
+            });
+        }
+    };
     public static MyPreviewCallback getInstance(Context context) {
 
         return new MyPreviewCallback(context);
@@ -103,6 +163,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         possibleCenters = new ArrayList<>();
 
         showFinderPatternThread.start();
+        focusThread.start();
 
         lightSensor = new LightSensor();
         lightSensor.start();
@@ -149,7 +210,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             data = params[0];
             try {
-
 
                 if (info!=null && possibleCenters != null && possibleCenters.size() == 4)
                 {
@@ -232,11 +292,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             return false;
 
         Mat bgr = null;
-        List<Double> lumList = new ArrayList<>();
         List<Double> focusList = new ArrayList<>();
-        double[] lumMinMax;
-        double minLum = -1;
-        double maxLum = 256;
+        List<double[]> lumList = new ArrayList<>();
         boolean luminosityQualOk = false;
         boolean shadowQualOk = false;
         boolean levelQualOk = false;
@@ -268,100 +325,34 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
                     Imgproc.cvtColor(bgr.submat(roi), src_gray, Imgproc.COLOR_BGR2GRAY);
 
-                    //brightness
-                    lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
-                    lumDiff = lumMinMax[1] - lumMinMax[0];
-                    lumQual = 100 * lumDiff / 255;
-                    lumList.add(lumQual);
+                    //brightness: add lum. values to list
+                    addLumToList(src_gray, lumList);
 
-//                    System.out.println("***lumMinMax: " + lumMinMax[0] + ", " + lumMinMax[1]);
-
-                    //store lum min value that corresponds with highest; we use it to check over-exposure
-                    if(lumMinMax[0]>minLum)
-                    {
-                        minLum = lumMinMax[0];
-                    }
-                    //store lum max value that corresponds with lowest; we use it to check under-exposure
-                    if(lumMinMax[1]<maxLum)
-                    {
-                        maxLum = lumMinMax[1];
-                    }
-
-                    //focus
+                    //focus: add values to list
                     laplacian = PreviewUtils.focusLaplacian1(src_gray);
                     // correct the focus quality parameter for the total luminosity range of the finder pattern
-                    // the factor of 0.5 means that 100% corresponds to the pattern goes from black to white within 2 pixels
-                    focusQual = 100 * (laplacian / (0.5 * lumDiff));
-                    focusList.add(focusQual);
+                    // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
+                    double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
+                    if(lumMinMax.length==2) {
+                        focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
+
+                        //System.out.println("***focusQual =  " + focusQual );
+
+                        //never more than 100%
+                        focusQual = Math.min(focusQual,100);
+
+                        if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
+                            try {
+                                focusList.add(Double.valueOf(focusQual));
+                            } catch (Exception e) {
+                                System.out.println("***exception adding to focuslist.");
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
-
-//                System.out.println("***lumMinMax result: " + minLum + ", " + maxLum);
-
             }
-
-            //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
-            if(lumTrack.size()>25) {
-                lumTrack.removeFirst();
-            }
-
-
-            if(lumList.size() > 0) {
-                //lowest value for brightness comes first
-                Collections.sort(lumList);
-
-                //add lowest value to track list
-                lumTrack.addLast(lumList.get(0));
-
-
-                //compensate for over-exposure
-                //if min values are larger than 20 or max values larger than 254
-                if(minLum > Constant.MIN_LUM_LOWER || maxLum > Constant.MIN_LUM_UPPER)
-                {
-                    System.out.println("***over exposed. ");
-                    //Change direction in which to compensate
-                    listener.setExposureCompensation(-1);
-                }
-                //compare latest value with the previous one
-                else if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
-
-                    //difference is increasing; this is good, keep going in the same direction
-                    listener.setExposureCompensation(1);
-                }
-                else if(lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE)
-                {
-                    //optimum situation reached: remove last value to keep ideal situation
-                    if(lumTrack.size()>2)
-                        lumTrack.removeLast();
-
-                    luminosityQualOk = lumList.get(0) > Constant.MIN_LUMINOSITY_PERCENTAGE;
-
-                    System.out.println("***optimum exposure reached. ");
-
-                }
-                else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
-                {
-                    //we are no where near a good exposure, just keep on trying
-                    listener.setExposureCompensation(1);
-
-                    System.out.println("***adjusting exposure. ");
-                }
-
-                if(luminosityQualOk)
-                    listener.showMaxLuminosity(true, 100 * maxLum/254);
-                else
-                    listener.showMaxLuminosity(false, 100 * maxLum/254);
-
-
-                //logging
-//                if(lumTrack.size()>2) {
-//                    for (int i = 0; i < lumTrack.size(); i++) {
-//                        System.out.println("***exp lumtrack: " + i + "  " + lumTrack.get(i) + " > " +
-//                                (lumTrack.getLast() > lumTrack.get(lumTrack.size() - 2))
-//                                + " > min_lum_perc: " + (lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE));
-//                    }
-//                }
-            }
-            else //no finder patterns found
+            else
             {
                 //if no finder patterns are found, remove one from track
                 //when device e.g. is put down, slowly the value becomes zero
@@ -369,42 +360,32 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 if(lumTrack.size()>0) {
                     lumTrack.removeFirst();
                 }
-
             }
-            lumList.clear();
+
+            System.out.println("***lumTrack size =  " + lumTrack.size());
 
             if(lumTrack.size()<1) {
                 //show zero values
                 listener.showMaxLuminosity(false, 0);
-                //reset exposure comp. to zero
-                listener.setExposureCompensation(0);
-                //reinitialise camera
-                listener.resetSurfaceHolder();
             }
 
-            // update quality icon of the focus
+
+            // focus: do the checks
             // if focus is too low, do another round of focussing
             if(focusList.size() > 0) {
                 Collections.sort(focusList);
                 listener.showFocusValue(focusList.get(0));
-                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE)
-                {
-                    focused = false;
-                    int count = 0;
-                    // TODO Check if this actually focusses the camera.
-                    while (!focused && camera != null && count < 100) {
-                        camera.autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                if (success) focused = true;
-                            }
-                        });
-                        count++;
-                    }
+                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
+
+                    focusHandler.post(focusRunnable);
                 }
                 else
                 {
                     focused = true;
+                    focusHandler.removeCallbacks(focusRunnable);
+                    //brightness: do the checks
+                    luminosityQualOk = luminosityCheck(lumList);
+
                 }
             } else {
 
@@ -459,6 +440,111 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         return true;
 
+    }
+
+    private void addLumToList(Mat src_gray, List<double[]> lumList)
+    {
+        double[] lumMinMax;
+
+        lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
+        if(lumMinMax.length == 2) {
+
+            lumList.add(lumMinMax);
+        }
+    }
+    private boolean luminosityCheck(List<double[]> lumList)
+    {
+
+        double maxminLum = -1; //highest value of 'black'
+        double minmaxLum = 256; //lowest value of 'white'
+        double maxmaxLum = -1; //highest value of 'white'
+        boolean luminosityQualOk = false;
+
+        for(int i=0; i<lumList.size();i++) {
+            //store lum min value that corresponds with highest; we use it to check over-exposure
+            if (lumList.get(i)[0] > maxminLum) {
+                maxminLum = lumList.get(i)[0];
+            }
+            //store lum max value that corresponds with lowest; we use it to check under-exposure
+            if (lumList.get(i)[1] < minmaxLum) {
+                minmaxLum = lumList.get(i)[1];
+            }
+
+            if (lumList.get(i)[1] > maxmaxLum) {
+                maxmaxLum = lumList.get(i)[1];
+            }
+        }
+        //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
+        if(lumTrack.size()>25) {
+            lumTrack.removeFirst();
+        }
+
+
+        if(lumList.size() > 0) {
+
+            //add highest value of 'white' to track list
+            lumTrack.addLast(100 * maxmaxLum/255);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                Camera.Parameters parameters = camera.getParameters();
+                parameters.setAutoExposureLock(true);
+                camera.setParameters(parameters);
+                System.out.println("***locking auto-exposure. ");
+            }
+
+            //compensate for over-exposure
+            //if min values are larger than 20 or max values larger than 254
+            if(maxminLum > Constant.MIN_LUM_LOWER || minmaxLum > Constant.MIN_LUM_UPPER)
+            {
+                System.out.println("***over exposed. ");
+                //Change direction in which to compensate
+                listener.setExposureCompensation(-1);
+            }
+            //compare latest value with the previous one
+            else if(lumTrack.size()>1)
+            {
+                if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
+
+                    //difference is increasing; this is good, keep going in the same direction
+                    listener.setExposureCompensation(1);
+                }
+                else if(lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE)
+                {
+                    //optimum situation reached: remove last value to keep ideal situation
+                    if(lumTrack.size()>2)
+                        lumTrack.removeLast();
+
+                    luminosityQualOk = true;
+
+                    System.out.println("***optimum exposure reached. ");
+
+                }
+                else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
+                {
+                    //we are no where near a good exposure, just keep on trying
+                    listener.setExposureCompensation(1);
+
+                    System.out.println("***adjusting exposure. ");
+                }
+            }
+
+            if(luminosityQualOk)
+                listener.showMaxLuminosity(true, minmaxLum);
+            else
+                listener.showMaxLuminosity(false, minmaxLum);
+
+
+            //logging
+//                if(lumTrack.size()>2) {
+//                    for (int i = 0; i < lumTrack.size(); i++) {
+//                        System.out.println("***exp lumtrack: " + i + "  " + lumTrack.get(i) + " > " +
+//                                (lumTrack.getLast() > lumTrack.get(lumTrack.size() - 2))
+//                                + " > min_lum_perc: " + (lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE));
+//                    }
+//                }
+        }
+
+        return luminosityQualOk;
     }
 
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {

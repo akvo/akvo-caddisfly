@@ -2,7 +2,6 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.os.Build;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -176,11 +175,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             return;
         parameters = mCamera.getParameters();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            parameters.setAutoExposureLock(true);
-            mCamera.setParameters(parameters);
-        }
-
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//            parameters.setAutoExposureLock(true);
+//            mCamera.setParameters(parameters);
+//        }
 
         int ec = parameters.getExposureCompensation();
         if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
@@ -210,9 +208,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         System.out.println("***Exposure compensation direction: " + goOnInSameDirection);
         System.out.println("***Exposure compensation: " + parameters.getExposureCompensation());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            parameters.setAutoExposureLock(false);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//            parameters.setAutoExposureLock(false);
+//        }
+
         mCamera.setParameters(parameters);
     }
 }

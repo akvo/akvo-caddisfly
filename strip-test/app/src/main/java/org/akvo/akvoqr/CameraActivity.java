@@ -233,6 +233,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         mPreview.surfaceChanged(mPreview.getHolder(), mCamera.getParameters().getPreviewFormat(),
                 mCamera.getParameters().getPreviewSize().width,
                 mCamera.getParameters().getPreviewSize().height);
+
+//        mCamera.stopPreview();
+//        mCamera.startPreview();
     }
     @Override
     public void setCountQualityCheckResult(int count)
@@ -378,17 +381,21 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
-                if(messageLightView !=null)
-                    messageLightView.setText(getString(R.string.light) +": " + String.format("%.0f",value) + " %");
 
+                String valueString;
                 if(ok)
                 {
                     exposureView.setImageResource(R.drawable.exposure_green);
+                    valueString = "100%" +" (max lum: " + String.format("%.0f",value) + ")";
                 }
                 else
                 {
                     exposureView.setImageResource(R.drawable.exposure_red);
+                    valueString = String.format("%.0f",100*value/254)+"% (max lum: " + String.format("%.0f",value) + ")";
                 }
+
+                if(messageLightView !=null)
+                    messageLightView.setText(getString(R.string.light) +": " + valueString);
 
             }
         };
