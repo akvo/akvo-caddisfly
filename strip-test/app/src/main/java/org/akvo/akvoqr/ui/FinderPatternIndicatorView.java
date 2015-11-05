@@ -86,7 +86,7 @@ public class FinderPatternIndicatorView extends SurfaceView {
 
                 //The x of the canvas corresponds to the y of the pattern,
                 //The y of the canvas corresponds to the x of the pattern.
-                float x = canvas.getWidth() - patterns.get(i).getY();
+                float x = (canvas.getWidth() - patterns.get(i).getY()) * ratioW;
                 float y = patterns.get(i).getX() * ratioH;
                 canvas.drawCircle(x, y, 10, paint);
             }
