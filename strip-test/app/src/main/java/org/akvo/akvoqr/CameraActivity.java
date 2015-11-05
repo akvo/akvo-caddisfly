@@ -454,7 +454,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public void setExposureCompensation(int goOnInSameDirection)
+    public void adjustExposureCompensation(int goOnInSameDirection)
     {
         mPreview.adjustExposure(goOnInSameDirection);
     }

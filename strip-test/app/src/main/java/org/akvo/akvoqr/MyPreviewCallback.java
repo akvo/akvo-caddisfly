@@ -338,8 +338,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 }
             }
 
-            System.out.println("***lumTrack size =  " + lumTrack.size());
-
             if(lumTrack.size()<1) {
                 //show zero values
                 listener.showMaxLuminosity(false, 0);
@@ -472,7 +470,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             {
                 System.out.println("***over exposed. ");
                 //Change direction in which to compensate
-                listener.setExposureCompensation(-1);
+                listener.adjustExposureCompensation(-1);
             }
             //compare latest value with the previous one
             else if(lumTrack.size()>1)
@@ -480,7 +478,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
 
                     //difference is increasing; this is good, keep going in the same direction
-                    listener.setExposureCompensation(1);
+                    listener.adjustExposureCompensation(1);
                 }
                 else if(lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE)
                 {
@@ -496,7 +494,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
                 {
                     //we are no where near a good exposure, just keep on trying
-                    listener.setExposureCompensation(1);
+                    listener.adjustExposureCompensation(1);
 
                     System.out.println("***adjusting exposure. ");
                 }

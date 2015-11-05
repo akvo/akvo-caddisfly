@@ -170,40 +170,37 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     //exposure compensation
     private static int direction = 1;
-    public void adjustExposure(int goOnInSameDirection)
+    public void adjustExposure(int direction)
     {
         if(mCamera==null)
             return;
         parameters = mCamera.getParameters();
 
-        float step = parameters.getExposureCompensationStep();
-
-        int ec = parameters.getExposureCompensation();
-        if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
-        {
-            direction = -direction;
-        }
+//        int ec = parameters.getExposureCompensation();
+//        if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
+//        {
+//            BaseCameraView.direction = -BaseCameraView.direction;
+//        }
 
         int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
         int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
-        int currentDirection = direction==1? compPlus: compMinus;
-        int differentDirection = currentDirection==compMinus? compPlus: compMinus;
+       // int currentDirection = BaseCameraView.direction ==1? compPlus: compMinus;
+       // int differentDirection = currentDirection==compMinus? compPlus: compMinus;
 
-        if(goOnInSameDirection > 0)
+        if(direction > 0)
         {
-            parameters.setExposureCompensation(currentDirection);
+            parameters.setExposureCompensation(compPlus);
         }
-        else if(goOnInSameDirection < 0)
+        else if(direction < 0)
         {
-            parameters.setExposureCompensation(differentDirection);
+            parameters.setExposureCompensation(compMinus);
         }
-        else if(goOnInSameDirection == 0) {
+        else if(direction == 0) {
             parameters.setExposureCompensation(0);
         }
 
-//        System.out.println("***min Exposure compensation: " + parameters.getMinExposureCompensation());
-//        System.out.println("***max Exposure compensation: " + parameters.getMaxExposureCompensation());
-        System.out.println("***Exposure compensation direction: " + goOnInSameDirection + ". step = " + step);
+        float step = parameters.getExposureCompensationStep();
+        System.out.println("***Exposure compensation direction: " + direction + ". step = " + step);
         System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
         mCamera.setParameters(parameters);
