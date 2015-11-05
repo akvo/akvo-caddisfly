@@ -12,13 +12,11 @@ public class Constant {
     public static final String WIDTH = "org.akvo.akvoqr.width";
     public static final String HEIGHT = "org.akvo.akvoqr.height";
     public static final String TOPLEFT = "org.akvo.akvoqr.topleft";
-    public static final String MODULE_SIZE = "org.akvo.akvoqr.modsize";
     public static final String TOPRIGHT = "org.akvo.akvoqr.topright";
     public static final String BOTTOMLEFT = "org.akvo.akvoqr.bottomleft";
     public static final String BOTTOMRIGHT = "org.akvo.akvoqr.bottomright";
-    public static final String FINDERPATTERNBUNDLE = "org.akvo.akvoqr.finderpatternbundle";
     public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
-    public static final double MIN_LUMINOSITY_PERCENTAGE = 60;
+    public static final double MIN_LUMINOSITY_PERCENTAGE = 75;
     public static final double MAX_SHADOW_PERCENTAGE = 10;
     public static final double MIN_FOCUS_PERCENTAGE = 70;
     public static final double CONTRAST_DEVIATION_FRACTION = 0.05;
@@ -26,7 +24,6 @@ public class Constant {
     public static final int COUNT_QUALITY_CHECK_LIMIT = 10;
     public static final double CROP_CAMERAVIEW_FACTOR = 0.66;
     public static final float MAX_LEVEL_DIFF = 2f;
-    public static final double MIN_LUM_LOWER = 20;
-    public static final double MAX_LUM_ABS = 254;
+    public static final double MIN_LUM_LOWER = 60;
     public static final double MIN_LUM_UPPER = 254;
 }

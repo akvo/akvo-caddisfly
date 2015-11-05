@@ -2,6 +2,7 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.os.Build;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -175,10 +176,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             return;
         parameters = mCamera.getParameters();
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//            parameters.setAutoExposureLock(true);
-//            mCamera.setParameters(parameters);
-//        }
+        float step = parameters.getExposureCompensationStep();
 
         int ec = parameters.getExposureCompensation();
         if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
@@ -186,8 +184,8 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             direction = -direction;
         }
 
-        int compPlus = Math.min(parameters.getMaxExposureCompensation(), parameters.getExposureCompensation() + 1);
-        int compMinus = Math.max(parameters.getMinExposureCompensation(), parameters.getExposureCompensation() - 1);
+        int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
+        int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
         int currentDirection = direction==1? compPlus: compMinus;
         int differentDirection = currentDirection==compMinus? compPlus: compMinus;
 
@@ -205,14 +203,34 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
 //        System.out.println("***min Exposure compensation: " + parameters.getMinExposureCompensation());
 //        System.out.println("***max Exposure compensation: " + parameters.getMaxExposureCompensation());
-        System.out.println("***Exposure compensation direction: " + goOnInSameDirection);
-        System.out.println("***Exposure compensation: " + parameters.getExposureCompensation());
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//            parameters.setAutoExposureLock(false);
-//        }
+        System.out.println("***Exposure compensation direction: " + goOnInSameDirection + ". step = " + step);
+        System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
         mCamera.setParameters(parameters);
+    }
+
+    public void setFocusAreas(List<Camera.Area> areas)
+    {
+        if(mCamera==null)
+            return;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+            if(mCamera.getParameters().getMaxNumFocusAreas()>0) {
+                try {
+                    //make sure area list does not exceed max num areas allowed
+                    List<Camera.Area> subAreas = areas.subList(0, mCamera.getParameters().getMaxNumFocusAreas());
+
+                    Camera.Parameters parameters = mCamera.getParameters();
+                    parameters.setFocusAreas(subAreas);
+                    mCamera.setParameters(parameters);
+                } catch (Exception e) {
+                    System.out.println("***Exception setting parameters for focus areas.");
+                    e.printStackTrace();
+
+                }
+            }
+        }
     }
 }
 

@@ -227,15 +227,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     }
 
-    @Override
-    public void resetSurfaceHolder()
+    public void setFocusAreas(List<Camera.Area> areas)
     {
-        mPreview.surfaceChanged(mPreview.getHolder(), mCamera.getParameters().getPreviewFormat(),
-                mCamera.getParameters().getPreviewSize().width,
-                mCamera.getParameters().getPreviewSize().height);
-
-//        mCamera.stopPreview();
-//        mCamera.startPreview();
+        if(mPreview!=null)
+        {
+            mPreview.setFocusAreas(areas);
+        }
     }
     @Override
     public void setCountQualityCheckResult(int count)

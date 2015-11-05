@@ -111,34 +111,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         @Override
         public void run() {
 
-            //set focus area to where finder patterns are
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-                if(possibleCenters!=null) {
-                    List<Camera.Area> areas = new ArrayList<>();
-                    for (int i = 0; i < possibleCenters.size(); i++) {
-
-                        FinderPattern fp = possibleCenters.get(i);
-                        Rect focusArea = new Rect((int) Math.round(fp.getX() - fp.getEstimatedModuleSize()), (int) Math.round(fp.getY() - fp.getEstimatedModuleSize()),
-                                (int) Math.round(fp.getX() + fp.getEstimatedModuleSize()), (int) Math.round(fp.getY() + fp.getEstimatedModuleSize()));
-
-                        areas.add(new Camera.Area(focusArea, 1));
-                    }
-
-                    try {
-                        Camera.Parameters parameters = camera.getParameters();
-                        parameters.setFocusAreas(areas);
-                        camera.setParameters(parameters);
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("***Exception setting parameters in focusRunnable.");
-                        e.printStackTrace();
-
-                    }
-                }
-            }
-
             camera.autoFocus(new Camera.AutoFocusCallback() {
                 @Override
                 public void onAutoFocus(boolean success, Camera camera) {
@@ -182,6 +154,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         FinderPatternInfo info;
         info = findPossibleCenters(data, previewSize);
+
+        setFocusAreas(info);
 
         // checks the quality of the image data, updates the icons, and if the
         // quality is ok, shows the start button
@@ -327,6 +301,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     //brightness: add lum. values to list
                     addLumToList(src_gray, lumList);
+                    //brightness: do the checks
+                    luminosityQualOk = luminosityCheck(lumList);
 
                     //focus: add values to list
                     laplacian = PreviewUtils.focusLaplacian1(src_gray);
@@ -377,15 +353,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 listener.showFocusValue(focusList.get(0));
                 if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
 
-                    focusHandler.post(focusRunnable);
+                    // focusHandler.post(focusRunnable);
+                    focused = false;
                 }
                 else
                 {
                     focused = true;
-                    focusHandler.removeCallbacks(focusRunnable);
-                    //brightness: do the checks
-                    luminosityQualOk = luminosityCheck(lumList);
-
+                    //focusHandler.removeCallbacks(focusRunnable);
                 }
             } else {
 
@@ -485,15 +459,15 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             //add highest value of 'white' to track list
             lumTrack.addLast(100 * maxmaxLum/255);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                Camera.Parameters parameters = camera.getParameters();
-                parameters.setAutoExposureLock(true);
-                camera.setParameters(parameters);
-                System.out.println("***locking auto-exposure. ");
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                Camera.Parameters parameters = camera.getParameters();
+//                parameters.setAutoExposureLock(true);
+//                camera.setParameters(parameters);
+//                System.out.println("***locking auto-exposure. ");
+//            }
 
             //compensate for over-exposure
-            //if min values are larger than 20 or max values larger than 254
+            //if min values are larger than 60 or max values larger than 254
             if(maxminLum > Constant.MIN_LUM_LOWER || minmaxLum > Constant.MIN_LUM_UPPER)
             {
                 System.out.println("***over exposed. ");
@@ -516,7 +490,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     luminosityQualOk = true;
 
-                    System.out.println("***optimum exposure reached. ");
+                    System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
 
                 }
                 else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
@@ -529,19 +503,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
 
             if(luminosityQualOk)
-                listener.showMaxLuminosity(true, minmaxLum);
+                listener.showMaxLuminosity(true, maxmaxLum);
             else
-                listener.showMaxLuminosity(false, minmaxLum);
+                listener.showMaxLuminosity(false, maxmaxLum);
 
-
-            //logging
-//                if(lumTrack.size()>2) {
-//                    for (int i = 0; i < lumTrack.size(); i++) {
-//                        System.out.println("***exp lumtrack: " + i + "  " + lumTrack.get(i) + " > " +
-//                                (lumTrack.getLast() > lumTrack.get(lumTrack.size() - 2))
-//                                + " > min_lum_perc: " + (lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE));
-//                    }
-//                }
         }
 
         return luminosityQualOk;
@@ -576,7 +541,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 info = finderPatternFinder.find(null);
 
-
             } catch (Exception e) {
                 // this only means not all patterns (=4) are detected.
             }
@@ -596,6 +560,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     handler.post(showFinderPatternRunnable);
 
+
+
                     try {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
@@ -614,6 +580,33 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
 
         return null;
+    }
+
+    private void setFocusAreas(FinderPatternInfo info)
+    {
+        //set focus area to where finder patterns are
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+            if(info!=null) {
+                List<Camera.Area> areas = new ArrayList<>();
+
+                int ratioW = Math.round(1000f/previewSize.width);
+                int ratioH = Math.round(1000f / previewSize.height);
+
+                List<Point> points = PreviewUtils.sortFinderPatternInfo(info);
+
+                Rect focusArea = new Rect(
+                        -1000 + ratioW * (int) Math.round(points.get(0).x),
+                        -1000 + ratioH * (int) Math.round(points.get(0).y),
+                        -1000 + ratioW * (int) Math.round(points.get(3).x),
+                        -1000 + ratioH * (int) Math.round(points.get(3).y)
+                );
+
+                areas.add(new Camera.Area(focusArea, 1));
+
+                listener.setFocusAreas(areas);
+            }
+        }
     }
 
     private byte[] compressToJpeg(byte[] data)
