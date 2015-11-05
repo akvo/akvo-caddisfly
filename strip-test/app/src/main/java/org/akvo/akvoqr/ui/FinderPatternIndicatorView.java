@@ -68,10 +68,6 @@ public class FinderPatternIndicatorView extends SurfaceView {
             //the height of the canvas corresponds to the width of the size.
             ratioW = (float)canvas.getWidth() / (float)size.height ;
             ratioH = (float)canvas.getHeight() / (float)size.width;
-
-//            System.out.println("***finder pattern view size: width = " + size.width + " height = " + size.height);
-//            System.out.println("***finder pattern view canvas size: width = " + canvas.getWidth() + " height = " + canvas.getHeight()
-//            + " ratioH: " + ratioH);
         }
 
         // Have the view being transparent
@@ -80,13 +76,9 @@ public class FinderPatternIndicatorView extends SurfaceView {
         if(patterns!=null) {
 
             for (int i = 0; i < patterns.size(); i++) {
-
-//                System.out.println("***patterns x, y: " + i + " = " + patterns.get(i).getX() + ", " + patterns.get(i).getY()
-//                + " x * ratioH = " + ( patterns.get(i).getX() * ratioH));
-
                 //The x of the canvas corresponds to the y of the pattern,
                 //The y of the canvas corresponds to the x of the pattern.
-                float x = (canvas.getWidth() - patterns.get(i).getY()) * ratioW;
+                float x = canvas.getWidth() - patterns.get(i).getY() * ratioW;
                 float y = patterns.get(i).getX() * ratioH;
                 canvas.drawCircle(x, y, 10, paint);
             }
