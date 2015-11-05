@@ -21,6 +21,8 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileHelper {
 
@@ -32,7 +34,7 @@ public class FileHelper {
     // Folders
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
-    private static final String DIR_DOWNLOAD = "Download"; // Calibration files
+    private static final String DIR_DOWNLOAD = "Download/install"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
 
     /**
@@ -106,10 +108,48 @@ public class FileHelper {
         return text;
     }
 
+    public static void cleanInstallFolder(boolean keepLatest) {
+        File directory = FileHelper.getFilesDir(FileHelper.FileType.DOWNLOAD, "");
+        File[] files = directory.listFiles();
+
+        if (keepLatest) {
+            int latestVersion = 0;
+            int fileVersion;
+            File currentFile = null;
+            for (File file : files) {
+                Pattern pattern = Pattern.compile("(\\d+).apk");
+                Matcher matcher = pattern.matcher(file.getName());
+                if (matcher.find()) {
+                    fileVersion = Integer.parseInt(matcher.group(1));
+                    if (fileVersion > latestVersion) {
+                        latestVersion = fileVersion;
+                        if (currentFile != null) {
+                            //noinspection ResultOfMethodCallIgnored
+                            currentFile.delete();
+                        }
+                        currentFile = file;
+                    } else {
+                        //noinspection ResultOfMethodCallIgnored
+                        file.delete();
+                    }
+                } else {
+                    //noinspection ResultOfMethodCallIgnored
+                    file.delete();
+                }
+            }
+        } else {
+            for (File file : files) {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+            }
+        }
+    }
+
     /**
      * The different types of files
      */
     public enum FileType {
         CALIBRATION, CONFIG, DOWNLOAD, IMAGE
     }
+
 }

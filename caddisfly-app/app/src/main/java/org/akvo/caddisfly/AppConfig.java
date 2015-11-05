@@ -40,7 +40,7 @@ public class AppConfig {
      * The url to check for update version
      */
     public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/app/deviceapprest1?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
+            = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
 
     /**
      * Update check interval

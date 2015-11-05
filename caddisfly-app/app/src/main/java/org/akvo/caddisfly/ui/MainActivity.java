@@ -201,7 +201,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         try {
-            unregisterReceiver(updateCheckReceiver);
+            if (updateCheckReceiver != null) {
+                unregisterReceiver(updateCheckReceiver);
+            }
         } catch (Exception ignored) {
         }
         super.onDestroy();

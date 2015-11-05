@@ -66,6 +66,9 @@ public class UpdateCheckReceiver extends BroadcastReceiver {
                         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.DOWNLOAD, ""), fileName);
 
                         if (!file.exists()) {
+
+                            FileHelper.cleanInstallFolder(false);
+
                             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                             Uri Download_Uri = Uri.parse(location);
                             DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
@@ -73,7 +76,7 @@ public class UpdateCheckReceiver extends BroadcastReceiver {
                             request.setAllowedOverRoaming(false);
                             request.setTitle(context.getString(R.string.appName));
 
-                            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName);
+                            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "install/" + fileName);
                             PreferencesUtil.setLong(context, "downloadReference", downloadManager.enqueue(request));
                         }
                     }

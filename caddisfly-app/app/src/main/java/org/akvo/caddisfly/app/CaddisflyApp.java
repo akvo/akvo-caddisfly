@@ -31,6 +31,7 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
@@ -225,6 +226,13 @@ public class CaddisflyApp extends Application {
         if (mCurrentTestInfo != null) {
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
                 loadCalibratedSwatches(mCurrentTestInfo);
+
+                if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
+                    try {
+                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "Backup");
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         }
     }
@@ -236,9 +244,10 @@ public class CaddisflyApp extends Application {
      */
     public void loadCalibratedSwatches(TestInfo testInfo) {
 
+        final Context context = getApplicationContext();
         for (Swatch swatch : testInfo.getSwatches()) {
             String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
-            swatch.setColor(PreferencesUtil.getInt(this.getApplicationContext(), key, 0));
+            swatch.setColor(PreferencesUtil.getInt(context, key, 0));
         }
     }
 

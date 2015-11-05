@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,14 +49,10 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
-import org.akvo.caddisfly.util.ColorUtil;
-import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +77,7 @@ public class CalibrateListActivity extends BaseActivity
     private TextView textSubtitle1;
     private TextView textSubtitle2;
     private int mPosition;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,7 +105,7 @@ public class CalibrateListActivity extends BaseActivity
                         return true;
                     }
                 };
-                loadCalibration(callback);
+                loadCalibration(this, callback);
                 return true;
             case R.id.menuSave:
                 showEditCalibrationDetailsDialog();
@@ -301,42 +297,21 @@ public class CalibrateListActivity extends BaseActivity
             swatch.setColor(resultColor);
             PreferencesUtil.setInt(getApplicationContext(), colorKey, resultColor);
         }
-    }
 
-    /**
-     * Convert a string number into a double value
-     *
-     * @param text the text to be converted to number
-     * @return the double value
-     */
-    private double stringToDouble(String text) {
+        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
 
-        text = text.replaceAll(",", ".");
-        NumberFormat nf = NumberFormat.getInstance(Locale.US);
-        try {
-            return nf.parse(text).doubleValue();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return 0.0;
-        }
-    }
+        //Save a backup of the calibration details
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(this,
+                testCode,
+                PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""),
+                PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey),
+                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey));
 
-    /**
-     * Save a list of calibrated colors
-     *
-     * @param swatches List of swatch colors to be saved
-     */
-    private void saveCalibratedSwatches(ArrayList<Swatch> swatches) {
+        final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
 
-        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        for (Swatch swatch : swatches) {
-            String key = String.format(Locale.US, "%s-%.2f",
-                    currentTestInfo.getCode(), swatch.getValue());
+        FileUtil.saveToFile(path, "Backup", calibrationDetails);
 
-            PreferencesUtil.setInt(this, key, swatch.getColor());
-        }
-
-        CaddisflyApp.getApp().loadCalibratedSwatches(currentTestInfo);
+        Toast.makeText(this, R.string.calibrated, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -344,8 +319,7 @@ public class CalibrateListActivity extends BaseActivity
      *
      * @param callback callback to be initiated once the loading is complete
      */
-    private void loadCalibration(final Handler.Callback callback) {
-        final Context context = this;
+    private void loadCalibration(final Context context, final Handler.Callback callback) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.loadCalibration);
@@ -383,77 +357,24 @@ public class CalibrateListActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String fileName = listFiles[which].getName();
-                                final ArrayList<Swatch> swatchList = new ArrayList<>();
-
-                                ArrayList<String> calibrationDetails;
                                 try {
-                                    calibrationDetails = FileUtil.loadFromFile(path, fileName);
+                                    final ArrayList<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
 
-                                    if (calibrationDetails != null) {
-
-                                        for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
-                                            String line = calibrationDetails.get(i);
-                                            if (!line.contains("=")) {
-                                                String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
-                                                if (line.contains("Calibrated:")) {
-                                                    Calendar calendar = Calendar.getInstance();
-                                                    Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
-                                                            "yyyy-MM-dd HH:mm");
-                                                    if (date != null) {
-                                                        calendar.setTime(date);
-                                                        PreferencesUtil.setLong(context, testCode,
-                                                                R.string.calibrationDateKey, calendar.getTimeInMillis());
-                                                    }
-                                                }
-                                                if (line.contains("ReagentExpiry:")) {
-                                                    Calendar calendar = Calendar.getInstance();
-                                                    Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
-                                                            "yyyy-MM-dd");
-                                                    if (date != null) {
-                                                        calendar.setTime(date);
-                                                        PreferencesUtil.setLong(context, testCode,
-                                                                R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
-                                                    }
-                                                }
-
-                                                if (line.contains("ReagentBatch:")) {
-                                                    String batch = line.substring(line.indexOf(":") + 1).trim();
-                                                    PreferencesUtil.setString(context, testCode,
-                                                            R.string.batchNumberKey, batch);
-                                                }
-                                                calibrationDetails.remove(i);
-                                            }
+                                    (new AsyncTask<Void, Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground(Void... params) {
+                                            SwatchHelper.saveCalibratedSwatches(context, swatchList);
+                                            return null;
                                         }
 
-                                        for (String rgb : calibrationDetails) {
-                                            String[] values = rgb.split("=");
-                                            Swatch swatch = new Swatch(stringToDouble(values[0]),
-                                                    ColorUtil.getColorFromRgb(values[1]), Color.TRANSPARENT);
-                                            swatchList.add(swatch);
+                                        @Override
+                                        protected void onPostExecute(Void result) {
+                                            super.onPostExecute(result);
+                                            callback.handleMessage(null);
                                         }
+                                    }).execute();
 
-                                        if (swatchList.size() > 0) {
-                                            Toast.makeText(getBaseContext(),
-                                                    String.format(getString(R.string.calibrationLoaded), fileName),
-                                                    Toast.LENGTH_SHORT).show();
 
-                                            (new AsyncTask<Void, Void, Void>() {
-                                                @Override
-                                                protected Void doInBackground(Void... params) {
-                                                    saveCalibratedSwatches(swatchList);
-                                                    return null;
-                                                }
-
-                                                @Override
-                                                protected void onPostExecute(Void result) {
-                                                    super.onPostExecute(result);
-                                                    callback.handleMessage(null);
-                                                }
-                                            }).execute();
-                                        } else {
-                                            throw new Exception();
-                                        }
-                                    }
                                 } catch (Exception ex) {
                                     AlertUtil.showError(context, R.string.error, getString(R.string.errorLoadingFile),
                                             null, R.string.ok,
@@ -465,6 +386,7 @@ public class CalibrateListActivity extends BaseActivity
                                             }, null, null);
                                 }
                             }
+
                         }
                 );
 
@@ -489,7 +411,7 @@ public class CalibrateListActivity extends BaseActivity
                                                 ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
                                                 listAdapter.remove(listAdapter.getItem(position));
                                                 alertDialog.dismiss();
-                                                Toast.makeText(getBaseContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show();
                                             }
                                         }, null);
                                 return true;

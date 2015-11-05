@@ -18,12 +18,14 @@ package org.akvo.caddisfly.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.util.ApiUtil;
 
 public class AboutActivity extends BaseActivity {
 
@@ -80,6 +82,14 @@ public class AboutActivity extends BaseActivity {
                 }
             }
         });
+
+        //A indication whether the app was installed via Store or manually
+        ImageView imageStoreIcon = (ImageView) findViewById(R.id.imageStoreIcon);
+        if (ApiUtil.isStoreVersion(this)) {
+            imageStoreIcon.setVisibility(View.GONE);
+        } else {
+            imageStoreIcon.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -37,12 +37,9 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.ApiUtil;
-import org.akvo.caddisfly.util.ColorUtil;
-import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -201,47 +198,13 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     if (formEntryValid()) {
-                        final StringBuilder calibrationDetails = new StringBuilder();
 
-                        for (Swatch swatch : CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) {
-                            calibrationDetails.append(String.format("%.2f", swatch.getValue()))
-                                    .append("=")
-                                    .append(ColorUtil.getColorRgbString(swatch.getColor()));
-                            calibrationDetails.append('\n');
-                        }
-
-                        calibrationDetails.append("Type: ");
-                        calibrationDetails.append(CaddisflyApp.getApp().getCurrentTestInfo().getCode());
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("Date: ");
-                        calibrationDetails.append(DateUtil.getDateTimeString());
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("Calibrated: ");
-                        calibrationDetails.append(DateUtil.getDateTimeString());
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("ReagentExpiry: ");
-                        calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(calendar.getTime()));
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("ReagentBatch: ");
-                        calibrationDetails.append(editBatchCode.getText().toString());
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("Version: ");
-                        calibrationDetails.append(CaddisflyApp.getAppVersion(context));
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("Model: ");
-                        calibrationDetails.append(android.os.Build.MODEL).append(" (")
-                                .append(android.os.Build.PRODUCT).append(")");
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("OS: ");
-                        calibrationDetails.append(android.os.Build.VERSION.RELEASE).append(" (")
-                                .append(android.os.Build.VERSION.SDK_INT).append(")");
-                        calibrationDetails.append("\n");
-                        calibrationDetails.append("DeviceId: ");
-                        calibrationDetails.append(ApiUtil.getEquipmentId(context));
+                        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
 
                         if (!editName.getText().toString().trim().isEmpty()) {
-                            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                                    CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+
+                            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
+
                             File file = new File(path, editName.getText().toString());
 
                             if (file.exists()) {
@@ -250,31 +213,35 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                FileUtil.saveToFile(path, editName.getText().toString(),
-                                                        calibrationDetails.toString());
-                                                Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                                                saveCalibrationDetails(path);
+                                                saveDetails(testCode);
+                                                closeKeyboard(context, editName);
+                                                dismiss();
                                             }
                                         }, null
                                 );
                             } else {
-                                FileUtil.saveToFile(path, editName.getText().toString(),
-                                        calibrationDetails.toString());
-                                Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+                                saveCalibrationDetails(path);
+                                saveDetails(testCode);
+                                closeKeyboard(context, editName);
+                                dismiss();
                             }
+                        } else {
+                            saveDetails(testCode);
+                            closeKeyboard(context, editExpiryDate);
+                            dismiss();
                         }
-
-                        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
-                        PreferencesUtil.setLong(context, testCode,
-                                R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
-
-                        PreferencesUtil.setString(context, testCode,
-                                R.string.batchNumberKey, editBatchCode.getText().toString());
-
-                        ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
-
-                        closeKeyboard(context, editName);
-                        dismiss();
                     }
+                }
+
+                public void saveDetails(String testCode) {
+                    PreferencesUtil.setLong(context, testCode,
+                            R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
+
+                    PreferencesUtil.setString(context, testCode,
+                            R.string.batchNumberKey, editBatchCode.getText().toString());
+
+                    ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
                 }
 
                 private boolean formEntryValid() {
@@ -298,6 +265,22 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 }
             });
         }
+    }
+
+    private void saveCalibrationDetails(File path) {
+        final Context context = getContext();
+
+        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
+                testCode, editBatchCode.getText().toString(),
+                Calendar.getInstance().getTimeInMillis(),
+                calendar.getTimeInMillis());
+
+        FileUtil.saveToFile(path, editName.getText().toString(), calibrationDetails);
+
+        Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
+
     }
 
     /**

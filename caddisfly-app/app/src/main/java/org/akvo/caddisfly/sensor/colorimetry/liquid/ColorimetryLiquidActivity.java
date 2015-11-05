@@ -350,26 +350,28 @@ public class ColorimetryLiquidActivity extends BaseActivity
             ArrayList<Swatch> swatches = new ArrayList<>();
 
             //1 step analysis
+            swatches.add(testInfo.getSwatches().get(0));
             SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-
             results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.LAB));
-
             results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             swatches.clear();
+
             //add only the first and last swatch for a 2 step analysis
             swatches.add(testInfo.getSwatches().get(0));
             swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
-
+            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
             results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.LAB));
-
             results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
+            swatches.clear();
+
             //add the middle swatch for a 3 step analysis
-            swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2) - 1));
-
+            swatches.add(testInfo.getSwatches().get(0));
+            swatches.add(testInfo.getSwatches().get(testInfo.getSwatches().size() - 1));
+            swatches.add(1, testInfo.getSwatches().get((testInfo.getSwatches().size() / 2)));
+            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
             results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.LAB));
-
             results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             //use all the swatches for an all steps analysis

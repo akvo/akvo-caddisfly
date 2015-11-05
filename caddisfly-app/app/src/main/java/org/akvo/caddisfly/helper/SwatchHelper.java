@@ -16,24 +16,41 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import android.widget.Toast;
 
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.DateUtil;
+import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public final class SwatchHelper {
+
+    private static final int MAX_VALID_CALIBRATION_TOLERANCE = 100;
 
     private SwatchHelper() {
     }
@@ -197,7 +214,7 @@ public final class SwatchHelper {
             }
 
             if (swatch1.getDefaultColor() != Color.TRANSPARENT) {
-                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > 130) {
+                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > MAX_VALID_CALIBRATION_TOLERANCE) {
                     return false;
                 }
             }
@@ -211,10 +228,9 @@ public final class SwatchHelper {
 
         int count = 0;
         for (Swatch swatch1 : swatches) {
-            if (swatch1.getColor() == Color.TRANSPARENT || swatch1.getColor() == Color.BLACK) {
-                break;
+            if (swatch1.getColor() != Color.TRANSPARENT && swatch1.getColor() != Color.BLACK) {
+                count += 1;
             }
-            count += 1;
         }
         return count;
     }
@@ -333,20 +349,189 @@ public final class SwatchHelper {
     }
 
     public static void generateSwatches(ArrayList<Swatch> swatches, ArrayList<Swatch> testSwatches) {
-        //int[] greenArray = new int[]{0, 11, 16, 40, 26};
-        //int[] blueArray = new int[]{0, -61, -81, -40, -19};
+        int redDifferenceTotal = 0;
+        int greenDifferenceTotal = 0;
+        int blueDifferenceTotal = 0;
 
-        int[] greenArray = new int[]{0, 13, 8, 3, 19};
-        int[] blueArray = new int[]{0, -57, -40, -34, -21};
-
-        int green = Color.green(testSwatches.get(0).getColor());
-        int blue = Color.blue(testSwatches.get(0).getColor());
         for (int i = 0; i < testSwatches.size(); i++) {
-            swatches.add(new Swatch(testSwatches.get(i).getValue(),
-                    Color.rgb(255, Math.max(0, green += greenArray[i]), Math.max(0, blue += blueArray[i])),
-                    Color.TRANSPARENT));
+            Swatch clonedSwatch = (Swatch) testSwatches.get(i).clone();
+            clonedSwatch.setColor(Color.TRANSPARENT);
 
-            Log.d("Swatches", swatches.get(i).getValue() + ":" + ColorUtil.getColorRgbString(swatches.get(i).getColor()));
+            if (swatches.size() > i) {
+                Swatch swatch = swatches.get(i);
+                if (swatch.getValue() != testSwatches.get(i).getValue()) {
+                    swatches.add(i, clonedSwatch);
+                } else {
+
+                    int redDifference = Color.red(swatch.getColor()) - Color.red(swatch.getDefaultColor());
+                    int greenDifference = Color.green(swatch.getColor()) - Color.green(swatch.getDefaultColor());
+                    int blueDifference = Color.blue(swatch.getColor()) - Color.blue(swatch.getDefaultColor());
+
+                    redDifferenceTotal += redDifference;
+                    greenDifferenceTotal += greenDifference;
+                    blueDifferenceTotal += blueDifference;
+                }
+            } else {
+                swatches.add(clonedSwatch);
+            }
+        }
+
+        redDifferenceTotal = redDifferenceTotal / testSwatches.size();
+        greenDifferenceTotal = greenDifferenceTotal / testSwatches.size();
+        blueDifferenceTotal = blueDifferenceTotal / testSwatches.size();
+
+        for (Swatch swatch : swatches) {
+            if (swatch.getColor() == Color.TRANSPARENT) {
+                int color = swatch.getDefaultColor();
+
+                swatch.setColor(Color.rgb(Color.red(color) + redDifferenceTotal,
+                        Color.green(color) + greenDifferenceTotal,
+                        Color.blue(color) + blueDifferenceTotal));
+            }
         }
     }
+
+    public static String generateCalibrationFile(Context context, String testCode, String batchCode,
+                                                 long calibrationDate, long expiryDate) {
+
+        final StringBuilder calibrationDetails = new StringBuilder();
+
+        for (Swatch swatch : CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) {
+            calibrationDetails.append(String.format("%.2f", swatch.getValue()))
+                    .append("=")
+                    .append(ColorUtil.getColorRgbString(swatch.getColor()));
+            calibrationDetails.append('\n');
+        }
+
+        calibrationDetails.append("Type: ");
+        calibrationDetails.append(testCode);
+        calibrationDetails.append("\n");
+        calibrationDetails.append("Date: ");
+        calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("Calibrated: ");
+        calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("ReagentExpiry: ");
+        calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(expiryDate));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("ReagentBatch: ");
+        calibrationDetails.append(batchCode);
+        calibrationDetails.append("\n");
+        calibrationDetails.append("Version: ");
+        calibrationDetails.append(CaddisflyApp.getAppVersion(context));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("Model: ");
+        calibrationDetails.append(android.os.Build.MODEL).append(" (")
+                .append(android.os.Build.PRODUCT).append(")");
+        calibrationDetails.append("\n");
+        calibrationDetails.append("OS: ");
+        calibrationDetails.append(android.os.Build.VERSION.RELEASE).append(" (")
+                .append(android.os.Build.VERSION.SDK_INT).append(")");
+        calibrationDetails.append("\n");
+        calibrationDetails.append("DeviceId: ");
+        calibrationDetails.append(ApiUtil.getEquipmentId(context));
+        return calibrationDetails.toString();
+    }
+
+    public static ArrayList<Swatch> loadCalibrationFromFile(Context context, String fileName) throws Exception {
+        final ArrayList<Swatch> swatchList = new ArrayList<>();
+        final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
+                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+
+        ArrayList<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
+
+        if (calibrationDetails != null) {
+
+            for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
+                String line = calibrationDetails.get(i);
+                if (!line.contains("=")) {
+                    String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                    if (line.contains("Calibrated:")) {
+                        Calendar calendar = Calendar.getInstance();
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                                "yyyy-MM-dd HH:mm");
+                        if (date != null) {
+                            calendar.setTime(date);
+                            PreferencesUtil.setLong(context, testCode,
+                                    R.string.calibrationDateKey, calendar.getTimeInMillis());
+                        }
+                    }
+                    if (line.contains("ReagentExpiry:")) {
+                        Calendar calendar = Calendar.getInstance();
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                                "yyyy-MM-dd");
+                        if (date != null) {
+                            calendar.setTime(date);
+                            PreferencesUtil.setLong(context, testCode,
+                                    R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
+                        }
+                    }
+
+                    if (line.contains("ReagentBatch:")) {
+                        String batch = line.substring(line.indexOf(":") + 1).trim();
+                        PreferencesUtil.setString(context, testCode,
+                                R.string.batchNumberKey, batch);
+                    }
+                    calibrationDetails.remove(i);
+                }
+            }
+
+            for (String rgb : calibrationDetails) {
+                String[] values = rgb.split("=");
+                Swatch swatch = new Swatch(stringToDouble(values[0]),
+                        ColorUtil.getColorFromRgb(values[1]), Color.TRANSPARENT);
+                swatchList.add(swatch);
+            }
+
+            if (swatchList.size() > 0) {
+                SwatchHelper.saveCalibratedSwatches(context, swatchList);
+
+                Toast.makeText(context,
+                        String.format(context.getString(R.string.calibrationLoaded), fileName),
+                        Toast.LENGTH_SHORT).show();
+
+            } else {
+                throw new Exception();
+            }
+        }
+        return swatchList;
+    }
+
+    /**
+     * Save a list of calibrated colors
+     *
+     * @param swatches List of swatch colors to be saved
+     */
+    public static void saveCalibratedSwatches(Context context, ArrayList<Swatch> swatches) {
+
+        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        for (Swatch swatch : swatches) {
+            String key = String.format(Locale.US, "%s-%.2f",
+                    currentTestInfo.getCode(), swatch.getValue());
+
+            PreferencesUtil.setInt(context, key, swatch.getColor());
+        }
+
+        CaddisflyApp.getApp().loadCalibratedSwatches(currentTestInfo);
+    }
+
+    /**
+     * Convert a string number into a double value
+     *
+     * @param text the text to be converted to number
+     * @return the double value
+     */
+    private static double stringToDouble(String text) {
+
+        text = text.replaceAll(",", ".");
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        try {
+            return nf.parse(text).doubleValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
 }

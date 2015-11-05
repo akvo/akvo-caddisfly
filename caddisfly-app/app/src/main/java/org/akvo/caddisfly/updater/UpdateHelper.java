@@ -28,7 +28,6 @@ import android.net.Uri;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.NetUtil;
@@ -42,6 +41,8 @@ import java.util.regex.Pattern;
 public final class UpdateHelper {
 
     public static UpdateCheckReceiver checkUpdate(final Context context, boolean showMessage) {
+
+        final long FIVE_DAYS = 60000L * 60L * 24L * 5L;
 
         DownloadManager downloadManager;
         UpdateCheckReceiver updateCheckReceiver = null;
@@ -84,70 +85,49 @@ public final class UpdateHelper {
             }
         } else {
 
-            if (currentDate.getTimeInMillis() - updateLastCheck > AppConfig.UPDATE_CHECK_INTERVAL) {
+            //If five days since last server check then check server again instead of already downloaded file
+            if (currentDate.getTimeInMillis() - updateLastCheck > FIVE_DAYS) {
+                updateCheckReceiver = checkForUpdate(context);
+            } else {
 
-                //Delete all older apk install files and keep only the latest one
-                File directory = FileHelper.getFilesDir(FileHelper.FileType.DOWNLOAD, "");
-                File[] files = directory.listFiles();
-                int latestVersion = 0;
-                int fileVersion;
-                File currentFile = null;
-                for (File file : files) {
-                    Pattern pattern = Pattern.compile("(\\d+).apk");
-                    Matcher matcher = pattern.matcher(file.getName());
-                    if (matcher.find()) {
-                        fileVersion = Integer.parseInt(matcher.group(1));
-                        if (fileVersion > latestVersion) {
-                            latestVersion = fileVersion;
-                            if (currentFile != null) {
-                                //noinspection ResultOfMethodCallIgnored
-                                currentFile.delete();
-                            }
-                            currentFile = file;
-                        } else {
-                            //noinspection ResultOfMethodCallIgnored
-                            file.delete();
-                        }
-                    } else {
-                        //noinspection ResultOfMethodCallIgnored
-                        file.delete();
-                    }
-                }
+                if (currentDate.getTimeInMillis() - updateLastCheck > AppConfig.UPDATE_CHECK_INTERVAL) {
 
-                //Remove items from the download manager queue
-                downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                Cursor cursor = downloadManager.query(new DownloadManager.Query());
+                    //Remove old items from the download manager queue
+                    downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                    Cursor cursor = downloadManager.query(new DownloadManager.Query());
 
-                boolean found = false;
-                for (int i = 0; i < cursor.getCount(); i++) {
-                    cursor.moveToPosition(i);
-                    if (context.getString(R.string.appName).equals(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_TITLE)))) {
-                        int downloadStatus = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                    boolean found = false;
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        cursor.moveToPosition(i);
+                        if (context.getString(R.string.appName).equals(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_TITLE)))) {
+                            int downloadStatus = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
 
-                        switch (downloadStatus) {
-                            case DownloadManager.STATUS_SUCCESSFUL:
-                                final String filePath = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                                final File file = new File(filePath);
+                            switch (downloadStatus) {
+                                case DownloadManager.STATUS_SUCCESSFUL:
+                                    final String filePath = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+                                    final File file = new File(filePath);
 
-                                if (file.exists() && !found) {
-                                    found = true;
-                                } else {
+                                    if (file.exists() && !found) {
+                                        found = true;
+                                        if (showMessage) {
+                                            installUpdate(context, file);
+                                        }
+                                    } else {
+                                        downloadManager.remove(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_ID)));
+                                    }
+                                    break;
+                                case DownloadManager.STATUS_FAILED:
                                     downloadManager.remove(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_ID)));
-                                }
-                                break;
-                            case DownloadManager.STATUS_FAILED:
-                                downloadManager.remove(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_ID)));
-                                break;
+                                    break;
+                            }
                         }
                     }
-                }
-                cursor.close();
+                    cursor.close();
 
-                //Install the latest apk otherwise check server for updates
-                if (showMessage && currentFile != null) {
-                    installUpdate(context, currentFile);
-                } else {
-                    updateCheckReceiver = checkForUpdate(context);
+                    if (!found) {
+                        //check server for updates
+                        updateCheckReceiver = checkForUpdate(context);
+                    }
                 }
             }
         }

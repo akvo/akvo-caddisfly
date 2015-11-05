@@ -134,6 +134,7 @@ public class PreferencesUtil {
      * @param key     the key id
      * @return the stored long value
      */
+    @SuppressWarnings("WeakerAccess")
     public static long getLong(Context context, String key) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

@@ -16,11 +16,11 @@
 
 package org.akvo.caddisfly.updater;
 
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+
+import org.akvo.caddisfly.helper.FileHelper;
 
 public class DownloadReceiver extends BroadcastReceiver {
 
@@ -29,14 +29,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-        Uri filePath = downloadManager.getUriForDownloadedFile(referenceId);
-        Intent i = new Intent(context, UpdateActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra("referenceId", referenceId);
-        i.putExtra("filePath", filePath.getPath());
-        context.startActivity(i);
+        //Delete all older apk install files and keep only the latest one
+        FileHelper.cleanInstallFolder(true);
     }
 }

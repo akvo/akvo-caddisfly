@@ -134,14 +134,14 @@
             android:enabled="true" />
         <service android:name=".updater.UpdateIntentService" />
 
-        <!--<receiver-->
-        <!--android:name=".helper.DownloadReceiver"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver
+            android:name=".updater.DownloadReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

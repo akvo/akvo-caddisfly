@@ -16,7 +16,7 @@
 
 package org.akvo.caddisfly.model;
 
-public class Swatch {
+public class Swatch implements Cloneable {
     private final double value;
     private final int defaultColor;
     private int color;
@@ -41,5 +41,13 @@ public class Swatch {
 
     public int getDefaultColor() {
         return defaultColor;
+    }
+
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }

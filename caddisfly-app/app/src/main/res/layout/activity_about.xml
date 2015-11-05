@@ -94,13 +94,20 @@
                 android:id="@+id/buttonSoftwareNotices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoLink="all"
                 android:fontFamily="sans-serif"
-                android:paddingBottom="15dp"
+                android:paddingBottom="10dp"
                 android:paddingTop="5dp"
                 android:text="@string/legalInformation"
                 android:textColor="@color/cyan"
                 android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/imageStoreIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.4"
+                android:contentDescription="@null"
+                android:src="@android:drawable/arrow_down_float" />
 
         </LinearLayout>
     </LinearLayout>
