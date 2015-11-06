@@ -30,4 +30,9 @@ public class ColorimetryLiquidConfig {
      * The number of photos to take during analysis
      */
     public static final int SAMPLING_COUNT_DEFAULT = 5;
+    /**
+     * Tolerance at which a calibrated color is valid when compared to expected color
+     */
+    public static final int MAX_VALID_CALIBRATION_TOLERANCE = 100;
+
 }

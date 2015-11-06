@@ -49,10 +49,9 @@ import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
-import static org.akvo.caddisfly.TestHelper.getActivityInstance;
+import static org.akvo.caddisfly.TestUtil.getActivityInstance;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
-
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest

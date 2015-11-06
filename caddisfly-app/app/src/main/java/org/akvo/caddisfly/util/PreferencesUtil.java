@@ -242,6 +242,10 @@ public class PreferencesUtil {
         editor.apply();
     }
 
+    public static void removeKey(Context context, @StringRes int keyId) {
+        removeKey(context, getKey(context, keyId));
+    }
+
     /**
      * Removes the key from the preferences
      *

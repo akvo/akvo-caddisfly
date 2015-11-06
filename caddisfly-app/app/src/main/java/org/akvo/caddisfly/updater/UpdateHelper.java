@@ -86,7 +86,7 @@ public final class UpdateHelper {
         } else {
 
             //If five days since last server check then check server again instead of already downloaded file
-            if (currentDate.getTimeInMillis() - updateLastCheck > FIVE_DAYS) {
+            if (updateLastCheck > -1 && currentDate.getTimeInMillis() - updateLastCheck > FIVE_DAYS) {
                 updateCheckReceiver = checkForUpdate(context);
             } else {
 

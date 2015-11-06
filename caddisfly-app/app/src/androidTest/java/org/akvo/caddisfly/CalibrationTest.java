@@ -47,15 +47,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.TestHelper.clickListViewItem;
+import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.mDevice;
-import static org.akvo.caddisfly.TestHelper.saveOutOfSequence;
-import static org.akvo.caddisfly.TestHelper.sleep;
+import static org.akvo.caddisfly.TestHelper.saveCalibration;
+import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.hamcrest.Matchers.not;
 
@@ -97,7 +97,7 @@ public class CalibrationTest {
     @Test
     public void testOutOfSequence() {
 
-        saveOutOfSequence();
+        saveCalibration("OutOfSequence");
 
         goToMainScreen();
 

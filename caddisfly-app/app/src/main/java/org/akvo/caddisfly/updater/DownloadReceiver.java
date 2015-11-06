@@ -20,7 +20,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 public class DownloadReceiver extends BroadcastReceiver {
 
@@ -31,5 +33,8 @@ public class DownloadReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //Delete all older apk install files and keep only the latest one
         FileHelper.cleanInstallFolder(true);
+
+        //To Force an update check so that the update dialog gets shown
+        PreferencesUtil.removeKey(context, R.string.lastUpdateCheckKey);
     }
 }

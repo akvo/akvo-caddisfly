@@ -28,6 +28,7 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.DateUtil;
@@ -49,8 +50,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public final class SwatchHelper {
-
-    private static final int MAX_VALID_CALIBRATION_TOLERANCE = 100;
 
     private SwatchHelper() {
     }
@@ -214,7 +213,8 @@ public final class SwatchHelper {
             }
 
             if (swatch1.getDefaultColor() != Color.TRANSPARENT) {
-                if (ColorUtil.getColorDistance(swatch1.getColor(), swatch1.getDefaultColor()) > MAX_VALID_CALIBRATION_TOLERANCE) {
+                if (ColorUtil.getColorDistance(swatch1.getColor(),
+                        swatch1.getDefaultColor()) > ColorimetryLiquidConfig.MAX_VALID_CALIBRATION_TOLERANCE) {
                     return false;
                 }
             }

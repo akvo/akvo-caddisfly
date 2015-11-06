@@ -28,6 +28,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Matchers;
@@ -49,9 +50,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.TestHelper.clickListViewItem;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
@@ -59,16 +60,17 @@ import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestHelper.saveHighLevelCalibration;
-import static org.akvo.caddisfly.TestHelper.saveLowLevelCalibration;
-import static org.akvo.caddisfly.TestHelper.sleep;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.TestUtil.clickListViewItem;
+import static org.akvo.caddisfly.TestUtil.getText;
+import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AnalysisTest {
 
+    private static final int TEST_START_DELAY = 16000;
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -95,12 +97,15 @@ public class AnalysisTest {
 
         mActivityRule.launchActivity(mActivityRule.getActivity().getIntent());
 
+        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12));
+
     }
 
     @Test
     public void testStartASurvey() {
 
-        saveCalibration();
+        saveCalibration("TestValid");
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -116,11 +121,9 @@ public class AnalysisTest {
 
         onView(withId(R.id.menuLoad)).perform(click());
 
-        sleep(2000);
+        sleep(1000);
 
         clickListViewItem("TestValid");
-
-        sleep(2000);
 
         goToMainScreen();
 
@@ -176,8 +179,6 @@ public class AnalysisTest {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        sleep(500);
-
         onView(withId(R.id.editBatchCode))
                 .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
 
@@ -202,7 +203,7 @@ public class AnalysisTest {
             e.printStackTrace();
         }
 
-        sleep(3000);
+        sleep(2000);
 
         mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
 
@@ -210,7 +211,7 @@ public class AnalysisTest {
 
         mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
 
-        mDevice.waitForWindowUpdate("", 2000);
+        mDevice.waitForWindowUpdate("", 1000);
 
         clickListViewItem("Automated Tests");
 
@@ -219,7 +220,7 @@ public class AnalysisTest {
     @Test
     public void testStartNoDilutionTest() {
 
-        saveLowLevelCalibration();
+        saveCalibration("TestValid");
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -245,11 +246,9 @@ public class AnalysisTest {
 
         onView(withId(R.id.menuLoad)).perform(click());
 
-        sleep(2000);
+        sleep(1000);
 
-        clickListViewItem("LowLevelTest");
-
-        sleep(2000);
+        clickListViewItem("TestValid");
 
         leaveDiagnosticMode();
 
@@ -259,7 +258,7 @@ public class AnalysisTest {
 
         clickExternalSourceButton("useExternalSource");
 
-        sleep(2000);
+        sleep(1000);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -267,7 +266,8 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();
@@ -290,7 +290,7 @@ public class AnalysisTest {
     @Test
     public void testStartHighLevelTest() {
 
-        saveHighLevelCalibration();
+        saveCalibration("HighLevelTest");
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -310,11 +310,11 @@ public class AnalysisTest {
 
         onView(withId(R.id.menuLoad)).perform(click());
 
-        sleep(2000);
+        sleep(1000);
 
         clickListViewItem("HighLevelTest");
 
-        sleep(2000);
+        sleep(1000);
 
         leaveDiagnosticMode();
 
@@ -324,7 +324,7 @@ public class AnalysisTest {
 
         clickExternalSourceButton("useExternalSource");
 
-        sleep(2000);
+        sleep(1000);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -338,7 +338,7 @@ public class AnalysisTest {
         onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
                 ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 2)))
@@ -363,7 +363,8 @@ public class AnalysisTest {
         onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
 
-        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 5)))
                 .check(matches(isCompletelyDisplayed()));
@@ -390,10 +391,11 @@ public class AnalysisTest {
         //Test Progress Screen
         takeScreenshot();
 
-        sleep(16000 + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("10" + dfs.getDecimalSeparator() + "00")).check(matches(isCompletelyDisplayed()));
+        double result = Double.valueOf(getText(withId(R.id.textResult)));
+        assertTrue("Result is wrong", result > 9);
 
         onView(withId(R.id.buttonOk)).perform(click());
 
@@ -404,9 +406,5 @@ public class AnalysisTest {
         mDevice.pressBack();
 
         mDevice.pressBack();
-
-//        onView(withId(android.R.id.list)).check(matches(withChildCount(is(greaterThan(0)))));
-//        onView(withText(R.string.startTestConfirm)).check(matches(isDisplayed()));
-
     }
 }

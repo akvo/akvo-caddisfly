@@ -49,7 +49,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.TestHelper.clickListViewItem;
+import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
@@ -57,8 +57,7 @@ import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestHelper.saveInvalidCalibration;
-import static org.akvo.caddisfly.TestHelper.sleep;
+import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
 
@@ -96,7 +95,7 @@ public class NavigationTest {
     @Test
     public void testNavigateAll() {
 
-        saveInvalidCalibration();
+        saveCalibration("TestInvalid");
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
 
@@ -150,7 +149,7 @@ public class NavigationTest {
 
         sleep(2000);
 
-        clickListViewItem("TestInvalid");
+        clickListViewItem("TestValid");
 
         sleep(2000);
 
@@ -190,7 +189,7 @@ public class NavigationTest {
 
         onView(withId(R.id.buttonStart)).perform(click());
 
-        saveCalibration();
+        saveCalibration("TestValid");
 
         goToMainScreen();
 
