@@ -18,13 +18,19 @@
         android:background="@android:color/transparent"
         android:id="@+id/activity_cameraFinderPatternIndicatorView"
         />
-    <View
+    <RelativeLayout
         android:id="@+id/transparent_window"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
-        android:background="@android:color/transparent" />
-
+        android:background="@android:color/transparent" >
+    <org.akvo.akvoqr.ui.LevelView
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:layout_centerInParent="true"
+        android:id="@+id/activity_cameraImageViewLevel"
+        android:visibility="visible"/>
+        </RelativeLayout>
     <View
         android:id="@+id/black_bottom_box"
         android:layout_width="match_parent"
@@ -129,13 +135,7 @@
             android:layout_gravity="center_horizontal"
             android:text="Level"
             android:visibility="gone"/>
-        <org.akvo.akvoqr.ui.LevelView
-            android:layout_width="48dip"
-            android:layout_height="48dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:id="@+id/activity_cameraImageViewLevel"
-            android:visibility="gone"/>
+
     </LinearLayout>
 
     <Button

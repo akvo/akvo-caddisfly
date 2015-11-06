@@ -134,9 +134,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     RelativeLayout.LayoutParams params;
                     params = (RelativeLayout.LayoutParams) transView.getLayoutParams();
                     params.height = (int) Math.round(transView.getWidth() * Constant.CROP_CAMERAVIEW_FACTOR);
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     transView.setLayoutParams(params);
                     transView.postInvalidate();
-
                 }
             });
         }
@@ -357,15 +357,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        Runnable hideView = new Runnable() {
-            @Override
-            public void run() {
-                focusView.setVisibility(View.GONE);
-                messageFocusView.setVisibility(View.GONE);
-            }
-        };
         if(handler!=null) {
-            handler.post(hideView);
+
         }
 
     }
@@ -379,7 +372,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             public void run() {
 
                 exposureView.setPercentage((float)value);
-
             }
         };
 
@@ -396,22 +388,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
-//                if(messageContrastView !=null) {
-//                    messageContrastView.setText(getString(R.string.contrast));
-//
-//                    if(value<101)
-//                    {
-//                        messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
-//                    }
-//                }
-//                if(value < Constant.MAX_SHADOW_PERCENTAGE)
-//                {
-//                    contrastView.setImageResource(R.drawable.contrast_green);
-//                }
-//                else
-//                {
-//                    contrastView.setImageResource(R.drawable.contrast_red);
-//                }
 
                 contrastView.setPercentage((float)value);
             }
@@ -436,14 +412,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null)
         {
-           // handler.post(levelRunnable);
+           handler.post(levelRunnable);
         }
     }
 
     @Override
-    public void adjustExposureCompensation(int goOnInSameDirection)
+    public void adjustExposureCompensation(int direction)
     {
-        mPreview.adjustExposure(goOnInSameDirection);
+        mPreview.adjustExposure(direction);
     }
 
     private Runnable startNextPreview = new Runnable() {
