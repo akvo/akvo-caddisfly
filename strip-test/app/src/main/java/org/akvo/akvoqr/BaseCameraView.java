@@ -169,7 +169,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     //exposure compensation
-    private static int direction = 1;
+   // private static int direction = 1;
     public void adjustExposure(int direction)
     {
         if(mCamera==null)

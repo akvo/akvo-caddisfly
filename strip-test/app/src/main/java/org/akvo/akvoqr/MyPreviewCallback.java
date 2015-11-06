@@ -8,8 +8,6 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.detector.BinaryBitmap;
@@ -51,75 +49,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private Camera.Size previewSize;
     private int previewFormat;
     private boolean focused = true;
-    private Handler handler;
-    private Handler focusHandler;
     private  LightSensor lightSensor;
-    double shadowPercentage = 101;
     LinkedList<Double> lumTrack = new LinkedList<>();
+    LinkedList<Double> shadowTrack = new LinkedList<>();
 
-    private Thread showFinderPatternThread = new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Looper.prepare();
-
-                        handler = new Handler();
-
-                        Looper.loop();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-    );
-    private Thread focusThread = new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Looper.prepare();
-
-                        focusHandler = new Handler();
-
-                        Looper.loop();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-    );
-
-    Runnable showFinderPatternRunnable = new Runnable() {
-        @Override
-        public void run() {
-
-            if (listener != null && possibleCenters != null && previewSize != null) {
-
-                listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
-            }
-        }
-    };
-
-    private Runnable focusRunnable =  new Runnable() {
-        @Override
-        public void run() {
-
-            camera.autoFocus(new Camera.AutoFocusCallback() {
-                @Override
-                public void onAutoFocus(boolean success, Camera camera) {
-                    //System.out.println("***focused = " + success);
-                    focused = success;
-                }
-            });
-        }
-    };
     public static MyPreviewCallback getInstance(Context context) {
 
         return new MyPreviewCallback(context);
@@ -132,10 +65,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             throw new ClassCastException(" must implement cameraviewListener");
         }
 
-        possibleCenters = new ArrayList<>();
+        finderPatternColor = Color.parseColor("#f02cb673");
 
-        showFinderPatternThread.start();
-        focusThread.start();
+        possibleCenters = new ArrayList<>();
 
         lightSensor = new LightSensor();
         lightSensor.start();
@@ -150,7 +82,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         previewFormat = camera.getParameters().getPreviewFormat();
 
         focused = false;
-        finderPatternColor = Color.GREEN;
 
         FinderPatternInfo info;
         info = findPossibleCenters(data, previewSize);
@@ -166,7 +97,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         new SendDataTask(info).execute(data);
 
     }
-
 
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
@@ -198,8 +128,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         {
                             camera.stopPreview();
                             listener.playSound();
-                            finderPatternColor = Color.parseColor("#f02cb673");
-                            handler.post(showFinderPatternRunnable);
 
                             data = compressToJpeg(data);
 
@@ -271,8 +199,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         boolean luminosityQualOk = false;
         boolean shadowQualOk = false;
         boolean levelQualOk = false;
-        double laplacian;
-        double focusQual;
 
         try {
             if (possibleCenters != null && possibleCenters.size() > 0) {
@@ -301,91 +227,63 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     //brightness: add lum. values to list
                     addLumToList(src_gray, lumList);
-                    //brightness: do the checks
-                    luminosityQualOk = luminosityCheck(lumList);
 
                     //focus: add values to list
-                    laplacian = PreviewUtils.focusLaplacian1(src_gray);
-                    // correct the focus quality parameter for the total luminosity range of the finder pattern
-                    // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
-                    double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
-                    if(lumMinMax.length==2) {
-                        focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
-
-                        //System.out.println("***focusQual =  " + focusQual );
-
-                        //never more than 100%
-                        focusQual = Math.min(focusQual,100);
-
-                        if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
-                            try {
-                                focusList.add(Double.valueOf(focusQual));
-                            } catch (Exception e) {
-                                System.out.println("***exception adding to focuslist.");
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                    addFocusQualToList(src_gray, focusList);
                 }
             }
-            else
-            {
+            else {
                 //if no finder patterns are found, remove one from track
                 //when device e.g. is put down, slowly the value becomes zero
                 //'slowly' being about a second
-                if(lumTrack.size()>0) {
+                if (lumTrack.size() > 0) {
                     lumTrack.removeFirst();
                 }
+                if (shadowTrack.size() > 0){
+                    shadowTrack.removeFirst();
+                }
             }
+
+            //brightness: do the checks
+            double maxmaxLum = luminosityCheck(lumList);
+            luminosityQualOk = maxmaxLum > Constant.MIN_LUMINOSITY_PERCENTAGE;
+
+            //System.out.println("***lumTrack size: " + lumTrack.size());
 
             if(lumTrack.size()<1) {
                 //show zero values
                 listener.showMaxLuminosity(false, 0);
             }
+            else
+            {
+                listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
+            }
 
+            // DETECT SHADOWS
+            double shadowPercentage = detectShadows(info, bgr);
+            shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+            if(shadowTrack.size()<1) {
+                //101 means 'no data'
+                listener.showShadow(101);
+            }else {
+                listener.showShadow(shadowTrack.getLast());
+            }
 
             // focus: do the checks
             // if focus is too low, do another round of focussing
             if(focusList.size() > 0) {
                 Collections.sort(focusList);
-                listener.showFocusValue(focusList.get(0));
                 if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
 
-                    // focusHandler.post(focusRunnable);
                     focused = false;
-                }
-                else
-                {
+
+                } else {
+
                     focused = true;
-                    //focusHandler.removeCallbacks(focusRunnable);
-                }
-            } else {
 
-                listener.showFocusValue(0);
-            }
-
-            // DETECT SHADOWS
-            if(info != null) {
-                double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
-                double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
-                double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
-                double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-                Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
-
-                try
-                {
-                    if(versionNumber!=CalibrationCard.CODE_NOT_FOUND)
-                        shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
-                    //System.out.println("***versionNumber 2: " + versionNumber);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
                 }
             }
 
-            shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
-            listener.showShadow(shadowPercentage);
 
             //GET ANGLE
             if(info!=null) {
@@ -414,6 +312,73 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
     }
 
+    private double detectShadows(FinderPatternInfo info, Mat bgr) throws Exception
+    {
+        double shadowPercentage = 101;
+
+        //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
+        if(shadowTrack.size()>25) {
+            shadowTrack.removeFirst();
+        }
+
+        if(info != null) {
+            double[] tl = new double[]{info.getTopLeft().getX(), info.getTopLeft().getY()};
+            double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
+            double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
+            double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
+            Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
+
+            try
+            {
+                if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    //System.out.println("***versionNumber 2: " + versionNumber);
+                    shadowTrack.add(shadowPercentage);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally {
+                if(warp!=null)
+                    warp.release();
+            }
+        }
+
+        return shadowPercentage;
+
+    }
+
+    private void addFocusQualToList(Mat src_gray, List<Double> focusList)
+    {
+        double laplacian;
+        double focusQual;
+
+        laplacian = PreviewUtils.focusLaplacian1(src_gray);
+        // correct the focus quality parameter for the total luminosity range of the finder pattern
+        // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
+        double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
+
+        if(lumMinMax.length==2) {
+            focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
+
+            //System.out.println("***focusQual =  " + focusQual );
+
+            //never more than 100%
+            focusQual = Math.min(focusQual,100);
+
+            if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
+                try {
+                    focusList.add(Double.valueOf(focusQual));
+                } catch (Exception e) {
+                    System.out.println("***exception adding to focuslist.");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void addLumToList(Mat src_gray, List<double[]> lumList)
     {
         double[] lumMinMax;
@@ -424,7 +389,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             lumList.add(lumMinMax);
         }
     }
-    private boolean luminosityCheck(List<double[]> lumList)
+    private double luminosityCheck(List<double[]> lumList)
     {
 
         double maxminLum = -1; //highest value of 'black'
@@ -450,7 +415,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         if(lumTrack.size()>25) {
             lumTrack.removeFirst();
         }
-
 
         if(lumList.size() > 0) {
 
@@ -486,9 +450,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     if(lumTrack.size()>2)
                         lumTrack.removeLast();
 
-                    luminosityQualOk = true;
-
-                    System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+                    //System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
 
                 }
                 else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
@@ -500,14 +462,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 }
             }
 
-            if(luminosityQualOk)
-                listener.showMaxLuminosity(true, maxmaxLum);
-            else
-                listener.showMaxLuminosity(false, maxmaxLum);
-
         }
 
-        return luminosityQualOk;
+        return maxmaxLum;
     }
 
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
@@ -554,16 +511,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     }
                 }
                 //System.out.println("***possible centers size: " + possibleCenters.size());
-                if (handler != null && possibleCenters != null && previewSize != null) {
+                if (possibleCenters != null && previewSize != null) {
 
-                    handler.post(showFinderPatternRunnable);
-
-
+                    listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
 
                     try {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-                            System.out.println("***versionNumber: " + versionNumber);
+                            //System.out.println("***versionNumber: " + versionNumber);
                         }
                     }
                     catch (Exception e)

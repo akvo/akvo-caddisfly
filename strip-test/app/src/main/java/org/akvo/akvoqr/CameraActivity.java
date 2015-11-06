@@ -23,6 +23,7 @@ import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.LevelView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
+import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.opencv.android.BaseLoaderCallback;
@@ -43,9 +44,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     MyPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
-    private TextView messageLightView;
-    private TextView messageFocusView;
-    private TextView messageContrastView;
     private ProgressIndicatorView progressIndicatorView;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
@@ -73,9 +71,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         handler = new Handler(Looper.getMainLooper());
 
-        messageLightView = (TextView) findViewById(R.id.camera_preview_messageLightView);
-        messageFocusView = (TextView) findViewById(R.id.camera_preview_messageFocusView);
-        messageContrastView = (TextView) findViewById(R.id.camera_preview_messageContrastView);
         progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
@@ -102,7 +97,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
 
         //use brightness view as a button to switch on and off the flash
-        ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
+        QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
         exposureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,15 +314,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
     {
-        Runnable showFinderPatternsRunnable = new Runnable() {
-            @Override
-            public void run() {
-                finderPatternIndicatorView.setColor(color);
-                finderPatternIndicatorView.showPatterns(patterns, size);
-            }
-        };
-        handler.post(showFinderPatternsRunnable);
+        finderPatternIndicatorView.setColor(color);
+        finderPatternIndicatorView.showPatterns(patterns, size);
     }
+
     @Override
     public void getMessage(int what) {
         if(mCamera!=null && mPreview!=null && !isFinishing()) {
@@ -347,6 +337,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showFocusValue(final double value)
     {
         final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
+        final TextView messageFocusView = (TextView) findViewById(R.id.camera_preview_messageFocusView);
 
         Runnable showMessage = new Runnable() {
             @Override
@@ -365,68 +356,64 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
             }
         };
+
+        Runnable hideView = new Runnable() {
+            @Override
+            public void run() {
+                focusView.setVisibility(View.GONE);
+                messageFocusView.setVisibility(View.GONE);
+            }
+        };
         if(handler!=null) {
-            handler.post(showMessage);
+            handler.post(hideView);
         }
 
     }
     @Override
     public void showMaxLuminosity(final boolean ok, final double value){
 
-        final ImageView exposureView = (ImageView) findViewById(R.id.activity_cameraImageViewExposure);
+        final QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
 
-        Runnable showMessage = new Runnable() {
+        Runnable show = new Runnable() {
             @Override
             public void run() {
 
-                String valueString;
-                if(ok)
-                {
-                    exposureView.setImageResource(R.drawable.exposure_green);
-                    valueString = "100%" +" (max lum: " + String.format("%.0f",value) + ")";
-                }
-                else
-                {
-                    exposureView.setImageResource(R.drawable.exposure_red);
-                    valueString = String.format("%.0f",100*value/254)+"% (max lum: " + String.format("%.0f",value) + ")";
-                }
-
-                if(messageLightView !=null)
-                    messageLightView.setText(getString(R.string.light) +": " + valueString);
+                exposureView.setPercentage((float)value);
 
             }
         };
 
         if(handler!=null) {
-            handler.post(showMessage);
+            handler.post(show);
         }
     }
 
     @Override
     public void showShadow(final double value){
 
-        final ImageView contrastView = (ImageView) findViewById(R.id.activity_cameraImageViewContrast);
+        final QualityCheckView contrastView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewContrast);
 
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
-                if(messageContrastView !=null) {
-                    messageContrastView.setText(getString(R.string.contrast));
+//                if(messageContrastView !=null) {
+//                    messageContrastView.setText(getString(R.string.contrast));
+//
+//                    if(value<101)
+//                    {
+//                        messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
+//                    }
+//                }
+//                if(value < Constant.MAX_SHADOW_PERCENTAGE)
+//                {
+//                    contrastView.setImageResource(R.drawable.contrast_green);
+//                }
+//                else
+//                {
+//                    contrastView.setImageResource(R.drawable.contrast_red);
+//                }
 
-                    if(value<101)
-                    {
-                        messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
-                    }
-                }
-                if(value < Constant.MAX_SHADOW_PERCENTAGE)
-                {
-                    contrastView.setImageResource(R.drawable.contrast_green);
-                }
-                else
-                {
-                    contrastView.setImageResource(R.drawable.contrast_red);
-                }
-
+                contrastView.setPercentage((float)value);
             }
         };
 
@@ -449,7 +436,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null)
         {
-            handler.post(levelRunnable);
+           // handler.post(levelRunnable);
         }
     }
 
