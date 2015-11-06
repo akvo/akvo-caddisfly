@@ -332,7 +332,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
                     shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
-                    //System.out.println("***versionNumber 2: " + versionNumber);
+                    //System.out.println("***versionNumber : " + versionNumber);
                     shadowTrack.add(shadowPercentage);
                 }
             }

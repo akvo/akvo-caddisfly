@@ -100,19 +100,25 @@ public class ProgressIndicatorView extends View {
     public void onDraw(Canvas canvas)
     {
         canvas.drawARGB(255, 0, 0, 0);
-        //distance = (int) Math.round(canvas.getHeight() * 0.75)/totalSteps;
-        distance = canvas.getWidth();
+
+        distance = canvas.getWidth()<canvas.getHeight()? canvas.getWidth(): canvas.getHeight();
 
         //background
-        canvas.drawRect(canvas.getWidth()/2 - 20, 20, canvas.getWidth()/2 + 20, canvas.getHeight(), stripPaint);
+        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), stripPaint);
+
+        canvas.save();
+        //make smaller and center vertically before drawing patches
+        canvas.scale(1f, 0.75f);
+        distance = (int)Math.round(0.75 * distance);
+        canvas.translate(0f, 0.5f * distance);
 
         //patches
         for(int i=0;i < totalSteps;i++) {
 
-            Rect rect = new Rect(canvas.getWidth()/2 - 17,
-                    (distance * i + distance/2),
-                    canvas.getWidth()/2 + 17,
-                    (distance * i) + distance/2 + 34);
+            Rect rect = new Rect(0,
+                    0,
+                    distance,
+                    distance);
 
             if(i < stepsTaken)
             {
@@ -131,12 +137,16 @@ public class ProgressIndicatorView extends View {
                         canvas.drawText( countdown,
                         rect.centerX()-textWidth/2, rect.centerY(), textPaint);
             }
+            canvas.translate(distance + 10f, 0);
         }
+
+        canvas.restore();
 
         //time lapsed
         double timeScale = (double)canvas.getHeight()/(double)duration;
         canvas.drawRect(canvas.getWidth() - 10, 2, canvas.getWidth(),
                 (float) (timeLapsed * timeScale), timePaint);
+
 
     }
 

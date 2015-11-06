@@ -44,13 +44,12 @@
         android:id="@+id/camera_preview_messageDurationView"
         android:textColor="@color/lightblue"
         android:background="#99000000"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/transparent_window"
-        android:gravity="right"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/activity_cameraMessagesLayout"
         android:text="@string/duration"/>
     <org.akvo.akvoqr.ui.ProgressIndicatorView
-        android:layout_width="@dimen/ppm_circle_area"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/ppm_circle_area"
+        android:layout_width="match_parent"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/camera_preview_messageDurationView"
         android:id="@+id/activity_cameraProgressIndicatorView"/>
