@@ -213,10 +213,11 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-            if(mCamera.getParameters().getMaxNumFocusAreas()>0) {
+            if(mCamera.getParameters().getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
                 try {
                     //make sure area list does not exceed max num areas allowed
-                    List<Camera.Area> subAreas = areas.subList(0, mCamera.getParameters().getMaxNumFocusAreas());
+                    int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
+                    List<Camera.Area> subAreas = areas.subList(0, length);
 
                     Camera.Parameters parameters = mCamera.getParameters();
                     parameters.setFocusAreas(subAreas);
