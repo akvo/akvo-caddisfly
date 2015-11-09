@@ -180,11 +180,10 @@ public class OpenCVUtils {
     public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH)
     {
 
-        Mat lab = new Mat();
         List<Mat> channels = new ArrayList<>();
 
-        Imgproc.cvtColor(striparea, lab, Imgproc.COLOR_BGR2Lab, 0);
-
+        //Imgproc.cvtColor(striparea, lab, Imgproc.COLOR_BGR2Lab, 0);
+        Mat lab = striparea.clone();
         Imgproc.medianBlur(lab, lab, 11);
 
         Mat temp = lab.clone();

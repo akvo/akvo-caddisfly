@@ -171,7 +171,7 @@ public class DetectStripActivity extends AppCompatActivity {
             JSONArray imagePatchArray = null;
             int imageCount = -1;
             // Mat for detected strip
-            Mat rgba = new Mat();
+            Mat labStrip = new Mat();
 
             try {
                 String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH+".txt");
@@ -223,9 +223,7 @@ public class DetectStripActivity extends AppCompatActivity {
                             }
 
                             // save warped image to external storage
-
                             if (develop) {
-//                        Mat bgr = new Mat(warp, width, CvType.CV_8UC3);
                                 Mat rgb = new Mat();
                                 Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_Lab2RGB);
                                 Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
@@ -240,7 +238,6 @@ public class DetectStripActivity extends AppCompatActivity {
 
                             //find calibration patches
                             try {
-
                                 showMessage(getString(R.string.calibrating));
                                 cal_dest = getCalibratedImage(warp_dst);
 
@@ -264,9 +261,7 @@ public class DetectStripActivity extends AppCompatActivity {
                             if (roiStriparea != null)
                                 striparea = cal_dest.submat(roiStriparea);
 
-
                             if (striparea != null) {
-
                                 showMessage(getString(R.string.cut_out_strip));
 
                                 StripTest stripTestBrand = StripTest.getInstance();
@@ -275,20 +270,22 @@ public class DetectStripActivity extends AppCompatActivity {
                                 Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
 
                                 if (strip != null) {
-                                    Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGB);
+                                    labStrip = strip.clone();
+                                    //Imgproc.cvtColor(strip, labStrip, Imgproc.COLOR_Lab2RGB);
                                 } else {
                                     showMessage(getString(R.string.error_cut_out_strip));
-                                    Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGB);
+                                    labStrip = striparea.clone();
+                                    //Imgproc.cvtColor(striparea, labStrip, Imgproc.COLOR_Lab2RGB);
 
                                     //draw a red cross over the image
-                                    Imgproc.line(rgba, new Point(0, 0), new Point(rgba.cols(),
-                                            rgba.rows()), new Scalar(255, 0, 0, 255), 2);
-                                    Imgproc.line(rgba, new Point(0, rgba.rows()), new Point(rgba.cols(),
+                                    Imgproc.line(labStrip, new Point(0, 0), new Point(labStrip.cols(),
+                                            labStrip.rows()), new Scalar(255, 0, 0, 255), 2);
+                                    Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),
                                             0), new Scalar(255, 0, 0, 255), 2);
                                 }
                             }
                         }
-                        resultList.add(rgba);
+                        resultList.add(labStrip);
                     }
                 } catch (Exception e) {
                     showMessage(getString(R.string.error_unknown));
