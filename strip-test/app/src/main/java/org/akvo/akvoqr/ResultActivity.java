@@ -45,23 +45,6 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Mat> mats;
     private Mat strip;
     private LinearLayout layout;
-    private Scalar[] testColorsListRGB = new Scalar[]
-            {
-                    new Scalar(255, 232.21, 168.64), //light yellow
-                    new Scalar(208.83, 218.83, 150.51), //light green
-                    new Scalar(255, 168.51, 161.92), //medium pink
-                    new Scalar(200.30, 169.03, 181.46), //lilac
-                    new Scalar(239.90, 117.48, 142.37) //dark pink
-
-            };
-    private Scalar[] testColorsListLab = new Scalar[]
-            {
-                    new Scalar(64.27, 48.17, - 3.48),
-                    new Scalar(73.02,10.895, - 17.26),
-                    new Scalar(77.915, 30.98, 3.01),
-                    new Scalar(85.93, - 16.24, 20),
-                    new Scalar(93.58, 0.6, 20.37)
-            };
     private int testCount = 0;
 
     @Override
@@ -207,7 +190,14 @@ public class ResultActivity extends AppCompatActivity {
 
             double[] colorValue = colorDetected.getLab().val;
             String colorSchema = "lab"; //must correspond with name of property in strips.json
-            ppm = calculatePPM(colorValue, colours, colorSchema);
+            try {
+                ppm = calculatePPM(colorValue, colours, colorSchema);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                ppm = Double.NaN;
+            }
 
             //done with lab shema, make rgb to show in imageview
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
@@ -257,7 +247,7 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    private double calculatePPM(double[] colorValues, JSONArray colours, String colorSchema) {
+    private double calculatePPM(double[] colorValues, JSONArray colours, String colorSchema) throws Exception{
 
         List<Pair<Integer,Double>> labdaList = new ArrayList<>();
         double ppm = Double.MAX_VALUE;
@@ -295,6 +285,10 @@ public class ResultActivity extends AppCompatActivity {
                 //in strips.json, lab values are between -128 and 128, but here we use the OpenCV standard: 0 - 255
                 if(colorSchema.equals("lab"))
                 {
+                    if(pointA.length !=3 || pointB.length!=3)
+                    {
+                        throw new Exception("no valid lab data.");
+                    }
                     for(int i=0;i<3;i++)
                     {
                         pointA[i] = pointA[i]+128;
@@ -472,7 +466,17 @@ public class ResultActivity extends AppCompatActivity {
 
     private void testRGB(double[] pointC)
     {
+        Scalar[] testColorsListRGB = new Scalar[]
+                {
+                        new Scalar(255, 232.21, 168.64), //light yellow
+                        new Scalar(208.83, 218.83, 150.51), //light green
+                        new Scalar(255, 168.51, 161.92), //medium pink
+                        new Scalar(200.30, 169.03, 181.46), //lilac
+                        new Scalar(239.90, 117.48, 142.37) //dark pink
+
+                };
         Locale l = Locale.US;
+
         System.out.print("***test color ,");
         System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListRGB[testCount].val[0]) +
                 ", " + String.format(l, "%.2f", testColorsListRGB[testCount].val[1]) + ", " +
@@ -498,6 +502,14 @@ public class ResultActivity extends AppCompatActivity {
 
     private void testLab(double[] pointC)
     {
+        Scalar[] testColorsListLab = new Scalar[]
+                {
+                        new Scalar(64.27, 48.17, - 3.48),
+                        new Scalar(73.02,10.895, - 17.26),
+                        new Scalar(77.915, 30.98, 3.01),
+                        new Scalar(85.93, - 16.24, 20),
+                        new Scalar(93.58, 0.6, 20.37)
+                };
         Locale l = Locale.US;
         System.out.print("***test color Lab,");
         System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
