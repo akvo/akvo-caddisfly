@@ -26,6 +26,7 @@ import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
+import org.json.JSONArray;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -134,9 +135,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     RelativeLayout.LayoutParams params;
                     params = (RelativeLayout.LayoutParams) transView.getLayoutParams();
                     params.height = (int) Math.round(transView.getWidth() * Constant.CROP_CAMERAVIEW_FACTOR);
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     transView.setLayoutParams(params);
                     transView.postInvalidate();
-
                 }
             });
         }
@@ -295,7 +296,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
         {
             handler.post(hideRunnable);
-           // setCountQualityCheckResultZero();
+            // setCountQualityCheckResultZero();
             setCountQualityCheckIterationZero();
 
         }
@@ -357,15 +358,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        Runnable hideView = new Runnable() {
-            @Override
-            public void run() {
-                focusView.setVisibility(View.GONE);
-                messageFocusView.setVisibility(View.GONE);
-            }
-        };
         if(handler!=null) {
-            handler.post(hideView);
+
         }
 
     }
@@ -379,7 +373,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             public void run() {
 
                 exposureView.setPercentage((float)value);
-
             }
         };
 
@@ -396,22 +389,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable showMessage = new Runnable() {
             @Override
             public void run() {
-//                if(messageContrastView !=null) {
-//                    messageContrastView.setText(getString(R.string.contrast));
-//
-//                    if(value<101)
-//                    {
-//                        messageContrastView.append( ": " + String.format("%.0f", 100 - value) + " %");
-//                    }
-//                }
-//                if(value < Constant.MAX_SHADOW_PERCENTAGE)
-//                {
-//                    contrastView.setImageResource(R.drawable.contrast_green);
-//                }
-//                else
-//                {
-//                    contrastView.setImageResource(R.drawable.contrast_red);
-//                }
 
                 contrastView.setPercentage((float)value);
             }
@@ -436,14 +413,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null)
         {
-           // handler.post(levelRunnable);
+            handler.post(levelRunnable);
         }
     }
 
     @Override
-    public void adjustExposureCompensation(int goOnInSameDirection)
+    public void adjustExposureCompensation(int direction)
     {
-        mPreview.adjustExposure(goOnInSameDirection);
+        mPreview.adjustExposure(direction);
     }
 
     private Runnable startNextPreview = new Runnable() {
@@ -480,8 +457,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             FileStorage.writeByteArray(data, patchCount);
             String json = FinderPatternInfoToJson.toJson(info);
-            FileStorage.writeFinderPatternInfoJson(patchCount, json);
-
+            FileStorage.writeToInternalStorage(Constant.INFO + patchCount, json);
             return true;
         }
 
@@ -491,6 +467,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             if(patchesCovered == patches.size()-1)
             {
+                //write image/patch info to internal storage
+                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+
                 startDetectActivity(format, width, height);
             }
         }
@@ -498,9 +477,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     //private int to keep track of preview data already stored
     private int patchesCovered = -1;
+    private int imageCount = 0;
+    //Array to store image/patch combination
+    private JSONArray imagePatchArray = new JSONArray();
     @Override
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info) {
+
 
 
         //check if picture is taken on time for the patch.
@@ -518,17 +501,27 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
 
-                new StoreDataTask(i, data, info, format, width, height).execute();
+                //
+                JSONArray array = new JSONArray();
+                array.put(imageCount);
+                array.put(i);
+                imagePatchArray.put(array);
 
                 //System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
 
             }
+
+            new StoreDataTask(i, data, info, format, width, height).execute();
+
         }
 
         showProgress(patchesCovered+1);
 
+        //add one to imageCount
+        imageCount ++;
+
         //continue until all patches are covered
-        if (patchesCovered< numPatches -1) {
+        if (patchesCovered < numPatches -1) {
 
             Runnable clearFinderPatterns = new Runnable() {
                 @Override

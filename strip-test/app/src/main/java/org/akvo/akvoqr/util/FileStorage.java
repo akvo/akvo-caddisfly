@@ -70,9 +70,9 @@ public class FileStorage {
         return data;
     }
 
-    public static void writeFinderPatternInfoJson(int order, String json)
+    public static void writeToInternalStorage(String name, String json)
     {
-        String fileName = Constant.INFO + order +".txt";
+        String fileName = name +".txt";
 
         FileOutputStream outputStream;
 
@@ -87,9 +87,9 @@ public class FileStorage {
         }
     }
 
-    public static String readFinderPatternInfoJson(int order)
+    public static String readFromInternalStorage(String fileName)
     {
-        String fileName = Constant.INFO + order +".txt";
+
         File file = new File(App.getMyApplicationContext().getFilesDir(), fileName);
 
         String json = "";

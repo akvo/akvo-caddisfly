@@ -61,12 +61,12 @@ public class LevelView extends View {
             }
             else
             {
-                canvas.drawBitmap(arrowBitmapOK, 0, 0, redPaint);
+                //canvas.drawBitmap(arrowBitmapOK, 0, 0, redPaint);
             }
         }
         else
         {
-            canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getHeight() / 2, redPaint);
+           // canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getHeight() / 2, redPaint);
 
         }
     }

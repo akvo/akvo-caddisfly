@@ -305,7 +305,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         //count results only if checks have taken place
         if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
             //System.out.println("start button: " + focused + " " +  luminosityQualOk + "  " + shadowQualOk);
-            listener.setCountQualityCheckResult(focused && luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0);
+            listener.setCountQualityCheckResult(luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0);
         }
 
         return true;
@@ -332,8 +332,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
                     shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
-                    System.out.println("*** shadow:" + shadowPercentage);
-                    //System.out.println("***versionNumber 2: " + versionNumber);
                     shadowTrack.add(shadowPercentage);
                 }
             }
