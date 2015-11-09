@@ -138,7 +138,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         if(parameters.getWhiteBalance()!=null)
         {
             //TODO check if this optimise the code
-            parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_DAYLIGHT);
+            parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         }
 
         // start preview with new settings
