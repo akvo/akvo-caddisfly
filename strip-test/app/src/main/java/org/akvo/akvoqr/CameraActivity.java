@@ -517,8 +517,11 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         showProgress(patchesCovered+1);
 
+        //add one to imageCount
+        imageCount ++;
+
         //continue until all patches are covered
-        if (patchesCovered< numPatches -1) {
+        if (patchesCovered < numPatches -1) {
 
             Runnable clearFinderPatterns = new Runnable() {
                 @Override

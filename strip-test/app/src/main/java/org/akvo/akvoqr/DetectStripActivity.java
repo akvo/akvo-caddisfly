@@ -167,6 +167,7 @@ public class DetectStripActivity extends AppCompatActivity {
 
                 return null;
             }
+
             JSONArray imagePatchArray = null;
             int imageCount=-1;
             //Mat for detected strip
@@ -176,6 +177,8 @@ public class DetectStripActivity extends AppCompatActivity {
 
                 String json =  FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH +".txt");
                 imagePatchArray = new JSONArray(json);
+
+                System.out.println("***json image/patch: " + imagePatchArray.toString(1));
 
             } catch (JSONException e) {
                 e.printStackTrace();
