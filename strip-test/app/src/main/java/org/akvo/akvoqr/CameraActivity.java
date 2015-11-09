@@ -26,6 +26,7 @@ import org.akvo.akvoqr.ui.ProgressIndicatorView;
 import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
+import org.json.JSONArray;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -295,7 +296,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else if(countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5)
         {
             handler.post(hideRunnable);
-           // setCountQualityCheckResultZero();
+            // setCountQualityCheckResultZero();
             setCountQualityCheckIterationZero();
 
         }
@@ -412,7 +413,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null)
         {
-           handler.post(levelRunnable);
+            handler.post(levelRunnable);
         }
     }
 
@@ -456,8 +457,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             FileStorage.writeByteArray(data, patchCount);
             String json = FinderPatternInfoToJson.toJson(info);
-            FileStorage.writeFinderPatternInfoJson(patchCount, json);
-
+            FileStorage.writeToInternalStorage(Constant.INFO + patchCount, json);
             return true;
         }
 
@@ -467,6 +467,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             if(patchesCovered == patches.size()-1)
             {
+                //write image/patch info to internal storage
+                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+
                 startDetectActivity(format, width, height);
             }
         }
@@ -474,9 +477,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     //private int to keep track of preview data already stored
     private int patchesCovered = -1;
+    private int imageCount = 0;
+    //Array to store image/patch combination
+    private JSONArray imagePatchArray = new JSONArray();
     @Override
     public void sendData(final byte[] data, long timeMillis, int format, int width, int height,
                          final FinderPatternInfo info) {
+
 
 
         //check if picture is taken on time for the patch.
@@ -494,11 +501,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
 
-                new StoreDataTask(i, data, info, format, width, height).execute();
+                //
+                JSONArray array = new JSONArray();
+                array.put(imageCount);
+                array.put(i);
+                imagePatchArray.put(array);
 
                 //System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
 
             }
+
+            new StoreDataTask(i, data, info, format, width, height).execute();
+
         }
 
         showProgress(patchesCovered+1);

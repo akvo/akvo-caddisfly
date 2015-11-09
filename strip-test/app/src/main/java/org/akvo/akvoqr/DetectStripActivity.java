@@ -25,6 +25,7 @@ import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -166,136 +167,151 @@ public class DetectStripActivity extends AppCompatActivity {
 
                 return null;
             }
+            JSONArray imagePatchArray = null;
+            int imageCount=-1;
+            //Mat for detected strip
+            Mat rgba = new Mat();
+
+            try {
+
+                String json =  FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH +".txt");
+                imagePatchArray = new JSONArray(json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             for (int i = 0; i < numPatches; i++) {
 
                 try {
 
-                    showMessage("\n" + getString(R.string.patch_no) + (i + 1));
+                    if (imagePatchArray != null) {
 
-                    showMessage(getString(R.string.reading_data));
+                        //sub-array for each patch
+                        JSONArray array = imagePatchArray.getJSONArray(i);
+                        //get the image number from the json-array
+                        int imageNo = array.getInt(0);
 
-                    data = FileStorage.readByteArray(i);
+                        //if the image number is greater than the previous one, read the image from storage
+                        //otherwise the previous image goes for this patch as well
+                        if(imageNo > imageCount) {
+                           // showMessage("\n" + getString(R.string.patch_no) + (i + 1));
 
-                    if (data == null)
-                        throw new IOException();
+                            showMessage(getString(R.string.reading_data));
+
+                            data = FileStorage.readByteArray(i);
+
+                            if (data == null)
+                                throw new IOException();
+
+                            //set imageCount to current number
+                            imageCount = imageNo;
+
+                            //make a blue, green, red Mat object from data
+                            try {
+                                makeBGR();
+                            } catch (Exception e) {
+                                showMessage(getString(R.string.error_conversion));
+                                continue;
+                            }
+
+                            //perspectiveTransform
+                            try {
+                                warp(i);
+                            } catch (Exception e) {
+                                showMessage(getString(R.string.error_warp));
+                                continue;
+                            }
+
+                            //divide into calibration and stripareas
+                            try {
+                                divideIntoCalibrationAndStripArea();
+                            } catch (Exception e) {
+                                showMessage(getString(R.string.error_detection));
+                                continue;
+                            }
+
+                            //save warped image to external storage
+                            if (develop) {
+                                Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(warp_dst, bitmap);
+
+                                if (FileStorage.checkExternalMedia()) {
+                                    FileStorage.writeToSDFile(bitmap);
+                                }
+                                Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                                showImage(bitmap);
+                            }
+
+                            //calibration
+                            try {
+
+                                showMessage(getString(R.string.calibrating));
+                                //Calibration code works with 8UC3 images only.
+                                // System.out.println("***warp_dst type: " + CvType.typeToString(warp_dst.type()) + ", channels: " + warp_dst.channels());
+                                cal_dest = getCalibratedImage(warp_dst);
+
+                            } catch (Exception e) {
+                                System.out.println("cal. failed: " + e.getMessage());
+                                e.printStackTrace();
+                                showMessage(getString(R.string.error_calibrating));
+                                cal_dest = warp_dst.clone();
+                            }
+
+                            //show calibrated image
+                            if (develop) {
+                                Mat rgb = new Mat();
+                                Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_BGR2RGBA);
+                                Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(rgb, bitmap);
+                                Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                                showImage(bitmap);
+                            }
+
+                            if (roiStriparea != null)
+                                striparea = cal_dest.submat(roiStriparea);
+
+
+                            if (striparea != null) {
+
+                                showMessage(getString(R.string.cut_out_strip));
+
+                                StripTest stripTestBrand = StripTest.getInstance();
+                                StripTest.Brand brand = stripTestBrand.getBrand(brandname);
+
+                                Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+
+                                if (strip != null) {
+
+                                    Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGB);
+
+                                } else {
+
+                                    showMessage(getString(R.string.error_cut_out_strip));
+                                    //Mat rgba = new Mat();
+                                    Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGB);
+
+                                    //draw a red cross over the image
+                                    Imgproc.line(rgba, new Point(0, 0), new Point(rgba.cols(),
+                                            rgba.rows()), new Scalar(255, 0, 0, 255), 2);
+                                    Imgproc.line(rgba, new Point(0, rgba.rows()), new Point(rgba.cols(),
+                                            0), new Scalar(255, 0, 0, 255), 2);
+
+                                }
+                            }
+                        }
+
+                        resultList.add(rgba);
+                    }
 
 
                 } catch (Exception e) {
 
-                    showMessage(getString(R.string.no_data) + (i + 1));
+                    showMessage(getString(R.string.error_unknown) + (i + 1));
                     //place a Mat object in result list. This is necessary for ResultActivity to work
                     //because we are counting patches, not mats
                     Mat mat = Mat.zeros(1, 1, CvType.CV_8UC4);
                     resultList.add(mat);
-                    continue;
-                }
-
-                try {
-
-                    //make a blue, green, red Mat object from data
-                    try {
-                        makeBGR();
-                    } catch (Exception e) {
-                        showMessage(getString(R.string.error_conversion));
-                        continue;
-                    }
-
-                    //perspectiveTransform
-                    try {
-                        warp(i);
-                    } catch (Exception e) {
-                        showMessage(getString(R.string.error_warp));
-                        continue;
-                    }
-
-                    //divide into calibration and stripareas
-                    try {
-                        divideIntoCalibrationAndStripArea();
-                    } catch (Exception e) {
-                        showMessage(getString(R.string.error_detection));
-                        continue;
-                    }
-
-                    //save warped image to external storage
-
-                    if (develop) {
-                        Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
-                        Utils.matToBitmap(warp_dst, bitmap);
-
-                        if (FileStorage.checkExternalMedia()) {
-                            FileStorage.writeToSDFile(bitmap);
-                        }
-                        Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                        showImage(bitmap);
-                    }
-
-
-                    //find calibration patches
-                    try {
-
-                        showMessage(getString(R.string.calibrating));
-                        //Calibration code works with 8UC3 images only.
-                        // System.out.println("***warp_dst type: " + CvType.typeToString(warp_dst.type()) + ", channels: " + warp_dst.channels());
-                        cal_dest = getCalibratedImage(warp_dst);
-
-                    } catch (Exception e) {
-                        System.out.println("cal. failed: " + e.getMessage());
-                        e.printStackTrace();
-                        showMessage(getString(R.string.error_calibrating));
-                        cal_dest = warp_dst.clone();
-                    }
-
-                    //show calibrated image
-                    if (develop) {
-                        Mat rgb = new Mat();
-                        Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_BGR2RGBA);
-                        Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-                        Utils.matToBitmap(rgb, bitmap);
-                        Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                        showImage(bitmap);
-                    }
-
-                    if (roiStriparea != null)
-                        striparea = cal_dest.submat(roiStriparea);
-
-
-                    if (striparea != null) {
-
-                        showMessage(getString(R.string.cut_out_strip));
-
-                        StripTest stripTestBrand = StripTest.getInstance();
-                        StripTest.Brand brand = stripTestBrand.getBrand(brandname);
-
-                        Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
-
-                        if (strip != null) {
-
-                            Mat rgba = new Mat();
-                            Imgproc.cvtColor(strip, rgba, Imgproc.COLOR_BGR2RGB);
-
-                            resultList.add(rgba);
-
-                        } else {
-
-                            showMessage(getString(R.string.error_cut_out_strip));
-                            Mat rgba = new Mat();
-                            Imgproc.cvtColor(striparea, rgba, Imgproc.COLOR_BGR2RGB);
-
-                            //draw a red cross over the image
-                            Imgproc.line(rgba, new Point(0, 0), new Point(rgba.cols(),
-                                    rgba.rows()), new Scalar(255, 0, 0, 255), 2);
-                            Imgproc.line(rgba, new Point(0, rgba.rows()), new Point(rgba.cols(),
-                                    0), new Scalar(255, 0, 0, 255), 2);
-
-                            resultList.add(rgba);
-
-                        }
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    showMessage(getString(R.string.error_unknown));
                     continue;
                 }
             }
@@ -365,7 +381,7 @@ public class DetectStripActivity extends AppCompatActivity {
 
         private void warp(int i) throws Exception
         {
-            String jsonInfo = FileStorage.readFinderPatternInfoJson(i);
+            String jsonInfo = FileStorage.readFromInternalStorage(Constant.INFO + i + ".txt");
             if (jsonInfo == null) {
                 showMessage(getString(R.string.error_no_finder_pattern_info));
 
