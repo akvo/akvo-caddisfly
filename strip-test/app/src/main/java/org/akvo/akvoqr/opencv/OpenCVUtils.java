@@ -336,12 +336,17 @@ public class OpenCVUtils {
         return null;
     }
 
-    public static ColorDetected detectStripColorBrandKnown(Mat submat)
+    public static ColorDetected detectStripColorBrandKnown(Mat lab)
     {
 
-        Scalar mean = Core.mean(submat);
+        Scalar mean = Core.mean(lab);
 
         ColorDetected colorDetected = new ColorDetected(0);
+        colorDetected.setLab(mean);
+
+        Mat rgb = new Mat();
+        Imgproc.cvtColor(lab, rgb, Imgproc.COLOR_Lab2RGB);
+        mean = Core.mean(rgb);
         colorDetected.setRgb(mean);
 
         int color = Color.rgb((int)Math.round(mean.val[0]),(int)Math.round(mean.val[1]),
@@ -349,11 +354,7 @@ public class OpenCVUtils {
 
         colorDetected.setColor(color);
 
-        Mat lab = new Mat();
-        Imgproc.cvtColor(submat, lab, Imgproc.COLOR_RGB2Lab);
-        mean = Core.mean(lab);
-        colorDetected.setLab(mean);
-        submat.release();
+        rgb.release();
 
         return colorDetected;
     }

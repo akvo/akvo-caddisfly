@@ -2,7 +2,6 @@ package org.akvo.akvoqr;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -69,10 +68,10 @@ public class DetectStripActivity extends AppCompatActivity {
                 textView.setText(message);
                 linearLayout.addView(textView);
 
-//                View lastView = scrollView.getChildAt(scrollView.getChildCount()-1);
-//                scrollView.smoothScrollTo(0, lastView.getBottom());
+                View lastView = scrollView.getChildAt(scrollView.getChildCount()-1);
+                scrollView.smoothScrollTo(0, lastView.getBottom());
 
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
 
         };

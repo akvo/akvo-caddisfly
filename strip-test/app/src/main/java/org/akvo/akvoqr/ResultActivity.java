@@ -45,7 +45,7 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Mat> mats;
     private Mat strip;
     private LinearLayout layout;
-    private Scalar[] testColorsList = new Scalar[]
+    private Scalar[] testColorsListRGB = new Scalar[]
             {
                     new Scalar(255, 232.21, 168.64), //light yellow
                     new Scalar(208.83, 218.83, 150.51), //light green
@@ -53,6 +53,14 @@ public class ResultActivity extends AppCompatActivity {
                     new Scalar(200.30, 169.03, 181.46), //lilac
                     new Scalar(239.90, 117.48, 142.37) //dark pink
 
+            };
+    private Scalar[] testColorsListLab = new Scalar[]
+            {
+                    new Scalar(64.27, 48.17, - 3.48),
+                    new Scalar(73.02,10.895, - 17.26),
+                    new Scalar(77.915, 30.98, 3.01),
+                    new Scalar(85.93, - 16.24, 20),
+                    new Scalar(93.58, 0.6, 20.37)
             };
     private int testCount = 0;
 
@@ -91,16 +99,10 @@ public class ResultActivity extends AppCompatActivity {
                 if (strip.height() > 1) {
                     double ratioW = strip.width() / brand.getStripLenght();
 
-                    //extend the strip with a border, so we can draw a circle around each patch that is
-                    //wider than the strip itself. That is just because it looks nice.
-                    //we make a new Mat object to be sure not to touch the original
-                    int borderSize = (int) Math.ceil(strip.height() * 0.5);
-                    Mat mat = new Mat();
-                    Core.copyMakeBorder(strip, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
                     //calculate center of patch in pixels
                     double x = patches.get(i).getPosition() * ratioW;
-                    double y = mat.height() / 2;
+                    double y = strip.height() / 2;
                     Point centerPatch = new Point(x, y);
 
                     //set the colours needed to calculate ppm
@@ -110,7 +112,7 @@ public class ResultActivity extends AppCompatActivity {
                     //testing
                     System.out.println("***Start ppm calculation: " + i);
 
-                    new BitmapTask(desc, centerPatch, colours, unit).execute(mat);
+                    new BitmapTask(desc, centerPatch, colours, unit).execute(strip);
                 } else {
                     new BitmapTask(desc, null, null, null).execute(strip);
                 }
@@ -192,12 +194,6 @@ public class ResultActivity extends AppCompatActivity {
 
             int submatSize = 7;
 
-            //Draw a green circle around each patch and make a bitmap of the whole
-            Imgproc.circle(mat, centerPatch, (int) Math.ceil(mat.height() * 0.4),
-                    new Scalar(0, 255, 0, 255), 2);
-
-            stripBitmap = makeBitmap(mat);
-
             //make a submat around center of the patch and get mean color
             int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
             int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
@@ -209,7 +205,25 @@ public class ResultActivity extends AppCompatActivity {
 
             colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
 
-            ppm = calculatePPMrgb(colorDetected, colours);
+            double[] colorValue = colorDetected.getLab().val;
+            String colorSchema = "lab"; //must correspond with name of property in strips.json
+            ppm = calculatePPM(colorValue, colours, colorSchema);
+
+            //done with lab shema, make rgb to show in imageview
+            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
+
+            //extend the strip with a border, so we can draw a circle around each patch that is
+            //wider than the strip itself. That is just because it looks nice.
+            //we make a new Mat object to be sure not to touch the original
+            int borderSize = (int) Math.ceil(mat.height() * 0.5);
+
+            Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+
+            //Draw a green circle around each patch and make a bitmap of the whole
+            Imgproc.circle(mat, new Point(centerPatch.x, mat.height()/2), (int) Math.ceil(mat.height() * 0.4),
+                    new Scalar(0, 255, 0, 255), 2);
+
+            stripBitmap = makeBitmap(mat);
 
             return null;
         }
@@ -243,7 +257,7 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    private double calculatePPMrgb(ColorDetected colorDetected, JSONArray colours) {
+    private double calculatePPM(double[] colorValues, JSONArray colours, String colorSchema) {
 
         List<Pair<Integer,Double>> labdaList = new ArrayList<>();
         double ppm = Double.MAX_VALUE;
@@ -252,38 +266,17 @@ public class ResultActivity extends AppCompatActivity {
         double[] pointC = null;
         double labda;
         double minLabdaAbs = Double.MAX_VALUE;
-        JSONArray rgb;
+        JSONArray patchColorValues;
         double distance;
         double minDistance = Double.MAX_VALUE;
 
         // make pointC array
-        if (colorDetected.getRgb() != null) {
+        if (colorValues != null) {
 
-            pointC = colorDetected.getRgb().val;
+            pointC = colorValues;
 
             //start test
-            Locale l = Locale.US;
-            System.out.print("***test color RGB,");
-            System.out.print(testCount + "," + String.format(l, "%.2f", testColorsList[testCount].val[0]) +
-                    ", " + String.format(l, "%.2f", testColorsList[testCount].val[1]) + ", " +
-                    String.format(l, "%.2f", testColorsList[testCount].val[2]) + ",");
-
-            System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
-                    + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
-
-
-            try {
-
-                pointA = testColorsList[testCount].val;
-
-                distance = getDistanceBetween2Points3D(pointA, pointC);
-                System.out.print("," + distance);
-                System.out.println(",***");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            testLab(pointC);
             testCount ++;
             //end test
         }
@@ -293,12 +286,21 @@ public class ResultActivity extends AppCompatActivity {
             // make points A and B
             try
             {
-                rgb = colours.getJSONObject(j).getJSONArray("rgb");
-                pointA = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
+                patchColorValues = colours.getJSONObject(j).getJSONArray(colorSchema);
+                pointA = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
-                rgb = colours.getJSONObject(j + 1).getJSONArray("rgb");
-                pointB = new double[]{rgb.getDouble(0), rgb.getDouble(1), rgb.getDouble(2)};
+                patchColorValues = colours.getJSONObject(j + 1).getJSONArray(colorSchema);
+                pointB = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
+                //in strips.json, lab values are between -128 and 128, but here we use the OpenCV standard: 0 - 255
+                if(colorSchema.equals("lab"))
+                {
+                    for(int i=0;i<3;i++)
+                    {
+                        pointA[i] = pointA[i]+128;
+                        pointB[i] = pointB[i]+128;
+                    }
+                }
             }
             catch (JSONException e)
             {
@@ -468,4 +470,59 @@ public class ResultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void testRGB(double[] pointC)
+    {
+        Locale l = Locale.US;
+        System.out.print("***test color ,");
+        System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListRGB[testCount].val[0]) +
+                ", " + String.format(l, "%.2f", testColorsListRGB[testCount].val[1]) + ", " +
+                String.format(l, "%.2f", testColorsListRGB[testCount].val[2]) + ",");
+
+        System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
+                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
+
+
+        try {
+
+            double[] pointA = testColorsListRGB[testCount].val;
+
+            double distance = getDistanceBetween2Points3D(pointA, pointC);
+            System.out.print("," + distance);
+            System.out.println(",***");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void testLab(double[] pointC)
+    {
+        Locale l = Locale.US;
+        System.out.print("***test color Lab,");
+        System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
+                ", " + String.format(l, "%.2f", testColorsListLab[testCount].val[1]) + ", " +
+                String.format(l, "%.2f", testColorsListLab[testCount].val[2]) + ",");
+
+        System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
+                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
+
+
+        try {
+
+            double[] pointA = testColorsListLab[testCount].val;
+            for(int i=0;i<3;i++)
+            {
+                pointA[i] = pointA[i]+128;
+            }
+
+            double distance = getDistanceBetween2Points3D(pointA, pointC);
+            System.out.print("," + distance);
+            System.out.println(",***");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

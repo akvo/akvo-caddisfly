@@ -500,8 +500,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
-
-                //
+                
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
                 array.put(i);
