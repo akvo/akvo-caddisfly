@@ -552,32 +552,105 @@ public class CalibrationCard{
      * imgMat: CV_8UC3 (8-bit) Mat object, in BGR encoding.
      * @result: calibrated image
      */
-    public Mat calibrateImage(Mat labImg) throws Exception{
+    public CalibrationResultData calibrateImage(Mat labImg) throws Exception{
         System.out.println("*** start of calibration");
 
         if(calData!=null) {
-//            // illumination correction
+            // illumination correction
             if(labImg!=null) {
                 System.out.println("*** ILLUM - starting illumination correction");
                 labImg = doIlluminationCorrection(labImg);
             }
 
-            // 1D gray balance
+            // 1D and 3D colour balance
             if(labImg!=null) {
                 System.out.println("*** ILLUM - starting 1D and 3D balance");
                 labImg = do1D_3DCorrection(labImg);
             }
-//
-//             insert calibration colours in image
+
+            // measure quality of the calibration
+            double[] E94Result = computeE93Error(labImg);
+
+            // insert calibration colours in image
             if(labImg!=null) {
                 System.out.println("*** ILLUM - adding colours");
                 addCalColours(labImg);
             }
-////
-////            System.out.println("*** end of calibration");
-            return labImg;
+
+            CalibrationResultData calResult = new CalibrationResultData(labImg,E94Result[0],E94Result[1]);
+
+            return calResult;
         }
         return null;
+    }
+
+    /*
+    * Computes E94 distance between two colours.
+    * First normalises the colours as follows:
+    * L : 0...100
+    * a,b: -128 ... 128
+    *
+    * @returns: E94 distance
+     */
+    private double E94(double l1,double a1,double b1,double l2,double a2,double b2){
+        // normalise values to standard ranges
+        l1 = l1 / 2.55;
+        l2 = l2 / 2.55;
+        a1 = a1 - 128;
+        a2 = a2 - 128;
+        b1 = b1 - 128;
+        b2 = b2 - 128;
+
+        double dL = l1 - l2;
+        double C1 = Math.sqrt(a1 * a1 + b1 * b1);
+        double C2 = Math.sqrt(a2 * a2 + b2 * b2);
+        double dC = C1 - C2;
+        double da = a1 - a2;
+        double db = b1 - b2;
+        double dH;
+        double dE = Math.sqrt(dL * dL + da * da + db * db);
+        if (Math.sqrt(dE) > (Math.sqrt(Math.abs(dL)) + Math.sqrt(Math.abs(dC)))){
+            dH = Math.sqrt((dE * dE) - (dL * dL) - (dC * dC));
+        } else {
+            dH = 0.0;
+        }
+
+        double SL = 1.0;
+        double SC = 1.0 + 0.045 * C1;
+        double SH = 1.0 + 0.015 * C1;
+
+        double dE94 = Math.sqrt(Math.pow(dL/SL,2) + Math.pow(dC/SC,2) + Math.pow(dH/SH,2));
+        return dE94;
+    }
+
+    /*
+    * Computes mean and max E94 distance of calibrated image and the calibration patches
+    * @returns: vector of double, with [mean E94, max E94]
+     */
+    private double[] computeE93Error(Mat labImg) throws Exception{
+        try {
+            int num = 0;
+            double totE94 = 0;
+            double maxE94 = 0;
+            for (String label : calData.calValues.keySet()) {
+                CalibrationData.CalValue cal = calData.calValues.get(label);
+                CalibrationData.Location loc = calData.locations.get(label);
+                float[] LABcol = measurePatch(labImg, loc.x, loc.y); // measure patch colour
+                double E94Dist = E94(LABcol[0], LABcol[1], LABcol[2], cal.CIE_L, cal.CIE_A, cal.CIE_B);
+                totE94 += E94Dist;
+                if (E94Dist > maxE94){
+                    maxE94 = E94Dist;
+                }
+                num++;
+            }
+            return new double[]{totE94/num,maxE94};
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new Exception("Error determining E94 calibration distance");
+        }
+
     }
 
     /**

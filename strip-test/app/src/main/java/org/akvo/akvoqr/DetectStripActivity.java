@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.calibration.CalibrationData;
+import org.akvo.akvoqr.calibration.CalibrationResultData;
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
@@ -114,7 +115,7 @@ public class DetectStripActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Mat getCalibratedImage(Mat mat) throws Exception
+    public CalibrationResultData getCalibratedImage(Mat mat) throws Exception
     {
         System.out.println("***version number detect: " + CalibrationCard.calVersionNumber);
 
@@ -239,8 +240,9 @@ public class DetectStripActivity extends AppCompatActivity {
                             //find calibration patches
                             try {
                                 showMessage(getString(R.string.calibrating));
-                                cal_dest = getCalibratedImage(warp_dst);
-
+                                CalibrationResultData calResult = getCalibratedImage(warp_dst);
+                                cal_dest = calResult.calibratedImage;
+                                showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
                             } catch (Exception e) {
                                 System.out.println("cal. failed: " + e.getMessage());
                                 e.printStackTrace();
