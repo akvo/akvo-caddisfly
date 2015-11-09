@@ -31,6 +31,7 @@ import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.hamcrest.Description;
@@ -46,7 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 /**
  * Utility functions for automated testing
  */
-public class TestUtil {
+class TestUtil {
 
     private TestUtil() {
     }
@@ -127,10 +128,21 @@ public class TestUtil {
         return activity[0];
     }
 
-    public static boolean clickListViewItem(String name) {
-        UiScrollable listView = new UiScrollable(new UiSelector());
+    public static void findButtonInScrollable(String name) {
+        UiScrollable listView = new UiScrollable(new UiSelector().className(ScrollView.class.getName()));
         listView.setMaxSearchSwipes(10);
         listView.waitForExists(5000);
+        try {
+            listView.scrollTextIntoView(name);
+        } catch (Exception ignored) {
+        }
+    }
+
+
+    public static boolean clickListViewItem(String name) {
+        UiScrollable listView = new UiScrollable(new UiSelector());
+        listView.setMaxSearchSwipes(4);
+        listView.waitForExists(3000);
         UiObject listViewItem;
         try {
             if (listView.scrollTextIntoView(name)) {
@@ -143,8 +155,6 @@ public class TestUtil {
         } catch (UiObjectNotFoundException e) {
             return false;
         }
-
-        System.out.println("\"" + name + "\" ListView item was clicked.");
         return true;
     }
 }

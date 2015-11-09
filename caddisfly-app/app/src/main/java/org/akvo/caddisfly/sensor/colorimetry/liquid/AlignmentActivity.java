@@ -50,9 +50,11 @@ public class AlignmentActivity extends BaseActivity {
                 mCameraDialog.stopCamera();
 
                 final Intent intent = new Intent(getIntent());
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                 intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 mTestStarted = true;
-                startActivityForResult(intent, REQUEST_TEST);
+                //startActivityForResult(intent, REQUEST_TEST);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
@@ -82,11 +84,6 @@ public class AlignmentActivity extends BaseActivity {
                     break;
             }
         }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
 
         mCameraDialog = CameraDialogFragment.newInstance();
         TextView textSubtitle = (TextView) findViewById(R.id.textSubtitle);
@@ -96,6 +93,13 @@ public class AlignmentActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .add(R.id.layoutCameraPreview, mCameraDialog)
                 .commit();
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
     }
 
     @Override
@@ -108,7 +112,7 @@ public class AlignmentActivity extends BaseActivity {
                     Intent intent = new Intent(data);
                     this.setResult(Activity.RESULT_OK, intent);
                 }
-                finish();
+                onBackPressed();
                 break;
             default:
         }
@@ -136,6 +140,14 @@ public class AlignmentActivity extends BaseActivity {
         if (!mTestStarted) {
             setResult(Activity.RESULT_CANCELED);
             finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCameraDialog != null) {
+            mCameraDialog.stopCamera();
         }
     }
 }

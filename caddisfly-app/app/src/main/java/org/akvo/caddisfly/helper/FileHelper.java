@@ -34,7 +34,7 @@ public class FileHelper {
     // Folders
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
-    private static final String DIR_DOWNLOAD = "Download/install"; // Calibration files
+    private static final String DIR_DOWNLOAD = "Download/Install"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
 
     /**

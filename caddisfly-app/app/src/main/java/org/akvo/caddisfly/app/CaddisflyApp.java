@@ -229,7 +229,7 @@ public class CaddisflyApp extends Application {
 
                 if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
                     try {
-                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "Backup");
+                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
                     } catch (Exception ignored) {
                     }
                 }

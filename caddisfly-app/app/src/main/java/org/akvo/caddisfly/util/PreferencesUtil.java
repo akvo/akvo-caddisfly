@@ -77,29 +77,46 @@ public class PreferencesUtil {
      * Gets an integer value from preferences
      *
      * @param context      the context
-     * @param keyId        the key id
+     * @param key          the key id
      * @param defaultValue the default value
      * @return stored int value
      */
     @SuppressWarnings("SameParameterValue")
-    public static int getInt(Context context, String keyId, int defaultValue) {
+    public static int getInt(Context context, String key, int defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        return sharedPreferences.getInt(keyId, defaultValue);
+        return sharedPreferences.getInt(key, defaultValue);
+    }
+
+    /**
+     * Gets a long value from preferences
+     *
+     * @param context the context
+     * @param keyId   the key id
+     * @return the stored long value
+     */
+    @SuppressWarnings({"SameParameterValue", "unused"})
+    public static int getInt(Context context, @StringRes int keyId, int defaultValue) {
+        return PreferencesUtil.getInt(context, getKey(context, keyId), defaultValue);
+    }
+
+
+    public static void setInt(Context context, @StringRes int keyId, int value) {
+        PreferencesUtil.setInt(context, getKey(context, keyId), value);
     }
 
     /**
      * Sets an integer value to preferences
      *
      * @param context the context
-     * @param keyId   the key id
+     * @param key     the key id
      * @param value   the value to set
      */
-    public static void setInt(Context context, String keyId, int value) {
+    public static void setInt(Context context, String key, int value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();
-        editor.putInt(keyId, value);
+        editor.putInt(key, value);
         editor.apply();
     }
 

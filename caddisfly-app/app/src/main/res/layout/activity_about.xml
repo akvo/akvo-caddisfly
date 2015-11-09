@@ -95,19 +95,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/legalInformation"
                 android:textColor="@color/cyan"
                 android:textSize="15sp" />
 
-            <ImageView
-                android:id="@+id/imageStoreIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.4"
-                android:contentDescription="@null"
-                android:src="@android:drawable/arrow_down_float" />
+            <View
+                android:id="@+id/viewInstallType"
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#e4e4e4" />
 
         </LinearLayout>
     </LinearLayout>

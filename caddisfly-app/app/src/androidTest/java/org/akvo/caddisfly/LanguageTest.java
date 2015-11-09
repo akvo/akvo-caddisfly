@@ -26,6 +26,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
+import static org.akvo.caddisfly.TestHelper.loadData;
+import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
+import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.object.HasToString.hasToString;
 
@@ -48,18 +51,25 @@ import static org.hamcrest.object.HasToString.hasToString;
 public class LanguageTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
-    private UiDevice mDevice;
+
+    @BeforeClass
+    public static void initialize() {
+        if (mDevice == null) {
+            mDevice = UiDevice.getInstance(getInstrumentation());
+
+            loadData(mCurrentLanguage);
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
+        }
+    }
 
     @Before
     public void setUp() {
 
-        changeLanguage("en");
-
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12));
-
-        // Initialize UiDevice instance
-        mDevice = UiDevice.getInstance(getInstrumentation());
 
     }
 
@@ -98,7 +108,7 @@ public class LanguageTest {
     private void languageTest(String language) {
         onView(withId(R.id.actionSettings)).perform(click());
 
-        changeLanguage(language);
+        loadData(language);
 
         try {
             onView(withText(currentHashMap.get("language"))).perform(click());

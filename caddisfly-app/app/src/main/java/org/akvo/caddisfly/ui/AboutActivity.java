@@ -18,7 +18,6 @@ package org.akvo.caddisfly.ui;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,7 +83,7 @@ public class AboutActivity extends BaseActivity {
         });
 
         //A indication whether the app was installed via Store or manually
-        ImageView imageStoreIcon = (ImageView) findViewById(R.id.imageStoreIcon);
+        View imageStoreIcon = findViewById(R.id.viewInstallType);
         if (ApiUtil.isStoreVersion(this)) {
             imageStoreIcon.setVisibility(View.GONE);
         } else {

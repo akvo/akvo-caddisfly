@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,7 @@ import java.io.File;
 import java.text.DecimalFormatSymbols;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -47,19 +49,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
+import static org.akvo.caddisfly.TestHelper.loadData;
+import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
+import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.TestUtil.sleep;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.object.HasToString.hasToString;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -67,29 +72,27 @@ public class NavigationTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
+    @BeforeClass
+    public static void initialize() {
+        if (mDevice == null) {
+            mDevice = UiDevice.getInstance(getInstrumentation());
+
+            loadData(mCurrentLanguage);
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
+        }
+    }
+
     @Before
     public void setUp() {
-
-        mDevice = UiDevice.getInstance(getInstrumentation());
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        changeLanguage("en");
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
 
-        mActivityRule.launchActivity(mActivityRule.getActivity().getIntent());
-
+        resetLanguage();
     }
 
     @Test
@@ -149,11 +152,12 @@ public class NavigationTest {
 
         sleep(2000);
 
-        clickListViewItem("TestValid");
+        onData(hasToString(startsWith("TestInvalid"))).perform(click());
 
         sleep(2000);
 
-        onView(withText(String.format("%s. %s", mActivityRule.getActivity().getString(R.string.calibrationIsInvalid),
+        onView(withText(String.format("%s. %s", mActivityRule.getActivity()
+                        .getString(R.string.calibrationIsInvalid),
                 mActivityRule.getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
 
         leaveDiagnosticMode();
@@ -171,7 +175,9 @@ public class NavigationTest {
         takeScreenshot();
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+//        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
 
         onView(withId(R.id.editBatchCode))
                 .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
@@ -213,7 +219,7 @@ public class NavigationTest {
 
         sleep(2000);
 
-        clickListViewItem("TestValid");
+        onData(hasToString(startsWith("TestValid"))).perform(click());
 
         sleep(2000);
 

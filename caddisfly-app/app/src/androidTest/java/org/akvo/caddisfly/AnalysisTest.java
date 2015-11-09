@@ -33,6 +33,7 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,7 @@ import org.junit.runner.RunWith;
 import java.text.DecimalFormatSymbols;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -51,20 +53,24 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
-import static org.akvo.caddisfly.TestHelper.changeLanguage;
 import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
+import static org.akvo.caddisfly.TestHelper.loadData;
+import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
+import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.getText;
 import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.object.HasToString.hasToString;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -74,32 +80,151 @@ public class AnalysisTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
+    @BeforeClass
+    public static void initialize() {
+        if (mDevice == null) {
+            mDevice = UiDevice.getInstance(getInstrumentation());
+
+            loadData(mCurrentLanguage);
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
+        }
+    }
+
     @Before
     public void setUp() {
-
-        mDevice = UiDevice.getInstance(getInstrumentation());
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        changeLanguage("en");
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
 
-        mActivityRule.launchActivity(mActivityRule.getActivity().getIntent());
-
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12));
 
+        resetLanguage();
+    }
+
+    @Test
+    public void testStartHighLevelTest() {
+
+        saveCalibration("HighLevelTest");
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
+
+        onView(withText(version)).check(matches(isDisplayed()));
+
+        enterDiagnosticMode();
+
+        goToMainScreen();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.menuLoad)).perform(click());
+
+        sleep(1000);
+
+        clickListViewItem("HighLevelTest");
+
+        sleep(1000);
+
+        leaveDiagnosticMode();
+
+        onView(withId(R.id.buttonSurvey)).perform(click());
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton("useExternalSource");
+
+        sleep(1000);
+
+        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.buttonNoDilution)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
+                .check(matches(isCompletelyDisplayed()));
+
+        onView(withId(R.id.buttonStart)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
+                .check(matches(isCompletelyDisplayed()));
+
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 2)))
+                .check(matches(isCompletelyDisplayed()));
+
+        onView(withId(R.id.buttonOk)).perform(click());
+
+        clickExternalSourceButton("useExternalSource");
+
+        onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.buttonDilution1)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
+                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
+
+        //Test Start Screen
+        takeScreenshot();
+
+        onView(withId(R.id.buttonStart)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
+                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
+
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 5)))
+                .check(matches(isCompletelyDisplayed()));
+
+        //High levels found dialog
+        takeScreenshot();
+
+        onView(withId(R.id.buttonOk)).perform(click());
+
+        clickExternalSourceButton("useExternalSource");
+
+        onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.buttonDilution2)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
+                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
+
+        onView(withId(R.id.buttonStart)).perform(click());
+
+        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
+                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
+
+        //Test Progress Screen
+        takeScreenshot();
+
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
+                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        double result = Double.valueOf(getText(withId(R.id.textResult)));
+        assertTrue("Result is wrong", result > 9);
+
+        onView(withId(R.id.buttonOk)).perform(click());
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
     }
 
     @Test
@@ -123,7 +248,7 @@ public class AnalysisTest {
 
         sleep(1000);
 
-        clickListViewItem("TestValid");
+        onData(hasToString(startsWith("TestValid"))).perform(click());
 
         goToMainScreen();
 
@@ -248,7 +373,7 @@ public class AnalysisTest {
 
         sleep(1000);
 
-        clickListViewItem("TestValid");
+        onData(hasToString(startsWith("TestValid"))).perform(click());
 
         leaveDiagnosticMode();
 
@@ -287,124 +412,4 @@ public class AnalysisTest {
 
     }
 
-    @Test
-    public void testStartHighLevelTest() {
-
-        saveCalibration("HighLevelTest");
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
-
-        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
-
-        onView(withText(version)).check(matches(isDisplayed()));
-
-        enterDiagnosticMode();
-
-        goToMainScreen();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        onView(withId(R.id.menuLoad)).perform(click());
-
-        sleep(1000);
-
-        clickListViewItem("HighLevelTest");
-
-        sleep(1000);
-
-        leaveDiagnosticMode();
-
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
-        gotoSurveyForm();
-
-        clickExternalSourceButton("useExternalSource");
-
-        sleep(1000);
-
-        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonNoDilution)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
-                .check(matches(isCompletelyDisplayed()));
-
-        onView(withId(R.id.buttonStart)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
-                .check(matches(isCompletelyDisplayed()));
-
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
-                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
-
-        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 2)))
-                .check(matches(isCompletelyDisplayed()));
-
-        onView(withId(R.id.buttonOk)).perform(click());
-
-        clickExternalSourceButton("useExternalSource");
-
-        onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonDilution1)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
-
-        //Test Start Screen
-        takeScreenshot();
-
-        onView(withId(R.id.buttonStart)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
-
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
-                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
-
-        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 5)))
-                .check(matches(isCompletelyDisplayed()));
-
-        //High levels found dialog
-        takeScreenshot();
-
-        onView(withId(R.id.buttonOk)).perform(click());
-
-        clickExternalSourceButton("useExternalSource");
-
-        onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonDilution2)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
-
-        onView(withId(R.id.buttonStart)).perform(click());
-
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
-
-        //Test Progress Screen
-        takeScreenshot();
-
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
-                ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
-
-        double result = Double.valueOf(getText(withId(R.id.textResult)));
-        assertTrue("Result is wrong", result > 9);
-
-        onView(withId(R.id.buttonOk)).perform(click());
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-
-        mDevice.pressBack();
-    }
 }

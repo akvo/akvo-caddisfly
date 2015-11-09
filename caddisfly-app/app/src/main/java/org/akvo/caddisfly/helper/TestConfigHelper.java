@@ -146,7 +146,6 @@ public final class TestConfigHelper {
                         defaultColorsArray = defaultColors.split(",");
                     }
 
-
                     //Create TestInfo object
                     tests.add(new TestInfo(
                             namesHashTable,

@@ -60,6 +60,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
+    private boolean isEditing = false;
 
     public SaveCalibrationDialogFragment() {
         // Required empty public constructor
@@ -71,8 +72,10 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
      *
      * @return A new instance of fragment SaveCalibrationDialogFragment.
      */
-    public static SaveCalibrationDialogFragment newInstance() {
-        return new SaveCalibrationDialogFragment();
+    public static SaveCalibrationDialogFragment newInstance(boolean isEdit) {
+        SaveCalibrationDialogFragment saveCalibrationDialogFragment = new SaveCalibrationDialogFragment();
+        saveCalibrationDialogFragment.isEditing = isEdit;
+        return saveCalibrationDialogFragment;
     }
 
     @NonNull
@@ -104,14 +107,20 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
-        editBatchCode.setText(PreferencesUtil.getString(context, testCode, R.string.batchNumberKey, ""));
+        long milliseconds = PreferencesUtil.getLong(getActivity(),
+                CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                R.string.calibrationExpiryDateKey);
+        if (milliseconds > new Date().getTime()) {
 
-        long expiryDate = PreferencesUtil.getLong(getContext(), testCode, R.string.calibrationExpiryDateKey);
-        if (expiryDate >= 0) {
-            calendar.setTimeInMillis(expiryDate);
+            editBatchCode.setText(PreferencesUtil.getString(context, testCode, R.string.batchNumberKey, "").trim());
 
-            editExpiryDate.setText(new SimpleDateFormat("dd-MMM-yyyy", Locale.US)
-                    .format(new Date(expiryDate)));
+            long expiryDate = PreferencesUtil.getLong(getContext(), testCode, R.string.calibrationExpiryDateKey);
+            if (expiryDate >= 0) {
+                calendar.setTimeInMillis(expiryDate);
+
+                editExpiryDate.setText(new SimpleDateFormat("dd-MMM-yyyy", Locale.US)
+                        .format(new Date(expiryDate)));
+            }
         }
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener,
@@ -152,7 +161,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         });
 
         editName = (EditText) view.findViewById(R.id.editName);
-        if (AppPreferences.isDiagnosticMode()) {
+        if (!isEditing && AppPreferences.isDiagnosticMode()) {
             editName.requestFocus();
         } else {
             editName.setVisibility(View.GONE);
@@ -239,14 +248,14 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                             R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
 
                     PreferencesUtil.setString(context, testCode,
-                            R.string.batchNumberKey, editBatchCode.getText().toString());
+                            R.string.batchNumberKey, editBatchCode.getText().toString().trim());
 
                     ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
                 }
 
                 private boolean formEntryValid() {
 
-                    if (AppPreferences.isDiagnosticMode() &&
+                    if (!isEditing && AppPreferences.isDiagnosticMode() &&
                             editName.getText().toString().trim().isEmpty()) {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;
@@ -273,11 +282,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
 
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
-                testCode, editBatchCode.getText().toString(),
+                testCode, editBatchCode.getText().toString().trim(),
                 Calendar.getInstance().getTimeInMillis(),
                 calendar.getTimeInMillis());
 
-        FileUtil.saveToFile(path, editName.getText().toString(), calibrationDetails);
+        FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
         Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
 

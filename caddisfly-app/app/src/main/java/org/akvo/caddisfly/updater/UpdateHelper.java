@@ -169,7 +169,7 @@ public final class UpdateHelper {
                 if (fileVersion > versionCode) {
                     String fileChecksum = FileUtil.getMD5Checksum(file.getPath());
                     String checksum = PreferencesUtil.getString(context, "updateChecksum", "");
-                    if (fileChecksum == null || !fileChecksum.equals(checksum)) {
+                    if (fileChecksum == null || !fileChecksum.equals(checksum.toUpperCase())) {
                         //Delete the file if the checksum does not match
                         // noinspection ResultOfMethodCallIgnored
                         file.delete();

@@ -31,5 +31,9 @@
     <string name="themeChangedKey" translateable="false">themeChanged</string>
     <string name="saveImagesKey" translateable="false">saveImages</string>
     <string name="lastUpdateCheckKey" translateable="false">lastUpdateCheck</string>
-    <string name="updateInfoDateKey">updateInfoDate</string>
+    <string name="updateInfoDateKey" translateable="false">updateInfoDate</string>
+    <string name="totalSuccessfulCalibrationsKey" translateable="false">totalSuccessfulCalibrations</string>
+    <string name="totalFailedCalibrationsKey" translateable="false">totalFailedCalibrations</string>
+    <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
+    <string name="totalFailedTestsKey" translateable="false">totalFailedTests</string>
 </resources>

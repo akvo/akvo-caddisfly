@@ -78,7 +78,6 @@ public class CalibrateListActivity extends BaseActivity
     private TextView textSubtitle2;
     private int mPosition;
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (AppPreferences.isDiagnosticMode()) {
@@ -108,7 +107,7 @@ public class CalibrateListActivity extends BaseActivity
                 loadCalibration(this, callback);
                 return true;
             case R.id.menuSave:
-                showEditCalibrationDetailsDialog();
+                showEditCalibrationDetailsDialog(false);
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -141,16 +140,16 @@ public class CalibrateListActivity extends BaseActivity
         fabEditCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showEditCalibrationDetailsDialog();
+                showEditCalibrationDetailsDialog(true);
             }
         });
 
         loadDetails();
     }
 
-    private void showEditCalibrationDetailsDialog() {
+    private void showEditCalibrationDetailsDialog(boolean isEdit) {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance();
+        SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance(isEdit);
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
@@ -231,7 +230,7 @@ public class CalibrateListActivity extends BaseActivity
         //Show edit calibration details dialog if required
         Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
         if (expiryDate < Calendar.getInstance().getTimeInMillis()) {
-            showEditCalibrationDetailsDialog();
+            showEditCalibrationDetailsDialog(true);
             return;
         }
 
@@ -309,7 +308,7 @@ public class CalibrateListActivity extends BaseActivity
 
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
 
-        FileUtil.saveToFile(path, "Backup", calibrationDetails);
+        FileUtil.saveToFile(path, "_AutoBackup", calibrationDetails);
 
         Toast.makeText(this, R.string.calibrated, Toast.LENGTH_LONG).show();
     }

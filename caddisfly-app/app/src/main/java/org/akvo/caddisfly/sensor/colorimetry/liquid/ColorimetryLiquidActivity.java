@@ -60,6 +60,7 @@ import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -540,6 +541,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
             if (isCalibration && color != Color.TRANSPARENT) {
                 sound.playShortResource(R.raw.done);
+                PreferencesUtil.setInt(this, R.string.totalSuccessfulCalibrationsKey,
+                        PreferencesUtil.getInt(this, R.string.totalSuccessfulCalibrationsKey, 0) + 1);
 
                 if (AppPreferences.isSaveImagesOn()) {
                     saveImageForDiagnostics(data, result);
@@ -562,11 +565,20 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                     if (AppPreferences.isDiagnosticMode()) {
                         sound.playShortResource(R.raw.err);
+
+                        PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
+                                PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
+
                         showDiagnosticResultDialog(true, 0, color, isCalibration);
                     } else {
                         if (mIsCalibration) {
                             showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+                            PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
+                                    PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
                         } else {
+                            PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
+                                    PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
+
                             showError(getString(R.string.errorTestFailed), ImageUtil.getBitmap(data));
                         }
                     }
@@ -579,6 +591,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     if (AppPreferences.isDiagnosticMode()) {
                         sound.playShortResource(R.raw.done);
                         showDiagnosticResultDialog(false, result, color, false);
+
+                        PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
+                                PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
+
                     } else {
                         String title = CaddisflyApp.getApp().getCurrentTestInfo().
                                 getName(getResources().getConfiguration().locale.getLanguage());
@@ -611,6 +627,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                         } else {
                             sound.playShortResource(R.raw.done);
+
+                            PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
+                                    PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
+
                             ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
                                     mDilutionLevel, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                             final FragmentTransaction ft = getFragmentManager().beginTransaction();

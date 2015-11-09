@@ -45,6 +45,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
+import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
+import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.object.HasToString.hasToString;
 
@@ -56,7 +58,7 @@ class TestHelper {
     private static final boolean mTakeScreenshots = false;
     public static HashMap<String, String> currentHashMap;
     public static UiDevice mDevice;
-    private static String mCurrentLanguage = "en";
+    public static String mCurrentLanguage = "fr";
     private static int mCounter;
 
     private static void addString(String key, String englishText, String frenchText) {
@@ -68,8 +70,12 @@ class TestHelper {
         calibrationHashMap.put(key, colors);
     }
 
-    public static void changeLanguage(String languageCode) {
+    public static void loadData(String languageCode) {
         mCurrentLanguage = languageCode;
+
+        stringHashMapEN.clear();
+        stringHashMapFR.clear();
+        calibrationHashMap.clear();
 
         addString("language", "English", "Français");
         addString("otherLanguage", "Français", "English");
@@ -102,17 +108,17 @@ class TestHelper {
                 + "1.5=255  59  89\n"
                 + "2.0=255  81  34\n");
 
-        addCalibration("HighLevelTest", "0.0=255  38  150\n"
+        addCalibration("HighLevelTest", "0.0=255  38  180\n"
                 + "0.5=255  51  129\n"
                 + "1.0=255  53  110\n"
                 + "1.5=255  55  100\n"
                 + "2.0=255  59  89\n");
 
-//        addCalibration("HighLevelTest", "0.0=255  88  47\n"
-//                + "0.5=255  60  37\n"
-//                + "1.0=255  35  27\n"
-//                + "1.5=253  17  17\n"
-//                + "2.0=254  0  0\n");
+        addCalibration("TestInvalid2", "0.0=255  88  47\n"
+                + "0.5=255  60  37\n"
+                + "1.0=255  35  27\n"
+                + "1.5=253  17  17\n"
+                + "2.0=254  0  0\n");
 
         addCalibration("LowLevelTest", "0.0=255  60  37\n"
                 + "0.5=255  35  27\n"
@@ -150,8 +156,27 @@ class TestHelper {
         }
     }
 
+
+    public static void clickViewInScrollView(String buttonText) {
+        try {
+
+            UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+            appViews.setAsVerticalList();
+            appViews.flingToEnd(3);
+            appViews.getChildByText(
+                    new UiSelector().className(android.widget.Button.class.getName()), buttonText).click();
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void clickExternalSourceButton(String buttonText) {
         try {
+
+            findButtonInScrollable(buttonText);
 
             mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
 
@@ -198,16 +223,11 @@ class TestHelper {
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
         FileUtil.saveToFile(path, name, calibrationHashMap.get(name));
-
     }
 
     public static void gotoSurveyForm() {
-        //clickListViewItem("Automated Tests");
-        //onView(withText("Automated Tests")).perform(click());
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
-            //openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 
-            // click on 'Add Note' button
             UiObject addButton = mDevice.findObject(new UiSelector()
                     .descriptionContains(currentHashMap.get("createNewDataPoint")));
 
@@ -218,11 +238,7 @@ class TestHelper {
             } catch (UiObjectNotFoundException e) {
                 e.printStackTrace();
             }
-
-            // onView(withContentDescription(currentHashMap.get("createNewDataPoint"))).perform(click());
-            //clickListViewItem(currentHashMap.get("createNewDataPoint"));
         }
-        //clickListViewItem("All Tests");
     }
 
     public static void enterDiagnosticMode() {
@@ -236,13 +252,27 @@ class TestHelper {
         onView(withId(R.id.fabDisableDiagnostics)).perform(click());
     }
 
-    private void resetLanguage() {
-        onView(withId(R.id.actionSettings))
-                .perform(click());
+    public static void resetLanguage() {
 
-        onView(withText(R.string.language))
-                .perform(click());
+        goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.language)).perform(click());
 
         onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+
+        mDevice.waitForIdle();
+
+        goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.language)).perform(click());
+
+        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+
+        mDevice.waitForIdle();
+
     }
 }

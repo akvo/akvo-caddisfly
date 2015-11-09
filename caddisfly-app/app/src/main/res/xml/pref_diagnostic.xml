@@ -44,5 +44,12 @@
             android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
+        <Preference
+            android:key="diagnosticInformation"
+            android:title="Diagnostic Information">
+            <intent
+                android:targetClass="org.akvo.caddisfly.ui.DiagnosticInfoActivity"
+                android:targetPackage="org.akvo.caddisfly" />
+        </Preference>
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

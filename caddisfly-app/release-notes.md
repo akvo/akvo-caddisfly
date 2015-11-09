@@ -3,9 +3,12 @@ v0.93 beta
 1. Added default colors for swatches in json config
 2. Validate calibration against default colors
 3. Redirect to Play store if update available
-4. Store a backup of the calibration when calibrated
-5. Diagnostic: display color distance values for failed color matches
-6. Diagnostic: Load the calibration details also when calibration loaded
+4. Auto backup of the calibration when calibrated
+5. Don't prefill save calibration details if reagent has expired
+6. Diagnostic: allow saving of calibration details without saving file
+7. Diagnostic: added information screen
+8. Diagnostic: display color distance values for failed color matches
+9. Diagnostic: Load the calibration details also when calibration loaded
 
 v0.92 beta
 ----------

@@ -262,6 +262,10 @@ public class SensorActivity extends BaseActivity {
 
     private void displayResult(String value) {
 
+        if (AppPreferences.getShowDebugMessages()) {
+            Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
+        }
+
         if (value.startsWith(".") || value.startsWith(",")) {
             return;
         }
@@ -388,6 +392,7 @@ public class SensorActivity extends BaseActivity {
                             sensorActivity.displayResult(sensorActivity.mReceivedData);
                             sensorActivity.mReceivedData = "";
                         }
+
 
 //                        if (data.contains("\r\n") || sensorActivity.mReceivedData.contains("\r\n")) {
 //                            //Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);

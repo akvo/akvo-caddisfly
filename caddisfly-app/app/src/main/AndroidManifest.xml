@@ -13,7 +13,6 @@
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -82,6 +81,7 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -103,9 +103,12 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.liquid.AlignmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:noHistory="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.TypeListActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
@@ -123,11 +126,15 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-
         <activity
             android:name=".updater.UpdateActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name=".ui.DiagnosticInfoActivity"
+            android:parentActivityName=".preference.SettingsActivity"
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".sensor.ec.UsbService"

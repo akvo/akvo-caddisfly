@@ -97,9 +97,12 @@ public class MainActivity extends BaseActivity {
                 startSurvey();
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         updateCheckReceiver = UpdateHelper.checkUpdate(this, true);
-
     }
 
     /**

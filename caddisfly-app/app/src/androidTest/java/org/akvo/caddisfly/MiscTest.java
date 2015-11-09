@@ -17,10 +17,13 @@
 package org.akvo.caddisfly;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
@@ -29,6 +32,7 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +40,7 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Method;
 import java.text.DecimalFormatSymbols;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -46,12 +51,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.akvo.caddisfly.TestHelper.changeLanguage;
+import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
+import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
+import static org.akvo.caddisfly.TestHelper.mDevice;
+import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestUtil.getActivityInstance;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
-import static org.akvo.caddisfly.TestHelper.leaveDiagnosticMode;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -60,12 +67,26 @@ public class MiscTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
     //private UiDevice mDevice;
 
-    @Before
-    public void stubCameraIntent() {
-        // Initialize UiDevice instance
-        //mDevice = UiDevice.getInstance(getInstrumentation());
+    @BeforeClass
+    public static void initialize() {
+        if (mDevice == null) {
+            mDevice = UiDevice.getInstance(getInstrumentation());
 
-        changeLanguage("en");
+            loadData(mCurrentLanguage);
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
+        }
+    }
+
+    @Before
+    public void setUp() {
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
+        prefs.edit().clear().apply();
+
+        resetLanguage();
     }
 
     @Test
@@ -136,7 +157,7 @@ public class MiscTest {
 
         goToMainScreen();
 
-        leaveDiagnosticMode();
+//        leaveDiagnosticMode();
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -159,7 +180,9 @@ public class MiscTest {
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+//        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
 
         onView(withId(R.id.editBatchCode))
                 .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());

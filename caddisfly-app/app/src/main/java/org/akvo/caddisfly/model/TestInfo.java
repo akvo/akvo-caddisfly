@@ -71,6 +71,23 @@ public class TestInfo {
 
         }
 
+        if (swatches.size() > 0) {
+            Swatch previousSwatch = swatches.get(0);
+            Swatch swatch;
+            for (int i = 1; i < swatches.size(); i++) {
+                swatch = swatches.get(i);
+                int redDifference = Color.red(swatch.getDefaultColor()) - Color.red(previousSwatch.getDefaultColor());
+                int greenDifference = Color.green(swatch.getDefaultColor()) - Color.green(previousSwatch.getDefaultColor());
+                int blueDifference = Color.blue(swatch.getDefaultColor()) - Color.blue(previousSwatch.getDefaultColor());
+
+                swatch.setRedDifference(redDifference);
+                swatch.setGreenDifference(greenDifference);
+                swatch.setBlueDifference(blueDifference);
+
+                previousSwatch = swatch;
+            }
+        }
+
         for (String dilution : dilutionsArray) {
             addDilution(Integer.parseInt(dilution));
         }

@@ -76,13 +76,14 @@ public class UpdateCheckReceiver extends BroadcastReceiver {
                             request.setAllowedOverRoaming(false);
                             request.setTitle(context.getString(R.string.appName));
 
-                            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "install/" + fileName);
+                            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "Install/" + fileName);
                             PreferencesUtil.setLong(context, "downloadReference", downloadManager.enqueue(request));
                         }
                     }
                 }
             }
         } catch (JSONException e) {
+            PreferencesUtil.setLong(context, R.string.lastUpdateCheckKey, Calendar.getInstance().getTimeInMillis());
             e.printStackTrace();
         }
     }

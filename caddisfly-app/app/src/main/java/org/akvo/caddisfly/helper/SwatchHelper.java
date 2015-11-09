@@ -199,28 +199,52 @@ public final class SwatchHelper {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isSwatchListValid(ArrayList<Swatch> swatches) {
-
+        boolean result = true;
+        Swatch previousSwatch = swatches.get(0);
         for (Swatch swatch1 : swatches) {
             if (swatch1.getColor() == Color.TRANSPARENT || swatch1.getColor() == Color.BLACK) {
                 //Calibration is incomplete
-                return false;
+                result = false;
+                break;
             }
             for (Swatch swatch2 : swatches) {
                 if (swatch1 != swatch2 && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
-                    return false;
+                    result = false;
+                    break;
                 }
             }
 
             if (swatch1.getDefaultColor() != Color.TRANSPARENT) {
                 if (ColorUtil.getColorDistance(swatch1.getColor(),
                         swatch1.getDefaultColor()) > ColorimetryLiquidConfig.MAX_VALID_CALIBRATION_TOLERANCE) {
-                    return false;
+                    result = false;
+                    break;
+                }
+
+                int redDifference = Color.red(swatch1.getColor()) - Color.red(previousSwatch.getColor());
+                int greenDifference = Color.green(swatch1.getColor()) - Color.green(previousSwatch.getColor());
+                int blueDifference = Color.blue(swatch1.getColor()) - Color.blue(previousSwatch.getColor());
+
+                if (Math.abs(swatch1.getRedDifference() - redDifference) > 100) {
+                    result = false;
+                    break;
+                }
+
+                if (Math.abs(swatch1.getGreenDifference() - greenDifference) > 100) {
+                    result = false;
+                    break;
+                }
+
+                if (Math.abs(swatch1.getBlueDifference() - blueDifference) > 100) {
+                    result = false;
+                    break;
                 }
             }
+            previousSwatch = swatch1;
         }
 
-        return true;
+        return result;
         //return !(calculateSlope(swatches) < 20 || calculateSlope(swatches) > 40);
     }
 
