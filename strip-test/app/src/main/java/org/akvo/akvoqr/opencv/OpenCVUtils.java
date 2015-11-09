@@ -118,7 +118,7 @@ public class OpenCVUtils {
         //destination quad corresponding with srcQuad
         Point[] dstQuad = new Point[4];
 
-        //second and third Points in the list are top-right and bottom-left, but there order changes
+        //second and third Points in the list are top-right and bottom-left, but their order changes
         //depending on if portrait or landscape
         if(srcList.get(1).x > srcList.get(2).x) //it is portrait view
         {

@@ -23,7 +23,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
 
@@ -66,7 +68,6 @@ public class CalibrationCard{
 
                 CalibrationData calData = new CalibrationData();
 
-
                 JSONObject obj = new JSONObject(json);
 
                 // general data
@@ -91,7 +92,8 @@ public class CalibrationCard{
                 JSONArray colJSON = calDataJSON.getJSONArray("calValues");
                 for (int i = 0; i < colJSON.length(); i++) {
                     JSONObject cal = colJSON.getJSONObject(i);
-                    calData.addCal(cal.getString("l"), cal.getInt("R"), cal.getInt("G"), cal.getInt("B"));
+                    // we scale the Lab values in the same way as openCV does
+                    calData.addCal(cal.getString("l"), cal.getDouble("CIE_L") * 2.55, cal.getDouble("CIE_A") + 128, cal.getDouble("CIE_B") + 128);
                 }
 
                 // white lines
@@ -129,33 +131,41 @@ public class CalibrationCard{
         return val < min ? min : val;
     }
 
-    // computes the average luminosity around a point.
+    // computes the colour around a single point
     // x and y in pixels
-    // This method expects a hls file
-    public double getLuminosity(Mat hls, int x, int y, int dp){
+    // This method expects a cielab file
+    public double[] getWhiteVal(Mat lab, int x, int y, int dp){
         double totLum = 0;
+        double totA = 0;
+        double totB = 0;
+
         int totNum = 0;
         for (int i = -dp; i <= dp; i++){
             for (int ii = -dp; ii <= dp; ii++){
-                totLum = totLum + hls.get(y + i, x + ii)[1]; // L is the second in the array [H,L,S]
+                totLum = totLum + lab.get(y + i, x + ii)[0];
+                totA = totA + lab.get(y + i, x + ii)[1];
+                totB = totB + lab.get(y + i, x + ii)[2];
                 totNum++;
             }
         }
-        return totLum / totNum;
+        return new double[]{totLum / totNum, totA / totNum, totB / totNum};
     }
 
-    public double[][] createWhitePointArray(Mat hls)
+    /*
+    * Samples the white area of a calibration card. This information is used to straighten out the illumination.
+    * @result: array of point vectors, with the structure [x,y,L,A,B]
+     */
+    public double[][] createWhitePointArray(Mat lab)
     {
-
         List<CalibrationData.WhiteLine> lines = calData.whiteLines;
         int numLines = lines.size() * 10; // on each line, we sample 10 points
-        double[][] points = new double[numLines][3];
+        double[][] points = new double[numLines][5];
         int index = 0;
 
-        calData.hsizePixel = hls.cols();
-        double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
-        calData.vsizePixel = hls.rows();
-        double vfac = calData.vsizePixel / calData.vsize; // pixel per mm
+        calData.hsizePixel = lab.cols();
+        double hfac = calData.hsizePixel / calData.hsize; // pixel per mm in the horizontal direction
+        calData.vsizePixel = lab.rows();
+        double vfac = calData.vsizePixel / calData.vsize; // pixel per mm in the vertical direction
 
         for (CalibrationData.WhiteLine line : lines){
             double xStart = line.p[0];
@@ -176,32 +186,38 @@ public class CalibrationCard{
 
                 points[index * 10 + i][0] = xp;
                 points[index * 10 + i][1] = yp;
-                points[index * 10 + i][2] = getLuminosity(hls, xp, yp, dp);
+                double[] whiteVal = getWhiteVal(lab,xp, yp, dp);
+                points[index * 10 + i][2] = whiteVal[0];
+                points[index * 10 + i][3] = whiteVal[1];
+                points[index * 10 + i][4] = whiteVal[2];
             }
-
             index++;
         }
-
         return points;
     }
-    private RealMatrix createWhitePointMatrix(Mat hls) {
 
-        double[][] points = createWhitePointArray(hls);
+    /*
+    * Turns the whitepoint array into a matrix
+     */
+    private RealMatrix createWhitePointMatrix(Mat lab) {
+        double[][] points = createWhitePointArray(lab);
         return MatrixUtils.createRealMatrix(points);
     }
 
-    public Mat doIlluminationCorrection(Mat imgMat){
+    /*
+    * Straightens the illumination of the calibration file. It does this by sampling the white areas
+    * and compute a quadratic profile. The image is then corrected using this profile.
+     */
+    public Mat doIlluminationCorrection(Mat imgLab){
         // create HLS image for homogenous illumination calibration
-        int pheight =  imgMat.rows();
-        int pwidth = imgMat.cols();
-        Mat hls = new Mat(pheight, pwidth, CvType.CV_8UC3);
+        int pheight =  imgLab.rows();
+        int pwidth = imgLab.cols();
 
-        Imgproc.cvtColor(imgMat, hls, Imgproc.COLOR_BGR2HLS_FULL, imgMat.channels());
 
-        RealMatrix points = createWhitePointMatrix(hls);
+        RealMatrix points = createWhitePointMatrix(imgLab);
 
-        // create coefficient matrix
-        // the model is Luminosity = ax + bx^2 + cy + dy^2 + exy + f
+        // create coefficient matrix for all three variables L,A,B
+        // the model for all three is y = ax + bx^2 + cy + dy^2 + exy + f
         // 6th row is the constant 1
         RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(),6);
         coef.setColumnMatrix(0,points.getColumnMatrix(0));
@@ -211,52 +227,120 @@ public class CalibrationCard{
         for (int i = 0; i < points.getRowDimension(); i++){
             coef.setEntry(i,1,Math.pow(coef.getEntry(i,0),2)); // x^2
             coef.setEntry(i,3,Math.pow(coef.getEntry(i,2), 2)); // y^2
-            coef.setEntry(i,4,coef.getEntry(i,0) * coef.getEntry(i,2));
-            coef.setEntry(i,5,1d); // constant
+            coef.setEntry(i,4,coef.getEntry(i,0) * coef.getEntry(i,2)); // xy
+            coef.setEntry(i,5,1d); // constant = 1
         }
 
+        // create vectors
         RealVector L = points.getColumnVector(2);
-        DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
-        RealVector solution = solver.solve(L);
-        float a = (float)solution.getEntry(0);
-        float b = (float)solution.getEntry(1);
-        float c = (float)solution.getEntry(2);
-        float d = (float)solution.getEntry(3);
-        float e = (float)solution.getEntry(4);
-        float f = (float)solution.getEntry(5);
+        RealVector A = points.getColumnVector(3);
+        RealVector B = points.getColumnVector(4);
 
+        // solve the least squares problem for all three variables
+        DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
+        RealVector solutionL = solver.solve(L);
+        RealVector solutionA = solver.solve(A);
+        RealVector solutionB = solver.solve(B);
+
+        // get individual coefficients
+        float La = (float)solutionL.getEntry(0);
+        float Lb = (float)solutionL.getEntry(1);
+        float Lc = (float)solutionL.getEntry(2);
+        float Ld = (float)solutionL.getEntry(3);
+        float Le = (float)solutionL.getEntry(4);
+        float Lf = (float)solutionL.getEntry(5);
+
+        float Aa = (float)solutionA.getEntry(0);
+        float Ab = (float)solutionA.getEntry(1);
+        float Ac = (float)solutionA.getEntry(2);
+        float Ad = (float)solutionA.getEntry(3);
+        float Ae = (float)solutionA.getEntry(4);
+        float Af = (float)solutionA.getEntry(5);
+
+        float Ba = (float)solutionB.getEntry(0);
+        float Bb = (float)solutionB.getEntry(1);
+        float Bc = (float)solutionB.getEntry(2);
+        float Bd = (float)solutionB.getEntry(3);
+        float Be = (float)solutionB.getEntry(4);
+        float Bf = (float)solutionB.getEntry(5);
 
         // compute mean (the luminosity value of the plane in the middle of the image)
-        float Lmean = (float) (0.5 * a * pwidth + 0.5 * c * pheight + b * pwidth * pwidth / 3.0 + d * pheight * pheight / 3.0 + e * 0.25 * pheight * pwidth + f);
+        float Lmean = (float) (0.5 * La * pwidth + 0.5 * Lc * pheight + Lb * pwidth * pwidth / 3.0 + Ld * pheight * pheight / 3.0 + Le * 0.25 * pheight * pwidth + Lf);
+        float Amean = (float) (0.5 * Aa * pwidth + 0.5 * Ac * pheight + Ab * pwidth * pwidth / 3.0 + Ad * pheight * pheight / 3.0 + Ae * 0.25 * pheight * pwidth + Af);
+        float Bmean = (float) (0.5 * Ba * pwidth + 0.5 * Bc * pheight + Bb * pwidth * pwidth / 3.0 + Bd * pheight * pheight / 3.0 + Be * 0.25 * pheight * pwidth + Bf);
 
-        // correct image
+        // Correct image
         // we do this per row. We tried to do it in one block, but there is no speed difference.
-        byte[] temp = new byte[hls.cols() * hls.channels()];
-        int val = 0;
-        int ii;
-        int ii3;
-        int hlsCols = hls.cols();
-        for (int i = 0; i < hls.rows(); i++){ // y
-            hls.get(i, 0, temp);
-            ii3 = 0;
-            for (ii = 0; ii < hlsCols; ii++){  //x
-                val = (int) Math.round((temp[ii3 + 1] & 0xFF) - (a * ii + b * ii * ii + c * i + d * i * i + e * i * ii + f) + Lmean);
-                val = capValue(val, 0, 255);
-                temp[ii3 + 1] = (byte) val;
-                ii3 += 3;
-            }
-            hls.put(i, 0, temp);
+        byte[] temp = new byte[imgLab.cols() * imgLab.channels()];
+        int valL, valA, valB;
+        int ii, ii3;
+        float iiSq, iSq;
+        int imgCols = imgLab.cols();
+        int imgRows = imgLab.rows();
+
+        // use lookup tables to speed up computation
+        // create lookup tables
+        float[] Laii = new float[imgCols];
+        float[] LbiiSq = new float[imgCols];
+        float[] Aaii = new float[imgCols];
+        float[] AbiiSq = new float[imgCols];
+        float[] Baii = new float[imgCols];
+        float[] BbiiSq = new float[imgCols];
+
+        float[] Lci = new float[imgRows];
+        float[] LdiSq = new float[imgRows];
+        float[] Aci = new float[imgRows];
+        float[] AdiSq = new float[imgRows];
+        float[] Bci = new float[imgRows];
+        float[] BdiSq = new float[imgRows];
+
+        for (ii = 0; ii < imgCols; ii++){
+            iiSq = ii * ii;
+            Laii[ii] = La * ii;
+            LbiiSq[ii] = Lb * iiSq;
+            Aaii[ii] = Aa * ii ;
+            AbiiSq[ii] = Ab * iiSq;
+            Baii[ii] = Ba * ii;
+            BbiiSq[ii] = Bb * iiSq;
         }
 
-        Imgproc.cvtColor(hls, imgMat, Imgproc.COLOR_HLS2BGR_FULL, imgMat.channels());
-        return imgMat;
+        for (int i = 0; i < imgRows; i++){
+            iSq = i * i;
+            Lci[i] = Lc * i;
+            LdiSq[i] = Ld * iSq;
+            Aci[i] = Ac * i;
+            AdiSq[i] =Ad * iSq;
+            Bci[i] = Bc * i;
+            BdiSq[i] = Bd * iSq;
+        }
+
+        // TODO we can also improve the performance of the i,ii term, if we want, but it won't make much difference.
+        for (int i = 0; i < imgRows; i++){ // y
+            imgLab.get(i, 0, temp);
+            ii3 = 0;
+            iSq = i * i;
+            for (ii = 0; ii < imgCols; ii++){  //x
+                iiSq = ii * ii;
+                valL = capValue((int) Math.round((temp[ii3 + 0] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean),0,255);
+                valA = capValue((int) Math.round((temp[ii3 + 1] & 0xFF) - (Aaii[ii] + AbiiSq[ii] + Aci[i] + AdiSq[i] + Ae * i * ii + Af) + Amean),0,255);
+                valB = capValue((int) Math.round((temp[ii3 + 2] & 0xFF) - (Baii[ii] + BbiiSq[ii] + Bci[i] + BdiSq[i] + Be * i * ii + Bf) + Bmean),0,255);
+
+                temp[ii3] = (byte) valL;
+                temp[ii3 + 1] = (byte) valA;
+                temp[ii3 + 2] = (byte) valB;
+                ii3 += 3;
+            }
+            imgLab.put(i, 0, temp);
+        }
+
+        return imgLab;
     }
 
     private float[] measurePatch(Mat imgMat, double x, double y){
-        float[] BGRresult = new float[3];
+        float[] LABresult = new float[3];
+        float totL = 0;
+        float totA = 0;
         float totB = 0;
-        float totG = 0;
-        float totR = 0;
         int totNum = 0;
 
         calData.hsizePixel = imgMat.cols();
@@ -273,248 +357,160 @@ public class CalibrationCard{
             imgMat.get(yp - i, xp - dp, temp);
             ii3 = 0;
             for (int ii = 0; ii <= 2 * dp; ii++){
-                totB += temp[ii3] & 0xFF; //imgMat.get(yp + i, xp + ii)[0];
-                totG += temp[ii3 + 1] & 0xFF; //imgMat.get(yp + i, xp + ii)[1];
-                totR += temp[ii3 + 2] & 0xFF; //imgMat.get(yp + i, xp + ii)[2];
+                totL += temp[ii3] & 0xFF; //imgMat.get(yp + i, xp + ii)[0];
+                totA += temp[ii3 + 1] & 0xFF; //imgMat.get(yp + i, xp + ii)[1];
+                totB += temp[ii3 + 2] & 0xFF; //imgMat.get(yp + i, xp + ii)[2];
                 totNum++;
                 ii3 += 3;
             }
         }
-        BGRresult[0] = totB/totNum;
-        BGRresult[1] = totG/totNum;
-        BGRresult[2] = totR/totNum;
-        return BGRresult;
+        LABresult[0] = totL / totNum;
+        LABresult[1] = totA / totNum;
+        LABresult[2] = totB / totNum;
+        return LABresult;
     }
 
-    private Mat create1DLUT(double[] coeffB, double[] coeffG, double[] coeffR) {
-        Mat lutMat = new Mat(1, 256, CvType.CV_8UC3);
+    /*
+    * Perform two calibration steps:
+    * 1) a 1D calibration which looks at the individual L, A, B channels and corrects them
+    * 2) a 3d calibration which can mix the L,A,B channels to arrive at optimal results
+     */
+    private Mat do1D_3DCorrection(Mat imgMat) throws Exception{
 
-        // create storage area for lut, and put it in an array
-        int size = (int)(lutMat.total() * lutMat.channels());
-        byte[] temp = new byte[size];
-        lutMat.get(0, 0, temp);
-
-        int B;
-        int G;
-        int R;
-
-        for(int i = 0; i < 256; ++i){
-            double detB = coeffB[1]*coeffB[1] - 4.0 * coeffB[2] * (coeffB[0]-i);
-            double detG = coeffG[1]*coeffG[1] - 4.0 * coeffG[2] * (coeffG[0]-i);
-            double detR = coeffR[1]*coeffR[1] - 4.0 * coeffR[2] * (coeffR[0]-i);
-
-            if (detB < 0) {
-                B = i;
-            } else {
-                B = (int) Math.round((-coeffB[1] + Math.sqrt(detB)) / (2 * coeffB[2]));
-            }
-
-            if (detG < 0) {
-                G = i;
-            } else {
-                G = (int) Math.round((-coeffG[1] + Math.sqrt(detG)) / (2 * coeffG[2]));
-            }
-
-            if (detR < 0) {
-                R = i;
-            } else {
-                R = (int) Math.round((-coeffR[1] + Math.sqrt(detR)) / (2 * coeffR[2]));
-            }
-
-            // cap values
-            B = capValue(B,0,255);
-            G = capValue(G,0,255);
-            R = capValue(R,0,255);
-
-            // put value in lut
-            temp[3 * i] = (byte) B;
-            temp[3 * i + 1] = (byte) G;
-            temp[3 * i + 2] = (byte) R;
-        }
-        lutMat.put(0, 0, temp);
-        return lutMat;
-    }
-
-    private Mat create1DLUT2(double[] coeffB, double[] coeffG, double[] coeffR) {
-        Mat lutMat = new Mat(1, 256, CvType.CV_8UC3);
-
-        // create storage area for lut, and put it in an array
-        int size = (int)(lutMat.total() * lutMat.channels());
-        byte[] temp = new byte[size];
-        lutMat.get(0, 0, temp);
-
-        int B;
-        int G;
-        int R;
-        int isq;
-        for(int i = 0; i < 256; ++i){
-            isq = i * i;
-            B = (int) Math.round(coeffB[2] * isq + coeffB[1] * i + coeffB[0]);
-            G = (int) Math.round(coeffG[2] * isq + coeffG[1] * i + coeffG[0]);
-            R = (int) Math.round(coeffG[2] * isq + coeffR[1] * i + coeffR[0]);
-
-            // cap values
-            B = capValue(B,0,255);
-            G = capValue(G,0,255);
-            R = capValue(R,0,255);
-
-            // put value in lut
-            temp[3 * i] = (byte) B;
-            temp[3 * i + 1] = (byte) G;
-            temp[3 * i + 2] = (byte) R;
-        }
-        lutMat.put(0, 0, temp);
-        return lutMat;
-    }
-
-    private Mat do1DLUTCorrection(Mat imgMat) throws Exception{
-
-        if(calData==null)
+        if(calData==null) {
             throw new Exception("no calibration data.");
+        }
 
+        final WeightedObservedPoints obsL = new WeightedObservedPoints();
+        final WeightedObservedPoints obsA = new WeightedObservedPoints();
         final WeightedObservedPoints obsB = new WeightedObservedPoints();
-        final WeightedObservedPoints obsG = new WeightedObservedPoints();
-        final WeightedObservedPoints obsR = new WeightedObservedPoints();
 
+        Map<String,double[]> calResultIllum = new HashMap<String,double[]>();
         // iterate over all patches
         try {
             for (String label : calData.calValues.keySet()) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
-                if (loc.grayPatch) {
-                    //include this point
-                    float[] BGRcol = measurePatch(imgMat, loc.x, loc.y); // measure patch colour
-                    obsB.add(BGRcol[0], cal.B);
-                    obsG.add(BGRcol[1], cal.G);
-                    obsR.add(BGRcol[2], cal.R);
-                }
+                float[] LABcol = measurePatch(imgMat, loc.x, loc.y); // measure patch colour
+                obsL.add(LABcol[0], cal.CIE_L);
+                obsA.add(LABcol[1], cal.CIE_A);
+                obsB.add(LABcol[2], cal.CIE_B);
+                calResultIllum.put(label,new double[]{LABcol[0],LABcol[1],LABcol[2]});
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new Exception("Gray balance: error iterating over all patches.");
+            throw new Exception("1D calibration: error iterating over all patches.");
         }
+
         // Instantiate a second-degree polynomial fitter.
         final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(2);
 
         // Retrieve fitted parameters (coefficients of the polynomial function).
         // order of coefficients is (c + bx + ax^2), so [c,b,a]
         try {
+            final double[] coeffL = fitter.fit(obsL.toList());
+            final double[] coeffA = fitter.fit(obsA.toList());
             final double[] coeffB = fitter.fit(obsB.toList());
-            final double[] coeffG = fitter.fit(obsG.toList());
-            final double[] coeffR = fitter.fit(obsR.toList());
 
-            // create lookup table
-            Mat lut = create1DLUT2(coeffB, coeffG, coeffR);
-            Mat imgcorr = imgMat.clone();
+            double[] valIllum;
+            double Lorig, Aorig, Borig, Lnew, Anew, Bnew;
 
-            try {
-                Core.LUT(imgMat, lut, imgcorr);
+            // transform patch values using the 1d calibration results
+            Map<String,double[]> calResult1D = new HashMap<String,double[]>();
+            for (String label : calData.calValues.keySet()) {
+                valIllum = calResultIllum.get(label);
+
+                Lorig = valIllum[0];
+                Aorig = valIllum[1];
+                Borig = valIllum[2];
+
+                Lnew = coeffL[2] * Lorig * Lorig + coeffL[1] * Lorig + coeffL[0];
+                Anew = coeffA[2] * Aorig * Aorig + coeffA[1] * Aorig + coeffA[0];
+                Bnew = coeffB[2] * Borig * Borig + coeffB[1] * Borig + coeffB[0];
+
+                calResult1D.put(label,new double[]{Lnew,Anew,Bnew});
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                throw new Exception("Gray balance: error in LUT.");
+
+            // use the 1D calibration result for the second calibration step
+            // Following http://docs.scipy.org/doc/scipy/reference/tutorial/linalg.html#solving-linear-least-squares-problems-and-pseudo-inverses
+            // we will solve P = M x
+            int total = calData.locations.keySet().size();
+            RealMatrix coef = new Array2DRowRealMatrix(total,3);
+            RealMatrix cal = new Array2DRowRealMatrix(total,3);
+            int index = 0;
+
+            // create coefficient and calibration vectors
+            for (String label : calData.calValues.keySet()){
+                CalibrationData.CalValue calv = calData.calValues.get(label);
+                double[] cal1dResult = calResult1D.get(label);
+                coef.setEntry(index,0,cal1dResult[0]);
+                coef.setEntry(index,1,cal1dResult[1]);
+                coef.setEntry(index,2,cal1dResult[2]);
+
+                cal.setEntry(index,0,calv.CIE_L);
+                cal.setEntry(index,1,calv.CIE_A);
+                cal.setEntry(index,2,calv.CIE_B);
+                index++;
             }
-            return imgcorr;
+
+            DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
+            RealMatrix sol = solver.solve(cal);
+
+            float a_L, b_L, c_L, a_A, b_A, c_A, a_B, b_B, c_B;
+            a_L = (float)sol.getEntry(0,0);
+            b_L = (float)sol.getEntry(1,0);
+            c_L = (float)sol.getEntry(2,0);
+            a_A = (float)sol.getEntry(0,1);
+            b_A = (float)sol.getEntry(1,1);
+            c_A = (float)sol.getEntry(2,1);
+            a_B = (float)sol.getEntry(0,2);
+            b_B = (float)sol.getEntry(1,2);
+            c_B = (float)sol.getEntry(2,2);
+
+            //use the solution to correct the image
+            double Ltemp, Atemp, Btemp, Lmid, Amid, Bmid;
+            int Lfin, Afin, Bfin;
+            int ii3;
+            byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
+            for (int i = 0; i < imgMat.rows(); i++){ // y
+                imgMat.get(i, 0, temp);
+                ii3 = 0;
+                for (int ii = 0; ii < imgMat.cols(); ii++){  //x
+                    Ltemp = temp[ii3] & 0xFF;
+                    Atemp = temp[ii3 + 1] & 0xFF;
+                    Btemp = temp[ii3 + 2] & 0xFF;
+
+                    Lmid = coeffL[2] * Ltemp * Ltemp + coeffL[1] * Ltemp + coeffL[0];
+                    Amid = coeffA[2] * Atemp * Atemp + coeffA[1] * Atemp + coeffA[0];
+                    Bmid = coeffB[2] * Btemp * Btemp + coeffB[1] * Btemp + coeffB[0];
+
+                    Lfin = (int) Math.round(a_L * Lmid + b_L * Amid + c_L * Bmid);
+                    Afin = (int) Math.round(a_A * Lmid + b_A * Amid + c_A * Bmid);
+                    Bfin = (int) Math.round(a_B * Lmid + b_B * Amid + c_B * Bmid);
+
+                    // cap values
+                    Lfin = capValue(Lfin,0,255);
+                    Afin = capValue(Afin,0,255);
+                    Bfin = capValue(Bfin,0,255);
+
+                    temp[ii3] = (byte) Lfin;
+                    temp[ii3 + 1] = (byte) Afin;
+                    temp[ii3 + 2] = (byte) Bfin;
+
+                    ii3 += 3;
+                }
+                imgMat.put(i, 0, temp);
+            }
+
+            return imgMat;
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new Exception("Gray balance: error retrieving fitted parameters.");
+            throw new Exception("error while performing calibration: ",e);
         }
-
-    }
-
-    private Mat do3DLUTCorrection(Mat imgMat) {
-        int total = calData.locations.keySet().size();
-        RealMatrix coef = new Array2DRowRealMatrix(total,3);
-        RealMatrix cal = new Array2DRowRealMatrix(total,3);
-        int index = 0;
-
-        for (String label : calData.calValues.keySet()){
-            CalibrationData.CalValue calv = calData.calValues.get(label);
-            CalibrationData.Location loc = calData.locations.get(label);
-            float[] BGRcol = measurePatch(imgMat,loc.x,loc.y); // measure patch colour
-
-            coef.setEntry(index,0,BGRcol[0]);
-            coef.setEntry(index,1,BGRcol[1]);
-            coef.setEntry(index,2,BGRcol[2]);
-
-            cal.setEntry(index,0,calv.B);
-            cal.setEntry(index,1,calv.G);
-            cal.setEntry(index,2,calv.R);
-            index++;
-        }
-        DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
-        RealMatrix sol = solver.solve(cal);
-
-        float a_b, b_b, c_b, a_g, b_g, c_g, a_r, b_r, c_r;
-        a_b = (float)sol.getEntry(0,0);
-        b_b = (float)sol.getEntry(1,0);
-        c_b = (float)sol.getEntry(2,0);
-        a_g = (float)sol.getEntry(0,1);
-        b_g = (float)sol.getEntry(1,1);
-        c_g = (float)sol.getEntry(2,1);
-        a_r = (float)sol.getEntry(0,2);
-        b_r = (float)sol.getEntry(1,2);
-        c_r = (float)sol.getEntry(2,2);
-
-        // create luts
-        float[] A_B = new float[256];
-        float[] B_B = new float[256];
-        float[] C_B = new float[256];
-        float[] A_G = new float[256];
-        float[] B_G = new float[256];
-        float[] C_G = new float[256];
-        float[] A_R = new float[256];
-        float[] B_R = new float[256];
-        float[] C_R = new float[256];
-
-        for (int i = 0; i < 256; i++){
-            A_B[i] = a_b * i;
-            B_B[i] = b_b * i;
-            C_B[i] = c_b * i;
-            A_G[i] = a_g * i;
-            B_G[i] = b_g * i;
-            C_G[i] = c_g * i;
-            A_R[i] = a_r * i;
-            B_R[i] = b_r * i;
-            C_R[i] = c_r * i;
-        }
-
-        //use the solution to correct the image
-        int Btemp, Gtemp, Rtemp, Bnew, Gnew, Rnew;
-        int ii3;
-        byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
-        for (int i = 0; i < imgMat.rows(); i++){ // y
-            imgMat.get(i, 0, temp);
-            ii3 = 0;
-            for (int ii = 0; ii < imgMat.cols(); ii++){  //x
-                Btemp = temp[ii3] & 0xFF;
-                Gtemp = temp[ii3 + 1] & 0xFF;
-                Rtemp = temp[ii3 + 2] & 0xFF;
-
-                Bnew = (int) Math.round(A_B[Btemp] + B_B[Gtemp] + C_B[Rtemp]);
-                Gnew = (int) Math.round(A_G[Btemp] + B_G[Gtemp] + C_G[Rtemp]);
-                Rnew = (int) Math.round(A_R[Btemp] + B_R[Gtemp] + C_R[Rtemp]);
-
-                // cap values
-                Bnew = capValue(Bnew,0,255);
-                Gnew = capValue(Gnew,0,255);
-                Rnew = capValue(Rnew,0,255);
-
-                temp[ii3] = (byte) Bnew;
-                temp[ii3 + 1] = (byte) Gnew;
-                temp[ii3 + 2] = (byte) Rnew;
-
-                ii3 += 3;
-            }
-            imgMat.put(i, 0, temp);
-        }
-        // System.out.println("*** 3D-LUT - ending 3D LUT");
-        return imgMat;
     }
 
     private void addPatch(Mat imgMat, Double x, Double y, CalibrationData.CalValue calValue) {
@@ -530,9 +526,9 @@ public class CalibrationCard{
         for (int i = -dp; i <= dp; i++){
             for (int ii = -dp; ii <= dp; ii++){
                 byte[] col = new byte[3];
-                col[0] = (byte) calValue.B;
-                col[1] = (byte) calValue.G;
-                col[2] = (byte) calValue.R;
+                col[0] = (byte) Math.round(calValue.CIE_L);
+                col[1] = (byte) Math.round(calValue.CIE_A);
+                col[2] = (byte) Math.round(calValue.CIE_B);
                 imgMat.put(yp + i, xp + ii,col);
             }
         }
@@ -545,38 +541,41 @@ public class CalibrationCard{
         }
     }
 
-    public Mat calibrateImage(Mat imgMat) throws Exception{
-
+    /*
+    * Calibrate an image using a 3-step process. The steps are:
+     * 1) straighten illumination profile
+     * 2) 1D colour balance
+     * 3) 3D colour balance
+     *
+     * As a final step, we put the calibration colours in the image, so that the quality can be judged later
+     *
+     * imgMat: CV_8UC3 (8-bit) Mat object, in BGR encoding.
+     * @result: calibrated image
+     */
+    public Mat calibrateImage(Mat labImg) throws Exception{
         System.out.println("*** start of calibration");
 
         if(calData!=null) {
-
-            // illumination correction
-            if(imgMat!=null) {
+//            // illumination correction
+            if(labImg!=null) {
                 System.out.println("*** ILLUM - starting illumination correction");
-                imgMat = doIlluminationCorrection(imgMat);
+                labImg = doIlluminationCorrection(labImg);
             }
 
-            // 1D LUT gray balance
-            if(imgMat!=null) {
-                System.out.println("*** ILLUM - starting gray balance");
-                imgMat = do1DLUTCorrection(imgMat);
+            // 1D gray balance
+            if(labImg!=null) {
+                System.out.println("*** ILLUM - starting 1D and 3D balance");
+                labImg = do1D_3DCorrection(labImg);
             }
-            // 3D LUT color balance
-            if(imgMat!=null) {
-                System.out.println("*** ILLUM - starting 3D lut");
-                imgMat = do3DLUTCorrection(imgMat);
-            }
-
-            // insert calibration colours in image
-            if(imgMat!=null) {
+//
+//             insert calibration colours in image
+            if(labImg!=null) {
                 System.out.println("*** ILLUM - adding colours");
-                addCalColours(imgMat);
+                addCalColours(labImg);
             }
-
-            System.out.println("*** end of calibration");
-            return imgMat;
-
+////
+////            System.out.println("*** end of calibration");
+            return labImg;
         }
         return null;
     }
@@ -615,10 +614,6 @@ public class CalibrationCard{
             // sort points in order top-left, bottom-left, top-right, bottom-right
             List<Point> points = getOrderedPoints(p1,p2,p3,p4);
 
-            //if camera is in portrait mode, bottomLeft is third in the sorted list
-//            ResultPoint bottomLeft = new ResultPoint((float) points.get(2).x,(float) points.get(2).y);
-//            ResultPoint bottomRight = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
-
             //because camera is in portrait mode, we need bottom-right and top-right patterns:
             //the version number barcode lies next to bottom-right
             ResultPoint bottomLeft = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
@@ -632,11 +627,8 @@ public class CalibrationCard{
             //because camera is in portrait mode, we need to shift x and y
             double lrx = bottomRight.getX() - bottomLeft.getX();
             double lry = bottomRight.getY() - bottomLeft.getY();
-//            System.out.println("*** distances:" + bottomLeft.getX() + "," + bottomLeft.getY() + "," + bottomRight.getX() + "," + bottomRight.getY());
-//            System.out.println("*** " + lrx + "," + lry);
             double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
                     bottomRight.getX(), bottomRight.getY());
-//            System.out.println("*** " + lrx + "," + lry + "," + hNorm);
 
             // check if left and right are ok
             if (lry > 0) {
@@ -659,7 +651,6 @@ public class CalibrationCard{
                     px += lrx;
                     py += lry;
                     index++;
-//                    System.out.println("*** position: " + px + "," + py);
                 }
             }
             catch (Exception e)

@@ -139,12 +139,12 @@ public class PreviewUtils {
         int countMaxDev = 0;
         double deviation;
 
-        Mat hls = new Mat();
-        Imgproc.cvtColor(bgr, hls, Imgproc.COLOR_BGR2HLS_FULL);
+        Mat lab = new Mat();
+        Imgproc.cvtColor(bgr, lab, Imgproc.COLOR_BGR2Lab);
 
         CalibrationCard card = CalibrationCard.getInstance(versionNumber);
 
-        double[][] points = card.createWhitePointArray(hls);
+        double[][] points = card.createWhitePointArray(lab);
 
         //get the sum total of luminosity values
         for(int i=0; i< points.length; i++) {

@@ -44,14 +44,14 @@ public class CalibrationData {
     }
 
     public class CalValue {
-        public int R;
-        public int G;
-        public int B;
+        public double CIE_L;
+        public double CIE_A;
+        public double CIE_B;
 
-        public CalValue(int R, int G, int B){
-            this.R = R;
-            this.G = G;
-            this.B = B;
+        public CalValue(double CIE_L, double CIE_A, double CIE_B){
+            this.CIE_L = CIE_L;
+            this.CIE_A = CIE_A;
+            this.CIE_B = CIE_B;
 
         }
     }
@@ -76,8 +76,8 @@ public class CalibrationData {
         this.locations.put(label,loc);
     }
 
-    public void addCal(String label, int R, int G, int B){
-        CalValue calVal = new CalValue(R,G,B);
+    public void addCal(String label, double CIE_L, double CIE_A, double CIE_B){
+        CalValue calVal = new CalValue(CIE_L,CIE_A,CIE_B);
         this.calValues.put(label,calVal);
     }
 

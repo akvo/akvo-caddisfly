@@ -129,9 +129,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             camera.stopPreview();
                             listener.playSound();
 
-                            data = compressToJpeg(data);
+//                            data = compressToJpeg(data);
 
-                            listener.sendData(data, timePictureTaken, ImageFormat.JPEG,
+                            listener.sendData(data, timePictureTaken, ImageFormat.NV21,
                                     previewSize.width,
                                     previewSize.height, info);
 
@@ -332,6 +332,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
                     shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    System.out.println("*** shadow:" + shadowPercentage);
                     //System.out.println("***versionNumber 2: " + versionNumber);
                     shadowTrack.add(shadowPercentage);
                 }
@@ -562,19 +563,19 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
-    private byte[] compressToJpeg(byte[] data)
-    {
-
-        if(previewFormat == ImageFormat.NV21) {
-            YuvImage yuvImage = new YuvImage(data, previewFormat, previewSize.width, previewSize.height, null);
-            Rect rect = new Rect(0, 0, previewSize.width, previewSize.height);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            yuvImage.compressToJpeg(rect, 100, baos);
-            return baos.toByteArray();
-        }
-
-        return null;
-    }
+//    private byte[] compressToJpeg(byte[] data)
+//    {
+//
+//        if(previewFormat == ImageFormat.NV21) {
+//            YuvImage yuvImage = new YuvImage(data, previewFormat, previewSize.width, previewSize.height, null);
+//            Rect rect = new Rect(0, 0, previewSize.width, previewSize.height);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            yuvImage.compressToJpeg(rect, 100, baos);
+//            return baos.toByteArray();
+//        }
+//
+//        return null;
+//    }
 
 
 //    private void takePicture()

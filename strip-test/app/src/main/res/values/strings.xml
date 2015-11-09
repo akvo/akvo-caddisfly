@@ -10,7 +10,7 @@
     <string name="cut_out_strip">Cutting out strip...</string>
     <string name="detect_shadow">Detecting shadows ...</string>
     <string name="error_calibrating">Calibration failed</string>
-    <string name="error_conversion">Could not convert to bgr.</string>
+    <string name="error_conversion">Could not convert image.</string>
     <string name="error_cut_out_strip">No strip found.</string>
     <string name="error_detect_shadow">Could not detect shadows.</string>
     <string name="error_detection">Error in detection.</string>

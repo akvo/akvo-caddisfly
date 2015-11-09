@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 public class DetectStripActivity extends AppCompatActivity {
 
-    private Mat bgr;
+    private Mat labImg;
     private LinearLayout linearLayout;
     private Handler handler;
     private Button toResultsButton;
@@ -193,9 +193,9 @@ public class DetectStripActivity extends AppCompatActivity {
 
                 try {
 
-                    //make a blue, green, red Mat object from data
+                    //make a L,A,B Mat object from data
                     try {
-                        makeBGR();
+                        makeLab();
                     } catch (Exception e) {
                         showMessage(getString(R.string.error_conversion));
                         continue;
@@ -217,11 +217,14 @@ public class DetectStripActivity extends AppCompatActivity {
                         continue;
                     }
 
-                    //save warped image to external storage
+                    // save warped image to external storage
 
                     if (develop) {
-                        Bitmap bitmap = Bitmap.createBitmap(warp_dst.width(), warp_dst.height(), Bitmap.Config.ARGB_8888);
-                        Utils.matToBitmap(warp_dst, bitmap);
+//                        Mat bgr = new Mat(warp, width, CvType.CV_8UC3);
+                        Mat rgb = new Mat();
+                        Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_Lab2RGB);
+                        Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(rgb, bitmap);
 
                         if (FileStorage.checkExternalMedia()) {
                             FileStorage.writeToSDFile(bitmap);
@@ -230,13 +233,10 @@ public class DetectStripActivity extends AppCompatActivity {
                         showImage(bitmap);
                     }
 
-
                     //find calibration patches
                     try {
 
                         showMessage(getString(R.string.calibrating));
-                        //Calibration code works with 8UC3 images only.
-                        // System.out.println("***warp_dst type: " + CvType.typeToString(warp_dst.type()) + ", channels: " + warp_dst.channels());
                         cal_dest = getCalibratedImage(warp_dst);
 
                     } catch (Exception e) {
@@ -249,7 +249,7 @@ public class DetectStripActivity extends AppCompatActivity {
                     //show calibrated image
                     if (develop) {
                         Mat rgb = new Mat();
-                        Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_BGR2RGBA);
+                        Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_Lab2RGB);
                         Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                         Utils.matToBitmap(rgb, bitmap);
                         Bitmap.createScaledBitmap(bitmap, 800, 480, false);
@@ -330,37 +330,37 @@ public class DetectStripActivity extends AppCompatActivity {
             });
         }
 
-        private void makeBGR() throws Exception
+        private void makeLab() throws Exception
         {
             if (format == ImageFormat.NV21) {
-
-                //convert preview data to Mat object with highest possible quality
-                bgr = new Mat(height, width, CvType.CV_8UC3);
+                //convert preview data to Mat object in CIELAB format
+                Mat bgr = new Mat(height, width, CvType.CV_8UC3);
+                labImg = new Mat(height, width, CvType.CV_8UC3);
                 Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
                 convert_mYuv.put(0, 0, data);
-                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
-
+                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2RGB_NV21, bgr.channels());
+                Imgproc.cvtColor(bgr, labImg, Imgproc.COLOR_RGB2Lab, bgr.channels());
             }
-            else if (format == ImageFormat.JPEG || format == ImageFormat.RGB_565) {
-
-                Mat bgra = new Mat(height, width, CvType.CV_8UC4);
-                //System.out.println("***bgra type I: " + CvType.typeToString(bgra.type()) + ", channels: " + bgra.channels());
-
-                bgr = new Mat();
-                Bitmap bitmap;
-
-                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-
-                Utils.bitmapToMat(bitmap, bgra);
-
-                Imgproc.cvtColor(bgra, bgr, Imgproc.COLOR_BGRA2BGR);
-                //System.out.println("***bgr type II: " + CvType.typeToString(bgr.type()) + ", channels: " + bgr.channels());
-
-                if(develop) {
-                    Bitmap scaledbitmap = Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                    showImage(scaledbitmap);
-                }
-            }
+//            else if (format == ImageFormat.JPEG || format == ImageFormat.RGB_565) {
+//
+//                Mat bgra = new Mat(height, width, CvType.CV_8UC4);
+//                //System.out.println("***bgra type I: " + CvType.typeToString(bgra.type()) + ", channels: " + bgra.channels());
+//
+//                bgr = new Mat();
+//                Bitmap bitmap;
+//
+//                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//
+//                Utils.bitmapToMat(bitmap, bgra);
+//
+//                Imgproc.cvtColor(bgra, bgr, Imgproc.COLOR_BGRA2BGR);
+//                //System.out.println("***bgr type II: " + CvType.typeToString(bgr.type()) + ", channels: " + bgr.channels());
+//
+//                if(develop) {
+//                    Bitmap scaledbitmap = Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+//                    showImage(scaledbitmap);
+//                }
+//            }
         }
 
         private void warp(int i) throws Exception
@@ -382,8 +382,8 @@ public class DetectStripActivity extends AppCompatActivity {
             double[] bottomright = new double[]{br.getDouble(0), br.getDouble(1)};
 
             showMessage(getString(R.string.warp));
-            warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, bgr);
-
+            // TODO we are currently scaling up the image to the full size of the preview image, which is not necessary.
+            warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, labImg);
         }
 
         private void divideIntoCalibrationAndStripArea() throws Exception{
