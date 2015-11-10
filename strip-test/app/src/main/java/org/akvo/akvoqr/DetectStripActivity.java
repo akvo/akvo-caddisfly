@@ -364,9 +364,15 @@ public class DetectStripActivity extends AppCompatActivity {
 
         private void warp(int i) throws Exception
         {
+            if(labImg == null)
+            {
+                throw new Exception("no image");
+            }
+
             String jsonInfo = FileStorage.readFromInternalStorage(Constant.INFO + i + ".txt");
             if (jsonInfo == null) {
                 showMessage(getString(R.string.error_no_finder_pattern_info));
+                throw new Exception("no finder pattern info");
             }
 
             JSONObject jsonObject = new JSONObject(jsonInfo);

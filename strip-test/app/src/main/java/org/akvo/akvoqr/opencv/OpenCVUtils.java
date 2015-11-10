@@ -179,10 +179,7 @@ public class OpenCVUtils {
 
     public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH)
     {
-
         List<Mat> channels = new ArrayList<>();
-
-        //Imgproc.cvtColor(striparea, lab, Imgproc.COLOR_BGR2Lab, 0);
         Mat lab = striparea.clone();
         Imgproc.medianBlur(lab, lab, 11);
 
@@ -323,11 +320,11 @@ public class OpenCVUtils {
 //                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
 //                        + " height: " + rotated.size().height);
 
-                Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
-
-                point1 = new Point(point3.x - rotated.width(), point3.y - rotated.height());
-
-                Imgproc.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
+//                Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
+//
+//                point1 = new Point(point3.x - rotated.width(), point3.y - rotated.height());
+//
+//                Imgproc.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
 
                 return rotated;
             }
