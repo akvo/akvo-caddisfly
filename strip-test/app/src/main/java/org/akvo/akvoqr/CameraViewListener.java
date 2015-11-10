@@ -14,7 +14,7 @@ public interface CameraViewListener {
 
     void getMessage(int what);
 
-    void adjustExposureCompensation(int goOnInSameDirection);
+    void adjustExposureCompensation(int direction);
 
     void sendData(byte[] data, long timeMillis,
                   int format, int width, int height, FinderPatternInfo info);

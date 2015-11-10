@@ -35,10 +35,10 @@ public class QualityCheckShadowsView extends QualityCheckView {
                     canvas.getHeight(),
                     redPaint);
         } else  {
-            int numberOfBars = (int) Math.ceil(10-percentage * 0.1f);
+            int numberOfBars = (int) Math.ceil(10 - percentage * 0.1f);
 
             canvas.save();
-            for (int i = 0; i <= numberOfBars; i++) {
+            for (int i = 0; i < numberOfBars; i++) {
                 if (i < Constant.MAX_SHADOW_PERCENTAGE * 0.9) {
                     canvas.drawRect(
                             0, 0,

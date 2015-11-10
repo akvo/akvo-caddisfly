@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,7 +18,6 @@ import org.akvo.akvoqr.detector.HybridBinarizer;
 import org.akvo.akvoqr.detector.NotFoundException;
 import org.akvo.akvoqr.detector.PlanarYUVLuminanceSource;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
-import org.akvo.akvoqr.sensor.LightSensor;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.PreviewUtils;
 import org.opencv.core.CvType;
@@ -27,7 +25,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -47,9 +44,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
-    private int previewFormat;
+//    private int previewFormat;
     private boolean focused = true;
-    private  LightSensor lightSensor;
+//    private  LightSensor lightSensor;
     LinkedList<Double> lumTrack = new LinkedList<>();
     LinkedList<Double> shadowTrack = new LinkedList<>();
 
@@ -69,8 +66,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         possibleCenters = new ArrayList<>();
 
-        lightSensor = new LightSensor();
-        lightSensor.start();
+//        lightSensor = new LightSensor();
+//        lightSensor.start();
 
     }
 
@@ -79,7 +76,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
-        previewFormat = camera.getParameters().getPreviewFormat();
+//        previewFormat = camera.getParameters().getPreviewFormat();
 
         focused = false;
 
@@ -135,7 +132,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                                     previewSize.width,
                                     previewSize.height, info);
 
-                            lightSensor.stop();
+//                            lightSensor.stop();
                         }
                         else
                         {
@@ -246,13 +243,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             //brightness: do the checks
             double maxmaxLum = luminosityCheck(lumList);
-            luminosityQualOk = maxmaxLum > Constant.MIN_LUMINOSITY_PERCENTAGE;
+            luminosityQualOk = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER;
 
             //System.out.println("***lumTrack size: " + lumTrack.size());
 
             if(lumTrack.size()<1) {
-                //show zero values
-                listener.showMaxLuminosity(false, 0);
+                //101 means 'no data'
+                listener.showMaxLuminosity(false, 101);
             }
             else
             {
@@ -427,39 +424,41 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                System.out.println("***locking auto-exposure. ");
 //            }
 
+            //compensate for under-exposure
+            //if max values lower than 150
+            if(maxmaxLum < Constant.MAX_LUM_LOWER)
+            {
+                //enlarge
+                listener.adjustExposureCompensation(1);
+
+                System.out.println("***under exposed. ");
+            }
             //compensate for over-exposure
-            //if min values are larger than 60 or max values larger than 254
-            if(maxminLum > Constant.MIN_LUM_LOWER || minmaxLum > Constant.MIN_LUM_UPPER)
+            //if max values larger than 200
+            if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
                 System.out.println("***over exposed. ");
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
             //compare latest value with the previous one
-            else if(lumTrack.size()>1)
-            {
-                if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
-
-                    //difference is increasing; this is good, keep going in the same direction
-                    listener.adjustExposureCompensation(1);
-                }
-                else if(lumTrack.getLast() > Constant.MIN_LUMINOSITY_PERCENTAGE)
-                {
-                    //optimum situation reached: remove last value to keep ideal situation
-                    if(lumTrack.size()>2)
-                        lumTrack.removeLast();
-
-                    //System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
-
-                }
-                else if(lumTrack.getLast() < Constant.MIN_LUMINOSITY_PERCENTAGE)
-                {
-                    //we are no where near a good exposure, just keep on trying
-                    listener.adjustExposureCompensation(1);
-
-                    System.out.println("***adjusting exposure. ");
-                }
-            }
+//            else if(lumTrack.size()>1)
+//            {
+//                if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
+//
+//                    //difference is increasing; this is good, keep going in the same direction
+//                    listener.adjustExposureCompensation(1);
+//                }
+//                else if(lumTrack.getLast() > Constant.MAX_LUM_LOWER)
+//                {
+//                    //optimum situation reached: remove last value to keep ideal situation
+//                    if(lumTrack.size()>2)
+//                        lumTrack.removeLast();
+//
+//                    //System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+//
+//                }
+//            }
 
         }
 
