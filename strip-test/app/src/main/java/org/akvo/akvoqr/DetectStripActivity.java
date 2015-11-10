@@ -116,10 +116,10 @@ public class DetectStripActivity extends AppCompatActivity {
 
     public CalibrationResultData getCalibratedImage(Mat mat) throws Exception
     {
-        System.out.println("***version number detect: " + CalibrationCard.calVersionNumber);
+        System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
 
         CalibrationCard calibrationCard = CalibrationCard.getInstance();
-        if(CalibrationCard.calVersionNumber==CalibrationCard.CODE_NOT_FOUND)
+        if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND)
         {
             throw new Exception("no version number set.");
         }

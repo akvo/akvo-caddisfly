@@ -33,7 +33,7 @@ public class QualityCheckBrightnessView extends QualityCheckView {
 
     @Override
     public void onDraw(Canvas canvas) {
-        System.out.println("***brightness percentage: " + percentage);
+//        System.out.println("***brightness percentage: " + percentage);
 
         if (percentage > 100) {
             //no data
@@ -48,8 +48,8 @@ public class QualityCheckBrightnessView extends QualityCheckView {
             canvas.save();
             for (int i = 0; i < numberOfBars; i++) {
 
-                System.out.println("***brightness min lum percentage: "+ i + "  = " + Constant.MIN_LUM_PERCENTAGE + "  " + (double)(Constant.MIN_LUM_PERCENTAGE * 0.1d) +
-                "  max lum perc. = " +(double) (Constant.MAX_LUM_PERCENTAGE * 0.1d));
+//                System.out.println("***brightness min lum percentage: "+ i + "  = " + Constant.MIN_LUM_PERCENTAGE + "  " + (double)(Constant.MIN_LUM_PERCENTAGE * 0.1d) +
+//                "  max lum perc. = " +(double) (Constant.MAX_LUM_PERCENTAGE * 0.1d));
 
                 if (i < Math.floor(Constant.MAX_LUM_PERCENTAGE * 0.1d)) {
                     canvas.drawRect(

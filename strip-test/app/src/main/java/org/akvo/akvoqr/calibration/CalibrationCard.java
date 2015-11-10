@@ -17,12 +17,10 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-import org.opencv.imgproc.Imgproc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +29,17 @@ import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
 
 // Performs the calibration of the image
 public class CalibrationCard{
-    public static final int CODE_NOT_FOUND = -1;//temporary hack to work with current test card, was -1
+    public static final int CODE_NOT_FOUND = -1;
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
     private static CalibrationData calData;
-    public static int calVersionNumber = CODE_NOT_FOUND;
+    public static Map<Integer, Integer> versionNumberMap = new HashMap<>();
+    private static int calVersionNumber = CODE_NOT_FOUND;
 
     //Constructor to use if versionNumber is set previously or does not matter
     public static CalibrationCard getInstance()
     {
-        return getInstance(calVersionNumber);
+        return getInstance(getMostFrequentVersionNumber());
     }
 
     public static CalibrationCard getInstance(int versionNumber)
@@ -56,6 +55,43 @@ public class CalibrationCard{
         }
 
         return instance;
+    }
+
+    //put version number in HashMap: number, frequency
+    public static void addVersionNumber(Integer number)
+    {
+        int existingFrequency = versionNumberMap.get(number)==null? 0: versionNumberMap.get(number);
+        versionNumberMap.put(number, existingFrequency+1);
+    }
+
+    public static int getMostFrequentVersionNumber()
+    {
+        int mostFreq = 0;
+        List<Integer> versionNumbers = new ArrayList<>();
+        //what is the most frequent value
+        for(Integer freq: versionNumberMap.values())
+        {
+            if(freq > mostFreq)
+            {
+                mostFreq = freq;
+
+            }
+        }
+
+        //collect the keys that have mostFreq as value
+        for(Map.Entry<Integer, Integer> entry: versionNumberMap.entrySet())
+        {
+//            System.out.println("***saved version number: " + entry.getKey());
+
+            if(entry.getValue().equals(mostFreq))
+                versionNumbers.add(entry.getKey());
+        }
+
+        //return the first match (hopefully there will be one and only one match)
+        if(versionNumbers.size()>0)
+            return versionNumbers.get(0);
+
+        return CODE_NOT_FOUND;
     }
 
     private static CalibrationData readCalibrationFile(){

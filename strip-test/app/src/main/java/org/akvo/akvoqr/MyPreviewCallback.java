@@ -516,7 +516,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     try {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-                            //System.out.println("***versionNumber: " + versionNumber);
+//                            System.out.println("***versionNumber: " + versionNumber);
+                            CalibrationCard.addVersionNumber(versionNumber);
+
+                            //testing
+//                            Random random = new Random();
+//                            CalibrationCard.addVersionNumber(random.nextInt(10));
                         }
                     }
                     catch (Exception e)
