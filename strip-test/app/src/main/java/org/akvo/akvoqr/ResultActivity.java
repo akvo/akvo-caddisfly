@@ -265,6 +265,20 @@ public class ResultActivity extends AppCompatActivity {
 
             pointC = colorValues;
 
+            // in strips.json, lab values for a en b are between -128 and 128 and l between 0 - 100
+            //  but in OpenCV the range is: 0 - 255.
+            // we calculate pointC values back to CIE-Lab values
+            if(colorSchema.equals("lab"))
+            {
+                if(pointC.length < 3)
+                {
+                    throw new Exception("no valid lab data.");
+                }
+                pointC[0] = (pointC[0] / 255) * 100;
+                pointC[1] = pointC[1] - 128;
+                pointC[2] = pointC[2] - 128;
+            }
+
             //start test
             testLab(pointC);
             testCount ++;
@@ -282,19 +296,7 @@ public class ResultActivity extends AppCompatActivity {
                 patchColorValues = colours.getJSONObject(j + 1).getJSONArray(colorSchema);
                 pointB = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
-                //in strips.json, lab values are between -128 and 128, but here we use the OpenCV standard: 0 - 255
-                if(colorSchema.equals("lab"))
-                {
-                    if(pointA.length !=3 || pointB.length!=3)
-                    {
-                        throw new Exception("no valid lab data.");
-                    }
-                    for(int i=0;i<3;i++)
-                    {
-                        pointA[i] = pointA[i]+128;
-                        pointB[i] = pointB[i]+128;
-                    }
-                }
+
             }
             catch (JSONException e)
             {
@@ -504,11 +506,16 @@ public class ResultActivity extends AppCompatActivity {
     {
         Scalar[] testColorsListLab = new Scalar[]
                 {
-                        new Scalar(64.27, 48.17, - 3.48),
-                        new Scalar(73.02,10.895, - 17.26),
-                        new Scalar(77.915, 30.98, 3.01),
+//                        new Scalar(64.27, 48.17, - 3.48),
+//                        new Scalar(73.02,10.895, - 17.26),
+//                        new Scalar(77.915, 30.98, 3.01),
+//                        new Scalar(85.93, - 16.24, 20),
+//                        new Scalar(93.58, 0.6, 20.37)
+                        new Scalar(93.58, 0.6, 20.37),
                         new Scalar(85.93, - 16.24, 20),
-                        new Scalar(93.58, 0.6, 20.37)
+                        new Scalar(77.915, 30.98, 3.01),
+                        new Scalar(73.02,10.895, - 17.26),
+                        new Scalar(64.27, 48.17, - 3.48),
                 };
         Locale l = Locale.US;
         System.out.print("***test color Lab,");
@@ -523,10 +530,6 @@ public class ResultActivity extends AppCompatActivity {
         try {
 
             double[] pointA = testColorsListLab[testCount].val;
-            for(int i=0;i<3;i++)
-            {
-                pointA[i] = pointA[i]+128;
-            }
 
             double distance = getDistanceBetween2Points3D(pointA, pointC);
             System.out.print("," + distance);

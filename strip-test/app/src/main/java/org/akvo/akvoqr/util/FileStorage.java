@@ -113,12 +113,22 @@ public class FileStorage {
         return null;
     }
 
-    public static void deleteFromInternalStorage(int order)
+    public static void deleteFromInternalStorage(final String contains)
     {
-        String fileName = Constant.DATA + order +".txt";
-        File file = new File(App.getMyApplicationContext().getFilesDir(), fileName);
+        File file = App.getMyApplicationContext().getFilesDir();
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.contains(contains);
+            }
+        };
+        File[] files = file.listFiles(filter);
+        for(File f: files)
+        {
+            boolean deleted = f.delete();
 
-        file.delete();
+            System.out.println("***deleted file : " + f.getName() + ": " + deleted);
+        }
     }
 
     public static void deleteAll()

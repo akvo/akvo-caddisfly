@@ -176,6 +176,7 @@ public class DetectStripActivity extends AppCompatActivity {
             try {
                 String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH+".txt");
                 imagePatchArray = new JSONArray(json);
+                System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -187,17 +188,17 @@ public class DetectStripActivity extends AppCompatActivity {
                         JSONArray array = imagePatchArray.getJSONArray(i);
 
                         // get the image number from the json array
-                        int imgageNo = array.getInt(0);
+                        int imageNo = array.getInt(0);
 
-                        if (imgageNo > imageCount) {
-                            showMessage(getString(R.string.reading_data));
-                            data = FileStorage.readByteArray(i);
-                            if (data == null)
-                                throw new IOException();
+                        if (imageNo > imageCount) {
 
                             // Set imageCount to current number
-                            imageCount = imgageNo;
+                            imageCount = imageNo;
 
+                            showMessage(getString(R.string.reading_data));
+                            data = FileStorage.readByteArray(imageNo);
+                            if (data == null)
+                                throw new IOException();
                             //make a L,A,B Mat object from data
                             try {
                                 makeLab();
@@ -208,7 +209,7 @@ public class DetectStripActivity extends AppCompatActivity {
 
                             //perspectiveTransform
                             try {
-                                warp(i);
+                                warp(imageNo);
                             } catch (Exception e) {
                                 showMessage(getString(R.string.error_warp));
                                 continue;
@@ -236,7 +237,7 @@ public class DetectStripActivity extends AppCompatActivity {
                                 showImage(bitmap);
                             }
 
-                            //find calibration patches
+                            //calibrate
                             try {
                                 showMessage(getString(R.string.calibrating));
                                 CalibrationResultData calResult = getCalibratedImage(warp_dst);
@@ -379,7 +380,6 @@ public class DetectStripActivity extends AppCompatActivity {
             double[] bottomright = new double[]{br.getDouble(0), br.getDouble(1)};
 
             showMessage(getString(R.string.warp));
-            // TODO we are currently scaling up the image to the full size of the preview image, which is not necessary.
             warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, labImg);
         }
 

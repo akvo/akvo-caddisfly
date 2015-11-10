@@ -183,7 +183,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         super.onResume();
 
-        FileStorage.deleteAll();
+        //Delete all finder pattern info and image data from internal storage
+        FileStorage.deleteFromInternalStorage(Constant.INFO);
+        FileStorage.deleteFromInternalStorage(Constant.DATA);
 
         Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
 
@@ -436,15 +438,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     private class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
-        private int patchCount;
+        private int imageCount;
         private byte[] data;
         private FinderPatternInfo info;
         private int format;
         private int width;
         private int height;
 
-        private StoreDataTask(int patchCount, byte[] data, FinderPatternInfo info, int format, int width, int height) {
-            this.patchCount = patchCount;
+        private StoreDataTask(int imageCount, byte[] data, FinderPatternInfo info, int format, int width, int height) {
+            this.imageCount = imageCount;
             this.data = data;
             this.info = info;
             this.format = format;
@@ -455,15 +457,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            FileStorage.writeByteArray(data, patchCount);
+            FileStorage.writeByteArray(data, imageCount);
             String json = FinderPatternInfoToJson.toJson(info);
-            FileStorage.writeToInternalStorage(Constant.INFO + patchCount, json);
+            FileStorage.writeToInternalStorage(Constant.INFO + imageCount, json);
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean written) {
-            //System.out.println("***data was written: " + patchCount + written);
 
             if(patchesCovered == patches.size()-1)
             {
@@ -492,27 +493,24 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         //NB: in case a strip is designed in a manner where the order in time is different from the
         //order in the json-array, this will not work. Patches with lower value for time-lapse
         //should come before others.
-        for(int i=patchesCovered+1;i<patches.size();i++)
-        {
+        for(int i=patchesCovered+1;i<patches.size();i++) {
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
-            if(timeMillis > initTimeMillis + patches.get(i).getTimeLapse()*1000)
-            {
+            if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
 
                 //...but we do not want to replace the already saved data with new
                 patchesCovered = i;
-                
+
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
                 array.put(i);
                 imagePatchArray.put(array);
 
-                //System.out.println("***patchCount: " + i + " patchesCovered: " + patchesCovered);
+                //System.out.println("***imageCount: " + i + " patchesCovered: " + patchesCovered);
 
             }
-
-            new StoreDataTask(i, data, info, format, width, height).execute();
-
         }
+
+        new StoreDataTask(imageCount, data, info, format, width, height).execute();
 
         showProgress(patchesCovered+1);
 
