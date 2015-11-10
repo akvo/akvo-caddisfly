@@ -518,13 +518,15 @@ public class ResultActivity extends AppCompatActivity {
                         new Scalar(64.27, 48.17, - 3.48),
                 };
         Locale l = Locale.US;
-        System.out.print("***test color Lab,");
-        System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
-                ", " + String.format(l, "%.2f", testColorsListLab[testCount].val[1]) + ", " +
-                String.format(l, "%.2f", testColorsListLab[testCount].val[2]) + ",");
 
-        System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
-                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
+        String data = "***test color Lab,";
+
+        data += testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
+                ", " + String.format(l, "%.2f", testColorsListLab[testCount].val[1]) + ", " +
+                String.format(l, "%.2f", testColorsListLab[testCount].val[2]) + ",";
+
+        data += String.format(l, "%.2f", pointC[0]) + ", "
+                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]);
 
 
         try {
@@ -532,8 +534,10 @@ public class ResultActivity extends AppCompatActivity {
             double[] pointA = testColorsListLab[testCount].val;
 
             double distance = getDistanceBetween2Points3D(pointA, pointC);
-            System.out.print("," + distance);
-            System.out.println(",***");
+            data += "," + distance;
+            data += "\n";
+
+            FileStorage.writeLogToSDFile(data);
 
         } catch (Exception e) {
             e.printStackTrace();

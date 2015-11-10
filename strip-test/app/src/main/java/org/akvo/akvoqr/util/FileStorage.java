@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -207,7 +208,7 @@ public class FileStorage {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("\n\nFile written to " + file);
@@ -245,4 +246,33 @@ public class FileStorage {
         return String.valueOf(maxCount+1);
     }
 
+    public static void writeLogToSDFile(String data){
+
+        // Find the root of the external storage.
+        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
+
+        File root = android.os.Environment.getExternalStorageDirectory();
+        System.out.println("\nExternal file system root: " + root);
+
+        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
+
+        File dir = new File (root.getAbsolutePath() + "/download/striptest");
+        dir.mkdirs();
+        File file = new File(dir, "log.txt");
+
+        try {
+//            FileOutputStream f = new FileOutputStream(file);
+//            BufferedOutputStream bos = new BufferedOutputStream(f);
+            FileWriter writer = new FileWriter(file, true);
+            writer.write(data);
+
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n\nFile written to " + file);
+    }
 }
