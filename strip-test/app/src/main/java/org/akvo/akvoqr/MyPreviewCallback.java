@@ -305,7 +305,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             listener.setCountQualityCheckResult(luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0);
         }
 
-        return true;
+        return luminosityQualOk && shadowQualOk && levelQualOk;
 
     }
 
