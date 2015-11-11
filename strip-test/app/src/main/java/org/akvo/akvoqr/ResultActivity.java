@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.color.ColorDetected;
@@ -535,6 +536,10 @@ public class ResultActivity extends AppCompatActivity {
 
             double distance = getDistanceBetween2Points3D(pointA, pointC);
             data += "," + distance;
+
+            double E94 =  CalibrationCard.getInstance().E94(pointA[0], pointA[1], pointA[2],
+                    pointC[0], pointC[1], pointC[2]);
+            data += "," + E94;
             data += "\n";
 
             FileStorage.writeLogToSDFile(data);

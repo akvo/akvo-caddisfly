@@ -628,7 +628,7 @@ public class CalibrationCard{
     *
     * @returns: E94 distance
      */
-    private double E94(double l1,double a1,double b1,double l2,double a2,double b2){
+    public double E94(double l1,double a1,double b1,double l2,double a2,double b2){
         // normalise values to standard ranges
         l1 = l1 / 2.55;
         l2 = l2 / 2.55;
