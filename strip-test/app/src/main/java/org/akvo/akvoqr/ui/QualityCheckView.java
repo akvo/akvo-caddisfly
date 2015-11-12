@@ -55,8 +55,7 @@ public class QualityCheckView extends View {
             throw new NullPointerException("Method to get number must be overridden in child class.");
         }
 
-        System.out.println("***perc. = " + percentage  + " number = " + number);
-
+//        System.out.println("***perc. = " + percentage  + " number = " + number);
 
         canvas.save();
         //start at half of the width the view is going to be
