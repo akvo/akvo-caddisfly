@@ -143,7 +143,7 @@ public class DetectStripActivity extends AppCompatActivity {
         Mat cal_dest;
         Mat striparea = null;
         Mat calarea = null;
-        private boolean develop = true;
+        private boolean develop = false;
 
         protected void onPreExecute() {
             resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);
@@ -242,7 +242,9 @@ public class DetectStripActivity extends AppCompatActivity {
                                 showMessage(getString(R.string.calibrating));
                                 CalibrationResultData calResult = getCalibratedImage(warp_dst);
                                 cal_dest = calResult.calibratedImage;
-                                showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
+                                if(develop) {
+                                    showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
+                                }
                             } catch (Exception e) {
                                 System.out.println("cal. failed: " + e.getMessage());
                                 e.printStackTrace();
