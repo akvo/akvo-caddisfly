@@ -1,7 +1,6 @@
 package org.akvo.akvoqr.ui;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -27,54 +26,21 @@ public class QualityCheckBrightnessView extends QualityCheckView {
     public QualityCheckBrightnessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        yellowPaint = new Paint(redPaint);
+        yellowPaint = new Paint(paint);
         yellowPaint.setColor(Color.YELLOW);
+
+        //set percentage to a value that results in a negative at the start of the onDraw
+        percentage = -1;
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
-//        System.out.println("***brightness percentage: " + percentage);
-
-        if (percentage > 100) {
-            //no data
-            canvas.drawRect(
-                    0, 0,
-                    canvas.getWidth() * 0.05f,
-                    canvas.getHeight(),
-                    redPaint);
-        } else {
-            int numberOfBars = (int) Math.ceil((percentage/Constant.MAX_LUM_PERCENTAGE) * 10f);
-
-            canvas.save();
-            for (int i = 0; i < numberOfBars; i++) {
-
-//                System.out.println("***brightness min lum percentage: "+ i + "  = " + Constant.MIN_LUM_PERCENTAGE + "  " + (double)(Constant.MIN_LUM_PERCENTAGE * 0.1d) +
-//                "  max lum perc. = " +(double) (Constant.MAX_LUM_PERCENTAGE * 0.1d));
-
-                if (i < Math.floor(Constant.MAX_LUM_PERCENTAGE * 0.1d)) {
-                    canvas.drawRect(
-                            0, 0,
-                            canvas.getWidth() * 0.05f,
-                            canvas.getHeight(),
-                            redPaint);
-                }
-                else if(i > 10 )
-                {
-                    canvas.drawRect(
-                            0, 0,
-                            canvas.getWidth() * 0.05f,
-                            canvas.getHeight(),
-                            yellowPaint);
-                } else {
-                    canvas.drawRect(
-                            0, 0,
-                            canvas.getWidth() * 0.05f,
-                            canvas.getHeight(),
-                            greenPaint);
-                }
-                canvas.translate(canvas.getWidth() * 0.06f, 0);
-            }
-            canvas.restore();
-        }
+    protected double fromPercentageToNumber(float percentage)
+    {
+        // calculate the percentage back to value that fits NUMBER_OF_BARS.
+        // MAX_LUM_PERCENTAGE is the optimum value that can be reached,
+        // larger percentages mean over-exposure.
+        // we want the number to range between 0 (= dark) and 6 (bright).
+        return (percentage/Constant.MAX_LUM_PERCENTAGE) *  NUMBER_OF_BARS ;
     }
+
 }

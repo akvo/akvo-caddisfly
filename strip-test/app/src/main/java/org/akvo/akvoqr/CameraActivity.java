@@ -256,25 +256,26 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         startButton = (Button) findViewById(R.id.activity_cameraStartButton);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setActivated(!v.isActivated());
-                v.setOnClickListener(null);
-                v.setVisibility(View.GONE);
-
-                startButtonClicked = true;
-
-                startCountdown();
-            }
-        });
-
         Runnable showRunnable = new Runnable() {
             @Override
             public void run() {
 
                 if(!startButtonClicked) {
                     startButton.setVisibility(View.VISIBLE);
+                    startButton.setBackgroundResource(R.drawable.start_button);
+
+                    startButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            v.setActivated(!v.isActivated());
+                            v.setOnClickListener(null);
+                            v.setVisibility(View.GONE);
+
+                            startButtonClicked = true;
+
+                            startCountdown();
+                        }
+                    });
                 }
             }
         };
@@ -283,7 +284,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable hideRunnable = new Runnable() {
             @Override
             public void run() {
-                startButton.setVisibility(View.GONE);
+                if(startButtonClicked) {
+                    startButton.setVisibility(View.GONE);
+                    startButton.setOnClickListener(null);
+                }
+                else
+                {
+                    startButton.setBackgroundResource(R.drawable.start_button_grey);
+                }
 
             }
         };
@@ -388,7 +396,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         final QualityCheckView contrastView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewContrast);
 
-        Runnable showMessage = new Runnable() {
+        Runnable show = new Runnable() {
             @Override
             public void run() {
 
@@ -397,7 +405,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         };
 
         if(handler!=null) {
-            handler.post(showMessage);
+            handler.post(show);
         }
     }
 

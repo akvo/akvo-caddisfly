@@ -36,19 +36,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/transparent_window"
-        android:background="@android:color/background_dark"/>
+        android:background="@android:color/background_light"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/camera_preview_messageDurationView"
-        android:textColor="@color/lightblue"
-        android:background="#99000000"
+        android:textColor="@android:color/darker_gray"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/activity_cameraMessagesLayout"
         android:text="@string/duration"/>
     <org.akvo.akvoqr.ui.ProgressIndicatorView
-        android:layout_height="@dimen/ppm_circle_area"
+        android:layout_height="26dp"
         android:layout_width="match_parent"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/camera_preview_messageDurationView"
@@ -56,52 +55,55 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_alignParentLeft="true"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:layout_below="@+id/transparent_window"
         android:id="@+id/activity_cameraMessagesLayout">
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <TableRow
-                android:layout_marginTop="12dp">
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <org.akvo.akvoqr.ui.QualityCheckBrightnessView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:id="@+id/activity_cameraImageViewExposure"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/camera_preview_messageLightView"
-                    android:textColor="@android:color/white"
-                    android:paddingLeft="5sp"
-                    android:paddingRight="5sp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/light"/>
-                <org.akvo.akvoqr.ui.QualityCheckBrightnessView
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:id="@+id/activity_cameraImageViewExposure"/>
-            </TableRow>
-            <TableRow
-                android:layout_marginTop="12dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/camera_preview_messageContrastView"
-                    android:textColor="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:textColor="@android:color/darker_gray"
                     android:paddingLeft="5sp"
                     android:paddingRight="5sp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/contrast"/>
+                    android:text="@string/light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
                 <org.akvo.akvoqr.ui.QualityCheckShadowsView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="24dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:id="@+id/activity_cameraImageViewContrast"/>
-            </TableRow>
-        </TableLayout>
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/camera_preview_messageContrastView"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingLeft="5sp"
+                    android:paddingRight="5sp"
+                    android:text="@string/contrast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -135,15 +137,12 @@
             android:text="Level"
             android:visibility="gone"/>
 
-    </LinearLayout>
-
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start"
         android:textColor="@android:color/white"
-        android:background="@color/springgreen"
-        android:layout_alignParentRight="true"
+        android:background="@drawable/start_button_grey"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/activity_cameraStartButton"
         android:visibility="visible"/>

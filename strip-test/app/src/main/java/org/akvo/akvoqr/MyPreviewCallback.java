@@ -248,8 +248,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             //System.out.println("***lumTrack size: " + lumTrack.size());
 
             if(lumTrack.size()<1) {
-                //101 means 'no data'
-                listener.showMaxLuminosity(false, 101);
+                //-1 means 'no data'
+                listener.showMaxLuminosity(false, -1);
             }
             else
             {

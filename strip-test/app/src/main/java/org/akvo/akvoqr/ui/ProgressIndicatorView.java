@@ -1,6 +1,8 @@
 package org.akvo.akvoqr.ui;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +32,8 @@ public class ProgressIndicatorView extends View {
     private int distance;
     private int duration = 10;
     private int timeLapsed = 0;
+    private Bitmap checkedBox;
+    private final Bitmap uncheckedBox;
     private List<StripTest.Brand.Patch> patches;
 
     public ProgressIndicatorView(Context context) {
@@ -62,8 +66,12 @@ public class ProgressIndicatorView extends View {
         timePaint.setColor(getResources().getColor(R.color.mediumblue));
 
         textPaint = new TextPaint();
-        textPaint.setColor(getResources().getColor(R.color.mediumblue));
+        textPaint.setColor(getResources().getColor(R.color.lightblue));
+        textPaint.setTextSize(12);
         textPaint.setAntiAlias(true);
+
+        checkedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.checked_box);
+        uncheckedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.unchecked_box);
 
     }
 
@@ -101,6 +109,7 @@ public class ProgressIndicatorView extends View {
     {
         canvas.drawARGB(255, 0, 0, 0);
 
+        //take smallest value from canvas width or height
         distance = canvas.getWidth()<canvas.getHeight()? canvas.getWidth(): canvas.getHeight();
 
         //background
@@ -108,9 +117,9 @@ public class ProgressIndicatorView extends View {
 
         canvas.save();
         //make smaller and center vertically before drawing patches
-        canvas.scale(1f, 0.75f);
+        //canvas.scale(1f, 0.75f);
         distance = (int)Math.round(0.75 * distance);
-        canvas.translate(0f, 0.5f * distance);
+        canvas.translate(10f, 0);
 
         //patches
         for(int i=0;i < totalSteps;i++) {
@@ -122,20 +131,20 @@ public class ProgressIndicatorView extends View {
 
             if(i < stepsTaken)
             {
-                canvas.drawRect(rect, fillPaint);
+                canvas.drawBitmap(checkedBox,0,0,fillPaint);
             }
             else
             {
-                canvas.drawRect(rect, neutralPaint);
-                canvas.drawRect(rect, strokePaint);
+                canvas.drawBitmap(uncheckedBox, 0, 0, fillPaint);
             }
 
             if(timeLapsed>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
             {
                 String countdown = String.valueOf(patches.get(i).getTimeLapse() - timeLapsed);
                 float textWidth = textPaint.measureText(countdown);
-                        canvas.drawText( countdown,
-                        rect.centerX()-textWidth/2, rect.centerY(), textPaint);
+                float textHeight = (textPaint.descent() + textPaint.ascent());
+                canvas.drawText( countdown,
+                        rect.centerX()-textWidth/2, rect.centerY() - textHeight, textPaint);
             }
             canvas.translate(distance + 10f, 0);
         }
@@ -157,7 +166,7 @@ public class ProgressIndicatorView extends View {
             for (int i = 0; i < patches.size(); i++) {
                 //System.out.println("***timeLapsed: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
                 if (timeLapsed < patches.get(i).getTimeLapse()) {
-                  //  System.out.println("***timeLapsed < patch timelapse: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
+                    //  System.out.println("***timeLapsed < patch timelapse: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
                 } else {
                     pos = i + 1;
                     // break;
