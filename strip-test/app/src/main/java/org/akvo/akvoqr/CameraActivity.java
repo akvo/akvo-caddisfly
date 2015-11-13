@@ -10,9 +10,10 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -125,21 +126,25 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             preview.addView(mPreview);
 
             //find the transparent view in which to show part of the preview
-            final View transView = findViewById(R.id.transparent_window);
+            final RelativeLayout transView = (RelativeLayout) findViewById(R.id.transparent_window);
+            final Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 
-            //enlarge the transparent view based on a factor of its width
+            //enlarge the transparent view based on a factor of its parent height
             transView.post(new Runnable() {
 
                 @Override
                 public void run() {
                     RelativeLayout.LayoutParams params;
                     params = (RelativeLayout.LayoutParams) transView.getLayoutParams();
-                    params.height = (int) Math.round(transView.getWidth() * Constant.CROP_CAMERAVIEW_FACTOR);
-                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    params.height = (int) Math.round(mPreview.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
+                    //params.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     transView.setLayoutParams(params);
-                    transView.postInvalidate();
+                    transView.startAnimation(slideUp);
                 }
             });
+
+
+
         }
     }
 
@@ -344,10 +349,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
     }
 
-    @Override
+   @Override
     public void showFocusValue(final double value)
     {
-        final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
+      /*  final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
         final TextView messageFocusView = (TextView) findViewById(R.id.camera_preview_messageFocusView);
 
         Runnable showMessage = new Runnable() {
@@ -370,7 +375,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null) {
 
-        }
+        }*/
 
     }
     @Override

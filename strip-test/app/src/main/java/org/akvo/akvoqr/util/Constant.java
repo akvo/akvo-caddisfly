@@ -26,7 +26,7 @@ public class Constant {
     public static final double CONTRAST_DEVIATION_FRACTION = 0.05;
     public static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
     public static final int COUNT_QUALITY_CHECK_LIMIT = 5;
-    public static final double CROP_CAMERAVIEW_FACTOR = 0.66;
+    public static final double CROP_CAMERAVIEW_FACTOR = 0.6;
     public static final float MAX_LEVEL_DIFF = 2f;
 
 }
