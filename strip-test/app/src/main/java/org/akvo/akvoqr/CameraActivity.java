@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -57,7 +58,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private int countQualityCheckIteration = 0;
     private int countQualityCheckResult = 0;
     private Intent detectStripIntent;
-
+    LinearLayout progressLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         detectStripIntent = new Intent(this, DetectStripActivity.class);
 
         handler = new Handler(Looper.getMainLooper());
+
+        progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
 
         progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
         finderPatternIndicatorView =
@@ -139,6 +142,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     params.height = (int) Math.round(mPreview.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
                     //params.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     transView.setLayoutParams(params);
+
+                    if(progressLayout.getVisibility()==View.VISIBLE)
+                    {
+                        progressLayout.setVisibility(View.GONE);
+                    }
+
                     transView.startAnimation(slideUp);
                 }
             });
@@ -185,6 +194,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     public void onResume()
     {
+        progressLayout.setVisibility(View.VISIBLE);
+
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         super.onResume();
 
@@ -609,6 +620,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 default: {
                     super.onManagerConnected(status);
                 }
+
                 break;
             }
         }
