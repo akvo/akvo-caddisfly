@@ -57,6 +57,5 @@ public class ColorimetryStripActivity extends AppCompatActivity {
 
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(currentTestInfo.getName(conf.locale.getLanguage()));
-
     }
 }
