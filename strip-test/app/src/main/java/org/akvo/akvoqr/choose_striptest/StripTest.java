@@ -121,6 +121,22 @@ public class StripTest{
             return patches.get(patches.size()-1).getTimeLapse();
         }
 
+        public int getNumberOfPicturesNeeded()
+        {
+            int number = 1;
+            for(int i=0;i<patches.size()-1;i++)
+            {
+                //compare next patch with current
+                //if time lapse is larger, add one to number
+                if(patches.get(i+1).getTimeLapse() > patches.get(i).getTimeLapse())
+                {
+                    number ++;
+                }
+            }
+
+            return number;
+        }
+
         public class Patch {
             int order;
             String desc;

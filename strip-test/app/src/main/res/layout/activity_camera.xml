@@ -95,43 +95,64 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_below="@+id/activity_cameraMessagesLayout"
-            android:text="@string/duration"/>
-        <org.akvo.akvoqr.ui.ProgressIndicatorView
-            android:layout_height="26dp"
-            android:layout_width="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/camera_preview_messageDurationView"
-            android:id="@+id/activity_cameraProgressIndicatorView"/>
-
+            android:text="@string/duration"
+            android:visibility="gone"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:textColor="@android:color/white"
             android:background="@drawable/start_button_grey"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:id="@+id/activity_cameraStartButton"
-            android:visibility="visible"/>
-    </RelativeLayout>
+            android:visibility="gone"/>
 
+        <org.akvo.akvoqr.ui.ProgressIndicatorView
+            android:layout_height="72dp"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="-1dp"
+            android:layout_toRightOf="@+id/activity_cameraStartButton"
+            android:layout_alignTop="@+id/activity_cameraStartButton"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:id="@+id/activity_cameraProgressIndicatorView"
+            android:visibility="gone"/>
+
+        <org.akvo.akvoqr.ui.ProgressIndicatorViewAnim
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:id="@+id/activity_cameraProgressIndicatorViewAnim"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+        </org.akvo.akvoqr.ui.ProgressIndicatorViewAnim>
+    </RelativeLayout>
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/activity_cameraInitCameraProgressBar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <ProgressBar
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_marginRight="5dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="@string/init_camera" />
-</LinearLayout>
+        android:layout_alignParentBottom="true">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_marginRight="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="@string/init_camera" />
+    </LinearLayout>
+
+
+
     <!--
     <TextView
         android:layout_width="wrap_content"

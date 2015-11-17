@@ -25,6 +25,7 @@ import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.LevelView;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
+import org.akvo.akvoqr.ui.ProgressIndicatorViewAnim;
 import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -48,6 +49,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private ProgressIndicatorView progressIndicatorView;
+    ProgressIndicatorViewAnim progressIndicatorViewAnim;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
     private boolean hasTimeLapse;
@@ -82,14 +84,28 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         hasTimeLapse = StripTest.getInstance().getBrand(brandName).hasTimeLapse();
         numPatches = StripTest.getInstance().getBrand(brandName).getPatches().size();
+        int picsNeeded = StripTest.getInstance().getBrand(brandName).getNumberOfPicturesNeeded();
         patches = StripTest.getInstance().getBrand(brandName).getPatches();
 
         TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
 
-        if(hasTimeLapse)
+        progressIndicatorViewAnim = (ProgressIndicatorViewAnim) findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
+        for(int i=0;i<patches.size();i++) {
+
+            if(i>0) {
+                if (patches.get(i).getTimeLapse() <= patches.get(i - 1).getTimeLapse()) {
+                    continue;
+                }
+            }
+            progressIndicatorViewAnim.addStep(i, (int) patches.get(i).getTimeLapse());
+        }
+
+
+        //only if time lapse or always?
+        if(hasTimeLapse || true)
         {
             int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
-            progressIndicatorView.setTotalSteps(numPatches);
+            progressIndicatorView.setTotalSteps(picsNeeded);
             progressIndicatorView.setDuration(duration);
             progressIndicatorView.setPatches(patches);
 
@@ -132,28 +148,36 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             final RelativeLayout transView = (RelativeLayout) findViewById(R.id.transparent_window);
             final Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 
-            //enlarge the transparent view based on a factor of its parent height
+
             transView.post(new Runnable() {
 
                 @Override
                 public void run() {
+                    //enlarge the transparent view based on a factor of its parent height
                     RelativeLayout.LayoutParams params;
                     params = (RelativeLayout.LayoutParams) transView.getLayoutParams();
                     params.height = (int) Math.round(mPreview.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                    //params.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     transView.setLayoutParams(params);
 
+                    //make 'initialising camera' message invisible
                     if(progressLayout.getVisibility()==View.VISIBLE)
                     {
                         progressLayout.setVisibility(View.GONE);
                     }
 
+                    //make view holding brightness, shadows, start button slide up into view
                     transView.startAnimation(slideUp);
                 }
             });
 
-
-
+//            int count=0;
+//            while (progressIndicatorViewAnim.getMeasuredWidth()==0 && count < 10) {
+//                progressIndicatorViewAnim.invalidate();
+//                progressIndicatorViewAnim.requestLayout();
+//                count++;
+//            }
+//            progressIndicatorViewAnim.initView();
+            startCountdown();
         }
     }
 
@@ -220,6 +244,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         @Override
         public void run() {
 
+           progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+
             progressIndicatorView.setTimeLapsed(timeLapsed);
             timeLapsed++;
             handler.postDelayed(this, 1000);
@@ -276,22 +302,25 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
 
+
                 if(!startButtonClicked) {
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setBackgroundResource(R.drawable.start_button);
 
-                    startButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            v.setActivated(!v.isActivated());
-                            v.setOnClickListener(null);
-                            v.setVisibility(View.GONE);
+                    startButtonClicked = true;
 
-                            startButtonClicked = true;
-
-                            startCountdown();
-                        }
-                    });
+//                    startButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            v.setActivated(!v.isActivated());
+//                            v.setOnClickListener(null);
+//                            v.setVisibility(View.INVISIBLE);
+//
+//                            startButtonClicked = true;
+//
+//                            startCountdown();
+//                        }
+//                    });
                 }
             }
         };
@@ -301,7 +330,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
                 if(startButtonClicked) {
-                    startButton.setVisibility(View.GONE);
+                    startButton.setVisibility(View.INVISIBLE);
                     startButton.setOnClickListener(null);
                 }
                 else
@@ -360,7 +389,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
     }
 
-   @Override
+    @Override
     public void showFocusValue(final double value)
     {
       /*  final ImageView focusView = (ImageView) findViewById(R.id.activity_cameraImageViewFocus);
@@ -536,10 +565,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         new StoreDataTask(imageCount, data, info, format, width, height).execute();
 
-        showProgress(patchesCovered+1);
+        //showProgress(patchesCovered+1);
 
         //add one to imageCount
         imageCount ++;
+
+        showProgress(imageCount);
 
         //continue until all patches are covered
         if (patchesCovered < numPatches -1) {
@@ -579,6 +610,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
 
+                progressIndicatorViewAnim.setStepsTaken(which);
                 progressIndicatorView.setStepsTaken(which);
 
             }

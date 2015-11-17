@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -29,7 +28,7 @@ public class ProgressIndicatorView extends View {
     private TextPaint textPaint;
     private int totalSteps = 1;
     private int stepsTaken = 0;
-    private int distance;
+   // private int distance;
     private int duration = 10;
     private int timeLapsed = 0;
     private Bitmap checkedBox;
@@ -48,9 +47,9 @@ public class ProgressIndicatorView extends View {
         super(context, attrs, defStyleAttr);
 
         this.strokePaint = new Paint();
-        strokePaint.setColor(Color.BLACK);
+        strokePaint.setColor(Color.GRAY);
         strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(3);
+        strokePaint.setStrokeWidth(13);
         strokePaint.setAntiAlias(true);
 
         fillPaint = new Paint(strokePaint);
@@ -63,10 +62,10 @@ public class ProgressIndicatorView extends View {
         stripPaint.setColor(Color.WHITE);
 
         timePaint = new Paint(fillPaint);
-        timePaint.setColor(getResources().getColor(R.color.mediumblue));
+        timePaint.setColor(getResources().getColor(R.color.springgreen));
 
         textPaint = new TextPaint();
-        textPaint.setColor(getResources().getColor(R.color.lightblue));
+        textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(12);
         textPaint.setAntiAlias(true);
 
@@ -107,54 +106,54 @@ public class ProgressIndicatorView extends View {
     @Override
     public void onDraw(Canvas canvas)
     {
-        canvas.drawARGB(255, 0, 0, 0);
+        canvas.drawARGB(0, 0, 0, 0);
 
         //take smallest value from canvas width or height
-        distance = canvas.getWidth()<canvas.getHeight()? canvas.getWidth(): canvas.getHeight();
+        //distance = canvas.getWidth()<canvas.getHeight()? canvas.getWidth(): canvas.getHeight();
 
         //background
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), stripPaint);
 
         canvas.save();
-        //make smaller and center vertically before drawing patches
-        //canvas.scale(1f, 0.75f);
-        distance = (int)Math.round(0.75 * distance);
-        canvas.translate(10f, 0);
+        //distance = (int)Math.round(0.5 * distance);
+        //canvas.translate(distance/2, 0f);
+
+        canvas.drawLine(0, canvas.getHeight()/2, canvas.getWidth(), canvas.getHeight()/2, strokePaint);
+
+        //time lapsed
+        double timeScale = (double)canvas.getWidth()/(double)duration;
+//        canvas.drawRect(canvas.getWidth() - 10, 2, canvas.getWidth(),
+//                (float) (timeLapsed * timeScale), timePaint);
+        canvas.drawLine(0, canvas.getHeight()/2, (float) (timeLapsed * timeScale), canvas.getHeight()/2, timePaint);
 
         //patches
         for(int i=0;i < totalSteps;i++) {
 
-            Rect rect = new Rect(0,
-                    0,
-                    distance,
-                    distance);
+            canvas.translate(uncheckedBox.getWidth() + 10f, 0);
 
             if(i < stepsTaken)
             {
-                canvas.drawBitmap(checkedBox,0,0,fillPaint);
+                canvas.drawBitmap(checkedBox, 0, canvas.getHeight()/2 - checkedBox.getHeight()/2, fillPaint);
             }
             else
             {
-                canvas.drawBitmap(uncheckedBox, 0, 0, fillPaint);
+                canvas.drawBitmap(uncheckedBox, 0, canvas.getHeight()/2 - uncheckedBox.getHeight()/2, fillPaint);
+
             }
 
-            if(timeLapsed>0 && i == getTimePosition() && (duration-timeLapsed) >=0)
+            if(timeLapsed>0  && (duration-timeLapsed) >=0)
             {
                 String countdown = String.valueOf(patches.get(i).getTimeLapse() - timeLapsed);
                 float textWidth = textPaint.measureText(countdown);
                 float textHeight = (textPaint.descent() + textPaint.ascent());
                 canvas.drawText( countdown,
-                        rect.centerX()-textWidth/2, rect.centerY() - textHeight, textPaint);
+                        -textWidth/2, - textHeight, textPaint);
             }
-            canvas.translate(distance + 10f, 0);
+
         }
 
         canvas.restore();
 
-        //time lapsed
-        double timeScale = (double)canvas.getHeight()/(double)duration;
-        canvas.drawRect(canvas.getWidth() - 10, 2, canvas.getWidth(),
-                (float) (timeLapsed * timeScale), timePaint);
 
 
     }
