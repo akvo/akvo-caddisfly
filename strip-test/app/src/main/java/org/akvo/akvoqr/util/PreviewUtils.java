@@ -345,4 +345,18 @@ public class PreviewUtils {
 
         return points;
     }
+
+    public static String fromSecondsToMMSS(int seconds) throws Exception
+    {
+        if(seconds>3600)
+            throw new Exception("more than an hour");
+
+        int m = (int)Math.floor(seconds/60);
+        int s = seconds - (m * 60);
+
+        String mm = m>0? String.format("%2d", m) + ":": "";
+        String ss = m>0? String.format("%02d",s): String.format("%2d",s);
+
+        return mm + ss;
+    }
 }

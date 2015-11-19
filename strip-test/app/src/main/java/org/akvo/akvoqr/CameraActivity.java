@@ -1,6 +1,7 @@
 package org.akvo.akvoqr;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -24,8 +24,7 @@ import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.detector.FinderPatternInfoToJson;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.LevelView;
-import org.akvo.akvoqr.ui.ProgressIndicatorView;
-import org.akvo.akvoqr.ui.ProgressIndicatorViewAnim;
+import org.akvo.akvoqr.ui.ProgressIndicatorViewAnimII;
 import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
@@ -33,14 +32,16 @@ import org.json.JSONArray;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by linda on 7/7/15.
  */
-public class CameraActivity extends AppCompatActivity implements CameraViewListener{
+public class CameraActivity extends AppCompatActivity implements CameraViewListener, DetectStripListener{
 
     private Camera mCamera;
     private FrameLayout preview;
@@ -48,8 +49,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     MyPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
-    private ProgressIndicatorView progressIndicatorView;
-    ProgressIndicatorViewAnim progressIndicatorViewAnim;
+    // private ProgressIndicatorView progressIndicatorView;
+    ProgressIndicatorViewAnimII progressIndicatorViewAnim;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
     private boolean hasTimeLapse;
@@ -78,7 +79,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
 
-        progressIndicatorView = (ProgressIndicatorView) findViewById(R.id.activity_cameraProgressIndicatorView);
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
 
@@ -87,9 +87,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         int picsNeeded = StripTest.getInstance().getBrand(brandName).getNumberOfPicturesNeeded();
         patches = StripTest.getInstance().getBrand(brandName).getPatches();
 
-        TextView durationView = (TextView) findViewById(R.id.camera_preview_messageDurationView);
-
-        progressIndicatorViewAnim = (ProgressIndicatorViewAnim) findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
+        progressIndicatorViewAnim = (ProgressIndicatorViewAnimII) findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
         for(int i=0;i<patches.size();i++) {
 
             if(i>0) {
@@ -102,20 +100,20 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
 
         //only if time lapse or always?
-        if(hasTimeLapse || true)
-        {
-            int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
-            progressIndicatorView.setTotalSteps(picsNeeded);
-            progressIndicatorView.setDuration(duration);
-            progressIndicatorView.setPatches(patches);
-
-            durationView.append(": " + String.valueOf(duration) + " " + getString(R.string.seconds_abbr));
-        }
-        else
-        {
-            progressIndicatorView.setVisibility(View.GONE);
-            durationView.setVisibility(View.INVISIBLE);
-        }
+//        if(hasTimeLapse || true)
+//        {
+//            int duration = (int) Math.ceil(StripTest.getInstance().getBrand(brandName).getDuration());
+//            progressIndicatorView.setTotalSteps(picsNeeded);
+//            progressIndicatorView.setDuration(duration);
+//            progressIndicatorView.setPatches(patches);
+//
+//            durationView.append(": " + String.valueOf(duration) + " " + getString(R.string.seconds_abbr));
+//        }
+//        else
+//        {
+//            progressIndicatorView.setVisibility(View.GONE);
+//            durationView.setVisibility(View.INVISIBLE);
+//        }
 
         //use brightness view as a button to switch on and off the flash
         QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
@@ -170,13 +168,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
             });
 
-//            int count=0;
-//            while (progressIndicatorViewAnim.getMeasuredWidth()==0 && count < 10) {
-//                progressIndicatorViewAnim.invalidate();
-//                progressIndicatorViewAnim.requestLayout();
-//                count++;
-//            }
-//            progressIndicatorViewAnim.initView();
             startCountdown();
         }
     }
@@ -244,9 +235,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         @Override
         public void run() {
 
-           progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+            progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
 
-            progressIndicatorView.setTimeLapsed(timeLapsed);
+            //progressIndicatorView.setTimeLapsed(timeLapsed);
             timeLapsed++;
             handler.postDelayed(this, 1000);
         }
@@ -305,7 +296,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
                 if(!startButtonClicked) {
                     startButton.setVisibility(View.VISIBLE);
-                    startButton.setBackgroundResource(R.drawable.start_button);
+                    startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
                     startButtonClicked = true;
 
@@ -335,7 +326,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
                 else
                 {
-                    startButton.setBackgroundResource(R.drawable.start_button_grey);
+                    //startButton.setBackgroundResource(R.drawable.start_button_grey);
                 }
 
             }
@@ -445,7 +436,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
 
-                contrastView.setPercentage((float)value);
+                contrastView.setPercentage((float) value);
             }
         };
 
@@ -489,6 +480,78 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
     };
 
+    //DetectStripListener interface
+    @Override
+    public void showMessage(int what) {
+        String[] messages = new String[]
+                {
+                        getString(R.string.reading_data), //0
+                        getString(R.string.calibrating), //1
+                        getString(R.string.cut_out_strip), //2
+                        "\n\n" + getString(R.string.finished) //3
+
+                };
+
+        final Button finish = (Button) findViewById(R.id.activity_cameraFinishButton);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                finish.setText(R.string.analysing);
+            }
+        };
+        handler.post(runnable);
+    }
+
+    @Override
+    public void showMessage(final String message) {
+        final Button finish = (Button) findViewById(R.id.activity_cameraFinishButton);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                finish.setText(R.string.analysing);
+            }
+        };
+        handler.post(runnable);
+
+    }
+
+    @Override
+    public void showError(final int what) {
+
+        final String[] messages = new String[]
+                {
+                        getString(R.string.error_conversion), //0
+                        getString(R.string.error_no_finder_pattern_info),
+                        getString(R.string.error_warp), //1
+                        getString(R.string.error_detection), //2
+                        getString(R.string.error_calibrating), //3
+                        getString(R.string.error_cut_out_strip), //4
+                        getString(R.string.error_unknown) //5
+                };
+
+        final Button finish = (Button) findViewById(R.id.activity_cameraFinishButton);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                finish.setText(messages[what]);
+            }
+        };
+        handler.post(runnable);
+    }
+
+    @Override
+    public void showImage(Bitmap bitmap){ }
+
+    @Override
+    public void showResults(ArrayList<Mat> resultList) {
+        Intent resultIntent = new Intent(this, ResultActivity.class);
+        resultIntent.putExtra(Constant.BRAND, brandName);
+        resultIntent.putExtra(Constant.MAT, resultList);
+        startActivity(resultIntent);
+    }
+    //end DetectStripListener interface
+
     private class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
         private int imageCount;
@@ -519,12 +582,21 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         @Override
         protected void onPostExecute(Boolean written) {
 
+            //set to true if you want to see the original and calibrated images in an activity
+            //set to false if you want to go to the ResultActivity directly
+            boolean develop = false;
+
             if(patchesCovered == patches.size()-1)
             {
                 //write image/patch info to internal storage
                 FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
 
-                startDetectActivity(format, width, height);
+                Intent detectStripIntent = createDetectStripIntent(format, width, height);
+                //if develop
+                if(develop)
+                    startActivity(detectStripIntent);
+                else
+                    new DetectStripTask(CameraActivity.this).execute(detectStripIntent);
             }
         }
     }
@@ -558,37 +630,30 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 array.put(i);
                 imagePatchArray.put(array);
 
-                //System.out.println("***imageCount: " + i + " patchesCovered: " + patchesCovered);
-
             }
         }
 
         new StoreDataTask(imageCount, data, info, format, width, height).execute();
 
-        //showProgress(patchesCovered+1);
-
         //add one to imageCount
         imageCount ++;
 
-        showProgress(imageCount);
+        showProgress(patchesCovered);
 
-        //continue until all patches are covered
-        if (patchesCovered < numPatches -1) {
+        //System.out.println("***imageCount: " + imageCount + " patchesCovered: " + patchesCovered);
 
-            Runnable clearFinderPatterns = new Runnable() {
-                @Override
-                public void run() {
-                    mCamera.startPreview();
-                    finderPatternIndicatorView.showPatterns(null, null);
-                }
-            };
-            handler.postDelayed(clearFinderPatterns, 1000);
+        //clear the finder pattern view after one second
+        Runnable clearFinderPatterns = new Runnable() {
+            @Override
+            public void run() {
 
-            return;
-        }
+                finderPatternIndicatorView.showPatterns(null, null);
+            }
+        };
+        handler.postDelayed(clearFinderPatterns, 1000);
 
     }
-    private void startDetectActivity(int format, int width, int height)
+    private Intent createDetectStripIntent(int format, int width, int height)
     {
         //put Extras into intent
         detectStripIntent.putExtra(Constant.BRAND, brandName);
@@ -598,9 +663,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        startActivity(detectStripIntent);
-
-        this.finish();
+        return detectStripIntent;
     }
 
     @Override
@@ -611,7 +674,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             public void run() {
 
                 progressIndicatorViewAnim.setStepsTaken(which);
-                progressIndicatorView.setStepsTaken(which);
 
             }
         };

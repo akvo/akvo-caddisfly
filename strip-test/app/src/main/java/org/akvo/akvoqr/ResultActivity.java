@@ -103,6 +103,12 @@ public class ResultActivity extends AppCompatActivity {
 
             }
         }
+        else
+        {
+            TextView textView = new TextView(this);
+            textView.setText("no data");
+            layout.addView(textView);
+        }
 
         Button save = (Button) findViewById(R.id.activity_resultButtonSave);
         Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);

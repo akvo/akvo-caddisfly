@@ -199,9 +199,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setExposureCompensation(0);
         }
 
-        float step = parameters.getExposureCompensationStep();
-        System.out.println("***Exposure compensation direction: " + direction + ". step = " + step);
-        System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
+//        float step = parameters.getExposureCompensationStep();
+//        System.out.println("***Exposure compensation direction: " + direction + ". step = " + step);
+//        System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
         mCamera.setParameters(parameters);
     }
