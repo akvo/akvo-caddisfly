@@ -43,6 +43,7 @@
     <string name="contrast">Shadows</string>
     <string name="init_camera">Initialising camera ...</string>
     <string name="analysing">Analysing image ...</string>
+    <string name="prepare_test">Prepare for test</string>
 
     <string-array name="instructions">
         <item>When you hear a sound, a picture is taken.</item>

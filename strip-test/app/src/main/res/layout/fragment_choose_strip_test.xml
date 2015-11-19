@@ -26,7 +26,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/start_test"
+        android:text="@string/prepare_test"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:paddingRight="12sp"
