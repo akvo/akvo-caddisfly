@@ -31,7 +31,6 @@ public class ProgressIndicatorView extends LinearLayout {
     private List<Step> steps;
     private int stepsTaken = 0;
     private int timeLapsed = 0;
-    private int animTime = 0; //duration of the animation
     private String message;
     private Context context;
     private Paint paint;
@@ -104,7 +103,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
             requestLayout();
             invalidate();
-            setDuration(duration);
+
             set = true;
         }
     }
@@ -112,7 +111,7 @@ public class ProgressIndicatorView extends LinearLayout {
     public void setStepsTaken(int stepsTaken) {
         this.stepsTaken = stepsTaken;
 
-        System.out.println("***xxxsteps taken: " + stepsTaken);
+       // System.out.println("***xxxsteps taken: " + stepsTaken);
 
         if(steps!=null) {
             for (int i = 0; i < steps.size(); i++) {
@@ -122,10 +121,6 @@ public class ProgressIndicatorView extends LinearLayout {
                 }
             }
         }
-    }
-
-    public void setDuration(int duration) {
-        int duration1 = duration;
     }
 
     public void setTimeLapsed(int timeLapsed) {
@@ -183,13 +178,13 @@ public class ProgressIndicatorView extends LinearLayout {
 
             running = true;
 
-            System.out.println("***animation start listener: " + i + " " + animation.getDuration());
+            //System.out.println("***animation start listener: " + i + " " + animation.getDuration());
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
             steps.get(i).animationEnded = true;
-            System.out.println("***animation ended listener: " + i + " " + animation.getDuration());
+            //System.out.println("***animation ended listener: " + i + " " + animation.getDuration());
 
             running = false;
         }
