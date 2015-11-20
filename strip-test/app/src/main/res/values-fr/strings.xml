@@ -43,6 +43,9 @@
     <string name="prepare_test">Prepare for test</string>
     <string name="prepare_camera_instr">NB: Do not take a sample yet.\nHold camera above card to ensure conditions are OK.</string>
     <string name="ready">Ready for take off</string>
+    <string name="picture_taken">Picture taken</string>
+    <string name="ready_for_picture">"Ready for picture "</string>
+    <string name="waiting">"Waiting "</string>
 
     <string-array name="instructions">
         <item>Quand vous entendez ce son, une photo est prise.</item>

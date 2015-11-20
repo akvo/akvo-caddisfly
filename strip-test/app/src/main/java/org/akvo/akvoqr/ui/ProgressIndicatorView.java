@@ -223,12 +223,12 @@ public class ProgressIndicatorView extends LinearLayout {
 
             if(steps.get(i).pictureTaken)
             {
-                message = "Picture taken";
+                message = getContext().getString(R.string.picture_taken);
                 canvas.drawBitmap(checked, 0, 0, paint);
 
             }
             else if (steps.get(i).animationEnded) {
-                message = "Ready for picture " + String.valueOf(i+1);
+                message = getContext().getString(R.string.ready_for_picture) + String.valueOf(i+1);
                 canvas.drawBitmap(background, 0, 0, paint);
 
             }
@@ -242,7 +242,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 if(i>0) {
                     if (steps.get(i - 1).animationEnded) {
                         try {
-                            message = "Waiting " + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
+                            message = getContext().getString(R.string.waiting) + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
                         } catch (Exception e) {
                             message = e.getMessage();
                         }
@@ -257,7 +257,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 {
                     //first one does have a count
                     try {
-                        message = "Waiting " + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
+                        message = getContext().getString(R.string.waiting) + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
                     } catch (Exception e) {
                         message = e.getMessage();
                     }

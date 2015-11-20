@@ -57,5 +57,8 @@
     <string name="prepare_camera_instr">NB: Do not take a sample yet.\n\nHold camera above card.\n\nAdjust your position until checks are OK.</string>
     <string name="ready">Ready</string>
     <string name="next">Next</string>
+    <string name="picture_taken">Picture taken</string>
+    <string name="ready_for_picture">"Ready for picture "</string>
+    <string name="waiting">"Waiting "</string>
 
 </resources>
