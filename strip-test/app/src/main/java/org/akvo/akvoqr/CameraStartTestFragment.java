@@ -149,7 +149,7 @@ public class CameraStartTestFragment extends Fragment {
         //add one to imageCount
         imageCount ++;
 
-        setStepsTaken(patchesCovered);
+        setStepsTaken(imageCount);
 
         //System.out.println("***imageCount: " + imageCount + " patchesCovered: " + patchesCovered);
 

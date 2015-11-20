@@ -145,7 +145,7 @@ public class ProgressIndicatorView extends LinearLayout {
             for (int i = 0; i < steps.size(); i++) {
 
                 Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
-                blink.setDuration(Math.min(5000, steps.get(i).timelapse));
+                blink.setDuration(Math.min(5000, steps.get(i).timelapse * 1000));
                 blink.setAnimationListener(new BlinkAnimListener(i));
 
                 if (steps.get(i).getTimelapse() - timeLapsed < 5) {

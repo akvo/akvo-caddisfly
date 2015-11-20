@@ -17,7 +17,6 @@ public class Constant {
     public static final String BOTTOMRIGHT = "org.akvo.akvoqr.bottomright";
     public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
     public static final String IMAGE_PATCH = "org.akvo.akvoqr.imagepatch";
-    public static final double MIN_LUM_PERCENTAGE = (150d/255d) * 100 ;
     public static final double MAX_LUM_PERCENTAGE = (200d / 255d) * 100;
     public static final double MAX_LUM_LOWER = 150;
     public static final double MAX_LUM_UPPER = 200;
@@ -25,7 +24,7 @@ public class Constant {
     public static final double MIN_FOCUS_PERCENTAGE = 70;
     public static final double CONTRAST_DEVIATION_FRACTION = 0.05;
     public static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
-    public static final int COUNT_QUALITY_CHECK_LIMIT = 0; //5;
+    public static final int COUNT_QUALITY_CHECK_LIMIT = 5;
     public static final double CROP_CAMERAVIEW_FACTOR = 0.6;
     public static final float MAX_LEVEL_DIFF = 2f;
 
