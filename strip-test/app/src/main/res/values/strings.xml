@@ -17,7 +17,7 @@
     <string name="error_no_finder_pattern_info">No info about finder patterns.</string>
     <string name="error_unknown">Unknown error occurred. Sorry.</string>
     <string name="error_warp">Warp failed.</string>
-    <string name="finished">FINISHED</string>
+    <string name="finished">FINISH</string>
     <string name="focus">Focus</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch no.</string>
@@ -52,5 +52,10 @@
         <item>@raw/futurebeep2</item>
     </array>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="prepare_camera_instr">NB: Do not take a sample yet.\n\nHold camera above card.\n\nAdjust your position until checks are OK.</string>
+    <string name="ready">Ready</string>
+    <string name="next">Next</string>
 
 </resources>

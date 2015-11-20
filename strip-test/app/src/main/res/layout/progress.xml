@@ -16,11 +16,12 @@
         android:gravity="left|center_vertical"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:drawablePadding="@dimen/activity_vertical_margin"
         android:id="@+id/activity_cameraStartButton"
         android:layout_weight="0.1"
         />
 
-    <org.akvo.akvoqr.ui.ProgressIndicatorViewAnimII
+    <org.akvo.akvoqr.ui.ProgressIndicatorView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0"
@@ -30,19 +31,31 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         >
-    </org.akvo.akvoqr.ui.ProgressIndicatorViewAnimII>
-    <Button
+    </org.akvo.akvoqr.ui.ProgressIndicatorView>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/activity_cameraProgressIndicatorViewAnim"
-        android:textColor="@android:color/darker_gray"
-        android:drawableLeft="@drawable/unchecked_box"
-        android:background="@android:color/transparent"
-        android:layout_alignParentLeft="true"
-        android:text="@string/finished"
-        android:gravity="left|center_vertical"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:id="@+id/activity_cameraFinishButton"
-        android:layout_weight="0.1"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_weight="0.1">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/unchecked_box"
+            android:id="@+id/activity_cameraFinishImage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/activity_cameraProgressIndicatorViewAnim"
+            android:textColor="@android:color/darker_gray"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:text="@string/finished"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:id="@+id/activity_cameraFinishText"
+            />
+    </LinearLayout>
 </LinearLayout>

@@ -2,7 +2,6 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -126,13 +125,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                             camera.stopPreview();
                             listener.playSound();
 
-//                            data = compressToJpeg(data);
+                            listener.sendData(data, timePictureTaken, info);
 
-                            listener.sendData(data, timePictureTaken, ImageFormat.NV21,
-                                    previewSize.width,
-                                    previewSize.height, info);
-
-//                            lightSensor.stop();
                         }
                         else
                         {

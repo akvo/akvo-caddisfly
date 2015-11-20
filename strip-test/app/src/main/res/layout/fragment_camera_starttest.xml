@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    tools:context="org.akvo.akvoqr.CameraPrepareFragment"
+    android:id="@+id/overlay"
+    android:background="@android:color/background_light"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/background_light"
+        android:id="@+id/activity_cameraMessagesLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <org.akvo.akvoqr.ui.QualityCheckBrightnessView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:id="@+id/activity_cameraImageViewExposure"/>
+            <TextView
+                android:id="@+id/camera_preview_messageLightView"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="@android:color/darker_gray"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:text="@string/light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <org.akvo.akvoqr.ui.QualityCheckShadowsView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:id="@+id/activity_cameraImageViewContrast"/>
+            <TextView
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:id="@+id/camera_preview_messageContrastView"
+                android:textColor="@android:color/darker_gray"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:text="@string/contrast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/progress"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>
+

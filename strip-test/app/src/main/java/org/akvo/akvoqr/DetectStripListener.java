@@ -11,6 +11,8 @@ import java.util.ArrayList;
  */
 public interface DetectStripListener {
 
+    void showSpinner();
+
     void showMessage(int what);
 
     void showMessage(String message);

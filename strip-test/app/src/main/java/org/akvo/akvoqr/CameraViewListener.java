@@ -16,10 +16,11 @@ public interface CameraViewListener {
 
     void adjustExposureCompensation(int direction);
 
-    void sendData(byte[] data, long timeMillis,
-                  int format, int width, int height, FinderPatternInfo info);
+    void sendData(byte[] data, long timeMillis, FinderPatternInfo info);
 
-    void showProgress(int which);
+    void dataSent();
+
+   // void showProgress(int which);
 
     void playSound();
 
@@ -35,7 +36,13 @@ public interface CameraViewListener {
 
     void setStartButtonVisibility(boolean show);
 
+    void startNextPreview(long timeMillis);
+
+    void ready();
+
     boolean start();
+
+
 
     void setCountQualityCheckResult(int count);
 

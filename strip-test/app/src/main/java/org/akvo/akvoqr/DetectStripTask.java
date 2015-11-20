@@ -58,6 +58,12 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     }
 
     @Override
+    protected void onPreExecute() {
+
+        listener.showSpinner();
+    }
+
+    @Override
     protected Void doInBackground(Intent... params) {
 
         intent = params[0];

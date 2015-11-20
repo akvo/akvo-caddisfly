@@ -8,32 +8,34 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.choose_striptest.StripTest;
+import org.akvo.akvoqr.util.PreviewUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by linda on 9/4/15.
+ * Created by linda on 11/16/15.
  */
-public class ProgressIndicatorView extends View {
+public class ProgressIndicatorView extends LinearLayout {
 
-    private Paint strokePaint;
-    private Paint neutralPaint;
-    private Paint fillPaint;
-    private Paint stripPaint;
-    private Paint timePaint;
-    private TextPaint textPaint;
-    private int totalSteps = 1;
+    private Bitmap checked;
+    private Bitmap unchecked_light;
+    private Bitmap background;
+    private ImageView img;
+    private List<Step> steps;
     private int stepsTaken = 0;
-   // private int distance;
-    private int duration = 10;
     private int timeLapsed = 0;
-    private Bitmap checkedBox;
-    private final Bitmap uncheckedBox;
-    private List<StripTest.Brand.Patch> patches;
+    private int animTime = 0; //duration of the animation
+    private String message;
+    private Context context;
+    private Paint paint;
+    private TextPaint textPaint;
 
     public ProgressIndicatorView(Context context) {
         this(context, null);
@@ -46,133 +48,250 @@ public class ProgressIndicatorView extends View {
     public ProgressIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        this.strokePaint = new Paint();
-        strokePaint.setColor(Color.GRAY);
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(13);
-        strokePaint.setAntiAlias(true);
+        setWillNotDraw(false); //needed for invalidate() to work
+        checked = BitmapFactory.decodeResource(context.getResources(), R.drawable.checked_box);
+        unchecked_light = BitmapFactory.decodeResource(context.getResources(), R.drawable.unchecked_box_light);
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.unchecked_box_green);
 
-        fillPaint = new Paint(strokePaint);
-        fillPaint.setStyle(Paint.Style.FILL);
+        this.context = context;
 
-        neutralPaint = new Paint(fillPaint);
-        neutralPaint.setColor(Color.LTGRAY);
-
-        stripPaint = new Paint(fillPaint);
-        stripPaint.setColor(Color.WHITE);
-
-        timePaint = new Paint(fillPaint);
-        timePaint.setColor(getResources().getColor(R.color.springgreen));
+        paint = new Paint();
+        paint.setColor(Color.GRAY);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(12);
 
         textPaint = new TextPaint();
-        textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(12);
-        textPaint.setAntiAlias(true);
-
-        checkedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.checked_box);
-        uncheckedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.unchecked_box);
-
+        textPaint.setColor(Color.DKGRAY);
     }
 
-    public void  setTotalSteps(int totalSteps)
+
+
+    public void addStep(int order, int timelapse) {
+        if(steps==null)
+            steps = new ArrayList<>();
+
+        steps.add(new Step(order, timelapse));
+    }
+
+    private boolean set;
+    public void initView()
     {
-        this.totalSteps = totalSteps;
-    }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+        if(!set) {
+            if(steps==null)
+                return;
 
-    public void setTimeLapsed(int timeLapsed) {
-        this.timeLapsed = timeLapsed;
-        invalidate();
-    }
+            int duration = steps.get(steps.size() - 1).getTimelapse();
 
-    public void setStepsTaken(int steps)
-    {
-        this.stepsTaken = steps;
-        invalidate();
-    }
+            int layoutH = 0;
+            for (int i = 0; i < steps.size(); i++) {
+                img = new ImageView(context);
+                img.setImageBitmap(unchecked_light);
 
-    public void setPatches(List<StripTest.Brand.Patch> patches) {
-        this.patches = patches;
-    }
+                img.setMinimumHeight(unchecked_light.getHeight() + 5);
+                img.setScaleType(ImageView.ScaleType.FIT_START);
+                img.setPadding(0, 5, 0, 0);
 
-    @Override
-    public void onMeasure(int w, int h)
-    {
-        super.onMeasure(w, h);
-    }
-    @Override
-    public void onDraw(Canvas canvas)
-    {
-        canvas.drawARGB(0, 0, 0, 0);
+                addView(img);
 
-        //take smallest value from canvas width or height
-        //distance = canvas.getWidth()<canvas.getHeight()? canvas.getWidth(): canvas.getHeight();
-
-        //background
-        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), stripPaint);
-
-        canvas.save();
-        //distance = (int)Math.round(0.5 * distance);
-        //canvas.translate(distance/2, 0f);
-
-        canvas.drawLine(0, canvas.getHeight()/2, canvas.getWidth(), canvas.getHeight()/2, strokePaint);
-
-        //time lapsed
-        double timeScale = (double)canvas.getWidth()/(double)duration;
-//        canvas.drawRect(canvas.getWidth() - 10, 2, canvas.getWidth(),
-//                (float) (timeLapsed * timeScale), timePaint);
-        canvas.drawLine(0, canvas.getHeight()/2, (float) (timeLapsed * timeScale), canvas.getHeight()/2, timePaint);
-
-        //patches
-        for(int i=0;i < totalSteps;i++) {
-
-            canvas.translate(uncheckedBox.getWidth() + 10f, 0);
-
-            if(i < stepsTaken)
-            {
-                canvas.drawBitmap(checkedBox, 0, canvas.getHeight()/2 - checkedBox.getHeight()/2, fillPaint);
-            }
-            else
-            {
-                canvas.drawBitmap(uncheckedBox, 0, canvas.getHeight()/2 - uncheckedBox.getHeight()/2, fillPaint);
+                layoutH += unchecked_light.getHeight() + 5;
 
             }
 
-            if(timeLapsed>0  && (duration-timeLapsed) >=0)
-            {
-                String countdown = String.valueOf(patches.get(i).getTimeLapse() - timeLapsed);
-                float textWidth = textPaint.measureText(countdown);
-                float textHeight = (textPaint.descent() + textPaint.ascent());
-                canvas.drawText( countdown,
-                        -textWidth/2, - textHeight, textPaint);
-            }
+            LayoutParams params = (LayoutParams) getLayoutParams();
+            params.height = layoutH;
+            setLayoutParams(params);
 
+            requestLayout();
+            invalidate();
+            setDuration(duration);
+            set = true;
         }
-
-        canvas.restore();
-
-
-
     }
 
-    private int getTimePosition()
-    {
-        int pos = 0;
-        if(patches!=null) {
-            for (int i = 0; i < patches.size(); i++) {
-                //System.out.println("***timeLapsed: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
-                if (timeLapsed < patches.get(i).getTimeLapse()) {
-                    //  System.out.println("***timeLapsed < patch timelapse: " + i + " = " + timeLapsed + ": " + patches.get(i).getTimeLapse());
-                } else {
-                    pos = i + 1;
-                    // break;
+    public void setStepsTaken(int stepsTaken) {
+        this.stepsTaken = stepsTaken;
+
+        System.out.println("***xxxsteps taken: " + stepsTaken);
+
+        if(steps!=null) {
+            for (int i = 0; i < steps.size(); i++) {
+                if (i < stepsTaken) {
+                    ((ImageView) getChildAt(i)).setImageBitmap(checked);
+                    steps.get(i).pictureTaken = true;
                 }
             }
         }
-
-        return pos;
     }
+
+    public void setDuration(int duration) {
+        int duration1 = duration;
+    }
+
+    public void setTimeLapsed(int timeLapsed) {
+
+        this.timeLapsed = timeLapsed;
+
+        invalidate();
+
+        if(!running)
+            startAnim();
+    }
+
+    private boolean running = false;
+    public void startAnim()
+    {
+        if(steps!=null) {
+            for (int i = 0; i < steps.size(); i++) {
+
+                Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
+                blink.setDuration(Math.min(5000, steps.get(i).timelapse));
+                blink.setAnimationListener(new BlinkAnimListener(i));
+
+                if (steps.get(i).getTimelapse() - timeLapsed < 5) {
+                    if (getChildCount() > 0 && getChildAt(i) != null) {
+                        if (i >= stepsTaken) {
+
+                            //System.out.println("***xxxanimation ended: " + i + "  " + steps.get(i).animationEnded);
+
+                            if (!steps.get(i).animationEnded) {
+
+                                getChildAt(i).startAnimation(blink);
+
+                            }
+
+                        } else {
+                            getChildAt(i).clearAnimation();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private class BlinkAnimListener implements Animation.AnimationListener
+    {
+
+        private int i;
+
+        public BlinkAnimListener(int i)
+        {
+            this.i = i;
+        }
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+
+            running = true;
+
+            System.out.println("***animation start listener: " + i + " " + animation.getDuration());
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            steps.get(i).animationEnded = true;
+            System.out.println("***animation ended listener: " + i + " " + animation.getDuration());
+
+            running = false;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
+
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        // get width and height size and mode
+        int wSpec = MeasureSpec.getSize(widthMeasureSpec);
+
+        int hSpec = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(wSpec, hSpec);
+
+        initView();
+    }
+
+    @Override
+    public void onDraw(Canvas canvas)
+    {
+        if(steps==null)
+            return;
+
+        canvas.save();
+        for (int i = 0; i < steps.size(); i++) {
+
+            canvas.translate(0f, 5f);
+            paint.setAlpha(255);
+
+
+            if(steps.get(i).pictureTaken)
+            {
+                message = "Picture taken";
+                canvas.drawBitmap(checked, 0, 0, paint);
+
+            }
+            else if (steps.get(i).animationEnded) {
+                message = "Ready for picture " + String.valueOf(i+1);
+                canvas.drawBitmap(background, 0, 0, paint);
+
+            }
+            else
+            {
+
+                canvas.drawBitmap(background, 0, 0, paint);
+
+                //if the previous step is finished, either picture taken or not, we start the counter
+                //otherwise we do not show any message
+                if(i>0) {
+                    if (steps.get(i - 1).animationEnded) {
+                        try {
+                            message = "Waiting " + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
+                        } catch (Exception e) {
+                            message = e.getMessage();
+                        }
+                    }
+                    else
+                    {
+                        message = "";
+
+                    }
+                }
+                else
+                {
+                    //first one does have a count
+                    try {
+                        message = "Waiting " + PreviewUtils.fromSecondsToMMSS(Math.max(0,steps.get(i).getTimelapse() - timeLapsed )) + " sec. ";
+                    } catch (Exception e) {
+                        message = e.getMessage();
+                    }
+                }
+            }
+
+            canvas.drawText(message, background.getWidth() + 5f, background.getHeight() / 2, textPaint);
+            canvas.translate(0f, background.getHeight());
+        }
+
+        canvas.restore();
+    }
+
+    private class Step
+    {
+        int order;
+        int timelapse;
+        boolean animationEnded = false;
+        boolean pictureTaken = false;
+
+        public Step(int order, int timelapse)
+        {
+            this.order = order;
+            this.timelapse = timelapse;
+        }
+
+        public int getTimelapse() {
+            return timelapse;
+        }
+    }
+
 }

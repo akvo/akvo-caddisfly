@@ -21,7 +21,6 @@ public class LevelView extends View {
     float[] angles;
     Paint redPaint;
     Bitmap arrowBitmap;
-    Bitmap arrowBitmapOK;
     BitmapDrawable arrowDrawable;
 
     public LevelView(Context context) {
@@ -41,7 +40,6 @@ public class LevelView extends View {
         redPaint.setStrokeWidth(3);
 
         arrowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.level);
-        arrowBitmapOK = BitmapFactory.decodeResource(context.getResources(), R.drawable.level_ok);
 
         arrowDrawable = new BitmapDrawable(context.getResources(), arrowBitmap);
 
@@ -61,14 +59,10 @@ public class LevelView extends View {
             }
             else
             {
-                //canvas.drawBitmap(arrowBitmapOK, 0, 0, redPaint);
+
             }
         }
-        else
-        {
-           // canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getHeight() / 2, redPaint);
 
-        }
     }
 
     public void setAngles(float[] angles) {

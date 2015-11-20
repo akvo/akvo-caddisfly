@@ -130,6 +130,10 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
     }
 
 
+    @Override
+    public void showSpinner() {
+
+    }
 
     @Override
     public void showMessage(final int what) {
