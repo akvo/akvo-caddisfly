@@ -258,8 +258,16 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
     {
-        finderPatternIndicatorView.setColor(color);
-        finderPatternIndicatorView.showPatterns(patterns, size);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                finderPatternIndicatorView.setColor(color);
+                finderPatternIndicatorView.showPatterns(patterns, size);
+            }
+        };
+
+        if(handler!=null)
+            handler.post(runnable);
     }
 
     @Override
@@ -357,16 +365,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
 
         //clear the finder pattern view after one second and start the preview again
-        Runnable clearFinderPatterns = new Runnable() {
-            @Override
-            public void run() {
+        showFinderPatterns(null, null, 0);
 
-                finderPatternIndicatorView.showPatterns(null, null);
-                mCamera.startPreview();
-            }
-        };
-        handler.postDelayed(clearFinderPatterns, 1000);
+        //clear level indicator
+        showLevel(null);
 
+        mCamera.startPreview();
     }
 
     @Override

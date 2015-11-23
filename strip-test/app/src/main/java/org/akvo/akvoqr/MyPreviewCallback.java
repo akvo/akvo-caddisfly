@@ -25,7 +25,6 @@ import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,9 +42,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
-//    private int previewFormat;
-    private boolean focused = true;
-//    private  LightSensor lightSensor;
+//    private boolean focused = true;
     LinkedList<Double> lumTrack = new LinkedList<>();
     LinkedList<Double> shadowTrack = new LinkedList<>();
 
@@ -61,12 +58,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             throw new ClassCastException(" must implement cameraviewListener");
         }
 
-        finderPatternColor = Color.parseColor("#f02cb673");
+        finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/springgreen
 
         possibleCenters = new ArrayList<>();
-
-//        lightSensor = new LightSensor();
-//        lightSensor.start();
 
     }
 
@@ -75,22 +69,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
-//        previewFormat = camera.getParameters().getPreviewFormat();
 
-        focused = false;
+        //focused = false;
 
-        FinderPatternInfo info;
-        info = findPossibleCenters(data, previewSize);
-
-        setFocusAreas(info);
-
-        // checks the quality of the image data, updates the icons, and if the
-        // quality is ok, shows the start button
-        new QualityChecksTask(info).execute(data);
-
-        // if the start button has been clicked and the quality is ok, use this data
-        // to start the iamge processing activity.
-        new SendDataTask(info).execute(data);
+        new SendDataTask().execute(data);
 
     }
 
@@ -100,9 +82,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         FinderPatternInfo info;
 
         boolean qualityOK = true;
-        public SendDataTask(FinderPatternInfo info)
+        public SendDataTask()
         {
-            this.info = info;
+
         }
 
         @Override
@@ -111,14 +93,21 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             data = params[0];
             try {
 
+                info = findPossibleCenters(data, previewSize);
+
+                setFocusAreas(info);
+
+                // final check if quality of image is ok, if not, abort
+                qualityOK = qualityChecks(data, info);
+
+                listener.setStartButtonVisibility(qualityOK);
+
                 if (info!=null && possibleCenters != null && possibleCenters.size() == 4)
                 {
                     long timePictureTaken = System.currentTimeMillis();
 
                     if(listener.start()) // someone clicked the start button
                     {
-                        // final check if quality of image is ok, if not, abort
-                        qualityOK = qualityChecks(data, info);
 
                         if (qualityOK)
                         {
@@ -159,23 +148,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         @Override
         protected void onPostExecute(Void result) {
             //do nothing
-        }
-    }
-
-    private class QualityChecksTask extends AsyncTask<byte[], Void, Void>
-    {
-        FinderPatternInfo info;
-        public QualityChecksTask(FinderPatternInfo info)
-        {
-            this.info = info;
-        }
-        @Override
-        protected Void doInBackground(byte[]... params) {
-
-            boolean ok = qualityChecks(params[0], info);
-            listener.setStartButtonVisibility(ok);
-
-            return null;
         }
     }
 
@@ -262,18 +234,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
             // focus: do the checks
             // if focus is too low, do another round of focussing
-            if(focusList.size() > 0) {
-                Collections.sort(focusList);
-                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
-
-                    focused = false;
-
-                } else {
-
-                    focused = true;
-
-                }
-            }
+//            if(focusList.size() > 0) {
+//                Collections.sort(focusList);
+//                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
+//
+//                    focused = false;
+//
+//                } else {
+//
+//                    focused = true;
+//
+//                }
+//            }
 
 
             //GET ANGLE
@@ -282,7 +254,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 listener.showLevel(angles);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
-                levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < 2 * Constant.MAX_LEVEL_DIFF;
+                levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
             }
 
         }  catch (Exception e) {
@@ -507,6 +479,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
 
+                    //get the version number from the barcode printed on the card
                     try {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
@@ -522,6 +495,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     {
                         e.printStackTrace();
                     }
+
+
                 }
 
                 return info;
