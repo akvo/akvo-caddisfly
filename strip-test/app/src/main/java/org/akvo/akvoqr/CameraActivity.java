@@ -47,7 +47,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
-    private boolean startButtonClicked = false;
+    private boolean start = false;
     private int countQualityCheckIteration = 0;
     private int countQualityCheckResult = 0;
     private LinearLayout progressLayout;
@@ -73,18 +73,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
 
-
-        //use brightness view as a button to switch on and off the flash
-        QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
-        if(exposureView!=null) {
-            exposureView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    mPreview.switchFlashMode();
-                }
-            });
-        }
     }
 
     private void init() {
@@ -112,7 +100,19 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     R.id.activity_cameraFragmentPlaceholder, currentFragment
             ).commit();
 
-            mCamera.startPreview();
+            //use brightness view as a button to switch on and off the flash
+            QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
+            if(exposureView!=null) {
+                exposureView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mPreview.switchFlashMode();
+                    }
+                });
+            }
+
+            startNextPreview(0);
         }
     }
 
@@ -173,11 +173,30 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             if(mCamera!=null && previewCallback!=null) {
                 mCamera.startPreview();
                 mCamera.setOneShotPreviewCallback(previewCallback);
+
             }
         }
     };
 
+    private Runnable takeNextPicture = new Runnable() {
+        @Override
+        public void run() {
+            if(mCamera!=null && previewCallback!=null) {
+                mCamera.startPreview();
+                mCamera.setOneShotPreviewCallback(previewCallback);
+                start = true;
+            }
+        }
+    };
+
+
     //START CAMERAVIEWLISTENER INTERFACE METHODS
+    @Override
+    public void takeNextPicture(long timeMillis) {
+        if(handler!=null)
+            handler.postDelayed(takeNextPicture, timeMillis);
+    }
+
     @Override
     public void startNextPreview(long timeMillis) {
         if(handler!=null)
@@ -218,7 +237,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
                 else if(currentFragment instanceof  CameraStartTestFragment)
                 {
-                    startButtonClicked = true;
+                   // start = true;
                     ((CameraStartTestFragment) currentFragment).ready();
                 }
             }
@@ -252,7 +271,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public boolean start() {
 
-        return startButtonClicked;
+        return start;
 
     }
     @Override
@@ -276,7 +295,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             mCamera.startPreview();
             if (what == 0) {
-                handler.post(startNextPreview);
+                startNextPreview(0);
 
             } else {
 
@@ -393,7 +412,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     //END CAMERAVIEWLISTENER INTERFACE METHODS
 
     //DETECTSTRIPLISTENER INTERFACE METHODS
-
 
     @Override
     public void showSpinner() {

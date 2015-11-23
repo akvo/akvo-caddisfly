@@ -17,6 +17,8 @@ import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.util.PreviewUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -80,7 +82,8 @@ public class ProgressIndicatorView extends LinearLayout {
             if(steps==null)
                 return;
 
-            int duration = steps.get(steps.size() - 1).getTimelapse();
+            //sort on timelapse, shortest first
+            Collections.sort(steps, new StepComparator());
 
             int layoutH = 0;
             for (int i = 0; i < steps.size(); i++) {
@@ -137,6 +140,7 @@ public class ProgressIndicatorView extends LinearLayout {
     public void startAnim()
     {
         if(steps!=null) {
+            Collections.sort(steps, new StepComparator());
             for (int i = 0; i < steps.size(); i++) {
 
                 Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
@@ -147,7 +151,7 @@ public class ProgressIndicatorView extends LinearLayout {
                     if (getChildCount() > 0 && getChildAt(i) != null) {
                         if (i >= stepsTaken) {
 
-                            //System.out.println("***xxxanimation ended: " + i + "  " + steps.get(i).animationEnded);
+                            System.out.println("***xxxanimation ended: " + i + "  " + steps.get(i).timelapse);
 
                             if (!steps.get(i).animationEnded) {
 
@@ -289,4 +293,19 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
+    private class StepComparator implements Comparator<Step>
+    {
+
+        @Override
+        public int compare(Step lhs, Step rhs) {
+            if(lhs.timelapse < rhs.timelapse)
+                return -1;
+            if (lhs.timelapse == rhs.timelapse)
+            return 0;
+
+            return 1;
+        }
+
+
+    }
 }

@@ -20,8 +20,6 @@ public interface CameraViewListener {
 
     void dataSent();
 
-   // void showProgress(int which);
-
     void playSound();
 
     void showFinderPatterns(List<FinderPattern> info, Camera.Size previewSize, int color);
@@ -38,11 +36,11 @@ public interface CameraViewListener {
 
     void startNextPreview(long timeMillis);
 
+    void takeNextPicture(long timeMillis);
+
     void ready();
 
     boolean start();
-
-
 
     void setCountQualityCheckResult(int count);
 

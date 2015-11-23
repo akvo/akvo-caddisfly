@@ -106,7 +106,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 {
                     long timePictureTaken = System.currentTimeMillis();
 
-                    if(listener.start()) // someone clicked the start button
+                    if(listener.start()) // start is set to true if it is time for the next patch
                     {
 
                         if (qualityOK)

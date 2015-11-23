@@ -78,13 +78,14 @@ public class CameraStartTestFragment extends Fragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
-            patches = StripTest.getInstance().getBrand(brandName).getPatches();
+            patches = StripTest.getInstance().getBrand(brandName).getPatchesOrderedByTimelapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
             for (int i = 0; i < patches.size(); i++) {
 
+                System.out.println("***patches: " + i + " timelapse: " + patches.get(i).getTimeLapse());
                 if (i > 0) {
-                    if (patches.get(i).getTimeLapse() <= patches.get(i - 1).getTimeLapse()) {
+                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
                         continue;
                     }
                 }
@@ -138,7 +139,7 @@ public class CameraStartTestFragment extends Fragment {
 
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
-                array.put(i);
+                array.put(patches.get(i).getOrder());
                 imagePatchArray.put(array);
 
             }
@@ -211,7 +212,6 @@ public class CameraStartTestFragment extends Fragment {
                 @Override
                 public void run() {
 
-                    System.out.println("***parentView.getHeight() " + parentView.getHeight() );
                     //enlarge the transparent view based on a factor of its parent height
                     ViewGroup.LayoutParams params = transView.getLayoutParams();
                     params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
@@ -251,11 +251,8 @@ public class CameraStartTestFragment extends Fragment {
 
         //Post the callback on time for each patch
         for (int i = 0; i < patches.size(); i++) {
-            //there must be a timelapse between patches
-            if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
-                mListener.startNextPreview((long) patches.get(i).getTimeLapse() * 1000);
 
-            }
+            mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000);
         }
     }
 

@@ -147,7 +147,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             mCamera.setParameters(parameters);
             mCamera.setPreviewDisplay(holder);
 
-            activity.getMessage(0);
+           // activity.getMessage(0);
 
         } catch (Exception e){
             Log.d("", "Error starting camera preview: " + e.getMessage());
@@ -169,23 +169,14 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     //exposure compensation
-   // private static int direction = 1;
     public void adjustExposure(int direction)
     {
         if(mCamera==null)
             return;
         parameters = mCamera.getParameters();
 
-//        int ec = parameters.getExposureCompensation();
-//        if( ec == parameters.getMinExposureCompensation() || ec == parameters.getMaxExposureCompensation())
-//        {
-//            BaseCameraView.direction = -BaseCameraView.direction;
-//        }
-
         int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
         int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
-       // int currentDirection = BaseCameraView.direction ==1? compPlus: compMinus;
-       // int differentDirection = currentDirection==compMinus? compPlus: compMinus;
 
         if(direction > 0)
         {

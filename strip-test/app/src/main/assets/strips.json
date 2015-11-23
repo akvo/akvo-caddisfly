@@ -97,9 +97,169 @@
         ]
     },
     {
+      "name": "Nitrate, Nitrite",
+      "code": "strip-N-2",
+      "id": "340",
+      "brand": "HACH2745425",
+      "numPatch": 2,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Nitrate",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229],
+              "lab":[94.736, -4.268 ,5.565]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219],
+              "lab":[82.721 , 8.779, -6.916]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193],
+              "lab":[71.120, 15.865, -10.249]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175],
+              "lab":[93.271 ,  -9.189 ,  10.190]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153],
+              "lab":[93.271 ,  -19.189 ,  10.190]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130],
+              "lab":[93.271 ,  -29.189 ,  10.190]
+            }
+          ],
+          "timeLapse":60,
+          "unit": "ppm"
+        },
+        {
+          "patchDesc":"Nitrite",
+          "patchPos":17.2,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229],
+              "lab":[94.736, -4.268 ,5.565]
+            },
+            {
+              "value": 0.5,
+              "rgb":[217, 201, 219],
+              "lab":[82.721 , 8.779, -6.916]
+            },
+            {
+              "value": 1,
+              "rgb":[195, 165, 193],
+              "lab":[71.120, 15.865, -10.249]
+            },
+            {
+              "value": 2,
+              "rgb":[181, 146, 175],
+              "lab":[93.271 ,  -9.189 ,  10.190]
+            },
+            {
+              "value": 4,
+              "rgb":[157, 112, 153],
+              "lab":[93.271 ,  -19.189 ,  10.190]
+            },
+            {
+              "value": 10,
+              "rgb":[133, 101, 130],
+              "lab":[93.271 ,  -29.189 ,  10.190]
+            }
+          ],
+          "timeLapse":30,
+          "unit": "ppm"
+        }
+      ],
+      "instructions": [
+        {"text": "Dip strip into water for 1 second.", "png": ""},
+        {"text": "<!>Do not shake excess water from the test strip.<!", "png":"" },
+        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
+      ]
+    },
+    {
+      "name": "Total Iron",
+      "code": "strip-Total-Iron",
+      "id": "337",
+      "brand": "HACH2745348",
+      "numPatch": 1,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Total iron",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[236, 242, 229],
+              "lab":[94.736, -4.268 ,5.565]
+            },
+            {
+              "value": 0.15,
+              "rgb":[217, 201, 219],
+              "lab":[82.721 , 8.779, -6.916]
+            },
+            {
+              "value":0.3,
+              "rgb":[195, 165, 193],
+              "lab":[71.120, 15.865, -10.249]
+            },
+            {
+              "value": 0.6,
+              "rgb":[181, 146, 175],
+              "lab":[93.271 ,  -9.189 ,  10.190]
+            },
+            {
+              "value": 1,
+              "rgb":[157, 112, 153],
+              "lab":[93.271 ,  -19.189 ,  10.190]
+            },
+            {
+              "value": 2,
+              "rgb":[133, 101, 130],
+              "lab":[93.271 ,  -29.189 ,  10.190]
+            },
+            {
+              "value": 5,
+              "rgb":[133, 101, 130],
+              "lab":[93.271 ,  -29.189 ,  10.190]
+            }
+          ],
+          "timeLapse":0,
+          "unit": ""
+        }
+      ],
+      "instructions": [
+        {"text": "Fill sample vial HALF FULL with sample water.", "png": ""},
+        {"text": "Open one foil packet and add powder contents to vial.", "png": ""},
+        {"text": "Cap vial and shake rapidly for 5 seconds. Remove cap.", "png": ""},
+        {"text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.", "png":"" },
+        {"text": "Place strip onto black area.", "png": "instruction_place_strip"},
+        {"text": "After that: <!>Start test immediately.<!", "png": ""}
+      ]
+    },
+    {
       "name": "PH 4-9",
       "code": "strip-PH-4-9",
-      "id": "337",
+      "id": "338",
       "brand": "HACH2745650",
       "numPatch": 1,
       "length": 82.8,
@@ -156,7 +316,7 @@
     {
       "name": "5 in 1 Water Quality",
       "code": "strip-5-in-1",
-      "id": "338",
+      "id": "339",
       "brand": "HACH2755250",
       "numPatch": 5,
       "length": 82.8,

@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +139,12 @@ public class StripTest{
             return number;
         }
 
+        public List<Patch> getPatchesOrderedByTimelapse()
+        {
+            Collections.sort(patches, new PatchComparator());
+            return patches;
+        }
+
         public class Patch {
             int order;
             String desc;
@@ -157,6 +165,10 @@ public class StripTest{
                 this.timeLapse = timeLapse;
                 this.unit = unit;
                 this.colours = colours;
+            }
+
+            public int getOrder() {
+                return order;
             }
 
             public String getDesc() {
@@ -206,6 +218,20 @@ public class StripTest{
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class PatchComparator implements Comparator<Brand.Patch>
+    {
+
+        @Override
+        public int compare(Brand.Patch lhs, Brand.Patch rhs) {
+            if (lhs.timeLapse < rhs.timeLapse)
+                return -1;
+            if(lhs.timeLapse == rhs.timeLapse)
+                return 0;
+
+            return 1;
         }
     }
 

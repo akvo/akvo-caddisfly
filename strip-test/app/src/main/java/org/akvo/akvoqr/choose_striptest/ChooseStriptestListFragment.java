@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import org.akvo.akvoqr.R;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,6 +78,10 @@ public class ChooseStriptestListFragment extends ListFragment {
         StripTest stripTest = StripTest.getInstance();
 
         brandnames = stripTest.getBrandsAsList();
+
+        //order alpha-numeric on brand (same as the name of the .png file in assets)
+        Collections.sort(brandnames);
+
         ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),
                 R.layout.adapter_choose_striptest, brandnames);
 
