@@ -36,7 +36,7 @@ public class FinderPatternFinder {
 
   private static final int CENTER_QUORUM = 2;
   protected static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  protected static final int MAX_MODULES = 84; // this is the height of our calibration card
+  protected static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
 
   private final BitMatrix image;
   private final List<FinderPattern> possibleCenters;
@@ -68,6 +68,17 @@ public class FinderPatternFinder {
     return possibleCenters;
   }
 
+  /* Find finder patterns
+  * The image we have is higher than it is wide, and contains the calibration card rotated:
+  * ----------
+  *|o        o|
+  *|          |
+  *|          |
+  *|          |
+  *|          |
+  *|          |
+  *|o________o|
+  */
   public final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
     boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
     boolean pureBarcode = hints != null && hints.containsKey(DecodeHintType.PURE_BARCODE);
@@ -76,11 +87,11 @@ public class FinderPatternFinder {
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
-    // Let's assume that the maximum version QR Code we support takes up 1/2 the height of the
+    // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
     // image, and then account for the center being 3 modules in size. This gives the smallest
     // number of pixels the center could be, so skip this often. When trying harder, look for all
     // QR versions regardless of how dense they are.
-    int iSkip = (6 * maxI) / (4 * MAX_MODULES);
+    int iSkip = (int) Math.round(3 * (3.0/4) * maxI / MAX_MODULES);
     if (iSkip < MIN_SKIP || tryHarder) {
       iSkip = MIN_SKIP;
     }
@@ -536,8 +547,10 @@ public class FinderPatternFinder {
           // difference in the x / y coordinates of the two centers.
           // This is the case where you find top left last.
           hasSkipped = true;
-          return (int) (Math.abs(firstConfirmedCenter.getX() - center.getX()) -
-                  Math.abs(firstConfirmedCenter.getY() - center.getY())) / 3;
+          // the calibration card has a aspect ration of 1.75, so we can skip this much.
+          // To be on the safe side, we approximate this by 1.6
+          return (int) ((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
+                  Math.abs(firstConfirmedCenter.getY() - center.getY())) * 1.6);
         }
       }
     }

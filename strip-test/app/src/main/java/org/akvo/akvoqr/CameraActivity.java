@@ -236,8 +236,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        System.out.println("***countQualityCheckResult: " + countQualityCheckResult );
-
         if (countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT) {
             handler.post(showRunnable);
         }
