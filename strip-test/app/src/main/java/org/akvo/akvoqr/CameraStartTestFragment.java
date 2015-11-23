@@ -78,6 +78,7 @@ public class CameraStartTestFragment extends Fragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
+            //get the patches ordered by time-lapse
             patches = StripTest.getInstance().getBrand(brandName).getPatchesOrderedByTimelapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
@@ -127,9 +128,6 @@ public class CameraStartTestFragment extends Fragment {
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.
         //reading may be done after that time, but not before.
-        //NB: in case a strip is designed in a manner where the order in time is different from the
-        //order in the json-array, this will not work. Patches with lower value for time-lapse
-        //should come before others.
         for(int i=patchesCovered+1;i<patches.size();i++) {
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
