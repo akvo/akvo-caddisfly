@@ -17,7 +17,6 @@ import org.akvo.akvoqr.util.Constant;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 /**
  * Created by linda on 9/12/15.
@@ -57,7 +56,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
             try {
                 // get input stream
                 String path = getActivity().getResources().getString(R.string.striptest_images);
-                InputStream ims = getActivity().getAssets().open(path + "/" + brandName.toLowerCase(Locale.US)+".png");
+                InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
                 // load image as Drawable
                 Drawable d = Drawable.createFromStream(ims, null);
                 // set image to ImageView
