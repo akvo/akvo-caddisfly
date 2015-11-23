@@ -1,17 +1,17 @@
 {
   "strips":[
     {
-      "name": "Chlorine (ppm) and free chlorine (ppm)",
-      "code": "strip-CL-101",
-      "id": "336",
-      "brand": "HACH883738",
+      "name": "Chlorine and Free Chlorine",
+      "code": "strip-CL-HACH-27450",
+      "id": "27450",
+      "brand": "HACH-27450-50",
       "numPatch": 2,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Total Chlorine ppm - end pad",
+          "patchDesc":"Total Chlorine (ppm)",
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[
@@ -50,7 +50,7 @@
           "unit": "ppm"
         },
         {
-          "patchDesc":"Free Chlorine ppm",
+          "patchDesc":"Free Chlorine (ppm)",
           "patchPos":17.2,
           "patchWidth": 5,
           "colours":[
@@ -97,17 +97,17 @@
         ]
     },
     {
-      "name": "Nitrate, Nitrite",
-      "code": "strip-N-2",
-      "id": "340",
-      "brand": "HACH2745425",
+      "name": "Nitrate and Nitrite",
+      "code": "strip-NI-HACH-27454",
+      "id": "27454",
+      "brand": "HACH-27454-25",
       "numPatch": 2,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Nitrate",
+          "patchDesc":"60-second Nitrate Nitrogen (ppm)",
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[
@@ -151,7 +151,7 @@
           "unit": "ppm"
         },
         {
-          "patchDesc":"Nitrite",
+          "patchDesc":"30-second Nitrite Nitrogen (ppm)",
           "patchPos":17.2,
           "patchWidth": 5,
           "colours":[
@@ -199,16 +199,16 @@
     },
     {
       "name": "Total Iron",
-      "code": "strip-Total-Iron",
-      "id": "337",
-      "brand": "HACH2745348",
+      "code": "strip-FE-2745348",
+      "id": "2745348",
+      "brand": "HACH-2745348",
       "numPatch": 1,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Total iron",
+          "patchDesc":"Total iron (ppm, mg/L)",
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[
