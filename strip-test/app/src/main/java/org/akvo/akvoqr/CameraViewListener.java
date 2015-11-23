@@ -46,7 +46,5 @@ public interface CameraViewListener {
 
     void setCountQualityCheckResultZero();
 
-    void setCountQualityCheckIterationZero();
-
     void setFocusAreas(List<Camera.Area> areas);
 }

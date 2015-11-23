@@ -48,7 +48,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
     private boolean start = false;
-    private int countQualityCheckIteration = 0;
     private int countQualityCheckResult = 0;
     private LinearLayout progressLayout;
     private Fragment currentFragment;
@@ -212,17 +211,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     @Override
     public void setCountQualityCheckResult(int count) {
-        countQualityCheckIteration++;
+
         countQualityCheckResult += count;
     }
 
     public void setCountQualityCheckResultZero() {
         countQualityCheckResult = 0;
-    }
-
-    @Override
-    public void setCountQualityCheckIterationZero() {
-        countQualityCheckIteration = 0;
     }
 
     @Override
@@ -237,22 +231,17 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 }
                 else if(currentFragment instanceof  CameraStartTestFragment)
                 {
-                   // start = true;
                     ((CameraStartTestFragment) currentFragment).ready();
                 }
             }
         };
 
-//        System.out.println("***countQualityCheckResult: " + countQualityCheckResult +
-//        " countQualityCheckIteration: " + countQualityCheckIteration);
+        System.out.println("***countQualityCheckResult: " + countQualityCheckResult );
 
         if (countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT) {
             handler.post(showRunnable);
-        } else if (countQualityCheckIteration > Constant.COUNT_QUALITY_CHECK_LIMIT * 1.5) {
-
-            setCountQualityCheckIterationZero();
-
         }
+
     }
 
     @Override
