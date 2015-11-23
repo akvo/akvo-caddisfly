@@ -434,9 +434,11 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
 
         FinderPatternInfo info = null;
+
+        // crop preview image to only contain the known region for the finder patterns
         PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
-                (int) Math.round(size.height * Constant.CROP_CAMERAVIEW_FACTOR),
+                (int) Math.round(size.height * Constant.CROP_FINDERPATTERN_FACTOR),
                 size.height,
                 false);
 
