@@ -112,7 +112,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 });
             }
 
-            startNextPreview(0);
+            //startNextPreview(0);
         }
     }
 
@@ -468,11 +468,11 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         final String[] messages = new String[]
                 {
                         getString(R.string.error_conversion), //0
-                        getString(R.string.error_no_finder_pattern_info),
-                        getString(R.string.error_warp), //1
-                        getString(R.string.error_detection), //2
-                        getString(R.string.error_calibrating), //3
-                        getString(R.string.error_cut_out_strip), //4
+                        getString(R.string.error_no_finder_pattern_info), //1
+                        getString(R.string.error_warp), //2
+                        getString(R.string.error_detection), //3
+                        getString(R.string.error_calibrating), //4
+                        getString(R.string.error_cut_out_strip), //5
                         getString(R.string.error_unknown) //5
                 };
 
@@ -481,8 +481,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(finish!=null)
-                finish.setText(messages[what]);
+                if(finish!=null) {
+                    int mesNo= what < messages.length? what: messages.length - 1;
+                    finish.setText(messages[mesNo]);
+                }
 
             }
         };

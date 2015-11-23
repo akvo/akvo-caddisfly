@@ -102,6 +102,11 @@ public class CameraPrepareFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         setHeightOfOverlay(0);
+
+        if(mListener!=null)
+        {
+            mListener.startNextPreview(0);
+        }
     }
 
     private void setHeightOfOverlay(int shrinkOrEnlarge)

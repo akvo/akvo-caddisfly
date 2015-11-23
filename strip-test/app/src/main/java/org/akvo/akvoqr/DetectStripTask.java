@@ -227,8 +227,15 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
 
-        listener.showResults(resultList);
-
+        if(listener!=null) {
+            if (resultList != null) {
+                listener.showResults(resultList);
+            }
+            else
+                System.out.println("***resultList is null");
+        }
+        else
+            System.out.println("***listener is null");
     }
 
     private Mat makeLab() throws Exception
