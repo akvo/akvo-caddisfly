@@ -66,6 +66,15 @@ public class ResultActivity extends AppCompatActivity {
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
+            JSONArray imagePatchArray = null;
+            try {
+                String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
+                imagePatchArray = new JSONArray(json);
+                System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             for (int i = 0; i < patches.size(); i++) {
 
                 //the name of the patch
@@ -73,7 +82,19 @@ public class ResultActivity extends AppCompatActivity {
 
                 //make sure we have a mat for this patch
                 if (i < mats.size()) {
-                    strip = mats.get(i).clone();
+                    if(imagePatchArray!=null) {
+                        JSONArray array = null;
+                        try {
+                            array = imagePatchArray.getJSONArray(i);
+                            // get the image number from the json array
+                            int patchNo = array.getInt(1);
+
+                            strip = mats.get(patchNo).clone();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 } else {
                     continue;
                 }

@@ -377,6 +377,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info) {
 
+        //stop myPreviewCallback take next picture
+        start = false;
 
         if(currentFragment instanceof CameraStartTestFragment)
         {
