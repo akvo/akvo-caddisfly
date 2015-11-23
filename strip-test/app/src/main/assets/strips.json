@@ -93,7 +93,7 @@
         {"text": "Collect water sample", "png": "instruction_collect_sample"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_quality_checks"}
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
         ]
     },
     {
@@ -150,7 +150,7 @@
         {"text": "Collect water sample", "png": "instruction_collect_sample"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_quality_checks"}
+        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"}
       ]
     },
     {
@@ -364,8 +364,8 @@
         {"text": "Collect water sample", "png": "instruction_collect_sample"},
         {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button. <!>It is important that no more than 30 seconds pass between dipping strip in water and start.<!", "png": "instruction_quality_checks"},
-        {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed.", "png":"instruction_progress"}
+        {"text": "Press 'Start' button. <!>It is important that no more than 30 seconds pass between dipping strip in water and start.<!", "png": "instruction_start_button"},
+        {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed.", "png":""}
       ]
     }
 
