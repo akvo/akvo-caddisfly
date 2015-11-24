@@ -98,14 +98,19 @@ public class CameraStartTestFragment extends Fragment {
         return rootView;
     }
 
-    public void ready() {
+    public void showStartButton() {
 
         if(startButton==null)
             return;
 
+        System.out.println("***count quality check start test fragment " );
+
         startButton.setVisibility(View.VISIBLE);
         startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
+        if(progressIndicatorViewAnim!=null) {
+            progressIndicatorViewAnim.setStart(true);
+        }
     }
 
     public void setStepsTaken(final int number)
@@ -186,6 +191,10 @@ public class CameraStartTestFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement CameraViewListener");
         }
+
+        //reset quality checks count to zero
+        if(mListener!=null)
+            mListener.setCountQualityCheckResultZero();
     }
 
     @Override

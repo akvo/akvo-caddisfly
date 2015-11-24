@@ -98,9 +98,8 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 setFocusAreas(info);
 
                 // final check if quality of image is ok, if not, abort
-                qualityOK = qualityChecks(data, info);
-
-                listener.setStartButtonVisibility(qualityOK);
+                int countQuality = qualityChecks(data, info);
+                listener.setStartButtonVisibility(countQuality);
 
                 if (info!=null && possibleCenters != null && possibleCenters.size() == 4)
                 {
@@ -109,7 +108,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     if(listener.start()) // start is set to true if it is time for the next patch
                     {
 
-                        if (qualityOK)
+                        if (countQuality==1)
                         {
                             camera.stopPreview();
                             listener.playSound();
@@ -151,10 +150,10 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
-    private boolean qualityChecks(byte[] data, FinderPatternInfo info) {
+    private int qualityChecks(byte[] data, FinderPatternInfo info) {
 
         if(camera==null)
-            return false;
+            return 0;
 
         Mat bgr = null;
         List<Double> focusList = new ArrayList<>();
@@ -259,19 +258,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
         }  catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         } finally {
             if(bgr!=null)
                 bgr.release();
         }
 
-        //count results only if checks have taken place
-        if(info!=null && possibleCenters!=null && possibleCenters.size()>0) {
-            //System.out.println("start button: " + focused + " " +  luminosityQualOk + "  " + shadowQualOk);
-            listener.setCountQualityCheckResult(luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0);
-        }
 
-        return luminosityQualOk && shadowQualOk && levelQualOk;
+        return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 
     }
 

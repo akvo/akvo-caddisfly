@@ -183,7 +183,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             if(mCamera!=null && previewCallback!=null) {
                 mCamera.startPreview();
                 mCamera.setOneShotPreviewCallback(previewCallback);
-                start = true;
+
             }
         }
     };
@@ -220,21 +220,26 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public void setStartButtonVisibility(boolean show) {
+    public void setStartButtonVisibility(int count) {
 
         Runnable showRunnable = new Runnable() {
             @Override
             public void run() {
 
                 if (currentFragment instanceof CameraPrepareFragment) {
-                    ((CameraPrepareFragment) currentFragment).ready();
+                    ((CameraPrepareFragment) currentFragment).showStartButton();
                 }
                 else if(currentFragment instanceof  CameraStartTestFragment)
                 {
-                    ((CameraStartTestFragment) currentFragment).ready();
+                    ((CameraStartTestFragment) currentFragment).showStartButton();
+                    start = true;
                 }
             }
         };
+
+        countQualityCheckResult += count;
+
+        System.out.println("***count quality check: " + countQualityCheckResult);
 
         if (countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT) {
             handler.post(showRunnable);
@@ -243,7 +248,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public void ready() {
+    public void nextFragment() {
 
         if(currentFragment instanceof CameraPrepareFragment) {
             currentFragment = CameraInstructionFragment.newInstance(brandName);
@@ -400,8 +405,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
     //END CAMERAVIEWLISTENER INTERFACE METHODS
 
-    //DETECTSTRIPLISTENER INTERFACE METHODS
 
+    //DETECTSTRIPLISTENER INTERFACE METHODS
     @Override
     public void showSpinner() {
         ImageView finishImage = (ImageView) findViewById(R.id.activity_cameraFinishImage);

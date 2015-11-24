@@ -105,7 +105,7 @@ public class CameraInstructionFragment extends Fragment {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.ready();
+                mListener.nextFragment();
             }
         });
         return rootView;

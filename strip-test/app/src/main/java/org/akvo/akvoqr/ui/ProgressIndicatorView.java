@@ -30,6 +30,8 @@ public class ProgressIndicatorView extends LinearLayout {
     private Bitmap unchecked_light;
     private Bitmap background;
     private ImageView img;
+    private boolean set;
+    private boolean start;
     private List<Step> steps;
     private int stepsTaken = 0;
     private int timeLapsed = 0;
@@ -74,7 +76,7 @@ public class ProgressIndicatorView extends LinearLayout {
         steps.add(new Step(order, timelapse));
     }
 
-    private boolean set;
+
     public void initView()
     {
 
@@ -111,6 +113,10 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
+    public void setStart(boolean start)
+    {
+        this.start = start;
+    }
     public void setStepsTaken(int stepsTaken) {
         this.stepsTaken = stepsTaken;
 
@@ -132,7 +138,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
         invalidate();
 
-        if(!running)
+        if(!running && start)
             startAnim();
     }
 
@@ -140,7 +146,9 @@ public class ProgressIndicatorView extends LinearLayout {
     public void startAnim()
     {
         if(steps!=null) {
+            //sort on time lapse ascending
             Collections.sort(steps, new StepComparator());
+
             for (int i = 0; i < steps.size(); i++) {
 
                 Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
@@ -151,7 +159,7 @@ public class ProgressIndicatorView extends LinearLayout {
                     if (getChildCount() > 0 && getChildAt(i) != null) {
                         if (i >= stepsTaken) {
 
-                            System.out.println("***xxxanimation ended: " + i + "  " + steps.get(i).timelapse);
+                           // System.out.println("***xxxanimation ended: " + i + "  " + steps.get(i).timelapse);
 
                             if (!steps.get(i).animationEnded) {
 
@@ -216,6 +224,9 @@ public class ProgressIndicatorView extends LinearLayout {
     public void onDraw(Canvas canvas)
     {
         if(steps==null)
+            return;
+
+        if(!start)
             return;
 
         canvas.save();

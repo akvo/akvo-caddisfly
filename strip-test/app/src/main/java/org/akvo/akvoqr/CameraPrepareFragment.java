@@ -56,7 +56,7 @@ public class CameraPrepareFragment extends Fragment {
         return rootView;
     }
 
-    public void ready() {
+    public void showStartButton() {
 
         if(startButton==null)
             return;
@@ -69,7 +69,7 @@ public class CameraPrepareFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mListener != null)
-                    mListener.ready();
+                    mListener.nextFragment();
             }
         });
 

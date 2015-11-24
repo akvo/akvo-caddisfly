@@ -32,13 +32,13 @@ public interface CameraViewListener {
 
     void showLevel(float[] angles);
 
-    void setStartButtonVisibility(boolean show);
+    void setStartButtonVisibility(int count);
 
     void startNextPreview(long timeMillis);
 
     void takeNextPicture(long timeMillis);
 
-    void ready();
+    void nextFragment();
 
     boolean start();
 
