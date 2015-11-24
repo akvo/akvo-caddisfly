@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+  ~ either version 3 of the License or any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License included below for more details.
+  ~
+  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Coliforms"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeDevice"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutWait"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/layoutContent4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-8dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:src="@drawable/place_device" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutDetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/textCountdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:textSize="40sp"
+            tools:text="00:00:59" />
+
+        <View
+            android:id="@+id/viewInstallType"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e4e4e4" />
+
+        <TextView
+            android:id="@+id/textSampleCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="#5b5b5b"
+            android:textSize="18dp"
+            tools:ignore="HardcodedText,SpUsage"
+            tools:text="Completed: 0" />
+
+        <TextView
+            android:id="@+id/textInterval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="#5b5b5b"
+            android:textSize="18dp"
+            tools:ignore="HardcodedText,SpUsage"
+            tools:text="Sampled every 2 minutes" />
+
+    </LinearLayout>
+
+</LinearLayout>

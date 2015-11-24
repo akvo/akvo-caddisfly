@@ -37,6 +37,7 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.updater.UpdateCheckReceiver;
 import org.akvo.caddisfly.updater.UpdateHelper;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -239,6 +240,12 @@ public class ExternalActionActivity extends BaseActivity {
                 } else {
                     alertFeatureNotSupported();
                 }
+                break;
+            case TURBIDITY_COLIFORMS:
+
+                final Intent turbidityIntent = new Intent(context, TimeLapseActivity.class);
+                startActivityForResult(turbidityIntent, REQUEST_TEST);
+
                 break;
         }
     }

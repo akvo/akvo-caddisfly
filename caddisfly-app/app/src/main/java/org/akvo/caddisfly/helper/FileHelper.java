@@ -36,6 +36,7 @@ public class FileHelper {
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
     private static final String DIR_DOWNLOAD = "Download/Install"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
+    private static final String TURBIDITY_IMAGE = "Akvo Caddisfly/Turbidity"; // Calibration files
 
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may
@@ -73,6 +74,9 @@ public class FileHelper {
                 break;
             case IMAGE:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
+                break;
+            case TURBIDITY_IMAGE:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + TURBIDITY_IMAGE;
                 break;
         }
         File dir = new File(path);
@@ -149,7 +153,7 @@ public class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, CONFIG, DOWNLOAD, IMAGE
+        CALIBRATION, CONFIG, DOWNLOAD, IMAGE, TURBIDITY_IMAGE
     }
 
 }

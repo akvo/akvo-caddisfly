@@ -14,25 +14,40 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
+package org.opencv.android;
 
-public class ColorimetryLiquidConfig {
+/**
+ * Installation callback interface.
+ */
+public interface InstallCallbackInterface {
+    /**
+     * New package installation is required.
+     */
+    int NEW_INSTALLATION = 0;
+    /**
+     * Current package installation is in progress.
+     */
+    int INSTALLATION_PROGRESS = 1;
 
     /**
-     * Width and height of cropped image
+     * Target package name.
+     *
+     * @return Return target package name.
      */
-    public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-    /**
-     * The delay between each photo taken by the camera during the analysis
-     */
-    public static final int DELAY_BETWEEN_SAMPLING = 6000;
-    /**
-     * The number of photos to take during analysis
-     */
-    public static final int SAMPLING_COUNT_DEFAULT = 5;
-    /**
-     * Tolerance at which a calibrated color is valid when compared to expected color
-     */
-    public static final int MAX_VALID_CALIBRATION_TOLERANCE = 140;
+    String getPackageName();
 
+    /**
+     * Installation is approved.
+     */
+    void install();
+
+    /**
+     * Installation is canceled.
+     */
+    void cancel();
+
+    /**
+     * Wait for package installation.
+     */
+    void wait_install();
 }

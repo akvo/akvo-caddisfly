@@ -14,25 +14,18 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
+package org.opencv.core;
 
-public class ColorimetryLiquidConfig {
+public class CvException extends RuntimeException {
 
-    /**
-     * Width and height of cropped image
-     */
-    public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
-    /**
-     * The delay between each photo taken by the camera during the analysis
-     */
-    public static final int DELAY_BETWEEN_SAMPLING = 6000;
-    /**
-     * The number of photos to take during analysis
-     */
-    public static final int SAMPLING_COUNT_DEFAULT = 5;
-    /**
-     * Tolerance at which a calibrated color is valid when compared to expected color
-     */
-    public static final int MAX_VALID_CALIBRATION_TOLERANCE = 140;
+    private static final long serialVersionUID = 1L;
 
+    public CvException(String msg) {
+        super(msg);
+    }
+
+    @Override
+    public String toString() {
+        return "CvException [" + super.toString() + "]";
+    }
 }

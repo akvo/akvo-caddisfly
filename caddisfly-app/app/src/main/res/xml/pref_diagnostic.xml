@@ -24,6 +24,13 @@
         <Preference
             android:key="startTest"
             android:title="Colorimetric Test" />
+        <Preference
+            android:key="startTurbidityTest"
+            android:title="Turbidity Test">
+            <intent
+                android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"
+                android:targetPackage="org.akvo.caddisfly" />
+        </Preference>
         <CheckBoxPreference
             android:key="@string/showDebugMessagesKey"
             android:title="@string/debuggingOn" />

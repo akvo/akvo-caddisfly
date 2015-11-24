@@ -29,7 +29,6 @@ import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.util.FileUtil;
 
@@ -46,7 +45,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
-import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.object.HasToString.hasToString;
 
@@ -58,7 +56,7 @@ class TestHelper {
     private static final boolean mTakeScreenshots = false;
     public static HashMap<String, String> currentHashMap;
     public static UiDevice mDevice;
-    public static String mCurrentLanguage = "fr";
+    public static String mCurrentLanguage = "en";
     private static int mCounter;
 
     private static void addString(String key, String englishText, String frenchText) {
@@ -219,8 +217,7 @@ class TestHelper {
     }
 
     public static void saveCalibration(String name) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, "FLUOR");
 
         FileUtil.saveToFile(path, name, calibrationHashMap.get(name));
     }
@@ -273,6 +270,8 @@ class TestHelper {
         onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
 
         mDevice.waitForIdle();
+
+        goToMainScreen();
 
     }
 }

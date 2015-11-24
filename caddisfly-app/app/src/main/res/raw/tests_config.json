@@ -81,6 +81,21 @@
         "ranges": "0,1,2,3,4",
         "diagnostic": "true",
         "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Coliforms"
+          },
+          {
+            "fr": "Coliforms"
+          }
+        ],
+        "type": "3",
+        "code": "colif",
+        "unit": "ppm",
+        "calibrate": "false",
+        "diagnostic": "true"
       }
     ]
   }

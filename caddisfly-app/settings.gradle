@@ -14,4 +14,4 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-include ':app'
+include ':app', ':opencv300'

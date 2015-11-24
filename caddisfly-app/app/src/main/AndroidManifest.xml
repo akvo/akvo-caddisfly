@@ -130,10 +130,13 @@
             android:name=".updater.UpdateActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Translucent" />
-
         <activity
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".sensor.turbidity.TimeLapseActivity"
             android:screenOrientation="nosensor" />
 
         <service
@@ -149,6 +152,11 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".sensor.turbidity.TurbidityStartReceiver"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 

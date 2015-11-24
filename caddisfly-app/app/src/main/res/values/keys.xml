@@ -36,4 +36,8 @@
     <string name="totalFailedCalibrationsKey" translateable="false">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey" translateable="false">totalFailedTests</string>
+    <string name="turbiditySavePathKey">turbiditySavePath</string>
+    <string name="sampleIntervalMinutesKey">sampleIntervalMinutes</string> 
+    <string name="numberOfTurbiditySamplesKey">numberOfTurbiditySamples</string> 
+
 </resources>
