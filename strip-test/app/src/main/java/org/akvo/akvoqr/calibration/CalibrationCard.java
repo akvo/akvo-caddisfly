@@ -354,9 +354,7 @@ public class CalibrationCard{
         for (int i = 0; i < imgRows; i++){ // y
             imgLab.get(i, 0, temp);
             ii3 = 0;
-            iSq = i * i;
             for (ii = 0; ii < imgCols; ii++){  //x
-                iiSq = ii * ii;
                 valL = capValue((int) Math.round((temp[ii3 + 0] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean),0,255);
                 valA = capValue((int) Math.round((temp[ii3 + 1] & 0xFF) - (Aaii[ii] + AbiiSq[ii] + Aci[i] + AdiSq[i] + Ae * i * ii + Af) + Amean),0,255);
                 valB = capValue((int) Math.round((temp[ii3 + 2] & 0xFF) - (Baii[ii] + BbiiSq[ii] + Bci[i] + BdiSq[i] + Be * i * ii + Bf) + Bmean),0,255);
