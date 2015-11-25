@@ -136,7 +136,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     /*
     * Update the start button in progressIndicatorView to show green checked box
     * Update progressIndicatorView to set its property: 'start' to true.
-    * It depends on start == true to draw on its Canvas and to animate its Views
+    * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
      */
     public void showStartButton() {
 
@@ -168,14 +168,24 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
     }
 
-
+    /*
+    * Store image data together with FinderPatternInfo data.
+    * Update JSONArray imagePatchArray to keep track of which picture goes with which patch.
+     */
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info)
     {
+        //what happens in the for-loop:
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.
         //reading may be done after that time, but not before.
-        for(int i=patchesCovered+1;i<patches.size();i++) {
+
+        //we start patchesCovered at -1, because 0 would mean the first patch, and we do not want anything to happen
+        // before this loop has run.
+        //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
+        // the list of patches, which ofcourse starts counting at 0.
+        for(int i = patchesCovered + 1; i < patches.size(); i++) {
+
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
 
@@ -197,17 +207,37 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             }
         }
 
+        //store the data as file in internal memory using the value of imageCount as part of its name,
+        //at the same time store the data that the FinderPatternInfo object contains.
+        //The two files can be retrieved and combined later, because they share 'imageCount'
+        // and imagePatchArray contains a value that corresponds with that.
         new StoreDataTask(getActivity(), imageCount, data, info).execute();
 
         //add one to imageCount
         imageCount ++;
 
+        //update UI
         setStepsTaken(stepsCovered);
 
         //System.out.println("***xxximageCount: " + imageCount + " patchesCovered: " + patchesCovered);
 
     }
 
+    /*
+    * If picture data (Camera Preview data) is stored,
+    * proceed to calibrate and detect the strip from it.
+    * That happens in the
+    * {@link DetectStripTask} (AsyncTask).
+    * For development purposes: if you set the boolean 'develop' to true,
+    * you can see images of the original and the calibrated images in a separate activity
+    * Otherwise, the whole process runs in the onBackground() of the AsyncTask.
+    *
+    * Even though it may be called any time, we take care that the detect-strip-process only starts
+    * if all patches are 'covered', meaning that we have counted that number beforehand,
+    * in the 'sendData' method above.
+    *
+    * @params: format, widht, height. Those should be the format, width and height of the Camera.Size
+     */
     public void dataSent(int format, int width, int height)
     {
 
@@ -215,8 +245,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         //set to false if you want to go to the ResultActivity directly
         boolean develop = false;
 
+        //check if we do have images for all patches
         if(patchesCovered == patches.size()-1)
         {
+            //check if we really do have data in the json-array
             if(imagePatchArray.length()>0) {
                 //write image/patch info to internal storage
                 FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
