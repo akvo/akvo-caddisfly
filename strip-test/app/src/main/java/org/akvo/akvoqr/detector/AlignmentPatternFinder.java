@@ -52,8 +52,8 @@ final class AlignmentPatternFinder {
    * <p>Creates a finder that will look in a portion of the whole image.</p>
    *
    * @param image image to search
-   * @param startX left column from which to start searching
-   * @param startY top row from which to start searching
+   * @param startX left column from which to qualityChecksOK searching
+   * @param startY top row from which to qualityChecksOK searching
    * @param width width of region to search
    * @param height height of region to search
    * @param moduleSize estimated module size so far
@@ -98,9 +98,9 @@ final class AlignmentPatternFinder {
       stateCount[1] = 0;
       stateCount[2] = 0;
       int j = startX;
-      // Burn off leading white pixels before anything else; if we start in the middle of
+      // Burn off leading white pixels before anything else; if we qualityChecksOK in the middle of
       // a white run, it doesn't make sense to count its length, since we don't know if the
-      // white run continued to the left of the start point
+      // white run continued to the left of the qualityChecksOK point
       while (j < maxJ && !image.get(j, i)) {
         j++;
       }

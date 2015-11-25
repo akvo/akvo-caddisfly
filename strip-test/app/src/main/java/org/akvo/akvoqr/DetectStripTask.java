@@ -227,6 +227,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
 
+        System.out.println("***onPostExecute DetectStripTask");
+
         if(listener!=null) {
             if (resultList != null) {
                 listener.showResults(resultList);

@@ -87,7 +87,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
                     .commit();
 
         } else {
-            // In single-pane mode, simply start the detail activity
+            // In single-pane mode, simply qualityChecksOK the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ChooseStriptestDetailActivity.class);
             detailIntent.putExtra(Constant.BRAND, id);

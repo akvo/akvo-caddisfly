@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.ui.ProgressIndicatorView;
+import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
@@ -42,10 +43,9 @@ public class CameraStartTestFragment extends Fragment {
     private int timeLapsed = 0;
     private Handler handler;
     private String brandName;
-    //private int to keep track of preview data already stored
     private int patchesCovered = -1;
+
     private int imageCount = 0;
-    //Array to store image/patch combination
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
 
@@ -85,6 +85,7 @@ public class CameraStartTestFragment extends Fragment {
             for (int i = 0; i < patches.size(); i++) {
 
                 System.out.println("***patches: " + i + " timelapse: " + patches.get(i).getTimeLapse());
+
                 if (i > 0) {
                     if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
                         continue;
@@ -95,6 +96,18 @@ public class CameraStartTestFragment extends Fragment {
         }
         handler = new Handler(Looper.getMainLooper());
 
+        //use brightness view as a button to switch on and off the flash
+        QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
+        if(exposureView!=null) {
+            exposureView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mListener.switchFlash();
+                }
+            });
+        }
+
         return rootView;
     }
 
@@ -103,7 +116,7 @@ public class CameraStartTestFragment extends Fragment {
         if(startButton==null)
             return;
 
-        System.out.println("***count quality check start test fragment " );
+        System.out.println("***count quality check qualityChecksOK test fragment " );
 
         startButton.setVisibility(View.VISIBLE);
         startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
@@ -127,6 +140,7 @@ public class CameraStartTestFragment extends Fragment {
 
     }
 
+    private int stepsCovered = 0;
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info)
     {
@@ -137,9 +151,16 @@ public class CameraStartTestFragment extends Fragment {
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
 
-                //...but we do not want to replace the already saved data with new
+                //keep track of which patches are 'done'
                 patchesCovered = i;
 
+                //keep track of stepsCovered ('step' is the patches that have the same time lapse)
+                if (i > 0) {
+                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
+                        stepsCovered ++;
+                    }
+                }
+                //keep track of which image belongs to which patch
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
                 array.put(patches.get(i).getOrder());
@@ -153,16 +174,16 @@ public class CameraStartTestFragment extends Fragment {
         //add one to imageCount
         imageCount ++;
 
-        setStepsTaken(imageCount);
+        setStepsTaken(stepsCovered);
 
-        //System.out.println("***imageCount: " + imageCount + " patchesCovered: " + patchesCovered);
+        //System.out.println("***xxximageCount: " + imageCount + " patchesCovered: " + patchesCovered);
 
     }
 
     public void dataSent(int format, int width, int height)
     {
 
-        //set to true if you want to see the original and calibrated images in an activity
+        //set to true if you want to see the original and calibrated images in DetectStripActivity
         //set to false if you want to go to the ResultActivity directly
         boolean develop = false;
 
@@ -182,6 +203,7 @@ public class CameraStartTestFragment extends Fragment {
             }
         }
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -258,7 +280,11 @@ public class CameraStartTestFragment extends Fragment {
 
         //Post the callback on time for each patch
         for (int i = 0; i < patches.size(); i++) {
-
+            if (i > 0) {
+                if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
+                    continue;
+                }
+            }
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000);
         }
     }

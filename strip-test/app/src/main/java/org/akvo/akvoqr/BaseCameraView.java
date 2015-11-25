@@ -141,7 +141,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         }
 
-        // start preview with new settings
+        // qualityChecksOK preview with new settings
         try {
 
             mCamera.setParameters(parameters);
@@ -190,9 +190,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setExposureCompensation(0);
         }
 
-//        float step = parameters.getExposureCompensationStep();
-//        System.out.println("***Exposure compensation direction: " + direction + ". step = " + step);
-//        System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
+        //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
         mCamera.setParameters(parameters);
     }

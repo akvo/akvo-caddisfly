@@ -307,7 +307,7 @@ public class ResultActivity extends AppCompatActivity {
                 pointC[2] = pointC[2] - 128;
             }
 
-            //start test
+            //qualityChecksOK test
             testLab(pointC);
             testCount ++;
             //end test

@@ -148,7 +148,7 @@ public class FinderPatternFinder {
                   currentState = 3;
                   continue;
                 }
-                // Clear state to start looking again
+                // Clear state to qualityChecksOK looking again
                 currentState = 0;
                 stateCount[0] = 0;
                 stateCount[1] = 0;

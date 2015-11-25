@@ -20,7 +20,7 @@ public class QualityCheckShadowsView extends QualityCheckView {
     public QualityCheckShadowsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        //set percentage to a value that results in a negative at the start of the onDraw
+        //set percentage to a value that results in a negative at the qualityChecksOK of the onDraw
         percentage = 101;
     }
 

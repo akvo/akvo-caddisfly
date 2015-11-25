@@ -34,7 +34,6 @@ import java.util.List;
  */
 public class MyPreviewCallback implements Camera.PreviewCallback {
 
-    private final int messageRepeat = 0;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
@@ -42,12 +41,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private CameraViewListener listener;
     private Camera camera;
     private Camera.Size previewSize;
-//    private boolean focused = true;
-    LinkedList<Double> lumTrack = new LinkedList<>();
-    LinkedList<Double> shadowTrack = new LinkedList<>();
+    private boolean takePicture;
+    private boolean start;
+    private LinkedList<Double> lumTrack = new LinkedList<>();
+    private LinkedList<Double> shadowTrack = new LinkedList<>();
 
-    public static MyPreviewCallback getInstance(Context context) {
-
+    public static MyPreviewCallback newInstance(Context context)
+    {
         return new MyPreviewCallback(context);
     }
 
@@ -76,16 +76,20 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
     }
 
+    public void setTakePicture(boolean takePicture) {
+        this.takePicture = takePicture;
+    }
+
+    public void setStart(boolean start)
+    {
+        this.start = start;
+    }
+
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
         byte[] data;
         FinderPatternInfo info;
 
-        boolean qualityOK = true;
-        public SendDataTask()
-        {
-
-        }
 
         @Override
         protected Void doInBackground(byte[]... params) {
@@ -97,19 +101,18 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 setFocusAreas(info);
 
-                // final check if quality of image is ok, if not, abort
+                //check if quality of image is ok, if not, abort
                 int countQuality = qualityChecks(data, info);
                 listener.setStartButtonVisibility(countQuality);
 
-                if (info!=null && possibleCenters != null && possibleCenters.size() == 4)
+                if(takePicture)
                 {
-                    long timePictureTaken = System.currentTimeMillis();
 
-                    if(listener.start()) // start is set to true if it is time for the next patch
-                    {
-
-                        if (countQuality==1)
+                        if (info!=null && countQuality==1 && start && listener.qualityChecksOK())
                         {
+                            start = false;
+                            long timePictureTaken = System.currentTimeMillis();
+
                             camera.stopPreview();
                             listener.playSound();
 
@@ -119,20 +122,14 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                         else
                         {
                             if (listener != null)
-                                listener.getMessage(messageRepeat);
+                                listener.takeNextPicture(0);
                         }
-                    }
-                    else
-                    {
-                        if (listener != null)
-                            listener.getMessage(messageRepeat);
-                    }
 
                 }
                 else
                 {
                     if (listener != null)
-                        listener.getMessage(messageRepeat);
+                        listener.startNextPreview(0);
 
                 }
             }
@@ -158,12 +155,13 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         Mat bgr = null;
         List<Double> focusList = new ArrayList<>();
         List<double[]> lumList = new ArrayList<>();
+        float[] angles = null;
         boolean luminosityQualOk = false;
         boolean shadowQualOk = false;
         boolean levelQualOk = false;
 
         try {
-            if (possibleCenters != null && possibleCenters.size() > 0) {
+            if (possibleCenters != null && possibleCenters.size() > 3) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -210,26 +208,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             double maxmaxLum = luminosityCheck(lumList);
             luminosityQualOk = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER;
 
-            //System.out.println("***lumTrack size: " + lumTrack.size());
-
-            if(lumTrack.size()<1) {
-                //-1 means 'no data'
-                listener.showMaxLuminosity(false, -1);
-            }
-            else
-            {
-                listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
-            }
-
-            // DETECT SHADOWS
-            double shadowPercentage = detectShadows(info, bgr);
-            shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
-            if(shadowTrack.size()<1) {
-                //101 means 'no data'
-                listener.showShadow(101);
-            }else {
-                listener.showShadow(shadowTrack.getLast());
-            }
 
             // focus: do the checks
             // if focus is too low, do another round of focussing
@@ -247,14 +225,40 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //            }
 
 
-            //GET ANGLE
-            if(info!=null) {
-                float[] angles = PreviewUtils.getAngle(info);
 
-                listener.showLevel(angles);
+            if(info!=null) {
+
+                // DETECT SHADOWS
+                double shadowPercentage = detectShadows(info, bgr);
+                shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+
+                //GET ANGLE
+                angles = PreviewUtils.getAngle(info);
+
                 //the sum of the angles should approach zero: then the camera is hold even with the card
                 levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
+
             }
+
+            //brightness: show the values on device
+            if(lumTrack.size()<1) {
+                //-1 means 'no data'
+                listener.showMaxLuminosity(false, -1);
+            }
+            else {
+                listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
+            }
+
+            //shadows: show the values on device
+            if(shadowTrack.size()<1) {
+                //101 means 'no data'
+                listener.showShadow(101);
+            }else {
+                listener.showShadow(shadowTrack.getLast());
+            }
+
+            //level: show on device
+            listener.showLevel(angles);
 
         }  catch (Exception e) {
             e.printStackTrace();
@@ -319,8 +323,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
         if(lumMinMax.length==2) {
             focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
 
-            //System.out.println("***focusQual =  " + focusQual );
-
             //never more than 100%
             focusQual = Math.min(focusQual,100);
 
@@ -348,21 +350,11 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private double luminosityCheck(List<double[]> lumList)
     {
 
-        double maxminLum = -1; //highest value of 'black'
-        double minmaxLum = 256; //lowest value of 'white'
         double maxmaxLum = -1; //highest value of 'white'
-        boolean luminosityQualOk = false;
 
         for(int i=0; i<lumList.size();i++) {
-            //store lum min value that corresponds with highest; we use it to check over-exposure
-            if (lumList.get(i)[0] > maxminLum) {
-                maxminLum = lumList.get(i)[0];
-            }
-            //store lum max value that corresponds with lowest; we use it to check under-exposure
-            if (lumList.get(i)[1] < minmaxLum) {
-                minmaxLum = lumList.get(i)[1];
-            }
 
+            //store lum max value that corresponds with highest: we use it to check over- and under exposure
             if (lumList.get(i)[1] > maxmaxLum) {
                 maxmaxLum = lumList.get(i)[1];
             }
@@ -384,6 +376,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 //                System.out.println("***locking auto-exposure. ");
 //            }
 
+
+            //System.out.println("***exp maxmaxLum: " + maxmaxLum);
+
             //compensate for under-exposure
             //if max values lower than 150
             if(maxmaxLum < Constant.MAX_LUM_LOWER)
@@ -393,8 +388,9 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                 System.out.println("***under exposed. ");
             }
+
             //compensate for over-exposure
-            //if max values larger than 200
+            //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
                 System.out.println("***over exposed. ");
@@ -402,23 +398,35 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                 listener.adjustExposureCompensation(-1);
             }
             //compare latest value with the previous one
-//            else if(lumTrack.size()>1)
-//            {
-//                if(lumTrack.getLast() > lumTrack.get(lumTrack.size()-2)) {
-//
-//                    //difference is increasing; this is good, keep going in the same direction
-//                    listener.adjustExposureCompensation(1);
-//                }
-//                else if(lumTrack.getLast() > Constant.MAX_LUM_LOWER)
-//                {
-//                    //optimum situation reached: remove last value to keep ideal situation
-//                    if(lumTrack.size()>2)
-//                        lumTrack.removeLast();
-//
-//                    //System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
-//
-//                }
-//            }
+            else if(lumTrack.size()>1)
+            {
+                //get EV to use in order to avoid over exposure while trying to optimise brightness
+                float step = camera.getParameters().getExposureCompensationStep();
+                //make sure it never becomes zero
+                float EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
+
+                //System.out.println("***exp EV = " + EV + " EV * 255 = " + EV * 255 + "  " + maxmaxLum + EV * 255);
+
+                //we want to get it as bright as possible but without risking overexposure
+                // we assume that EV will be a factor that determines the amount with which brightness will increase
+                // after adjusting exp. comp.
+                // we do not want to increase exp. comp. if the current brightness plus the max. brightness time the EV
+                // becomes larger that the UPPER limit
+                if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
+
+                    //luminosity is increasing; this is good, keep going in the same direction
+                    System.out.println("***increasing exposure." );
+
+                    listener.adjustExposureCompensation(1);
+                }
+                else
+                {
+                    //optimum situation reached
+
+                    System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+
+                }
+            }
 
         }
 
@@ -470,7 +478,7 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
 
                     }
                 }
-                //System.out.println("***possible centers size: " + possibleCenters.size());
+
                 if (possibleCenters != null && previewSize != null) {
 
                     listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
@@ -491,8 +499,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
                     {
                         e.printStackTrace();
                     }
-
-
                 }
 
                 return info;
@@ -529,66 +535,6 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
             }
         }
     }
-
-//    private byte[] compressToJpeg(byte[] data)
-//    {
-//
-//        if(previewFormat == ImageFormat.NV21) {
-//            YuvImage yuvImage = new YuvImage(data, previewFormat, previewSize.width, previewSize.height, null);
-//            Rect rect = new Rect(0, 0, previewSize.width, previewSize.height);
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            yuvImage.compressToJpeg(rect, 100, baos);
-//            return baos.toByteArray();
-//        }
-//
-//        return null;
-//    }
-
-
-//    private void takePicture()
-//    {
-//        camera.takePicture(null, new Camera.PictureCallback() {
-//                    @Override
-//                    public void onPictureTaken(byte[] data, Camera camera) {
-//                        if (data != null) {
-//                            System.out.println("***raw: " + data.length);
-//                            if(info!=null) {
-//                                listener.sendData(data, camera.getParameters().getPictureFormat(),
-//                                        camera.getParameters().getPictureSize().width,
-//                                        camera.getParameters().getPictureSize().height, info);
-//                            }
-//                        }
-//                        else
-//                        {
-//                            System.out.println("***raw is null");
-//                        }
-//                    }
-//
-//                },
-//                null,
-//                new Camera.PictureCallback() {
-//                    @Override
-//                    public void onPictureTaken(byte[] data, Camera camera) {
-//                        if(data!=null)
-//                        {
-//                            System.out.println("***jpeg: " + data.length);
-//                            if(info!=null) {
-//                                listener.sendData(data, camera.getParameters().getPictureFormat(),
-//                                        camera.getParameters().getPictureSize().width,
-//                                        camera.getParameters().getPictureSize().height, info);
-//
-//                            }
-//                        }
-//                        else
-//                        {
-//                            System.out.println("***jpeg is null");
-//                        }
-//                    }
-//                });
-//
-//    }
-
-
 }
 
 

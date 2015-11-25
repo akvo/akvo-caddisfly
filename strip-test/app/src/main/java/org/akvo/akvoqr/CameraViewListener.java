@@ -12,8 +12,6 @@ import java.util.List;
  */
 public interface CameraViewListener {
 
-    void getMessage(int what);
-
     void adjustExposureCompensation(int direction);
 
     void sendData(byte[] data, long timeMillis, FinderPatternInfo info);
@@ -40,11 +38,11 @@ public interface CameraViewListener {
 
     void nextFragment();
 
-    boolean start();
-
-    void setCountQualityCheckResult(int count);
+    boolean qualityChecksOK();
 
     void setCountQualityCheckResultZero();
 
     void setFocusAreas(List<Camera.Area> areas);
+
+    void switchFlash();
 }

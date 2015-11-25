@@ -79,7 +79,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
-        previewCallback = MyPreviewCallback.getInstance(this);
+        previewCallback = MyPreviewCallback.newInstance(this);
 
         if (mCamera != null) {
             // Create our Preview view and set it as the content of our activity.
@@ -99,19 +99,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     R.id.activity_cameraFragmentPlaceholder, currentFragment
             ).commit();
 
-            //use brightness view as a button to switch on and off the flash
-            QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
-            if(exposureView!=null) {
-                exposureView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        mPreview.switchFlashMode();
-                    }
-                });
-            }
-
-            //startNextPreview(0);
         }
     }
 
@@ -171,6 +158,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             if(mCamera!=null && previewCallback!=null) {
                 mCamera.startPreview();
+                previewCallback.setTakePicture(false);
                 mCamera.setOneShotPreviewCallback(previewCallback);
 
             }
@@ -180,10 +168,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private Runnable takeNextPicture = new Runnable() {
         @Override
         public void run() {
-            if(mCamera!=null && previewCallback!=null) {
+            if(mCamera!=null) {
                 mCamera.startPreview();
+                previewCallback.setTakePicture(true);
                 mCamera.setOneShotPreviewCallback(previewCallback);
-
             }
         }
     };
@@ -191,15 +179,26 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     //START CAMERAVIEWLISTENER INTERFACE METHODS
     @Override
+    public void switchFlash() {
+        mPreview.switchFlashMode();
+    }
+
+    @Override
     public void takeNextPicture(long timeMillis) {
-        if(handler!=null)
+        if(previewCallback!=null) {
+            previewCallback.setStart(true);
+        }
+        if(handler!=null) {
+
             handler.postDelayed(takeNextPicture, timeMillis);
+        }
     }
 
     @Override
     public void startNextPreview(long timeMillis) {
-        if(handler!=null)
+        if(handler!=null) {
             handler.postDelayed(startNextPreview, timeMillis);
+        }
     }
 
     @Override
@@ -207,12 +206,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         if (mPreview != null) {
             mPreview.setFocusAreas(areas);
         }
-    }
-
-    @Override
-    public void setCountQualityCheckResult(int count) {
-
-        countQualityCheckResult += count;
     }
 
     public void setCountQualityCheckResultZero() {
@@ -239,6 +232,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         countQualityCheckResult += count;
 
+        if (currentFragment instanceof CameraPrepareFragment) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    ((CameraPrepareFragment) currentFragment).countQuality(countQualityCheckResult);
+                }
+            };
+
+            if(handler!=null)
+               handler.post(runnable);
+        }
+
         System.out.println("***count quality check: " + countQualityCheckResult);
 
         if (countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT) {
@@ -261,7 +266,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public boolean start() {
+    public boolean qualityChecksOK() {
 
         return start;
 
@@ -279,22 +284,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(handler!=null)
             handler.post(runnable);
-    }
-
-    @Override
-    public void getMessage(int what) {
-        if(mCamera!=null && mPreview!=null && !isFinishing()) {
-
-            mCamera.startPreview();
-            if (what == 0) {
-                startNextPreview(0);
-
-            } else {
-
-                handler.removeCallbacks(startNextPreview);
-                mCamera.setOneShotPreviewCallback(null);
-            }
-        }
     }
 
     @Override
@@ -370,14 +359,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                          final FinderPatternInfo info) {
 
         //stop myPreviewCallback take next picture
-        start = false;
+        //previewCallback.setStart(false);
 
         if(currentFragment instanceof CameraStartTestFragment)
         {
             ((CameraStartTestFragment) currentFragment).sendData(data, timeMillis, info);
         }
 
-        //clear the finder pattern view after one second and start the preview again
+        //clear the finder pattern view after one second and qualityChecksOK the preview again
         showFinderPatterns(null, null, 0);
 
         //clear level indicator
@@ -391,7 +380,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(currentFragment instanceof CameraStartTestFragment)
         {
-            ((CameraStartTestFragment) currentFragment).dataSent(mCamera.getParameters().getPreviewFormat(), mCamera.getParameters().getPreviewSize().width,
+            ((CameraStartTestFragment) currentFragment).dataSent(mCamera.getParameters().getPreviewFormat(),
+                    mCamera.getParameters().getPreviewSize().width,
                     mCamera.getParameters().getPreviewSize().height);
         }
 

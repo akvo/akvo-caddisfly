@@ -60,7 +60,7 @@ public class PreviewUtils {
 //    }
 
 
-//        System.out.println("*** start ****************************************");
+//        System.out.println("*** qualityChecksOK ****************************************");
 //        for (int j = 0; j < cols - 1; j++){
 //            System.out.println("*** point:" + (temp[j] & 0xFF));
 //        }

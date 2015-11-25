@@ -587,7 +587,7 @@ public class CalibrationCard{
      * @result: calibrated image
      */
     public CalibrationResultData calibrateImage(Mat labImg) throws Exception{
-        System.out.println("*** start of calibration");
+        System.out.println("*** qualityChecksOK of calibration");
 
         if(calData!=null) {
             // illumination correction
@@ -772,7 +772,7 @@ public class CalibrationCard{
             int startIndex = (int) Math.abs(Math.round(4.5 * modSize / lry));
             int endIndex = (int) Math.abs(Math.round(25 * modSize / lry));
 
-            // determine start of pattern: first black bit. Approach from the left
+            // determine qualityChecksOK of pattern: first black bit. Approach from the left
             try {
                 int startI = startIndex;
                 while (startI < endIndex && !bits[startI]) {

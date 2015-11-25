@@ -111,7 +111,7 @@ public final class BitArray implements Cloneable {
   }
 
   /**
-   * @param from index to start looking for unset bit
+   * @param from index to qualityChecksOK looking for unset bit
    * @return index of next unset bit, or {@code size} if none are unset until the end
    * @see #getNextSet(int)
    */
@@ -147,7 +147,7 @@ public final class BitArray implements Cloneable {
   /**
    * Sets a range of bits.
    *
-   * @param start start of range, inclusive.
+   * @param start qualityChecksOK of range, inclusive.
    * @param end end of range, exclusive
    */
   public void setRange(int start, int end) {
@@ -189,11 +189,11 @@ public final class BitArray implements Cloneable {
   /**
    * Efficient method to check if a range of bits is set, or not set.
    *
-   * @param start start of range, inclusive.
+   * @param start qualityChecksOK of range, inclusive.
    * @param end end of range, exclusive
    * @param value if true, checks that bits in range are set, otherwise checks that they are not set
    * @return true iff all bits are set or not set in range, according to value argument
-   * @throws IllegalArgumentException if end is less than or equal to start
+   * @throws IllegalArgumentException if end is less than or equal to qualityChecksOK
    */
   public boolean isRange(int start, int end, boolean value) {
     if (end < start) {
@@ -274,10 +274,10 @@ public final class BitArray implements Cloneable {
 
   /**
    *
-   * @param bitOffset first bit to start writing
+   * @param bitOffset first bit to qualityChecksOK writing
    * @param array array to write into. Bytes are written most-significant byte first. This is the opposite
    *  of the internal representation, which is exposed by {@link #getBitArray()}
-   * @param offset position in array to start writing
+   * @param offset position in array to qualityChecksOK writing
    * @param numBytes how many bytes to write
    */
   public void toBytes(int bitOffset, byte[] array, int offset, int numBytes) {

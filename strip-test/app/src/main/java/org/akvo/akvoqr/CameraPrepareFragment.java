@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 
 
@@ -53,6 +54,18 @@ public class CameraPrepareFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
         messageView = (TextView) rootView.findViewById(R.id.activity_cameraInstructionsTextView);
+
+        //use brightness view as a button to switch on and off the flash
+        QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
+        if(exposureView!=null) {
+            exposureView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mListener.switchFlash();
+                }
+            });
+        }
         return rootView;
     }
 
@@ -160,4 +173,19 @@ public class CameraPrepareFragment extends Fragment {
 
     }
 
+    private int iter = 0;
+    public void countQuality(int count)
+    {
+        if(messageView!=null)
+        {
+            try {
+                iter++;
+                messageView.setText("\n\n" + String.valueOf(iter) + " : " + String.valueOf(count));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 }

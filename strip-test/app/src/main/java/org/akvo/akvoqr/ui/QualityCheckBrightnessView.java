@@ -1,8 +1,7 @@
 package org.akvo.akvoqr.ui;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 
 import org.akvo.akvoqr.util.Constant;
@@ -12,8 +11,6 @@ import org.akvo.akvoqr.util.Constant;
  */
 public class QualityCheckBrightnessView extends QualityCheckView {
 
-
-    private Paint yellowPaint;
 
     public QualityCheckBrightnessView(Context context) {
         this(context, null);
@@ -26,10 +23,7 @@ public class QualityCheckBrightnessView extends QualityCheckView {
     public QualityCheckBrightnessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        yellowPaint = new Paint(paint);
-        yellowPaint.setColor(Color.YELLOW);
-
-        //set percentage to a value that results in a negative at the start of the onDraw
+        //set percentage to a value that results in a negative at the qualityChecksOK of the onDraw
         percentage = -1;
     }
 
@@ -43,4 +37,12 @@ public class QualityCheckBrightnessView extends QualityCheckView {
         return (percentage/Constant.MAX_LUM_PERCENTAGE) *  NUMBER_OF_BARS ;
     }
 
+    @Override
+    public void onDraw(Canvas canvas)
+    {
+        super.onDraw(canvas);
+
+        System.out.println("***exp perc. = " + percentage + " number = " + number);
+
+    }
 }

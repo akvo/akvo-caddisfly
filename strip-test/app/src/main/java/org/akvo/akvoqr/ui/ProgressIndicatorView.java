@@ -117,14 +117,16 @@ public class ProgressIndicatorView extends LinearLayout {
     {
         this.start = start;
     }
+
     public void setStepsTaken(int stepsTaken) {
+
         this.stepsTaken = stepsTaken;
 
-       // System.out.println("***xxxsteps taken: " + stepsTaken);
+       System.out.println("***xxxsteps taken: " + stepsTaken);
 
         if(steps!=null) {
             for (int i = 0; i < steps.size(); i++) {
-                if (i < stepsTaken) {
+                if (i <= stepsTaken) {
                     ((ImageView) getChildAt(i)).setImageBitmap(checked);
                     steps.get(i).pictureTaken = true;
                 }
@@ -190,7 +192,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
             running = true;
 
-            //System.out.println("***animation start listener: " + i + " " + animation.getDuration());
+            //System.out.println("***animation qualityChecksOK listener: " + i + " " + animation.getDuration());
         }
 
         @Override
@@ -252,7 +254,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
                 canvas.drawBitmap(background, 0, 0, paint);
 
-                //if the previous step is finished, either picture taken or not, we start the counter
+                //if the previous step is finished, either picture taken or not, we qualityChecksOK the counter
                 //otherwise we do not show any message
                 if(i>0) {
                     if (steps.get(i - 1).animationEnded) {

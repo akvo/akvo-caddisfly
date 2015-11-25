@@ -20,6 +20,7 @@ public class QualityCheckView extends View {
     protected int red;
     protected final int NUMBER_OF_BARS = 6;
     protected float percentage = Float.NaN;
+    protected double number;
 
     public QualityCheckView(Context context) {
         this(context, null);
@@ -49,16 +50,14 @@ public class QualityCheckView extends View {
         if (percentage == Float.NaN) {
             return;
         }
-        double number = fromPercentageToNumber(percentage);
+        number = fromPercentageToNumber(percentage);
 
         if (number == Double.NaN) {
             throw new NullPointerException("Method to get number must be overridden in child class.");
         }
 
-//        System.out.println("***perc. = " + percentage  + " number = " + number);
-
         canvas.save();
-        //start at half of the width the view is going to be
+        //qualityChecksOK at half of the width the view is going to be
         //each 'dot' has a diameter of half the canvas height
         canvas.translate(canvas.getWidth() / 2 - ((canvas.getHeight() * 0.5f + 0.2f) * 2.5f), 0);
         for (double i = 0; i < NUMBER_OF_BARS; i++) {
@@ -68,16 +67,7 @@ public class QualityCheckView extends View {
 
             //check if we have valid data
             if(number >= 0) {
-                //if percentage exceeds optimum
-                if(number > NUMBER_OF_BARS)
-                {
-                    //option to show all circles with a yellow color
-                    //paint.setColor(Color.YELLOW);
 
-                    //trick code into showing the two orange circles
-                    number = NUMBER_OF_BARS * 0.5;
-                }
-                else
                 //change color depending on value of percentage
                 if (i < 2) { //0 1
 
@@ -101,8 +91,21 @@ public class QualityCheckView extends View {
                     //paint green if perc. larger than 4
                     //so if perc. == 4.5 we get two green dots
                     // and if perc. == 6 also two
-                    if(number > i )
-                        paint.setColor(green);
+                    if(number > i ) {
+
+                        //if percentage exceeds optimum
+                        if(number > NUMBER_OF_BARS)
+                        {
+                            //option to show all circles with a yellow color
+                            paint.setColor(Color.YELLOW);
+
+                            //trick code into showing the two orange circles
+                            //number = NUMBER_OF_BARS * 0.5;
+                        }
+                        else {
+                            paint.setColor(green);
+                        }
+                    }
                 }
 
             }

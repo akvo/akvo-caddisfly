@@ -118,7 +118,7 @@ public abstract class GridSampler {
                                             float[] points) throws NotFoundException {
     int width = image.getWidth();
     int height = image.getHeight();
-    // Check and nudge points from start until we see some that are OK:
+    // Check and nudge points from qualityChecksOK until we see some that are OK:
     boolean nudged = true;
     for (int offset = 0; offset < points.length && nudged; offset += 2) {
       int x = (int) points[offset];

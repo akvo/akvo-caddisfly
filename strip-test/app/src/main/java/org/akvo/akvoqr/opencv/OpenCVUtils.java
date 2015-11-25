@@ -27,7 +27,7 @@ import java.util.List;
 @SuppressWarnings("HardCodedStringLiteral")
 public class OpenCVUtils {
 
-    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize)
+    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize) throws Exception
     {
         Mat rot_mat;
         Mat cropped = new Mat();
@@ -162,7 +162,7 @@ public class OpenCVUtils {
         Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
 
         //do the warp
-        Imgproc.warpPerspective(bgr, warp_dst,warp_mat, warp_dst.size());
+        Imgproc.warpPerspective(bgr, warp_dst, warp_mat, warp_dst.size());
 
         //dst width and height taken from the position of the finder patterns
         double dstWidth = srcList.get(2).y - srcList.get(0).y;
@@ -199,7 +199,7 @@ public class OpenCVUtils {
 
 //        System.out.println("***lowest maxVal: " + maxVals.get(0));
 
-//        System.out.println("***start submat");
+//        System.out.println("***qualityChecksOK submat");
         for(int c=0; c<lab.cols()-4; c+=4) {
             Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
 
@@ -315,18 +315,15 @@ public class OpenCVUtils {
 
                 Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
 
-                Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
-//                System.out.println("***rotated mat: " + CvType.typeToString(rotated.type())
-//                        + " size: " + rotated.size().toString() + " width: " + rotated.size().width
-//                        + " height: " + rotated.size().height);
+                try {
+                    Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
 
-//                Imgproc.rectangle(striparea, point1, point3, new Scalar(255, 0, 0, 255), 1);
-//
-//                point1 = new Point(point3.x - rotated.width(), point3.y - rotated.height());
-//
-//                Imgproc.rectangle(striparea, point1, point3, new Scalar(0, 255, 0, 255), 1);
-
-                return rotated;
+                    return rotated;
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
 

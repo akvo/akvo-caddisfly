@@ -298,7 +298,7 @@ public class Detector {
   /**
    * <p>This method traces a line from a point in the image, in the direction towards another point.
    * It begins in a black region, and keeps going until it finds white, then black, then white again.
-   * It reports the distance from the start to this point.</p>
+   * It reports the distance from the qualityChecksOK to this point.</p>
    *
    * <p>This is used when figuring out how wide a finder pattern is, when the finder pattern
    * may be skewed or rotated.</p>
