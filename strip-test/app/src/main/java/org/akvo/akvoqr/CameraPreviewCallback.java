@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by linda on 6/26/15.
  */
-public class MyPreviewCallback implements Camera.PreviewCallback {
+public class CameraPreviewCallback implements Camera.PreviewCallback {
 
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -46,12 +46,12 @@ public class MyPreviewCallback implements Camera.PreviewCallback {
     private LinkedList<Double> lumTrack = new LinkedList<>();
     private LinkedList<Double> shadowTrack = new LinkedList<>();
 
-    public static MyPreviewCallback newInstance(Context context)
+    public static CameraPreviewCallback newInstance(Context context)
     {
-        return new MyPreviewCallback(context);
+        return new CameraPreviewCallback(context);
     }
 
-    private MyPreviewCallback(Context context) {
+    private CameraPreviewCallback(Context context) {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {

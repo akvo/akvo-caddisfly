@@ -2,7 +2,6 @@ package org.akvo.akvoqr;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +17,20 @@ import org.akvo.akvoqr.util.Constant;
 
 
 /**
- * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
  * to handle interaction events.
  * Use the {@link CameraPrepareFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * The fragment is used to show the quality checks done in CameraPreviewCallback
  */
-public class CameraPrepareFragment extends Fragment {
+public class CameraPrepareFragment extends CameraSharedFragment {
 
     private CameraViewListener mListener;
     private Button startButton;
     private TextView messageView;
+    private TextView countQualityView;
 
     public static CameraPrepareFragment newInstance() {
         CameraPrepareFragment fragment = new CameraPrepareFragment();
@@ -53,7 +54,8 @@ public class CameraPrepareFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
-        messageView = (TextView) rootView.findViewById(R.id.activity_cameraInstructionsTextView);
+        messageView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareTextView);
+        countQualityView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareCountQualityView);
 
         //use brightness view as a button to switch on and off the flash
         QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
@@ -75,8 +77,8 @@ public class CameraPrepareFragment extends Fragment {
             return;
 
         startButton.setVisibility(View.VISIBLE);
-        //startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
         startButton.setBackgroundResource(android.R.drawable.btn_default);
+        startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
         startButton.setText(R.string.next);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +134,6 @@ public class CameraPrepareFragment extends Fragment {
         final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
         final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
 
-        System.out.println("***parentView.getHeight() " + parentView.getHeight());
-
         final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
         final ViewGroup.LayoutParams params = overlay.getLayoutParams();
 
@@ -173,14 +173,15 @@ public class CameraPrepareFragment extends Fragment {
 
     }
 
-    private int iter = 0;
+    @Override
     public void countQuality(int count)
     {
-        if(messageView!=null)
+
+        if(countQualityView!=null)
         {
             try {
-                iter++;
-                messageView.setText("\n\n" + String.valueOf(iter) + " : " + String.valueOf(count));
+                count = Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count);
+                countQualityView.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
             }
             catch (Exception e)
             {

@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -42,15 +41,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private Camera mCamera;
     private FrameLayout preview;
     private BaseCameraView mPreview;
-    MyPreviewCallback previewCallback;
+    CameraPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
     private boolean start = false;
-    private int countQualityCheckResult = 0;
+    private int countQualityCheckSum = 0;
     private LinearLayout progressLayout;
-    private Fragment currentFragment;
+    private CameraSharedFragment currentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
-        previewCallback = MyPreviewCallback.newInstance(this);
+        previewCallback = CameraPreviewCallback.newInstance(this);
 
         if (mCamera != null) {
             // Create our Preview view and set it as the content of our activity.
@@ -208,8 +207,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
     }
 
+    @Override
     public void setCountQualityCheckResultZero() {
-        countQualityCheckResult = 0;
+        countQualityCheckSum = 0;
     }
 
     @Override
@@ -230,13 +230,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        countQualityCheckResult += count;
+        countQualityCheckSum += count;
 
-        if (currentFragment instanceof CameraPrepareFragment) {
+        if (currentFragment instanceof CameraPrepareFragment || currentFragment instanceof CameraStartTestFragment) {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    ((CameraPrepareFragment) currentFragment).countQuality(countQualityCheckResult);
+                   currentFragment.countQuality(countQualityCheckSum);
                 }
             };
 
@@ -244,9 +244,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                handler.post(runnable);
         }
 
-        System.out.println("***count quality check: " + countQualityCheckResult);
+        //System.out.println("***count quality check: " + countQualityCheckSum);
 
-        if (countQualityCheckResult > Constant.COUNT_QUALITY_CHECK_LIMIT) {
+        if (countQualityCheckSum > Constant.COUNT_QUALITY_CHECK_LIMIT) {
             handler.post(showRunnable);
         }
 

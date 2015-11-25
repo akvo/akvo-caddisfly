@@ -26,7 +26,7 @@ import org.json.JSONException;
  * Use the {@link CameraInstructionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraInstructionFragment extends Fragment {
+public class CameraInstructionFragment extends CameraSharedFragment {
 
     private CameraViewListener mListener;
     private Button startButton;
@@ -138,5 +138,6 @@ public class CameraInstructionFragment extends Fragment {
         parentView.setLayoutParams(params);
 
     }
+
 
 }

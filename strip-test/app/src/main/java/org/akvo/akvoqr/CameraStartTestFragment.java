@@ -34,7 +34,7 @@ import java.util.List;
  * Use the {@link CameraStartTestFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraStartTestFragment extends Fragment {
+public class CameraStartTestFragment extends CameraSharedFragment {
 
     private CameraViewListener mListener;
     private Button startButton;
@@ -84,7 +84,7 @@ public class CameraStartTestFragment extends Fragment {
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
             for (int i = 0; i < patches.size(); i++) {
 
-                System.out.println("***patches: " + i + " timelapse: " + patches.get(i).getTimeLapse());
+                //System.out.println("***patches: " + i + " timelapse: " + patches.get(i).getTimeLapse());
 
                 if (i > 0) {
                     if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
@@ -116,7 +116,7 @@ public class CameraStartTestFragment extends Fragment {
         if(startButton==null)
             return;
 
-        System.out.println("***count quality check qualityChecksOK test fragment " );
+        //System.out.println("***count quality check qualityChecksOK test fragment " );
 
         startButton.setVisibility(View.VISIBLE);
         startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
@@ -189,17 +189,19 @@ public class CameraStartTestFragment extends Fragment {
 
         if(patchesCovered == patches.size()-1)
         {
-            //write image/patch info to internal storage
-            FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+            if(imagePatchArray.length()>0) {
+                //write image/patch info to internal storage
+                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
 
-            Intent detectStripIntent = createDetectStripIntent(format, width, height);
-            //if develop
-            if(develop) {
-                detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
-                startActivity(detectStripIntent);
-            }
-            else {
-                new DetectStripTask(getActivity()).execute(detectStripIntent);
+                Intent detectStripIntent = createDetectStripIntent(format, width, height);
+
+                //if develop
+                if (develop) {
+                    detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
+                    startActivity(detectStripIntent);
+                } else {
+                    new DetectStripTask(getActivity()).execute(detectStripIntent);
+                }
             }
         }
     }
@@ -303,4 +305,20 @@ public class CameraStartTestFragment extends Fragment {
         return detectStripIntent;
     }
 
+    @Override
+    public void countQuality(int count)
+    {
+
+        if(startButton!=null)
+        {
+            try {
+                count = Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count);
+                startButton.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 }
