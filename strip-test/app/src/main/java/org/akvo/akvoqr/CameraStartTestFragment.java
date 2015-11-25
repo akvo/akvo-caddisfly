@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +26,28 @@ import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
  * to handle interaction events.
  * Use the {@link CameraStartTestFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * This fragment shows the progress of the strip test.
+ *
+ * At the beginning, we start a countdown.
+ * We need to know when it is time for each patch to get its picture taken.
+ *
+ * Then we update the UI:
+ * First it shows if quality checks are OK
+ *
+ * It uses an instance of
+ * ProgressIndicatorView to indicate if
+ * a. it is time to take a picture
+ * b. the picture is taken
+ *
+ * If all pictures are taken it
+ * a. if develop is false: shows an animation of a spinning circle while doing a DetectStripTask
+ * b. if develop is true: starts the DetectStripActivity (which does a DetectStripTask)
  */
 public class CameraStartTestFragment extends CameraSharedFragment {
 
@@ -44,7 +59,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private Handler handler;
     private String brandName;
     private int patchesCovered = -1;
-
+    private int stepsCovered = 0;
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
@@ -67,6 +82,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
     }
 
+    /*
+    * Set global properties with the values we now know.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,10 +100,11 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             patches = StripTest.getInstance().getBrand(brandName).getPatchesOrderedByTimelapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
+
+            //Add a step per time lapse to progressIndicatorView
             for (int i = 0; i < patches.size(); i++) {
 
-                //System.out.println("***patches: " + i + " timelapse: " + patches.get(i).getTimeLapse());
-
+                //Skip if there is no timelapse.
                 if (i > 0) {
                     if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
                         continue;
@@ -94,9 +113,12 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 progressIndicatorViewAnim.addStep(i, (int) patches.get(i).getTimeLapse());
             }
         }
+
+        //Prepare handler
         handler = new Handler(Looper.getMainLooper());
 
         //use brightness view as a button to switch on and off the flash
+        //TODO: remove in release version?
         QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         if(exposureView!=null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +133,15 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         return rootView;
     }
 
+    /*
+    * Update the start button in progressIndicatorView to show green checked box
+    * Update progressIndicatorView to set its property: 'start' to true.
+    * It depends on start == true to draw on its Canvas and to animate its Views
+     */
     public void showStartButton() {
 
         if(startButton==null)
             return;
-
-        //System.out.println("***count quality check qualityChecksOK test fragment " );
 
         startButton.setVisibility(View.VISIBLE);
         startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
@@ -126,6 +151,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         }
     }
 
+    /*
+    * Update progressIndicatorView with the number of steps that we have a picture of
+     */
     public void setStepsTaken(final int number)
     {
         Runnable runnable = new Runnable() {
@@ -140,7 +168,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
     }
 
-    private int stepsCovered = 0;
+
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info)
     {
@@ -227,14 +255,20 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         mListener = null;
     }
 
+    /*
+    * When we can be sure that we have a parent Activity, we use its size to calculate the
+    * size we want this fragment to have.
+    * Then we start a countdown.
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
         try {
+
             final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
 
-            //find the transparent view in which to show part of the preview
+            //find the view in which to show part of the preview
             final RelativeLayout transView = (RelativeLayout) getView().findViewById(R.id.overlay);
             final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
 
@@ -262,7 +296,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         }
     }
 
-    private Runnable startCountdownRunnable = new Runnable() {
+    /*
+    * Update the ProgressIndicatorView every second
+     */
+    private Runnable countdownRunnable = new Runnable() {
         @Override
         public void run() {
 
@@ -273,24 +310,52 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         }
     };
 
+    /*
+    * Keep track of the time.
+    * We start a runnable (countdownRunnable) that update the progress view (afterwards that takes care of itself)
+    * We know beforehand at what intervals the patches are due from the values in strips.json
+    * so we can use a handler and runnable to post them at exactly that interval from start countdown
+     */
     private void startCountdown() {
 
+        //reset timeLapsed to zero just to make sure
         timeLapsed = 0;
+
+        //initialise the global initial time
         initTimeMillis = System.currentTimeMillis();
 
-        handler.post(startCountdownRunnable);
+        //post the runnable responsible for updating the
+        // ProgressIndicatorView
+        handler.post(countdownRunnable);
 
-        //Post the callback on time for each patch
+        //Post the CameraPreviewCallback on time for each patch (the posting is done in the CameraActivity itself)
         for (int i = 0; i < patches.size(); i++) {
+
+            //if next patch is no later than previous, skip.
             if (i > 0) {
                 if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
                     continue;
                 }
             }
+            //tell CameraActivity when it is time to take the next picture
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000);
         }
     }
 
+    /*
+    * Create an Intent that holds information about the preview data:
+    * preview format
+    * preview width
+    * preview height
+    *
+    * and information about the strip test brand we are now handling
+    *
+    * It is used to
+    * a. start an Activity with this intent
+    * b. start an AsyncTask passing this intent as param
+    *
+    * in the method dataSent() above
+     */
     private Intent createDetectStripIntent(int format, int width, int height)
     {
         Intent detectStripIntent = new Intent();
@@ -305,6 +370,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         return detectStripIntent;
     }
 
+    /*
+    *  Show the number of succesful quality checks as text on the start button
+     */
     @Override
     public void countQuality(int count)
     {

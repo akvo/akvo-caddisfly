@@ -23,7 +23,7 @@ import org.akvo.akvoqr.util.Constant;
  * Use the {@link CameraPrepareFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
- * The fragment is used to show the quality checks done in CameraPreviewCallback
+ * This fragment is used to show the quality checks done in CameraPreviewCallback
  */
 public class CameraPrepareFragment extends CameraSharedFragment {
 

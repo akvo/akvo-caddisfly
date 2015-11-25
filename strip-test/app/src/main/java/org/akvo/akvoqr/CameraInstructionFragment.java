@@ -3,7 +3,6 @@ package org.akvo.akvoqr;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,13 @@ import org.json.JSONException;
 
 
 /**
- * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
  * to handle interaction events.
  * Use the {@link CameraInstructionFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * This fragment shows instructions for a particular strip test. They are read from strips.json in assets
  */
 public class CameraInstructionFragment extends CameraSharedFragment {
 

@@ -122,7 +122,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
         this.stepsTaken = stepsTaken;
 
-       System.out.println("***xxxsteps taken: " + stepsTaken);
+       //System.out.println("***xxxsteps taken: " + stepsTaken);
 
         if(steps!=null) {
             for (int i = 0; i < steps.size(); i++) {
