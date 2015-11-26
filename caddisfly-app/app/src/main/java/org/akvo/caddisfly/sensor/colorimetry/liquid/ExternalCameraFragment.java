@@ -31,11 +31,12 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.CameraDialogFragment;
+import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.usb.UVCCamera;
@@ -44,7 +45,7 @@ import org.akvo.caddisfly.widget.CameraViewInterface;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public final class ExternalCameraFragment extends CameraDialogFragment {
+public final class ExternalCameraFragment extends CameraDialog {
     private static final boolean DEBUG = false;    // TODO set false on release
     private static final String TAG = "ExternalCameraFragment";
     private static final String ARG_PREVIEW_ONLY = "preview";
@@ -54,13 +55,13 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_WIDTH = 640;
+    private static final int PREVIEW_WIDTH = 320;
     /**
      * preview resolution(height)
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_HEIGHT = 480;
+    private static final int PREVIEW_HEIGHT = 240;
     /**
      * preview mode
      * if your camera does not support specific resolution and mode,
@@ -106,19 +107,20 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
     private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
         @Override
         public void onAttach(final UsbDevice device) {
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
             if (DEBUG) Log.v(TAG, "onConnect:");
             mHandler.openCamera(ctrlBlock);
+            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_CONNECTED", Toast.LENGTH_SHORT).show();
             startPreview();
         }
 
         @Override
         public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
-            if (DEBUG) Log.v(TAG, "onDisconnect:");
+            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
             if (mHandler != null) {
                 mHandler.closeCamera();
             }
@@ -126,7 +128,7 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
 
         @Override
         public void onDetach(final UsbDevice device) {
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -178,7 +180,6 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
 
         final View view = inflater.inflate(R.layout.fragment_external_camera, container, false);
         final View cameraView = view.findViewById(R.id.uvcCameraView);
-        //cameraView.setOnLongClickListener(mOnLongClickListener);
         mUVCCameraView = (CameraViewInterface) cameraView;
         mUVCCameraView.setAspectRatio(PREVIEW_WIDTH / (float) PREVIEW_HEIGHT);
         mUSBMonitor = new USBMonitor(getActivity(), mOnDeviceConnectListener);
@@ -216,9 +217,6 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
                         final Object item = usbDeviceList.get(0);
                         mUSBMonitor.requestPermission((UsbDevice) item);
                     }
-                }
-                if (!mPreviewOnly) {
-                    startTakingPictures();
                 }
             }
         };
@@ -299,6 +297,21 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
 
     public boolean hasTestCompleted() {
         return samplingCount > AppPreferences.getSamplingTimes() || picturesTaken > 10;
+    }
+
+    @Override
+    public void takePictureSingle() {
+
+    }
+
+    @Override
+    public void takePictures(int count, long delay) {
+
+    }
+
+    @Override
+    public void stopCamera() {
+
     }
 
     public interface PictureCallback {
@@ -482,21 +495,21 @@ public final class ExternalCameraFragment extends CameraDialogFragment {
             }
 
             public void handleCaptureStill() {
-                if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");
-                final ExternalCameraFragment parent = mWeakParent.get();
-                if (parent == null) return;
-                parent.sound.playShortResource(R.raw.beep);
-                final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
-
-                parent.samplingCount++;
-                parent.picturesTaken++;
-                //if (!mCancelled) {
-                if (parent.hasTestCompleted()) {
-                    parent.pictureCallback.onPictureTaken(bitmap);
-                } else {
-                    parent.pictureCallback.onPictureTaken(bitmap);
-                    parent.takePicture();
-                }
+//                if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");
+//                final ExternalCameraFragment parent = mWeakParent.get();
+//                if (parent == null) return;
+//                parent.sound.playShortResource(R.raw.beep);
+//                final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
+//
+//                parent.samplingCount++;
+//                parent.picturesTaken++;
+//                //if (!mCancelled) {
+//                if (parent.hasTestCompleted()) {
+//                    parent.pictureCallback.onPictureTaken(bitmap);
+//                } else {
+//                    parent.pictureCallback.onPictureTaken(bitmap);
+//                    parent.takePicture();
+//                }
                 //}
             }
 

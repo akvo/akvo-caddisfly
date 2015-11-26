@@ -15,34 +15,12 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
-    android:name="org.akvo.caddisfly.ui.ExternalCameraFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout="@layout/fragment_external_camera">
+    android:layout_height="match_parent">
 
     <org.akvo.caddisfly.widget.UVCCameraTextureView
         android:id="@+id/uvcCameraView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-    <ImageView
-        android:id="@+id/imageCameraPreview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/uvcCameraView"
-        android:layout_alignEnd="@+id/uvcCameraView"
-        android:layout_alignStart="@+id/uvcCameraView"
-        android:layout_alignTop="@+id/uvcCameraView"
-        android:contentDescription="@null" />
-
-    <Button
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerInParent="true"
-        android:gravity="center" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

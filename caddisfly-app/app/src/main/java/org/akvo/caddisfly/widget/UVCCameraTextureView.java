@@ -31,7 +31,7 @@ import android.view.TextureView;
 public class UVCCameraTextureView extends TextureView    // API >= 14
         implements TextureView.SurfaceTextureListener, CameraViewInterface {
 
-    private static final boolean DEBUG = false;    // TODO set false on release
+    private static final boolean DEBUG = true;    // TODO set false on release
     private static final String TAG = "UVCCameraTextureView";
     private final Object mCaptureSync = new Object();
     private double mRequestedAspect = -1.0;
