@@ -31,6 +31,39 @@ import java.util.List;
 
 /**
  * Created by linda on 6/26/15.
+ *
+ * This class is meant to be called in the setOnShotCameraPreviewCallback(Camera.PreviewCallback)
+ * method of a class that holds an instance of the Android Camera.
+ *
+ * In the AsyncTask called 'SendDataTask', executed in every onPreviewFrame(),
+ * this happens:
+ * - find the FinderPatterns on the card
+ * - do quality checks regarding luminosity, shadows and perspective
+ * - communicate the result of finder patterns to the listener (==CameraActivity)
+ * - communicate the result of quality checks to the listener
+ *
+ * Depending on the instance of the Fragment that is inflated by CameraActivity at this instance,
+ * the global boolean 'takePicture' is set.
+ * Fragment instance of CameraPrepareFragment -> false
+ * Fragment instance of CameraStartTestFragment -> true
+ *
+ * If conditions under which to take a picture (==store Preview data in internal storage) fail,
+ * comminicate to the listener that it calls this class again,
+ * - if we are in the 'takePicture' Fragment, call it like that
+ * - if we are in the 'prepare' Fragment, call it like that
+ *
+ * The conditions under which to take a picture are:
+ * - 'takePicture' must be true
+ * - FinderPatternInfo object must not be null
+ * - 'start' must be true
+ * - listener.countQualityOK must be true
+ *
+ * 'start' boolean is set to true in the method takeNextPicture
+ * it is set to false if all conditions are met. This ensures that
+ * no other picture is taken afterwards
+ *
+ * if takePicture is false, we tell the listener to call this callback again
+ * with the startNextPreview() method.
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
@@ -90,7 +123,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         byte[] data;
         FinderPatternInfo info;
 
-
         @Override
         protected Void doInBackground(byte[]... params) {
 
@@ -99,10 +131,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                 info = findPossibleCenters(data, previewSize);
 
+                //set the focus area to lie between the finder patterns
                 setFocusAreas(info);
 
-                //check if quality of image is ok, if not, abort
+                //check if quality of image is ok. if OK, value is 1, if not 0
                 int countQuality = qualityChecks(data, info);
+
+                //add countQuality to sum in listener
                 listener.setStartButtonVisibility(countQuality);
 
                 if(takePicture)
