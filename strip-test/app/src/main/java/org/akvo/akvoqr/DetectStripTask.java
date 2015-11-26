@@ -1,6 +1,6 @@
 package org.akvo.akvoqr;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
@@ -47,13 +47,13 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     private boolean develop = true;
     private DetectStripListener listener;
 
-    public DetectStripTask(Context listener) {
+    public DetectStripTask(Activity listener) {
 
         try {
             this.listener = (DetectStripListener) listener;
         }
         catch (ClassCastException e) {
-            throw new ClassCastException("must implement CameraViewListener");
+            throw new ClassCastException("must implement DetectStripListener");
         }
     }
 
@@ -97,7 +97,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
         try {
             String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
             imagePatchArray = new JSONArray(json);
-            System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+            //System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -233,11 +233,13 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
             if (resultList != null) {
                 listener.showResults(resultList);
             }
-            else
+            else {
                 System.out.println("***resultList is null");
+            }
         }
-        else
+        else {
             System.out.println("***listener is null");
+        }
     }
 
     private Mat makeLab() throws Exception

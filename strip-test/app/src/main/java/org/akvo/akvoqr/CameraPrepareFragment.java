@@ -71,6 +71,7 @@ public class CameraPrepareFragment extends CameraSharedFragment {
         return rootView;
     }
 
+    @Override
     public void showStartButton() {
 
         if(startButton==null)

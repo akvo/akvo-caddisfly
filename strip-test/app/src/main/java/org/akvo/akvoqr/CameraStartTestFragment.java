@@ -138,6 +138,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     * Update progressIndicatorView to set its property: 'start' to true.
     * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
      */
+    @Override
     public void showStartButton() {
 
         if(startButton==null)
@@ -183,7 +184,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         //we start patchesCovered at -1, because 0 would mean the first patch, and we do not want anything to happen
         // before this loop has run.
         //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
-        // the list of patches, which ofcourse starts counting at 0.
+        // the list of patches, which of course starts counting at 0.
         for(int i = patchesCovered + 1; i < patches.size(); i++) {
 
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...

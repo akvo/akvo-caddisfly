@@ -46,7 +46,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
-    private boolean start = false;
+    private boolean qualityChecksOK = false;
     private int countQualityCheckSum = 0;
     private LinearLayout progressLayout;
     private CameraSharedFragment currentFragment;
@@ -218,35 +218,26 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable showRunnable = new Runnable() {
             @Override
             public void run() {
+                currentFragment.showStartButton();
+            }
 
-                if (currentFragment instanceof CameraPrepareFragment) {
-                    ((CameraPrepareFragment) currentFragment).showStartButton();
-                }
-                else if(currentFragment instanceof  CameraStartTestFragment)
-                {
-                    ((CameraStartTestFragment) currentFragment).showStartButton();
-                    start = true;
-                }
+        };
+
+        Runnable countQualityRunnable = new Runnable() {
+            @Override
+            public void run() {
+                currentFragment.countQuality(countQualityCheckSum);
             }
         };
 
+        if(handler!=null)
+            handler.post(countQualityRunnable);
+
         countQualityCheckSum += count;
-
-        if (currentFragment instanceof CameraPrepareFragment || currentFragment instanceof CameraStartTestFragment) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                   currentFragment.countQuality(countQualityCheckSum);
-                }
-            };
-
-            if(handler!=null)
-               handler.post(runnable);
-        }
-
         //System.out.println("***count quality check: " + countQualityCheckSum);
 
         if (countQualityCheckSum > Constant.COUNT_QUALITY_CHECK_LIMIT) {
+            qualityChecksOK = true;
             handler.post(showRunnable);
         }
 
@@ -268,7 +259,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public boolean qualityChecksOK() {
 
-        return start;
+        return qualityChecksOK;
 
     }
     @Override
@@ -358,8 +349,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info) {
 
-        //stop myPreviewCallback take next picture
-        //previewCallback.setStart(false);
 
         if(currentFragment instanceof CameraStartTestFragment)
         {
@@ -424,7 +413,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
                 if(finish!=null)
-                finish.setText(R.string.analysing);
+                    finish.setText(R.string.analysing);
 
             }
         };
@@ -438,7 +427,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
                 if(finish!=null)
-                finish.setText(R.string.analysing);
+                    finish.setText(R.string.analysing);
 
             }
         };
