@@ -27,8 +27,13 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         super(context);
         mCamera = camera;
 
-        activity = (CameraActivity) context;
-
+        try {
+            activity = (CameraActivity) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException("must have CameraActivity as Context.");
+        }
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
         mHolder = getHolder();
@@ -110,6 +115,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mCamera.setDisplayOrientation(90);
 
         //preview size
+        System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
         //parameters.setPreviewFormat(ImageFormat.NV21);
@@ -147,7 +153,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             mCamera.setParameters(parameters);
             mCamera.setPreviewDisplay(holder);
 
-           // activity.getMessage(0);
+            activity.setPreviewProperties();
 
         } catch (Exception e){
             Log.d("", "Error starting camera preview: " + e.getMessage());

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
  */
 public abstract class CameraSharedFragment extends Fragment {
 
-
     public void countQuality(int count){};
 
     public void showStartButton(){};

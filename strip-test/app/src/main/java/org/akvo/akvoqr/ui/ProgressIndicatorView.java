@@ -189,7 +189,6 @@ public class ProgressIndicatorView extends LinearLayout {
         @Override
         public void onAnimationStart(Animation animation) {
 
-
             running = true;
 
             //System.out.println("***animation qualityChecksOK listener: " + i + " " + animation.getDuration());
@@ -280,6 +279,18 @@ public class ProgressIndicatorView extends LinearLayout {
                     }
                 }
             }
+
+            /*
+            * DEBUGGING TIME
+             */
+            try {
+                message = message + " " + PreviewUtils.fromSecondsToMMSS(timeLapsed ) + " sec. ";
+            } catch (Exception e) {
+                message = e.getMessage();
+            }
+            /*
+            * END DEBUGGING
+             */
 
             canvas.drawText(message, background.getWidth() + 5f, background.getHeight() / 2, textPaint);
             canvas.translate(0f, background.getHeight());

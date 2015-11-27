@@ -40,16 +40,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     private Camera mCamera;
     private FrameLayout preview;
-    private BaseCameraView mPreview;
+    private BaseCameraView baseCameraView;
     CameraPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private String brandName;
-    private boolean qualityChecksOK = false;
-    private int countQualityCheckSum = 0;
+    private int qualityCheckCount = 0;
     private LinearLayout progressLayout;
     private CameraSharedFragment currentFragment;
+    private int previewFormat;
+    private int previewWidth;
+    private int previewHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,14 +80,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
-        previewCallback = CameraPreviewCallback.newInstance(this);
+        previewCallback = new CameraPreviewCallback(this);
 
         if (mCamera != null) {
+
             // Create our Preview view and set it as the content of our activity.
-            mPreview = new BaseCameraView(this, mCamera);
+            baseCameraView = new BaseCameraView(this, mCamera);
             preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.removeAllViews();
-            preview.addView(mPreview);
+            preview.addView(baseCameraView);
 
             //make 'initialising camera' message invisible
             if (progressLayout.getVisibility() == View.VISIBLE) {
@@ -96,12 +99,19 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             currentFragment = CameraPrepareFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(
                     R.id.activity_cameraFragmentPlaceholder, currentFragment
-            ).commit();
+            ).addToBackStack(null).commit();
+
 
         }
     }
 
     public void onPause() {
+
+        if(currentFragment!=null)
+            currentFragment = null;
+
+        if(previewCallback!=null)
+            previewCallback = null;
 
         if (mCamera != null) {
 
@@ -112,18 +122,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             mCamera = null;
         }
 
-        if (mPreview != null) {
-            preview.removeView(mPreview);
-            mPreview = null;
+        if (baseCameraView != null) {
+            preview.removeView(baseCameraView);
+            baseCameraView = null;
         }
-        Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+        Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
         super.onPause();
 
     }
 
     public void onStop() {
-        Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+        Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
         super.onPause();
 
@@ -134,43 +144,77 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         progressLayout.setVisibility(View.VISIBLE);
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        super.onResume();
 
         //Delete all finder pattern info and image data from internal storage
         FileStorage.deleteFromInternalStorage(Constant.INFO);
         FileStorage.deleteFromInternalStorage(Constant.DATA);
 
-        Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+        super.onResume();
+
+        Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
     }
 
     public void onStart() {
         super.onStart();
 
-        Log.d(TAG, "onStart OUT mCamera, mCameraPreview: " + mCamera + ", " + mPreview);
+        Log.d(TAG, "onStart OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
     }
 
+    //store preview info in global properties for later use
+    //called at end of baseCameraView surfaceChanged()
+    public void setPreviewProperties()
+    {
+        if(mCamera!=null && baseCameraView!=null) {
+
+            previewFormat = mCamera.getParameters().getPreviewFormat();
+            previewWidth = mCamera.getParameters().getPreviewSize().width;
+            previewHeight = mCamera.getParameters().getPreviewSize().height;
+            //System.out.println("***preview data : " + previewFormat + " " + previewWidth + " " + previewHeight);
+        }
+    }
+
+    //in the instance of CameraPreviewCallback set takePicture to false
+    //and do a oneShotPreviewCallback.
+    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
     private Runnable startNextPreview = new Runnable() {
         @Override
         public void run() {
 
             if(mCamera!=null && previewCallback!=null) {
+
                 mCamera.startPreview();
-                previewCallback.setTakePicture(false);
-                mCamera.setOneShotPreviewCallback(previewCallback);
+
+                if(currentFragment instanceof CameraPrepareFragment) {
+
+                    previewCallback.setTakePicture(false);
+                    mCamera.setOneShotPreviewCallback(previewCallback);
+                }
+                if(currentFragment instanceof CameraStartTestFragment) {
+
+                    previewCallback.setTakePicture(false);
+                    mCamera.setOneShotPreviewCallback(previewCallback);
+                }
+
+                //System.out.println("***calling startNextPreview runnable");
 
             }
         }
     };
 
+    //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
     private Runnable takeNextPicture = new Runnable() {
         @Override
         public void run() {
-            if(mCamera!=null) {
+
+            if(mCamera!=null && previewCallback!=null) {
+
                 mCamera.startPreview();
                 previewCallback.setTakePicture(true);
                 mCamera.setOneShotPreviewCallback(previewCallback);
+
+                //System.out.println("***calling takeNextPicture runnable");
             }
         }
     };
@@ -179,22 +223,27 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     //START CAMERAVIEWLISTENER INTERFACE METHODS
     @Override
     public void switchFlash() {
-        mPreview.switchFlashMode();
+        baseCameraView.switchFlashMode();
+    }
+
+    //prevents or enables the CameraPreviewCallback to execute its AsyncTask
+    @Override
+    public void stopCallback(boolean stop) {
+        if(previewCallback!=null)
+            previewCallback.setStop(stop);
     }
 
     @Override
     public void takeNextPicture(long timeMillis) {
-        if(previewCallback!=null) {
-            previewCallback.setStart(true);
-        }
-        if(handler!=null) {
 
+        if(handler!=null) {
             handler.postDelayed(takeNextPicture, timeMillis);
         }
     }
 
     @Override
     public void startNextPreview(long timeMillis) {
+
         if(handler!=null) {
             handler.postDelayed(startNextPreview, timeMillis);
         }
@@ -202,18 +251,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     @Override
     public void setFocusAreas(List<Camera.Area> areas) {
-        if (mPreview != null) {
-            mPreview.setFocusAreas(areas);
+        if (mCamera!=null && baseCameraView != null) {
+            baseCameraView.setFocusAreas(areas);
         }
     }
 
     @Override
-    public void setCountQualityCheckResultZero() {
-        countQualityCheckSum = 0;
+    public void setQualityCheckCountZero() {
+        qualityCheckCount = 0;
     }
 
     @Override
-    public void setStartButtonVisibility(int count) {
+    public void addCountToQualityCheckCount(int count) {
 
         Runnable showRunnable = new Runnable() {
             @Override
@@ -226,18 +275,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable countQualityRunnable = new Runnable() {
             @Override
             public void run() {
-                currentFragment.countQuality(countQualityCheckSum);
+                currentFragment.countQuality(qualityCheckCount);
             }
         };
 
         if(handler!=null)
             handler.post(countQualityRunnable);
 
-        countQualityCheckSum += count;
-        //System.out.println("***count quality check: " + countQualityCheckSum);
+        qualityCheckCount += count;
+        //System.out.println("***count quality check: " + qualityCheckCount);
 
-        if (countQualityCheckSum > Constant.COUNT_QUALITY_CHECK_LIMIT) {
-            qualityChecksOK = true;
+        if (qualityCheckCount >= Constant.COUNT_QUALITY_CHECK_LIMIT) {
+
             handler.post(showRunnable);
         }
 
@@ -247,19 +296,27 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void nextFragment() {
 
         if(currentFragment instanceof CameraPrepareFragment) {
+            //start instruction fragment
             currentFragment = CameraInstructionFragment.newInstance(brandName);
+
         }
         else if(currentFragment instanceof CameraInstructionFragment) {
-            currentFragment = CameraStartTestFragment.newInstance(brandName);
+            currentFragment = CameraStartTestFragment.getInstance(brandName);
+
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_cameraFragmentPlaceholder, currentFragment).commit();
+        System.out.println("***currentFragment: " + currentFragment.toString());
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.activity_cameraFragmentPlaceholder, currentFragment)
+                        //.addToBackStack(null)
+                .commit();
 
     }
 
     @Override
     public boolean qualityChecksOK() {
 
-        return qualityChecksOK;
+        return qualityCheckCount > Constant.COUNT_QUALITY_CHECK_LIMIT;
 
     }
     @Override
@@ -332,8 +389,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
         };
 
-        if(handler!=null)
-        {
+        if(handler!=null) {
             handler.post(levelRunnable);
         }
     }
@@ -341,7 +397,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void adjustExposureCompensation(int direction)
     {
-        mPreview.adjustExposure(direction);
+        baseCameraView.adjustExposure(direction);
     }
 
 
@@ -367,11 +423,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void dataSent() {
 
+        System.out.println("***preview data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
         if(currentFragment instanceof CameraStartTestFragment)
         {
-            ((CameraStartTestFragment) currentFragment).dataSent(mCamera.getParameters().getPreviewFormat(),
-                    mCamera.getParameters().getPreviewSize().width,
-                    mCamera.getParameters().getPreviewSize().height);
+            ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
+                    previewWidth,
+                    previewHeight);
         }
 
     }
