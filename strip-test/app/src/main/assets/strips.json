@@ -199,7 +199,7 @@
     },
     {
       "name": "Total Iron",
-      "code": "strip-FE-2745348",
+      "code": "strip-FE-HACH-2745348",
       "id": "2745348",
       "brand": "HACH-2745348",
       "numPatch": 1,
@@ -249,7 +249,7 @@
             }
           ],
           "timeLapse":0,
-          "unit": ""
+          "unit": "ppm"
         }
       ],
       "instructions": [
@@ -263,9 +263,9 @@
     },
     {
       "name": "PH 4-9",
-      "code": "strip-PH-4-9",
-      "id": "338",
-      "brand": "HACH2745650",
+      "code": "strip-PH-HACH-4-9",
+      "id": "27456",
+      "brand": "HACH-27456-50",
       "numPatch": 1,
       "length": 82.8,
       "height": 5.2,
@@ -277,262 +277,98 @@
           "patchWidth": 5,
           "colours":[
             {
-              "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
-            },
-            {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
-            },
-            {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
-            },
-            {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
-            },
-            {
               "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
+              "rgb":[0, 0, 0],
+              "lab":[60.782, -25.984, 25.982]
             },
             {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
+              "value": 5,
+              "rgb":[0, 0, 0],
+              "lab":[51.65,-36.806,18.09]
+            },
+            {
+              "value": 6,
+              "rgb":[0, 0, 0],
+              "lab":[48.68,-26.408,-2.044]
+            },
+            {
+              "value": 7,
+              "rgb":[0, 0, 0],
+              "lab":[52.27,-19.848,-10.222]
+            },
+            {
+              "value": 8,
+              "rgb":[0, 0, 0],
+              "lab":[48.18,-20.426,-16.3]
+            },
+            {
+              "value": 9,
+              "rgb":[0, 0, 0],
+              "lab":[40.988,0.418,-28.132]
             }
           ],
-          "timeLapse":0,
+          "timeLapse":15,
           "unit": ""
         }
       ],
       "instructions": [
         {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
+        {"text": "Dip a strip into water and remove immediately. Do not shake excess water from strip", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button. It is important that no more than 30 seconds pass between dipping strip in water and start.", "png": "instruction_start_button"}
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     },
     {
-      "name": "5 in 1 Water Quality",
-      "code": "strip-5-in-1",
-      "id": "339",
-      "brand": "HACH2755250",
-      "numPatch": 5,
+      "name": "Phosphate",
+      "code": "strip-PHOS-HACH",
+      "id": "27571",
+      "brand": "HACH-27571-50",
+      "numPatch": 1,
       "length": 82.8,
       "height": 5.2,
       "unit": "mm",
-      "patchDesc":["total chlorine", "free chlorine", "hardness", "alkalinity", "pH"],
       "patches": [
         {
-          "patchDesc":"Total Chlorine",
+          "patchDesc":"Phosphate",
           "patchPos":3.3,
           "patchWidth": 5,
           "colours":[
             {
               "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
+              "rgb":[0, 0, 0],
+              "lab":[77.908,14.982,1.518]
             },
             {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
+              "value": 5,
+              "rgb":[0, 0, 0],
+              "lab":[77.734,11.062,-1.632]
             },
             {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
+              "value": 15,
+              "rgb":[0, 0, 0],
+              "lab":[74.46,4.212,0.606]
             },
             {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
+              "value": 30,
+              "rgb":[0, 0, 0],
+              "lab":[75.948,-0.192,-2.16]
             },
             {
-              "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
-            },
-            {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
+              "value": 50,
+              "rgb":[0, 0, 0],
+              "lab":[71.494,-5.432,-1.744]
             }
           ],
-          "timeLapse":0,
+          "timeLapse":45,
           "unit": "ppm"
-        },
-        {
-          "patchDesc":"Free Chlorine",
-          "patchPos":17.2,
-          "patchWidth": 5,
-          "colours":[
-            {
-              "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
-            },
-            {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
-            },
-            {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
-            },
-            {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
-            },
-            {
-              "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
-            },
-            {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
-            }
-          ],
-          "timeLapse":0,
-          "unit": "ppm"
-        },
-        {
-          "patchDesc":"Hardness",
-          "patchPos":30,
-          "patchWidth": 5,
-          "colours":[
-            {
-              "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
-            },
-            {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
-            },
-            {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
-            },
-            {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
-            },
-            {
-              "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
-            },
-            {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
-            }
-          ],
-          "timeLapse":10,
-          "unit": "ppm"
-        },
-        {
-          "patchDesc":"Alkalinity",
-          "patchPos":40,
-          "patchWidth": 5,
-          "colours":[
-            {
-              "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
-            },
-            {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
-            },
-            {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
-            },
-            {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
-            },
-            {
-              "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
-            },
-            {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
-            }
-          ],
-          "timeLapse":20,
-          "unit": "ppm"
-        },
-        {
-          "patchDesc":"pH",
-          "patchPos":51,
-          "patchWidth": 5,
-          "colours":[
-            {
-              "value": 0,
-              "rgb":[236, 242, 229],
-              "lab":[94.736, -4.268 ,5.565]
-            },
-            {
-              "value": 0.5,
-              "rgb":[217, 201, 219],
-              "lab":[82.721 , 8.779, -6.916]
-            },
-            {
-              "value": 1,
-              "rgb":[195, 165, 193],
-              "lab":[71.120, 15.865, -10.249]
-            },
-            {
-              "value": 2,
-              "rgb":[181, 146, 175],
-              "lab":[93.271 ,  -9.189 ,  10.190]
-            },
-            {
-              "value": 4,
-              "rgb":[157, 112, 153],
-              "lab":[93.271 ,  -19.189 ,  10.190]
-            },
-            {
-              "value": 10,
-              "rgb":[133, 101, 130],
-              "lab":[93.271 ,  -29.189 ,  10.190]
-            }
-          ],
-          "timeLapse":40,
-          "unit": ""
         }
       ],
       "instructions": [
         {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
+        {"text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip", "png":"instruction_dip" },
         {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button. <!>It is important that no more than 30 seconds pass between dipping strip in water and start.<!", "png": "instruction_start_button"},
-        {"text": "It will take 25 sec. for the test to complete. The first three patches are read at once. For alkalinity and pH you have to wait until color is developed.", "png":""}
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     }
-
   ]
 }
