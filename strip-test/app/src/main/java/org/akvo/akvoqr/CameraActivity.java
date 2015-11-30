@@ -99,7 +99,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             currentFragment = CameraPrepareFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(
                     R.id.activity_cameraFragmentPlaceholder, currentFragment
-            ).addToBackStack(null).commit();
+            ).commit();
 
 
         }
@@ -107,11 +107,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     public void onPause() {
 
-        if(currentFragment!=null)
-            currentFragment = null;
-
-        if(previewCallback!=null)
+        if(previewCallback!=null) {
+            previewCallback.setStop(true);
             previewCallback = null;
+        }
 
         if (mCamera != null) {
 
@@ -126,6 +125,11 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             preview.removeView(baseCameraView);
             baseCameraView = null;
         }
+
+//        if(currentFragment!=null) {
+//            currentFragment = null;
+//        }
+
         Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
         super.onPause();
@@ -185,18 +189,18 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             if(mCamera!=null && previewCallback!=null) {
 
                 mCamera.startPreview();
+                if(currentFragment!=null) {
+                    if (currentFragment instanceof CameraPrepareFragment) {
 
-                if(currentFragment instanceof CameraPrepareFragment) {
+                        previewCallback.setTakePicture(false);
+                        mCamera.setOneShotPreviewCallback(previewCallback);
+                    }
+                    if (currentFragment instanceof CameraStartTestFragment) {
 
-                    previewCallback.setTakePicture(false);
-                    mCamera.setOneShotPreviewCallback(previewCallback);
+                        previewCallback.setTakePicture(false);
+                        mCamera.setOneShotPreviewCallback(previewCallback);
+                    }
                 }
-                if(currentFragment instanceof CameraStartTestFragment) {
-
-                    previewCallback.setTakePicture(false);
-                    mCamera.setOneShotPreviewCallback(previewCallback);
-                }
-
                 //System.out.println("***calling startNextPreview runnable");
 
             }
