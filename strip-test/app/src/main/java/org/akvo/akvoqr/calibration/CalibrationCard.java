@@ -603,7 +603,7 @@ public class CalibrationCard{
             }
 
             // measure quality of the calibration
-            double[] E94Result = computeE93Error(labImg);
+            double[] E94Result = computeE94Error(labImg);
 
             // insert calibration colours in image
             if(labImg!=null) {
@@ -626,14 +626,17 @@ public class CalibrationCard{
     *
     * @returns: E94 distance
      */
-    public double E94(double l1,double a1,double b1,double l2,double a2,double b2){
-        // normalise values to standard ranges
-        l1 = l1 / 2.55;
-        l2 = l2 / 2.55;
-        a1 = a1 - 128;
-        a2 = a2 - 128;
-        b1 = b1 - 128;
-        b2 = b2 - 128;
+    public double E94(double l1,double a1,double b1,double l2,double a2,double b2, boolean normalise){
+
+        if (normalise){
+            // normalise values to standard ranges
+            l1 = l1 / 2.55;
+            l2 = l2 / 2.55;
+            a1 = a1 - 128;
+            a2 = a2 - 128;
+            b1 = b1 - 128;
+            b2 = b2 - 128;
+        }
 
         double dL = l1 - l2;
         double C1 = Math.sqrt(a1 * a1 + b1 * b1);
@@ -661,7 +664,7 @@ public class CalibrationCard{
     * Computes mean and max E94 distance of calibrated image and the calibration patches
     * @returns: vector of double, with [mean E94, max E94]
      */
-    private double[] computeE93Error(Mat labImg) throws Exception{
+    private double[] computeE94Error(Mat labImg) throws Exception{
         try {
             int num = 0;
             double totE94 = 0;
@@ -670,7 +673,8 @@ public class CalibrationCard{
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
                 float[] LABcol = measurePatch(labImg, loc.x, loc.y); // measure patch colour
-                double E94Dist = E94(LABcol[0], LABcol[1], LABcol[2], cal.CIE_L, cal.CIE_A, cal.CIE_B);
+                // as both measured and calibration values are in openCV range, we need to normalise the values
+                double E94Dist = E94(LABcol[0], LABcol[1], LABcol[2], cal.CIE_L, cal.CIE_A, cal.CIE_B, true);
                 totE94 += E94Dist;
                 if (E94Dist > maxE94){
                     maxE94 = E94Dist;
