@@ -55,18 +55,15 @@ import java.util.List;
  * The conditions under which to take a picture are:
  * - 'takePicture' must be true
  * - FinderPatternInfo object must not be null
- * - 'start' must be true
  * - listener.countQualityOK must be true
- *
- * 'start' boolean is set to true in the method takeNextPicture
- * it is set to false if all conditions are met. This ensures that
- * no other picture is taken afterwards
  *
  * if takePicture is false, we tell the listener to call this callback again
  * with the startNextPreview() method.
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
+//    private static int countInstance = 0;
+//    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
@@ -75,16 +72,14 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private Camera camera;
     private Camera.Size previewSize;
     private boolean takePicture;
-    private boolean start;
     private LinkedList<Double> lumTrack = new LinkedList<>();
     private LinkedList<Double> shadowTrack = new LinkedList<>();
+    private boolean running;
+    private boolean stop;
+    private Mat src_gray = new Mat();
 
-    public static CameraPreviewCallback newInstance(Context context)
-    {
-        return new CameraPreviewCallback(context);
-    }
 
-    private CameraPreviewCallback(Context context) {
+    public CameraPreviewCallback(Context context) {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
@@ -95,6 +90,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         possibleCenters = new ArrayList<>();
 
+        //countInstance ++;
+
     }
 
     @Override
@@ -103,9 +100,11 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        //focused = false;
+        //System.out.println("***CameraPreviewCallback count instance: " + countInstance);
 
-        new SendDataTask().execute(data);
+        if(!stop) {
+            new SendDataTask().execute(data);
+        }
 
     }
 
@@ -113,11 +112,10 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         this.takePicture = takePicture;
     }
 
-    public void setStart(boolean start)
+    public void setStop(boolean stop)
     {
-        this.start = start;
+        this.stop = stop;
     }
-
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
         byte[] data;
@@ -125,7 +123,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         @Override
         protected Void doInBackground(byte[]... params) {
+            //count ++;
 
+            running = true;
             data = params[0];
             try {
 
@@ -135,22 +135,33 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 setFocusAreas(info);
 
                 //check if quality of image is ok. if OK, value is 1, if not 0
+                //the qualityChecks() method sends messages back to listener to update UI
                 int countQuality = qualityChecks(data, info);
 
                 //add countQuality to sum in listener
-                listener.setStartButtonVisibility(countQuality);
+                //if countQuality sums up to the limit set in Constant,
+                //listener.qualityChecksOK will return true;
+                listener.addCountToQualityCheckCount(countQuality);
+
+                //logging
+//                System.out.println("***CameraPreviewCallback takePicture: " + countInstance + " " + takePicture);
+//                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
+//                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+
 
                 if(takePicture)
                 {
 
-                        if (info!=null && countQuality==1 && start && listener.qualityChecksOK())
+                        if (info!=null && countQuality==1 && listener.qualityChecksOK())
                         {
-                            start = false;
+
                             long timePictureTaken = System.currentTimeMillis();
 
-                            camera.stopPreview();
+                            //freeze the screen and play a sound
+                            //camera.stopPreview();
                             listener.playSound();
 
+                            //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
                             listener.sendData(data, timePictureTaken, info);
 
                         }
@@ -161,8 +172,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                         }
 
                 }
-                else
+                else //we are not taking any picture, just looking at the quality checks
                 {
+
                     if (listener != null)
                         listener.startNextPreview(0);
 
@@ -178,7 +190,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         @Override
         protected void onPostExecute(Void result) {
-            //do nothing
+           running = false;
         }
     }
 
@@ -188,12 +200,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             return 0;
 
         Mat bgr = null;
-        List<Double> focusList = new ArrayList<>();
+
+       // List<Double> focusList = new ArrayList<>();
         List<double[]> lumList = new ArrayList<>();
         float[] angles = null;
         boolean luminosityQualOk = false;
         boolean shadowQualOk = false;
-        boolean levelQualOk = false;
+        boolean levelQualOk = true;
 
         try {
             if (possibleCenters != null && possibleCenters.size() > 3) {
@@ -204,7 +217,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 convert_mYuv.put(0, 0, data);
                 Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
-                Mat src_gray = new Mat();
+
                 for (int i = 0; i < possibleCenters.size(); i++) {
                     double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
 
@@ -224,7 +237,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                     addLumToList(src_gray, lumList);
 
                     //focus: add values to list
-                    addFocusQualToList(src_gray, focusList);
+                    //addFocusQualToList(src_gray, focusList);
                 }
             }
             else {
@@ -258,7 +271,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 //
 //                }
 //            }
-
 
 
             if(info!=null) {
@@ -301,8 +313,12 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         } finally {
             if(bgr!=null)
                 bgr.release();
+
         }
 
+        System.out.println("***yyylum qual ok: " + luminosityQualOk);
+        System.out.println("***yyyshadow qual ok: " + shadowQualOk);
+        System.out.println("***yyylevel qual ok: " + levelQualOk);
 
         return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 

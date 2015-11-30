@@ -42,7 +42,7 @@ public class QualityCheckBrightnessView extends QualityCheckView {
     {
         super.onDraw(canvas);
 
-        System.out.println("***exp perc. = " + percentage + " number = " + number);
+        //System.out.println("***exp perc. = " + percentage + " number = " + number);
 
     }
 }

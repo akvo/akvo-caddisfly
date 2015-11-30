@@ -30,17 +30,19 @@ public interface CameraViewListener {
 
     void showLevel(float[] angles);
 
-    void setStartButtonVisibility(int count);
+    void addCountToQualityCheckCount(int count);
 
     void startNextPreview(long timeMillis);
 
     void takeNextPicture(long timeMillis);
 
+    void stopCallback(boolean stop);
+
     void nextFragment();
 
     boolean qualityChecksOK();
 
-    void setCountQualityCheckResultZero();
+    void setQualityCheckCountZero();
 
     void setFocusAreas(List<Camera.Area> areas);
 

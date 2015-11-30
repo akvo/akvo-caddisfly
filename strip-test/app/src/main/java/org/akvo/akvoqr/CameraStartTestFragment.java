@@ -29,7 +29,7 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
  * to handle interaction events.
- * Use the {@link CameraStartTestFragment#newInstance} factory method to
+ * Use the {@link CameraStartTestFragment#getInstance} factory method to
  * create an instance of this fragment.
  *
  * This fragment shows the progress of the strip test.
@@ -51,6 +51,7 @@ import java.util.List;
  */
 public class CameraStartTestFragment extends CameraSharedFragment {
 
+    private static CameraStartTestFragment instance;
     private CameraViewListener mListener;
     private Button startButton;
     private List<StripTest.Brand.Patch> patches;
@@ -63,8 +64,24 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
+    /*
+     * Update the ProgressIndicatorView every second
+    */
+    private Runnable countdownRunnable = new Runnable() {
+        @Override
+        public void run() {
 
-    public static CameraStartTestFragment newInstance(String brandName) {
+            if(progressIndicatorViewAnim!=null && handler!=null) {
+                progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+                handler.postDelayed(this, 1000);
+            }
+            timeLapsed++;
+
+        }
+    };
+
+    public static CameraStartTestFragment getInstance(String brandName) {
+
         CameraStartTestFragment fragment = new CameraStartTestFragment();
         Bundle args = new Bundle();
         args.putString(Constant.BRAND, brandName);
@@ -133,140 +150,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         return rootView;
     }
 
-    /*
-    * Update the start button in progressIndicatorView to show green checked box
-    * Update progressIndicatorView to set its property: 'start' to true.
-    * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
-     */
-    @Override
-    public void showStartButton() {
-
-        if(startButton==null)
-            return;
-
-        startButton.setVisibility(View.VISIBLE);
-        startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
-
-        if(progressIndicatorViewAnim!=null) {
-            progressIndicatorViewAnim.setStart(true);
-        }
-    }
-
-    /*
-    * Update progressIndicatorView with the number of steps that we have a picture of
-     */
-    public void setStepsTaken(final int number)
-    {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if(progressIndicatorViewAnim!=null) {
-                    progressIndicatorViewAnim.setStepsTaken(number);
-                }
-            }
-        };
-        handler.post(runnable);
-
-    }
-
-    /*
-    * Store image data together with FinderPatternInfo data.
-    * Update JSONArray imagePatchArray to keep track of which picture goes with which patch.
-     */
-    public void sendData(final byte[] data, long timeMillis,
-                         final FinderPatternInfo info)
-    {
-        //what happens in the for-loop:
-        //check if picture is taken on time for the patch.
-        //assumed is that some tests require time for a color to develop.
-        //reading may be done after that time, but not before.
-
-        //we start patchesCovered at -1, because 0 would mean the first patch, and we do not want anything to happen
-        // before this loop has run.
-        //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
-        // the list of patches, which of course starts counting at 0.
-        for(int i = patchesCovered + 1; i < patches.size(); i++) {
-
-            //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
-            if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
-
-                //keep track of which patches are 'done'
-                patchesCovered = i;
-
-                //keep track of stepsCovered ('step' is the patches that have the same time lapse)
-                if (i > 0) {
-                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
-                        stepsCovered ++;
-                    }
-                }
-                //keep track of which image belongs to which patch
-                JSONArray array = new JSONArray();
-                array.put(imageCount);
-                array.put(patches.get(i).getOrder());
-                imagePatchArray.put(array);
-
-            }
-        }
-
-        //store the data as file in internal memory using the value of imageCount as part of its name,
-        //at the same time store the data that the FinderPatternInfo object contains.
-        //The two files can be retrieved and combined later, because they share 'imageCount'
-        // and imagePatchArray contains a value that corresponds with that.
-        new StoreDataTask(getActivity(), imageCount, data, info).execute();
-
-        //add one to imageCount
-        imageCount ++;
-
-        //update UI
-        setStepsTaken(stepsCovered);
-
-        //System.out.println("***xxximageCount: " + imageCount + " patchesCovered: " + patchesCovered);
-
-    }
-
-    /*
-    * If picture data (Camera Preview data) is stored,
-    * proceed to calibrate and detect the strip from it.
-    * That happens in the
-    * {@link DetectStripTask} (AsyncTask).
-    * For development purposes: if you set the boolean 'develop' to true,
-    * you can see images of the original and the calibrated images in a separate activity
-    * Otherwise, the whole process runs in the onBackground() of the AsyncTask.
-    *
-    * Even though it may be called any time, we take care that the detect-strip-process only starts
-    * if all patches are 'covered', meaning that we have counted that number beforehand,
-    * in the 'sendData' method above.
-    *
-    * @params: format, widht, height. Those should be the format, width and height of the Camera.Size
-     */
-    public void dataSent(int format, int width, int height)
-    {
-
-        //set to true if you want to see the original and calibrated images in DetectStripActivity
-        //set to false if you want to go to the ResultActivity directly
-        boolean develop = false;
-
-        //check if we do have images for all patches
-        if(patchesCovered == patches.size()-1)
-        {
-            //check if we really do have data in the json-array
-            if(imagePatchArray.length()>0) {
-                //write image/patch info to internal storage
-                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
-
-                Intent detectStripIntent = createDetectStripIntent(format, width, height);
-
-                //if develop
-                if (develop) {
-                    detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
-                    startActivity(detectStripIntent);
-                } else {
-                    new DetectStripTask(getActivity()).execute(detectStripIntent);
-                }
-            }
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -279,7 +162,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         //reset quality checks count to zero
         if(mListener!=null)
-            mListener.setCountQualityCheckResultZero();
+            mListener.setQualityCheckCountZero();
     }
 
     @Override
@@ -330,26 +213,18 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     }
 
     /*
-    * Update the ProgressIndicatorView every second
-     */
-    private Runnable countdownRunnable = new Runnable() {
-        @Override
-        public void run() {
-
-            progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
-
-            timeLapsed++;
-            handler.postDelayed(this, 1000);
-        }
-    };
-
-    /*
-    * Keep track of the time.
-    * We start a runnable (countdownRunnable) that update the progress view (afterwards that takes care of itself)
-    * We know beforehand at what intervals the patches are due from the values in strips.json
-    * so we can use a handler and runnable to post them at exactly that interval from start countdown
-     */
+   * Keep track of the time.
+   * We start a runnable (countdownRunnable) that update the progress view (afterwards that takes care of itself)
+   * We know beforehand at what intervals the patches are due from the values in strips.json
+   * so we can use a handler and runnable to post them at exactly that interval from start countdown
+    */
     private void startCountdown() {
+
+        //reset
+        imageCount = 0;
+        patchesCovered = -1;
+        stepsCovered = 0;
+        imagePatchArray = new JSONArray();
 
         //reset timeLapsed to zero just to make sure
         timeLapsed = 0;
@@ -359,9 +234,14 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         //post the runnable responsible for updating the
         // ProgressIndicatorView
-        handler.post(countdownRunnable);
+        if(handler!=null) {
+            handler.post(countdownRunnable);
+        }
 
-        //Post the CameraPreviewCallback on time for each patch (the posting is done in the CameraActivity itself)
+        //start the CameraPreviewCallback in preview mode (not taking pictures, but doing quality checks
+        mListener.startNextPreview(0);
+
+        //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         for (int i = 0; i < patches.size(); i++) {
 
             //if next patch is no later than previous, skip.
@@ -372,8 +252,161 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             }
             //tell CameraActivity when it is time to take the next picture
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000);
+
+            System.out.println("***posting takeNextPicture: " + i + " timelapse: " + patches.get(i).getTimeLapse());
+        }
+
+    }
+
+    /*
+    * Update the start button in progressIndicatorView to show green checked box
+    * Update progressIndicatorView to set its property: 'start' to true.
+    * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
+     */
+    @Override
+    public void showStartButton() {
+
+        if(startButton==null)
+            return;
+
+        startButton.setVisibility(View.VISIBLE);
+        startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
+
+        if(progressIndicatorViewAnim!=null) {
+            progressIndicatorViewAnim.setStart(true);
         }
     }
+
+    /*
+    * Update progressIndicatorView with the number of steps that we have a picture of
+     */
+    public void setStepsTaken(final int number)
+    {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(progressIndicatorViewAnim!=null) {
+                    progressIndicatorViewAnim.setStepsTaken(number);
+                }
+            }
+        };
+
+        if(handler!=null) {
+            handler.post(runnable);
+        }
+
+    }
+
+    /*
+    * Store image data together with FinderPatternInfo data.
+    * Update JSONArray imagePatchArray to keep track of which picture goes with which patch.
+     */
+    public void sendData(final byte[] data, long timeMillis,
+                         final FinderPatternInfo info)
+    {
+        //what happens in the for-loop:
+        //check if picture is taken on time for the patch.
+        //assumed is that some tests require time for a color to develop.
+        //reading may be done after that time, but not before.
+
+        //we start patchesCovered at -1, because 0 would mean the first patch, and we do not want anything to happen
+        // before this loop has run.
+        //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
+        // the list of patches, which of course starts counting at 0.
+        for(int i = patchesCovered + 1; i < patches.size(); i++) {
+
+            //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
+            if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
+
+                //keep track of which patches are 'done'
+                patchesCovered = i;
+
+                //keep track of stepsCovered ('step' is the patches that have the same time lapse)
+                if (i > 0) {
+                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
+                        stepsCovered ++;
+                    }
+                }
+                //keep track of which image belongs to which patch
+                JSONArray array = new JSONArray();
+                array.put(imageCount);
+                array.put(patches.get(i).getOrder());
+                imagePatchArray.put(array);
+
+            }
+        }
+
+        //update UI
+        setStepsTaken(stepsCovered);
+
+        //store the data as file in internal memory using the value of imageCount as part of its name,
+        //at the same time store the data that the FinderPatternInfo object contains.
+        //The two files can be retrieved and combined later, because they share 'imageCount'
+        // and imagePatchArray contains a value that corresponds with that.
+        new StoreDataTask(getActivity(), imageCount, data, info).execute();
+
+        System.out.println("***xxximageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
+
+        //add one to imageCount
+        imageCount++;
+
+
+
+
+    }
+
+    /*
+    * If picture data (Camera Preview data) is stored,
+    * proceed to calibrate and detect the strip from it.
+    * That happens in the
+    * {@link DetectStripTask} (AsyncTask).
+    * For development purposes: if you set the boolean 'develop' to true,
+    * you can see images of the original and the calibrated images in a separate activity
+    * Otherwise, the whole process runs in the onBackground() of the AsyncTask.
+    *
+    * Even though it may be called any time, we take care that the detect-strip-process only starts
+    * if all patches are 'covered', meaning that we have counted that number beforehand,
+    * in the 'sendData' method above.
+    *
+    * @params: format, widht, height. Those should be the format, width and height of the Camera.Size
+     */
+    public void dataSent(int format, int width, int height)
+    {
+
+        //set to true if you want to see the original and calibrated images in DetectStripActivity
+        //set to false if you want to go to the ResultActivity directly
+        boolean develop = false;
+
+        //check if we do have images for all patches
+        if(patchesCovered == patches.size()-1)
+        {
+            //stop the preview callback from repeating itself
+            if(mListener!=null)
+            {
+                mListener.stopCallback(true);
+            }
+            //check if we really do have data in the json-array
+            if(imagePatchArray.length()>0) {
+                //write image/patch info to internal storage
+                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+
+                Intent detectStripIntent = createDetectStripIntent(format, width, height);
+
+                //if develop
+                if (develop) {
+                    detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
+                    startActivity(detectStripIntent);
+                } else {
+                    new DetectStripTask(getActivity()).execute(detectStripIntent);
+                }
+            }
+        }
+    }
+
+
+
+
+
 
     /*
     * Create an Intent that holds information about the preview data:
