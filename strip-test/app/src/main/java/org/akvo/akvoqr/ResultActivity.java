@@ -216,10 +216,10 @@ public class ResultActivity extends AppCompatActivity {
 
             colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
 
-            double[] colorValue = colorDetected.getLab().val;
-            String colorSchema = "lab"; //must correspond with name of property in strips.json
+            double[] colorValueLab = colorDetected.getLab().val;
+            //String colorSchema = "lab"; //must correspond with name of property in strips.json
             try {
-                ppm = calculatePPM(colorValue, colours, colorSchema);
+                ppm = calculatePPM(colorValueLab, colours);
             }
             catch (Exception e)
             {
@@ -275,130 +275,212 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    private double calculatePPM(double[] colorValues, JSONArray colours, String colorSchema) throws Exception{
 
-        List<Pair<Integer,Double>> labdaList = new ArrayList<>();
-        double ppm = Double.MAX_VALUE;
-        double[] pointA = null;
-        double[] pointB = null;
-        double[] pointC = null;
-        double labda;
-        double minLabdaAbs = Double.MAX_VALUE;
+    private double calculatePPM(double[] colorValues, JSONArray colours) throws Exception{
         JSONArray patchColorValues;
-        double distance;
-        double minDistance = Double.MAX_VALUE;
+        double ppmPatchValueStart,ppmPatchValueEnd;
+        double[] pointStart;
+        double[] pointEnd;
+        double ppmVal, LInter, aInter, bInter, vInter;
+        int INTERPOLNUM = 10;
+        int numIters;
+        double result = 0;
 
-        // make pointC array
-        if (colorValues != null) {
+        // compute total number of interpolated values the table will hold
+        // this includes an extrapolation beyond the last point, and INTERPOLNUM values
+        // in between each two patches
+        // The table holds [L, a, b, ppm value]
+        double[][] interpolTable = new double[colours.length() * INTERPOLNUM][4];
 
-            pointC = colorValues;
+        CalibrationCard calCard = CalibrationCard.getInstance();
+        int count = 0;
+        for (int i = 0; i < colours.length() - 1; i++) {
+            try {
+                patchColorValues = colours.getJSONObject(i).getJSONArray("lab");
+                ppmPatchValueStart = colours.getJSONObject(i).getDouble("value");
+                pointStart = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
-            // in strips.json, lab values for a en b are between -128 and 128 and l between 0 - 100
-            //  but in OpenCV the range is: 0 - 255.
-            // we calculate pointC values back to CIE-Lab values
-            if(colorSchema.equals("lab"))
-            {
-                if(pointC.length < 3)
-                {
-                    throw new Exception("no valid lab data.");
+                patchColorValues = colours.getJSONObject(i + 1).getJSONArray("lab");
+                ppmPatchValueEnd = colours.getJSONObject(i + 1).getDouble("value");
+                pointEnd = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
+
+                double LStart = pointStart[0];
+                double aStart = pointStart[1];
+                double bStart = pointStart[2];
+
+                double dL = (pointEnd[0] - pointStart[0]) / INTERPOLNUM;
+                double da = (pointEnd[1] - pointStart[1]) / INTERPOLNUM;
+                double db = (pointEnd[2] - pointStart[2]) / INTERPOLNUM;
+                double dV = (ppmPatchValueEnd - ppmPatchValueStart) / INTERPOLNUM;
+
+                // create 10 interpolation points, including the start point,
+                // but excluding the end point
+                // the last interval is made twice as long, so we can extrapolate
+                numIters = (i == colours.length() - 2) ? INTERPOLNUM * 2 : INTERPOLNUM;
+                for (int ii = 0; ii < numIters; ii++) {
+                    LInter = LStart + ii * dL;
+                    aInter = aStart + ii * da;
+                    bInter = bStart + ii * db;
+                    vInter = ppmPatchValueStart + ii * dV;
+
+                    interpolTable[count][0] = LInter;
+                    interpolTable[count][1] = aInter;
+                    interpolTable[count][2] = bInter;
+                    interpolTable[count][3] = vInter;
+
+                    count++;
                 }
-                pointC[0] = (pointC[0] / 255) * 100;
-                pointC[1] = pointC[1] - 128;
-                pointC[2] = pointC[2] - 128;
-            }
-
-            //qualityChecksOK test
-            testLab(pointC);
-            testCount ++;
-            //end test
-        }
-
-        for (int j = 0; j < colours.length() - 1; j++) {
-
-            // make points A and B
-            try
-            {
-                patchColorValues = colours.getJSONObject(j).getJSONArray(colorSchema);
-                pointA = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
-
-                patchColorValues = colours.getJSONObject(j + 1).getJSONArray(colorSchema);
-                pointB = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
-
-
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-
-            try
-            {
-                if (pointA != null && pointB != null && pointC != null)
-                {
-                    labda = getClosestPointOnLine(pointA, pointB, pointC);
-
-                    distance = getDistanceCtoAB(pointA, pointB, pointC, labda);
-
-                    // if labda is between 0 and 1, it is valid.
-                    if (0 < labda && labda < 1) {
-
-                        //choose shortest distance if more than one patch is valid
-                        if( distance < minDistance) {
-
-                            minDistance = distance;
-
-                            ppm = (1 - labda) * colours.getJSONObject(j).getDouble("value") + labda * colours.getJSONObject(j + 1).getDouble("value");
-                        }
-                    }
-
-                    //add value for labda to list for later use: extrapolate ppm
-                    labdaList.add(new Pair(j, labda));
-
-//                    System.out.println("***RGB*** color patch no: " + j + " distance: " + distance +
-//                            "  labda: " + labda + " ppm: " + ppm);
-
-                }
-            }
-            catch (Exception e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
-        if(ppm == Double.MAX_VALUE)
-        {
-            //no labda between 0 and 1 is found: extrapolate ppm value
-
-            try
-            {
-                //find the lowest value for labda and calculate ppm with that
-                for (int i = 0; i < labdaList.size(); i++) {
-                    labda = Math.abs(labdaList.get(i).second);
-                    if (labda < minLabdaAbs) {
-
-                        minLabdaAbs = labda;
-                        if(labdaList.get(i).first < colours.length()) {
-                            ppm = (1 - labda) * colours.getJSONObject(labdaList.get(i).first).getDouble("value") +
-                                    labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
-                        }
-
-                        // System.out.println("***SETTING VALUE FOR PPM: " + ppm);
-
-                    }
-                }
-                //System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
-
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
+        // determine closest value
+        // create interpolation and extrapolation tables using linear approximation
+        if (colorValues == null || colorValues.length < 3){
+            throw new Exception("no valid lab colour data.");
         }
 
-        return ppm;
+        // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
+        double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
+
+        double closestPPM = 0, dist;
+        int minPos = 0;
+        double smallestE94Dist = Double.MAX_VALUE;
+
+        for (int j = 0; j < interpolTable.length; j++) {
+            // Find the closest point using the E94 distance
+            // the values are already in the right range, so we don't need to normalize
+            dist = calCard.E94(labPoint[0],labPoint[1],labPoint[2],interpolTable[j][0], interpolTable[j][1], interpolTable[j][2], false);
+            if (dist < smallestE94Dist){
+                smallestE94Dist = dist;
+                minPos = j;
+            }
+        }
+        result = interpolTable[minPos][3];
+        return result;
     }
 
-
-
+//    private double calculatePPM_old(double[] colorValues, JSONArray colours) throws Exception{
+//
+//        List<Pair<Integer,Double>> labdaList = new ArrayList<>();
+//        double ppm = Double.MAX_VALUE;
+//        double[] pointA = null;
+//        double[] pointB = null;
+//        double[] pointC = null;
+//        double labda;
+//        double minLabdaAbs = Double.MAX_VALUE;
+//        JSONArray patchColorValues;
+//        double distance;
+//        double minDistance = Double.MAX_VALUE;
+//
+//        // make pointC array
+//        if (colorValues != null) {
+//
+//            pointC = colorValues;
+//
+//            // in strips.json, lab values for a en b are between -128 and 128 and l between 0 - 100
+//            //  but in OpenCV the range is: 0 - 255.
+//            // we calculate pointC values back to CIE-Lab values
+//            if(colorSchema.equals("lab"))
+//            {
+//                if(pointC.length < 3)
+//                {
+//                    throw new Exception("no valid lab data.");
+//                }
+//                pointC[0] = (pointC[0] / 255) * 100;
+//                pointC[1] = pointC[1] - 128;
+//                pointC[2] = pointC[2] - 128;
+//            }
+//
+//            //qualityChecksOK test
+//            testLab(pointC);
+//            testCount ++;
+//            //end test
+//        }
+//
+//        for (int j = 0; j < colours.length() - 1; j++) {
+//
+//            // make points A and B
+//            try
+//            {
+//                patchColorValues = colours.getJSONObject(j).getJSONArray(colorSchema);
+//                pointA = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
+//
+//                patchColorValues = colours.getJSONObject(j + 1).getJSONArray(colorSchema);
+//                pointB = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
+//
+//
+//            }
+//            catch (JSONException e)
+//            {
+//                e.printStackTrace();
+//            }
+//
+//            try
+//            {
+//                if (pointA != null && pointB != null && pointC != null)
+//                {
+//                    labda = getClosestPointOnLine(pointA, pointB, pointC);
+//
+//                    distance = getDistanceCtoAB(pointA, pointB, pointC, labda);
+//
+//                    // if labda is between 0 and 1, it is valid.
+//                    if (0 < labda && labda < 1) {
+//
+//                        //choose shortest distance if more than one patch is valid
+//                        if( distance < minDistance) {
+//
+//                            minDistance = distance;
+//
+//                            ppm = (1 - labda) * colours.getJSONObject(j).getDouble("value") + labda * colours.getJSONObject(j + 1).getDouble("value");
+//                        }
+//                    }
+//
+//                    //add value for labda to list for later use: extrapolate ppm
+//                    labdaList.add(new Pair(j, labda));
+//
+////                    System.out.println("***RGB*** color patch no: " + j + " distance: " + distance +
+////                            "  labda: " + labda + " ppm: " + ppm);
+//
+//                }
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if(ppm == Double.MAX_VALUE)
+//        {
+//            //no labda between 0 and 1 is found: extrapolate ppm value
+//
+//            try
+//            {
+//                //find the lowest value for labda and calculate ppm with that
+//                for (int i = 0; i < labdaList.size(); i++) {
+//                    labda = Math.abs(labdaList.get(i).second);
+//                    if (labda < minLabdaAbs) {
+//
+//                        minLabdaAbs = labda;
+//                        if(labdaList.get(i).first < colours.length()) {
+//                            ppm = (1 - labda) * colours.getJSONObject(labdaList.get(i).first).getDouble("value") +
+//                                    labda * colours.getJSONObject(labdaList.get(i).first + 1).getDouble("value");
+//                        }
+//
+//                        // System.out.println("***SETTING VALUE FOR PPM: " + ppm);
+//
+//                    }
+//                }
+//                //System.out.println("***NO MATCH FOUND*** strip patch no: "  + "  labda: " + labda + " ppm: " + ppm);
+//
+//            }
+//            catch (JSONException e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return ppm;
+//    }
 
     /*
     //   labda = 	 (A - L) . (B - A)
@@ -410,67 +492,67 @@ public class ResultActivity extends AppCompatActivity {
     //
     // x1*x2 + y1*y2 + z1*z2
     */
-    private double getClosestPointOnLine(double[] pointA, double[] pointB, double[] pointC) throws Exception {
-
-
-        if(pointA.length<3 || pointB.length<3 || pointC.length<3)
-            throw new Exception("array lengths should all be 3");
-
-        double pxA = pointA[0];
-        double pyA = pointA[1];
-        double pzA = pointA[2];
-        double pxB = pointB[0];
-        double pyB = pointB[1];
-        double pzB = pointB[2];
-        double pxC = pointC[0];
-        double pyC = pointC[1];
-        double pzC = pointC[2];
-
-        double numerator = (pxA - pxC) * (pxB - pxA) + (pyA - pyC) * (pyB - pyA) + (pzA - pzC) * (pzB - pzA);
-        double denominator = Math.pow((pxB - pxA), 2) + Math.pow(pyB - pyA, 2) + Math.pow(pzB - pzA, 2);
-
-        double t = - numerator / denominator;
-
-        return t;
-
-    }
-
-    private double getDistanceCtoAB(double[] pointA, double[] pointB, double[] pointC, double labda) throws Exception {
-
-
-        if(pointA.length<3 || pointB.length<3 || pointC.length<3)
-            throw new Exception("array lengths should all be 3");
-
-        double pxA = pointA[0];
-        double pyA = pointA[1];
-        double pzA = pointA[2];
-        double pxB = pointB[0];
-        double pyB = pointB[1];
-        double pzB = pointB[2];
-        double pxC = pointC[0];
-        double pyC = pointC[1];
-        double pzC = pointC[2];
-
-        double pxC1 = pxA * (1-labda) + labda*pxB;
-        double pyC1 = pyA * (1-labda) + labda*pyB;
-        double pzC1 = pzA * (1-labda) + labda*pzB;
-
-        return Math.sqrt(Math.pow(pxC1 - pxC, 2) + Math.pow(pyC1 - pyC, 2) + Math.pow(pzC1 - pzC, 2));
-
-    }
-
-    private double getDistanceBetween2Points3D(double[] pointA, double[] pointB)
-    {
-        double pxA = pointA[0];
-        double pyA = pointA[1];
-        double pzA = pointA[2];
-        double pxB = pointB[0];
-        double pyB = pointB[1];
-        double pzB = pointB[2];
-
-        return Math.sqrt(Math.pow(pxB - pxA, 2) + Math.pow(pyB - pyA, 2) + Math.pow(pzB - pzA, 2));
-
-    }
+//    private double getClosestPointOnLine(double[] pointA, double[] pointB, double[] pointC) throws Exception {
+//
+//
+//        if(pointA.length<3 || pointB.length<3 || pointC.length<3)
+//            throw new Exception("array lengths should all be 3");
+//
+//        double pxA = pointA[0];
+//        double pyA = pointA[1];
+//        double pzA = pointA[2];
+//        double pxB = pointB[0];
+//        double pyB = pointB[1];
+//        double pzB = pointB[2];
+//        double pxC = pointC[0];
+//        double pyC = pointC[1];
+//        double pzC = pointC[2];
+//
+//        double numerator = (pxA - pxC) * (pxB - pxA) + (pyA - pyC) * (pyB - pyA) + (pzA - pzC) * (pzB - pzA);
+//        double denominator = Math.pow((pxB - pxA), 2) + Math.pow(pyB - pyA, 2) + Math.pow(pzB - pzA, 2);
+//
+//        double t = - numerator / denominator;
+//
+//        return t;
+//
+//    }
+//
+//    private double getDistanceCtoAB(double[] pointA, double[] pointB, double[] pointC, double labda) throws Exception {
+//
+//
+//        if(pointA.length<3 || pointB.length<3 || pointC.length<3)
+//            throw new Exception("array lengths should all be 3");
+//
+//        double pxA = pointA[0];
+//        double pyA = pointA[1];
+//        double pzA = pointA[2];
+//        double pxB = pointB[0];
+//        double pyB = pointB[1];
+//        double pzB = pointB[2];
+//        double pxC = pointC[0];
+//        double pyC = pointC[1];
+//        double pzC = pointC[2];
+//
+//        double pxC1 = pxA * (1-labda) + labda*pxB;
+//        double pyC1 = pyA * (1-labda) + labda*pyB;
+//        double pzC1 = pzA * (1-labda) + labda*pzB;
+//
+//        return Math.sqrt(Math.pow(pxC1 - pxC, 2) + Math.pow(pyC1 - pyC, 2) + Math.pow(pzC1 - pzC, 2));
+//
+//    }
+//
+//    private double getDistanceBetween2Points3D(double[] pointA, double[] pointB)
+//    {
+//        double pxA = pointA[0];
+//        double pyA = pointA[1];
+//        double pzA = pointA[2];
+//        double pxB = pointB[0];
+//        double pyB = pointB[1];
+//        double pzB = pointB[2];
+//
+//        return Math.sqrt(Math.pow(pxB - pxA, 2) + Math.pow(pyB - pyA, 2) + Math.pow(pzB - pzA, 2));
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -494,86 +576,86 @@ public class ResultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void testRGB(double[] pointC)
-    {
-        Scalar[] testColorsListRGB = new Scalar[]
-                {
-                        new Scalar(255, 232.21, 168.64), //light yellow
-                        new Scalar(208.83, 218.83, 150.51), //light green
-                        new Scalar(255, 168.51, 161.92), //medium pink
-                        new Scalar(200.30, 169.03, 181.46), //lilac
-                        new Scalar(239.90, 117.48, 142.37) //dark pink
+//    private void testRGB(double[] pointC)
+//    {
+//        Scalar[] testColorsListRGB = new Scalar[]
+//                {
+//                        new Scalar(255, 232.21, 168.64), //light yellow
+//                        new Scalar(208.83, 218.83, 150.51), //light green
+//                        new Scalar(255, 168.51, 161.92), //medium pink
+//                        new Scalar(200.30, 169.03, 181.46), //lilac
+//                        new Scalar(239.90, 117.48, 142.37) //dark pink
+//
+//                };
+//        Locale l = Locale.US;
+//
+//        System.out.print("***test color ,");
+//        System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListRGB[testCount].val[0]) +
+//                ", " + String.format(l, "%.2f", testColorsListRGB[testCount].val[1]) + ", " +
+//                String.format(l, "%.2f", testColorsListRGB[testCount].val[2]) + ",");
+//
+//        System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
+//                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
+//
+//
+//        try {
+//
+//            double[] pointA = testColorsListRGB[testCount].val;
+//
+//            double distance = getDistanceBetween2Points3D(pointA, pointC);
+//            System.out.print("," + distance);
+//            System.out.println(",***");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
-                };
-        Locale l = Locale.US;
-
-        System.out.print("***test color ,");
-        System.out.print(testCount + "," + String.format(l, "%.2f", testColorsListRGB[testCount].val[0]) +
-                ", " + String.format(l, "%.2f", testColorsListRGB[testCount].val[1]) + ", " +
-                String.format(l, "%.2f", testColorsListRGB[testCount].val[2]) + ",");
-
-        System.out.print(String.format(l, "%.2f", pointC[0]) + ", "
-                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]));
-
-
-        try {
-
-            double[] pointA = testColorsListRGB[testCount].val;
-
-            double distance = getDistanceBetween2Points3D(pointA, pointC);
-            System.out.print("," + distance);
-            System.out.println(",***");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void testLab(double[] pointC)
-    {
-        Scalar[] testColorsListLab = new Scalar[]
-                {
-//                        new Scalar(64.27, 48.17, - 3.48),
-//                        new Scalar(73.02,10.895, - 17.26),
-//                        new Scalar(77.915, 30.98, 3.01),
+//    private void testLab(double[] pointC)
+//    {
+//        Scalar[] testColorsListLab = new Scalar[]
+//                {
+////                        new Scalar(64.27, 48.17, - 3.48),
+////                        new Scalar(73.02,10.895, - 17.26),
+////                        new Scalar(77.915, 30.98, 3.01),
+////                        new Scalar(85.93, - 16.24, 20),
+////                        new Scalar(93.58, 0.6, 20.37)
+//                        new Scalar(93.58, 0.6, 20.37),
 //                        new Scalar(85.93, - 16.24, 20),
-//                        new Scalar(93.58, 0.6, 20.37)
-                        new Scalar(93.58, 0.6, 20.37),
-                        new Scalar(85.93, - 16.24, 20),
-                        new Scalar(77.915, 30.98, 3.01),
-                        new Scalar(73.02,10.895, - 17.26),
-                        new Scalar(64.27, 48.17, - 3.48),
-                };
-        Locale l = Locale.US;
-
-        String data = "***test color Lab,";
-
-        data += testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
-                ", " + String.format(l, "%.2f", testColorsListLab[testCount].val[1]) + ", " +
-                String.format(l, "%.2f", testColorsListLab[testCount].val[2]) + ",";
-
-        data += String.format(l, "%.2f", pointC[0]) + ", "
-                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]);
-
-
-        try {
-
-            double[] pointA = testColorsListLab[testCount].val;
-
-            double distance = getDistanceBetween2Points3D(pointA, pointC);
-            data += "," + distance;
-
-            double E94 =  CalibrationCard.getInstance().E94(pointA[0], pointA[1], pointA[2],
-                    pointC[0], pointC[1], pointC[2]);
-            data += "," + E94;
-            data += "\n";
-
-            FileStorage.writeLogToSDFile(data);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//                        new Scalar(77.915, 30.98, 3.01),
+//                        new Scalar(73.02,10.895, - 17.26),
+//                        new Scalar(64.27, 48.17, - 3.48),
+//                };
+//        Locale l = Locale.US;
+//
+//        String data = "***test color Lab,";
+//
+//        data += testCount + "," + String.format(l, "%.2f", testColorsListLab[testCount].val[0]) +
+//                ", " + String.format(l, "%.2f", testColorsListLab[testCount].val[1]) + ", " +
+//                String.format(l, "%.2f", testColorsListLab[testCount].val[2]) + ",";
+//
+//        data += String.format(l, "%.2f", pointC[0]) + ", "
+//                + String.format(l, "%.2f", pointC[1]) + ", " + String.format(l, "%.2f", pointC[2]);
+//
+//
+//        try {
+//
+//            double[] pointA = testColorsListLab[testCount].val;
+//
+//            double distance = getDistanceBetween2Points3D(pointA, pointC);
+//            data += "," + distance;
+//
+//            double E94 =  CalibrationCard.getInstance().E94(pointA[0], pointA[1], pointA[2],
+//                    pointC[0], pointC[1], pointC[2]);
+//            data += "," + E94;
+//            data += "\n";
+//
+//            FileStorage.writeLogToSDFile(data);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }
