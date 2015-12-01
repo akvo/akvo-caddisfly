@@ -19,7 +19,7 @@ import org.akvo.akvoqr.util.Constant;
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link ChooseStriptestListFragment} and the item details
- * (if present) is a {@link InstructionDetailFragment}.
+ * (if present) is a {@link ChooseStripTestDetailFragment}.
  * <p/>
  * This activity also implements the required
  * {@link ChooseStriptestListFragment.Callbacks} interface
@@ -52,20 +52,6 @@ public class ChooseStriptestListActivity extends AppCompatActivity
                     .findFragmentById(R.id.instruction_list))
                     .setActivateOnItemClick(true);
         }
-
-//        Intent intent = getIntent();
-//        final String brandname = intent.getStringExtra(Constant.BRAND);
-//
-//        Button startButton = (Button) findViewById(R.id.activity_instruction_listStartButton);
-//        startButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                v.setActivated(!v.isActivated());
-//                Intent intent = new Intent(ChooseStriptestListActivity.this, CameraActivity.class);
-//                intent.putExtra(Constant.BRAND, brandname);
-//                startActivity(intent);
-//            }
-//        });
 
     }
 

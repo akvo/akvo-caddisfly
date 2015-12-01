@@ -117,7 +117,14 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        setHeightOfOverlay(0);
+        try {
+            setHeightOfOverlay(0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
         if(mListener!=null)
         {
