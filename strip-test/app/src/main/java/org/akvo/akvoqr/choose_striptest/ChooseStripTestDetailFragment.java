@@ -1,10 +1,14 @@
 package org.akvo.akvoqr.choose_striptest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,7 +29,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
     private String brandName;
     private ImageView imageView;
-    private Button buttonInstruction;
+    private Drawable drawable;
 
     public static ChooseStripTestDetailFragment newInstance(String brandName) {
         ChooseStripTestDetailFragment fragment = new ChooseStripTestDetailFragment();
@@ -36,6 +40,43 @@ public class ChooseStripTestDetailFragment extends Fragment {
     }
 
     public ChooseStripTestDetailFragment() {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        System.out.println("***ChooseStripTestDetailFragment on Create called.");
+
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
+
+        if(savedInstanceState==null) {
+
+            System.out.println("***ChooseStripTestDetailFragment savedInstanceState is null.");
+
+            if (getArguments() != null) {
+
+                this.brandName = getArguments().getString(Constant.BRAND);
+
+                //images in assets
+                try {
+
+                    if (drawable == null) {
+                        // get input stream
+                        String path = getActivity().getResources().getString(R.string.striptest_images);
+                        InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
+                        // load image as Drawable
+
+                        drawable = Drawable.createFromStream(ims, null);
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -44,39 +85,39 @@ public class ChooseStripTestDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
         imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
-        if(getArguments()!=null) {
+        // set image to ImageView
+        if(drawable!=null) {
+            imageView.setImageDrawable(drawable);
+        }
 
-            this.brandName = getArguments().getString(Constant.BRAND);
-
-            //images in res/drawable
-//            int resId = getResources().getIdentifier(brandName.toLowerCase(Locale.US), "drawable", this.getActivity().getPackageName()); //NON-NLS
-//            imageView.setImageResource(resId);
-
-            //images in assets
-            try {
-                // get input stream
-                String path = getActivity().getResources().getString(R.string.striptest_images);
-                InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
-                // load image as Drawable
-                Drawable d = Drawable.createFromStream(ims, null);
-                // set image to ImageView
-                imageView.setImageDrawable(d);
-            }
-            catch(IOException ex) {
-                ex.printStackTrace();
-            }
-
-
-
+        if(brandName!=null) {
             Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
             button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
 
             Button buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
             buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
 
+            AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+            if(appCompatActivity!=null) {
+                appCompatActivity.getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandName).getName());
+            }
         }
         return rootView;
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+         }
 
     private class ChooseBrandOnClickListener implements View.OnClickListener{
 
@@ -94,7 +135,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
             intent.putExtra(Constant.BRAND, brand);
             startActivity(intent);
 
-            getActivity().finish();
+            //getActivity().finish();
         }
     }
 

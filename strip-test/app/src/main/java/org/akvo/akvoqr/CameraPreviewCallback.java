@@ -102,7 +102,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         //System.out.println("***CameraPreviewCallback count instance: " + countInstance);
 
-        if(!stop) {
+        if(!stop && !running) {
             new SendDataTask().execute(data);
         }
 
@@ -314,11 +314,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             if(bgr!=null)
                 bgr.release();
 
+            if(src_gray!=null)
+                src_gray.release();
         }
 
-        System.out.println("***yyylum qual ok: " + luminosityQualOk);
-        System.out.println("***yyyshadow qual ok: " + shadowQualOk);
-        System.out.println("***yyylevel qual ok: " + levelQualOk);
+//        System.out.println("***yyylum qual ok: " + luminosityQualOk);
+//        System.out.println("***yyyshadow qual ok: " + shadowQualOk);
+//        System.out.println("***yyylevel qual ok: " + levelQualOk);
 
         return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 
@@ -437,14 +439,14 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                System.out.println("***under exposed. ");
+                //System.out.println("***under exposed. ");
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                System.out.println("***over exposed. ");
+                //System.out.println("***over exposed. ");
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
@@ -466,7 +468,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
 
                     //luminosity is increasing; this is good, keep going in the same direction
-                    System.out.println("***increasing exposure." );
+                   // System.out.println("***increasing exposure." );
 
                     listener.adjustExposureCompensation(1);
                 }
@@ -474,7 +476,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 {
                     //optimum situation reached
 
-                    System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+                   // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
 
                 }
             }

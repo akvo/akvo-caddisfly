@@ -251,7 +251,8 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 }
             }
             //tell CameraActivity when it is time to take the next picture
-            mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000);
+            //add 10 milliseconds to avoid it being on same time as preview if timelapse is 0;
+            mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
 
             System.out.println("***posting takeNextPicture: " + i + " timelapse: " + patches.get(i).getTimeLapse());
         }
@@ -304,6 +305,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info)
     {
+        //check if image count is lower than patches size. if not, abort
+        if(imageCount >= patches.size())
+            return;
+
         //what happens in the for-loop:
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.

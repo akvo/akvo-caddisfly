@@ -125,17 +125,26 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         List<String> modes = mCamera.getParameters().getSupportedFocusModes();
         for(String s: modes) {
 
+            System.out.println("***supported focus modes: " + s);
+
             if(s.equals(Camera.Parameters.FOCUS_MODE_AUTO))
             {
                 canAutoFocus = true;
+                //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             }
             if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
             {
-                disableContinuousFocus = false;
+                disableContinuousFocus = true;
             }
         }
 
-        CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
+        try {
+            CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         //flashmode
         //switchFlashMode();
