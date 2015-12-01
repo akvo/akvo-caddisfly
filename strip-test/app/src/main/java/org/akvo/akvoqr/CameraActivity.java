@@ -221,6 +221,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             if(mCamera!=null && previewCallback!=null) {
 
+                if(handler!=null)
+                    handler.removeCallbacks(startNextPreview);
+
                 mCamera.startPreview();
                 previewCallback.setTakePicture(true);
                 mCamera.setOneShotPreviewCallback(previewCallback);
@@ -248,6 +251,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void takeNextPicture(long timeMillis) {
 
         if(handler!=null) {
+
             handler.postDelayed(takeNextPicture, timeMillis);
         }
     }

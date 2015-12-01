@@ -1,5 +1,7 @@
 package org.akvo.akvoqr.choose_striptest;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -39,8 +41,12 @@ public class ChooseStriptestListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_striptest_list);
 
+        final int memClass = ((ActivityManager) this.getSystemService(
+                Context.ACTIVITY_SERVICE)).getMemoryClass();
+        System.out.println("***Available memory: " + memClass);
+
         if (findViewById(R.id.instruction_detail_container) != null) {
-            // The detail container view will be present only in the
+            // The detail conStainer view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
             // activity should be in two-pane mode.
