@@ -44,7 +44,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     Mat cal_dest;
     Mat striparea = null;
     Mat calarea = null;
-    private boolean develop = true;
+    private boolean develop = false;
     private DetectStripListener listener;
 
     public DetectStripTask(Activity listener) {
