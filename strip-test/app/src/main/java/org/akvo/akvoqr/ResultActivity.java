@@ -263,7 +263,11 @@ public class ResultActivity extends AppCompatActivity {
                 circleView.circleView(colorDetected.getColor());
 
                 TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
-                textView.setText(String.format("%.1f", ppm) + " " + unit);
+                if (ppm < 1.0 ) {
+                    textView.setText(String.format("%.2f", ppm) + " " + unit);
+                } else {
+                    textView.setText(String.format("%.1f", ppm) + " " + unit);
+                }
 
             }
             else
@@ -343,6 +347,7 @@ public class ResultActivity extends AppCompatActivity {
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
         double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
 
+        System.out.println("*** lab value:" + labPoint[0] + "," + labPoint[1] + "," + labPoint[2]);
         double closestPPM = 0, dist;
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
