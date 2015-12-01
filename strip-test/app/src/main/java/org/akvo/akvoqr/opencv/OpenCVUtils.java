@@ -15,7 +15,9 @@ import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoint;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -177,158 +179,331 @@ public class OpenCVUtils {
         return warp_dst;
     }
 
-    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH)
-    {
+    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH){
         List<Mat> channels = new ArrayList<>();
-        Mat lab = striparea.clone();
-        Imgproc.medianBlur(lab, lab, 11);
+        Mat sArea = striparea.clone();
 
-        Mat temp = lab.clone();
+        // Gaussian blurr
+        Imgproc.medianBlur(sArea, sArea, 3);
+        Core.split(sArea, channels);
 
-        List<Double> maxVals = new ArrayList<>();
-        for(int c=0;c<lab.cols()-4;c+=4)
-        {
-            Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
+        // create binary image
+        Mat binary = new Mat();
+        Imgproc.threshold(channels.get(0), binary, 128, 255, Imgproc.THRESH_BINARY);
 
-            Core.split(submat, channels);
-            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
-            if(result.maxVal>50)
-                maxVals.add(result.maxVal);
-        }
-        Collections.sort(maxVals);
+        // compute first approximation of line through length of the strip
+        final WeightedObservedPoints points = new WeightedObservedPoints();
+        final WeightedObservedPoints corrPoints = new WeightedObservedPoints();
 
-//        System.out.println("***lowest maxVal: " + maxVals.get(0));
-
-//        System.out.println("***qualityChecksOK submat");
-        for(int c=0; c<lab.cols()-4; c+=4) {
-            Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
-
-            Core.split(submat, channels);
-            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
-
-//            Scalar mean = Core.mean(submat);
-            double tresholdMax = maxVals.get(0);
-            double tresholdMin = result.minVal * 1.25;
-
-//            System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal
-//                    + " mean: " + mean.val[0] + " treshold: " + treshold);
-
-            Mat upper = new Mat();
-            Mat lower = new Mat();
-            Imgproc.threshold(channels.get(0), upper, tresholdMax, 255, Imgproc.THRESH_BINARY);
-            Imgproc.threshold(channels.get(0), lower, tresholdMin, 255, Imgproc.THRESH_BINARY);
-            Core.bitwise_and(upper,lower, channels.get(0));
-            Core.merge(channels, submat);
-
-            for(int sc=0;sc<submat.cols();sc++) {
-                for (int sr = 0; sr < submat.rows(); sr++) {
-
-                    double[] vals = submat.get(sr, sc);
-                    temp.put(sr, c+sc, vals);
-
+        double tot, ytot;
+        for (int i = 0; i < binary.cols(); i++){ // iterate over cols
+            tot = 0;
+            ytot = 0;
+            for (int j = 0; j < binary.rows(); j++){ // iterate over rows
+                if (binary.get(j,i)[0] > 128){
+                    ytot += j;
+                    tot++;
                 }
             }
-            submat.release();
-        }
-//        System.out.println("***end submat");
-
-        ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        MatOfPoint innermostContours = new MatOfPoint();
-        MatOfInt4 mContours = new MatOfInt4();
-        MatOfPoint2f mMOP2f = new MatOfPoint2f();
-        RotatedRect rotatedRect;
-
-        Core.split(temp, channels);
-
-        //need to make binary image for findContours
-        Imgproc.threshold(channels.get(0), channels.get(0), 254, 255, Imgproc.THRESH_BINARY);
-//        Core.inRange(lab, new Scalar(254, 0, 0), new Scalar(256, 255, 255), lab);
-
-        Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
-        double maxParent = -Double.MAX_VALUE;
-
-        //Sort on areasize, so the largest contour is the last one in the arraylist
-        Collections.sort(contours, new ContoursComparator());
-
-        for (int x = 0; x < contours.size(); x++) {
-
-            double areasize = Imgproc.contourArea(contours.get(x));
-
-            System.out.println("***areasize contour strip: " + areasize);
-
-//            Imgproc.drawContours(striparea, contours, x, new Scalar(255, 2, 255, 255), 1);
-
-            if(mContours.get(0,x)[3] >= 0)//has parent, inner (hole) contour of a closed edge
-            {
-                if(areasize > 1000)
-                {
-
-                    if(mContours.get(0,x)[3] > maxParent)
-                    {
-                        contours.get(x).copyTo(innermostContours);
-
-                        maxParent = mContours.get(0, x)[3];
-                    }
-                }
-
-//                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 0, 255), 2);
-
-            }
-            else if(areasize > 1000)
-            {
-                //could not find innermost, take the largest
-                contours.get(x).copyTo(innermostContours);
-//                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 255, 255), 2);
+            if (tot > 0){
+                points.add((double) i, ytot / tot);
             }
         }
 
-        List<Point> innermostList = innermostContours.toList();
-        if(innermostList.size()>0) {
+        // order of coefficients is (b + ax), so [b, a]
+        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+        List<WeightedObservedPoint> pointsList = points.toList();
+        final double[] coeff = fitter.fit(pointsList);
 
-            //only needed for logging
-            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
-            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
-            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
+        // second pass, remove outliers
+        double estimate, actual;
 
-//            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
-//            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
-//            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
-//            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
-
-            //demo
-//            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
-
-            // we need the mMOP2f object for our rotated Rect
-            innermostContours.convertTo(mMOP2f, CvType.CV_32FC2);
-            rotatedRect = Imgproc.minAreaRect(mMOP2f);
-            if(rotatedRect!=null) {
-
-                //only needed for demo
-//                Point[] rotPoints = new Point[4];
-//                rotatedRect.points(rotPoints);
-//                Core.line(lab, rotPoints[0], rotPoints[1], new Scalar(0, 0, 255, 255), 2);
-//                Core.line(lab, rotPoints[1], rotPoints[2], new Scalar(0,0,255,255), 2);
-//                Core.line(lab, rotPoints[2], rotPoints[3], new Scalar(0,0,255,255), 2);
-//                Core.line(lab, rotPoints[3], rotPoints[0], new Scalar(0,0,255,255), 2);
-
-                //make sure detected area is not smaller than known strip size of brand
-
-                Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
-
-                try {
-                    Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
-
-                    return rotated;
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+        for (int i = 0; i < pointsList.size(); i++){
+            estimate = coeff[1] * pointsList.get(i).getX() + coeff[0];
+            actual = pointsList.get(i).getY();
+            if (actual > 0.9 * estimate && actual <  1.1 * estimate) { //if the point differs less than +/- 10 %, keep the point
+                corrPoints.add(pointsList.get(i).getX(), pointsList.get(i).getY());
             }
         }
 
-        return null;
+        final double[] coeffCorr = fitter.fit(corrPoints.toList());
+        double slope = coeffCorr[1];
+        double offset = coeffCorr[0];
+
+        // compute rotation angle
+        double rotAngleDeg = Math.atan(slope) * 180 / Math.PI;
+
+        //determine a point on the line, in the middle of strip, in the horizontal middle of the whole image
+        int midpointx = (int) Math.round(binary.cols() / 2);
+        int midpointy = (int) Math.round(midpointx * slope + offset);
+
+        // rotate around the midpoint, to straighten the binary strip
+        Mat dstBinary = new Mat(binary.rows(), binary.cols(), binary.type());
+        Point center = new Point(midpointx,midpointy);
+        Mat rotMat = Imgproc.getRotationMatrix2D(center,rotAngleDeg,1.0);
+        Imgproc.warpAffine(binary, dstBinary, rotMat, binary.size(), Imgproc.INTER_CUBIC + Imgproc.WARP_FILL_OUTLIERS);
+
+        // also apply rotation to coloured strip
+        Mat dstStrip = new Mat(striparea.rows(), striparea.cols(), striparea.type());
+        Imgproc.warpAffine(striparea, dstStrip, rotMat, binary.size(), Imgproc.INTER_CUBIC + Imgproc.WARP_FILL_OUTLIERS);
+
+        // Compute white points in each row
+        double[] rowCount = new double[dstBinary.rows()];
+        int rowTot;
+        for (int i = 0; i < dstBinary.rows(); i++){ // iterate over rows
+            rowTot = 0;
+            for (int j = 0; j < dstBinary.cols(); j++){ // iterate over cols
+                if (dstBinary.get(i,j)[0] > 128){
+                    rowTot++;
+                }
+            }
+            rowCount[i] = rowTot;
+        }
+
+        // find width by finding rising and dropping edges
+        // rising edge  = largest positive difference
+        // falling edge = largest negative difference
+        int risePos = 0;
+        int fallPos = 0;
+        double riseVal = 0;
+        double fallVal = 0;
+        for (int i = 0; i < dstBinary.rows() - 1; i++) {
+            if (rowCount[i + 1] - rowCount[i] > riseVal) {
+                riseVal = rowCount[i + 1] - rowCount[i];
+                risePos = i + 1;
+            }
+            if (rowCount[i + 1] - rowCount[i] < fallVal) {
+                fallVal = rowCount[i + 1] - rowCount[i];
+                fallPos = i;
+            }
+        }
+
+        // cut out binary strip
+        Point stripTopLeft = new Point(0,risePos);
+        Point stripBottomRight = new Point(dstBinary.cols(),fallPos);
+
+        org.opencv.core.Rect stripArea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
+        Mat binaryStrip = dstBinary.submat(stripArea);
+
+        // also cut out coloured strip
+        Mat colourStrip = dstStrip.submat(stripArea);
+
+        // now right end of strip
+        // method: first rising edge
+
+        double[] colCount = new double[binaryStrip.cols()];
+        int colTot;
+        for (int i = 0; i < binaryStrip.cols(); i++){ // iterate over cols
+            colTot = 0;
+            for (int j = 0; j < binaryStrip.rows(); j++){ // iterate over rows
+                if (binaryStrip.get(j,i)[0] > 128){
+                    colTot++;
+                }
+            }
+            colCount[i] = colTot;
+        }
+
+        // treshold is that half of the rows in a column should be white
+        int treshold = Math.round(binaryStrip.rows() / 2);
+
+        // moving from the right, determine the first point that crosses the treshold
+        boolean found = false;
+        int posRight = binaryStrip.cols() - 1;
+        while(!found && posRight > 0){
+            if (colCount[posRight] > treshold){
+                found = true;
+            } else {
+                posRight--;
+            }
+        }
+
+        // moving from the left, determine the first point that crosses the treshold
+        found = false;
+        int posLeft = 0;
+        while(!found && posLeft < binaryStrip.cols() - 1){
+            if (colCount[posLeft] > treshold){
+                found = true;
+            } else {
+                posLeft++;
+            }
+        }
+        // cut out final strip
+        stripTopLeft = new Point(posLeft,0);
+        stripBottomRight = new Point(posRight,binaryStrip.rows());
+        stripArea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
+        Mat resultStrip = colourStrip.submat(stripArea);
+
+        // release Mat objects
+        striparea.release();
+        sArea.release();
+        binary.release();
+        dstBinary.release();
+        dstStrip.release();
+        binaryStrip.release();
+        colourStrip.release();
+
+        // sanity check: the strip should be at least larger than half of the black area
+        if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5){
+            return null;
+        }
+
+        return resultStrip;
     }
+
+
+//
+//    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH)
+//    {
+//        List<Mat> channels = new ArrayList<>();
+//        Mat lab = striparea.clone();
+//        Imgproc.medianBlur(lab, lab, 11);
+//
+//        Mat temp = lab.clone();
+//
+//        List<Double> maxVals = new ArrayList<>();
+//        for(int c=0;c<lab.cols()-4;c+=4)
+//        {
+//            Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
+//
+//            Core.split(submat, channels);
+//            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+//            if(result.maxVal>50)
+//                maxVals.add(result.maxVal);
+//        }
+//        Collections.sort(maxVals);
+//
+////        System.out.println("***lowest maxVal: " + maxVals.get(0));
+//
+////        System.out.println("***qualityChecksOK submat");
+//        for(int c=0; c<lab.cols()-4; c+=4) {
+//            Mat submat = lab.submat(0, lab.rows(), c, c+4).clone();
+//
+//            Core.split(submat, channels);
+//            Core.MinMaxLocResult result = Core.minMaxLoc(channels.get(0));
+//
+////            Scalar mean = Core.mean(submat);
+//            double tresholdMax = maxVals.get(0);
+//            double tresholdMin = result.minVal * 1.25;
+//
+////            System.out.println("***result L detect strip min val: " + result.minVal + " max val : " + result.maxVal
+////                    + " mean: " + mean.val[0] + " treshold: " + treshold);
+//
+//            Mat upper = new Mat();
+//            Mat lower = new Mat();
+//            Imgproc.threshold(channels.get(0), upper, tresholdMax, 255, Imgproc.THRESH_BINARY);
+//            Imgproc.threshold(channels.get(0), lower, tresholdMin, 255, Imgproc.THRESH_BINARY);
+//            Core.bitwise_and(upper,lower, channels.get(0));
+//            Core.merge(channels, submat);
+//
+//            for(int sc=0;sc<submat.cols();sc++) {
+//                for (int sr = 0; sr < submat.rows(); sr++) {
+//
+//                    double[] vals = submat.get(sr, sc);
+//                    temp.put(sr, c+sc, vals);
+//
+//                }
+//            }
+//            submat.release();
+//        }
+////        System.out.println("***end submat");
+//
+//        ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+//        MatOfPoint innermostContours = new MatOfPoint();
+//        MatOfInt4 mContours = new MatOfInt4();
+//        MatOfPoint2f mMOP2f = new MatOfPoint2f();
+//        RotatedRect rotatedRect;
+//
+//        Core.split(temp, channels);
+//
+//        //need to make binary image for findContours
+//        Imgproc.threshold(channels.get(0), channels.get(0), 254, 255, Imgproc.THRESH_BINARY);
+////        Core.inRange(lab, new Scalar(254, 0, 0), new Scalar(256, 255, 255), lab);
+//
+//        Imgproc.findContours(channels.get(0), contours, mContours, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
+//        double maxParent = -Double.MAX_VALUE;
+//
+//        //Sort on areasize, so the largest contour is the last one in the arraylist
+//        Collections.sort(contours, new ContoursComparator());
+//
+//        for (int x = 0; x < contours.size(); x++) {
+//
+//            double areasize = Imgproc.contourArea(contours.get(x));
+//
+//            System.out.println("***areasize contour strip: " + areasize);
+//
+////            Imgproc.drawContours(striparea, contours, x, new Scalar(255, 2, 255, 255), 1);
+//
+//            if(mContours.get(0,x)[3] >= 0)//has parent, inner (hole) contour of a closed edge
+//            {
+//                if(areasize > 1000)
+//                {
+//
+//                    if(mContours.get(0,x)[3] > maxParent)
+//                    {
+//                        contours.get(x).copyTo(innermostContours);
+//
+//                        maxParent = mContours.get(0, x)[3];
+//                    }
+//                }
+//
+////                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 0, 255), 2);
+//
+//            }
+//            else if(areasize > 1000)
+//            {
+//                //could not find innermost, take the largest
+//                contours.get(x).copyTo(innermostContours);
+////                Imgproc.drawContours(striparea, contours, x, new Scalar(0, 255, 255, 255), 2);
+//            }
+//        }
+//
+//        List<Point> innermostList = innermostContours.toList();
+//        if(innermostList.size()>0) {
+//
+//            //only needed for logging
+//            Point point1 = new Point(OpenCVUtils.getMinX(innermostList), OpenCVUtils.getMinY(innermostList));
+//            Point point2 = new Point(getMaxX(innermostList), getMinY(innermostList));
+//            Point point3 = new Point(OpenCVUtils.getMaxX(innermostList), OpenCVUtils.getMaxY(innermostList));
+//
+////            System.out.println("*** innermostList 0 : " + innermostList.get(0).x + "," + innermostList.get(0).y);
+////            System.out.println("*** innermostList topleft :" + point1.x + "," + point1.y);
+////            System.out.println("*** innermostList topright :" + point2.x + "," + point2.y);
+////            System.out.println("*** innermostList bottomleft :" + point3.x + "," + point3.y);
+//
+//            //demo
+////            Imgproc.drawContours(striparea, contours, (int) maxParent + 1, new Scalar(0, 0, 255, 255), 2);
+//
+//            // we need the mMOP2f object for our rotated Rect
+//            innermostContours.convertTo(mMOP2f, CvType.CV_32FC2);
+//            rotatedRect = Imgproc.minAreaRect(mMOP2f);
+//            if(rotatedRect!=null) {
+//
+//                //only needed for demo
+////                Point[] rotPoints = new Point[4];
+////                rotatedRect.points(rotPoints);
+////                Core.line(lab, rotPoints[0], rotPoints[1], new Scalar(0, 0, 255, 255), 2);
+////                Core.line(lab, rotPoints[1], rotPoints[2], new Scalar(0,0,255,255), 2);
+////                Core.line(lab, rotPoints[2], rotPoints[3], new Scalar(0,0,255,255), 2);
+////                Core.line(lab, rotPoints[3], rotPoints[0], new Scalar(0,0,255,255), 2);
+//
+//                //make sure detected area is not smaller than known strip size of brand
+//
+//                Size brandSize = new Size(brand.getStripLenght()*ratioW, brand.getStripHeight()*ratioH);
+//
+//                try {
+//                    Mat rotated = rotateImage(striparea, rotatedRect, brandSize);
+//
+//                    return rotated;
+//                }
+//                catch (Exception e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public static ColorDetected detectStripColorBrandKnown(Mat lab)
     {

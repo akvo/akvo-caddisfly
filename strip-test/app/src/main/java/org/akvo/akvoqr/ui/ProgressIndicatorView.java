@@ -283,11 +283,11 @@ public class ProgressIndicatorView extends LinearLayout {
             /*
             * DEBUGGING TIME
              */
-            try {
-                message = message + " " + PreviewUtils.fromSecondsToMMSS(timeLapsed ) + " sec. ";
-            } catch (Exception e) {
-                message = e.getMessage();
-            }
+//            try {
+//                message = message + " " + PreviewUtils.fromSecondsToMMSS(timeLapsed ) + " sec. ";
+//            } catch (Exception e) {
+//                message = e.getMessage();
+//            }
             /*
             * END DEBUGGING
              */
