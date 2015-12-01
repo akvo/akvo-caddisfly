@@ -77,6 +77,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private boolean running;
     private boolean stop;
     private Mat src_gray = new Mat();
+    private int count = 0;
 
 
     public CameraPreviewCallback(Context context) {
@@ -97,10 +98,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
+        count ++;
+
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        //System.out.println("***CameraPreviewCallback count instance: " + countInstance);
+        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
+        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
 
         if(!stop && !running) {
             new SendDataTask().execute(data);
@@ -123,7 +127,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         @Override
         protected Void doInBackground(byte[]... params) {
-            //count ++;
+
 
             running = true;
             data = params[0];
@@ -144,9 +148,10 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 listener.addCountToQualityCheckCount(countQuality);
 
                 //logging
-//                System.out.println("***CameraPreviewCallback takePicture: " + countInstance + " " + takePicture);
-//                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-//                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
+                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
+                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
 
 
                 if(takePicture)
