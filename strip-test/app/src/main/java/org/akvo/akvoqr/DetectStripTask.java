@@ -42,7 +42,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     org.opencv.core.Rect roiCalarea = null;
     Mat warp_dst;
     Mat cal_dest;
-    Mat striparea = null;
+
     Mat calarea = null;
     private boolean develop = false;
     private DetectStripListener listener;
@@ -182,7 +182,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
                             listener.showImage(bitmap);
                         }
-
+                        Mat striparea = null;
                         if (roiStriparea != null)
                             striparea = cal_dest.submat(roiStriparea);
 

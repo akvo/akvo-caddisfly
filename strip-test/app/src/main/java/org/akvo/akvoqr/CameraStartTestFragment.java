@@ -29,7 +29,7 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
  * to handle interaction events.
- * Use the {@link CameraStartTestFragment#getInstance} factory method to
+ * Use the {@link CameraStartTestFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
  * This fragment shows the progress of the strip test.
@@ -51,7 +51,6 @@ import java.util.List;
  */
 public class CameraStartTestFragment extends CameraSharedFragment {
 
-    private static CameraStartTestFragment instance;
     private CameraViewListener mListener;
     private Button startButton;
     private List<StripTest.Brand.Patch> patches;
@@ -80,7 +79,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         }
     };
 
-    public static CameraStartTestFragment getInstance(String brandName) {
+    public static CameraStartTestFragment newInstance(String brandName) {
 
         CameraStartTestFragment fragment = new CameraStartTestFragment();
         Bundle args = new Bundle();
@@ -380,7 +379,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         //set to true if you want to see the original and calibrated images in DetectStripActivity
         //set to false if you want to go to the ResultActivity directly
-        boolean develop = false;
+        boolean develop = true;
 
         //check if we do have images for all patches
         if(patchesCovered == patches.size()-1)
@@ -389,6 +388,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             if(mListener!=null)
             {
                 mListener.stopCallback(true);
+            }
+            if(handler!=null)
+            {
+                handler.removeCallbacks(countdownRunnable);
             }
             //check if we really do have data in the json-array
             if(imagePatchArray.length()>0) {

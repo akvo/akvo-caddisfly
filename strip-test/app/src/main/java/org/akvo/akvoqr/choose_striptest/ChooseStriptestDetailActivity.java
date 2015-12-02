@@ -50,7 +50,7 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
                 ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
 
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.instruction_detail_container, fragment)
+                        .add(R.id.choose_striptest_detail_container, fragment)
                         .commit();
 
                 //getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandname).getName());

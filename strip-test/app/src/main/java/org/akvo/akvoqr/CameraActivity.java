@@ -49,6 +49,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private int qualityCheckCount = 0;
     private LinearLayout progressLayout;
     private CameraSharedFragment currentFragment;
+    private MediaPlayer mp;
     private int previewFormat;
     private int previewWidth;
     private int previewHeight;
@@ -64,6 +65,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else
         {
             throw new NullPointerException("Cannot proceed without brand.");
+
         }
 
         handler = new Handler(Looper.getMainLooper());
@@ -132,10 +134,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             preview.removeView(baseCameraView);
             baseCameraView = null;
         }
-
-//        if(currentFragment!=null) {
-//            currentFragment = null;
-//        }
 
         Log.d(TAG, "onPause OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
@@ -251,7 +249,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void takeNextPicture(long timeMillis) {
 
         if(handler!=null) {
-
             handler.postDelayed(takeNextPicture, timeMillis);
         }
     }
@@ -316,10 +313,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         }
         else if(currentFragment instanceof CameraInstructionFragment) {
-            currentFragment = CameraStartTestFragment.getInstance(brandName);
+            currentFragment = CameraStartTestFragment.newInstance(brandName);
 
         }
-        System.out.println("***currentFragment: " + currentFragment.toString());
+       // System.out.println("***currentFragment: " + currentFragment.toString());
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_cameraFragmentPlaceholder, currentFragment)
@@ -340,8 +337,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                finderPatternIndicatorView.setColor(color);
-                finderPatternIndicatorView.showPatterns(patterns, size);
+                if(finderPatternIndicatorView!=null) {
+                    finderPatternIndicatorView.setColor(color);
+                    finderPatternIndicatorView.showPatterns(patterns, size);
+                }
             }
         };
 
@@ -400,7 +399,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable levelRunnable = new Runnable() {
             @Override
             public void run() {
-                levelView.setAngles(angles);
+                if(levelView!=null)
+                    levelView.setAngles(angles);
             }
         };
 
@@ -412,7 +412,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void adjustExposureCompensation(int direction)
     {
-        baseCameraView.adjustExposure(direction);
+        if(baseCameraView!=null)
+            baseCameraView.adjustExposure(direction);
     }
 
 
@@ -451,8 +452,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void playSound()
     {
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
         mp.start();
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
     }
     //END CAMERAVIEWLISTENER INTERFACE METHODS
 
@@ -489,7 +497,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             }
         };
-        handler.post(runnable);
+        if(handler!=null)
+            handler.post(runnable);
     }
 
     @Override
@@ -503,7 +512,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             }
         };
-        handler.post(runnable);
+        if(handler!=null)
+            handler.post(runnable);
 
     }
 
@@ -518,7 +528,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                         getString(R.string.error_detection), //3
                         getString(R.string.error_calibrating), //4
                         getString(R.string.error_cut_out_strip), //5
-                        getString(R.string.error_unknown) //5
+                        getString(R.string.error_unknown) //6
                 };
 
         final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
@@ -533,7 +543,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             }
         };
-        handler.post(runnable);
+        if(handler!=null)
+            handler.post(runnable);
     }
 
     @Override
@@ -545,6 +556,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         resultIntent.putExtra(Constant.BRAND, brandName);
         resultIntent.putExtra(Constant.MAT, resultList);
         startActivity(resultIntent);
+
+        this.finish();
     }
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
@@ -570,9 +583,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                     }
                     else
                     {
-                        init();
+
                     }
 
+                    init();
                 }
                 break;
                 default: {

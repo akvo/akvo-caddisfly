@@ -29,4 +29,5 @@ public class Constant {
     public static final double CROP_FINDERPATTERN_FACTOR = 0.75;
     public static final float MAX_LEVEL_DIFF = 2f;
 
+    public static final String ERROR = "org.akvo.akvoqr.error";
 }

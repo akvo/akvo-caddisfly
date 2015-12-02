@@ -4,7 +4,7 @@
     >
     <fragment
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/instruction_list"
+        android:id="@+id/choose_striptest_list"
         android:name="org.akvo.akvoqr.choose_striptest.ChooseStriptestListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

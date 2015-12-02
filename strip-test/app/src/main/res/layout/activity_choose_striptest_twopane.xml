@@ -31,7 +31,7 @@
             android:layout_weight="1"
             >
 
-            <fragment android:id="@+id/instruction_list"
+            <fragment android:id="@+id/choose_striptest_list"
                 android:name="org.akvo.akvoqr.choose_striptest.ChooseStriptestListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -39,7 +39,7 @@
 
         </LinearLayout>
 
-        <FrameLayout android:id="@+id/instruction_detail_container"
+        <FrameLayout android:id="@+id/choose_striptest_detail_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2" />

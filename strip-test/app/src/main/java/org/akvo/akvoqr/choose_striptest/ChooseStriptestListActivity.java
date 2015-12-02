@@ -45,7 +45,8 @@ public class ChooseStriptestListActivity extends AppCompatActivity
                 Context.ACTIVITY_SERVICE)).getMemoryClass();
         System.out.println("***Available memory: " + memClass);
 
-        if (findViewById(R.id.instruction_detail_container) != null) {
+
+        if (findViewById(R.id.choose_striptest_detail_container) != null) {
             // The detail conStainer view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
@@ -55,7 +56,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((ChooseStriptestListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.instruction_list))
+                    .findFragmentById(R.id.choose_striptest_list))
                     .setActivateOnItemClick(true);
         }
 
@@ -75,7 +76,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
             ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(id);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.instruction_detail_container, fragment)
+                    .replace(R.id.choose_striptest_detail_container, fragment)
                     .commit();
 
         } else {

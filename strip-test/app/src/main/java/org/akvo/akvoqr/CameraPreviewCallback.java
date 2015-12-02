@@ -62,7 +62,7 @@ import java.util.List;
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
-//    private static int countInstance = 0;
+    //    private static int countInstance = 0;
 //    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -145,7 +145,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //add countQuality to sum in listener
                 //if countQuality sums up to the limit set in Constant,
                 //listener.qualityChecksOK will return true;
-                listener.addCountToQualityCheckCount(countQuality);
+                if(listener!=null)
+                    listener.addCountToQualityCheckCount(countQuality);
 
                 //logging
                 System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
@@ -157,8 +158,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 if(takePicture)
                 {
 
-                        if (info!=null && countQuality==1 && listener.qualityChecksOK())
-                        {
+                    if(listener!=null) {
+                        if (info != null && countQuality == 1 && listener.qualityChecksOK()) {
 
                             long timePictureTaken = System.currentTimeMillis();
 
@@ -169,13 +170,11 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                             //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
                             listener.sendData(data, timePictureTaken, info);
 
-                        }
-                        else
-                        {
-                            if (listener != null)
-                                listener.takeNextPicture(0);
-                        }
+                        } else {
 
+                            listener.takeNextPicture(0);
+                        }
+                    }
                 }
                 else //we are not taking any picture, just looking at the quality checks
                 {
@@ -195,7 +194,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         @Override
         protected void onPostExecute(Void result) {
-           running = false;
+            running = false;
         }
     }
 
@@ -206,7 +205,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         Mat bgr = null;
 
-       // List<Double> focusList = new ArrayList<>();
+        // List<Double> focusList = new ArrayList<>();
         List<double[]> lumList = new ArrayList<>();
         float[] angles = null;
         boolean luminosityQualOk = false;
@@ -292,25 +291,26 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
             }
 
-            //brightness: show the values on device
-            if(lumTrack.size()<1) {
-                //-1 means 'no data'
-                listener.showMaxLuminosity(false, -1);
-            }
-            else {
-                listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
-            }
+            if(listener!=null) {
+                //brightness: show the values on device
+                if (lumTrack.size() < 1) {
+                    //-1 means 'no data'
+                    listener.showMaxLuminosity(false, -1);
+                } else {
+                    listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
+                }
 
-            //shadows: show the values on device
-            if(shadowTrack.size()<1) {
-                //101 means 'no data'
-                listener.showShadow(101);
-            }else {
-                listener.showShadow(shadowTrack.getLast());
-            }
+                //shadows: show the values on device
+                if (shadowTrack.size() < 1) {
+                    //101 means 'no data'
+                    listener.showShadow(101);
+                } else {
+                    listener.showShadow(shadowTrack.getLast());
+                }
 
-            //level: show on device
-            listener.showLevel(angles);
+                //level: show on device
+                listener.showLevel(angles);
+            }
 
         }  catch (Exception e) {
             e.printStackTrace();
@@ -323,9 +323,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 src_gray.release();
         }
 
-//        System.out.println("***yyylum qual ok: " + luminosityQualOk);
-//        System.out.println("***yyyshadow qual ok: " + shadowQualOk);
-//        System.out.println("***yyylevel qual ok: " + levelQualOk);
+        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
+        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
+        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
 
         return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 
@@ -473,7 +473,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
 
                     //luminosity is increasing; this is good, keep going in the same direction
-                   // System.out.println("***increasing exposure." );
+                    // System.out.println("***increasing exposure." );
 
                     listener.adjustExposureCompensation(1);
                 }
@@ -481,7 +481,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 {
                     //optimum situation reached
 
-                   // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
 
                 }
             }
@@ -539,8 +539,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                 if (possibleCenters != null && previewSize != null) {
 
-                    listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
-
+                    if(listener!=null) {
+                        listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
+                    }
                     //get the version number from the barcode printed on the card
                     try {
                         if (possibleCenters.size() == 4) {

@@ -53,7 +53,6 @@ public class FileStorage {
 
         FileInputStream fis = App.getMyApplicationContext().openFileInput(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
         BufferedInputStream bos = new BufferedInputStream(fis);
 
         while((c = bos.read()) != -1)
@@ -64,9 +63,9 @@ public class FileStorage {
 
         data = baos.toByteArray();
 
+        bos.close();
         baos.close();
         fis.close();
-        bos.close();
 
         return data;
     }
@@ -98,13 +97,14 @@ public class FileStorage {
         try {
             FileInputStream fis = new FileInputStream(file);
             DataInputStream in = new DataInputStream(fis);
-            BufferedReader br =
-                    new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             while ((strLine = br.readLine()) != null) {
                 json = json + strLine;
             }
+            br.close();
             in.close();
+            fis.close();
 
             return json;
         } catch (IOException e) {
@@ -211,6 +211,7 @@ public class FileStorage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("\n\nFile written to " + file);
     }
 
@@ -261,8 +262,6 @@ public class FileStorage {
         File file = new File(dir, "log.txt");
 
         try {
-//            FileOutputStream f = new FileOutputStream(file);
-//            BufferedOutputStream bos = new BufferedOutputStream(f);
             FileWriter writer = new FileWriter(file, true);
             writer.write(data);
 

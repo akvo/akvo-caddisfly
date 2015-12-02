@@ -125,7 +125,6 @@ public class CameraPrepareFragment extends CameraSharedFragment {
             e.printStackTrace();
         }
 
-
         if(mListener!=null)
         {
             mListener.startNextPreview(0);
@@ -134,16 +133,18 @@ public class CameraPrepareFragment extends CameraSharedFragment {
 
     private void setHeightOfOverlay(int shrinkOrEnlarge)
     {
-        final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
+        try {
+            final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
 
-        final FrameLayout placeholderView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
+            final FrameLayout placeholderView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
 
-        //find the overlay that hides part of the preview
-        final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
-        final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+            //find the overlay that hides part of the preview
+            final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
+            final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
 
-        final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
-        final ViewGroup.LayoutParams params = overlay.getLayoutParams();
+            final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
+            final ViewGroup.LayoutParams params = overlay.getLayoutParams();
+
 
         //shrinkOrEnlarge the overlay view based on a factor of its parent height
         switch (shrinkOrEnlarge)
@@ -157,8 +158,6 @@ public class CameraPrepareFragment extends CameraSharedFragment {
                 paramsP.height = ViewGroup.LayoutParams.MATCH_PARENT;
                 break;
         }
-
-        try {
 
             overlay.post(new Runnable() {
 

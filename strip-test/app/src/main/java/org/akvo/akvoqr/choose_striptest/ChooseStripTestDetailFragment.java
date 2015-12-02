@@ -1,14 +1,11 @@
 package org.akvo.akvoqr.choose_striptest;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,7 +16,6 @@ import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -49,13 +45,12 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
         System.out.println("***ChooseStripTestDetailFragment on Create called.");
 
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
+        //setRetainInstance(true);
 
         if(savedInstanceState==null) {
 
             System.out.println("***ChooseStripTestDetailFragment savedInstanceState is null.");
-
+        }
             if (getArguments() != null) {
 
                 this.brandName = getArguments().getString(Constant.BRAND);
@@ -70,13 +65,15 @@ public class ChooseStripTestDetailFragment extends Fragment {
                         // load image as Drawable
 
                         drawable = Drawable.createFromStream(ims, null);
+
+                        ims.close();
                     }
 
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }
+
     }
 
     @Override
@@ -104,20 +101,6 @@ public class ChooseStripTestDetailFragment extends Fragment {
         }
         return rootView;
     }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-         }
 
     private class ChooseBrandOnClickListener implements View.OnClickListener{
 
