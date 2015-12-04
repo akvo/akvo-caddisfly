@@ -53,7 +53,6 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
                         .add(R.id.choose_striptest_detail_container, fragment)
                         .commit();
 
-                //getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandname).getName());
             }
         }
     }

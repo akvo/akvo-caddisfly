@@ -3,6 +3,7 @@ package org.akvo.akvoqr;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,42 +32,43 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 
 public class ResultActivity extends AppCompatActivity {
 
-    private String brandName;
-    private StripTest.Brand brand;
-    private ArrayList<Mat> mats;
-    private Mat strip;
-    private LinearLayout layout;
-    private int testCount = 0;
+
+    private static int countInstance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        Intent intent = getIntent();
-        mats = (ArrayList<Mat>) intent.getSerializableExtra(Constant.MAT);
-        brandName = intent.getStringExtra(Constant.BRAND);
+        countInstance++;
+        System.out.println("***ResultActivity countInstance: " + countInstance);
 
-        if(mats!=null && mats.size()>0) {
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+            //ArrayList<Mat> mats = (ArrayList<Mat>) intent.getSerializableExtra(Constant.MAT);
+            String brandName = intent.getStringExtra(Constant.BRAND);
 
-            layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
-
-            StripTest stripTestBrand = StripTest.getInstance();
-            brand = stripTestBrand.getBrand(brandName);
+            Mat strip;
+            StripTest stripTestBrand = new StripTest(this);
+            StripTest.Brand brand = stripTestBrand.getBrand(brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
             JSONArray imagePatchArray = null;
             try {
-                String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
+                FileStorage fileStorage = new FileStorage(this);
+
+                String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
                 imagePatchArray = new JSONArray(json);
+
                 System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -76,80 +78,91 @@ public class ResultActivity extends AppCompatActivity {
                 //the name of the patch
                 String desc = patches.get(i).getDesc();
 
-                //make sure we have a mat for this patch
-                if (i < mats.size()) {
-                    if(imagePatchArray!=null) {
-                        JSONArray array = null;
-                        try {
-                            array = imagePatchArray.getJSONArray(i);
-                            // get the image number from the json array
-                            int patchNo = array.getInt(1);
+                if (imagePatchArray != null) {
 
-                            strip = mats.get(patchNo).clone();
+                    try {
+                        JSONArray array = imagePatchArray.getJSONArray(i);
+                        // get the image number from the json array
+                        int patchNo = array.getInt(1);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        FileStorage fileStorage = new FileStorage(this);
+                        byte[] data = fileStorage.readByteArray(Constant.STRIP + patchNo);
+                        if (data != null) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                            strip = new Mat();
+                            Utils.bitmapToMat(bitmap, strip);
+
+                            //if the height of the strip is smaller than 1, it means that in DetectStripTask there was
+                            //no data for this patch (there a Mat.zeros object is added to the list of mats)
+                            if (strip!=null && strip.height() > 1) {
+                                double ratioW = strip.width() / brand.getStripLenght();
+
+                                //calculate center of patch in pixels
+                                double x = patches.get(i).getPosition() * ratioW;
+                                double y = strip.height() / 2;
+                                Point centerPatch = new Point(x, y);
+
+                                //set the colours needed to calculate ppm
+                                JSONArray colours = patches.get(i).getColours();
+                                String unit = patches.get(i).getUnit();
+
+                                //testing
+                                System.out.println("***Start ppm calculation: " + i);
+
+                                new BitmapTask(desc, centerPatch, colours, unit).execute(strip);
+                            } else {
+                               // new BitmapTask(desc, null, null, null).execute(strip);
+                                System.out.println("***no strip voor patch: " + i);
+
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                 } else {
-                    continue;
+                    TextView textView = new TextView(this);
+                    textView.setText("no data");
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
+
+                    layout.addView(textView);
                 }
+            }
 
-                //if the height of the strip is smaller than 1, it means that in DetectStripActivity there was
-                //no data for this patch (there a Mat.zeros object is added to the list of mats)
-                if (strip.height() > 1) {
-                    double ratioW = strip.width() / brand.getStripLenght();
+            final FileStorage fileStorage = new FileStorage(this);
 
+            Button save = (Button) findViewById(R.id.activity_resultButtonSave);
+            Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
 
-                    //calculate center of patch in pixels
-                    double x = patches.get(i).getPosition() * ratioW;
-                    double y = strip.height() / 2;
-                    Point centerPatch = new Point(x, y);
-
-                    //set the colours needed to calculate ppm
-                    JSONArray colours = patches.get(i).getColours();
-                    String unit = patches.get(i).getUnit();
-
-                    //testing
-                    System.out.println("***Start ppm calculation: " + i);
-
-                    new BitmapTask(desc, centerPatch, colours, unit).execute(strip);
-                } else {
-                    new BitmapTask(desc, null, null, null).execute(strip);
+            //TODO onclicklistener for save button
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
                 }
+            });
 
-            }
+            redo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    fileStorage.deleteAll();
+                    Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
+                    //intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intentRedo);
+                    ResultActivity.this.finish();
+                }
+            });
+
         }
-        else
-        {
-            TextView textView = new TextView(this);
-            textView.setText("no data");
-            layout.addView(textView);
-        }
-
-        Button save = (Button) findViewById(R.id.activity_resultButtonSave);
-        Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
-
-        //TODO onclicklistener for save button
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        redo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FileStorage.deleteAll();
-                Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
-                intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intentRedo);
-                ResultActivity.this.finish();
-            }
-        });
     }
+
+
 
     private Bitmap makeBitmap(Mat mat)
     {
@@ -191,10 +204,13 @@ public class ResultActivity extends AppCompatActivity {
             this.colours = colours;
             this.unit = unit;
         }
+
         @Override
         protected Void doInBackground(Mat... params) {
 
             Mat mat = params[0];
+
+            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
 
             if(mat.height()<2)
                 return null;
@@ -270,6 +286,8 @@ public class ResultActivity extends AppCompatActivity {
             {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
             }
+
+            LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
             layout.addView(result_ppm_layout);
 

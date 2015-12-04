@@ -1,10 +1,8 @@
 package org.opencv.core;
 
-import java.io.Serializable;
-
 // C++: class Mat
 //javadoc: Mat
-public class Mat implements Serializable {
+public class Mat {
 
     public final long nativeObj;
 

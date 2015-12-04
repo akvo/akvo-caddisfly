@@ -5,11 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.ui.QualityCheckView;
@@ -119,65 +115,15 @@ public class CameraPrepareFragment extends CameraSharedFragment {
 
         try {
             setHeightOfOverlay(0);
+
+            if (mListener != null) {
+                mListener.startNextPreview(0);
+            }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
+
         }
-
-        if(mListener!=null)
-        {
-            mListener.startNextPreview(0);
-        }
-    }
-
-    private void setHeightOfOverlay(int shrinkOrEnlarge)
-    {
-        try {
-            final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
-
-            final FrameLayout placeholderView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
-
-            //find the overlay that hides part of the preview
-            final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
-            final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-
-            final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
-            final ViewGroup.LayoutParams params = overlay.getLayoutParams();
-
-
-        //shrinkOrEnlarge the overlay view based on a factor of its parent height
-        switch (shrinkOrEnlarge)
-        {
-            case 0: //shrink
-                params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                paramsP.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                break;
-            case 1: //enlarge
-                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                paramsP.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                break;
-        }
-
-            overlay.post(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    placeholderView.setLayoutParams(paramsP);
-                    overlay.setLayoutParams(params);
-
-                    //make view slide up
-                    placeholderView.startAnimation(slideUp);
-                    overlay.startAnimation(slideUp);
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
     }
 
     @Override

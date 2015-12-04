@@ -17,22 +17,25 @@ import java.util.List;
  */
 public class ChooseStriptestAdapter extends ArrayAdapter<String> {
 
-    private List<String> instructions;
+    private List<String> brandnames;
     private int resource;
     private Context context;
+    private StripTest stripTest;
+    private StripTest.Brand brand;
+    private List<StripTest.Brand.Patch> patches;
 
-    public ChooseStriptestAdapter(Context context, int resource, List<String> instructions) {
+    public ChooseStriptestAdapter(Context context, int resource, List<String> brandnames) {
         super(context, resource);
 
         this.context = context;
         this.resource = resource;
-        this.instructions = instructions;
-
+        this.brandnames = brandnames;
+        this.stripTest = new StripTest(context);
     }
 
     @Override
     public int getCount() {
-        return instructions.size();
+        return brandnames.size();
     }
 
     @Override
@@ -52,25 +55,27 @@ public class ChooseStriptestAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) view.getTag();
         }
 
-        StripTest.Brand brand = StripTest.getInstance().getBrand(instructions.get(position));
-        List<StripTest.Brand.Patch> patches = brand.getPatches();
-        String subtext = "";
-        for(int i=0;i<patches.size();i++)
-        {
-            subtext += patches.get(i).getDesc() + ", ";
+        if(brandnames!=null) {
+            if(stripTest!=null) {
+               brand = stripTest.getBrand(brandnames.get(position));
+            }
+            if(brand!=null) {
+                patches = brand.getPatches();
+
+                if(patches!=null && patches.size()>0) {
+                    String subtext = "";
+                    for (int i = 0; i < patches.size(); i++) {
+                        subtext += patches.get(i).getDesc() + ", ";
+                    }
+                    int indexLastSep = subtext.lastIndexOf(",");
+                    subtext = subtext.substring(0, indexLastSep);
+                    holder.textView.setText(brand.getName());
+
+                    holder.subtextView.setText(subtext);
+                }
+            }
+            else holder.textView.setText(brandnames.get(position));
         }
-        int indexLastSep = subtext.lastIndexOf(",");
-        subtext = subtext.substring(0, indexLastSep);
-        holder.textView.setText(brand.getName());
-
-        holder.subtextView.setText(subtext);
-
-//        if(position==0) {
-//            holder.imageView.setImageResource(R.drawable.progress_icon_top);
-//        }
-//        else {
-//            holder.imageView.setImageResource(R.drawable.progress_icon_center);
-//        }
         return view;
 
     }

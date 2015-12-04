@@ -4,20 +4,18 @@ import android.graphics.Color;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.color.ColorDetected;
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoint;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfInt4;
-import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.apache.commons.math3.fitting.WeightedObservedPoints;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -334,13 +332,13 @@ public class OpenCVUtils {
         Mat resultStrip = colourStrip.submat(stripArea);
 
         // release Mat objects
-        striparea.release();
-        sArea.release();
-        binary.release();
-        dstBinary.release();
-        dstStrip.release();
-        binaryStrip.release();
-        colourStrip.release();
+//        striparea.release();
+//        sArea.release();
+//        binary.release();
+//        dstBinary.release();
+//        dstStrip.release();
+//        binaryStrip.release();
+//        colourStrip.release();
 
         // sanity check: the strip should be at least larger than half of the black area
         if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5){
@@ -523,7 +521,7 @@ public class OpenCVUtils {
                 (int)Math.round(mean.val[2]));
 
         colorDetected.setColor(color);
-        rgb.release();
+//        rgb.release();
         return colorDetected;
     }
 

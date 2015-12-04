@@ -24,14 +24,21 @@ import java.io.InputStreamReader;
 @SuppressWarnings("HardCodedStringLiteral")
 public class FileStorage {
 
-    public static boolean writeByteArray(byte[] data, int order)
+    private Context context;
+
+    public FileStorage(Context context)
     {
-        String fileName = Constant.DATA + order +".txt";
+        this.context = context;
+    }
+
+    public boolean writeByteArray(byte[] data, String name)
+    {
+        String fileName = name +".txt";
 
         FileOutputStream outputStream;
 
         try {
-            outputStream = App.getMyApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             BufferedOutputStream bos = new BufferedOutputStream(outputStream);
             for (byte s : data) {
                 bos.write(s);
@@ -46,12 +53,12 @@ public class FileStorage {
         return true;
     }
 
-    public static byte[] readByteArray(int order) throws IOException {
-        String fileName = Constant.DATA + order +".txt";
+    public byte[] readByteArray(String name) throws IOException {
+        String fileName = name +".txt";
         byte[] data;
         int c;
 
-        FileInputStream fis = App.getMyApplicationContext().openFileInput(fileName);
+        FileInputStream fis = context.openFileInput(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedInputStream bos = new BufferedInputStream(fis);
 
@@ -70,14 +77,14 @@ public class FileStorage {
         return data;
     }
 
-    public static void writeToInternalStorage(String name, String json)
+    public void writeToInternalStorage(String name, String json)
     {
         String fileName = name +".txt";
 
         FileOutputStream outputStream;
 
         try {
-            outputStream = App.getMyApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             for (byte s : json.getBytes()) {
                 outputStream.write(s);
             }
@@ -87,10 +94,30 @@ public class FileStorage {
         }
     }
 
-    public static String readFromInternalStorage(String fileName)
+    public void writeBitmapToInternalStorage(String name, Bitmap bitmap)
     {
 
-        File file = new File(App.getMyApplicationContext().getFilesDir(), fileName);
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+
+            writeByteArray(baos.toByteArray(), name);
+
+            baos.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String readFromInternalStorage(String fileName)
+    {
+
+        File file = new File(context.getFilesDir(), fileName);
 
         String json = "";
 
@@ -114,9 +141,9 @@ public class FileStorage {
         return null;
     }
 
-    public static void deleteFromInternalStorage(final String contains)
+    public void deleteFromInternalStorage(final String contains)
     {
-        File file = App.getMyApplicationContext().getFilesDir();
+        File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
@@ -132,9 +159,9 @@ public class FileStorage {
         }
     }
 
-    public static void deleteAll()
+    public void deleteAll()
     {
-        File file = App.getMyApplicationContext().getFilesDir();
+        File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {

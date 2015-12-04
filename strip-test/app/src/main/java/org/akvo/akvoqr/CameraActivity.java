@@ -39,7 +39,7 @@ import java.util.List;
 public class CameraActivity extends AppCompatActivity implements CameraViewListener, DetectStripListener {
 
     private Camera mCamera;
-    private FrameLayout preview;
+    private FrameLayout previewLayout;
     private BaseCameraView baseCameraView;
     CameraPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
@@ -50,9 +50,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private LinearLayout progressLayout;
     private CameraSharedFragment currentFragment;
     private MediaPlayer mp;
-    private int previewFormat;
-    private int previewWidth;
-    private int previewHeight;
+    private int previewFormat= -1;
+    private int previewWidth = 0;
+    private int previewHeight = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,9 +90,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             // Create our Preview view and set it as the content of our activity.
             baseCameraView = new BaseCameraView(this, mCamera);
-            preview = (FrameLayout) findViewById(R.id.camera_preview);
-            preview.removeAllViews();
-            preview.addView(baseCameraView);
+            previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
+            previewLayout.removeAllViews();
+            previewLayout.addView(baseCameraView);
 
             //make 'initialising camera' message invisible
             if (progressLayout.getVisibility() == View.VISIBLE) {
@@ -101,7 +101,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             //inflate fragment
             try {
-                currentFragment = CameraPrepareFragment.newInstance();
+                //currentFragment = CameraPrepareFragment.newInstance();
+                currentFragment = CameraStartTestFragment.newInstance(brandName);
                 getSupportFragmentManager().beginTransaction().replace(
                         R.id.activity_cameraFragmentPlaceholder, currentFragment
                 ).commit();
@@ -130,8 +131,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             mCamera = null;
         }
 
-        if (baseCameraView != null) {
-            preview.removeView(baseCameraView);
+        if (baseCameraView != null && previewLayout!=null) {
+            previewLayout.removeView(baseCameraView);
             baseCameraView = null;
         }
 
@@ -144,19 +145,21 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void onStop() {
         Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
-        super.onPause();
+       // super.onPause();
 
         super.onStop();
     }
 
     public void onResume() {
+
         progressLayout.setVisibility(View.VISIBLE);
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
         //Delete all finder pattern info and image data from internal storage
-        FileStorage.deleteFromInternalStorage(Constant.INFO);
-        FileStorage.deleteFromInternalStorage(Constant.DATA);
+        FileStorage fileStorage = new FileStorage(this);
+        fileStorage.deleteFromInternalStorage(Constant.INFO);
+        fileStorage.deleteFromInternalStorage(Constant.DATA);
 
         super.onResume();
 
@@ -171,7 +174,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     }
 
-    //store preview info in global properties for later use
+    //store previewLayout info in global properties for later use
     //called at end of baseCameraView surfaceChanged()
     public void setPreviewProperties()
     {
@@ -180,7 +183,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             previewFormat = mCamera.getParameters().getPreviewFormat();
             previewWidth = mCamera.getParameters().getPreviewSize().width;
             previewHeight = mCamera.getParameters().getPreviewSize().height;
-            //System.out.println("***preview data : " + previewFormat + " " + previewWidth + " " + previewHeight);
+            //System.out.println("***previewLayout data : " + previewFormat + " " + previewWidth + " " + previewHeight);
         }
     }
 
@@ -243,6 +246,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void stopCallback(boolean stop) {
         if(previewCallback!=null)
             previewCallback.setStop(stop);
+
+        if(handler!=null)
+        {
+            handler.removeCallbacks(startNextPreview);
+            handler.removeCallbacks(takeNextPicture);
+        }
     }
 
     @Override
@@ -427,24 +436,28 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             ((CameraStartTestFragment) currentFragment).sendData(data, timeMillis, info);
         }
 
-        //clear the finder pattern view after one second and qualityChecksOK the preview again
+        //clear the finder pattern view after one second and qualityChecksOK the previewLayout again
         showFinderPatterns(null, null, 0);
 
         //clear level indicator
         showLevel(null);
 
-        mCamera.startPreview();
+        if(mCamera!=null)
+            mCamera.startPreview();
     }
 
     @Override
     public void dataSent() {
 
-        System.out.println("***preview data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
+        System.out.println("***previewLayout data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
+
         if(currentFragment instanceof CameraStartTestFragment)
         {
-            ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
-                    previewWidth,
-                    previewHeight);
+            if(previewFormat > 0 && previewWidth > 0 && previewHeight > 0 ) {
+                ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
+                        previewWidth,
+                        previewHeight);
+            }
         }
 
     }
@@ -554,7 +567,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showResults(ArrayList<Mat> resultList) {
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.BRAND, brandName);
-        resultIntent.putExtra(Constant.MAT, resultList);
+        //resultIntent.putExtra(Constant.MAT, resultList);
         startActivity(resultIntent);
 
         this.finish();

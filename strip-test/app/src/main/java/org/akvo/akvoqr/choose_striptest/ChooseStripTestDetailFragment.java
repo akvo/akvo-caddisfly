@@ -43,14 +43,6 @@ public class ChooseStripTestDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println("***ChooseStripTestDetailFragment on Create called.");
-
-        //setRetainInstance(true);
-
-        if(savedInstanceState==null) {
-
-            System.out.println("***ChooseStripTestDetailFragment savedInstanceState is null.");
-        }
             if (getArguments() != null) {
 
                 this.brandName = getArguments().getString(Constant.BRAND);
@@ -96,7 +88,8 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
             AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
             if(appCompatActivity!=null) {
-                appCompatActivity.getSupportActionBar().setTitle(StripTest.getInstance().getBrand(brandName).getName());
+                StripTest stripTest = new StripTest(getActivity());
+                appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(brandName).getName());
             }
         }
         return rootView;
@@ -118,7 +111,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
             intent.putExtra(Constant.BRAND, brand);
             startActivity(intent);
 
-            //getActivity().finish();
+            getActivity().finish();
         }
     }
 

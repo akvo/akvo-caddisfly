@@ -50,7 +50,9 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
 
         int countFragments = 0;
         try {
-            StripTest.Brand brand = StripTest.getInstance().getBrand(getIntent().getStringExtra(Constant.BRAND));
+
+            StripTest stripTest = new StripTest(this);
+            StripTest.Brand brand = stripTest.getBrand(getIntent().getStringExtra(Constant.BRAND));
             instructions = brand.getInstructions();
 
             for(int i=0;i<instructions.length();i++) {

@@ -78,6 +78,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private boolean stop;
     private Mat src_gray = new Mat();
     private int count = 0;
+    private Context context;
 
 
     public CameraPreviewCallback(Context context) {
@@ -86,6 +87,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         } catch (ClassCastException e) {
             throw new ClassCastException(" must implement cameraviewListener");
         }
+
+        this.context = context;
 
         finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/springgreen
 
@@ -122,7 +125,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     }
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
-        byte[] data;
+       // byte[] data;
         FinderPatternInfo info;
 
         @Override
@@ -130,13 +133,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
 
             running = true;
-            data = params[0];
+            byte[] data = params[0];
             try {
 
                 info = findPossibleCenters(data, previewSize);
 
                 //set the focus area to lie between the finder patterns
-                setFocusAreas(info);
+                //setFocusAreas(info);
 
                 //check if quality of image is ok. if OK, value is 1, if not 0
                 //the qualityChecks() method sends messages back to listener to update UI
@@ -316,11 +319,11 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             e.printStackTrace();
             return 0;
         } finally {
-            if(bgr!=null)
-                bgr.release();
-
-            if(src_gray!=null)
-                src_gray.release();
+//            if(bgr!=null)
+//                bgr.release();
+//
+//            if(src_gray!=null)
+//                src_gray.release();
         }
 
         System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
@@ -350,7 +353,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             try
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber, context);
                     shadowTrack.add(shadowPercentage);
                 }
             }
@@ -359,8 +362,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 e.printStackTrace();
             }
             finally {
-                if(warp!=null)
-                    warp.release();
+//                if(warp!=null)
+//                    warp.release();
             }
         }
 

@@ -1,13 +1,13 @@
 package org.akvo.akvoqr.choose_striptest;
 
+import android.content.Context;
+
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.util.App;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,18 +20,19 @@ import java.util.Map;
  */
 public class StripTest{
 
-    public static StripTest instance;
-    private static JSONArray stripsJson;
-    private static Map<String, JSONObject> stripObjects;
+    //public static StripTest instance;
+    private  JSONArray stripsJson;
+    private  Map<String, JSONObject> stripObjects;
 
-    public static StripTest getInstance()
+    public StripTest (Context context)
     {
-        if(instance==null)
-        {
-            instance = new StripTest();
-            fromJson();
-        }
-        return instance;
+//        if(instance==null)
+//        {
+//            instance = new StripTest();
+//            fromJson();
+//        }
+
+        fromJson(context);
     }
 
     public List<String> getBrandsAsList()
@@ -48,7 +49,7 @@ public class StripTest{
         return new Brand(brand);
     }
 
-    public class Brand  implements Serializable
+    public class Brand
     {
         private String name;
         private double stripLenght;
@@ -193,10 +194,11 @@ public class StripTest{
 
         }
     }
-    private static void fromJson()
+
+    private void fromJson(Context context)
     {
-        String filename = App.getMyApplicationContext().getString(R.string.strips_json);
-        String json = AssetsManager.getInstance().loadJSONFromAsset(filename);
+        String filename = context.getString(R.string.strips_json);
+        String json = AssetsManager.getInstance(context).loadJSONFromAsset(filename);
         try {
 
             JSONObject object = new JSONObject(json);

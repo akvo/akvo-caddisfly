@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:src="@drawable/button_arrow_right_selector"
+
         android:scaleType="centerInside"
         android:layout_weight="3"
         android:id="@+id/adapter_instructionsImageView"/>

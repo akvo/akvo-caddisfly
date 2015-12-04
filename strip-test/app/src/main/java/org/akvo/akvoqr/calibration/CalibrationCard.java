@@ -1,5 +1,7 @@
 package org.akvo.akvoqr.calibration;
 
+import android.content.Context;
+
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.Detector;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -32,7 +34,7 @@ public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
-    private static CalibrationData calData;
+   // private static CalibrationData calData;
     public static Map<Integer, Integer> versionNumberMap = new HashMap<>();
     private static int calVersionNumber = CODE_NOT_FOUND;
 
@@ -51,7 +53,7 @@ public class CalibrationCard{
 
         if(calVersionNumber!=versionNumber) {
             calVersionNumber = versionNumber;
-            calData = readCalibrationFile();
+            //calData = readCalibrationFile();
         }
 
         return instance;
@@ -94,10 +96,10 @@ public class CalibrationCard{
         return CODE_NOT_FOUND;
     }
 
-    private static CalibrationData readCalibrationFile(){
+    public CalibrationData readCalibrationFile(Context context){
 
         String calFileName = "calibration" + calVersionNumber + ".json";
-        String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
+        String json = AssetsManager.getInstance(context).loadJSONFromAsset(calFileName);
 
         if(json!=null) {
             try {
@@ -191,7 +193,7 @@ public class CalibrationCard{
     * Samples the white area of a calibration card. This information is used to straighten out the illumination.
     * @result: array of point vectors, with the structure [x,y,L,A,B]
      */
-    public double[][] createWhitePointArray(Mat lab)
+    public double[][] createWhitePointArray(Mat lab, CalibrationData calData)
     {
         List<CalibrationData.WhiteLine> lines = calData.whiteLines;
         int numLines = lines.size() * 10; // on each line, we sample 10 points
@@ -235,8 +237,8 @@ public class CalibrationCard{
     /*
     * Turns the whitepoint array into a matrix
      */
-    private RealMatrix createWhitePointMatrix(Mat lab) {
-        double[][] points = createWhitePointArray(lab);
+    private RealMatrix createWhitePointMatrix(Mat lab, CalibrationData calData) {
+        double[][] points = createWhitePointArray(lab, calData);
         return MatrixUtils.createRealMatrix(points);
     }
 
@@ -244,13 +246,13 @@ public class CalibrationCard{
     * Straightens the illumination of the calibration file. It does this by sampling the white areas
     * and compute a quadratic profile. The image is then corrected using this profile.
      */
-    public Mat doIlluminationCorrection(Mat imgLab){
+    public Mat doIlluminationCorrection(Mat imgLab, CalibrationData calData){
         // create HLS image for homogenous illumination calibration
         int pheight =  imgLab.rows();
         int pwidth = imgLab.cols();
 
 
-        RealMatrix points = createWhitePointMatrix(imgLab);
+        RealMatrix points = createWhitePointMatrix(imgLab, calData);
 
         // create coefficient matrix for all three variables L,A,B
         // the model for all three is y = ax + bx^2 + cy + dy^2 + exy + f
@@ -370,7 +372,7 @@ public class CalibrationCard{
         return imgLab;
     }
 
-    private float[] measurePatch(Mat imgMat, double x, double y){
+    private float[] measurePatch(Mat imgMat, double x, double y, CalibrationData calData){
         float[] LABresult = new float[3];
         float totL = 0;
         float totA = 0;
@@ -409,7 +411,7 @@ public class CalibrationCard{
     * 1) a 1D calibration which looks at the individual L, A, B channels and corrects them
     * 2) a 3d calibration which can mix the L,A,B channels to arrive at optimal results
      */
-    private Mat do1D_3DCorrection(Mat imgMat) throws Exception{
+    private Mat do1D_3DCorrection(Mat imgMat, CalibrationData calData) throws Exception{
 
         if(calData==null) {
             throw new Exception("no calibration data.");
@@ -425,7 +427,7 @@ public class CalibrationCard{
             for (String label : calData.calValues.keySet()) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
-                float[] LABcol = measurePatch(imgMat, loc.x, loc.y); // measure patch colour
+                float[] LABcol = measurePatch(imgMat, loc.x, loc.y, calData); // measure patch colour
                 obsL.add(LABcol[0], cal.CIE_L);
                 obsA.add(LABcol[1], cal.CIE_A);
                 obsB.add(LABcol[2], cal.CIE_B);
@@ -547,8 +549,10 @@ public class CalibrationCard{
         }
     }
 
-    private void addPatch(Mat imgMat, Double x, Double y, CalibrationData.CalValue calValue) {
+    private void addPatch(Mat imgMat, Double x, Double y, CalibrationData calData, String label) {
 
+        Map<String, CalibrationData.CalValue> calValueMap = calData.calValues;
+        CalibrationData.CalValue calValue = calData.calValues.get(label);
         calData.hsizePixel = imgMat.cols();
         double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
         calData.vsizePixel = imgMat.rows();
@@ -568,10 +572,10 @@ public class CalibrationCard{
         }
     }
 
-    private void addCalColours(Mat imgMat) {
+    private void addCalColours(Mat imgMat, CalibrationData calData) {
         for (String label : calData.locations.keySet()){
             CalibrationData.Location loc = calData.locations.get(label);
-            addPatch(imgMat,loc.x,loc.y,calData.calValues.get(label));
+            addPatch(imgMat,loc.x,loc.y,calData, label);
         }
     }
 
@@ -586,29 +590,29 @@ public class CalibrationCard{
      * imgMat: CV_8UC3 (8-bit) Mat object, in BGR encoding.
      * @result: calibrated image
      */
-    public CalibrationResultData calibrateImage(Mat labImg) throws Exception{
+    public CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws Exception{
         System.out.println("*** qualityChecksOK of calibration");
 
         if(calData!=null) {
             // illumination correction
             if(labImg!=null) {
                 System.out.println("*** ILLUM - starting illumination correction");
-                labImg = doIlluminationCorrection(labImg);
+                labImg = doIlluminationCorrection(labImg, calData);
             }
 
             // 1D and 3D colour balance
             if(labImg!=null) {
                 System.out.println("*** ILLUM - starting 1D and 3D balance");
-                labImg = do1D_3DCorrection(labImg);
+                labImg = do1D_3DCorrection(labImg, calData);
             }
 
             // measure quality of the calibration
-            double[] E94Result = computeE94Error(labImg);
+            double[] E94Result = computeE94Error(labImg, calData);
 
             // insert calibration colours in image
             if(labImg!=null) {
                 System.out.println("*** ILLUM - adding colours");
-                addCalColours(labImg);
+                addCalColours(labImg, calData);
             }
 
             CalibrationResultData calResult = new CalibrationResultData(labImg,E94Result[0],E94Result[1]);
@@ -664,7 +668,7 @@ public class CalibrationCard{
     * Computes mean and max E94 distance of calibrated image and the calibration patches
     * @returns: vector of double, with [mean E94, max E94]
      */
-    private double[] computeE94Error(Mat labImg) throws Exception{
+    private double[] computeE94Error(Mat labImg, CalibrationData calData) throws Exception{
         try {
             int num = 0;
             double totE94 = 0;
@@ -672,7 +676,7 @@ public class CalibrationCard{
             for (String label : calData.calValues.keySet()) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
-                float[] LABcol = measurePatch(labImg, loc.x, loc.y); // measure patch colour
+                float[] LABcol = measurePatch(labImg, loc.x, loc.y, calData); // measure patch colour
                 // as both measured and calibration values are in openCV range, we need to normalise the values
                 double E94Dist = E94(LABcol[0], LABcol[1], LABcol[2], cal.CIE_L, cal.CIE_A, cal.CIE_B, true);
                 totE94 += E94Dist;
@@ -863,7 +867,7 @@ public class CalibrationCard{
         return oneCount % 2 != 0; // returns true if parity is odd
     }
 
-    public static CalibrationData getCalData() {
-        return calData;
-    }
+//    public static CalibrationData getCalData() {
+//        return calData;
+//    }
 }

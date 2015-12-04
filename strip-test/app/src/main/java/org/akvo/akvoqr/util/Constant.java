@@ -30,4 +30,5 @@ public class Constant {
     public static final float MAX_LEVEL_DIFF = 2f;
 
     public static final String ERROR = "org.akvo.akvoqr.error";
+    public static final String STRIP = "org.akvo.akvoqr.strip";
 }
