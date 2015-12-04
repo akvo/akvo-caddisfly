@@ -261,25 +261,31 @@ public class CameraDialogFragment extends CameraDialog {
 
         private void setCamera(Camera camera) {
             mCamera = camera;
-            //mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.Parameters parameters = mCamera.getParameters();
 
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
-            parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
-
-            parameters.setExposureCompensation(-2);
+            List<String> supportedWhiteBalance = mCamera.getParameters().getSupportedWhiteBalance();
+            if (supportedWhiteBalance != null && supportedWhiteBalance.contains(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT)) {
+                parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
+            }
 
             List<String> supportedSceneModes = mCamera.getParameters().getSupportedSceneModes();
             if (supportedSceneModes != null && supportedSceneModes.contains(Camera.Parameters.SCENE_MODE_AUTO)) {
                 parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
             }
 
-            parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
-            parameters.setPictureFormat(ImageFormat.JPEG);
-            parameters.setJpegQuality(100);
-            parameters.setZoom(0);
+            List<String> supportedColorEffects = mCamera.getParameters().getSupportedColorEffects();
+            if (supportedColorEffects != null && supportedColorEffects.contains(Camera.Parameters.EFFECT_NONE)) {
+                parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
+            }
+
+            List<Integer> supportedPictureFormats = mCamera.getParameters().getSupportedPictureFormats();
+            if (supportedPictureFormats != null && supportedPictureFormats.contains(ImageFormat.JPEG)) {
+                parameters.setPictureFormat(ImageFormat.JPEG);
+                parameters.setJpegQuality(100);
+            }
 
             List<String> focusModes = parameters.getSupportedFocusModes();
 
@@ -299,18 +305,15 @@ public class CameraDialogFragment extends CameraDialog {
                 parameters.setMeteringAreas(meteringAreas);
             }
 
-//            if (parameters.getMaxNumFocusAreas() > 0) {
-//                List<Camera.Area> focusAreas = new ArrayList<>();
-//                Rect areaRect1 = new Rect(-100, -100, 100, 100);
-//                focusAreas.add(new Camera.Area(areaRect1, 1000));
-//                parameters.setFocusAreas(focusAreas);
-//            }
-
             if (mSupportedFlashModes != null) {
                 if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 }
             }
+
+            parameters.setExposureCompensation(-2);
+
+            parameters.setZoom(0);
 
             mCamera.setDisplayOrientation(90);
 

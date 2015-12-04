@@ -54,7 +54,7 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
         String testCode = getArguments().getString("testCode");
 
         final EditTextPreference sampleIntervalPreference =
-                (EditTextPreference) findPreference(getString(R.string.fluorIntervalMinutesKey));
+                (EditTextPreference) findPreference(getString(R.string.fluor_IntervalMinutesKey));
         if (sampleIntervalPreference != null) {
 
             sampleIntervalPreference.setSummary(String.format("Every %s minutes", sampleIntervalPreference.getText()));
@@ -78,7 +78,7 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
         }
 
         final EditTextPreference samplesPreference =
-                (EditTextPreference) findPreference(getString(R.string.fluorNumberOfSamplesKey));
+                (EditTextPreference) findPreference(getString(R.string.fluor_NumberOfSamplesKey));
         if (samplesPreference != null) {
             samplesPreference.setSummary(samplesPreference.getText());
 

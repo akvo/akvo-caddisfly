@@ -89,13 +89,20 @@ public class TimeLapseActivity extends BaseActivity {
                     break;
             }
 
-            textSampleCount.setText(String.format("%s: %d", "Samples done", folder.listFiles().length));
-
             int delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    mTestCode + "_intervalMinutes", "1"));
+                    mTestCode + "_IntervalMinutes", "1"));
 
-            futureDate = Calendar.getInstance();
-            futureDate.add(Calendar.MINUTE, delayMinute);
+            int numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                    mTestCode + "_NumberOfSamples", "1"));
+
+            if (folder.listFiles().length >= numberOfSamples) {
+                TurbidityConfig.stopRepeatingAlarm(context, mTestCode);
+                finish();
+            } else {
+                textSampleCount.setText(String.format("%s: %d", "Samples done", folder.listFiles().length));
+                futureDate = Calendar.getInstance();
+                futureDate.add(Calendar.MINUTE, delayMinute);
+            }
         }
     };
 
@@ -208,7 +215,7 @@ public class TimeLapseActivity extends BaseActivity {
 
                         TextView textInterval = (TextView) findViewById(R.id.textInterval);
                         int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                                mTestCode + "_intervalMinutes", "1"));
+                                mTestCode + "_IntervalMinutes", "1"));
 
                         textInterval.setText(String.format("Every %d minutes", interval));
 
