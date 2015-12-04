@@ -31,7 +31,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -107,20 +106,20 @@ public final class ExternalCameraFragment extends CameraDialog {
     private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
         @Override
         public void onAttach(final UsbDevice device) {
-            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
             if (DEBUG) Log.v(TAG, "onConnect:");
             mHandler.openCamera(ctrlBlock);
-            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_CONNECTED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_CONNECTED", Toast.LENGTH_SHORT).show();
             startPreview();
         }
 
         @Override
         public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
-            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
             if (mHandler != null) {
                 mHandler.closeCamera();
             }
@@ -128,7 +127,7 @@ public final class ExternalCameraFragment extends CameraDialog {
 
         @Override
         public void onDetach(final UsbDevice device) {
-            Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
 
 

@@ -19,14 +19,14 @@
         <EditTextPreference
             android:defaultValue="5"
             android:dialogMessage="Interval in minutes (max 360)"
-            android:key="@string/turbiditySampleIntervalMinutesKey"
+            android:key="@string/fluorIntervalMinutesKey"
             android:maxLength="3"
             android:numeric="integer"
             android:title="Sampling interval" />
         <EditTextPreference
             android:defaultValue="12"
             android:dialogMessage="Number of samples (max 50)"
-            android:key="@string/turbidityNumberOfSamplesKey"
+            android:key="@string/fluorNumberOfSamplesKey"
             android:maxLength="2"
             android:numeric="integer"
             android:title="Number of samples" />

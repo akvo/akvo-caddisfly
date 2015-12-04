@@ -83,7 +83,8 @@
                 android:layout_marginTop="-30dp" />
 
             <org.akvo.caddisfly.widget.CrossHairView
-                android:layout_width="240dp"
+                android:id="@+id/crossHairView"
+                android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>

@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.sensor.turbidity;
 
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ShakeDetector;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.opencv.android.BaseLoaderCallback;
@@ -52,20 +54,6 @@ public class TimeLapseActivity extends BaseActivity {
     private TextView textSampleCount;
     private TextView textCountdown;
     private Calendar futureDate;
-    private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            File folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
-                    intent.getStringExtra(Intent.EXTRA_TEXT));
-            textSampleCount.setText(String.format("%s: %d", "Samples done", folder.listFiles().length));
-
-            int delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    R.string.sampleIntervalMinutesKey, "1"));
-
-            futureDate = Calendar.getInstance();
-            futureDate.add(Calendar.MINUTE, delayMinute);
-        }
-    };
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
     private boolean mWaitingForStillness = false;
@@ -83,6 +71,31 @@ public class TimeLapseActivity extends BaseActivity {
                 }
                 break;
             }
+        }
+    };
+    private String mTestCode;
+    private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            File folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
+                    intent.getStringExtra(Intent.EXTRA_TEXT));
+
+            mTestCode = getIntent().getDataString();
+            switch (mTestCode) {
+                case "fluor":
+                    folder = FileHelper.getFilesDir(FileHelper.FileType.FLUORIDE_IMAGE,
+                            intent.getStringExtra(Intent.EXTRA_TEXT));
+                    break;
+            }
+
+            textSampleCount.setText(String.format("%s: %d", "Samples done", folder.listFiles().length));
+
+            int delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                    mTestCode + "_intervalMinutes", "1"));
+
+            futureDate = Calendar.getInstance();
+            futureDate.add(Calendar.MINUTE, delayMinute);
         }
     };
 
@@ -118,19 +131,44 @@ public class TimeLapseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_lapse);
 
+        mTestCode = getIntent().getDataString();
+
         setTitle("Analyzing");
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.layoutContent4, new TimeLapsePreferenceFragment())
-                .commit();
 
         final LinearLayout layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
         final LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
 
+        Fragment fragment = null;
+        Bundle bundle = new Bundle();
+
+
+        final TextView textTitle = (TextView) findViewById(R.id.textTitle);
+        switch (mTestCode) {
+            case "fluor":
+                fragment = new LiquidTimeLapsePreferenceFragment();
+                bundle.putString("textCode", mTestCode);
+                fragment.setArguments(bundle);
+
+                textTitle.setText("Fluoride");
+                break;
+            case "colif":
+                fragment = new TimeLapsePreferenceFragment();
+                bundle.putString("textCode", mTestCode);
+                fragment.setArguments(bundle);
+
+                textTitle.setText("Coliform");
+                break;
+        }
+
+        getFragmentManager().beginTransaction()
+                .add(R.id.layoutContent4, fragment)
+                .commit();
+
         layoutWait.setVisibility(View.VISIBLE);
         layoutDetails.setVisibility(View.GONE);
 
-        if (TurbidityConfig.isAlarmRunning(this)) {
+        if (TurbidityConfig.isAlarmRunning(this, mTestCode)) {
             Log.e("TimeLapse", "Already Running Alarm");
         } else {
 
@@ -159,7 +197,7 @@ public class TimeLapseActivity extends BaseActivity {
                         Calendar startDate = Calendar.getInstance();
                         PreferencesUtil.setString(context, R.string.turbiditySavePathKey,
                                 new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
-                        TurbidityConfig.setRepeatingAlarm(context, 10000);
+                        TurbidityConfig.setRepeatingAlarm(context, 10000, mTestCode);
 
                         String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
                         ((TextView) findViewById(R.id.textSubtitle))
@@ -170,7 +208,7 @@ public class TimeLapseActivity extends BaseActivity {
 
                         TextView textInterval = (TextView) findViewById(R.id.textInterval);
                         int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                                R.string.sampleIntervalMinutesKey, "1"));
+                                mTestCode + "_intervalMinutes", "1"));
 
                         textInterval.setText(String.format("Every %d minutes", interval));
 
@@ -209,10 +247,10 @@ public class TimeLapseActivity extends BaseActivity {
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
 
-        Toast.makeText(this, "Coliforms test stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Test stopped", Toast.LENGTH_LONG).show();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this);
+        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(mShakeDetector);
         }
@@ -223,7 +261,7 @@ public class TimeLapseActivity extends BaseActivity {
         super.onBackPressed();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this);
+        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(mShakeDetector);
         }
@@ -246,10 +284,10 @@ public class TimeLapseActivity extends BaseActivity {
             mSensorManager.unregisterListener(mShakeDetector);
         }
 
-        Toast.makeText(this, "Coliforms test stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Test stopped", Toast.LENGTH_LONG).show();
 
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this);
+        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
     }
 }

@@ -23,6 +23,8 @@ import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -32,6 +34,7 @@ import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
+import org.akvo.caddisfly.widget.CrossHairView;
 
 import java.util.List;
 
@@ -94,8 +97,17 @@ public class AlignmentActivity extends BaseActivity {
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        FrameLayout layoutCameraPreview = (FrameLayout) findViewById(R.id.layoutCameraPreview);
         if (usbDeviceList.size() > 0) {
             mCameraDialog = ExternalCameraFragment.newInstance();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutCameraPreview.getLayoutParams();
+            params.topMargin = 0;
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            layoutCameraPreview.setLayoutParams(params);
+
+            CrossHairView crossHairView = (CrossHairView) findViewById(R.id.crossHairView);
+            crossHairView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         } else {
             mCameraDialog = CameraDialogFragment.newInstance();
         }

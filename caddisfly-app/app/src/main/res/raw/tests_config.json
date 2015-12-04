@@ -15,7 +15,7 @@
         "unit": "ppm",
         "calibrate": "true",
         "ranges": "0,0.5,1,1.5,2",
-        "defaultColors": "ff26ba,ff3381,ff3b59,ff3e37,ff5122",
+        "defaultColors": "FD14A6,FF227B,F63B49,E65E28,D46C0A",
         "dilutions": "0,50,20",
         "monthsValid": "12"
       },

@@ -28,7 +28,7 @@ import android.view.TextureView;
  * if you set this view with in a FrameLayout and set property "android:layout_gravity="center",
  * you can show this view in the center of screen and keep the aspect ratio of content
  */
-public class UVCCameraTextureView extends TextureView    // API >= 14
+public class UVCCameraTextureView extends TextureView
         implements TextureView.SurfaceTextureListener, CameraViewInterface {
 
     private static final boolean DEBUG = true;    // TODO set false on release
@@ -169,5 +169,4 @@ public class UVCCameraTextureView extends TextureView    // API >= 14
             return mTempBitmap;
         }
     }
-
 }

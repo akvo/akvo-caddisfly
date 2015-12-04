@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.turbidity;
+package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -33,18 +33,18 @@ import org.akvo.caddisfly.util.ListViewUtil;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimeLapsePreferenceFragment extends PreferenceFragment {
+public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public TimeLapsePreferenceFragment() {
+    public LiquidTimeLapsePreferenceFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_turbidity);
+        addPreferencesFromResource(R.xml.pref_fluoride);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
         String testCode = getArguments().getString("testCode");
 
         final EditTextPreference sampleIntervalPreference =
-                (EditTextPreference) findPreference(getString(R.string.turbiditySampleIntervalMinutesKey));
+                (EditTextPreference) findPreference(getString(R.string.fluorIntervalMinutesKey));
         if (sampleIntervalPreference != null) {
 
             sampleIntervalPreference.setSummary(String.format("Every %s minutes", sampleIntervalPreference.getText()));
@@ -78,7 +78,7 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
         }
 
         final EditTextPreference samplesPreference =
-                (EditTextPreference) findPreference(getString(R.string.turbidityNumberOfSamplesKey));
+                (EditTextPreference) findPreference(getString(R.string.fluorNumberOfSamplesKey));
         if (samplesPreference != null) {
             samplesPreference.setSummary(samplesPreference.getText());
 

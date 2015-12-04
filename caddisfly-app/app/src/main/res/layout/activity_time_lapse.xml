@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-light"
-            android:text="Coliforms"
             android:textColor="#fff"
             android:textSize="30sp" />
 
