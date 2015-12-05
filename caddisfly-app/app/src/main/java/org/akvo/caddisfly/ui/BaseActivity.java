@@ -89,7 +89,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
+            try {
+                setSupportActionBar(toolbar);
+            } catch (Throwable t) {
+                //Ignore crash in Samsung
+            }
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

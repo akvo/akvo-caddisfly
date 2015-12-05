@@ -37,6 +37,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ShakeDetector;
+import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -51,6 +52,7 @@ import java.util.Locale;
 
 public class TimeLapseActivity extends BaseActivity {
 
+    private SoundPoolPlayer sound;
     private TextView textSampleCount;
     private TextView textCountdown;
     private Calendar futureDate;
@@ -77,6 +79,8 @@ public class TimeLapseActivity extends BaseActivity {
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            sound.playShortResource(R.raw.beep);
 
             File folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
                     intent.getStringExtra(Intent.EXTRA_TEXT));
@@ -142,6 +146,7 @@ public class TimeLapseActivity extends BaseActivity {
 
         setTitle("Analyzing");
 
+        sound = new SoundPoolPlayer(this);
 
         final LinearLayout layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
         final LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);

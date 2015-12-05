@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 23
         versionName "0.95 Beta"
         versionCode 95
