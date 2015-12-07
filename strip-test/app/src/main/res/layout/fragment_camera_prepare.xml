@@ -75,7 +75,6 @@
         android:layout_above="@+id/activity_cameraStartButton"
         android:layout_margin="5dp"
         android:gravity="center_vertical"
-        android:text="0"
         android:id="@+id/activity_cameraPrepareCountQualityView"/>
 
     <Button

@@ -92,7 +92,7 @@ public class ChooseStriptestListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, null);
+        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container);
         return view;
     }
 
