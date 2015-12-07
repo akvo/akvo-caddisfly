@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChooseStriptestListFragmentII.OnFragmentInteractionListener} interface
+ * {@link Callbacks} interface
  * to handle interaction events.
  */
 public class ChooseStriptestListFragmentII extends ListFragment {
 
-    private OnFragmentInteractionListener mListener;
+    private Callbacks mListener;
     private ChooseStriptestAdapter adapter;
     private StripTest stripTest;
     private List<String> brandnames;
@@ -36,7 +36,7 @@ public class ChooseStriptestListFragmentII extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.fragment_blank, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_choose_striptest_list, container, false);
 
         if(stripTest==null)
             stripTest = StripTest.getInstance(getActivity());
@@ -66,8 +66,8 @@ public class ChooseStriptestListFragmentII extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) activity;
+        if (activity instanceof Callbacks) {
+            mListener = (Callbacks) activity;
         } else {
             throw new RuntimeException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -83,7 +83,7 @@ public class ChooseStriptestListFragmentII extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
-        mListener.onFragmentInteraction(brandnames.get(position));
+        mListener.onItemSelected(brandnames.get(position));
     }
 
     /**
@@ -96,8 +96,8 @@ public class ChooseStriptestListFragmentII extends ListFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface Callbacks {
 
-        void onFragmentInteraction(String brandname);
+        void onItemSelected(String brandname);
     }
 }

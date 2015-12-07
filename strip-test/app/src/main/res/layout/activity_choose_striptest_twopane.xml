@@ -31,11 +31,16 @@
             android:layout_weight="1"
             >
 
-            <fragment android:id="@+id/choose_striptest_list"
-                android:name="org.akvo.akvoqr.choose_striptest.ChooseStriptestListFragment"
+            <!--<fragment android:id="@+id/choose_striptest_list"-->
+                <!--android:name="org.akvo.akvoqr.choose_striptest.ChooseStriptestListFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--tools:layout="@android:layout/list_content" />-->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout="@android:layout/list_content" />
+                android:id="@+id/activity_choose_striptestFragmentPlaceholder">
+            </FrameLayout>
 
         </LinearLayout>
 
