@@ -39,7 +39,7 @@ public class ChooseStriptestListFragmentII extends ListFragment {
         View rootview = inflater.inflate(R.layout.fragment_blank, container, false);
 
         if(stripTest==null)
-            stripTest = new StripTest(getActivity());
+            stripTest = StripTest.getInstance(getActivity());
 
         brandnames = stripTest.getBrandsAsList();
 

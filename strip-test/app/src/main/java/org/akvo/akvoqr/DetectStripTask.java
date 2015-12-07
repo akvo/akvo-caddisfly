@@ -85,7 +85,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
         String brandname = intent.getStringExtra(Constant.BRAND);
 
-        StripTest stripTest = new StripTest(context);
+        StripTest stripTest = StripTest.getInstance(context);
         int numPatches = stripTest.getBrand(brandname).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
@@ -99,8 +99,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
         JSONArray imagePatchArray = null;
         int imageCount = -1;
-        Mat labImg;// Mat for image from NV21 data
-        Mat labStrip = new Mat();// Mat for detected strip
+        Mat labImg; // Mat for image from NV21 data
+        Mat labStrip; // Mat for detected strip
 
         try {
             String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
@@ -248,16 +248,10 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                     }
                 }
             } catch (Exception e) {
+
                 listener.showError(5);
-
-                //create a Mat object with no meaningfull content
-                //labStrip = Mat.zeros(1, 1, CvType.CV_8UC3);
-
                 continue;
             }
-
-
-
         }
         listener.showMessage(3);
         return null;
@@ -266,14 +260,15 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
 
-        System.out.println("***onPostExecute DetectStripTask");
+        //System.out.println("***onPostExecute DetectStripTask");
 
         if(listener!=null) {
 
             listener.showResults();
         }
         else {
-            System.out.println("***listener is null");
+            //System.out.println("***listener is null");
+            //TODO what now?
         }
     }
 

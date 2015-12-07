@@ -30,7 +30,7 @@ public class ChooseStriptestAdapter extends ArrayAdapter<String> {
         this.context = context;
         this.resource = resource;
         this.brandnames = brandnames;
-        this.stripTest = new StripTest(context);
+        this.stripTest = StripTest.getInstance(context);
     }
 
     @Override

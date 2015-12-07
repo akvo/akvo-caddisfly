@@ -76,7 +76,7 @@ public class ChooseStriptestListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState==null) {
-            StripTest stripTest = new StripTest(getActivity());
+            StripTest stripTest = StripTest.getInstance(getActivity());
 
             brandnames = stripTest.getBrandsAsList();
 

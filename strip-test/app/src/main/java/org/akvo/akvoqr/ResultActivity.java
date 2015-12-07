@@ -55,7 +55,7 @@ public class ResultActivity extends AppCompatActivity {
             String brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
-            StripTest stripTestBrand = new StripTest(this);
+            StripTest stripTestBrand = StripTest.getInstance(this);
             StripTest.Brand brand = stripTestBrand.getBrand(brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();

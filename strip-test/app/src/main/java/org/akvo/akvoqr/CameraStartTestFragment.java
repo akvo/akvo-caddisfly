@@ -108,7 +108,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
-            StripTest stripTest = new StripTest(getActivity());
+            StripTest stripTest = StripTest.getInstance(getActivity());
             //get the patches ordered by time-lapse
             patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
 
