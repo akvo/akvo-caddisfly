@@ -62,7 +62,7 @@ import java.util.List;
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
-    //    private static int countInstance = 0;
+//    private static int countInstance = 0;
 //    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -77,7 +77,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private boolean running;
     private boolean stop;
     private Mat src_gray = new Mat();
-    private int count = 0;
     private Context context;
 
 
@@ -101,7 +100,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
-        count ++;
+//        count ++;
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
@@ -353,7 +352,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             try
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber, context);
+                    CalibrationCard card = CalibrationCard.getInstance(context);
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, card);
                     shadowTrack.add(shadowPercentage);
                 }
             }
@@ -550,8 +550,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
 //                            System.out.println("***versionNumber: " + versionNumber);
-                            CalibrationCard.addVersionNumber(versionNumber);
-
+                            if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
+                                CalibrationCard.addVersionNumber(versionNumber);
+                            }
                             //testing
 //                            Random random = new Random();
 //                            CalibrationCard.addVersionNumber(random.nextInt(10));

@@ -322,8 +322,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
     private void divideIntoCalibrationAndStripArea(Context context) throws Exception{
 
-        CalibrationCard calibrationCard = CalibrationCard.getInstance();
-        CalibrationData data = calibrationCard.readCalibrationFile(context);
+        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
+        CalibrationData data = calibrationCard.getCalData();
 
         if (warp_dst!=null && data != null) {
 
@@ -355,12 +355,12 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     {
         //System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
 
-        CalibrationCard calibrationCard = CalibrationCard.getInstance();
+        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
         if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND)
         {
             throw new Exception("no version number set.");
         }
-        CalibrationData data = calibrationCard.readCalibrationFile(context);
+        CalibrationData data = calibrationCard.getCalData();
         return calibrationCard.calibrateImage(mat, data);
 
     }

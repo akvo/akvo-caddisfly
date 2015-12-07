@@ -38,15 +38,15 @@ import java.util.List;
 public class ResultActivity extends AppCompatActivity {
 
 
-    private static int countInstance = 0;
+//    private static int countInstance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        countInstance++;
-        System.out.println("***ResultActivity countInstance: " + countInstance);
+//        countInstance++;
+//        System.out.println("***ResultActivity countInstance: " + countInstance);
 
         if (savedInstanceState == null) {
 
@@ -85,13 +85,13 @@ public class ResultActivity extends AppCompatActivity {
 
                         JSONArray array = imagePatchArray.getJSONArray(i);
                         // get the image number from the json array
-                        int patchNo = array.getInt(1);
+                        int imageNo = array.getInt(0);
 
-                        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + patchNo + Constant.ERROR);
+                        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
 
                         String error = isInvalidStrip? Constant.ERROR: "";
 
-                            byte[] data = fileStorage.readByteArray(Constant.STRIP + patchNo + error);
+                            byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
                             if (data != null) {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
@@ -109,13 +109,14 @@ public class ResultActivity extends AppCompatActivity {
                                 JSONArray colours = patches.get(i).getColours();
                                 String unit = patches.get(i).getUnit();
 
-
                                 new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
 
                             }
 
                     } catch (Exception e) {
+
                         e.printStackTrace();
+                        continue;
                     }
                 }
             } else {
@@ -319,7 +320,6 @@ public class ResultActivity extends AppCompatActivity {
         // The table holds [L, a, b, ppm value]
         double[][] interpolTable = new double[colours.length() * INTERPOLNUM][4];
 
-        CalibrationCard calCard = CalibrationCard.getInstance();
         int count = 0;
         for (int i = 0; i < colours.length() - 1; i++) {
             try {
@@ -375,6 +375,7 @@ public class ResultActivity extends AppCompatActivity {
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
 
+        CalibrationCard calCard = CalibrationCard.getInstance(this);
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize

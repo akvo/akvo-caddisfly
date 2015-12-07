@@ -34,26 +34,14 @@ public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
-   // private static CalibrationData calData;
+    private static CalibrationData calData;
     public static Map<Integer, Integer> versionNumberMap = new HashMap<>();
-    private static int calVersionNumber = CODE_NOT_FOUND;
 
-    //Constructor to use if versionNumber is set previously or does not matter
-    public static CalibrationCard getInstance()
-    {
-        return getInstance(getMostFrequentVersionNumber());
-    }
-
-    public static CalibrationCard getInstance(int versionNumber)
+    public static CalibrationCard getInstance(Context context)
     {
         if(instance==null) {
             instance = new CalibrationCard();
-
-        }
-
-        if(calVersionNumber!=versionNumber) {
-            calVersionNumber = versionNumber;
-            //calData = readCalibrationFile();
+            calData = readCalibrationFile(context);
         }
 
         return instance;
@@ -90,15 +78,17 @@ public class CalibrationCard{
         }
 
         //return the first match (hopefully there will be one and only one match)
-        if(versionNumbers.size()>0)
+        if(versionNumbers.size()>0) {
+
             return versionNumbers.get(0);
+        }
 
         return CODE_NOT_FOUND;
     }
 
-    public CalibrationData readCalibrationFile(Context context){
+    private static CalibrationData readCalibrationFile(Context context){
 
-        String calFileName = "calibration" + calVersionNumber + ".json";
+        String calFileName = "calibration" + getMostFrequentVersionNumber() + ".json";
         String json = AssetsManager.getInstance(context).loadJSONFromAsset(calFileName);
 
         if(json!=null) {
@@ -867,7 +857,7 @@ public class CalibrationCard{
         return oneCount % 2 != 0; // returns true if parity is odd
     }
 
-//    public static CalibrationData getCalData() {
-//        return calData;
-//    }
+    public CalibrationData getCalData() {
+        return calData;
+    }
 }
