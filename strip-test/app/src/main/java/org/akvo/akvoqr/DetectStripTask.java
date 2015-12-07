@@ -330,10 +330,10 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
                 ratioW = warp_dst.width() / hsize;
                 ratioH = warp_dst.height() / vsize;
-                Point stripTopLeft = new Point(area[0] * ratioW + 2,
-                        area[1] * ratioH + 2);
-                Point stripBottomRight = new Point(area[2] * ratioW - 2,
-                        area[3] * ratioH - 2);
+                Point stripTopLeft = new Point(area[0] * ratioW + Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
+                        area[1] * ratioH + Constant.PIXEL_MARGIN_STRIP_AREA_HEIGHT);
+                Point stripBottomRight = new Point(area[2] * ratioW - Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
+                        area[3] * ratioH - Constant.PIXEL_MARGIN_STRIP_AREA_HEIGHT);
 
                 //striparea rect
                 roiStriparea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
