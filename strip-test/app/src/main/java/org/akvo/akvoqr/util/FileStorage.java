@@ -119,9 +119,9 @@ public class FileStorage {
 
         File file = new File(context.getFilesDir(), fileName);
 
-        String json = "";
-
         try {
+
+            String json = "";
             FileInputStream fis = new FileInputStream(file);
             DataInputStream in = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -141,8 +141,9 @@ public class FileStorage {
         return null;
     }
 
-    public void deleteFromInternalStorage(final String contains)
+    public boolean checkIfFilenameContainsString(final String contains)
     {
+
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
@@ -151,21 +152,20 @@ public class FileStorage {
             }
         };
         File[] files = file.listFiles(filter);
-        for(File f: files)
-        {
-            boolean deleted = f.delete();
 
-            System.out.println("***deleted file : " + f.getName() + ": " + deleted);
-        }
+        System.out.println("***files that contain string: " + files.length);
+
+        return files.length>0;
+
     }
 
-    public void deleteAll()
+    public void deleteFromInternalStorage(final String contains)
     {
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                return filename.contains(Constant.DATA);
+                return filename.contains(contains);
             }
         };
         File[] files = file.listFiles(filter);

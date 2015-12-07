@@ -27,10 +27,7 @@ import org.akvo.akvoqr.util.FileStorage;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,8 +98,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
             //inflate fragment
             try {
-                //currentFragment = CameraPrepareFragment.newInstance();
-                currentFragment = CameraStartTestFragment.newInstance(brandName);
+                currentFragment = CameraPrepareFragment.newInstance();
+                //currentFragment = CameraStartTestFragment.newInstance(brandName);
                 getSupportFragmentManager().beginTransaction().replace(
                         R.id.activity_cameraFragmentPlaceholder, currentFragment
                 ).commit();
@@ -160,6 +157,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         FileStorage fileStorage = new FileStorage(this);
         fileStorage.deleteFromInternalStorage(Constant.INFO);
         fileStorage.deleteFromInternalStorage(Constant.DATA);
+        fileStorage.deleteFromInternalStorage(Constant.STRIP);
 
         super.onResume();
 
@@ -325,11 +323,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             currentFragment = CameraStartTestFragment.newInstance(brandName);
 
         }
-       // System.out.println("***currentFragment: " + currentFragment.toString());
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_cameraFragmentPlaceholder, currentFragment)
-                        //.addToBackStack(null)
                 .commit();
 
     }
@@ -564,13 +560,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void showImage(Bitmap bitmap){ }
 
     @Override
-    public void showResults(ArrayList<Mat> resultList) {
+    public void showResults() {
+
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.BRAND, brandName);
-        //resultIntent.putExtra(Constant.MAT, resultList);
         startActivity(resultIntent);
 
-        this.finish();
+        //this.finish();
     }
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
@@ -583,21 +579,17 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 case LoaderCallbackInterface.SUCCESS: {
                     Log.i("", "OpenCV loaded successfully");
 
-                    if(mCamera!=null)
-                    {
-                        Log.d(TAG, "mCamera is not null");
-
-                        try {
-                            mCamera.reconnect();
-                            mCamera.startPreview();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else
-                    {
-
-                    }
+//                    if(mCamera!=null)
+//                    {
+//                        Log.d(TAG, "mCamera is not null");
+//
+//                        try {
+//                            mCamera.reconnect();
+//                            mCamera.startPreview();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
 
                     init();
                 }

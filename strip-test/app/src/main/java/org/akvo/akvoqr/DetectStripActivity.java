@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.util.Constant;
-import org.opencv.core.Mat;
-
-import java.util.ArrayList;
 
 public class DetectStripActivity extends AppCompatActivity implements DetectStripListener{
 
@@ -44,7 +41,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
     }
 
     @Override
-    public void showResults(final ArrayList<Mat> resultList) {
+    public void showResults() {
 
 
         redoTestButton.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +59,6 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
             public void onClick(View v) {
                 Intent resultIntent = new Intent(DetectStripActivity.this, ResultActivity.class);
                 resultIntent.putExtra(Constant.BRAND, brandName);
-                resultIntent.putExtra(Constant.MAT, resultList);
                 startActivity(resultIntent);
                 //DetectStripActivity.this.finish();
             }

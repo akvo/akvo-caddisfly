@@ -24,14 +24,11 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by linda on 11/18/15.
  */
-public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
-
-    public static ArrayList<Mat> resultList = new ArrayList<>();
+public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
     int format;
     int width;
@@ -42,11 +39,11 @@ public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
     org.opencv.core.Rect roiCalarea = null;
     Mat warp_dst;
     Mat cal_dest;
-    private boolean develop = false;
     private DetectStripListener listener;
     private Context context;
     private FileStorage fileStorage;
     private Bitmap bitmap;
+    private boolean develop = false;
 
     public DetectStripTask(Context listener) {
 
@@ -79,7 +76,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
     }
 
     @Override
-    protected ArrayList doInBackground(Intent... params) {
+    protected Void doInBackground(Intent... params) {
 
         Intent intent = params[0];
 
@@ -135,7 +132,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
 
                         //make a L,A,B Mat object from data
                         try {
-                           labImg = makeLab(data);
+                            labImg = makeLab(data);
                         } catch (Exception e) {
                             listener.showError(0);
                             continue;
@@ -196,6 +193,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
                             listener.showImage(bitmap);
                         }
+
                         Mat striparea = null;
                         if (roiStriparea != null)
                             striparea = cal_dest.submat(roiStriparea);
@@ -205,56 +203,74 @@ public class DetectStripTask extends AsyncTask<Intent,Void, ArrayList> {
 
                             StripTest.Brand brand = stripTest.getBrand(brandname);
 
-                            Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+                            Mat strip = null;
+                            try {
+                                 strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
 
+                            String error = "";
                             if (strip != null) {
+
                                 labStrip = strip.clone();
 
                             } else {
                                 listener.showError(4);
                                 labStrip = striparea.clone();
 
+                                error = Constant.ERROR;
+
                                 //draw a red cross over the image
+                                //TODO what is red in Lab schema?
+                                Scalar red = new Scalar(53.233, 80.109, 67.220, 255);
                                 Imgproc.line(labStrip, new Point(0, 0), new Point(labStrip.cols(),
-                                        labStrip.rows()), new Scalar(255, 0, 0, 255), 2);
+                                        labStrip.rows()), red, 2);
                                 Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),
-                                        0), new Scalar(255, 0, 0, 255), 2);
+                                        0), red, 2);
                             }
+
+                            try {
+                                Mat rgb = new Mat();
+                                Imgproc.cvtColor(labStrip, rgb, Imgproc.COLOR_Lab2RGB);
+                                bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(rgb, bitmap);
+                                fileStorage.writeBitmapToInternalStorage(Constant.STRIP + i + error, bitmap);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
                 }
             } catch (Exception e) {
                 listener.showError(5);
-                //place a Mat object in result list. This is necessary for ResultActivity to work
-                //because we are counting patches, not mats
-                labStrip = Mat.zeros(1, 1, CvType.CV_8UC4);
-                //resultList.add(mat);
+
+                //create a Mat object with no meaningfull content
+                //labStrip = Mat.zeros(1, 1, CvType.CV_8UC3);
+
                 continue;
             }
 
-            Mat rgb = new Mat();
-            Imgproc.cvtColor(labStrip, rgb, Imgproc.COLOR_Lab2RGB);
-            bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(rgb, bitmap);
-            fileStorage.writeBitmapToInternalStorage(Constant.STRIP + i, bitmap);
+
 
         }
         listener.showMessage(3);
-        return resultList;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(ArrayList resultList) {
+    protected void onPostExecute(Void result) {
 
         System.out.println("***onPostExecute DetectStripTask");
 
         if(listener!=null) {
-            if (resultList != null) {
-                listener.showResults(resultList);
-            }
-            else {
-                System.out.println("***resultList is null");
-            }
+
+            listener.showResults();
         }
         else {
             System.out.println("***listener is null");

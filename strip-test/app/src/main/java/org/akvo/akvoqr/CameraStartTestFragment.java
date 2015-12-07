@@ -409,7 +409,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                     new DetectStripTask(getActivity()).execute(detectStripIntent);
                 }
 
-                getActivity().finish();
             }
         }
     }

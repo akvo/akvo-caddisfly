@@ -332,13 +332,13 @@ public class OpenCVUtils {
         Mat resultStrip = colourStrip.submat(stripArea);
 
         // release Mat objects
-//        striparea.release();
-//        sArea.release();
-//        binary.release();
-//        dstBinary.release();
-//        dstStrip.release();
-//        binaryStrip.release();
-//        colourStrip.release();
+        striparea.release();
+        sArea.release();
+        binary.release();
+        dstBinary.release();
+        dstStrip.release();
+        binaryStrip.release();
+        colourStrip.release();
 
         // sanity check: the strip should be at least larger than half of the black area
         if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5){

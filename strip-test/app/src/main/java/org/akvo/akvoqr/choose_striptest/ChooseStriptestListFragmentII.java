@@ -17,17 +17,17 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlankFragment.OnFragmentInteractionListener} interface
+ * {@link ChooseStriptestListFragmentII.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class BlankFragment extends ListFragment {
+public class ChooseStriptestListFragmentII extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
     private ChooseStriptestAdapter adapter;
     private StripTest stripTest;
     private List<String> brandnames;
 
-    public BlankFragment() {
+    public ChooseStriptestListFragmentII() {
         // Required empty public constructor
     }
 
@@ -42,11 +42,6 @@ public class BlankFragment extends ListFragment {
             stripTest = new StripTest(getActivity());
 
         brandnames = stripTest.getBrandsAsList();
-
-//        brandnames = new ArrayList<String>();
-//        brandnames.add("a");
-//        brandnames.add("z");
-//        brandnames.add("linda");
 
         //order alpha-numeric on brand (same as the name of the .png file in assets)
         Collections.sort(brandnames);
@@ -101,7 +96,7 @@ public class BlankFragment extends ListFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(String brandname);
     }
 }

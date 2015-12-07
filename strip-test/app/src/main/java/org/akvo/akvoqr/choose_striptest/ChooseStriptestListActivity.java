@@ -28,7 +28,7 @@ import org.akvo.akvoqr.util.Constant;
  * to listen for item selections.
  */
 public class ChooseStriptestListActivity extends AppCompatActivity
-        implements BlankFragment.OnFragmentInteractionListener{
+        implements ChooseStriptestListFragmentII.OnFragmentInteractionListener{
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -48,7 +48,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
 
         if(savedInstanceState==null) {
             if(chooseStripTestListFragment==null) {
-                chooseStripTestListFragment = new BlankFragment();
+                chooseStripTestListFragment = new ChooseStriptestListFragmentII();
             }
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.activity_choose_striptestFragmentPlaceholder, chooseStripTestListFragment)

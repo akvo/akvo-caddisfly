@@ -106,8 +106,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
-        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
+//        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
+//        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
 
         if(!stop && !running) {
             new SendDataTask().execute(data);
@@ -139,7 +139,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 info = findPossibleCenters(data, previewSize);
 
                 //set the focus area to lie between the finder patterns
-                //setFocusAreas(info);
+                setFocusAreas(info);
 
                 //check if quality of image is ok. if OK, value is 1, if not 0
                 //the qualityChecks() method sends messages back to listener to update UI
@@ -152,10 +152,10 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                     listener.addCountToQualityCheckCount(countQuality);
 
                 //logging
-                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
-                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
-                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
+//                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
+//                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
+//                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+//                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
 
 
                 if(takePicture)
@@ -319,16 +319,16 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             e.printStackTrace();
             return 0;
         } finally {
-//            if(bgr!=null)
-//                bgr.release();
-//
-//            if(src_gray!=null)
-//                src_gray.release();
+            if(bgr!=null)
+                bgr.release();
+
+            if(src_gray!=null)
+                src_gray.release();
         }
 
-        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
-        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
-        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
+//        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
+//        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
+//        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
 
         return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 
@@ -362,8 +362,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 e.printStackTrace();
             }
             finally {
-//                if(warp!=null)
-//                    warp.release();
+                if(warp!=null)
+                    warp.release();
             }
         }
 
@@ -480,13 +480,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                     listener.adjustExposureCompensation(1);
                 }
-                else
-                {
-                    //optimum situation reached
-
-                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
-
-                }
+//                else
+//                {
+//                    //optimum situation reached
+//
+//                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+//
+//                }
             }
 
         }

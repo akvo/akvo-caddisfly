@@ -32,7 +32,6 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -50,8 +49,9 @@ public class ResultActivity extends AppCompatActivity {
         System.out.println("***ResultActivity countInstance: " + countInstance);
 
         if (savedInstanceState == null) {
+
             Intent intent = getIntent();
-            //ArrayList<Mat> mats = (ArrayList<Mat>) intent.getSerializableExtra(Constant.MAT);
+            final FileStorage fileStorage = new FileStorage(this);
             String brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
@@ -62,40 +62,42 @@ public class ResultActivity extends AppCompatActivity {
 
             JSONArray imagePatchArray = null;
             try {
-                FileStorage fileStorage = new FileStorage(this);
 
                 String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
-                imagePatchArray = new JSONArray(json);
-
-                System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+                if (json != null) {
+                    imagePatchArray = new JSONArray(json);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < patches.size(); i++) {
+            if (imagePatchArray != null) {
 
-                //the name of the patch
-                String desc = patches.get(i).getDesc();
+                for (int i = 0; i < patches.size(); i++) {
 
-                if (imagePatchArray != null) {
+                    //the name of the patch
+                    String desc = patches.get(i).getDesc();
 
                     try {
+
+                        System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+
                         JSONArray array = imagePatchArray.getJSONArray(i);
                         // get the image number from the json array
                         int patchNo = array.getInt(1);
 
-                        FileStorage fileStorage = new FileStorage(this);
-                        byte[] data = fileStorage.readByteArray(Constant.STRIP + patchNo);
-                        if (data != null) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + patchNo + Constant.ERROR);
 
-                            strip = new Mat();
-                            Utils.bitmapToMat(bitmap, strip);
+                        String error = isInvalidStrip? Constant.ERROR: "";
 
-                            //if the height of the strip is smaller than 1, it means that in DetectStripTask there was
-                            //no data for this patch (there a Mat.zeros object is added to the list of mats)
-                            if (strip!=null && strip.height() > 1) {
+                            byte[] data = fileStorage.readByteArray(Constant.STRIP + patchNo + error);
+                            if (data != null) {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                                strip = new Mat();
+                                Utils.bitmapToMat(bitmap, strip);
+
                                 double ratioW = strip.width() / brand.getStripLenght();
 
                                 //calculate center of patch in pixels
@@ -107,34 +109,23 @@ public class ResultActivity extends AppCompatActivity {
                                 JSONArray colours = patches.get(i).getColours();
                                 String unit = patches.get(i).getUnit();
 
-                                //testing
-                                System.out.println("***Start ppm calculation: " + i);
 
-                                new BitmapTask(desc, centerPatch, colours, unit).execute(strip);
-                            } else {
-                               // new BitmapTask(desc, null, null, null).execute(strip);
-                                System.out.println("***no strip voor patch: " + i);
+                                new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
 
                             }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                } else {
-                    TextView textView = new TextView(this);
-                    textView.setText("no data");
-                    LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
-
-                    layout.addView(textView);
                 }
+            } else {
+                TextView textView = new TextView(this);
+                textView.setText("no data");
+                LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
+
+                layout.addView(textView);
             }
 
-            final FileStorage fileStorage = new FileStorage(this);
 
             Button save = (Button) findViewById(R.id.activity_resultButtonSave);
             Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
@@ -151,7 +142,12 @@ public class ResultActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    fileStorage.deleteAll();
+                    if (fileStorage != null) {
+                        fileStorage.deleteFromInternalStorage(Constant.INFO);
+                        fileStorage.deleteFromInternalStorage(Constant.DATA);
+                        fileStorage.deleteFromInternalStorage(Constant.STRIP);
+                    }
+
                     Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
                     //intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intentRedo);
@@ -159,10 +155,9 @@ public class ResultActivity extends AppCompatActivity {
                 }
             });
 
+
         }
     }
-
-
 
     private Bitmap makeBitmap(Mat mat)
     {
@@ -188,17 +183,18 @@ public class ResultActivity extends AppCompatActivity {
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void>
     {
-
+        private boolean invalid;
         private Bitmap stripBitmap = null;
         private String desc;
         private Point centerPatch;
         private JSONArray colours;
         private String unit;
         private ColorDetected colorDetected;
-        private double ppm;
+        private double ppm = -1;
 
-        public BitmapTask(String desc, Point centerPatch, JSONArray colours, String unit)
+        public BitmapTask(boolean invalid, String desc, Point centerPatch, JSONArray colours, String unit)
         {
+            this.invalid = invalid;
             this.desc = desc;
             this.centerPatch = centerPatch;
             this.colours = colours;
@@ -212,46 +208,52 @@ public class ResultActivity extends AppCompatActivity {
 
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
 
-            if(mat.height()<2)
-                return null;
-
             int submatSize = 7;
 
-            //make a submat around center of the patch and get mean color
-            int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
-            int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
-            int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
-            int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
+            if(mat.height()<submatSize)
+                return null;
 
-            Mat patch = mat.submat(minRow, maxRow,
-                    minCol, maxCol);
+            if (!invalid) {
 
-            colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
+                //make a submat around center of the patch and get mean color
+                int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
+                int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
+                int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
+                int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
 
-            double[] colorValueLab = colorDetected.getLab().val;
-            //String colorSchema = "lab"; //must correspond with name of property in strips.json
-            try {
-                ppm = calculatePPM(colorValueLab, colours);
+                Mat patch = mat.submat(minRow, maxRow,
+                        minCol, maxCol);
+
+                colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
+
+                double[] colorValueLab = colorDetected.getLab().val;
+                //String colorSchema = "lab"; //must correspond with name of property in strips.json
+                try {
+                    ppm = calculatePPM(colorValueLab, colours);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ppm = Double.NaN;
+                }
+
+                //done with lab shema, make rgb to show in imageview
+                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
+
+                //extend the strip with a border, so we can draw a circle around each patch that is
+                //wider than the strip itself. That is just because it looks nice.
+                //we make a new Mat object to be sure not to touch the original
+                int borderSize = (int) Math.ceil(mat.height() * 0.5);
+
+                Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+
+                //Draw a green circle around each patch and make a bitmap of the whole
+                Imgproc.circle(mat, new Point(centerPatch.x, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
+                        new Scalar(0, 255, 0, 255), 2);
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
-                ppm = Double.NaN;
+                //done with lab shema, make rgb to show in imageview
+                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
             }
-
-            //done with lab shema, make rgb to show in imageview
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
-
-            //extend the strip with a border, so we can draw a circle around each patch that is
-            //wider than the strip itself. That is just because it looks nice.
-            //we make a new Mat object to be sure not to touch the original
-            int borderSize = (int) Math.ceil(mat.height() * 0.5);
-
-            Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
-
-            //Draw a green circle around each patch and make a bitmap of the whole
-            Imgproc.circle(mat, new Point(centerPatch.x, mat.height()/2), (int) Math.ceil(mat.height() * 0.4),
-                    new Scalar(0, 255, 0, 255), 2);
 
             stripBitmap = makeBitmap(mat);
 
@@ -271,16 +273,21 @@ public class ResultActivity extends AppCompatActivity {
                 ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
                 imageView.setImageBitmap(stripBitmap);
 
-                CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
-                circleView.circleView(colorDetected.getColor());
+                if(!invalid) {
+                    if(colorDetected!=null) {
+                        CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
+                        circleView.circleView(colorDetected.getColor());
+                    }
 
-                TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
-                if (ppm < 1.0 ) {
-                    textView.setText(String.format("%.2f", ppm) + " " + unit);
-                } else {
-                    textView.setText(String.format("%.1f", ppm) + " " + unit);
+                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
+                    if (ppm > -1) {
+                        if (ppm < 1.0) {
+                            textView.setText(String.format("%.2f", ppm) + " " + unit);
+                        } else {
+                            textView.setText(String.format("%.1f", ppm) + " " + unit);
+                        }
+                    }
                 }
-
             }
             else
             {
@@ -296,6 +303,7 @@ public class ResultActivity extends AppCompatActivity {
 
 
     private double calculatePPM(double[] colorValues, JSONArray colours) throws Exception{
+
         JSONArray patchColorValues;
         double ppmPatchValueStart,ppmPatchValueEnd;
         double[] pointStart;
