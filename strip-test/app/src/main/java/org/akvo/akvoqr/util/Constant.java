@@ -28,6 +28,8 @@ public class Constant {
     public static final double CROP_CAMERAVIEW_FACTOR = 0.6;
     public static final double CROP_FINDERPATTERN_FACTOR = 0.75;
     public static final float MAX_LEVEL_DIFF = 2f;
+    public static final int PIXEL_MARGIN_STRIP_AREA_WIDTH = 6;
+    public static final int PIXEL_MARGIN_STRIP_AREA_HEIGHT = 4;
 
     public static final String ERROR = "org.akvo.akvoqr.error";
 }
