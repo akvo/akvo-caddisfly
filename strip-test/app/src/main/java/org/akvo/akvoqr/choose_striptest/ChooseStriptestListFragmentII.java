@@ -43,15 +43,16 @@ public class ChooseStriptestListFragmentII extends ListFragment {
 
         brandnames = stripTest.getBrandsAsList();
 
-        //order alpha-numeric on brand (same as the name of the .png file in assets)
-        Collections.sort(brandnames);
+        if(brandnames!=null) {
+            //order alpha-numeric on brand (same as the name of the .png file in assets)
+            Collections.sort(brandnames);
 
-        if(adapter==null) {
-            adapter = new ChooseStriptestAdapter(getActivity(),
-                    R.layout.adapter_choose_striptest, brandnames);
+            if (adapter == null) {
+                adapter = new ChooseStriptestAdapter(getActivity(),
+                        R.layout.adapter_choose_striptest, brandnames);
+            }
+            setListAdapter(adapter);
         }
-        setListAdapter(adapter);
-
         return rootview;
     }
 
