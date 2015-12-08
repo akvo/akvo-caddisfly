@@ -38,14 +38,12 @@ class TurbidityConfig {
         PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, testCode);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        long delay;
-        if (initialDelay > 0) {
-            delay = initialDelay;
-        } else {
-            delay = 6 + (mDelayMinute * 60000);
-        }
+        long delay = 6 + (mDelayMinute * 60000);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (initialDelay > 0) {
+                delay = initialDelay;
+            }
             alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + delay, pendingIntent);
         } else {

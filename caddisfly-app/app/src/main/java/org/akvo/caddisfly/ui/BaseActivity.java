@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
@@ -48,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         updateTheme();
         changeActionBarStyleBasedOnCurrentMode();
-        ApiUtil.lockScreenOrientation(this);
+        //ApiUtil.lockScreenOrientation(this);
     }
 
     private void updateTheme() {
