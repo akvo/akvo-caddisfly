@@ -99,7 +99,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             //inflate fragment
             try {
                 currentFragment = CameraPrepareFragment.newInstance();
-                //currentFragment = CameraStartTestFragment.newInstance(brandName);
                 getSupportFragmentManager().beginTransaction().replace(
                         R.id.activity_cameraFragmentPlaceholder, currentFragment
                 ).commit();
@@ -109,10 +108,21 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 e.printStackTrace();
             }
 
+            if(handler!=null) {
+                System.out.println("***posting focus: " );
+
+                handler.post(focus);
+            }
+
         }
     }
 
     public void onPause() {
+
+        if(handler!=null)
+        {
+            handler.removeCallbacks(focus);
+        }
 
         if(previewCallback!=null) {
             previewCallback.setStop(true);
@@ -165,13 +175,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     }
 
-    public void onStart() {
-        super.onStart();
-
-        Log.d(TAG, "onStart OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
-
-    }
-
     //store previewLayout info in global properties for later use
     //called at end of baseCameraView surfaceChanged()
     public void setPreviewProperties()
@@ -185,6 +188,29 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
     }
 
+    private Runnable focus = new Runnable() {
+        boolean focused;
+        @Override
+        public void run() {
+
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+
+                    System.out.println("***camera focus: " + success);
+                    focused = success;
+
+                }
+            });
+            if (handler != null) {
+                if (!focused) {
+                    handler.postDelayed(this, 100);
+                } else {
+                    handler.postDelayed(this, 5000);
+                }
+            }
+        }
+    };
     //in the instance of CameraPreviewCallback set takePicture to false
     //and do a oneShotPreviewCallback.
     //do not do this if currentFragment is instructions, only for prepare and starttest fragments

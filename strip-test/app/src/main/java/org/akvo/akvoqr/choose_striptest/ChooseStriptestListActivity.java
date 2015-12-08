@@ -1,7 +1,5 @@
 package org.akvo.akvoqr.choose_striptest;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -42,9 +40,9 @@ public class ChooseStriptestListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_striptest_list);
 
-        final int memClass = ((ActivityManager) this.getSystemService(
-                Context.ACTIVITY_SERVICE)).getMemoryClass();
-        System.out.println("***Available memory: " + memClass);
+//        final int memClass = ((ActivityManager) this.getSystemService(
+//                Context.ACTIVITY_SERVICE)).getMemoryClass();
+//        System.out.println("***Available memory: " + memClass);
 
         if(savedInstanceState==null) {
             if(chooseStripTestListFragment==null) {
@@ -67,6 +65,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
 //            ((ChooseStriptestListFragment) getSupportFragmentManager()
 //                    .findFragmentById(R.id.choose_striptest_list))
 //                    .setActivateOnItemClick(true);
+
         }
 
     }

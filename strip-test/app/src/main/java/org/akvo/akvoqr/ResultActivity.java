@@ -87,6 +87,7 @@ public class ResultActivity extends AppCompatActivity {
                         // get the image number from the json array
                         int imageNo = array.getInt(0);
 
+                        //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
                         boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
 
                         String error = isInvalidStrip? Constant.ERROR: "";
@@ -246,7 +247,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
-                //Draw a green circle around each patch and make a bitmap of the whole
+                //Draw a green circle around each patch
                 Imgproc.circle(mat, new Point(centerPatch.x, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
                         new Scalar(0, 255, 0, 255), 2);
             }
