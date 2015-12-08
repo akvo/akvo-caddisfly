@@ -3,6 +3,7 @@ package org.akvo.akvoqr;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,124 +32,133 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class ResultActivity extends AppCompatActivity {
 
-    private String brandName;
-    private StripTest.Brand brand;
-    private ArrayList<Mat> mats;
-    private Mat strip;
-    private LinearLayout layout;
-    private int testCount = 0;
+
+//    private static int countInstance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        Intent intent = getIntent();
-        mats = (ArrayList<Mat>) intent.getSerializableExtra(Constant.MAT);
-        brandName = intent.getStringExtra(Constant.BRAND);
+//        countInstance++;
+//        System.out.println("***ResultActivity countInstance: " + countInstance);
 
-        if(mats!=null && mats.size()>0) {
+        if (savedInstanceState == null) {
 
-            layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
+            Intent intent = getIntent();
+            final FileStorage fileStorage = new FileStorage(this);
+            String brandName = intent.getStringExtra(Constant.BRAND);
 
-            StripTest stripTestBrand = StripTest.getInstance();
-            brand = stripTestBrand.getBrand(brandName);
+            Mat strip;
+            StripTest stripTestBrand = StripTest.getInstance(this);
+            StripTest.Brand brand = stripTestBrand.getBrand(brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
             JSONArray imagePatchArray = null;
             try {
-                String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
-                imagePatchArray = new JSONArray(json);
-                System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+
+                String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
+                if (json != null) {
+                    imagePatchArray = new JSONArray(json);
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < patches.size(); i++) {
+            if (imagePatchArray != null) {
 
-                //the name of the patch
-                String desc = patches.get(i).getDesc();
+                for (int i = 0; i < patches.size(); i++) {
 
-                //make sure we have a mat for this patch
-                if (i < mats.size()) {
-                    if(imagePatchArray!=null) {
-                        JSONArray array = null;
-                        try {
-                            array = imagePatchArray.getJSONArray(i);
-                            // get the image number from the json array
-                            int patchNo = array.getInt(1);
+                    //the name of the patch
+                    String desc = patches.get(i).getDesc();
 
-                            strip = mats.get(patchNo).clone();
+                    try {
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+
+                        JSONArray array = imagePatchArray.getJSONArray(i);
+                        // get the image number from the json array
+                        int imageNo = array.getInt(0);
+
+                        //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
+                        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
+
+                        String error = isInvalidStrip? Constant.ERROR: "";
+
+                            byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
+                            if (data != null) {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                                strip = new Mat();
+                                Utils.bitmapToMat(bitmap, strip);
+
+                                double ratioW = strip.width() / brand.getStripLenght();
+
+                                //calculate center of patch in pixels
+                                double x = patches.get(i).getPosition() * ratioW;
+                                double y = strip.height() / 2;
+                                Point centerPatch = new Point(x, y);
+
+                                //set the colours needed to calculate ppm
+                                JSONArray colours = patches.get(i).getColours();
+                                String unit = patches.get(i).getUnit();
+
+                                new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
+
+                            }
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+                        continue;
                     }
-                } else {
-                    continue;
                 }
+            } else {
+                TextView textView = new TextView(this);
+                textView.setText("no data");
+                LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
-                //if the height of the strip is smaller than 1, it means that in DetectStripActivity there was
-                //no data for this patch (there a Mat.zeros object is added to the list of mats)
-                if (strip.height() > 1) {
-                    double ratioW = strip.width() / brand.getStripLenght();
+                layout.addView(textView);
+            }
 
 
-                    //calculate center of patch in pixels
-                    double x = patches.get(i).getPosition() * ratioW;
-                    double y = strip.height() / 2;
-                    Point centerPatch = new Point(x, y);
+            Button save = (Button) findViewById(R.id.activity_resultButtonSave);
+            Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
 
-                    //set the colours needed to calculate ppm
-                    JSONArray colours = patches.get(i).getColours();
-                    String unit = patches.get(i).getUnit();
-
-                    //testing
-                    System.out.println("***Start ppm calculation: " + i);
-
-                    new BitmapTask(desc, centerPatch, colours, unit).execute(strip);
-                } else {
-                    new BitmapTask(desc, null, null, null).execute(strip);
+            //TODO onclicklistener for save button
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
                 }
+            });
 
-            }
+            redo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (fileStorage != null) {
+                        fileStorage.deleteFromInternalStorage(Constant.INFO);
+                        fileStorage.deleteFromInternalStorage(Constant.DATA);
+                        fileStorage.deleteFromInternalStorage(Constant.STRIP);
+                    }
+
+                    Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
+                    //intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intentRedo);
+                    ResultActivity.this.finish();
+                }
+            });
+
+
         }
-        else
-        {
-            TextView textView = new TextView(this);
-            textView.setText("no data");
-            layout.addView(textView);
-        }
-
-        Button save = (Button) findViewById(R.id.activity_resultButtonSave);
-        Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
-
-        //TODO onclicklistener for save button
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        redo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FileStorage.deleteAll();
-                Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
-                intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intentRedo);
-                ResultActivity.this.finish();
-            }
-        });
     }
 
     private Bitmap makeBitmap(Mat mat)
@@ -175,67 +185,77 @@ public class ResultActivity extends AppCompatActivity {
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void>
     {
-
+        private boolean invalid;
         private Bitmap stripBitmap = null;
         private String desc;
         private Point centerPatch;
         private JSONArray colours;
         private String unit;
         private ColorDetected colorDetected;
-        private double ppm;
+        private double ppm = -1;
 
-        public BitmapTask(String desc, Point centerPatch, JSONArray colours, String unit)
+        public BitmapTask(boolean invalid, String desc, Point centerPatch, JSONArray colours, String unit)
         {
+            this.invalid = invalid;
             this.desc = desc;
             this.centerPatch = centerPatch;
             this.colours = colours;
             this.unit = unit;
         }
+
         @Override
         protected Void doInBackground(Mat... params) {
 
             Mat mat = params[0];
 
-            if(mat.height()<2)
-                return null;
+            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
 
             int submatSize = 7;
 
-            //make a submat around center of the patch and get mean color
-            int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
-            int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
-            int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
-            int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
+            if(mat.height()<submatSize)
+                return null;
 
-            Mat patch = mat.submat(minRow, maxRow,
-                    minCol, maxCol);
+            if (!invalid) {
 
-            colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
+                //make a submat around center of the patch and get mean color
+                int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
+                int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
+                int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
+                int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
 
-            double[] colorValueLab = colorDetected.getLab().val;
-            //String colorSchema = "lab"; //must correspond with name of property in strips.json
-            try {
-                ppm = calculatePPM(colorValueLab, colours);
+                Mat patch = mat.submat(minRow, maxRow,
+                        minCol, maxCol);
+
+                colorDetected = OpenCVUtils.detectStripColorBrandKnown(patch);
+
+                double[] colorValueLab = colorDetected.getLab().val;
+                //String colorSchema = "lab"; //must correspond with name of property in strips.json
+                try {
+                    ppm = calculatePPM(colorValueLab, colours);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ppm = Double.NaN;
+                }
+
+                //done with lab shema, make rgb to show in imageview
+                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
+
+                //extend the strip with a border, so we can draw a circle around each patch that is
+                //wider than the strip itself. That is just because it looks nice.
+                //we make a new Mat object to be sure not to touch the original
+                int borderSize = (int) Math.ceil(mat.height() * 0.5);
+
+                Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+
+                //Draw a green circle around each patch
+                Imgproc.circle(mat, new Point(centerPatch.x, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
+                        new Scalar(0, 255, 0, 255), 2);
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
-                ppm = Double.NaN;
+                //done with lab shema, make rgb to show in imageview
+                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
             }
-
-            //done with lab shema, make rgb to show in imageview
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
-
-            //extend the strip with a border, so we can draw a circle around each patch that is
-            //wider than the strip itself. That is just because it looks nice.
-            //we make a new Mat object to be sure not to touch the original
-            int borderSize = (int) Math.ceil(mat.height() * 0.5);
-
-            Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
-
-            //Draw a green circle around each patch and make a bitmap of the whole
-            Imgproc.circle(mat, new Point(centerPatch.x, mat.height()/2), (int) Math.ceil(mat.height() * 0.4),
-                    new Scalar(0, 255, 0, 255), 2);
 
             stripBitmap = makeBitmap(mat);
 
@@ -255,21 +275,28 @@ public class ResultActivity extends AppCompatActivity {
                 ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
                 imageView.setImageBitmap(stripBitmap);
 
-                CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
-                circleView.circleView(colorDetected.getColor());
+                if(!invalid) {
+                    if(colorDetected!=null) {
+                        CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
+                        circleView.circleView(colorDetected.getColor());
+                    }
 
-                TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
-                if (ppm < 1.0 ) {
-                    textView.setText(String.format("%.2f", ppm) + " " + unit);
-                } else {
-                    textView.setText(String.format("%.1f", ppm) + " " + unit);
+                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
+                    if (ppm > -1) {
+                        if (ppm < 1.0) {
+                            textView.setText(String.format("%.2f", ppm) + " " + unit);
+                        } else {
+                            textView.setText(String.format("%.1f", ppm) + " " + unit);
+                        }
+                    }
                 }
-
             }
             else
             {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
             }
+
+            LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
             layout.addView(result_ppm_layout);
 
@@ -278,6 +305,7 @@ public class ResultActivity extends AppCompatActivity {
 
 
     private double calculatePPM(double[] colorValues, JSONArray colours) throws Exception{
+
         JSONArray patchColorValues;
         double ppmPatchValueStart,ppmPatchValueEnd;
         double[] pointStart;
@@ -293,7 +321,6 @@ public class ResultActivity extends AppCompatActivity {
         // The table holds [L, a, b, ppm value]
         double[][] interpolTable = new double[colours.length() * INTERPOLNUM][4];
 
-        CalibrationCard calCard = CalibrationCard.getInstance();
         int count = 0;
         for (int i = 0; i < colours.length() - 1; i++) {
             try {
@@ -349,6 +376,7 @@ public class ResultActivity extends AppCompatActivity {
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
 
+        CalibrationCard calCard = CalibrationCard.getInstance(this);
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize

@@ -8,11 +8,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
@@ -112,8 +108,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
+            StripTest stripTest = StripTest.getInstance(getActivity());
             //get the patches ordered by time-lapse
-            patches = StripTest.getInstance().getBrand(brandName).getPatchesOrderedByTimelapse();
+            patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
 
@@ -181,27 +178,30 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         try {
 
-            final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
-
-            //find the view in which to show part of the preview
-            final RelativeLayout transView = (RelativeLayout) getView().findViewById(R.id.overlay);
-            final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-
-            transView.post(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    //enlarge the transparent view based on a factor of its parent height
-                    ViewGroup.LayoutParams params = transView.getLayoutParams();
-                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                    transView.setLayoutParams(params);
-                    params = parentView.getLayoutParams();
-                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                    parentView.setLayoutParams(params);
-                    transView.startAnimation(slideUp);
-                }
-            });
+//            //final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
+//            final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
+//
+//            //find the view in which to show part of the preview
+//            final RelativeLayout transView = (RelativeLayout) getView().findViewById(R.id.overlay);
+//            final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+//
+//            transView.post(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//
+//                    //enlarge the transparent view based on a factor of its parent height
+//                    ViewGroup.LayoutParams params = transView.getLayoutParams();
+//                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
+//                    transView.setLayoutParams(params);
+//
+//                    params = parentView.getLayoutParams();
+//                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
+//                    parentView.setLayoutParams(params);
+//                    transView.startAnimation(slideUp);
+//                }
+//            });
+            setHeightOfOverlay(0);
 
             startCountdown();
         }
@@ -379,7 +379,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         //set to true if you want to see the original and calibrated images in DetectStripActivity
         //set to false if you want to go to the ResultActivity directly
-        boolean develop = true;
+        boolean develop = false;
 
         //check if we do have images for all patches
         if(patchesCovered == patches.size()-1)
@@ -396,7 +396,8 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             //check if we really do have data in the json-array
             if(imagePatchArray.length()>0) {
                 //write image/patch info to internal storage
-                FileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+                FileStorage fileStorage = new FileStorage(getActivity());
+                fileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
 
                 Intent detectStripIntent = createDetectStripIntent(format, width, height);
 
@@ -407,14 +408,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 } else {
                     new DetectStripTask(getActivity()).execute(detectStripIntent);
                 }
+
             }
         }
     }
-
-
-
-
-
 
     /*
     * Create an Intent that holds information about the preview data:

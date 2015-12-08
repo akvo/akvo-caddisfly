@@ -32,4 +32,5 @@ public class Constant {
     public static final int PIXEL_MARGIN_STRIP_AREA_HEIGHT = 4;
 
     public static final String ERROR = "org.akvo.akvoqr.error";
+    public static final String STRIP = "org.akvo.akvoqr.strip";
 }

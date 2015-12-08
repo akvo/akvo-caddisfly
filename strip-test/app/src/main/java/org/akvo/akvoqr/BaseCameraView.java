@@ -115,7 +115,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mCamera.setDisplayOrientation(90);
 
         //preview size
-        System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
+       // System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
         //parameters.setPreviewFormat(ImageFormat.NV21);
@@ -132,10 +132,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
                 canAutoFocus = true;
                 //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             }
-            if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
-            {
-                disableContinuousFocus = true;
-            }
+//            if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
+//            {
+//                disableContinuousFocus = false;
+//            }
         }
 
         try {

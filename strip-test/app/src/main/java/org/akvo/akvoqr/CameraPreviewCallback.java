@@ -62,7 +62,7 @@ import java.util.List;
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
-    //    private static int countInstance = 0;
+//    private static int countInstance = 0;
 //    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -77,7 +77,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private boolean running;
     private boolean stop;
     private Mat src_gray = new Mat();
-    private int count = 0;
+    private Context context;
 
 
     public CameraPreviewCallback(Context context) {
@@ -86,6 +86,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         } catch (ClassCastException e) {
             throw new ClassCastException(" must implement cameraviewListener");
         }
+
+        this.context = context;
 
         finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/springgreen
 
@@ -98,13 +100,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
-        count ++;
+//        count ++;
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
 
-        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
-        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
+//        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
+//        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
 
         if(!stop && !running) {
             new SendDataTask().execute(data);
@@ -122,7 +124,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     }
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
-        byte[] data;
+       // byte[] data;
         FinderPatternInfo info;
 
         @Override
@@ -130,7 +132,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
 
             running = true;
-            data = params[0];
+            byte[] data = params[0];
             try {
 
                 info = findPossibleCenters(data, previewSize);
@@ -149,10 +151,10 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                     listener.addCountToQualityCheckCount(countQuality);
 
                 //logging
-                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
-                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
-                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
+//                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
+//                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
+//                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+//                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
 
 
                 if(takePicture)
@@ -323,9 +325,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 src_gray.release();
         }
 
-        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
-        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
-        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
+//        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
+//        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
+//        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
 
         return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
 
@@ -350,7 +352,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             try
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, versionNumber);
+                    CalibrationCard card = CalibrationCard.getInstance(context);
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, card);
                     shadowTrack.add(shadowPercentage);
                 }
             }
@@ -477,13 +480,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                     listener.adjustExposureCompensation(1);
                 }
-                else
-                {
-                    //optimum situation reached
-
-                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
-
-                }
+//                else
+//                {
+//                    //optimum situation reached
+//
+//                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
+//
+//                }
             }
 
         }
@@ -547,8 +550,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                         if (possibleCenters.size() == 4) {
                             versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
 //                            System.out.println("***versionNumber: " + versionNumber);
-                            CalibrationCard.addVersionNumber(versionNumber);
-
+                            if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
+                                CalibrationCard.addVersionNumber(versionNumber);
+                            }
                             //testing
 //                            Random random = new Random();
 //                            CalibrationCard.addVersionNumber(random.nextInt(10));

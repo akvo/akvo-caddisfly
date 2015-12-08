@@ -17,6 +17,7 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     private byte[] data;
     private FinderPatternInfo info;
     private CameraViewListener listener;
+    private Context context;
 
     public StoreDataTask(Context listener,
                           int imageCount, byte[] data, FinderPatternInfo info) {
@@ -31,15 +32,17 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
         this.imageCount = imageCount;
         this.data = data;
         this.info = info;
+        this.context = listener;
 
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        FileStorage.writeByteArray(data, imageCount);
+        FileStorage fileStorage = new FileStorage(context);
+        fileStorage.writeByteArray(data,  Constant.DATA + imageCount);
         String json = FinderPatternInfoToJson.toJson(info);
-        FileStorage.writeToInternalStorage(Constant.INFO + imageCount, json);
+        fileStorage.writeToInternalStorage(Constant.INFO + imageCount, json);
         return true;
     }
 

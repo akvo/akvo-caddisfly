@@ -132,7 +132,7 @@ public class PreviewUtils {
    * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
    *  points with luminosity with a larger difference than Constant.CONTRAST_MAX_DEVIATION_PERCENTAGE count 10 times in the result.
     */
-    public static double getShadowPercentage(Mat bgr, int versionNumber) {
+    public static double getShadowPercentage(Mat bgr, CalibrationCard card) {
 
         double sumLum = 0;
         int countDev = 0;
@@ -142,9 +142,9 @@ public class PreviewUtils {
         Mat lab = new Mat();
         Imgproc.cvtColor(bgr, lab, Imgproc.COLOR_BGR2Lab);
 
-        CalibrationCard card = CalibrationCard.getInstance(versionNumber);
-
-        double[][] points = card.createWhitePointArray(lab);
+//        CalibrationCard card = CalibrationCard.getInstance(versionNumber);
+//        CalibrationData data = card.readCalibrationFile(context);
+        double[][] points = card.createWhitePointArray(lab, card.getCalData());
 
         //get the sum total of luminosity values
         for(int i=0; i< points.length; i++) {

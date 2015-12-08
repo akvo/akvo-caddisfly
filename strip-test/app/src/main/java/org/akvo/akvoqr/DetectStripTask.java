@@ -1,6 +1,6 @@
 package org.akvo.akvoqr;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
@@ -24,15 +24,12 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by linda on 11/18/15.
  */
-public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
-    Intent intent;
-    ArrayList<Mat> resultList = new ArrayList<>();
-    byte[] data;
+public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
+
     int format;
     int width;
     int height;
@@ -42,25 +39,34 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     org.opencv.core.Rect roiCalarea = null;
     Mat warp_dst;
     Mat cal_dest;
-
-    Mat calarea = null;
-    private boolean develop = false;
     private DetectStripListener listener;
+    private Context context;
+    private FileStorage fileStorage;
+    private Bitmap bitmap;
+    private boolean develop = false;
 
-    public DetectStripTask(Activity listener) {
+    public DetectStripTask(Context listener) {
 
         try {
             this.listener = (DetectStripListener) listener;
+            this.context = listener;
         }
         catch (ClassCastException e) {
             throw new ClassCastException("must implement DetectStripListener");
         }
+
+        fileStorage = new FileStorage(context);
     }
 
     @Override
     protected void onPreExecute() {
 
+        if(listener==null) {
+            cancel(true);
+        }
+
         try {
+
             listener.showSpinner();
         }
         catch (Exception e)
@@ -72,11 +78,15 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     @Override
     protected Void doInBackground(Intent... params) {
 
-        intent = params[0];
+        Intent intent = params[0];
+
+        if(intent==null)
+            return null;
 
         String brandname = intent.getStringExtra(Constant.BRAND);
 
-        int numPatches = StripTest.getInstance().getBrand(brandname).getPatches().size();
+        StripTest stripTest = StripTest.getInstance(context);
+        int numPatches = stripTest.getBrand(brandname).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
         width = intent.getIntExtra(Constant.WIDTH, 0);
@@ -89,13 +99,11 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
 
         JSONArray imagePatchArray = null;
         int imageCount = -1;
-        // Mat for image from NV21 data
-        Mat labImg;
-        // Mat for detected strip
-        Mat labStrip = new Mat();
+        Mat labImg; // Mat for image from NV21 data
+        Mat labStrip; // Mat for detected strip
 
         try {
-            String json = FileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
+            String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
             imagePatchArray = new JSONArray(json);
             //System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
         } catch (JSONException e) {
@@ -117,12 +125,14 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
                         imageCount = imageNo;
 
                         listener.showMessage(0);
-                        data = FileStorage.readByteArray(imageNo);
+
+                        byte[] data = fileStorage.readByteArray( Constant.DATA + imageNo);
                         if (data == null)
                             throw new IOException();
+
                         //make a L,A,B Mat object from data
                         try {
-                           labImg = makeLab();
+                            labImg = makeLab(data);
                         } catch (Exception e) {
                             listener.showError(0);
                             continue;
@@ -138,7 +148,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
 
                         //divide into calibration and stripareas
                         try {
-                            divideIntoCalibrationAndStripArea();
+                            if(context!=null)
+                                divideIntoCalibrationAndStripArea(context);
                         } catch (Exception e) {
                             listener.showError(1);
                             continue;
@@ -182,6 +193,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
                             listener.showImage(bitmap);
                         }
+
                         Mat striparea = null;
                         if (roiStriparea != null)
                             striparea = cal_dest.submat(roiStriparea);
@@ -189,34 +201,55 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
                         if (striparea != null) {
                             listener.showMessage(2);
 
-                            StripTest stripTestBrand = StripTest.getInstance();
-                            StripTest.Brand brand = stripTestBrand.getBrand(brandname);
+                            StripTest.Brand brand = stripTest.getBrand(brandname);
 
-                            Mat strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+                            Mat strip = null;
+                            try {
+                                 strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
 
+                            String error = "";
                             if (strip != null) {
+
                                 labStrip = strip.clone();
-                                //Imgproc.cvtColor(strip, labStrip, Imgproc.COLOR_Lab2RGB);
+
                             } else {
                                 listener.showError(4);
                                 labStrip = striparea.clone();
 
+                                error = Constant.ERROR;
+
                                 //draw a red cross over the image
+                                // red in Lab schema
+                                Scalar red = new Scalar(135,208,195);
                                 Imgproc.line(labStrip, new Point(0, 0), new Point(labStrip.cols(),
-                                        labStrip.rows()), new Scalar(255, 0, 0, 255), 2);
+                                        labStrip.rows()), red, 2);
                                 Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),
-                                        0), new Scalar(255, 0, 0, 255), 2);
+                                        0), red, 2);
                             }
+
+                            try {
+                                Mat rgb = new Mat();
+                                Imgproc.cvtColor(labStrip, rgb, Imgproc.COLOR_Lab2RGB);
+                                bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(rgb, bitmap);
+                                fileStorage.writeBitmapToInternalStorage(Constant.STRIP + i + error, bitmap);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
-                    resultList.add(labStrip);
                 }
             } catch (Exception e) {
+
                 listener.showError(5);
-                //place a Mat object in result list. This is necessary for ResultActivity to work
-                //because we are counting patches, not mats
-                Mat mat = Mat.zeros(1, 1, CvType.CV_8UC4);
-                resultList.add(mat);
                 continue;
             }
         }
@@ -225,24 +258,21 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
+    protected void onPostExecute(Void result) {
 
-        System.out.println("***onPostExecute DetectStripTask");
+        //System.out.println("***onPostExecute DetectStripTask");
 
         if(listener!=null) {
-            if (resultList != null) {
-                listener.showResults(resultList);
-            }
-            else {
-                System.out.println("***resultList is null");
-            }
+
+            listener.showResults();
         }
         else {
-            System.out.println("***listener is null");
+            //System.out.println("***listener is null");
+            //TODO what now?
         }
     }
 
-    private Mat makeLab() throws Exception
+    private Mat makeLab(byte[] data) throws Exception
     {
         if (format == ImageFormat.NV21) {
             //convert preview data to Mat object in CIELAB format
@@ -266,7 +296,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
             throw new Exception("no image");
         }
 
-        String jsonInfo = FileStorage.readFromInternalStorage(Constant.INFO + i + ".txt");
+        String jsonInfo = fileStorage.readFromInternalStorage(Constant.INFO + i + ".txt");
         if (jsonInfo == null) {
 
             throw new Exception("no finder pattern info");
@@ -285,9 +315,10 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
         warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, labImg);
     }
 
-    private void divideIntoCalibrationAndStripArea() throws Exception{
+    private void divideIntoCalibrationAndStripArea(Context context) throws Exception{
 
-        CalibrationData data = CalibrationCard.getCalData();
+        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
+        CalibrationData data = calibrationCard.getCalData();
 
         if (warp_dst!=null && data != null) {
 
@@ -319,12 +350,13 @@ public class DetectStripTask extends AsyncTask<Intent,Void,Void> {
     {
         //System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
 
-        CalibrationCard calibrationCard = CalibrationCard.getInstance();
+        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
         if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND)
         {
             throw new Exception("no version number set.");
         }
-        return calibrationCard.calibrateImage(mat);
+        CalibrationData data = calibrationCard.getCalData();
+        return calibrationCard.calibrateImage(mat, data);
 
     }
 }

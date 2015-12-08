@@ -50,7 +50,9 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
 
         int countFragments = 0;
         try {
-            StripTest.Brand brand = StripTest.getInstance().getBrand(getIntent().getStringExtra(Constant.BRAND));
+
+            StripTest stripTest = StripTest.getInstance(this);
+            StripTest.Brand brand = stripTest.getBrand(getIntent().getStringExtra(Constant.BRAND));
             instructions = brand.getInstructions();
 
             for(int i=0;i<instructions.length();i++) {
@@ -69,10 +71,6 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             e.printStackTrace();
         }
 
-      /*  // Set up the action bar.
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-*/
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

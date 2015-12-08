@@ -51,7 +51,7 @@ public class ChooseStriptestListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+         void onItemSelected(String id);
     }
 
     /**
@@ -75,23 +75,24 @@ public class ChooseStriptestListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        StripTest stripTest = StripTest.getInstance();
+        if(savedInstanceState==null) {
+            StripTest stripTest = StripTest.getInstance(getActivity());
 
-        brandnames = stripTest.getBrandsAsList();
+            brandnames = stripTest.getBrandsAsList();
 
-        //order alpha-numeric on brand (same as the name of the .png file in assets)
-        Collections.sort(brandnames);
+            //order alpha-numeric on brand (same as the name of the .png file in assets)
+            Collections.sort(brandnames);
 
-        ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),
-                R.layout.adapter_choose_striptest, brandnames);
+            ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),
+                    R.layout.adapter_choose_striptest, brandnames);
 
-        setListAdapter(adapter);
-
+            setListAdapter(adapter);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, null);
+        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container);
         return view;
     }
 
