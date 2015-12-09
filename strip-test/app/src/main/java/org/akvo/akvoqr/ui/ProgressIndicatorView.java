@@ -39,6 +39,8 @@ public class ProgressIndicatorView extends LinearLayout {
     private Context context;
     private Paint paint;
     private TextPaint textPaint;
+    private float horMargin;
+    private float verMargin;
 
     public ProgressIndicatorView(Context context) {
         this(context, null);
@@ -64,7 +66,12 @@ public class ProgressIndicatorView extends LinearLayout {
         paint.setStrokeWidth(12);
 
         textPaint = new TextPaint();
-        textPaint.setColor(Color.DKGRAY);
+        textPaint.setColor(Color.GRAY);
+        textPaint.setTextSize(context.getResources().getDimension(R.dimen.mediumTextSize));
+        textPaint.setAntiAlias(true);
+
+        horMargin = getResources().getDimension(R.dimen.activity_horizontal_margin);
+        verMargin = getResources().getDimension(R.dimen.activity_vertical_margin);
     }
 
 
@@ -91,14 +98,21 @@ public class ProgressIndicatorView extends LinearLayout {
             for (int i = 0; i < steps.size(); i++) {
                 img = new ImageView(context);
                 img.setImageBitmap(unchecked_light);
-
-                img.setMinimumHeight(unchecked_light.getHeight() + 5);
                 img.setScaleType(ImageView.ScaleType.FIT_START);
-                img.setPadding(0, 5, 0, 0);
+
+                if(i==0) {
+                    verMargin = 0;
+                }
+                else
+                {
+                    verMargin = getResources().getDimension(R.dimen.activity_vertical_margin);
+                }
+                img.setMinimumHeight(unchecked_light.getHeight() + (int) Math.round(verMargin));
+                img.setPadding(0, (int) Math.round(verMargin), 0, 0);
 
                 addView(img);
 
-                layoutH += unchecked_light.getHeight() + 5;
+                layoutH += unchecked_light.getHeight() + (int)Math.round(verMargin);
 
             }
 
@@ -230,12 +244,13 @@ public class ProgressIndicatorView extends LinearLayout {
         if(!start)
             return;
 
+        paint.setAlpha(255);
+
         canvas.save();
         for (int i = 0; i < steps.size(); i++) {
 
-            canvas.translate(0f, 5f);
-            paint.setAlpha(255);
-
+            if(i>0)
+            canvas.translate(0f, verMargin);
 
             if(steps.get(i).pictureTaken)
             {
@@ -292,8 +307,13 @@ public class ProgressIndicatorView extends LinearLayout {
             * END DEBUGGING
              */
 
-            canvas.drawText(message, background.getWidth() + 5f, background.getHeight() / 2, textPaint);
+            float textHeight = Math.abs(textPaint.ascent()) ;//+ Math.abs(textPaint.descent());
+            float ypos = background.getHeight() / 2 + textHeight / 2;
+            canvas.drawText(message, background.getWidth() + horMargin, ypos, textPaint);
+
             canvas.translate(0f, background.getHeight());
+
+
         }
 
         canvas.restore();

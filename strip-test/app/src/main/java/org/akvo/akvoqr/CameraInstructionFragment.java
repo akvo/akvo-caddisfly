@@ -3,6 +3,7 @@ package org.akvo.akvoqr;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,8 @@ public class CameraInstructionFragment extends CameraSharedFragment {
 
                     for(int ii=0; ii < instrArray.length;ii++) {
                         textView = new TextView(getActivity());
-                        textView.setTextSize(getResources().getDimension(R.dimen.mediumTextSize));
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mediumTextSize));
+
                         int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
                         textView.setPadding(0,0,0, padBottom);
                         textView.setText(" - ");

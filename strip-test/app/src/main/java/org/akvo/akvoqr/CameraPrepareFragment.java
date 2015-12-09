@@ -87,7 +87,6 @@ public class CameraPrepareFragment extends CameraSharedFragment {
 
         if(messageView!=null)
         {
-            messageView.setTextSize(getResources().getDimension(R.dimen.mediumTextSize));
             messageView.setText("Excellent! \nPlease go to the next step.");
         }
     }

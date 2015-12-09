@@ -14,7 +14,6 @@ import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -106,7 +105,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
             String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
             imagePatchArray = new JSONArray(json);
             //System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -17,7 +17,7 @@
     <string name="error_warp">Warp failed.</string>
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
-    <string name="no_data">No data for patch no.</string>
+    <string name="no_data">No data for patch.</string>
     <string name="please_wait">Please wait...</string>
     <string name="reading_data">Reading data from storage...</string>
     <string name="redo_test">Redo Test</string>
@@ -36,7 +36,7 @@
     <string name="analysing">Analysing image ...</string>
     <string name="prepare_test">Prepare for test</string>
 
-    <string name="prepare_camera_instr">NB: Do not take a sample yet.\n\nHold camera above card.\n\nAdjust your position until checks are OK.</string>
+    <string name="prepare_camera_instr">NB: Do not take a sample yet.\nHold camera above card.\nAdjust your position until checks are OK.</string>
     <string name="next">Next</string>
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">"Ready for picture "</string>

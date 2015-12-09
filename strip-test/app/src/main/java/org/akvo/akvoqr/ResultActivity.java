@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -92,31 +93,35 @@ public class ResultActivity extends AppCompatActivity {
 
                         String error = isInvalidStrip? Constant.ERROR: "";
 
-                            byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
-                            if (data != null) {
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
+                        if (data != null) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-                                strip = new Mat();
-                                Utils.bitmapToMat(bitmap, strip);
+                            strip = new Mat();
+                            Utils.bitmapToMat(bitmap, strip);
 
-                                double ratioW = strip.width() / brand.getStripLenght();
+                            double ratioW = strip.width() / brand.getStripLenght();
 
-                                //calculate center of patch in pixels
-                                double x = patches.get(i).getPosition() * ratioW;
-                                double y = strip.height() / 2;
-                                Point centerPatch = new Point(x, y);
+                            //calculate center of patch in pixels
+                            double x = patches.get(i).getPosition() * ratioW;
+                            double y = strip.height() / 2;
+                            Point centerPatch = new Point(x, y);
 
-                                //set the colours needed to calculate ppm
-                                JSONArray colours = patches.get(i).getColours();
-                                String unit = patches.get(i).getUnit();
+                            //set the colours needed to calculate ppm
+                            JSONArray colours = patches.get(i).getColours();
+                            String unit = patches.get(i).getUnit();
 
-                                new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
+                            new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
 
-                            }
+                        }
 
                     } catch (Exception e) {
 
                         e.printStackTrace();
+
+                        //TESTING
+                        new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
+
                         continue;
                     }
                 }
@@ -126,6 +131,10 @@ public class ResultActivity extends AppCompatActivity {
                 LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
                 layout.addView(textView);
+
+                //TESTING
+                new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
+
             }
 
 
@@ -208,6 +217,10 @@ public class ResultActivity extends AppCompatActivity {
 
             Mat mat = params[0];
 
+            if(mat.empty()) {
+                return null;
+            }
+
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
 
             int submatSize = 7;
@@ -242,7 +255,6 @@ public class ResultActivity extends AppCompatActivity {
 
                 //extend the strip with a border, so we can draw a circle around each patch that is
                 //wider than the strip itself. That is just because it looks nice.
-                //we make a new Mat object to be sure not to touch the original
                 int borderSize = (int) Math.ceil(mat.height() * 0.5);
 
                 Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
@@ -257,7 +269,9 @@ public class ResultActivity extends AppCompatActivity {
                 Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
             }
 
-            stripBitmap = makeBitmap(mat);
+            if(!mat.empty()) {
+                stripBitmap = makeBitmap(mat);
+            }
 
             return null;
         }
@@ -294,6 +308,10 @@ public class ResultActivity extends AppCompatActivity {
             else
             {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
+                //TESTING
+                CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
+                circleView.circleView(Color.RED);
+
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);

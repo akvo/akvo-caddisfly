@@ -104,6 +104,25 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         View rootView = inflater.inflate(R.layout.fragment_camera_starttest, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
 
+        //************ HACK FOR TESTING *********************
+//        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
+//        finishTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent detectStripIntent = createDetectStripIntent(17,800, 400);
+//
+//                if (1==0) {
+//                    detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
+//                    startActivity(detectStripIntent);
+//                } else {
+//                    new DetectStripTask(getActivity()).execute(detectStripIntent);
+//                }
+//
+//            }
+//        });
+        // ************* END HACK FOR TESTING ******************
+
         if(getArguments()!=null) {
 
             brandName = getArguments().getString(Constant.BRAND);
@@ -178,29 +197,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         try {
 
-//            //final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
-//            final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
-//
-//            //find the view in which to show part of the preview
-//            final RelativeLayout transView = (RelativeLayout) getView().findViewById(R.id.overlay);
-//            final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-//
-//            transView.post(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//
-//                    //enlarge the transparent view based on a factor of its parent height
-//                    ViewGroup.LayoutParams params = transView.getLayoutParams();
-//                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-//                    transView.setLayoutParams(params);
-//
-//                    params = parentView.getLayoutParams();
-//                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-//                    parentView.setLayoutParams(params);
-//                    transView.startAnimation(slideUp);
-//                }
-//            });
             setHeightOfOverlay(0);
 
             startCountdown();

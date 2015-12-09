@@ -1,6 +1,7 @@
 package org.akvo.akvoqr;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -56,6 +58,50 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        //LOGGING SCREEN SIZE
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        String toastMsg;
+        switch(screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                toastMsg = "Large screen";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                toastMsg = "Normal screen";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                toastMsg = "Small screen";
+                break;
+            default:
+                toastMsg = "Screen size is neither large, normal or small";
+        }
+        System.out.println("***screen size: " + toastMsg);
+        //END LOGGING SCREEN SIZE
+
+        //LOG DENSITY
+        int density= getResources().getDisplayMetrics().densityDpi;
+        String msg;
+        switch(density)
+        {
+            case DisplayMetrics.DENSITY_LOW:
+                msg = "LDPI";
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                msg =  "MDPI";
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                msg =  "HDPI";
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                msg = "XHDPI";
+                break;
+            default:
+                msg = "Unknown";
+        }
+        System.out.println("***screen density: " + msg);
+        //END LOGGING DENSITY
+
         if (getIntent().getStringExtra(Constant.BRAND) != null) {
             this.brandName = getIntent().getStringExtra(Constant.BRAND);
         }
@@ -77,7 +123,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private void init() {
 
         // Create an instance of Camera
-        mCamera = TheCamera.getCameraInstance();
+        try {
+            mCamera = TheCamera.getCameraInstance();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            finish();
+        }
 
         if(previewCallback==null) {
             previewCallback = new CameraPreviewCallback(this);
@@ -109,8 +162,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
 
             if(handler!=null) {
-                System.out.println("***posting focus: " );
-
                 handler.post(focus);
             }
 
@@ -193,15 +244,17 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         @Override
         public void run() {
 
-            mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                @Override
-                public void onAutoFocus(boolean success, Camera camera) {
+            if(mCamera!=null) {
+                mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                    @Override
+                    public void onAutoFocus(boolean success, Camera camera) {
 
-                    System.out.println("***camera focus: " + success);
-                    focused = success;
+                        System.out.println("***camera focus: " + success);
+                        focused = success;
 
-                }
-            });
+                    }
+                });
+            }
             if (handler != null) {
                 if (!focused) {
                     handler.postDelayed(this, 100);
@@ -328,6 +381,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             handler.post(countQualityRunnable);
 
         qualityCheckCount += count;
+
         //System.out.println("***count quality check: " + qualityCheckCount);
 
         if (qualityCheckCount >= Constant.COUNT_QUALITY_CHECK_LIMIT) {

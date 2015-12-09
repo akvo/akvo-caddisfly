@@ -56,7 +56,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
         if (findViewById(R.id.choose_striptest_detail_container) != null) {
             // The detail conStainer view will be present only in the
             // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
+            // res/values-w600dp). If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
