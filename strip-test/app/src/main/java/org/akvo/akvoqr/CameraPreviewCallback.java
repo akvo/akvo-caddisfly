@@ -62,7 +62,7 @@ import java.util.List;
  */
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
-//    private static int countInstance = 0;
+    //    private static int countInstance = 0;
 //    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
@@ -124,21 +124,22 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     }
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
-       // byte[] data;
         FinderPatternInfo info;
 
         @Override
         protected Void doInBackground(byte[]... params) {
 
-
             running = true;
             byte[] data = params[0];
+
             try {
 
                 info = findPossibleCenters(data, previewSize);
 
+                //TODO this worked in principal, but caused a Motorola XT1039 to focus again
                 //set the focus area to lie between the finder patterns
-                setFocusAreas(info);
+//                if(info!=null)
+//                    setFocusAreas(info);
 
                 //check if quality of image is ok. if OK, value is 1, if not 0
                 //the qualityChecks() method sends messages back to listener to update UI

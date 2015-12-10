@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
@@ -102,6 +104,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         System.out.println("***screen density: " + msg);
         //END LOGGING DENSITY
 
+        //LOG SYSTEM BUILD
+        System.out.println("***System info: VERSION CODENAME = " + Build.VERSION.CODENAME);
+        System.out.println("***System info: VERSION RELEASE = " + Build.VERSION.RELEASE);
+        System.out.println("***System info: VERSION SDK = " + Build.VERSION.SDK_INT);
+        //END LOG SYSTEM BUILD
+
         if (getIntent().getStringExtra(Constant.BRAND) != null) {
             this.brandName = getIntent().getStringExtra(Constant.BRAND);
         }
@@ -123,21 +131,19 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private void init() {
 
         // Create an instance of Camera
-        try {
-            mCamera = TheCamera.getCameraInstance();
-        }
-        catch (Exception e)
+        mCamera = TheCamera.getCameraInstance();
+
+        if(mCamera == null)
         {
-            e.printStackTrace();
+            Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera", Toast.LENGTH_SHORT).show();
             finish();
         }
+        else
+        {
 
-        if(previewCallback==null) {
-            previewCallback = new CameraPreviewCallback(this);
-        }
-
-        if (mCamera != null) {
-
+            if(previewCallback==null) {
+                previewCallback = new CameraPreviewCallback(this);
+            }
             // Create our Preview view and set it as the content of our activity.
             baseCameraView = new BaseCameraView(this, mCamera);
             previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
@@ -245,16 +251,37 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         public void run() {
 
             if(mCamera!=null) {
-                mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                    @Override
-                    public void onAutoFocus(boolean success, Camera camera) {
 
-                        System.out.println("***camera focus: " + success);
-                        focused = success;
+//                System.out.println("***camera focus mode: " + mCamera.getParameters().getFocusMode() +
+//                " " + Camera.Parameters.FOCUS_MODE_AUTO);
 
-                    }
-                });
+                //only need to call mCamera.autofocus if focus mode is set to AUTO
+                if(mCamera.getParameters().getFocusMode().equalsIgnoreCase(Camera.Parameters.FOCUS_MODE_AUTO)) {
+
+                    mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                        @Override
+                        public void onAutoFocus(boolean success, Camera camera) {
+
+                            focused = success;
+
+//                            System.out.println("***camera focus success: " + success);
+
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                                try {
+//                                    Camera.Area focusarea = mCamera.getParameters().getFocusAreas().get(0);
+//                                    System.out.println("***camera focus areas: " + focusarea);
+//                                }
+//                                catch (Exception e)
+//                                {
+//                                    //IGNORE
+//                                }
+//                            }
+
+                        }
+                    });
+                }
             }
+
             if (handler != null) {
                 if (!focused) {
                     handler.postDelayed(this, 100);

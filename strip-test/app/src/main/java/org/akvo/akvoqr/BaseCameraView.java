@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 
 import org.akvo.akvoqr.detector.CameraConfigurationUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -156,17 +157,22 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         }
 
-        // qualityChecksOK preview with new settings
         try {
 
             mCamera.setParameters(parameters);
-            mCamera.setPreviewDisplay(holder);
-
-            activity.setPreviewProperties();
 
         } catch (Exception e){
-            Log.d("", "Error starting camera preview: " + e.getMessage());
+            Log.d("", "Error setting camera parameters: " + e.getMessage());
         }
+
+        try {
+            mCamera.setPreviewDisplay(holder);
+            activity.setPreviewProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
@@ -184,7 +190,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     //exposure compensation
-    public void adjustExposure(int direction)
+    public void adjustExposure(int direction) throws RuntimeException
     {
         if(mCamera==null)
             return;
@@ -207,7 +213,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
-        mCamera.setParameters(parameters);
+        //mCamera.setParameters(parameters);
     }
 
     public void setFocusAreas(List<Camera.Area> areas)
@@ -223,9 +229,12 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
                     int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
                     List<Camera.Area> subAreas = areas.subList(0, length);
 
+                    mCamera.cancelAutoFocus();
+
                     Camera.Parameters parameters = mCamera.getParameters();
                     parameters.setFocusAreas(subAreas);
                     mCamera.setParameters(parameters);
+                    System.out.println("***set focus areas to: " + subAreas.size());
                 } catch (Exception e) {
                     System.out.println("***Exception setting parameters for focus areas.");
                     e.printStackTrace();
