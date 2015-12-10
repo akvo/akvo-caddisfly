@@ -26,14 +26,14 @@ import org.akvo.akvoqr.util.Constant;
  * to listen for item selections.
  */
 public class ChooseStriptestListActivity extends AppCompatActivity
-        implements ChooseStriptestListFragmentII.Callbacks {
+        implements ChooseStriptestListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-    private ChooseStriptestListFragmentII chooseStripTestListFragment;
+    private ChooseStriptestListFragment chooseStripTestListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
 
         if(savedInstanceState==null) {
             if(chooseStripTestListFragment==null) {
-                chooseStripTestListFragment = new ChooseStriptestListFragmentII();
+                chooseStripTestListFragment = new ChooseStriptestListFragment();
             }
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.activity_choose_striptestFragmentPlaceholder, chooseStripTestListFragment)
@@ -60,11 +60,6 @@ public class ChooseStriptestListActivity extends AppCompatActivity
             // activity should be in two-pane mode.
             mTwoPane = true;
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-//            ((ChooseStriptestListFragment) getSupportFragmentManager()
-//                    .findFragmentById(R.id.choose_striptest_list))
-//                    .setActivateOnItemClick(true);
 
         }
 
@@ -77,10 +72,15 @@ public class ChooseStriptestListActivity extends AppCompatActivity
 
     public void onItemSelected(String id) {
         if (mTwoPane) {
+
+            // In two-pane mode, list items should be given the
+            // 'activated' state when touched.
+            if(chooseStripTestListFragment!=null)
+                chooseStripTestListFragment.setActivateOnItemClick(true);
+
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-
             ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(id);
 
             getSupportFragmentManager().beginTransaction()
@@ -88,7 +88,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
                     .commit();
 
         } else {
-            // In single-pane mode, simply qualityChecksOK the detail activity
+            // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ChooseStriptestDetailActivity.class);
             detailIntent.putExtra(Constant.BRAND, id);

@@ -110,8 +110,6 @@ public class ChooseStripTestDetailFragment extends Fragment {
             Intent intent = new Intent(getActivity(), CameraActivity.class);
             intent.putExtra(Constant.BRAND, brand);
             startActivity(intent);
-
-            getActivity().finish();
         }
     }
 

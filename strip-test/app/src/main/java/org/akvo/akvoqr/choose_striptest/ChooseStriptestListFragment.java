@@ -24,7 +24,10 @@ import java.util.List;
  */
 public class ChooseStriptestListFragment extends ListFragment {
 
-    List<String> brandnames;
+    private ChooseStriptestAdapter adapter;
+    private StripTest stripTest;
+    private List<String> brandnames;
+
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -51,7 +54,7 @@ public class ChooseStriptestListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-         void onItemSelected(String id);
+        void onItemSelected(String id);
     }
 
     /**
@@ -75,24 +78,29 @@ public class ChooseStriptestListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState==null) {
-            StripTest stripTest = StripTest.getInstance(getActivity());
 
-            brandnames = stripTest.getBrandsAsList();
-
-            //order alpha-numeric on brand (same as the name of the .png file in assets)
-            Collections.sort(brandnames);
-
-            ChooseStriptestAdapter adapter = new ChooseStriptestAdapter(getActivity(),
-                    R.layout.adapter_choose_striptest, brandnames);
-
-            setListAdapter(adapter);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container);
+        View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container, false);
+
+        if(stripTest==null)
+            stripTest = StripTest.getInstance(getActivity());
+
+        brandnames = stripTest.getBrandsAsList();
+
+        if(brandnames!=null) {
+            //order alpha-numeric on brand (same as the name of the .png file in assets)
+            Collections.sort(brandnames);
+
+            if (adapter == null) {
+                adapter = new ChooseStriptestAdapter(getActivity(),
+                        R.layout.adapter_choose_striptest, brandnames);
+            }
+            setListAdapter(adapter);
+        }
+
         return view;
     }
 
@@ -134,7 +142,7 @@ public class ChooseStriptestListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-       // mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        // mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
         mCallbacks.onItemSelected(brandnames.get(position));
     }
 
