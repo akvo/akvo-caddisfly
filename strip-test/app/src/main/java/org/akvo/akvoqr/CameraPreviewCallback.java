@@ -251,11 +251,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //if no finder patterns are found, remove one from track
                 //when device e.g. is put down, slowly the value becomes zero
                 //'slowly' being about a second
-                if (lumTrack.size() > 0) {
-                    lumTrack.removeFirst();
-                }
-                if (shadowTrack.size() > 0){
-                    shadowTrack.removeFirst();
+                if(possibleCenters.size()==0) {
+                    if (lumTrack.size() > 0) {
+                        lumTrack.removeFirst();
+                    }
+                    if (shadowTrack.size() > 0) {
+                        shadowTrack.removeFirst();
+                    }
                 }
             }
 
