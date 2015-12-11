@@ -24,13 +24,13 @@ public interface CameraViewListener {
 
     void showFocusValue(double value);
 
-    void showMaxLuminosity(boolean ok, double value);
+    void showMaxLuminosity(double value);
 
     void showShadow(double value);
 
     void showLevel(float[] angles);
 
-    void addCountToQualityCheckCount(int count);
+    void addCountToQualityCheckCount(int[] countArray);
 
     void startNextPreview(long timeMillis);
 

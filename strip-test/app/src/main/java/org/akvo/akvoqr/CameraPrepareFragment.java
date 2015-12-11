@@ -1,6 +1,9 @@
 package org.akvo.akvoqr;
 
 import android.app.Activity;
+import android.graphics.Rect;
+import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,10 @@ import android.widget.TextView;
 
 import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -126,19 +133,58 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     }
 
     @Override
-    public void countQuality(int count)
+    public void countQuality(Map<String, Integer> countMap)
     {
 
         if(countQualityView!=null)
         {
             try {
-                count = Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count);
+
+                int count = 0;
+
+                for(int i: countMap.values()){
+                    if(i > Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size())
+                        count += Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size();
+                }
+
+                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
                 countQualityView.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
+
+                countQualityView.append("\n\n");
+                for(Map.Entry<String, Integer> entry: countMap.entrySet()) {
+                    countQualityView.append(entry.getKey() + ": " + entry.getValue() + " " );
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void setFocusAreas(Camera.Size previewSize) {
+        //set focus area to upper third of preview
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+
+            List<Camera.Area> areas = new ArrayList<>();
+
+            int ratioW = Math.round(1000f / previewSize.width);
+            int ratioH = Math.round(1000f / previewSize.height);
+
+            Rect focusArea = new Rect(
+                    -1000 + ratioW * (int) 1,
+                    -1000 + ratioH * (int) 1,
+                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERAVIEW_FACTOR),
+                    -1000 + ratioH * (int) (previewSize.height )
+            );
+
+            areas.add(new Camera.Area(focusArea, 1));
+
+            if(mListener!=null)
+                mListener.setFocusAreas(areas);
+
         }
     }
 }

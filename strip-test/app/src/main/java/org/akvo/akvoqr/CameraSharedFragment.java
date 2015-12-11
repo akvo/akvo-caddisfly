@@ -1,5 +1,6 @@
 package org.akvo.akvoqr;
 
+import android.hardware.Camera;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.RelativeLayout;
 
 import org.akvo.akvoqr.util.Constant;
 
+import java.util.Map;
+
 /**
  * Created by linda on 11/25/15.
  * Contains methods that are shared by child classes
@@ -18,7 +21,9 @@ import org.akvo.akvoqr.util.Constant;
  */
 public abstract class CameraSharedFragment extends Fragment {
 
-    public void countQuality(int count){};
+    public void setFocusAreas(Camera.Size previewSize){};
+
+    public void countQuality(Map<String, Integer> countArray){};
 
     public void showStartButton(){};
 

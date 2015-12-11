@@ -32,7 +32,9 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by linda on 7/7/15.
@@ -54,6 +56,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private int previewFormat= -1;
     private int previewWidth = 0;
     private int previewHeight = 0;
+    private Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +129,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
 
+        qualityCountMap.put("B", 0);
+        qualityCountMap.put("S", 0);
+        qualityCountMap.put("L", 0);
     }
 
     private void init() {
@@ -177,9 +183,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void onPause() {
 
         if(handler!=null)
-        {
             handler.removeCallbacks(focus);
-        }
 
         if(previewCallback!=null) {
             previewCallback.setStop(true);
@@ -209,7 +213,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     public void onStop() {
         Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
 
-       // super.onPause();
+        // super.onPause();
 
         super.onStop();
     }
@@ -242,55 +246,51 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             previewWidth = mCamera.getParameters().getPreviewSize().width;
             previewHeight = mCamera.getParameters().getPreviewSize().height;
             //System.out.println("***previewLayout data : " + previewFormat + " " + previewWidth + " " + previewHeight);
+
         }
     }
 
-    private Runnable focus = new Runnable() {
+    Runnable focus = new Runnable() {
         boolean focused;
         @Override
         public void run() {
 
-            if(mCamera!=null) {
+            try {
+                if (mCamera != null) {
 
-//                System.out.println("***camera focus mode: " + mCamera.getParameters().getFocusMode() +
-//                " " + Camera.Parameters.FOCUS_MODE_AUTO);
+//                            System.out.println("***camera focus mode: " + mCamera.getParameters().getFocusMode() +
+//                                    " " + Camera.Parameters.FOCUS_MODE_AUTO);
 
-                //only need to call mCamera.autofocus if focus mode is set to AUTO
-                if(mCamera.getParameters().getFocusMode().equalsIgnoreCase(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                    //only need to call mCamera.autofocus if focus mode is set to AUTO
+                    if (mCamera.getParameters().getFocusMode().equalsIgnoreCase(Camera.Parameters.FOCUS_MODE_AUTO)) {
 
-                    mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                        @Override
-                        public void onAutoFocus(boolean success, Camera camera) {
-
-                            focused = success;
-
-//                            System.out.println("***camera focus success: " + success);
-
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                                try {
-//                                    Camera.Area focusarea = mCamera.getParameters().getFocusAreas().get(0);
-//                                    System.out.println("***camera focus areas: " + focusarea);
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    //IGNORE
-//                                }
-//                            }
-
+                        if(currentFragment!=null) {
+                            currentFragment.setFocusAreas(mCamera.getParameters().getPreviewSize());
                         }
-                    });
+
+                        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+
+                                focused = success;
+                            }
+                        });
+                    }
+
+                    if(handler!=null) {
+
+                            handler.postDelayed(this, 5000);
+                    }
                 }
             }
-
-            if (handler != null) {
-                if (!focused) {
-                    handler.postDelayed(this, 100);
-                } else {
-                    handler.postDelayed(this, 5000);
-                }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
     };
+
+
     //in the instance of CameraPreviewCallback set takePicture to false
     //and do a oneShotPreviewCallback.
     //do not do this if currentFragment is instructions, only for prepare and starttest fragments
@@ -333,7 +333,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 previewCallback.setTakePicture(true);
                 mCamera.setOneShotPreviewCallback(previewCallback);
 
-                //System.out.println("***calling takeNextPicture runnable");
+                System.out.println("***calling takeNextPicture runnable");
             }
         }
     };
@@ -383,11 +383,17 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     @Override
     public void setQualityCheckCountZero() {
+
         qualityCheckCount = 0;
+
+        for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet()) {
+            entry.setValue(0);
+        }
     }
 
+
     @Override
-    public void addCountToQualityCheckCount(int count) {
+    public void addCountToQualityCheckCount(int[] countArray) {
 
         Runnable showRunnable = new Runnable() {
             @Override
@@ -400,22 +406,40 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         Runnable countQualityRunnable = new Runnable() {
             @Override
             public void run() {
-                currentFragment.countQuality(qualityCheckCount);
+                currentFragment.countQuality(qualityCountMap);
             }
         };
 
-        if(handler!=null)
-            handler.post(countQualityRunnable);
-
-        qualityCheckCount += count;
-
-        //System.out.println("***count quality check: " + qualityCheckCount);
-
-        if (qualityCheckCount >= Constant.COUNT_QUALITY_CHECK_LIMIT) {
-
-            handler.post(showRunnable);
+        if(countArray==null)
+        {
+            throw new NullPointerException("quality checks array is NULL");
         }
 
+        int ci = 0;
+        for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet())
+        {
+            entry.setValue(entry.getValue() + countArray[ci]);
+            ci ++;
+        }
+
+        if(handler!=null) {
+
+            handler.post(countQualityRunnable);
+
+            boolean show = true;
+            for(int i: qualityCountMap.values())
+            {
+                if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
+
+                    show = false;
+                }
+
+            }
+            if (show) {
+
+                handler.post(showRunnable);
+            }
+        }
     }
 
     @Override
@@ -440,8 +464,17 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public boolean qualityChecksOK() {
 
-        return qualityCheckCount > Constant.COUNT_QUALITY_CHECK_LIMIT;
+        //return qualityCheckCount > Constant.COUNT_QUALITY_CHECK_LIMIT;
+        boolean OK = true;
+        for(int i: qualityCountMap.values())
+        {
+            if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size())
+            {
+                OK = false;
+            }
+        }
 
+        return OK;
     }
     @Override
     public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
@@ -466,7 +499,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     }
     @Override
-    public void showMaxLuminosity(final boolean ok, final double value){
+    public void showMaxLuminosity(final double value){
 
         final QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
 

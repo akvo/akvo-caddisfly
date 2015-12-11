@@ -213,7 +213,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
 
-        //mCamera.setParameters(parameters);
+        mCamera.setParameters(parameters);
     }
 
     public void setFocusAreas(List<Camera.Area> areas)
@@ -234,7 +234,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
                     Camera.Parameters parameters = mCamera.getParameters();
                     parameters.setFocusAreas(subAreas);
                     mCamera.setParameters(parameters);
-                    System.out.println("***set focus areas to: " + subAreas.size());
+
                 } catch (Exception e) {
                     System.out.println("***Exception setting parameters for focus areas.");
                     e.printStackTrace();

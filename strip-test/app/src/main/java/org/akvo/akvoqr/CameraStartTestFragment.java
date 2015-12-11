@@ -19,6 +19,7 @@ import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -441,13 +442,22 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     *  Show the number of succesful quality checks as text on the start button
      */
     @Override
-    public void countQuality(int count)
+    public void countQuality(Map<String, Integer> countMap)
     {
 
         if(startButton!=null)
         {
             try {
-                count = Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count);
+
+                int count = 0;
+
+                for(int i: countMap.values()){
+                    if(i > Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size())
+                        count += Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size();
+                }
+
+                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
                 startButton.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
             }
             catch (Exception e)

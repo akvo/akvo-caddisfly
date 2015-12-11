@@ -63,7 +63,7 @@ import java.util.List;
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
     //    private static int countInstance = 0;
-//    private int count;
+    private int count;
     private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
@@ -100,7 +100,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
 
-//        count ++;
+        count ++;
 
         this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
@@ -132,65 +132,73 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             running = true;
             byte[] data = params[0];
 
-            try {
+//            try {
 
-                info = findPossibleCenters(data, previewSize);
+            info = findPossibleCenters(data, previewSize);
 
-                //TODO this worked in principal, but caused a Motorola XT1039 to focus again
-                //set the focus area to lie between the finder patterns
+            //TODO this worked in principal, but caused a Motorola XT1039 to focus again
+            //set the focus area to lie between the finder patterns
 //                if(info!=null)
 //                    setFocusAreas(info);
 
-                //check if quality of image is ok. if OK, value is 1, if not 0
-                //the qualityChecks() method sends messages back to listener to update UI
-                int countQuality = qualityChecks(data, info);
+            //check if quality of image is ok. if OK, value is 1, if not 0
+            //the qualityChecks() method sends messages back to listener to update UI
+            int[] countQuality = qualityChecks(data, info);
 
-                //add countQuality to sum in listener
-                //if countQuality sums up to the limit set in Constant,
-                //listener.qualityChecksOK will return true;
-                if(listener!=null)
-                    listener.addCountToQualityCheckCount(countQuality);
+            //add countQuality to sum in listener
+            //if countQuality sums up to the limit set in Constant,
+            //listener.qualityChecksOK will return true;
+            if(listener!=null)
+                listener.addCountToQualityCheckCount(countQuality);
 
-                //logging
+            //logging
 //                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
 //                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-//                System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
-//                System.out.println("***CameraPreviewCallback info: " + count + " " + info);
+//            System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
+//            System.out.println("***CameraPreviewCallback info: " + count + " " + info);
 
 
-                if(takePicture)
-                {
-
-                    if(listener!=null) {
-                        if (info != null && countQuality == 1 && listener.qualityChecksOK()) {
-
-                            long timePictureTaken = System.currentTimeMillis();
-
-                            //freeze the screen and play a sound
-                            //camera.stopPreview();
-                            listener.playSound();
-
-                            //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
-                            listener.sendData(data, timePictureTaken, info);
-
-                        } else {
-
-                            listener.takeNextPicture(0);
-                        }
+            if(takePicture)
+            {
+                //sumQual should amount to 3, if all checks are OK: [1,1,1]
+                int sumQual = 0;
+                if(countQuality!=null) {
+                    for (int i : countQuality) {
+                        sumQual += i;
                     }
                 }
-                else //we are not taking any picture, just looking at the quality checks
-                {
 
-                    if (listener != null)
-                        listener.startNextPreview(0);
+                if(listener!=null) {
+                    if (info != null && sumQual == 3 && listener.qualityChecksOK()) {
 
+                        long timePictureTaken = System.currentTimeMillis();
+
+                        //freeze the screen and play a sound
+                        //camera.stopPreview();
+                        listener.playSound();
+
+                        //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
+                        listener.sendData(data, timePictureTaken, info);
+
+
+                    } else {
+
+                        listener.takeNextPicture(100);
+                    }
                 }
             }
-            catch (Exception e) {
-                e.printStackTrace();
+            else //we are not taking any picture, just looking at the quality checks
+            {
+
+                if (listener != null)
+                    listener.startNextPreview(0);
 
             }
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//
+//            }
 
             return null;
         }
@@ -201,19 +209,19 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
-    private int qualityChecks(byte[] data, FinderPatternInfo info) {
+    private int[] qualityChecksArray = new int[]{0,0,0};//array containing brightness, shadow, level check values
+    private int[] qualityChecks(byte[] data, FinderPatternInfo info) {
 
         if(camera==null)
-            return 0;
+            return null;
 
         Mat bgr = null;
-
         // List<Double> focusList = new ArrayList<>();
         List<double[]> lumList = new ArrayList<>();
         float[] angles = null;
-        boolean luminosityQualOk = false;
-        boolean shadowQualOk = false;
-        boolean levelQualOk = true;
+        //boolean luminosityQualOk = false;
+        //boolean shadowQualOk = false;
+        //boolean levelQualOk = true;
 
         try {
             if (possibleCenters != null && possibleCenters.size() > 3) {
@@ -261,11 +269,12 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 }
             }
 
-            //brightness: do the checks
+            //DETECT BRIGHTNESS
             double maxmaxLum = luminosityCheck(lumList);
-            luminosityQualOk = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER;
+            //luminosityQualOk = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER;
+            int lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
-
+            qualityChecksArray[0] = lumVal;
             // focus: do the checks
             // if focus is too low, do another round of focussing
 //            if(focusList.size() > 0) {
@@ -286,23 +295,25 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                 // DETECT SHADOWS
                 double shadowPercentage = detectShadows(info, bgr);
-                shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+                //shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
+                int shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
+                qualityChecksArray[1] = shadVal;
 
                 //GET ANGLE
                 angles = PreviewUtils.getAngle(info);
-
                 //the sum of the angles should approach zero: then the camera is hold even with the card
-                levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
-
+                //levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
+                int levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
+                qualityChecksArray[2] = levVal;
             }
 
             if(listener!=null) {
                 //brightness: show the values on device
                 if (lumTrack.size() < 1) {
                     //-1 means 'no data'
-                    listener.showMaxLuminosity(false, -1);
+                    listener.showMaxLuminosity(-1);
                 } else {
-                    listener.showMaxLuminosity(luminosityQualOk, lumTrack.getLast());
+                    listener.showMaxLuminosity(lumTrack.getLast());
                 }
 
                 //shadows: show the values on device
@@ -319,7 +330,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         }  catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return null;
         } finally {
             if(bgr!=null)
                 bgr.release();
@@ -332,7 +343,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 //        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
 //        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
 
-        return luminosityQualOk && shadowQualOk && levelQualOk? 1 : 0;
+        return qualityChecksArray;
 
     }
 
