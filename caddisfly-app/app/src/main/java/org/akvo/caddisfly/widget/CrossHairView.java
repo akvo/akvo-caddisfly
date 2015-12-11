@@ -83,7 +83,7 @@ public class CrossHairView extends View {
         canvas.drawColor(backgroundColor);
         canvas.drawCircle(w / 2, h / 2, radius, clearPaint);
         canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
+        //canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
         super.onDraw(canvas);
     }
 }

@@ -32,16 +32,16 @@ public class UVCCamera {
     private static final int DEFAULT_PREVIEW_HEIGHT = 480;
     private static final String TAG = UVCCamera.class.getSimpleName();
     private static final String DEFAULT_USBFS = "/dev/bus/com.serenegiant.usb";
-    //private static boolean isLoaded;
+    private static boolean isLoaded;
 
-//    static {
-//        if (!isLoaded) {
-//            System.loadLibrary("usb100");
-//            System.loadLibrary("uvc");
-//            System.loadLibrary("UVCCamera");
-//            isLoaded = true;
-//        }
-//    }
+    static {
+        if (!isLoaded) {
+            System.loadLibrary("usb100");
+            System.loadLibrary("uvc");
+            System.loadLibrary("UVCCamera");
+            isLoaded = true;
+        }
+    }
 
     @SuppressWarnings("WeakerAccess")
     protected long mNativePtr; // this field is accessed from native code do not change

@@ -31,6 +31,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -70,7 +71,7 @@ public final class ExternalCameraFragment extends CameraDialog {
     private final Handler delayHandler = new Handler();
     public PictureCallback pictureCallback;
     private SoundPoolPlayer sound;
-    private boolean mPreviewOnly;
+
     /**
      * for accessing USB
      */
@@ -79,22 +80,6 @@ public final class ExternalCameraFragment extends CameraDialog {
      * Handler to execute camera related methods sequentially on private thread
      */
     private CameraHandler mHandler;
-    /**
-     * capture still image when you long click on preview image(not on buttons)
-     */
-//    private final OnLongClickListener mOnLongClickListener = new OnLongClickListener() {
-//        @Override
-//        public boolean onLongClick(final View view) {
-//            switch (view.getId()) {
-//                case R.id.camera_view:
-//                    if (mHandler != null && mHandler.isCameraOpened()) {
-//                        mHandler.captureStill();
-//                        return true;
-//                    }
-//            }
-//            return false;
-//        }
-//    };
     /**
      * for camera preview display
      */
@@ -106,20 +91,19 @@ public final class ExternalCameraFragment extends CameraDialog {
     private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
         @Override
         public void onAttach(final UsbDevice device) {
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
             if (DEBUG) Log.v(TAG, "onConnect:");
             mHandler.openCamera(ctrlBlock);
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_CONNECTED", Toast.LENGTH_SHORT).show();
             startPreview();
         }
 
         @Override
         public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
+            if (DEBUG) Log.v(TAG, "onDisconnect:");
             if (mHandler != null) {
                 mHandler.closeCamera();
             }
@@ -127,9 +111,8 @@ public final class ExternalCameraFragment extends CameraDialog {
 
         @Override
         public void onDetach(final UsbDevice device) {
-            //Toast.makeText(ExternalCameraFragment.this.getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
-
 
         @Override
         public void onCancel() {
@@ -159,11 +142,11 @@ public final class ExternalCameraFragment extends CameraDialog {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
-        }
+//        if (getArguments() != null) {
+//            mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
+//        }
         sound = new SoundPoolPlayer(getActivity());
     }
 
@@ -201,7 +184,6 @@ public final class ExternalCameraFragment extends CameraDialog {
         return dialog;
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -221,7 +203,6 @@ public final class ExternalCameraFragment extends CameraDialog {
         };
 
         delayHandler.postDelayed(delayRunnable, 500);
-
     }
 
     @Override
@@ -412,6 +393,9 @@ public final class ExternalCameraFragment extends CameraDialog {
             private final Object mSync = new Object();
             private final WeakReference<ExternalCameraFragment> mWeakParent;
             private final WeakReference<CameraViewInterface> mWeakCameraView;
+            /**
+             * shutter sound
+             */
             private CameraHandler mHandler;
             /**
              * for accessing UVC camera
@@ -447,7 +431,6 @@ public final class ExternalCameraFragment extends CameraDialog {
                 return mUVCCamera != null;
             }
 
-
             public void handleOpen(final USBMonitor.UsbControlBlock ctrlBlock) {
                 if (DEBUG) Log.v(TAG_THREAD, "handleOpen:");
                 handleClose();
@@ -478,6 +461,7 @@ public final class ExternalCameraFragment extends CameraDialog {
                     }
                 }
                 if (mUVCCamera != null) {
+//					mUVCCamera.setFrameCallback(mIFrameCallback, UVCCamera.PIXEL_FORMAT_YUV);
                     mUVCCamera.setPreviewDisplay(surface);
                     mUVCCamera.startPreview();
                 }
@@ -494,21 +478,21 @@ public final class ExternalCameraFragment extends CameraDialog {
             }
 
             public void handleCaptureStill() {
-//                if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");
-//                final ExternalCameraFragment parent = mWeakParent.get();
-//                if (parent == null) return;
-//                parent.sound.playShortResource(R.raw.beep);
-//                final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
-//
-//                parent.samplingCount++;
-//                parent.picturesTaken++;
-//                //if (!mCancelled) {
-//                if (parent.hasTestCompleted()) {
-//                    parent.pictureCallback.onPictureTaken(bitmap);
-//                } else {
-//                    parent.pictureCallback.onPictureTaken(bitmap);
-//                    parent.takePicture();
-//                }
+                if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");
+                final ExternalCameraFragment parent = mWeakParent.get();
+                if (parent == null) return;
+                parent.sound.playShortResource(R.raw.beep);
+                final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
+
+                parent.samplingCount++;
+                parent.picturesTaken++;
+                //if (!mCancelled) {
+                if (parent.hasTestCompleted()) {
+                    parent.pictureCallback.onPictureTaken(bitmap);
+                } else {
+                    parent.pictureCallback.onPictureTaken(bitmap);
+                    parent.takePicture();
+                }
                 //}
             }
 
