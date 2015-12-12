@@ -113,15 +113,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         System.out.println("***System info: VERSION SDK = " + Build.VERSION.SDK_INT);
         //END LOG SYSTEM BUILD
 
-        if (getIntent().getStringExtra(Constant.BRAND) != null) {
-            this.brandName = getIntent().getStringExtra(Constant.BRAND);
-        }
-        else
-        {
-            throw new NullPointerException("Cannot proceed without brand.");
-
-        }
-
         handler = new Handler(Looper.getMainLooper());
 
         progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
@@ -219,6 +210,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     public void onResume() {
+
+        if (getIntent().getStringExtra(Constant.BRAND) != null) {
+            this.brandName = getIntent().getStringExtra(Constant.BRAND);
+        }
+        else
+        {
+            throw new NullPointerException("Cannot proceed without brand.");
+
+        }
 
         progressLayout.setVisibility(View.VISIBLE);
 
@@ -444,6 +444,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     @Override
     public void nextFragment() {
+
+        System.out.println("***brandname CameraActivity nextFragment: " + brandName);
 
         if(currentFragment instanceof CameraPrepareFragment) {
             //start instruction fragment

@@ -160,7 +160,7 @@ public class ResultActivity extends AppCompatActivity {
                     }
 
                     Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
-                    //intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                     startActivity(intentRedo);
                     ResultActivity.this.finish();
                 }

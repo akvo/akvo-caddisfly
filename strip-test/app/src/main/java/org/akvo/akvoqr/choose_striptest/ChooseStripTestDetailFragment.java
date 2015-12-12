@@ -23,7 +23,7 @@ import java.io.InputStream;
  */
 public class ChooseStripTestDetailFragment extends Fragment {
 
-    private String brandName;
+   // private String brandName;
     private ImageView imageView;
     private Drawable drawable;
 
@@ -45,7 +45,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
             if (getArguments() != null) {
 
-                this.brandName = getArguments().getString(Constant.BRAND);
+                String brandName = getArguments().getString(Constant.BRAND);
 
                 //images in assets
                 try {
@@ -66,6 +66,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
                 }
             }
 
+        setRetainInstance(false);
     }
 
     @Override
@@ -79,17 +80,23 @@ public class ChooseStripTestDetailFragment extends Fragment {
             imageView.setImageDrawable(drawable);
         }
 
-        if(brandName!=null) {
-            Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
-            button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
+        if(getArguments()!=null) {
+            String brandName = getArguments().getString(Constant.BRAND);
 
-            Button buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
-            buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
+            System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
 
-            AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
-            if(appCompatActivity!=null) {
-                StripTest stripTest = StripTest.getInstance(getActivity());
-                appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(brandName).getName());
+            if (brandName != null) {
+                Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
+                button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
+
+                Button buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
+                buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
+
+                AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+                if (appCompatActivity != null) {
+                    StripTest stripTest = StripTest.getInstance(getActivity());
+                    appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(brandName).getName());
+                }
             }
         }
         return rootView;

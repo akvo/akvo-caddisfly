@@ -46,6 +46,7 @@
         <activity
             android:name=".choose_striptest.ChooseStriptestDetailActivity"
             android:label="@string/title_instruction_detail"
+            android:noHistory="true"
             android:parentActivityName=".choose_striptest.ChooseStriptestListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
