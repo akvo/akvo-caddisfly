@@ -136,6 +136,8 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     public void countQuality(Map<String, Integer> countMap)
     {
 
+        boolean develop = true;
+
         if(countQualityView!=null)
         {
             try {
@@ -143,16 +145,17 @@ public class CameraPrepareFragment extends CameraSharedFragment {
                 int count = 0;
 
                 for(int i: countMap.values()){
-                    if(i > Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size())
-                        count += Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size();
+                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
                 countQualityView.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
 
-                countQualityView.append("\n\n");
-                for(Map.Entry<String, Integer> entry: countMap.entrySet()) {
-                    countQualityView.append(entry.getKey() + ": " + entry.getValue() + " " );
+                if(develop) {
+                    countQualityView.append("\n\n");
+                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                        countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
+                    }
                 }
             }
             catch (Exception e)

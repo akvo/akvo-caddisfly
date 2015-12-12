@@ -93,6 +93,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setRetainInstance(false);
     }
 
     /*
@@ -105,7 +106,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         View rootView = inflater.inflate(R.layout.fragment_camera_starttest, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
 
-        //************ HACK FOR TESTING *********************
+        //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
 //        finishTextView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -238,6 +239,12 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         mListener.startNextPreview(0);
 
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
+        brandName = getArguments().getString(Constant.BRAND);
+
+        System.out.println("***brandname: " + brandName);
+
+        patches = StripTest.getInstance(getActivity()).getBrand(brandName).getPatchesOrderedByTimelapse();
+
         for (int i = 0; i < patches.size(); i++) {
 
             //if next patch is no later than previous, skip.
@@ -452,8 +459,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 int count = 0;
 
                 for(int i: countMap.values()){
-                    if(i > Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size())
-                        count += Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size();
+                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
