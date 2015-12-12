@@ -423,13 +423,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             //add highest value of 'white' to track list
             lumTrack.addLast(100 * maxmaxLum/255);
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                Camera.Parameters parameters = camera.getParameters();
-//                parameters.setAutoExposureLock(true);
-//                camera.setParameters(parameters);
-//                System.out.println("***locking auto-exposure. ");
-//            }
-
 
             //System.out.println("***exp maxmaxLum: " + maxmaxLum);
 

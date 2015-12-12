@@ -333,7 +333,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 previewCallback.setTakePicture(true);
                 mCamera.setOneShotPreviewCallback(previewCallback);
 
-                System.out.println("***calling takeNextPicture runnable");
+//                System.out.println("***calling takeNextPicture runnable");
             }
         }
     };

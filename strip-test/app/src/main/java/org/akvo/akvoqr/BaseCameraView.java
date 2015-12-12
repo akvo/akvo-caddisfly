@@ -194,7 +194,18 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     {
         if(mCamera==null)
             return;
+
         parameters = mCamera.getParameters();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+                if(!parameters.getAutoExposureLock()) {
+                    parameters.setAutoExposureLock(true);
+                    mCamera.setParameters(parameters);
+                    System.out.println("***locking auto-exposure. ");
+                }
+            }
+
 
         int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
         int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
@@ -212,8 +223,17 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         }
 
         //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-        mCamera.setParameters(parameters);
+            if(parameters.getAutoExposureLock()) {
+                parameters.setAutoExposureLock(false);
+                mCamera.setParameters(parameters);
+                System.out.println("***unlocking auto-exposure. ");
+            }
+        }else {
+
+            mCamera.setParameters(parameters);
+        }
     }
 
     public void setFocusAreas(List<Camera.Area> areas)
