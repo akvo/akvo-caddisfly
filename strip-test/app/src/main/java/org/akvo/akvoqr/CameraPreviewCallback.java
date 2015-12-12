@@ -265,21 +265,20 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 }
             }
 
-            //DETECT BRIGHTNESS
-            double maxmaxLum = luminosityCheck(lumList);
-            lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
-
             if(info!=null) {
+
+                //DETECT BRIGHTNESS
+                double maxmaxLum = luminosityCheck(lumList);
+                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // DETECT SHADOWS
                 double shadowPercentage = detectShadows(info, bgr);
-                //shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
                 shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
 
                 //GET ANGLE
                 angles = PreviewUtils.getAngle(info);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
-                //levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
+               // System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
                 levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
 
             }
@@ -312,8 +311,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             }
 
         }  catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
+            //return null;
         } finally {
             if(bgr!=null)
                 bgr.release();
@@ -364,32 +363,32 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
     }
 
-    private void addFocusQualToList(Mat src_gray, List<Double> focusList)
-    {
-        double laplacian;
-        double focusQual;
-
-        laplacian = PreviewUtils.focusLaplacian1(src_gray);
-        // correct the focus quality parameter for the total luminosity range of the finder pattern
-        // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
-        double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
-
-        if(lumMinMax.length==2) {
-            focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
-
-            //never more than 100%
-            focusQual = Math.min(focusQual,100);
-
-            if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
-                try {
-                    focusList.add(Double.valueOf(focusQual));
-                } catch (Exception e) {
-                    System.out.println("***exception adding to focuslist.");
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    private void addFocusQualToList(Mat src_gray, List<Double> focusList)
+//    {
+//        double laplacian;
+//        double focusQual;
+//
+//        laplacian = PreviewUtils.focusLaplacian1(src_gray);
+//        // correct the focus quality parameter for the total luminosity range of the finder pattern
+//        // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
+//        double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
+//
+//        if(lumMinMax.length==2) {
+//            focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
+//
+//            //never more than 100%
+//            focusQual = Math.min(focusQual,100);
+//
+//            if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
+//                try {
+//                    focusList.add(Double.valueOf(focusQual));
+//                } catch (Exception e) {
+//                    System.out.println("***exception adding to focuslist.");
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     private void addLumToList(Mat src_gray, List<double[]> lumList)
     {
@@ -401,6 +400,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             lumList.add(lumMinMax);
         }
     }
+
     private double luminosityCheck(List<double[]> lumList)
     {
 
@@ -423,7 +423,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             //add highest value of 'white' to track list
             lumTrack.addLast(100 * maxmaxLum/255);
 
-
             //System.out.println("***exp maxmaxLum: " + maxmaxLum);
 
             //compensate for under-exposure
@@ -433,19 +432,18 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                //System.out.println("***under exposed. ");
+                System.out.println("***under exposed. " + count);
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                //System.out.println("***over exposed. ");
+                System.out.println("***over exposed. " + count);
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
-            //compare latest value with the previous one
-            else if(lumTrack.size()>1)
+            else
             {
                 //get EV to use in order to avoid over exposure while trying to optimise brightness
                 float step = camera.getParameters().getExposureCompensationStep();
@@ -462,17 +460,18 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
 
                     //luminosity is increasing; this is good, keep going in the same direction
-                    // System.out.println("***increasing exposure." );
+                    System.out.println("***increasing exposure."  + count);
+                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
 
                     listener.adjustExposureCompensation(1);
                 }
-//                else
-//                {
-//                    //optimum situation reached
-//
-//                    // System.out.println("***optimum exposure reached. " + camera.getParameters().getExposureCompensation());
-//
-//                }
+                else
+                {
+                    //optimum situation reached
+
+                     System.out.println("***optimum exposure reached. " + count + "  exp.comp. = " + camera.getParameters().getExposureCompensation());
+
+                }
             }
 
         }
