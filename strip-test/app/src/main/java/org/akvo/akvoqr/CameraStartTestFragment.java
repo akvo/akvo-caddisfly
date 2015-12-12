@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
@@ -60,6 +61,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
+    private TextView countQualityView;
     /*
      * Update the ProgressIndicatorView every second
     */
@@ -105,6 +107,8 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_starttest, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
+
+        countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -469,6 +473,15 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             catch (Exception e)
             {
                 e.printStackTrace();
+            }
+        }
+
+        boolean develop = true;
+
+        if(develop) {
+            countQualityView.setText("");
+            for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
             }
         }
     }
