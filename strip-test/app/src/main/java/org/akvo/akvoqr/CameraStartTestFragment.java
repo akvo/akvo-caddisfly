@@ -62,6 +62,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
     private TextView countQualityView;
+    private QualityCheckView exposureView;
+    private QualityCheckView contrastView;
+
     /*
      * Update the ProgressIndicatorView every second
     */
@@ -77,6 +80,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         }
     };
+
 
     public static CameraStartTestFragment newInstance(String brandName) {
 
@@ -107,6 +111,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_starttest, container, false);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
+
+        exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
+        contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
 
         countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
 
@@ -211,6 +218,20 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void showExposure(double value) {
+
+        if(exposureView!=null)
+            exposureView.setPercentage((float)value);
+    }
+
+    @Override
+    protected void showShadow(double value) {
+
+        if(contrastView!=null)
+            contrastView.setPercentage((float) value);
     }
 
     /*

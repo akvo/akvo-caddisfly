@@ -57,10 +57,7 @@ public class LevelView extends View {
                 canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
                 canvas.restore();
             }
-            else
-            {
 
-            }
         }
 
     }

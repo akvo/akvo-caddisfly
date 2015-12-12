@@ -25,6 +25,10 @@ public abstract class CameraSharedFragment extends Fragment {
 
     public void countQuality(Map<String, Integer> countArray){};
 
+    protected void showExposure(double value){};
+
+    protected void showShadow(double value){};
+
     public void showStartButton(){};
 
     protected void setHeightOfOverlay(int shrinkOrEnlarge) {

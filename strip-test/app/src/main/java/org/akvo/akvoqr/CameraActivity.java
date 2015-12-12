@@ -48,6 +48,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
+    private QualityCheckView exposureView;
+    private QualityCheckView contrastView;
+    private LevelView levelView;
     private String brandName;
     private int qualityCheckCount = 0;
     private LinearLayout progressLayout;
@@ -119,6 +122,9 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
+
+
+        levelView = (LevelView) findViewById(R.id.activity_cameraImageViewLevel);
 
         qualityCountMap.put("B", 0);
         qualityCountMap.put("S", 0);
@@ -392,23 +398,23 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
 
+    Runnable showRunnable = new Runnable() {
+        @Override
+        public void run() {
+            currentFragment.showStartButton();
+        }
+
+    };
+
+    Runnable countQualityRunnable = new Runnable() {
+        @Override
+        public void run() {
+            currentFragment.countQuality(qualityCountMap);
+        }
+    };
+
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
-
-        Runnable showRunnable = new Runnable() {
-            @Override
-            public void run() {
-                currentFragment.showStartButton();
-            }
-
-        };
-
-        Runnable countQualityRunnable = new Runnable() {
-            @Override
-            public void run() {
-                currentFragment.countQuality(qualityCountMap);
-            }
-        };
 
         if(countArray==null)
         {
@@ -479,7 +485,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         return OK;
     }
     @Override
-    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
+    public synchronized void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
     {
         Runnable runnable = new Runnable() {
             @Override
@@ -492,7 +498,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         };
 
         if(handler!=null)
-            handler.post(runnable);
+            handler.postDelayed(runnable, 100);
     }
 
     @Override
@@ -500,48 +506,47 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     {
 
     }
-    @Override
-    public void showMaxLuminosity(final double value){
 
-        final QualityCheckView exposureView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewExposure);
+    @Override
+    public synchronized void showMaxLuminosity(final double value){
+
 
         Runnable show = new Runnable() {
             @Override
             public void run() {
 
-                if(exposureView!=null)
-                    exposureView.setPercentage((float)value);
+               if(currentFragment!=null)
+                   currentFragment.showExposure(value);
             }
         };
 
+
         if(handler!=null) {
-            handler.post(show);
+            handler.postDelayed(show, 110);
         }
     }
 
     @Override
-    public void showShadow(final double value){
+    public synchronized void showShadow(final double value){
 
-        final QualityCheckView contrastView = (QualityCheckView) findViewById(R.id.activity_cameraImageViewContrast);
 
         Runnable show = new Runnable() {
             @Override
             public void run() {
 
-                if(contrastView!=null)
-                    contrastView.setPercentage((float) value);
+              if(currentFragment!=null)
+                  currentFragment.showShadow(value);
             }
         };
 
         if(handler!=null) {
-            handler.post(show);
+            handler.postDelayed(show, 130);
         }
     }
 
     @Override
     public void showLevel(final float[] angles)
     {
-        final LevelView levelView = (LevelView) findViewById(R.id.activity_cameraImageViewLevel);
 
         Runnable levelRunnable = new Runnable() {
             @Override
@@ -552,7 +557,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         };
 
         if(handler!=null) {
-            handler.post(levelRunnable);
+            handler.postDelayed(levelRunnable, 150);
         }
     }
 
@@ -587,7 +592,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void dataSent() {
 
-        System.out.println("***previewLayout data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
+        //System.out.println("***previewLayout data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
 
         if(currentFragment instanceof CameraStartTestFragment)
         {

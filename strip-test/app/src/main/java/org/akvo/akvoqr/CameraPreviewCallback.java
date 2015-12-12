@@ -432,14 +432,14 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                System.out.println("***under exposed. " + count);
+                //System.out.println("***under exposed. " + count);
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                System.out.println("***over exposed. " + count);
+                //System.out.println("***over exposed. " + count);
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
@@ -460,8 +460,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
 
                     //luminosity is increasing; this is good, keep going in the same direction
-                    System.out.println("***increasing exposure."  + count);
-                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
+//                    System.out.println("***increasing exposure."  + count);
+//                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
 
                     listener.adjustExposureCompensation(1);
                 }
@@ -469,7 +469,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 {
                     //optimum situation reached
 
-                     System.out.println("***optimum exposure reached. " + count + "  exp.comp. = " + camera.getParameters().getExposureCompensation());
+                    // System.out.println("***optimum exposure reached. " + count + "  exp.comp. = " + camera.getParameters().getExposureCompensation());
 
                 }
             }

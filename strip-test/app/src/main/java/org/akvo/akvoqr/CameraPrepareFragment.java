@@ -34,6 +34,8 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     private Button startButton;
     private TextView messageView;
     private TextView countQualityView;
+    private QualityCheckView exposureView;
+    private QualityCheckView contrastView;
 
     public static CameraPrepareFragment newInstance() {
         CameraPrepareFragment fragment = new CameraPrepareFragment();
@@ -56,12 +58,15 @@ public class CameraPrepareFragment extends CameraSharedFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
+
+        exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
+        contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
+        startButton.setVisibility(View.GONE);
         messageView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareTextView);
         countQualityView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareCountQualityView);
 
         //use brightness view as a button to switch on and off the flash
-        QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         if(exposureView!=null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,23 +80,38 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     }
 
     @Override
+    protected void showExposure(double value) {
+
+        if(exposureView!=null)
+            exposureView.setPercentage((float)value);
+    }
+
+    @Override
+    protected void showShadow(double value) {
+
+        if(contrastView!=null)
+            contrastView.setPercentage((float) value);
+    }
+
+    @Override
     public void showStartButton() {
 
         if(startButton==null)
             return;
 
-        startButton.setVisibility(View.VISIBLE);
-        startButton.setBackgroundResource(android.R.drawable.btn_default);
-        startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
-        startButton.setText(R.string.next);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null)
-                    mListener.nextFragment();
-            }
-        });
-
+        if(startButton.getVisibility()==View.GONE) {
+            startButton.setVisibility(View.VISIBLE);
+            startButton.setBackgroundResource(android.R.drawable.btn_default);
+            startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
+            startButton.setText(R.string.next);
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null)
+                        mListener.nextFragment();
+                }
+            });
+        }
         if(messageView!=null)
         {
             messageView.setText("Excellent! \nPlease go to the next step.");
