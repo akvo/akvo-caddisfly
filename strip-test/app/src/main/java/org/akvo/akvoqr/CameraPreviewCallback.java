@@ -136,11 +136,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
             info = findPossibleCenters(data, previewSize);
 
-            //TODO this worked in principal, but caused a Motorola XT1039 to focus again
-            //set the focus area to lie between the finder patterns
-//                if(info!=null)
-//                    setFocusAreas(info);
-
             //check if quality of image is ok. if OK, value is 1, if not 0
             //the qualityChecks() method sends messages back to listener to update UI
             int[] countQuality = qualityChecks(data, info);
@@ -210,6 +205,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     }
 
     private int[] qualityChecksArray = new int[]{0,0,0};//array containing brightness, shadow, level check values
+
     private int[] qualityChecks(byte[] data, FinderPatternInfo info) {
 
         if(camera==null)
@@ -219,9 +215,9 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         // List<Double> focusList = new ArrayList<>();
         List<double[]> lumList = new ArrayList<>();
         float[] angles = null;
-        //boolean luminosityQualOk = false;
-        //boolean shadowQualOk = false;
-        //boolean levelQualOk = true;
+        int lumVal = 0;
+        int shadVal = 0;
+        int levVal = 0;
 
         try {
             if (possibleCenters != null && possibleCenters.size() > 3) {
@@ -271,42 +267,29 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
             //DETECT BRIGHTNESS
             double maxmaxLum = luminosityCheck(lumList);
-            //luminosityQualOk = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER;
-            int lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
-
-            qualityChecksArray[0] = lumVal;
-            // focus: do the checks
-            // if focus is too low, do another round of focussing
-//            if(focusList.size() > 0) {
-//                Collections.sort(focusList);
-//                if (focusList.get(0) < Constant.MIN_FOCUS_PERCENTAGE) {
-//
-//                    focused = false;
-//
-//                } else {
-//
-//                    focused = true;
-//
-//                }
-//            }
-
+            lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
             if(info!=null) {
 
                 // DETECT SHADOWS
                 double shadowPercentage = detectShadows(info, bgr);
                 //shadowQualOk = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE;
-                int shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
-                qualityChecksArray[1] = shadVal;
+                shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
 
                 //GET ANGLE
                 angles = PreviewUtils.getAngle(info);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
                 //levelQualOk = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF;
-                int levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
-                qualityChecksArray[2] = levVal;
+                levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
+
             }
 
+            //UPDATE VALUES IN ARRAY
+            qualityChecksArray[0] = lumVal;
+            qualityChecksArray[1] = shadVal;
+            qualityChecksArray[2] = levVal;
+
+            //SHOW VALUES ON SCREEN
             if(listener!=null) {
                 //brightness: show the values on device
                 if (lumTrack.size() < 1) {
@@ -338,10 +321,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             if(src_gray!=null)
                 src_gray.release();
         }
-
-//        System.out.println("***yyylum qual ok: " + count + " " + luminosityQualOk);
-//        System.out.println("***yyyshadow qual ok: "+ count + " "  + shadowQualOk);
-//        System.out.println("***yyylevel qual ok: "+ count + " "  + levelQualOk);
 
         return qualityChecksArray;
 
