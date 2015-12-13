@@ -61,6 +61,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
+    private CountQualityRunnable countQualityRunnable;
     private TextView countQualityView;
     private QualityCheckView exposureView;
     private QualityCheckView contrastView;
@@ -114,8 +115,8 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
-
         countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
+        countQualityRunnable = new CountQualityRunnable();
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -140,7 +141,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
-            StripTest stripTest = StripTest.getInstance(getActivity());
             //get the patches ordered by time-lapse
             patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
 
@@ -268,7 +268,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
         System.out.println("***brandname: " + brandName);
 
-        patches = StripTest.getInstance(getActivity()).getBrand(brandName).getPatchesOrderedByTimelapse();
+        patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
 
         for (int i = 0; i < patches.size(); i++) {
 
@@ -476,33 +476,45 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     @Override
     public void countQuality(Map<String, Integer> countMap)
     {
+        countQualityRunnable.setCountMap(countMap);
+        countQualityView.post(countQualityRunnable);
+    }
 
-        if(startButton!=null)
-        {
-            try {
+    class CountQualityRunnable implements Runnable {
 
-                int count = 0;
+        Map<String, Integer> countMap;
 
-                for(int i: countMap.values()){
-                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-                }
-
-                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
-
-                startButton.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+        public void setCountMap(Map<String, Integer> countMap) {
+            this.countMap = countMap;
         }
 
-        boolean develop = true;
+        @Override
+        public void run() {
+            if(startButton!=null)
+            {
+                try {
 
-        if(develop) {
-            countQualityView.setText("");
-            for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
+                    int count = 0;
+
+                    for(int i: countMap.values()){
+                        count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
+                    }
+
+                    count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
+                    startButton.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            if(0==0) {
+                countQualityView.setText("");
+                for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                    countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
+                }
             }
         }
     }

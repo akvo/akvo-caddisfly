@@ -47,6 +47,7 @@ public class FinderPatternIndicatorView extends SurfaceView {
                 this.size = size;
             }
 
+
             invalidate();
 
     }

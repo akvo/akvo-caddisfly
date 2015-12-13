@@ -34,14 +34,14 @@ public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
     private final double ONE_OVER_NINE = 1.0/9;
     private static CalibrationCard instance;
-    private static CalibrationData calData;
+    private CalibrationData calData;
     public static Map<Integer, Integer> versionNumberMap = new HashMap<>();
 
     public static CalibrationCard getInstance(Context context)
     {
         if(instance==null) {
             instance = new CalibrationCard();
-            calData = readCalibrationFile(context);
+
         }
 
         return instance;
@@ -86,7 +86,7 @@ public class CalibrationCard{
         return CODE_NOT_FOUND;
     }
 
-    private static CalibrationData readCalibrationFile(Context context){
+    public CalibrationData readCalibrationFile(Context context){
 
         String calFileName = "calibration" + getMostFrequentVersionNumber() + ".json";
         String json = AssetsManager.getInstance(context).loadJSONFromAsset(calFileName);
@@ -857,7 +857,4 @@ public class CalibrationCard{
         return oneCount % 2 != 0; // returns true if parity is odd
     }
 
-    public CalibrationData getCalData() {
-        return calData;
-    }
 }

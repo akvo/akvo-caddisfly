@@ -168,6 +168,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         try {
             mCamera.setPreviewDisplay(holder);
             activity.setPreviewProperties();
+            mCamera.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }

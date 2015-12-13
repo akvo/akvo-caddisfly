@@ -20,31 +20,35 @@ import java.util.Map;
  */
 public class StripTest{
 
-    public static StripTest instance;
-    private static Map<String, JSONObject> stripObjects;
+    //public static StripTest instance;
+    private Map<String, JSONObject> stripObjects;
 
-    private StripTest()
+    public StripTest(Context context)
     {
-
-    }
-    public static StripTest getInstance(Context context)
-    {
-        if(instance==null)
-        {
-            instance = new StripTest();
+        if(stripObjects == null)
             fromJson(context);
-        }
-
-       return instance;
     }
+
+//    public static StripTest getInstance(Context context)
+//    {
+//        if(instance==null)
+//        {
+//            instance = new StripTest(context);
+//
+//        }
+//
+//       return instance;
+//    }
 
     public List<String> getBrandsAsList()
     {
-       List<String> brandnames = new ArrayList<>();
-        for(String b: stripObjects.keySet()){
-            brandnames.add(b);
+        List<String> brandnames = new ArrayList<>();
+        if(stripObjects!=null){
+            for(String b: stripObjects.keySet()){
+                brandnames.add(b);
+            }
         }
-       return brandnames;
+        return brandnames;
     }
 
     public Brand getBrand(String brand)
@@ -198,7 +202,7 @@ public class StripTest{
         }
     }
 
-    private static void fromJson(Context context)
+    private void fromJson(Context context)
     {
         String filename = context.getString(R.string.strips_json);
         JSONArray stripsJson;

@@ -23,7 +23,6 @@ import java.io.InputStream;
  */
 public class ChooseStripTestDetailFragment extends Fragment {
 
-   // private String brandName;
     private ImageView imageView;
     private Drawable drawable;
 
@@ -94,12 +93,18 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
                 AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
                 if (appCompatActivity != null) {
-                    StripTest stripTest = StripTest.getInstance(getActivity());
+                    StripTest stripTest = new StripTest(getActivity());
                     appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(brandName).getName());
                 }
             }
         }
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        drawable = null;
+        super.onPause();
     }
 
     private class ChooseBrandOnClickListener implements View.OnClickListener{

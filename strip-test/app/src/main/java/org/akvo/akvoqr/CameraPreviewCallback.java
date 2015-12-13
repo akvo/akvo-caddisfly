@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -78,7 +79,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     private boolean stop;
     private Mat src_gray = new Mat();
     private Context context;
-
+    CalibrationCard card;
+    CalibrationData calData;
 
     public CameraPreviewCallback(Context context) {
         try {
@@ -93,6 +95,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         possibleCenters = new ArrayList<>();
 
+        card = CalibrationCard.getInstance(context);
         //countInstance ++;
 
     }
@@ -122,6 +125,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     {
         this.stop = stop;
     }
+
+
     private class SendDataTask extends AsyncTask<byte[], Void, Void> {
 
         FinderPatternInfo info;
@@ -147,7 +152,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 listener.addCountToQualityCheckCount(countQuality);
 
             //logging
-//                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
+                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
 //                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
 //            System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
 //            System.out.println("***CameraPreviewCallback info: " + count + " " + info);
@@ -178,7 +183,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                     } else {
 
-                        listener.takeNextPicture(100);
+                        listener.takeNextPicture(500);
                     }
                 }
             }
@@ -186,7 +191,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             {
 
                 if (listener != null)
-                    listener.startNextPreview(0);
+                    listener.startNextPreview(500);
 
             }
 //            }
@@ -205,16 +210,15 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
     }
 
     private int[] qualityChecksArray = new int[]{0,0,0};//array containing brightness, shadow, level check values
+    private Mat bgr = null;
+    private List<double[]> lumList = new ArrayList<>();
+    private float[] angles = null;
 
     private int[] qualityChecks(byte[] data, FinderPatternInfo info) {
 
         if(camera==null)
             return null;
 
-        Mat bgr = null;
-        // List<Double> focusList = new ArrayList<>();
-        List<double[]> lumList = new ArrayList<>();
-        float[] angles = null;
         int lumVal = 0;
         int shadVal = 0;
         int levVal = 0;
@@ -267,18 +271,18 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
             if(info!=null) {
 
-                //DETECT BRIGHTNESS
+               // DETECT BRIGHTNESS
                 double maxmaxLum = luminosityCheck(lumList);
                 lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
-                // DETECT SHADOWS
+              //   DETECT SHADOWS
                 double shadowPercentage = detectShadows(info, bgr);
                 shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
 
-                //GET ANGLE
+              //  GET ANGLES
                 angles = PreviewUtils.getAngle(info);
-                //the sum of the angles should approach zero: then the camera is hold even with the card
-               // System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
+              //  the sum of the angles should approach zero: then the camera is hold even with the card
+                System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
                 levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
 
             }
@@ -311,8 +315,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             }
 
         }  catch (Exception e) {
-            throw new RuntimeException(e);
-            //return null;
+            //throw new RuntimeException(e);
+            return null;
         } finally {
             if(bgr!=null)
                 bgr.release();
@@ -324,6 +328,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         return qualityChecksArray;
 
     }
+
 
     private double detectShadows(FinderPatternInfo info, Mat bgr) throws Exception
     {
@@ -344,14 +349,19 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             try
             {
                 if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
-                    CalibrationCard card = CalibrationCard.getInstance(context);
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, card);
+
+                    if(calData == null)
+                    {
+                        calData = card.readCalibrationFile(context);
+                    }
+                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, card, calData);
                     shadowTrack.add(shadowPercentage);
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
+
             }
             finally {
                 if(warp!=null)

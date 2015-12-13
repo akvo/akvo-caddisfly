@@ -84,7 +84,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
         String brandname = intent.getStringExtra(Constant.BRAND);
 
-        StripTest stripTest = StripTest.getInstance(context);
+        StripTest stripTest = new StripTest(context);
         int numPatches = stripTest.getBrand(brandname).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
@@ -317,7 +317,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     private void divideIntoCalibrationAndStripArea(Context context) throws Exception{
 
         CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
-        CalibrationData data = calibrationCard.getCalData();
+        CalibrationData data = calibrationCard.readCalibrationFile(context);
 
         if (warp_dst!=null && data != null) {
 
@@ -354,7 +354,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
         {
             throw new Exception("no version number set.");
         }
-        CalibrationData data = calibrationCard.getCalData();
+        CalibrationData data = calibrationCard.readCalibrationFile(context);
         return calibrationCard.calibrateImage(mat, data);
 
     }

@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +62,7 @@ public class CameraInstructionFragment extends CameraSharedFragment {
 
             brandName = getArguments().getString(Constant.BRAND);
 
-            StripTest stripTest = StripTest.getInstance(getActivity());
+
             JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
             TextView textView;
             try {

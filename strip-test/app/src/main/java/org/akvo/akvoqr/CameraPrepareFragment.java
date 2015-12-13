@@ -100,22 +100,28 @@ public class CameraPrepareFragment extends CameraSharedFragment {
             return;
 
         if(startButton.getVisibility()==View.GONE) {
-            startButton.setVisibility(View.VISIBLE);
-            startButton.setBackgroundResource(android.R.drawable.btn_default);
-            startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
-            startButton.setText(R.string.next);
-            startButton.setOnClickListener(new View.OnClickListener() {
+            startButton.post(new Runnable() {
                 @Override
-                public void onClick(View v) {
-                    if (mListener != null)
-                        mListener.nextFragment();
+                public void run() {
+                    startButton.setVisibility(View.VISIBLE);
+                    startButton.setBackgroundResource(android.R.drawable.btn_default);
+                    startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
+                    startButton.setText(R.string.next);
+                    startButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mListener != null)
+                                mListener.nextFragment();
+                        }
+                    });
+
+                    if (messageView != null) {
+                        messageView.setText("Excellent! \nPlease go to the next step.");
+                    }
                 }
             });
         }
-        if(messageView!=null)
-        {
-            messageView.setText("Excellent! \nPlease go to the next step.");
-        }
+
     }
 
     @Override
@@ -152,31 +158,42 @@ public class CameraPrepareFragment extends CameraSharedFragment {
         }
     }
 
-    @Override
-    public void countQuality(Map<String, Integer> countMap)
-    {
+    private Map<String, Integer> countMap;
+    private Runnable countQualityRunnable = new Runnable() {
+        @Override
+        public void run() {
 
-        boolean develop = true;
+            int count = 0;
 
-        if(countQualityView!=null)
-        {
-            try {
-
-                int count = 0;
-
-                for(int i: countMap.values()){
+            if (countMap != null) {
+                for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
                 countQualityView.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
 
-                if(develop) {
+                if (1 == 1) {
                     countQualityView.append("\n\n");
                     for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                         countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
                     }
                 }
+            }
+        }
+    };
+    @Override
+    public void countQuality(final Map<String, Integer> countMap)
+    {
+        this.countMap = countMap;
+
+        if(countQualityView!=null)
+        {
+            try {
+
+                countQualityView.post(countQualityRunnable);
+
             }
             catch (Exception e)
             {

@@ -1,6 +1,7 @@
 package org.akvo.akvoqr.util;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.core.Core;
@@ -132,7 +133,7 @@ public class PreviewUtils {
    * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
    *  points with luminosity with a larger difference than Constant.CONTRAST_MAX_DEVIATION_PERCENTAGE count 10 times in the result.
     */
-    public static double getShadowPercentage(Mat bgr, CalibrationCard card) {
+    public static double getShadowPercentage(Mat bgr,CalibrationCard card, CalibrationData data) {
 
         double sumLum = 0;
         int countDev = 0;
@@ -144,7 +145,7 @@ public class PreviewUtils {
 
 //        CalibrationCard card = CalibrationCard.getInstance(versionNumber);
 //        CalibrationData data = card.readCalibrationFile(context);
-        double[][] points = card.createWhitePointArray(lab, card.getCalData());
+        double[][] points = card.createWhitePointArray(lab, data);
 
         //get the sum total of luminosity values
         for(int i=0; i< points.length; i++) {

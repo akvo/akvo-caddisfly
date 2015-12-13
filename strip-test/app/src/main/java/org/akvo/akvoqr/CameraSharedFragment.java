@@ -1,5 +1,6 @@
 package org.akvo.akvoqr;
 
+import android.app.Activity;
 import android.hardware.Camera;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.util.Constant;
 
 import java.util.Map;
@@ -20,6 +22,16 @@ import java.util.Map;
  * in a simple way
  */
 public abstract class CameraSharedFragment extends Fragment {
+
+    protected StripTest stripTest;
+    protected CameraViewListener listener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        stripTest = new StripTest(activity);
+    }
 
     public void setFocusAreas(Camera.Size previewSize){};
 
