@@ -142,7 +142,7 @@ public class ChooseStriptestListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        // mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        System.out.println("***brandname in ChooseStripTestListFragment: " + brandnames.get(position));
         mCallbacks.onItemSelected(brandnames.get(position));
     }
 

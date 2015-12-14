@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.util.Constant;
@@ -28,35 +29,39 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
         // Show the Up button in the action bar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        //if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-
-            String brandname = getIntent().getStringExtra(Constant.BRAND);
-            if(brandname==null)
-            {
-                finish();
-            }
-            else {
-                ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
-
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.choose_striptest_detail_container, fragment)
-                        .commit();
-
-            }
-        //}
     }
 
+    @Override
+    public void onResume()
+    {
+        String brandname = getIntent().getStringExtra(Constant.BRAND);
+
+        System.out.println("*** ChooseStripTestDetailActivity onResume called with brandname: " + brandname);
+
+        if(brandname==null)
+        {
+            Toast.makeText(this.getApplicationContext(), "Cannot proceed without brandname", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else {
+            ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.choose_striptest_detail_container, fragment)
+                    .commit();
+
+        }
+
+        super.onResume();
+    }
+
+    @Override
+    public void onNewIntent(Intent intent)
+    {
+        System.out.println("***Expecting a call when FLAG_ACTIVITY_CLEAR_TOP is passed in the intent");
+
+        super.onNewIntent(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

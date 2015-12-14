@@ -23,9 +23,9 @@ import java.io.InputStream;
  */
 public class ChooseStripTestDetailFragment extends Fragment {
 
-   // private String brandName;
-    private ImageView imageView;
-    private Drawable drawable;
+    // private String brandName;
+    //private ImageView imageView;
+    //private Drawable drawable;
 
     public static ChooseStripTestDetailFragment newInstance(String brandName) {
         ChooseStripTestDetailFragment fragment = new ChooseStripTestDetailFragment();
@@ -43,42 +43,17 @@ public class ChooseStripTestDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            if (getArguments() != null) {
-
-                String brandName = getArguments().getString(Constant.BRAND);
-
-                //images in assets
-                try {
-
-                    if (drawable == null) {
-                        // get input stream
-                        String path = getActivity().getResources().getString(R.string.striptest_images);
-                        InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
-                        // load image as Drawable
-
-                        drawable = Drawable.createFromStream(ims, null);
-
-                        ims.close();
-                    }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-
         setRetainInstance(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
-        imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
-        // set image to ImageView
-        if(drawable!=null) {
-            imageView.setImageDrawable(drawable);
-        }
+        System.out.println("*** ChooseStripTestDetailFragment onCreateView called with Arguments: " + getArguments());
+
+        View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
         if(getArguments()!=null) {
             String brandName = getArguments().getString(Constant.BRAND);
@@ -86,6 +61,27 @@ public class ChooseStripTestDetailFragment extends Fragment {
             System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
 
             if (brandName != null) {
+
+                try {
+                    //images in assets
+                    // get input stream
+                    String path = getActivity().getResources().getString(R.string.striptest_images);
+                    InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
+                    // load image as Drawable
+
+                    Drawable drawable = Drawable.createFromStream(ims, null);
+
+                    ims.close();
+
+                    // set image to ImageView
+                    imageView.setImageDrawable(drawable);
+
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+
                 Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
                 button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
 
@@ -104,18 +100,18 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
     private class ChooseBrandOnClickListener implements View.OnClickListener{
 
-        private String brand;
+        private String brandname;
 
         public ChooseBrandOnClickListener(String brand)
         {
-            this.brand = brand;
+            this.brandname = brand;
         }
 
         @Override
         public void onClick(View v) {
             v.setActivated(!v.isActivated());
             Intent intent = new Intent(getActivity(), CameraActivity.class);
-            intent.putExtra(Constant.BRAND, brand);
+            intent.putExtra(Constant.BRAND, brandname);
             startActivity(intent);
         }
     }
