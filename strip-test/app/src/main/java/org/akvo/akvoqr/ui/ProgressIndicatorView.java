@@ -249,8 +249,9 @@ public class ProgressIndicatorView extends LinearLayout {
         canvas.save();
         for (int i = 0; i < steps.size(); i++) {
 
-            if(i>0)
-            canvas.translate(0f, verMargin);
+            if(i>0) {
+                canvas.translate(0f, verMargin);
+            }
 
             if(steps.get(i).pictureTaken)
             {
@@ -268,7 +269,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
                 canvas.drawBitmap(background, 0, 0, paint);
 
-                //if the previous step is finished, either picture taken or not, we qualityChecksOK the counter
+                //if the previous step is finished, either picture taken or not, we start the counter
                 //otherwise we do not show any message
                 if(i>0) {
                     if (steps.get(i - 1).animationEnded) {
