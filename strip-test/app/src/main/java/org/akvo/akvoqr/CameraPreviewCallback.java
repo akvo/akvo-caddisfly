@@ -279,7 +279,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 angles = PreviewUtils.getAngle(info);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
                // System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
-                levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < Constant.MAX_LEVEL_DIFF ? 1 : 0;
+                levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < 2*Constant.MAX_LEVEL_DIFF ? 1 : 0;
 
             }
 
