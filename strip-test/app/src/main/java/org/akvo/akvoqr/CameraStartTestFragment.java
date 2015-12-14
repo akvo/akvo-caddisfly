@@ -73,8 +73,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         public void run() {
 
             if(progressIndicatorViewAnim!=null && handler!=null) {
-                progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
-                handler.postDelayed(this, 1000);
+
+                    progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+                    handler.postDelayed(this, 1000);
+
             }
             timeLapsed++;
 
@@ -218,6 +220,15 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onPause() {
+        if(handler!=null)
+        {
+            handler.removeCallbacks(countdownRunnable);
+        }
+        super.onPause();
     }
 
     @Override
@@ -383,9 +394,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         //add one to imageCount
         imageCount++;
 
-
-
-
     }
 
     /*
@@ -403,8 +411,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     *
     * @params: format, widht, height. Those should be the format, width and height of the Camera.Size
      */
-    public void dataSent(int format, int width, int height)
-    {
+    public void dataSent(int format, int width, int height) {
 
         //set to true if you want to see the original and calibrated images in DetectStripActivity
         //set to false if you want to go to the ResultActivity directly
@@ -418,10 +425,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
             {
                 mListener.stopCallback(true);
             }
-            if(handler!=null)
-            {
-                handler.removeCallbacks(countdownRunnable);
-            }
+
             //check if we really do have data in the json-array
             if(imagePatchArray.length()>0) {
                 //write image/patch info to internal storage
