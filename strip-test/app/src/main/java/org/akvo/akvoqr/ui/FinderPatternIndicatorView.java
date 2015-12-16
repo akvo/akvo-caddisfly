@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -17,11 +16,10 @@ import java.util.List;
  */
 public class FinderPatternIndicatorView extends SurfaceView {
 
-    Paint paint;
-    List<FinderPattern> patterns;
-    Camera.Size size;
-    float ratioW = 1;
-    float ratioH = 1;
+    private final Paint paint;
+    private List<FinderPattern> patterns;
+    private int width;
+    private int height;
 
     public FinderPatternIndicatorView(Context context) {
         this(context, null);
@@ -38,16 +36,14 @@ public class FinderPatternIndicatorView extends SurfaceView {
         paint.setColor(Color.RED);
     }
 
-    public void showPatterns(List<FinderPattern> patterns, Camera.Size size)
+    public void showPatterns(List<FinderPattern> patterns, int width, int height)
     {
 
-            this.patterns = patterns;
+        this.patterns = patterns;
+        this.width = width;
+        this.height = height;
 
-            if(size!=null) {
-                this.size = size;
-            }
-
-            invalidate();
+        invalidate();
 
     }
 
@@ -60,20 +56,16 @@ public class FinderPatternIndicatorView extends SurfaceView {
     public void onDraw(Canvas canvas)
     {
 
-        if (size!=null)
-        {
-            //canvas has a rotation of 90 degrees in respect to the camera preview
-            //Camera preview size is in landscape mode, canvas is in portrait mode
-            //the width of the canvas corresponds to the height of the size,
-            //the height of the canvas corresponds to the width of the size.
-            ratioW = (float)canvas.getWidth() / (float)size.height ;
-            ratioH = (float)canvas.getHeight() / (float)size.width;
-        }
-
         // Have the view being transparent
         canvas.drawARGB(0, 0, 0, 0);
 
         if(patterns!=null) {
+            //canvas has a rotation of 90 degrees in respect to the camera preview
+            //Camera preview size is in landscape mode, canvas is in portrait mode
+            //the width of the canvas corresponds to the height of the size,
+            //the height of the canvas corresponds to the width of the size.
+        float ratioW = (float) canvas.getWidth() / (float) height;
+        float ratioH = (float) canvas.getHeight() / (float) width;
 
             for (int i = 0; i < patterns.size(); i++) {
                 //The x of the canvas corresponds to the y of the pattern,
@@ -84,5 +76,6 @@ public class FinderPatternIndicatorView extends SurfaceView {
             }
         }
 
+        super.onDraw(canvas);
     }
 }

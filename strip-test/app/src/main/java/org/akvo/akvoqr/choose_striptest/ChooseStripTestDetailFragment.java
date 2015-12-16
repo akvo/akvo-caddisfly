@@ -90,8 +90,8 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
                 AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
                 if (appCompatActivity != null) {
-                    StripTest stripTest = StripTest.getInstance(getActivity());
-                    appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(brandName).getName());
+                    StripTest stripTest = new StripTest();
+                    appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(getActivity(), brandName).getName());
                 }
             }
         }

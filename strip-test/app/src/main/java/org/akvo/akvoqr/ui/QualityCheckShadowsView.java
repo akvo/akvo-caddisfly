@@ -25,7 +25,7 @@ public class QualityCheckShadowsView extends QualityCheckView {
     }
 
     @Override
-    protected double fromPercentageToNumber(float percentage)
+    protected double fromPercentageToNumber()
     {
         // calculate the percentage back to value that fits NUMBER_OF_BARS
         // we want the number to range between 0 (= heavy shadow) and 6 (no shadow)

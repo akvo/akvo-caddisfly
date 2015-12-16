@@ -29,6 +29,7 @@ import java.io.IOException;
  */
 public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
+    StripTest stripTest;
     int format;
     int width;
     int height;
@@ -84,8 +85,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
         String brandname = intent.getStringExtra(Constant.BRAND);
 
-        StripTest stripTest = StripTest.getInstance(context);
-        int numPatches = stripTest.getBrand(brandname).getPatches().size();
+        stripTest = new StripTest();
+        int numPatches = stripTest.getBrand(context,brandname).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
         width = intent.getIntExtra(Constant.WIDTH, 0);
@@ -200,11 +201,12 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                         if (striparea != null) {
                             listener.showMessage(2);
 
-                            StripTest.Brand brand = stripTest.getBrand(brandname);
 
                             Mat strip = null;
                             try {
-                                 strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
+                                StripTest.Brand brand = stripTest.getBrand(context,brandname);
+
+                                strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                             }
                             catch (Exception e)
                             {
@@ -316,8 +318,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
     private void divideIntoCalibrationAndStripArea(Context context) throws Exception{
 
-        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
-        CalibrationData data = calibrationCard.getCalData();
+
+        CalibrationData data = CalibrationCard.readCalibrationFile(context);
 
         if (warp_dst!=null && data != null) {
 
@@ -349,13 +351,13 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     {
         //System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
 
-        CalibrationCard calibrationCard = CalibrationCard.getInstance(context);
+
         if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND)
         {
             throw new Exception("no version number set.");
         }
-        CalibrationData data = calibrationCard.getCalData();
-        return calibrationCard.calibrateImage(mat, data);
+        CalibrationData data = CalibrationCard.readCalibrationFile(context);
+        return CalibrationCard.calibrateImage(mat, data);
 
     }
 }

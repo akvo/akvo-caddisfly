@@ -2,12 +2,11 @@ package org.akvo.akvoqr;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
+import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
 import org.akvo.akvoqr.detector.FinderPattern;
@@ -60,25 +59,24 @@ import java.util.List;
  * if takePicture is false, we tell the listener to call this callback again
  * with the startNextPreview() method.
  */
+@SuppressWarnings("deprecation")
 public class CameraPreviewCallback implements Camera.PreviewCallback {
 
     //    private static int countInstance = 0;
     private int count;
-    private FinderPatternFinder finderPatternFinder;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
-    private int versionNumber = CalibrationCard.CODE_NOT_FOUND;
     private CameraViewListener listener;
-    private Camera camera;
+    private CalibrationData caldata;
     private Camera.Size previewSize;
     private boolean takePicture;
-    private LinkedList<Double> lumTrack = new LinkedList<>();
-    private LinkedList<Double> shadowTrack = new LinkedList<>();
+    private final LinkedList<Double> lumTrack = new LinkedList<>();
+    private final LinkedList<Double> shadowTrack = new LinkedList<>();
     private boolean running;
     private boolean stop;
-    private Mat src_gray = new Mat();
+    private final Mat src_gray = new Mat();
     private Context context;
-
+    private float EV;
 
     public CameraPreviewCallback(Context context) {
         try {
@@ -102,8 +100,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
         count ++;
 
-        this.camera = camera;
+        //this.camera = camera;
         previewSize = camera.getParameters().getPreviewSize();
+
+        //get EV to use in order to avoid over exposure while trying to optimise brightness
+        float step = camera.getParameters().getExposureCompensationStep();
+        //make sure it never becomes zero
+         EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
 
 //        System.out.println("***CameraPreviewCallback stop: " + count + " " + stop);
 //        System.out.println("***CameraPreviewCallback running: " + count + " " + running);
@@ -132,68 +135,68 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             running = true;
             byte[] data = params[0];
 
-//            try {
+            try {
 
-            info = findPossibleCenters(data, previewSize);
+                info = findPossibleCenters(data, previewSize);
 
-            //check if quality of image is ok. if OK, value is 1, if not 0
-            //the qualityChecks() method sends messages back to listener to update UI
-            int[] countQuality = qualityChecks(data, info);
+                //check if quality of image is ok. if OK, value is 1, if not 0
+                //the qualityChecks() method sends messages back to listener to update UI
+                int[] countQuality = qualityChecks(data, info);
 
-            //add countQuality to sum in listener
-            //if countQuality sums up to the limit set in Constant,
-            //listener.qualityChecksOK will return true;
-            if(listener!=null)
-                listener.addCountToQualityCheckCount(countQuality);
+                //add countQuality to sum in listener
+                //if countQuality sums up to the limit set in Constant,
+                //listener.qualityChecksOK will return true;
+                if(listener!=null)
+                    listener.addCountToQualityCheckCount(countQuality);
 
-            //logging
+                //logging
 //                System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
 //                System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
 //            System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
 //            System.out.println("***CameraPreviewCallback info: " + count + " " + info);
 
 
-            if(takePicture)
-            {
-                //sumQual should amount to 3, if all checks are OK: [1,1,1]
-                int sumQual = 0;
-                if(countQuality!=null) {
-                    for (int i : countQuality) {
-                        sumQual += i;
+                if(takePicture)
+                {
+                    //sumQual should amount to 3, if all checks are OK: [1,1,1]
+                    int sumQual = 0;
+                    if(countQuality!=null) {
+                        for (int i : countQuality) {
+                            sumQual += i;
+                        }
+                    }
+
+                    if(listener!=null) {
+                        if (info != null && sumQual == 3 && listener.qualityChecksOK()) {
+
+                            long timePictureTaken = System.currentTimeMillis();
+
+                            //freeze the screen and play a sound
+                            //camera.stopPreview();
+                            listener.playSound();
+
+                            //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
+                            listener.sendData(data, timePictureTaken, info);
+
+
+                        } else {
+
+                            listener.takeNextPicture(100);
+                        }
                     }
                 }
+                else //we are not taking any picture, just looking at the quality checks
+                {
 
-                if(listener!=null) {
-                    if (info != null && sumQual == 3 && listener.qualityChecksOK()) {
+                    if (listener != null)
+                        listener.startNextPreview(500);
 
-                        long timePictureTaken = System.currentTimeMillis();
-
-                        //freeze the screen and play a sound
-                        //camera.stopPreview();
-                        listener.playSound();
-
-                        //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
-                        listener.sendData(data, timePictureTaken, info);
-
-
-                    } else {
-
-                        listener.takeNextPicture(100);
-                    }
                 }
             }
-            else //we are not taking any picture, just looking at the quality checks
-            {
-
-                if (listener != null)
-                    listener.startNextPreview(0);
+            catch (Exception e) {
+                e.printStackTrace();
 
             }
-//            }
-//            catch (Exception e) {
-//                e.printStackTrace();
-//
-//            }
 
             return null;
         }
@@ -204,16 +207,15 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         }
     }
 
-    private int[] qualityChecksArray = new int[]{0,0,0};//array containing brightness, shadow, level check values
+    private final int[] qualityChecksArray = new int[]{0,0,0};//array containing brightness, shadow, level check values
+    private Mat bgr = null;
+    private Mat convert_mYuv = null;
+    private final List<double[]> lumList = new ArrayList<>();
+    // List<Double> focusList = new ArrayList<>();
 
     private int[] qualityChecks(byte[] data, FinderPatternInfo info) {
 
-        if(camera==null)
-            return null;
-
-        Mat bgr = null;
-        // List<Double> focusList = new ArrayList<>();
-        List<double[]> lumList = new ArrayList<>();
+        lumList.clear();
         float[] angles = null;
         int lumVal = 0;
         int shadVal = 0;
@@ -224,7 +226,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
-                Mat convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
+                convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
                 convert_mYuv.put(0, 0, data);
                 Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
@@ -278,7 +280,7 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 //GET ANGLE
                 angles = PreviewUtils.getAngle(info);
                 //the sum of the angles should approach zero: then the camera is hold even with the card
-               // System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
+                // System.out.println("***Angles: 0 = " + angles[0] + " 1 = " + angles[1]);
                 levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < 2*Constant.MAX_LEVEL_DIFF ? 1 : 0;
 
             }
@@ -311,19 +313,25 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             }
 
         }  catch (Exception e) {
-            throw new RuntimeException(e);
-            //return null;
+            // throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
+
         } finally {
             if(bgr!=null)
                 bgr.release();
 
             if(src_gray!=null)
                 src_gray.release();
+
+            if(convert_mYuv!=null)
+                convert_mYuv.release();
         }
 
         return qualityChecksArray;
 
     }
+
 
     private double detectShadows(FinderPatternInfo info, Mat bgr) throws Exception
     {
@@ -339,13 +347,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
             double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
             double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-            Mat warp = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
+            bgr = OpenCVUtils.perspectiveTransform(tl, tr, bl, br, bgr).clone();
 
             try
             {
-                if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
-                    CalibrationCard card = CalibrationCard.getInstance(context);
-                    shadowPercentage = PreviewUtils.getShadowPercentage(warp, card);
+                //if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
+                if(caldata!=null){
+                    shadowPercentage = PreviewUtils.getShadowPercentage(bgr, caldata);
                     shadowTrack.add(shadowPercentage);
                 }
             }
@@ -354,8 +362,8 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                 e.printStackTrace();
             }
             finally {
-                if(warp!=null)
-                    warp.release();
+                if(bgr!=null)
+                    bgr.release();
             }
         }
 
@@ -445,10 +453,6 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
             }
             else
             {
-                //get EV to use in order to avoid over exposure while trying to optimise brightness
-                float step = camera.getParameters().getExposureCompensationStep();
-                //make sure it never becomes zero
-                float EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
 
                 //System.out.println("***exp EV = " + EV + " EV * 255 = " + EV * 255 + "  " + maxmaxLum + EV * 255);
 
@@ -465,13 +469,13 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
 
                     listener.adjustExposureCompensation(1);
                 }
-                else
-                {
+//                else
+//                {
                     //optimum situation reached
 
                     // System.out.println("***optimum exposure reached. " + count + "  exp.comp. = " + camera.getParameters().getExposureCompensation());
 
-                }
+//                }
             }
 
         }
@@ -479,32 +483,33 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
         return maxmaxLum;
     }
 
-    public FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
+
+    private FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
 
         FinderPatternInfo info = null;
+        PlanarYUVLuminanceSource myYUV;
+        BinaryBitmap binaryBitmap;
+        BitMatrix bitMatrix=null;
 
         // crop preview image to only contain the known region for the finder patterns
-        PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
+       myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
                 (int) Math.round(size.height * Constant.CROP_FINDERPATTERN_FACTOR),
                 size.height,
                 false);
 
-        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
+        binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
 
-        BitMatrix bitMatrix = null;
+
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-
-        } catch (NullPointerException e) {
+        } catch (NotFoundException | NullPointerException e) {
             e.printStackTrace();
 
         }
 
         if (bitMatrix != null) {
-            finderPatternFinder = new FinderPatternFinder(bitMatrix, null);
+            FinderPatternFinder finderPatternFinder = new FinderPatternFinder(bitMatrix, null);
 
             try {
 
@@ -533,10 +538,12 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                     //get the version number from the barcode printed on the card
                     try {
                         if (possibleCenters.size() == 4) {
-                            versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
+                            int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
 //                            System.out.println("***versionNumber: " + versionNumber);
                             if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
                                 CalibrationCard.addVersionNumber(versionNumber);
+                                if(caldata==null)
+                                    caldata = CalibrationCard.readCalibrationFile(context);
                             }
                             //testing
 //                            Random random = new Random();
@@ -546,43 +553,47 @@ public class CameraPreviewCallback implements Camera.PreviewCallback {
                     catch (Exception e)
                     {
                         e.printStackTrace();
+
                     }
+
                 }
 
-                return info;
+
             }
         }
 
 
-        return null;
+        return info;
     }
 
-    private void setFocusAreas(FinderPatternInfo info)
-    {
-        //set focus area to where finder patterns are
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-            if(info!=null) {
-                List<Camera.Area> areas = new ArrayList<>();
-
-                int ratioW = Math.round(1000f/previewSize.width);
-                int ratioH = Math.round(1000f / previewSize.height);
-
-                List<Point> points = PreviewUtils.sortFinderPatternInfo(info);
-
-                Rect focusArea = new Rect(
-                        -1000 + ratioW * (int) Math.round(points.get(0).x),
-                        -1000 + ratioH * (int) Math.round(points.get(0).y),
-                        -1000 + ratioW * (int) Math.round(points.get(3).x),
-                        -1000 + ratioH * (int) Math.round(points.get(3).y)
-                );
-
-                areas.add(new Camera.Area(focusArea, 1));
-
-                listener.setFocusAreas(areas);
-            }
-        }
-    }
+// --Commented out by Inspection START (12/15/15 12:32 PM):
+//    private void setFocusAreas(FinderPatternInfo info)
+//    {
+//        //set focus area to where finder patterns are
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//
+//            if(info!=null) {
+//                List<Camera.Area> areas = new ArrayList<>();
+//
+//                int ratioW = Math.round(1000f/previewSize.width);
+//                int ratioH = Math.round(1000f / previewSize.height);
+//
+//                List<Point> points = PreviewUtils.sortFinderPatternInfo(info);
+//
+//                Rect focusArea = new Rect(
+//                        -1000 + ratioW * (int) Math.round(points.get(0).x),
+//                        -1000 + ratioH * (int) Math.round(points.get(0).y),
+//                        -1000 + ratioW * (int) Math.round(points.get(3).x),
+//                        -1000 + ratioH * (int) Math.round(points.get(3).y)
+//                );
+//
+//                areas.add(new Camera.Area(focusArea, 1));
+//
+//                listener.setFocusAreas(areas);
+//            }
+//        }
+//    }
+// --Commented out by Inspection STOP (12/15/15 12:32 PM)
 }
 
 

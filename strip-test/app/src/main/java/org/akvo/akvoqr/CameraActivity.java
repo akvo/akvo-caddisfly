@@ -25,7 +25,6 @@ import org.akvo.akvoqr.detector.FinderPattern;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
 import org.akvo.akvoqr.ui.FinderPatternIndicatorView;
 import org.akvo.akvoqr.ui.LevelView;
-import org.akvo.akvoqr.ui.QualityCheckView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.opencv.android.BaseLoaderCallback;
@@ -39,27 +38,28 @@ import java.util.Map;
 /**
  * Created by linda on 7/7/15.
  */
+@SuppressWarnings("deprecation")
 public class CameraActivity extends AppCompatActivity implements CameraViewListener, DetectStripListener {
 
     private Camera mCamera;
     private FrameLayout previewLayout;
     private BaseCameraView baseCameraView;
-    CameraPreviewCallback previewCallback;
+    private CameraPreviewCallback previewCallback;
     private final String TAG = "CameraActivity"; //NON-NLS
     private android.os.Handler handler;
     private FinderPatternIndicatorView finderPatternIndicatorView;
-    private QualityCheckView exposureView;
-    private QualityCheckView contrastView;
     private LevelView levelView;
     private String brandName;
-    private int qualityCheckCount = 0;
     private LinearLayout progressLayout;
     private CameraSharedFragment currentFragment;
-    private MediaPlayer mp;
     private int previewFormat= -1;
     private int previewWidth = 0;
     private int previewHeight = 0;
-    private Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
+    private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
+    private ShowFinderPatternRunnable showFinderPatternRunnable;
+    private ShowBrightnessRunnable showBrightnessRunnable;
+    private ShowShadowsRunnable showShadowsRunnable;
+    private ShowLevelRunnable showLevelRunnable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,14 +118,19 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         handler = new Handler(Looper.getMainLooper());
 
+        //VIEWS
         progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
-
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
-
-
         levelView = (LevelView) findViewById(R.id.activity_cameraImageViewLevel);
 
+        //RUNNABLES
+        showFinderPatternRunnable = new ShowFinderPatternRunnable();
+        showBrightnessRunnable = new ShowBrightnessRunnable();
+        showShadowsRunnable = new ShowShadowsRunnable();
+        showLevelRunnable = new ShowLevelRunnable();
+
+        //INIT COUNT QUALITY MAP
         qualityCountMap.put("B", 0);
         qualityCountMap.put("S", 0);
         qualityCountMap.put("L", 0);
@@ -171,7 +176,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
 
             if(handler!=null) {
-                handler.post(focus);
+               // handler.post(focus);
             }
 
         }
@@ -209,8 +214,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     public void onStop() {
         Log.d(TAG, "onStop OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
-
-        // super.onPause();
 
         super.onStop();
     }
@@ -255,95 +258,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         }
     }
-
-    Runnable focus = new Runnable() {
-        boolean focused;
-        @Override
-        public void run() {
-
-            try {
-                if (mCamera != null) {
-
-//                            System.out.println("***camera focus mode: " + mCamera.getParameters().getFocusMode() +
-//                                    " " + Camera.Parameters.FOCUS_MODE_AUTO);
-
-                    //only need to call mCamera.autofocus if focus mode is set to AUTO
-                    if (mCamera.getParameters().getFocusMode().equalsIgnoreCase(Camera.Parameters.FOCUS_MODE_AUTO)) {
-
-                        if(currentFragment!=null) {
-                            currentFragment.setFocusAreas(mCamera.getParameters().getPreviewSize());
-                        }
-
-                        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-
-                                focused = success;
-                            }
-                        });
-                    }
-
-                    if(handler!=null) {
-
-                            handler.postDelayed(this, 5000);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    };
-
-
-    //in the instance of CameraPreviewCallback set takePicture to false
-    //and do a oneShotPreviewCallback.
-    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
-    private Runnable startNextPreview = new Runnable() {
-        @Override
-        public void run() {
-
-            if(mCamera!=null && previewCallback!=null) {
-
-                mCamera.startPreview();
-                if(currentFragment!=null) {
-                    if (currentFragment instanceof CameraPrepareFragment) {
-
-                        previewCallback.setTakePicture(false);
-                        mCamera.setOneShotPreviewCallback(previewCallback);
-                    }
-                    if (currentFragment instanceof CameraStartTestFragment) {
-
-                        previewCallback.setTakePicture(false);
-                        mCamera.setOneShotPreviewCallback(previewCallback);
-                    }
-                }
-                //System.out.println("***calling startNextPreview runnable");
-
-            }
-        }
-    };
-
-    //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
-    private Runnable takeNextPicture = new Runnable() {
-        @Override
-        public void run() {
-
-            if(mCamera!=null && previewCallback!=null) {
-
-                if(handler!=null)
-                    handler.removeCallbacks(startNextPreview);
-
-                mCamera.startPreview();
-                previewCallback.setTakePicture(true);
-                mCamera.setOneShotPreviewCallback(previewCallback);
-
-//                System.out.println("***calling takeNextPicture runnable");
-            }
-        }
-    };
-
 
     //START CAMERAVIEWLISTENER INTERFACE METHODS
     @Override
@@ -390,28 +304,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void setQualityCheckCountZero() {
 
-        qualityCheckCount = 0;
-
         for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet()) {
             entry.setValue(0);
         }
     }
-
-
-    Runnable showRunnable = new Runnable() {
-        @Override
-        public void run() {
-            currentFragment.showStartButton();
-        }
-
-    };
-
-    Runnable countQualityRunnable = new Runnable() {
-        @Override
-        public void run() {
-            currentFragment.countQuality(qualityCountMap);
-        }
-    };
 
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
@@ -443,7 +339,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             }
             if (show) {
 
-                handler.post(showRunnable);
+                handler.post(showStartRunnable);
             }
         }
     }
@@ -484,80 +380,46 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         return OK;
     }
+
+
     @Override
     public synchronized void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
     {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if(finderPatternIndicatorView!=null) {
-                    finderPatternIndicatorView.setColor(color);
-                    finderPatternIndicatorView.showPatterns(patterns, size);
-                }
-            }
-        };
-
-        if(handler!=null)
-            handler.postDelayed(runnable, 100);
+        if(handler!=null) {
+            showFinderPatternRunnable.setPatterns(patterns);
+            showFinderPatternRunnable.setSize(size);
+            showFinderPatternRunnable.setColor(color);
+            handler.post(showFinderPatternRunnable);
+        }
     }
 
     @Override
-    public void showFocusValue(final double value)
-    {
-
-    }
+    public void showFocusValue(final double value) {}
 
     @Override
     public synchronized void showMaxLuminosity(final double value){
 
-
-        Runnable show = new Runnable() {
-            @Override
-            public void run() {
-
-               if(currentFragment!=null)
-                   currentFragment.showExposure(value);
-            }
-        };
-
-
         if(handler!=null) {
-            handler.postDelayed(show, 110);
+            showBrightnessRunnable.setValue(value);
+            handler.post(showBrightnessRunnable);
         }
     }
 
     @Override
     public synchronized void showShadow(final double value){
 
-
-        Runnable show = new Runnable() {
-            @Override
-            public void run() {
-
-              if(currentFragment!=null)
-                  currentFragment.showShadow(value);
-            }
-        };
-
-        if(handler!=null) {
-            handler.postDelayed(show, 130);
+        if(handler != null) {
+            showShadowsRunnable.setValue(value);
+            handler.post(showShadowsRunnable);
         }
     }
 
     @Override
     public void showLevel(final float[] angles)
     {
-
-        Runnable levelRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if(levelView!=null)
-                    levelView.setAngles(angles);
-            }
-        };
-
         if(handler!=null) {
-            handler.postDelayed(levelRunnable, 150);
+            showLevelRunnable.setAngles(angles);
+            handler.post(showLevelRunnable);
         }
     }
 
@@ -580,13 +442,11 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
 
         //clear the finder pattern view after one second and qualityChecksOK the previewLayout again
-        showFinderPatterns(null, null, 0);
+        showFinderPatterns(null,null,1);
 
         //clear level indicator
         showLevel(null);
 
-        if(mCamera!=null)
-            mCamera.startPreview();
     }
 
     @Override
@@ -608,7 +468,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void playSound()
     {
-        mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
         mp.start();
 
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -622,6 +482,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
 
     //DETECTSTRIPLISTENER INTERFACE METHODS
+
     @Override
     public void showSpinner() {
         ImageView finishImage = (ImageView) findViewById(R.id.activity_cameraFinishImage);
@@ -693,8 +554,14 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             @Override
             public void run() {
                 if(finish!=null) {
-                    int mesNo= what < messages.length? what: messages.length - 1;
-                    finish.setText(messages[mesNo]);
+                    try {
+                        int mesNo = what < messages.length ? what : messages.length - 1;
+                        finish.setText(messages[mesNo]);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -711,32 +578,203 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.BRAND, brandName);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(resultIntent);
 
-        //this.finish();
     }
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
 
+    /*********************************
+     *
+     * RUNNABLE DECLARATIONS
+     *
+     **********************************/
+
+    private class ShowFinderPatternRunnable implements Runnable
+    {
+        private int color;
+        private List<FinderPattern> patterns;
+        private Camera.Size size;
+
+        @Override
+        public void run() {
+            if(finderPatternIndicatorView!=null) {
+                finderPatternIndicatorView.setColor(color);
+
+                finderPatternIndicatorView.showPatterns(patterns, size==null? 0: size.width, size==null? 0: size.height);
+            }
+        }
+
+        public void setColor(int color) {
+            this.color = color;
+        }
+
+        public void setPatterns(List<FinderPattern> patterns) {
+            this.patterns = patterns;
+        }
+
+        public void setSize(Camera.Size size) {
+            this.size = size;
+        }
+    }
+    private class ShowBrightnessRunnable implements Runnable
+    {
+        private double value;
+        @Override
+        public void run() {
+            if(currentFragment!=null)
+                currentFragment.showExposure(value);
+        }
+
+        public void setValue(double value) {
+            this.value = value;
+        }
+    }
+    private class ShowShadowsRunnable implements Runnable
+    {
+        private double value;
+        @Override
+        public void run() {
+            if(currentFragment!=null)
+                currentFragment.showShadow(value);
+        }
+
+        public void setValue(double value) {
+            this.value = value;
+        }
+    }
+    private class ShowLevelRunnable implements Runnable
+    {
+        private float[] angles;
+        @Override
+        public void run() {
+            if(levelView!=null)
+                levelView.setAngles(angles);
+        }
+
+        public void setAngles(float[] angles) {
+            this.angles = angles;
+        }
+    }
+
+    //in the instance of CameraPreviewCallback set takePicture to false
+    //and do a oneShotPreviewCallback.
+    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
+    private final Runnable startNextPreview = new Runnable() {
+        @Override
+        public void run() {
+
+            if(mCamera!=null && previewCallback!=null) {
+
+
+                if(currentFragment!=null) {
+                    if (currentFragment instanceof CameraPrepareFragment) {
+
+                        previewCallback.setTakePicture(false);
+                        mCamera.setOneShotPreviewCallback(previewCallback);
+                    }
+                    if (currentFragment instanceof CameraStartTestFragment) {
+
+                        previewCallback.setTakePicture(false);
+                        mCamera.setOneShotPreviewCallback(previewCallback);
+                    }
+                }
+                //System.out.println("***calling startNextPreview runnable");
+
+            }
+        }
+    };
+
+    //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
+    private final Runnable takeNextPicture = new Runnable() {
+        @Override
+        public void run() {
+
+            if(mCamera!=null && previewCallback!=null) {
+
+                if(handler!=null)
+                    handler.removeCallbacks(startNextPreview);
+
+                mCamera.startPreview();
+                previewCallback.setTakePicture(true);
+                mCamera.setOneShotPreviewCallback(previewCallback);
+
+                //System.out.println("***calling takeNextPicture runnable");
+            }
+        }
+    };
+
+    private final Runnable showStartRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (currentFragment != null) {
+                currentFragment.showStartButton();
+            }
+        }
+    };
+
+    private final Runnable countQualityRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (currentFragment != null) {
+                currentFragment.countQuality(qualityCountMap);
+            }
+        }
+    };
+
+    private final Runnable focus = new Runnable() {
+
+        @Override
+        public void run() {
+
+            try {
+                if (mCamera != null) {
+
+//                            System.out.println("***camera focus mode: " + mCamera.getParameters().getFocusMode() +
+//                                    " " + Camera.Parameters.FOCUS_MODE_AUTO);
+
+                    //only need to call mCamera.autofocus if focus mode is set to AUTO
+                    if (mCamera.getParameters().getFocusMode().equalsIgnoreCase(Camera.Parameters.FOCUS_MODE_AUTO)) {
+
+                        if(currentFragment!=null) {
+                            currentFragment.setFocusAreas(mCamera.getParameters().getPreviewSize());
+                        }
+
+                        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+
+                            }
+                        });
+                    }
+
+                    if(handler!=null) {
+
+                        handler.postDelayed(this, 5000);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /*********************************
+     *
+     * END RUNNABLE DECLARATIONS
+     *
+     **********************************/
+
     //OPENCV MANAGER
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
                     Log.i("", "OpenCV loaded successfully");
-
-//                    if(mCamera!=null)
-//                    {
-//                        Log.d(TAG, "mCamera is not null");
-//
-//                        try {
-//                            mCamera.reconnect();
-//                            mCamera.startPreview();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
 
                     init();
                 }

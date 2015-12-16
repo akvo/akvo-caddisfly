@@ -30,7 +30,7 @@ public class ChooseStriptestAdapter extends ArrayAdapter<String> {
         this.context = context;
         this.resource = resource;
         this.brandnames = brandnames;
-        this.stripTest = StripTest.getInstance(context);
+        this.stripTest = new StripTest();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ChooseStriptestAdapter extends ArrayAdapter<String> {
 
         if(brandnames!=null) {
             if(stripTest!=null) {
-               brand = stripTest.getBrand(brandnames.get(position));
+               brand = stripTest.getBrand(context, brandnames.get(position));
             }
             if(brand!=null) {
                 patches = brand.getPatches();

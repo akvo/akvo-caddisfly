@@ -14,13 +14,12 @@ import org.akvo.akvoqr.R;
  */
 public class QualityCheckView extends View {
 
-    protected Paint paint;
-    protected int green;
-    protected int orange;
-    protected int red;
+    private final Paint paint;
+    private final int green;
+    private final int orange;
+    private final int red;
     protected final int NUMBER_OF_BARS = 6;
     protected float percentage = Float.NaN;
-    protected double number;
 
     public QualityCheckView(Context context) {
         this(context, null);
@@ -50,11 +49,11 @@ public class QualityCheckView extends View {
         if (percentage == Float.NaN) {
             return;
         }
-        number = fromPercentageToNumber(percentage);
+        double number = fromPercentageToNumber();
 
-        if (number == Double.NaN) {
-            throw new NullPointerException("Method to get number must be overridden in child class.");
-        }
+//        if (number == Double.NaN) {
+//            throw new NullPointerException("Method to get number must be overridden in child class.");
+//        }
 
         canvas.save();
         //qualityChecksOK at half of the width the view is going to be
@@ -121,6 +120,8 @@ public class QualityCheckView extends View {
             canvas.translate(canvas.getHeight() * 0.5f + 0.2f, 0);
         }
         canvas.restore();
+
+        super.onDraw(canvas);
     }
 
     public void setPercentage(float percentage) {
@@ -128,7 +129,7 @@ public class QualityCheckView extends View {
         invalidate();
     }
 
-    protected double fromPercentageToNumber(float percentage)
+    protected double fromPercentageToNumber()
     {
         //Override in child class
 

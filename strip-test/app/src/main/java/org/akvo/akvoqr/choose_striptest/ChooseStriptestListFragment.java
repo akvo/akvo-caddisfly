@@ -86,9 +86,9 @@ public class ChooseStriptestListFragment extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container, false);
 
         if(stripTest==null)
-            stripTest = StripTest.getInstance(getActivity());
+            stripTest = new StripTest();
 
-        brandnames = stripTest.getBrandsAsList();
+        brandnames = stripTest.getBrandsAsList(getActivity());
 
         if(brandnames!=null) {
             //order alpha-numeric on brand (same as the name of the .png file in assets)

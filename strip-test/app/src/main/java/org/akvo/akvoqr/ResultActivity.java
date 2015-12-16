@@ -56,8 +56,8 @@ public class ResultActivity extends AppCompatActivity {
             String brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
-            StripTest stripTestBrand = StripTest.getInstance(this);
-            StripTest.Brand brand = stripTestBrand.getBrand(brandName);
+            StripTest stripTest = new StripTest();
+            StripTest.Brand brand = stripTest.getBrand(this, brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
@@ -394,11 +394,11 @@ public class ResultActivity extends AppCompatActivity {
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
 
-        CalibrationCard calCard = CalibrationCard.getInstance(this);
+
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize
-            dist = calCard.E94(labPoint[0],labPoint[1],labPoint[2],interpolTable[j][0], interpolTable[j][1], interpolTable[j][2], false);
+            dist = CalibrationCard.E94(labPoint[0],labPoint[1],labPoint[2],interpolTable[j][0], interpolTable[j][1], interpolTable[j][2], false);
             if (dist < smallestE94Dist){
                 smallestE94Dist = dist;
                 minPos = j;

@@ -17,10 +17,7 @@ import java.util.List;
  */
 public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback{
 
-    /** A basic Camera preview class */
-
-    private SurfaceHolder mHolder;
-    private Camera mCamera;
+    private final Camera mCamera;
     private CameraActivity activity;
     private Camera.Parameters parameters;
 
@@ -37,7 +34,8 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         }
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
-        mHolder = getHolder();
+        /* A basic Camera preview class */
+        SurfaceHolder mHolder = getHolder();
         mHolder.addCallback(this);
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -117,6 +115,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         //preview size
        // System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
+        assert bestSize != null;
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
         //parameters.setPreviewFormat(ImageFormat.NV21);
@@ -147,9 +146,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             e.printStackTrace();
         }
 
-        //flashmode
-        //switchFlashMode();
-
         //white balance
         if(parameters.getWhiteBalance()!=null)
         {
@@ -168,11 +164,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         try {
             mCamera.setPreviewDisplay(holder);
             activity.setPreviewProperties();
+            mCamera.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
     }
 
@@ -195,7 +190,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         if(mCamera==null)
             return;
 
-        parameters = mCamera.getParameters();
+        //parameters = mCamera.getParameters();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
@@ -243,7 +238,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-            if(mCamera.getParameters().getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
+            if(parameters.getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
                 try {
                     //make sure area list does not exceed max num areas allowed
                     int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
@@ -251,7 +246,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
                     mCamera.cancelAutoFocus();
 
-                    Camera.Parameters parameters = mCamera.getParameters();
+                    //parameters = mCamera.getParameters();
                     parameters.setFocusAreas(subAreas);
                     mCamera.setParameters(parameters);
 

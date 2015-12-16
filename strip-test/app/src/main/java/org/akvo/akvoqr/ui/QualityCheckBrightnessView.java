@@ -1,7 +1,6 @@
 package org.akvo.akvoqr.ui;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 
 import org.akvo.akvoqr.util.Constant;
@@ -28,7 +27,7 @@ public class QualityCheckBrightnessView extends QualityCheckView {
     }
 
     @Override
-    protected double fromPercentageToNumber(float percentage)
+    protected double fromPercentageToNumber()
     {
         // calculate the percentage back to value that fits NUMBER_OF_BARS.
         // MAX_LUM_PERCENTAGE is the optimum value that can be reached,
@@ -37,12 +36,5 @@ public class QualityCheckBrightnessView extends QualityCheckView {
         return (percentage/Constant.MAX_LUM_PERCENTAGE) *  NUMBER_OF_BARS ;
     }
 
-    @Override
-    public void onDraw(Canvas canvas)
-    {
-        super.onDraw(canvas);
 
-        //System.out.println("***exp perc. = " + percentage + " number = " + number);
-
-    }
 }

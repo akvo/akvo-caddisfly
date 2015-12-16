@@ -11,45 +11,61 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by linda on 8/19/15.
  */
 public class StripTest{
 
-    public static StripTest instance;
-    private static Map<String, JSONObject> stripObjects;
+    //public static StripTest instance;
+    // private Map<String, JSONObject> stripObjects;
 
-    private StripTest()
+    public StripTest()
     {
 
     }
-    public static StripTest getInstance(Context context)
+//    public static StripTest getInstance(Context context)
+//    {
+//        if(instance==null)
+//        {
+//            instance = new StripTest(context);
+//
+//        }
+//       return instance;
+//    }
+
+    public List<String> getBrandsAsList(Context context)
     {
-        if(instance==null)
+        List<String> brandnames = new ArrayList<>();
+
+        String json = fromJson(context);
+        try {
+            JSONObject object = new JSONObject(json);
+
+            if (!object.isNull("strips")) {
+                JSONArray stripsJson = object.getJSONArray("strips");
+                JSONObject strip;
+                if (stripsJson != null) {
+                    for (int i = 0; i < stripsJson.length(); i++) {
+
+                        strip = stripsJson.getJSONObject(i);
+                        brandnames.add(strip.getString("brand"));
+
+                    }
+                }
+            }
+        }
+        catch (Exception e)
         {
-            instance = new StripTest();
-            fromJson(context);
+            return null;
         }
-
-       return instance;
+        return brandnames;
     }
 
-    public List<String> getBrandsAsList()
+    public Brand getBrand(Context context, String brand)
     {
-       List<String> brandnames = new ArrayList<>();
-        for(String b: stripObjects.keySet()){
-            brandnames.add(b);
-        }
-       return brandnames;
-    }
-
-    public Brand getBrand(String brand)
-    {
-        return new Brand(brand);
+        return new Brand(context, brand);
     }
 
     public class Brand
@@ -60,34 +76,59 @@ public class StripTest{
         private List<Patch> patches = new ArrayList<>();
         private JSONArray instructions;
 
-        public Brand(String brand) {
+        public Brand(Context context, String brand) {
 
-            if (stripObjects != null) {
-                JSONObject strip = stripObjects.get(brand);
-                if(strip!=null) {
-                    try {
-                        this.stripLenght = strip.getDouble("length");
-                        this.stripHeight = strip.getDouble("height");
-                        this.name = strip.getString("name");
-                        this.instructions = strip.getJSONArray("instructions");
+            System.out.println("***Striptest brand: " + brand);
+            try {
 
-                        JSONArray patchesArr = strip.getJSONArray("patches");
-                        for(int i=0;i<patchesArr.length();i++) {
-                            JSONObject patchObj = patchesArr.getJSONObject(i);
-                            String patchDesc = patchObj.getString("patchDesc");
-                            int patchPos = patchObj.getInt("patchPos");
-                            int patchWidth = patchObj.getInt("patchWidth");
-                            double timeLapse = patchObj.getDouble("timeLapse");
-                            String unit = patchObj.getString("unit");
-                            JSONArray colours = patchObj.getJSONArray("colours");
+                String json = fromJson(context);
+                JSONObject object = new JSONObject(json);
 
-                            patches.add(new Patch(i, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
+                if (!object.isNull("strips")) {
+                    JSONArray stripsJson = object.getJSONArray("strips");
+                    JSONObject strip;
+                    if (stripsJson != null) {
+
+                        for (int i = 0; i < stripsJson.length(); i++) {
+
+                            strip = stripsJson.getJSONObject(i);
+
+                            System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
+
+                            if (!strip.getString("brand").equalsIgnoreCase(brand)) {
+                                continue;
+                            } else {
+                                try {
+                                    this.stripLenght = strip.getDouble("length");
+                                    this.stripHeight = strip.getDouble("height");
+                                    this.name = strip.getString("name");
+                                    this.instructions = strip.getJSONArray("instructions");
+
+                                    JSONArray patchesArr = strip.getJSONArray("patches");
+                                    for (int ii = 0; ii < patchesArr.length(); ii++) {
+
+                                        JSONObject patchObj = patchesArr.getJSONObject(ii);
+
+                                        String patchDesc = patchObj.getString("patchDesc");
+                                        int patchPos = patchObj.getInt("patchPos");
+                                        int patchWidth = patchObj.getInt("patchWidth");
+                                        double timeLapse = patchObj.getDouble("timeLapse");
+                                        String unit = patchObj.getString("unit");
+                                        JSONArray colours = patchObj.getJSONArray("colours");
+
+                                        patches.add(new Patch(ii, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -95,9 +136,9 @@ public class StripTest{
             return patches;
         }
 
-        public double getStripHeight() {
-            return stripHeight;
-        }
+//        public double getStripHeight() {
+//            return stripHeight;
+//        }
 
         public double getStripLenght() {
             return stripLenght;
@@ -111,37 +152,6 @@ public class StripTest{
             return instructions;
         }
 
-        public boolean hasTimeLapse()
-        {
-            double totalTime = 0;
-            for(Patch patch: patches)
-            {
-                totalTime += patch.timeLapse;
-            }
-
-            return totalTime>0;
-        }
-
-        public double getDuration()
-        {
-            return patches.get(patches.size()-1).getTimeLapse();
-        }
-
-        public int getNumberOfPicturesNeeded()
-        {
-            int number = 1;
-            for(int i=0;i<patches.size()-1;i++)
-            {
-                //compare next patch with current
-                //if time lapse is larger, add one to number
-                if(patches.get(i+1).getTimeLapse() > patches.get(i).getTimeLapse())
-                {
-                    number ++;
-                }
-            }
-
-            return number;
-        }
 
         public List<Patch> getPatchesOrderedByTimelapse()
         {
@@ -198,34 +208,34 @@ public class StripTest{
         }
     }
 
-    private static void fromJson(Context context)
+    private String fromJson(Context context)
     {
         String filename = context.getString(R.string.strips_json);
-        JSONArray stripsJson;
 
-        String json = AssetsManager.getInstance(context).loadJSONFromAsset(filename);
-        try {
+        return AssetsManager.getInstance(context).loadJSONFromAsset(filename);
 
-            JSONObject object = new JSONObject(json);
-            if(!object.isNull("strips"))
-            {
-                stripsJson = object.getJSONArray("strips");
-                if(stripsJson!=null) {
-                    stripObjects = new HashMap<>();
-                    for (int i = 0; i < stripsJson.length(); i++) {
-                        JSONObject strip = stripsJson.getJSONObject(i);
-                        String key = strip.getString("brand");
-                        stripObjects.put(key, strip);
-                    }
-                }
-            }
-            else
-            {
-                System.out.println("***json object has no strips");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//
+//            JSONObject object = new JSONObject(json);
+//            if(!object.isNull("strips"))
+//            {
+//                stripsJson = object.getJSONArray("strips");
+//                if(stripsJson!=null) {
+//                    stripObjects = new HashMap<>();
+//                    for (int i = 0; i < stripsJson.length(); i++) {
+//                        JSONObject strip = stripsJson.getJSONObject(i);
+//                        String key = strip.getString("brand");
+//                        stripObjects.put(key, strip);
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                System.out.println("***json object has no strips");
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private class PatchComparator implements Comparator<Brand.Patch>

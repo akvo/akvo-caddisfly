@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -18,10 +17,9 @@ import org.akvo.akvoqr.util.Constant;
  */
 public class LevelView extends View {
 
-    float[] angles;
-    Paint redPaint;
-    Bitmap arrowBitmap;
-    BitmapDrawable arrowDrawable;
+    private float[] angles;
+    private final Paint redPaint;
+    private final Bitmap arrowBitmap;
 
     public LevelView(Context context) {
         this(context, null);
@@ -41,8 +39,6 @@ public class LevelView extends View {
 
         arrowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.level);
 
-        arrowDrawable = new BitmapDrawable(context.getResources(), arrowBitmap);
-
     }
 
     @Override
@@ -60,6 +56,7 @@ public class LevelView extends View {
 
         }
 
+        super.onDraw(canvas);
     }
 
     public void setAngles(float[] angles) {

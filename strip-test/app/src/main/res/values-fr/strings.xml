@@ -36,5 +36,6 @@
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">"Ready for picture "</string>
     <string name="waiting">"Waiting "</string>
+    <string name="quality_checks_counter">"Quality checks: "</string>
 
 </resources>
