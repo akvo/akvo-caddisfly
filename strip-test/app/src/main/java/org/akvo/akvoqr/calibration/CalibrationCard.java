@@ -617,6 +617,7 @@ public class CalibrationCard{
     * First normalises the colours as follows:
     * L : 0...100
     * a,b: -128 ... 128
+    * follows http://colormine.org/delta-e-calculator/cie94
     *
     * @returns: E94 distance
      */
@@ -638,12 +639,13 @@ public class CalibrationCard{
         double dC = C1 - C2;
         double da = a1 - a2;
         double db = b1 - b2;
+        double dH2 = da * da + db * db - dC * dC;
         double dH;
-        double dE = Math.sqrt(dL * dL + da * da + db * db);
-        if (Math.sqrt(dE) > (Math.sqrt(Math.abs(dL)) + Math.sqrt(Math.abs(dC)))){
-            dH = Math.sqrt((dE * dE) - (dL * dL) - (dC * dC));
+
+        if (dH2 < 0){
+            dH = 0;
         } else {
-            dH = 0.0;
+            dH = Math.sqrt(dH2);
         }
 
         double SL = 1.0;
