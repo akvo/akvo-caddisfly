@@ -1,6 +1,7 @@
 package org.akvo.akvoqr.util;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -8,12 +9,12 @@ import android.content.Intent;
  */
 public class App extends Application {
 
-   // private static Context context;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //context = this;
+        context = this;
 
         // Setup handler for uncaught exceptions.
         Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
@@ -47,8 +48,8 @@ public class App extends Application {
     }
 
 
-//    public static Context getMyApplicationContext()
-//    {
-//        return context;
-//    }
+    public static Context getMyApplicationContext()
+    {
+        return context;
+    }
 }

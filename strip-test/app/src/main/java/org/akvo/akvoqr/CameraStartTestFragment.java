@@ -8,7 +8,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.akvoqr.choose_striptest.StripTest;
@@ -19,6 +22,7 @@ import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
 import org.json.JSONArray;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -47,10 +51,10 @@ import java.util.Map;
  * a. if develop is false: shows an animation of a spinning circle while doing a DetectStripTask
  * b. if develop is true: starts the DetectStripActivity (which does a DetectStripTask)
  */
-public class CameraStartTestFragment extends CameraSharedFragment {
+public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
     private CameraViewListener mListener;
-    private Button startButton;
+    //private Button startButton;
     private List<StripTest.Brand.Patch> patches;
     private ProgressIndicatorView progressIndicatorViewAnim;
     private int timeLapsed = 0;
@@ -61,9 +65,14 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
-    private TextView countQualityView;
+    //private TextView countQualityView;
     private QualityCheckView exposureView;
     private QualityCheckView contrastView;
+    WeakReference<Button> wrStartButton;
+    WeakReference<TextView> wrCountQualityView;
+    private  ImageView finishImage;
+    private Animation rotate;
+
 
     /*
      * Update the ProgressIndicatorView every second
@@ -74,12 +83,11 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
             if(progressIndicatorViewAnim!=null && handler!=null) {
 
-                    progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
-                    handler.postDelayed(this, 1000);
+                timeLapsed = (int)Math.floor((System.currentTimeMillis() - initTimeMillis)/1000);
+                progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+                handler.postDelayed(this, 1000);
 
             }
-            timeLapsed++;
-
         }
     };
 
@@ -112,12 +120,16 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_starttest, container, false);
-        startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
+        Button startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
 
         exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
 
-        countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
+        TextView countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
+        finishImage = (ImageView) rootView.findViewById(R.id.activity_cameraFinishImage);
+
+        wrStartButton = new WeakReference<Button>(startButton);
+        wrCountQualityView  = new WeakReference<TextView>(countQualityView);
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -193,6 +205,9 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         //reset quality checks count to zero
         if(mListener!=null)
             mListener.setQualityCheckCountZero();
+
+        rotate = AnimationUtils.loadAnimation(activity, R.anim.rotate);
+
     }
 
     @Override
@@ -232,7 +247,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     }
 
     @Override
-    protected void showExposure(double value) {
+    protected void showBrightness(double value) {
 
         if(exposureView!=null)
             exposureView.setPercentage((float)value);
@@ -272,7 +287,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
         }
 
         //start the CameraPreviewCallback in preview mode (not taking pictures, but doing quality checks
-        mListener.startNextPreview(0);
+        //mListener.startNextPreview(0);
 
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         brandName = getArguments().getString(Constant.BRAND);
@@ -308,11 +323,10 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     @Override
     public void showStartButton() {
 
-        if(startButton==null)
+        if(wrStartButton==null)
             return;
 
-        startButton.setVisibility(View.VISIBLE);
-        startButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
+        wrStartButton.get().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
         if(progressIndicatorViewAnim!=null) {
             progressIndicatorViewAnim.setStart(true);
@@ -398,6 +412,13 @@ public class CameraStartTestFragment extends CameraSharedFragment {
 
     }
 
+    public void showSpinner()
+    {
+        if(finishImage!=null) {
+            finishImage.setImageResource(R.drawable.spinner);
+            finishImage.startAnimation(rotate);
+        }
+    }
     /*
     * If picture data (Camera Preview data) is stored,
     * proceed to calibrate and detect the strip from it.
@@ -443,7 +464,6 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 } else {
                     new DetectStripTask(getActivity()).execute(detectStripIntent);
                 }
-
             }
         }
     }
@@ -483,7 +503,7 @@ public class CameraStartTestFragment extends CameraSharedFragment {
     public void countQuality(Map<String, Integer> countMap)
     {
 
-        if(startButton!=null)
+        if(wrStartButton!=null)
         {
             try {
 
@@ -494,21 +514,22 @@ public class CameraStartTestFragment extends CameraSharedFragment {
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+                if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
 
-                startButton.setText("Quality checks: " + String.valueOf(count) + " out of " + Constant.COUNT_QUALITY_CHECK_LIMIT);
+                    String text = new String(getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT));
+                    wrStartButton.get().setText(text);
+
+                    if(1==1) {
+                        wrCountQualityView.get().setText("");
+                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-            }
-        }
-
-        boolean develop = true;
-
-        if(develop) {
-            countQualityView.setText("");
-            for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                countQualityView.append(entry.getKey() + ": " + entry.getValue() + " ");
             }
         }
     }

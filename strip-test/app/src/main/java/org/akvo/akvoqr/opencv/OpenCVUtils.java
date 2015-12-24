@@ -91,7 +91,7 @@ public class OpenCVUtils {
        * Because top-left always has the lowest sum of x and y
        * and bottom-right always the highest, they always come first and last.
        */
-    public static List<Point> getOrderedPoints(List<Point> srcList)
+    private static List<Point> getOrderedPoints(List<Point> srcList)
     {
         Collections.sort(srcList, new PointComparator());
 

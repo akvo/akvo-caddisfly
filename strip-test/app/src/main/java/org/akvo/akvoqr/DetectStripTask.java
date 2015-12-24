@@ -27,18 +27,18 @@ import java.io.IOException;
 /**
  * Created by linda on 11/18/15.
  */
-public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
+class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
-    StripTest stripTest;
-    int format;
-    int width;
-    int height;
-    double ratioW = 1;
-    double ratioH = 1;
-    org.opencv.core.Rect roiStriparea = null;
-    org.opencv.core.Rect roiCalarea = null;
-    Mat warp_dst;
-    Mat cal_dest;
+    private StripTest stripTest;
+    private int format;
+    private int width;
+    private int height;
+    private double ratioW = 1;
+    private double ratioH = 1;
+    private org.opencv.core.Rect roiStriparea = null;
+    private org.opencv.core.Rect roiCalarea = null;
+    private Mat warp_dst;
+    private Mat cal_dest;
     private DetectStripListener listener;
     private Context context;
     private FileStorage fileStorage;
@@ -347,7 +347,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
         }
     }
 
-    public CalibrationResultData getCalibratedImage(Mat mat) throws Exception
+    private CalibrationResultData getCalibratedImage(Mat mat) throws Exception
     {
         //System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
 

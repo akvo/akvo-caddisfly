@@ -30,7 +30,7 @@ import java.util.Map;
  * This fragment is used to show the quality checks done in CameraPreviewCallback
  */
 @SuppressWarnings("deprecation")
-public class CameraPrepareFragment extends CameraSharedFragment {
+public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
 
     private CameraViewListener mListener;
     private Button startButton;
@@ -79,14 +79,14 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     }
 
     @Override
-    protected synchronized void showExposure(double value) {
+    protected void showBrightness(double value) {
 
         if(wrExposureView!=null)
             wrExposureView.get().setPercentage((float) value);
     }
 
     @Override
-    protected synchronized void showShadow(double value) {
+    protected void showShadow(double value) {
 
         if(wrContrastView!=null)
             wrContrastView.get().setPercentage((float) value);
@@ -110,13 +110,19 @@ public class CameraPrepareFragment extends CameraSharedFragment {
                         mListener.nextFragment();
                 }
             });
-        }
-        if(messageView!=null)
-        {
-            messageView.setText("Excellent! \nPlease go to the next step.");
+
+            if(messageView!=null)
+            {
+                messageView.setText("Excellent! \nPlease go to the next step.");
+            }
         }
     }
 
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -152,7 +158,7 @@ public class CameraPrepareFragment extends CameraSharedFragment {
     }
 
     @Override
-    public synchronized void countQuality(Map<String, Integer> countMap)
+    public void countQuality(Map<String, Integer> countMap)
     {
 
         if(wrCountQualityView!=null)
@@ -161,18 +167,21 @@ public class CameraPrepareFragment extends CameraSharedFragment {
 
                 int count = 0;
 
-                for(int i: countMap.values()){
+                for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
-                String text = getResources().getString(R.string.quality_checks_counter, count , Constant.COUNT_QUALITY_CHECK_LIMIT);
-                wrCountQualityView.get().setText(text);
 
-                if(1==1) {
-                    wrCountQualityView.get().append("\n\n");
-                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                        wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
+                    String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
+                    wrCountQualityView.get().setText(text);
+
+                    if (1 == 1) {
+                        wrCountQualityView.get().append("\n\n");
+                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                        }
                     }
                 }
             }

@@ -64,8 +64,8 @@ public class FinderPatternIndicatorView extends SurfaceView {
             //Camera preview size is in landscape mode, canvas is in portrait mode
             //the width of the canvas corresponds to the height of the size,
             //the height of the canvas corresponds to the width of the size.
-        float ratioW = (float) canvas.getWidth() / (float) height;
-        float ratioH = (float) canvas.getHeight() / (float) width;
+            float ratioW = (float) canvas.getWidth() / (float) height;
+            float ratioH = (float) canvas.getHeight() / (float) width;
 
             for (int i = 0; i < patterns.size(); i++) {
                 //The x of the canvas corresponds to the y of the pattern,

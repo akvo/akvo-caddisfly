@@ -19,13 +19,13 @@ import java.util.Map;
  * So the activity that inflates an instance of this fragment has access to them
  * in a simple way
  */
-public abstract class CameraSharedFragment extends Fragment {
+public abstract class CameraSharedFragmentAbstract extends Fragment {
 
     public void setFocusAreas(Camera.Size previewSize){};
 
     public void countQuality(Map<String, Integer> countArray){};
 
-    protected void showExposure(double value){};
+    protected void showBrightness(double value){};
 
     protected void showShadow(double value){};
 

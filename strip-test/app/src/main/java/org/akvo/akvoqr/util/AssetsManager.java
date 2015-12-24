@@ -1,6 +1,5 @@
 package org.akvo.akvoqr.util;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 
 import java.io.IOException;
@@ -13,16 +12,16 @@ public class AssetsManager {
 
     private static AssetsManager assetsManager;
     private AssetManager manager;
-    public static AssetsManager getInstance(Context context)
+    public static AssetsManager getInstance()
     {
         if(assetsManager==null)
-            assetsManager = new AssetsManager(context);
+            assetsManager = new AssetsManager();
 
         return assetsManager;
     }
-    private AssetsManager(Context context)
+    private AssetsManager()
     {
-        this.manager = context.getAssets();
+        this.manager = App.getMyApplicationContext().getAssets();
     }
 
 

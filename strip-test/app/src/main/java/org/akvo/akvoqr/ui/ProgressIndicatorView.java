@@ -84,7 +84,7 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
 
-    public void initView()
+    private void initView()
     {
 
         if(!set) {
@@ -159,7 +159,7 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     private boolean running = false;
-    public void startAnim()
+    private void startAnim()
     {
         if(steps!=null) {
             //sort on time lapse ascending

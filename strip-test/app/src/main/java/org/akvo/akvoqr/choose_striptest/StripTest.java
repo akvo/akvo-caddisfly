@@ -3,6 +3,7 @@ package org.akvo.akvoqr.choose_striptest;
 import android.content.Context;
 
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.util.App;
 import org.akvo.akvoqr.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class StripTest{
     {
         List<String> brandnames = new ArrayList<>();
 
-        String json = fromJson(context);
+        String json = fromJson();
         try {
             JSONObject object = new JSONObject(json);
 
@@ -81,7 +82,7 @@ public class StripTest{
             System.out.println("***Striptest brand: " + brand);
             try {
 
-                String json = fromJson(context);
+                String json = fromJson();
                 JSONObject object = new JSONObject(json);
 
                 if (!object.isNull("strips")) {
@@ -208,11 +209,11 @@ public class StripTest{
         }
     }
 
-    private String fromJson(Context context)
+    private String fromJson()
     {
-        String filename = context.getString(R.string.strips_json);
+        String filename = App.getMyApplicationContext().getString(R.string.strips_json);
 
-        return AssetsManager.getInstance(context).loadJSONFromAsset(filename);
+        return AssetsManager.getInstance().loadJSONFromAsset(filename);
 
 //        try {
 //

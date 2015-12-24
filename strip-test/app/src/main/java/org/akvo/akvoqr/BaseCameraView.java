@@ -130,16 +130,17 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             if(s.equals(Camera.Parameters.FOCUS_MODE_AUTO))
             {
                 canAutoFocus = true;
-                //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+
             }
-//            if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
-//            {
-//                disableContinuousFocus = false;
-//            }
+            if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
+            {
+                disableContinuousFocus = false;
+            }
         }
 
         try {
             CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
+
         }
         catch (Exception e)
         {
@@ -165,6 +166,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             mCamera.setPreviewDisplay(holder);
             activity.setPreviewProperties();
             mCamera.startPreview();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -191,15 +193,16 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             return;
 
         //parameters = mCamera.getParameters();
+        //mCamera.cancelAutoFocus();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-                if(!parameters.getAutoExposureLock()) {
-                    parameters.setAutoExposureLock(true);
-                    mCamera.setParameters(parameters);
-                    System.out.println("***locking auto-exposure. ");
-                }
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//
+//                if(!parameters.getAutoExposureLock()) {
+//                    parameters.setAutoExposureLock(true);
+//                    mCamera.setParameters(parameters);
+//                    System.out.println("***locking auto-exposure. ");
+//                }
+//            }
 
 
         int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
@@ -217,18 +220,18 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
             parameters.setExposureCompensation(0);
         }
 
-        //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-            if(parameters.getAutoExposureLock()) {
-                parameters.setAutoExposureLock(false);
-                mCamera.setParameters(parameters);
-                System.out.println("***unlocking auto-exposure. ");
-            }
-        }else {
-
-            mCamera.setParameters(parameters);
-        }
+//        //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//
+//            if(parameters.getAutoExposureLock()) {
+//                parameters.setAutoExposureLock(false);
+//                mCamera.setParameters(parameters);
+//                System.out.println("***unlocking auto-exposure. ");
+//            }
+//        }else {
+//
+//            mCamera.setParameters(parameters);
+//        }
     }
 
     public void setFocusAreas(List<Camera.Area> areas)

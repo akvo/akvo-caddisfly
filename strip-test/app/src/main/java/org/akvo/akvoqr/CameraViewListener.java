@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by linda on 6/26/15.
  */
-public interface CameraViewListener {
+interface CameraViewListener {
 
     void adjustExposureCompensation(int direction);
 
@@ -24,7 +24,7 @@ public interface CameraViewListener {
 
     void showFocusValue(double value);
 
-    void showMaxLuminosity(double value);
+    void showBrightness(double value);
 
     void showShadow(double value);
 

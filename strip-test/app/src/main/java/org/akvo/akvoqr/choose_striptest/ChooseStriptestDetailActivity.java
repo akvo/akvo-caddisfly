@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import org.akvo.akvoqr.CameraActivity;
 import org.akvo.akvoqr.R;
+import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
 
 /**
@@ -19,7 +22,7 @@ import org.akvo.akvoqr.util.Constant;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ChooseStripTestDetailFragment}.
  */
-public class ChooseStriptestDetailActivity extends AppCompatActivity {
+public class ChooseStriptestDetailActivity extends AppCompatActivity implements ChooseStripTestDetailFragment.Callbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,5 +80,54 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void startCameraActivity(String brandname) {
+
+        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra(Constant.BRAND, brandname);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startInstructionActivity(String brandname) {
+
+        Intent intent = new Intent(this, InstructionActivity.class);
+        intent.putExtra(Constant.BRAND, brandname);
+        startActivity(intent);
+
+    }
+
+
+    private class ChooseBrandOnClickListener implements View.OnClickListener{
+
+        private String brandname;
+
+        public ChooseBrandOnClickListener(String brand)
+        {
+            this.brandname = brand;
+        }
+
+        @Override
+        public void onClick(View v) {
+            v.setActivated(!v.isActivated());
+
+
+        }
+    }
+
+    private class ShowInstructionsOnClickListener implements View.OnClickListener{
+
+        private String brandName;
+        public ShowInstructionsOnClickListener(String brandName)
+        {
+            this.brandName = brandName;
+        }
+        @Override
+        public void onClick(View v) {
+
+
+        }
     }
 }

@@ -35,8 +35,8 @@ import java.util.Map;
 public class FinderPatternFinder {
 
   private static final int CENTER_QUORUM = 2;
-  protected static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  protected static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
+  private static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
+  private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
 
   private final BitMatrix image;
   private final List<FinderPattern> possibleCenters;
@@ -202,7 +202,7 @@ public class FinderPatternFinder {
    * @return true iff the proportions of the counts is close enough to the 1/1/3/1/1 ratios
    *         used by finder patterns to be considered a match
    */
-  protected static boolean foundPatternCross(int[] stateCount) {
+  private static boolean foundPatternCross(int[] stateCount) {
     int totalModuleSize = 0;
     for (int i = 0; i < 5; i++) {
       int count = stateCount[i];
@@ -490,7 +490,7 @@ public class FinderPatternFinder {
    * @param pureBarcode true if in "pure barcode" mode
    * @return true if a finder pattern candidate was found this time
    */
-  protected final boolean handlePossibleCenter(int[] stateCount, int i, int j, boolean pureBarcode) {
+  private boolean handlePossibleCenter(int[] stateCount, int i, int j, boolean pureBarcode) {
     int stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] +
             stateCount[4];
     float centerJ = centerFromEnd(stateCount, j);

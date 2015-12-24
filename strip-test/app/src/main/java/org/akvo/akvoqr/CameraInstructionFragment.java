@@ -27,7 +27,7 @@ import org.json.JSONException;
  *
  * This fragment shows instructions for a particular strip test. They are read from strips.json in assets
  */
-public class CameraInstructionFragment extends CameraSharedFragment {
+public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
 
     private CameraViewListener mListener;
     private Button startButton;

@@ -1,6 +1,6 @@
 package org.akvo.akvoqr.choose_striptest;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import org.akvo.akvoqr.CameraActivity;
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
 
 import java.io.InputStream;
@@ -23,9 +21,7 @@ import java.io.InputStream;
  */
 public class ChooseStripTestDetailFragment extends Fragment {
 
-    // private String brandName;
-    //private ImageView imageView;
-    //private Drawable drawable;
+    private Callbacks mCallbacks;
 
     public static ChooseStripTestDetailFragment newInstance(String brandName) {
         ChooseStripTestDetailFragment fragment = new ChooseStripTestDetailFragment();
@@ -56,7 +52,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
         ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
         if(getArguments()!=null) {
-            String brandName = getArguments().getString(Constant.BRAND);
+            final String brandName = getArguments().getString(Constant.BRAND);
 
             System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
 
@@ -65,7 +61,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
                 try {
                     //images in assets
                     // get input stream
-                    String path = getActivity().getResources().getString(R.string.striptest_images);
+                    String path = getResources().getString(R.string.striptest_images);
                     InputStream ims = getActivity().getAssets().open(path + "/" + brandName + ".png");
                     // load image as Drawable
 
@@ -83,10 +79,20 @@ public class ChooseStripTestDetailFragment extends Fragment {
 
 
                 Button button = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonPerform);
-                button.setOnClickListener(new ChooseBrandOnClickListener(brandName));
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallbacks.startCameraActivity(brandName);
+                    }
+                });
 
                 Button buttonInstruction = (Button) rootView.findViewById(R.id.fragment_choose_strip_testButtonInstruction);
-                buttonInstruction.setOnClickListener(new ShowInstructionsOnClickListener(brandName));
+                buttonInstruction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallbacks.startInstructionActivity(brandName);
+                    }
+                });
 
                 AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
                 if (appCompatActivity != null) {
@@ -98,39 +104,35 @@ public class ChooseStripTestDetailFragment extends Fragment {
         return rootView;
     }
 
-    private class ChooseBrandOnClickListener implements View.OnClickListener{
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        private String brandname;
-
-        public ChooseBrandOnClickListener(String brand)
-        {
-            this.brandname = brand;
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        @Override
-        public void onClick(View v) {
-            v.setActivated(!v.isActivated());
-            Intent intent = new Intent(getActivity(), CameraActivity.class);
-            intent.putExtra(Constant.BRAND, brandname);
-            startActivity(intent);
-        }
+        mCallbacks = (Callbacks) activity;
+
     }
 
-    private class ShowInstructionsOnClickListener implements View.OnClickListener{
+    @Override
+    public void onDetach() {
+        super.onDetach();
 
-        private String brandName;
-        public ShowInstructionsOnClickListener(String brandName)
-        {
-            this.brandName = brandName;
-        }
-        @Override
-        public void onClick(View v) {
-
-            Intent intent = new Intent(getActivity(), InstructionActivity.class);
-            intent.putExtra(Constant.BRAND, brandName);
-            startActivity(intent);
-
-        }
+        // Reset the active callbacks interface to the dummy implementation.
+        mCallbacks = null;
     }
+
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void startCameraActivity(String brandname);
+        void startInstructionActivity(String brandname);
+    }
+
+
 
 }

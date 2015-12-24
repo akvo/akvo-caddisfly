@@ -33,7 +33,7 @@ import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
 public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
     private static final double ONE_OVER_NINE = 1.0/9;
-    public static Map<Integer, Integer> versionNumberMap = new HashMap<>();
+    private static Map<Integer, Integer> versionNumberMap = new HashMap<>();
 
     //put version number in HashMap: number, frequency
     public static void addVersionNumber(Integer number)
@@ -77,7 +77,7 @@ public class CalibrationCard{
     public static CalibrationData readCalibrationFile(Context context){
 
         String calFileName = "calibration" + getMostFrequentVersionNumber() + ".json";
-        String json = AssetsManager.getInstance(context).loadJSONFromAsset(calFileName);
+        String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
         if(json!=null) {
             try {
@@ -150,7 +150,7 @@ public class CalibrationCard{
     // computes the colour around a single point
     // x and y in pixels
     // This method expects a cielab file
-    public static double[] getWhiteVal(Mat lab, int x, int y, int dp){
+    private static double[] getWhiteVal(Mat lab, int x, int y, int dp){
         double totLum = 0;
         double totA = 0;
         double totB = 0;
@@ -224,7 +224,7 @@ public class CalibrationCard{
     * Straightens the illumination of the calibration file. It does this by sampling the white areas
     * and compute a quadratic profile. The image is then corrected using this profile.
      */
-    public static Mat doIlluminationCorrection(Mat imgLab, CalibrationData calData){
+    private static Mat doIlluminationCorrection(Mat imgLab, CalibrationData calData){
         // create HLS image for homogenous illumination calibration
         int pheight =  imgLab.rows();
         int pwidth = imgLab.cols();
