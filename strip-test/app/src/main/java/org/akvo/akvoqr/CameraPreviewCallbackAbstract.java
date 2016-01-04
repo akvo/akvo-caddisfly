@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.hardware.Camera;
 
+import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.detector.BinaryBitmap;
 import org.akvo.akvoqr.detector.BitMatrix;
@@ -147,8 +148,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             if(info!=null) {
 
                 //DETECT BRIGHTNESS
-//                double maxmaxLum = luminosityCheck(lumList);
-//                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
+                double maxmaxLum = luminosityCheck(lumList);
+                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // DETECT SHADOWS
                 if(bgr!=null) {
@@ -420,24 +421,24 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                         listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
                     }
                     //get the version number from the barcode printed on the card
-//                    try {
-//                        if (possibleCenters.size() == 4) {
-//                            int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-////                            System.out.println("***versionNumber: " + versionNumber);
-//                            if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
-//                                CalibrationCard.addVersionNumber(versionNumber);
-//                                if(caldata==null)
-//                                    caldata = CalibrationCard.readCalibrationFile(context);
-//                            }
-//                            //testing
-////                            Random random = new Random();
-////                            CalibrationCard.addVersionNumber(random.nextInt(10));
-//                        }
-//                    }
-//                    catch (Exception e)
-//                    {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        if (possibleCenters.size() == 4) {
+                            int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
+//                            System.out.println("***versionNumber: " + versionNumber);
+                            if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
+                                CalibrationCard.addVersionNumber(versionNumber);
+                                if(caldata==null)
+                                    caldata = CalibrationCard.readCalibrationFile(context);
+                            }
+                            //testing
+//                            Random random = new Random();
+//                            CalibrationCard.addVersionNumber(random.nextInt(10));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
 
                 }
 

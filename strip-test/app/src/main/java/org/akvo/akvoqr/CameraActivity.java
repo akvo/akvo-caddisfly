@@ -400,7 +400,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             showFinderPatternRunnable.setPatterns(patterns);
             showFinderPatternRunnable.setSize(size);
             showFinderPatternRunnable.setColor(color);
-            //handler.post(showFinderPatternRunnable);
+            handler.post(showFinderPatternRunnable);
         }
     }
 
