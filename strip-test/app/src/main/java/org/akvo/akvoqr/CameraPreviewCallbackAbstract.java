@@ -426,7 +426,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 //                            System.out.println("***versionNumber: " + versionNumber);
                             if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
                                 CalibrationCard.addVersionNumber(versionNumber);
-                                if(caldata==null)
+                                //if(caldata==null) //less overhead, but what if caldata is for wrong version number?
                                     caldata = CalibrationCard.readCalibrationFile(context);
                             }
                             //testing
