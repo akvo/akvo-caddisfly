@@ -358,7 +358,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void nextFragment() {
 
-        System.out.println("***brandname CameraActivity nextFragment: " + brandName);
+        //System.out.println("***brandname CameraActivity nextFragment: " + brandName);
 
         if(currentFragment instanceof CameraPrepareFragment) {
             //start instruction fragment
@@ -428,7 +428,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     {
         if(handler!=null) {
             showLevelRunnable.setAngles(angles);
-            //handler.post(showLevelRunnable);
+            handler.post(showLevelRunnable);
         }
     }
 
