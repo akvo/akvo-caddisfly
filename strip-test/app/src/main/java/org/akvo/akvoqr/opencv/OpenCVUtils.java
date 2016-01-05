@@ -187,6 +187,8 @@ public class OpenCVUtils {
 
         // create binary image
         Mat binary = new Mat();
+
+        // determine min and max NOT USED
         Imgproc.threshold(channels.get(0), binary, 128, 255, Imgproc.THRESH_BINARY);
 
         // compute first approximation of line through length of the strip
@@ -316,15 +318,20 @@ public class OpenCVUtils {
         }
 
         // moving from the left, determine the first point that crosses the treshold
-        found = false;
-        int posLeft = 0;
-        while(!found && posLeft < binaryStrip.cols() - 1){
-            if (colCount[posLeft] > treshold){
-                found = true;
-            } else {
-                posLeft++;
-            }
-        }
+//        found = false;
+//        int posLeft = 0;
+//        while(!found && posLeft < binaryStrip.cols() - 1){
+//            if (colCount[posLeft] > treshold){
+//                found = true;
+//            } else {
+//                posLeft++;
+//            }
+//        }
+
+        // use known length of strip to determine left side
+        int length = (int) Math.round(brand.getStripLenght()*ratioW);
+        int posLeft = posRight - length;
+
         // cut out final strip
         stripTopLeft = new Point(posLeft,0);
         stripBottomRight = new Point(posRight,binaryStrip.rows());
