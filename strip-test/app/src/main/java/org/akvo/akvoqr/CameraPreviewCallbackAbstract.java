@@ -41,7 +41,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     protected final LinkedList<Double> shadowTrack = new LinkedList<>();
     protected Context context;
     protected float EV;
-    Camera.Parameters parameters;
+    private Camera.Parameters parameters;
 
     public CameraPreviewCallbackAbstract(Context context, Camera.Parameters parameters) {
         try {

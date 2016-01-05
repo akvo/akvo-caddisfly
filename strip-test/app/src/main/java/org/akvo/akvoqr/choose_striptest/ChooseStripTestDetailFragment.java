@@ -46,7 +46,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        System.out.println("*** ChooseStripTestDetailFragment onCreateView called with Arguments: " + getArguments());
+        //System.out.println("*** ChooseStripTestDetailFragment onCreateView called with Arguments: " + getArguments());
 
         View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
@@ -54,7 +54,7 @@ public class ChooseStripTestDetailFragment extends Fragment {
         if(getArguments()!=null) {
             final String brandName = getArguments().getString(Constant.BRAND);
 
-            System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
+            //System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
 
             if (brandName != null) {
 

@@ -90,7 +90,7 @@ public class ChooseStriptestListActivity extends AppCompatActivity
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            System.out.println("***brandname in ChooseStripTestListActivity onItemSelected: " + id);
+            //System.out.println("***brandname in ChooseStripTestListActivity onItemSelected: " + id);
 
             Intent detailIntent = new Intent(this, ChooseStriptestDetailActivity.class);
             detailIntent.putExtra(Constant.BRAND, id);

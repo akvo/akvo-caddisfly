@@ -19,22 +19,10 @@ import java.util.List;
  */
 public class StripTest{
 
-    //public static StripTest instance;
-    // private Map<String, JSONObject> stripObjects;
-
     public StripTest()
     {
 
     }
-//    public static StripTest getInstance(Context context)
-//    {
-//        if(instance==null)
-//        {
-//            instance = new StripTest(context);
-//
-//        }
-//       return instance;
-//    }
 
     public List<String> getBrandsAsList(Context context)
     {
@@ -215,28 +203,6 @@ public class StripTest{
 
         return AssetsManager.getInstance().loadJSONFromAsset(filename);
 
-//        try {
-//
-//            JSONObject object = new JSONObject(json);
-//            if(!object.isNull("strips"))
-//            {
-//                stripsJson = object.getJSONArray("strips");
-//                if(stripsJson!=null) {
-//                    stripObjects = new HashMap<>();
-//                    for (int i = 0; i < stripsJson.length(); i++) {
-//                        JSONObject strip = stripsJson.getJSONObject(i);
-//                        String key = strip.getString("brand");
-//                        stripObjects.put(key, strip);
-//                    }
-//                }
-//            }
-//            else
-//            {
-//                System.out.println("***json object has no strips");
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private class PatchComparator implements Comparator<Brand.Patch>

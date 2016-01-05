@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.akvo.akvoqr.CameraActivity;
@@ -99,35 +98,4 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity implements 
 
     }
 
-
-    private class ChooseBrandOnClickListener implements View.OnClickListener{
-
-        private String brandname;
-
-        public ChooseBrandOnClickListener(String brand)
-        {
-            this.brandname = brand;
-        }
-
-        @Override
-        public void onClick(View v) {
-            v.setActivated(!v.isActivated());
-
-
-        }
-    }
-
-    private class ShowInstructionsOnClickListener implements View.OnClickListener{
-
-        private String brandName;
-        public ShowInstructionsOnClickListener(String brandName)
-        {
-            this.brandName = brandName;
-        }
-        @Override
-        public void onClick(View v) {
-
-
-        }
-    }
 }
