@@ -14,21 +14,12 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package org.akvo.caddisfly.widget;
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-alpha2'
-        classpath 'de.mobilej.unmock:UnMockPlugin:0.3.6'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
-    }
-}
+public interface AspectRatioViewInterface {
+    void setAspectRatio(double aspectRatio);
 
-allprojects {
-    repositories {
-        jcenter()
-    }
+    void onPause();
+
+    void onResume();
 }

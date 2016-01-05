@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -56,15 +57,19 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.usb.DeviceFilter;
+import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
@@ -93,6 +98,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     //pointer to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
+    private USBMonitor mUSBMonitor;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -155,6 +161,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
         });
         mShakeDetector.minShakeAcceleration = 5;
         mShakeDetector.maxShakeDuration = 2000;
+
+        mUSBMonitor = new USBMonitor(this, null);
+
         mSensorManager.unregisterListener(mShakeDetector);
 
         textSubtitle.setText(R.string.placeDevice);
@@ -202,7 +211,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void dismissShakeAndStartTest() {
         mSensorManager.unregisterListener(mShakeDetector);
 
-        startTest();
+        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
+        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        if (usbDeviceList.size() > 0) {
+            startExternalTest();
+        } else {
+            startTest();
+        }
     }
 
     /**
@@ -389,6 +404,71 @@ public class ColorimetryLiquidActivity extends BaseActivity
         Result result = new Result(bitmap, results);
 
         mResults.add(result);
+    }
+
+    private void startExternalTest() {
+        mResults = new ArrayList<>();
+        sound.playShortResource(R.raw.beep);
+        (new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+                mCameraFragment = ExternalCameraFragment.newInstance();
+                mCameraFragment.setCancelable(false);
+                if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
+
+                    ((ExternalCameraFragment) mCameraFragment).pictureCallback = new ExternalCameraFragment.PictureCallback() {
+                        @Override
+                        public void onPictureTaken(Bitmap bitmap) {
+
+                            Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                            getAnalyzedResult(croppedBitmap);
+                            //bitmap.recycle();
+
+                            if (((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
+                                ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
+                                if (croppedBitmap != null) {
+                                    croppedBitmap.copyPixelsToBuffer(buffer);
+                                }
+                                byte[] data = buffer.array();
+                                AnalyzeFinalResult(data);
+                                mCameraFragment.dismiss();
+                            }
+                        }
+                    };
+                }
+
+                acquireWakeLock();
+
+                delayRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        Fragment prev = getFragmentManager().findFragmentByTag("externalCameraDialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        ft.addToBackStack(null);
+                        try {
+                            mCameraFragment.show(ft, "externalCameraDialog");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            finish();
+                        }
+                    }
+                };
+
+                delayHandler.postDelayed(delayRunnable, 0);
+            }
+        }).execute();
     }
 
     private void startTest() {

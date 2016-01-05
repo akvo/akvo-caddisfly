@@ -15,3 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepclassmembers public class org.akvo.caddisfly.usb.UVCCamera {
+    public *;
+    protected *;
+    private *;
+}

@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly
@@ -15,15 +15,13 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    tools:context="org.akvo.caddisfly.sensor.CameraDialogFragment">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/layoutCameraPreview"
+    <org.akvo.caddisfly.widget.UVCCameraTextureView
+        android:id="@+id/uvcCameraView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:foreground="@android:color/holo_blue_bright" />
 
 </RelativeLayout>

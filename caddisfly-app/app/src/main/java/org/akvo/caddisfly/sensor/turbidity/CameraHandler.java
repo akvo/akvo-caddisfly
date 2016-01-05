@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.BatteryManager;
@@ -29,7 +30,15 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -38,6 +47,7 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,9 +59,12 @@ class CameraHandler implements Camera.PictureCallback {
     private final Context mContext;
     private Camera mCamera;
     private String mSavePath;
+    private String mTestCode;
 
-    public CameraHandler(Context context) {
+    public CameraHandler(Context context, String testCode) {
         mContext = context;
+        mTestCode = testCode;
+
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "CameraSensorWakeLock");
 
@@ -123,6 +136,8 @@ class CameraHandler implements Camera.PictureCallback {
         List<String> mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
         Camera.Parameters parameters = mCamera.getParameters();
 
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
         List<String> supportedWhiteBalance = mCamera.getParameters().getSupportedWhiteBalance();
         if (supportedWhiteBalance != null && supportedWhiteBalance.contains(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT)) {
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
@@ -144,16 +159,39 @@ class CameraHandler implements Camera.PictureCallback {
             parameters.setJpegQuality(100);
         }
 
+        List<String> focusModes = parameters.getSupportedFocusModes();
+
+        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+        } else {
+            // Attempt to set focus to infinity if supported
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+            }
+        }
+
+        if (parameters.getMaxNumMeteringAreas() > 0) {
+            List<Camera.Area> meteringAreas = new ArrayList<>();
+            Rect areaRect1 = new Rect(-100, -100, 100, 100);
+            meteringAreas.add(new Camera.Area(areaRect1, 1000));
+            parameters.setMeteringAreas(meteringAreas);
+        }
+
         if (mSupportedFlashModes != null) {
             if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
             }
         }
 
-        parameters.setZoom(0);
-        parameters.setRotation(90);
+        parameters.setExposureCompensation(-2);
 
-        parameters.setPictureSize(1280, 960);
+        parameters.setZoom(0);
+
+        //parameters.setRotation(90);
+
+        //parameters.setPictureSize(1280, 960);
+
+        parameters.setPictureSize(640, 480);
 
         try {
             mCamera.setParameters(parameters);
@@ -188,13 +226,42 @@ class CameraHandler implements Camera.PictureCallback {
             batteryPercent = (int) ((level / (float) scale) * 100);
         }
 
-        int blurriness = getBlurriness(data);
-
         String date = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(new Date());
 
-        String fileName = date + "_" + blurriness + "_" + batteryPercent;
+        String fileName = "";
+        File folder = null;
 
-        File folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE, mSavePath);
+        switch (mTestCode) {
+            case "fluor":
+
+                Bitmap bitmap = ImageUtil.getBitmap(data);
+
+                Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                //Extract the color from the photo which will be used for comparison
+                ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                CaddisflyApp.getApp().setDefaultTest();
+                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+                ResultDetail resultDetail = SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
+                        testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
+                fileName = date + "_" + resultDetail.getResult() + "_" + batteryPercent;
+
+                folder = FileHelper.getFilesDir(FileHelper.FileType.FLUORIDE_IMAGE, mSavePath);
+
+                break;
+
+            case "colif":
+                int blurriness = getBlurriness(data);
+                fileName = date + "_" + blurriness + "_" + batteryPercent;
+
+                folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE, mSavePath);
+
+                break;
+        }
+
 
         File photo = new File(folder, fileName + ".jpg");
 

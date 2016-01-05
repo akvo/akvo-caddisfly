@@ -28,6 +28,15 @@
             android:key="startTurbidityTest"
             android:title="Turbidity Test">
             <intent
+                android:data="colif"
+                android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"
+                android:targetPackage="org.akvo.caddisfly" />
+        </Preference>
+        <Preference
+            android:key="startFluorideTest"
+            android:title="Fluoride Test">
+            <intent
+                android:data="fluor"
                 android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>

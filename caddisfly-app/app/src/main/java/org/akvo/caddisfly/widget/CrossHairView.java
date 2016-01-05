@@ -46,14 +46,13 @@ public class CrossHairView extends View {
     public CrossHairView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        circlePaint = new Paint();
-        circlePaint.setColor(Color.YELLOW);
+        circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        circlePaint.setColor(Color.GREEN);
         circlePaint.setStyle(Paint.Style.STROKE);
         circlePaint.setStrokeWidth(5);
 
-        clearPaint = new Paint();
+        clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        clearPaint.setAntiAlias(true);
 
         TypedValue a = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.windowBackground, a, true);
@@ -84,7 +83,7 @@ public class CrossHairView extends View {
         canvas.drawColor(backgroundColor);
         canvas.drawCircle(w / 2, h / 2, radius, clearPaint);
         canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
+        //canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
         super.onDraw(canvas);
     }
 }

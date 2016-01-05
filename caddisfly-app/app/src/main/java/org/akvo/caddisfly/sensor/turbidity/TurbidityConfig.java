@@ -31,22 +31,19 @@ class TurbidityConfig {
     public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
     private static final int INTENT_REQUEST_CODE = 1000;
 
-    public static void setRepeatingAlarm(Context context, int initialDelay) {
+    public static void setRepeatingAlarm(Context context, int initialDelay, String testCode) {
 
         int mDelayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                R.string.sampleIntervalMinutesKey, "1"));
-
-        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT);
+                testCode + "_IntervalMinutes", "1"));
+        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, testCode);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        long delay;
-        if (initialDelay > 0) {
-            delay = initialDelay;
-        } else {
-            delay = 6 + (mDelayMinute * 60000);
-        }
+        long delay = 6 + (mDelayMinute * 60000);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (initialDelay > 0) {
+                delay = initialDelay;
+            }
             alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + delay, pendingIntent);
         } else {
@@ -55,20 +52,22 @@ class TurbidityConfig {
         }
     }
 
-    private static PendingIntent getPendingIntent(Context context, int flag) {
+    private static PendingIntent getPendingIntent(Context context, int flag, String testCode) {
         Intent intent = new Intent(context, TurbidityStartReceiver.class);
         intent.setAction(TurbidityConfig.ACTION_ALARM_RECEIVER);
         String savePath = PreferencesUtil.getString(context, R.string.turbiditySavePathKey, "");
         intent.putExtra("savePath", savePath);
+        intent.putExtra("testCode", testCode);
+
         return PendingIntent.getBroadcast(context, TurbidityConfig.INTENT_REQUEST_CODE, intent, flag);
     }
 
-    public static boolean isAlarmRunning(Context context) {
-        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE) != null;
+    public static boolean isAlarmRunning(Context context, String testCode) {
+        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, testCode) != null;
     }
 
-    public static void stopRepeatingAlarm(Context context) {
-        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE);
+    public static void stopRepeatingAlarm(Context context, String testCode) {
+        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, testCode);
         if (pendingIntent != null) {
             pendingIntent.cancel();
         }

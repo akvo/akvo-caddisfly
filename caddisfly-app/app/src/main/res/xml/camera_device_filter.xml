@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly
@@ -14,16 +14,11 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    tools:context="org.akvo.caddisfly.sensor.CameraDialogFragment">
+<resources>
 
-    <FrameLayout
-        android:id="@+id/layoutCameraPreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!-- all device of UVC -->
+    <usb-device
+        class="239"
+        subclass="2" />
 
-</RelativeLayout>
+</resources>
