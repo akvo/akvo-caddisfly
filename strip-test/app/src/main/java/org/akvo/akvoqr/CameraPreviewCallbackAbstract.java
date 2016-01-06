@@ -350,14 +350,14 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
                     listener.adjustExposureCompensation(1);
                 }
-//                else
-//                {
-                //optimum situation reached
+                else
+                {
+                    //optimum situation reached
 
                 System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
                         EV/step);
 
-//                }
+                }
             }
 
         }
