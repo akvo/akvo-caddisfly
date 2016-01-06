@@ -78,15 +78,6 @@ class CameraScheduledExecutorService {
 
     public void shutdown()
     {
-//        try {
-//            scheduledExecutorService.awaitTermination(5000, TimeUnit.MILLISECONDS);
-//
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//
-//        }
         scheduledExecutorService.shutdown();
     }
 

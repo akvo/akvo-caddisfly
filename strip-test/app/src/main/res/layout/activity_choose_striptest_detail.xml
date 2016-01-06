@@ -3,5 +3,5 @@
     android:id="@+id/choose_striptest_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.akvo.akvoqr.choose_striptest.ChooseStriptestDetailActivity"
+    tools:context=".choose_striptest.ColorimetryStripDetailActivity"
     tools:ignore="MergeRootFrame" />

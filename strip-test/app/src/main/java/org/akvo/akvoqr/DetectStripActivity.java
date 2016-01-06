@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.util.Constant;
 
 public class DetectStripActivity extends AppCompatActivity implements DetectStripListener{
@@ -47,7 +46,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
         redoTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetectStripActivity.this, ChooseStriptestListActivity.class);
+                Intent intent = new Intent(DetectStripActivity.this, ColorimetryStripActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }

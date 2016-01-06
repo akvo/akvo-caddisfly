@@ -19,19 +19,19 @@ import java.io.InputStream;
 /**
  * Created by linda on 9/12/15.
  */
-public class ChooseStripTestDetailFragment extends Fragment {
+public class ColorimetryStripDetailFragment extends Fragment {
 
     private Callbacks mCallbacks;
 
-    public static ChooseStripTestDetailFragment newInstance(String brandName) {
-        ChooseStripTestDetailFragment fragment = new ChooseStripTestDetailFragment();
+    public static ColorimetryStripDetailFragment newInstance(String brandName) {
+        ColorimetryStripDetailFragment fragment = new ColorimetryStripDetailFragment();
         Bundle args = new Bundle();
         args.putString(Constant.BRAND, brandName);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ChooseStripTestDetailFragment() {
+    public ColorimetryStripDetailFragment() {
 
     }
 

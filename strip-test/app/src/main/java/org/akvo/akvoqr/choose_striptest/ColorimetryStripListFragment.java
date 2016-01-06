@@ -17,14 +17,14 @@ import java.util.List;
  * A list fragment representing a list of Instructions. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link ChooseStripTestDetailFragment}.
+ * currently being viewed in a {@link ColorimetryStripDetailFragment}.
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ChooseStriptestListFragment extends ListFragment {
+public class ColorimetryStripListFragment extends ListFragment {
 
-    private ChooseStriptestAdapter adapter;
+    private ColorimetryStripAdapter adapter;
     private StripTest stripTest;
     private List<String> brandnames;
 
@@ -71,7 +71,7 @@ public class ChooseStriptestListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ChooseStriptestListFragment() {
+    public ColorimetryStripListFragment() {
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ChooseStriptestListFragment extends ListFragment {
             Collections.sort(brandnames);
 
             if (adapter == null) {
-                adapter = new ChooseStriptestAdapter(getActivity(),
+                adapter = new ColorimetryStripAdapter(getActivity(),
                         R.layout.adapter_choose_striptest, brandnames);
             }
             setListAdapter(adapter);

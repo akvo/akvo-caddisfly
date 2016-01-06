@@ -3,7 +3,6 @@ package org.akvo.akvoqr.util;
 import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.detector.FinderPatternInfo;
-import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;

@@ -1,4 +1,4 @@
-package org.akvo.akvoqr.opencv;
+package org.akvo.akvoqr.util;
 
 import android.graphics.Color;
 

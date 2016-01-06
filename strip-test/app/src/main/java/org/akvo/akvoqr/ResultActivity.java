@@ -17,13 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.akvoqr.calibration.CalibrationCard;
-import org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.color.ColorDetected;
-import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.ui.CircleView;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
+import org.akvo.akvoqr.util.OpenCVUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.opencv.android.Utils;
@@ -159,7 +158,7 @@ public class ResultActivity extends AppCompatActivity {
                         fileStorage.deleteFromInternalStorage(Constant.STRIP);
                     }
 
-                    Intent intentRedo = new Intent(ResultActivity.this, ChooseStriptestListActivity.class);
+                    Intent intentRedo = new Intent(ResultActivity.this, ColorimetryStripActivity.class);
 
                     startActivity(intentRedo);
                     ResultActivity.this.finish();

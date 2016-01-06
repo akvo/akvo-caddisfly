@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.akvo.akvoqr.CameraActivity;
+import org.akvo.akvoqr.ColorimetryStripActivity;
 import org.akvo.akvoqr.R;
 import org.akvo.akvoqr.instructions_app.InstructionActivity;
 import org.akvo.akvoqr.util.Constant;
@@ -16,12 +17,12 @@ import org.akvo.akvoqr.util.Constant;
  * An activity representing a single Instruction detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link ChooseStriptestListActivity}.
+ * in a {@link ColorimetryStripActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link ChooseStripTestDetailFragment}.
+ * more than a {@link ColorimetryStripDetailFragment}.
  */
-public class ChooseStriptestDetailActivity extends AppCompatActivity implements ChooseStripTestDetailFragment.Callbacks {
+public class ColorimetryStripDetailActivity extends AppCompatActivity implements ColorimetryStripDetailFragment.Callbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity implements 
             finish();
         }
         else {
-            ChooseStripTestDetailFragment fragment = ChooseStripTestDetailFragment.newInstance(brandname);
+            ColorimetryStripDetailFragment fragment = ColorimetryStripDetailFragment.newInstance(brandname);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.choose_striptest_detail_container, fragment)
@@ -75,7 +76,7 @@ public class ChooseStriptestDetailActivity extends AppCompatActivity implements 
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, ChooseStriptestListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, ColorimetryStripActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

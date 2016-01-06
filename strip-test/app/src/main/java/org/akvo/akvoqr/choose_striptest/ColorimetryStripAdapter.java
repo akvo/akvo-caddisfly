@@ -14,14 +14,14 @@ import java.util.List;
 /**
  * Created by linda on 9/5/15.
  */
-class ChooseStriptestAdapter extends ArrayAdapter<String> {
+class ColorimetryStripAdapter extends ArrayAdapter<String> {
 
     private List<String> brandnames;
     private int resource;
     private Context context;
     private StripTest stripTest;
 
-    public ChooseStriptestAdapter(Context context, int resource, List<String> brandnames) {
+    public ColorimetryStripAdapter(Context context, int resource, List<String> brandnames) {
         super(context, resource);
 
         this.context = context;

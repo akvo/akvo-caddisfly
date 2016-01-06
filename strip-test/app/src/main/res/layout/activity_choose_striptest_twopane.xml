@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:showDividers="middle"
         android:id="@+id/activity_instructionLinLay"
-        tools:context="org.akvo.akvoqr.choose_striptest.ChooseStriptestListActivity">
+        tools:context=".ColorimetryStripActivity">
 
         <!--
         This layout is a two-pane layout for the ChooseStriptest

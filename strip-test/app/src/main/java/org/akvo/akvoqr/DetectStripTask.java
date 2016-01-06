@@ -10,9 +10,9 @@ import org.akvo.akvoqr.calibration.CalibrationCard;
 import org.akvo.akvoqr.calibration.CalibrationData;
 import org.akvo.akvoqr.calibration.CalibrationResultData;
 import org.akvo.akvoqr.choose_striptest.StripTest;
-import org.akvo.akvoqr.opencv.OpenCVUtils;
 import org.akvo.akvoqr.util.Constant;
 import org.akvo.akvoqr.util.FileStorage;
+import org.akvo.akvoqr.util.OpenCVUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
@@ -43,7 +43,7 @@ class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     private Context context;
     private FileStorage fileStorage;
     private Bitmap bitmap;
-    private boolean develop = false;
+    private boolean develop = true;
 
     public DetectStripTask(Context listener) {
 
@@ -164,6 +164,10 @@ class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
                             if (FileStorage.checkExternalMedia()) {
                                 FileStorage.writeToSDFile(bitmap);
+                                System.out.println("***image written");
+                            }
+                            else {
+                                System.out.println("***could not write image");
                             }
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
                             listener.showImage(bitmap);

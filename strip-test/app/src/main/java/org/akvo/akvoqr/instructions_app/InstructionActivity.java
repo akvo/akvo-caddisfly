@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.akvo.akvoqr.R;
-import org.akvo.akvoqr.choose_striptest.ChooseStriptestDetailActivity;
+import org.akvo.akvoqr.choose_striptest.ColorimetryStripDetailActivity;
 import org.akvo.akvoqr.choose_striptest.StripTest;
 import org.akvo.akvoqr.util.Constant;
 import org.json.JSONArray;
@@ -141,7 +141,7 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
 
-            Intent intent = new Intent(this, ChooseStriptestDetailActivity.class);
+            Intent intent = new Intent(this, ColorimetryStripDetailActivity.class);
             intent.putExtra(Constant.BRAND, getIntent().getStringExtra(Constant.BRAND));
             NavUtils.navigateUpTo(this, intent);
             return true;

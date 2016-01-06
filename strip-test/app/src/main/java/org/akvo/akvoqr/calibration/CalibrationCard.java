@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.akvo.akvoqr.opencv.OpenCVUtils.getOrderedPoints;
+import static org.akvo.akvoqr.util.OpenCVUtils.getOrderedPoints;
 
 // Performs the calibration of the image
 public class CalibrationCard{
