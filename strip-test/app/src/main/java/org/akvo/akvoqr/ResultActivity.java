@@ -328,17 +328,14 @@ public class ResultActivity extends AppCompatActivity {
         double ppmPatchValueStart,ppmPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
-        double ppmVal, LInter, aInter, bInter, vInter;
+        double LInter, aInter, bInter, vInter;
         int INTERPOLNUM = 10;
-        int numIters;
-        double result = 0;
+        double result;
 
         // compute total number of interpolated values the table will hold
-        // this includes an extrapolation beyond the last point, and INTERPOLNUM values
-        // in between each two patches
+        // this includes INTERPOLNUM values in between each two patches
         // The table holds [L, a, b, ppm value]
-        double[][] interpolTable = new double[colours.length() * INTERPOLNUM][4];
-
+        double[][] interpolTable = new double[(colours.length() - 1) * INTERPOLNUM + 1][4];
         int count = 0;
         for (int i = 0; i < colours.length() - 1; i++) {
             try {
@@ -361,9 +358,8 @@ public class ResultActivity extends AppCompatActivity {
 
                 // create 10 interpolation points, including the start point,
                 // but excluding the end point
-                // the last interval is made twice as long, so we can extrapolate
-                numIters = (i == colours.length() - 2) ? INTERPOLNUM * 2 : INTERPOLNUM;
-                for (int ii = 0; ii < numIters; ii++) {
+
+                for (int ii = 0; ii < INTERPOLNUM; ii++) {
                     LInter = LStart + ii * dL;
                     aInter = aStart + ii * da;
                     bInter = bStart + ii * db;
@@ -373,13 +369,19 @@ public class ResultActivity extends AppCompatActivity {
                     interpolTable[count][1] = aInter;
                     interpolTable[count][2] = bInter;
                     interpolTable[count][3] = vInter;
-
                     count++;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // add final point
+            patchColorValues = colours.getJSONObject(colours.length() - 1).getJSONArray("lab");
+            interpolTable[count][0] = patchColorValues.getDouble(0);
+            interpolTable[count][1] = patchColorValues.getDouble(1);
+            interpolTable[count][2] = patchColorValues.getDouble(2);
+            interpolTable[count][3] = colours.getJSONObject(colours.length() - 1).getDouble("value");
         }
+
         // determine closest value
         // create interpolation and extrapolation tables using linear approximation
         if (colorValues == null || colorValues.length < 3){
@@ -390,7 +392,7 @@ public class ResultActivity extends AppCompatActivity {
         double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
 
         System.out.println("*** lab value:" + labPoint[0] + "," + labPoint[1] + "," + labPoint[2]);
-        double closestPPM = 0, dist;
+        double dist;
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
 
@@ -405,9 +407,11 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
         result = interpolTable[minPos][3];
+        System.out.println("*** result ppm:" + result);
         return result;
     }
 
+    // old way of computing ppm value, using geometric method to determine closest point
 //    private double calculatePPM_old(double[] colorValues, JSONArray colours) throws Exception{
 //
 //        List<Pair<Integer,Double>> labdaList = new ArrayList<>();
