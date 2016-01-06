@@ -41,7 +41,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     protected final LinkedList<Double> shadowTrack = new LinkedList<>();
     protected Context context;
     protected float EV;
-    private Camera.Parameters parameters;
 
     public CameraPreviewCallbackAbstract(Context context, Camera.Parameters parameters) {
         try {
@@ -56,8 +55,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         possibleCenters = new ArrayList<>();
 
-        this.parameters = parameters;
-
         previewSize = parameters.getPreviewSize();
     }
 
@@ -70,9 +67,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             return;
 
         //get EV to use in order to avoid over exposure while trying to optimise brightness
-        float step = parameters.getExposureCompensationStep();
+        float step = camera.getParameters().getExposureCompensationStep();
         //make sure it never becomes zero
-        EV = Math.max(step, step * parameters.getExposureCompensation());
+        EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
 
     }
 
