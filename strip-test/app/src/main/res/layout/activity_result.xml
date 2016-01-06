@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    tools:context="org.akvo.akvoqr.ResultActivity">
+    tools:context=".result_strip.ResultActivity">
 
     <ScrollView
         android:layout_width="match_parent"

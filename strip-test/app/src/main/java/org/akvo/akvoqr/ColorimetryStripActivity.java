@@ -5,9 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import org.akvo.akvoqr.choose_striptest.ColorimetryStripDetailActivity;
-import org.akvo.akvoqr.choose_striptest.ColorimetryStripDetailFragment;
-import org.akvo.akvoqr.choose_striptest.ColorimetryStripListFragment;
+import org.akvo.akvoqr.colorimetry_strip.ColorimetryStripDetailActivity;
+import org.akvo.akvoqr.colorimetry_strip.ColorimetryStripDetailFragment;
+import org.akvo.akvoqr.colorimetry_strip.ColorimetryStripListFragment;
 import org.akvo.akvoqr.util.Constant;
 
 

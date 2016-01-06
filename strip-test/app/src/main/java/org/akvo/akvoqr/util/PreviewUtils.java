@@ -1,8 +1,8 @@
 package org.akvo.akvoqr.util;
 
-import org.akvo.akvoqr.calibration.CalibrationCard;
-import org.akvo.akvoqr.calibration.CalibrationData;
-import org.akvo.akvoqr.detector.FinderPatternInfo;
+import org.akvo.akvoqr.util.calibration.CalibrationCard;
+import org.akvo.akvoqr.util.calibration.CalibrationData;
+import org.akvo.akvoqr.util.detector.FinderPatternInfo;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;

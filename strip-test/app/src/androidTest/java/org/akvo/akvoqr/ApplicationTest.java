@@ -6,6 +6,8 @@ import android.content.pm.PackageInfo;
 import android.test.ApplicationTestCase;
 import android.test.MoreAsserts;
 
+import org.akvo.akvoqr.camera_strip.CameraActivity;
+
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */

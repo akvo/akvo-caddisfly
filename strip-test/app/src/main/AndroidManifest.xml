@@ -25,26 +25,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResultActivity"
+            android:name=".result_strip.ResultActivity"
             android:label="@string/title_activity_result"
             android:screenOrientation="portrait"
             ></activity>
         <activity
-            android:name=".CameraActivity"
+            android:name=".camera_strip.CameraActivity"
             android:label="@string/title_activity_camera"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
-            android:name=".instructions_app.InstructionActivity"
+            android:name=".instructions_strip.InstructionActivity"
             android:label="@string/title_instruction_list"
-            android:parentActivityName=".choose_striptest.ColorimetryStripDetailActivity">
+            android:parentActivityName=".colorimetry_strip.ColorimetryStripDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".choose_striptest.ColorimetryStripDetailActivity" />
+                android:value=".colorimetry_strip.ColorimetryStripDetailActivity" />
         </activity>
         <activity
-            android:name=".choose_striptest.ColorimetryStripDetailActivity"
+            android:name=".colorimetry_strip.ColorimetryStripDetailActivity"
             android:label="@string/title_instruction_detail"
             android:parentActivityName=".ColorimetryStripActivity">
             <meta-data
@@ -52,14 +52,14 @@
                 android:value=".ColorimetryStripActivity" />
         </activity>
         <activity
-            android:name=".DetectStripActivity"
+            android:name=".detect_strip.DetectStripActivity"
             android:label="@string/title_activity_detect_strip"
             android:parentActivityName=".ColorimetryStripActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ColorimetryStripActivity" />
         </activity>
-        <activity android:name=".UncaughtExceptionActivity">
+        <activity android:name=".util.exception.UncaughtExceptionActivity">
             <intent-filter>
                 <action android:name="com.mydomain.SEND_LOG" />
                 <category android:name="android.intent.category.DEFAULT" />

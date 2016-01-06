@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-import org.akvo.akvoqr.detector.FinderPattern;
+import org.akvo.akvoqr.util.detector.FinderPattern;
 
 import java.util.List;
 

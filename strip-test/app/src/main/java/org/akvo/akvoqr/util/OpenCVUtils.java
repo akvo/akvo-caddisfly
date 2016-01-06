@@ -2,8 +2,8 @@ package org.akvo.akvoqr.util;
 
 import android.graphics.Color;
 
-import org.akvo.akvoqr.choose_striptest.StripTest;
-import org.akvo.akvoqr.color.ColorDetected;
+import org.akvo.akvoqr.colorimetry_strip.StripTest;
+import org.akvo.akvoqr.util.color.ColorDetected;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
