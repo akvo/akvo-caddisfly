@@ -174,6 +174,8 @@ class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             listener.showMessage(1);
                             CalibrationResultData calResult = getCalibratedImage(warp_dst);
                             cal_dest = calResult.calibratedImage;
+                            System.out.println("*** E94 error mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94) + ", total: " + String.format("%.2f", calResult.totalE94));
+
                             if(develop) {
                                 listener.showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
                             }
