@@ -593,7 +593,7 @@ public class CalibrationCard{
                 addCalColours(labImg, calData);
             }
 
-            CalibrationResultData calResult = new CalibrationResultData(labImg,E94Result[0],E94Result[1]);
+            CalibrationResultData calResult = new CalibrationResultData(labImg,E94Result[0],E94Result[1],E94Result[2]);
 
             return calResult;
         }
@@ -665,7 +665,7 @@ public class CalibrationCard{
                 }
                 num++;
             }
-            return new double[]{totE94/num,maxE94};
+            return new double[]{totE94/num, maxE94, totE94};
         }
         catch (Exception e)
         {
