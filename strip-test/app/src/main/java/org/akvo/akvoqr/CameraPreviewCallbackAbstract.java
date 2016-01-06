@@ -41,6 +41,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     protected final LinkedList<Double> shadowTrack = new LinkedList<>();
     protected Context context;
     protected float EV;
+    private float step;
 
     public CameraPreviewCallbackAbstract(Context context, Camera.Parameters parameters) {
         try {
@@ -67,7 +68,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             return;
 
         //get EV to use in order to avoid over exposure while trying to optimise brightness
-        float step = camera.getParameters().getExposureCompensationStep();
+        step = camera.getParameters().getExposureCompensationStep();
         //make sure it never becomes zero
         EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
 
@@ -320,14 +321,14 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                //System.out.println("***under exposed. " + count);
+                System.out.println("***under exposed. " + EV);
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                //System.out.println("***over exposed. " + count);
+                System.out.println("***over exposed. " + EV);
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
@@ -344,7 +345,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
 
                     //luminosity is increasing; this is good, keep going in the same direction
-//                    System.out.println("***increasing exposure."  + count);
+                    System.out.println("***increasing exposure."  + EV);
 //                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
 
                     listener.adjustExposureCompensation(1);
@@ -353,7 +354,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 //                {
                 //optimum situation reached
 
-                // System.out.println("***optimum exposure reached. " + count + "  exp.comp. = " + camera.getParameters().getExposureCompensation());
+                System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
+                        EV/step);
 
 //                }
             }
