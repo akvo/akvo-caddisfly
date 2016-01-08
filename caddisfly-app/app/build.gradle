@@ -33,16 +33,16 @@ android {
 
     signingConfigs {
         caddisflyRelease {
-            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
-            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
-            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
-            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+//            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
+//            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
+//            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
+//            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
         }
     }
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.caddisflyRelease
+           // signingConfig signingConfigs.caddisflyRelease
         }
 
         release {
@@ -74,6 +74,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile project(':opencv300')
+    compile 'org.apache.commons:commons-math3:3.5'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.2.0'
     testCompile 'org.robolectric:robolectric:3.0'

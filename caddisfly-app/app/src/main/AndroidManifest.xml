@@ -139,6 +139,49 @@
             android:name=".sensor.turbidity.TimeLapseActivity"
             android:screenOrientation="nosensor" />
 
+        <!-- StripTest -->
+        <activity
+            android:name=".sensor.colorimetry.strip.result_strip.ResultActivity"
+            android:label="@string/title_activity_result"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity
+            android:name=".sensor.colorimetry.strip.camera_strip.CameraActivity"
+            android:label="@string/title_activity_camera"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".sensor.colorimetry.strip.instructions_strip.InstructionActivity"
+            android:label="@string/title_instruction_list"
+            android:parentActivityName=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity" />
+        </activity>
+        <activity
+            android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity"
+            android:label="@string/title_instruction_detail"
+            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
+        </activity>
+        <activity
+            android:name=".sensor.colorimetry.strip.detect_strip.DetectStripActivity"
+            android:label="@string/title_activity_detect_strip"
+            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
+        </activity>
+        <activity android:name=".sensor.colorimetry.strip.util.exception.UncaughtExceptionActivity">
+            <intent-filter>
+                <action android:name="org.akvo.SEND_LOG" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- end StripTest -->
         <service
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />

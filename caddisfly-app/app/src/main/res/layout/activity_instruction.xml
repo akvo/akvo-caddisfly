@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<android.support.v4.view.ViewPager
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/activity_instructionFooterLinLayout"
+    tools:context="org.akvo.akvoqr.instructions_strip.InstructionActivity" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48sp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/activity_instructionFooterLinLayout">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/button_arrow_left_selector"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="12sp"
+        android:paddingRight="12sp"
+        android:id="@+id/activity_instructionFooterArrowLeft"/>
+    <org.akvo.akvoqr.instructions_strip.InstructionFooterView
+        android:layout_width="wrap_content"
+        android:layout_height="48sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/activity_instructionFooterView"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_arrow_right_selector"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="12sp"
+            android:paddingRight="12sp"
+            android:id="@+id/activity_instructionFooterArrowRight"/>
+    </RelativeLayout>
+</RelativeLayout>

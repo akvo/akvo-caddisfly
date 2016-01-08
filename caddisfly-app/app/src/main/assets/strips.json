@@ -1,0 +1,379 @@
+{
+  "strips":[
+    {
+      "name": "Chlorine and Free Chlorine",
+      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "code": "strip-CL-HACH-27450",
+      "id": "27450",
+      "brand": "HACH-27450-50",
+      "numPatch": 2,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Total Chlorine (ppm)",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0,0,0],
+              "lab":[90.904,-1.144,3.158]
+            },
+            {
+              "value": 0.5,
+              "rgb":[0,0,0],
+              "lab":[77.748,14.19,-10.962]
+            },
+            {
+              "value": 1,
+              "rgb":[0,0,0],
+              "lab":[67.302,21.654,-13.88]
+            },
+            {
+              "value": 2,
+              "rgb":[0,0,0],
+              "lab":[60.89,25.836,-15.294]
+            },
+            {
+              "value": 4,
+              "rgb":[0,0,0],
+              "lab":[50.514,35.566,-21.746]
+            },
+            {
+              "value": 10,
+              "rgb":[0,0,0],
+              "lab":[42.678,27.138,-17.802]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        },
+        {
+          "patchDesc":"Free Chlorine (ppm)",
+          "patchPos":17.2,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0,0,0],
+              "lab":[88.896,-0.944,13.55]
+            },
+            {
+              "value": 0.5,
+              "rgb":[0,0,0],
+              "lab":[75.208,2.764,-1.532]
+            },
+            {
+              "value": 1,
+              "rgb":[0,0,0],
+              "lab":[76.734,10.124,-12.792]
+            },
+            {
+              "value": 2,
+              "rgb":[0,0,0],
+              "lab":[59.902,21.18,-19.796]
+            },
+            {
+              "value": 4,
+              "rgb":[0,0,0],
+              "lab":[52.934,26.28,-22.958]
+            },
+            {
+              "value": 10,
+              "rgb":[0,0,0],
+              "lab":[43.426,26.542,-22.516]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        }
+      ],
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
+        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
+        ]
+    },
+    {
+      "name": "Nitrate and Nitrite",
+      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "code": "strip-NI-HACH-27454",
+      "id": "27454",
+      "brand": "HACH-27454-25",
+      "numPatch": 2,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"60-second Nitrate Nitrogen (ppm)",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0,0,0],
+              "lab":[85.99,4.906,13.412]
+            },
+            {
+              "value": 1,
+              "rgb":[0,0,0],
+              "lab":[84.442,8.134,7.49]
+            },
+            {
+              "value": 2,
+              "rgb":[0,0,0],
+              "lab":[80.39,12.046,4.914]
+            },
+            {
+              "value": 5,
+              "rgb":[0,0,0],
+              "lab":[76.488,18.186,1.876]
+            },
+            {
+              "value": 10,
+              "rgb":[0,0,0],
+              "lab":[73.198,33.664,-2.87]
+            },
+            {
+              "value": 20,
+              "rgb":[0,0,0],
+              "lab":[61.12,47.24,-5.536]
+            },
+            {
+              "value": 50,
+              "rgb":[0,0,0],
+              "lab":[45.518,60.9,-8.796]
+            }
+          ],
+          "timeLapse":60,
+          "unit": "ppm"
+        },
+        {
+          "patchDesc":"30-second Nitrite Nitrogen (ppm)",
+          "patchPos":17.2,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0,0,0],
+              "lab":[90.39,0.894,7.262]
+            },
+            {
+              "value": 0.15,
+              "rgb":[0,0,0],
+              "lab":[86.704,7.844,-5.964]
+            },
+            {
+              "value": 0.3,
+              "rgb":[0,0,0],
+              "lab":[86.352,10.88,-5.358]
+            },
+            {
+              "value": 1.0,
+              "rgb":[0,0,0],
+              "lab":[79.128,22.922,-4.294]
+            },
+            {
+              "value": 1.5,
+              "rgb":[0,0,0],
+              "lab":[74.58,30.988,-3.088]
+            },
+            {
+              "value": 3.0,
+              "rgb":[0,0,0],
+              "lab":[68.8,40.788,-2.284]
+            }
+          ],
+          "timeLapse":30,
+          "unit": "ppm"
+        }
+      ],
+      "instructions": [
+        {"text": "Dip strip into water for 1 second.", "png": ""},
+        {"text": "<!>Do not shake excess water from the test strip.<!", "png":"" },
+        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
+      ]
+    },
+    {
+      "name": "Total Iron",
+      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "code": "strip-FE-HACH-2745348",
+      "id": "2745348",
+      "brand": "HACH-2745348",
+      "numPatch": 1,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Total iron (ppm, mg/L)",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0,0,0],
+              "lab":[91.336,0.228,6.366]
+            },
+            {
+              "value": 0.15,
+              "rgb":[0,0,0],
+              "lab":[80.32,6.22,2.8]
+            },
+            {
+              "value":0.3,
+              "rgb":[0,0,0],
+              "lab":[79.018,8.398,-3.156]
+            },
+            {
+              "value": 0.6,
+              "rgb":[0,0,0],
+              "lab":[71.696,14.546,-7.13]
+            },
+            {
+              "value": 1,
+              "rgb":[0,0,0],
+              "lab":[65.79,16.494,-9.516]
+            },
+            {
+              "value": 2,
+              "rgb":[0,0,0],
+              "lab":[55.364,26.544,-14.556]
+            },
+            {
+              "value": 5,
+              "rgb":[0,0,0],
+              "lab":[46.178,26.932,-17.53]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        }
+      ],
+      "instructions": [
+        {"text": "Fill sample vial HALF FULL with sample water.", "png": ""},
+        {"text": "Open one foil packet and add powder contents to vial.", "png": ""},
+        {"text": "Cap vial and shake rapidly for 5 seconds. Remove cap.", "png": ""},
+        {"text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.", "png":"" },
+        {"text": "Place strip onto black area.", "png": "instruction_place_strip"},
+        {"text": "After that: <!>Start test immediately.<!", "png": ""}
+      ]
+    },
+    {
+      "name": "PH 4-9",
+      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "code": "strip-PH-HACH-4-9",
+      "id": "27456",
+      "brand": "HACH-27456-50",
+      "numPatch": 1,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"pH",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 4,
+              "rgb":[0, 0, 0],
+              "lab":[62.242,-25.676,26.022]
+            },
+            {
+              "value": 5,
+              "rgb":[0, 0, 0],
+              "lab":[52.41,-37.444,18.736]
+            },
+            {
+              "value": 6,
+              "rgb":[0, 0, 0],
+              "lab":[50.604,-25.478,-0.904]
+            },
+            {
+              "value": 7,
+              "rgb":[0, 0, 0],
+              "lab":[54.058,-19.436,-9.648]
+            },
+            {
+              "value": 8,
+              "rgb":[0, 0, 0],
+              "lab":[49.668,-20.034,-16.756]
+            },
+            {
+              "value": 9,
+              "rgb":[0, 0, 0],
+              "lab":[42.044,1.548,-29.216]
+            }
+          ],
+          "timeLapse":15,
+          "unit": ""
+        }
+      ],
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Dip a strip into water and remove immediately. Do not shake excess water from strip", "png":"instruction_dip" },
+        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
+      ]
+    },
+    {
+      "name": "Phosphate",
+      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "code": "strip-PHOS-HACH",
+      "id": "27571",
+      "brand": "HACH-27571-50",
+      "numPatch": 1,
+      "length": 82.8,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Phosphate",
+          "patchPos":3.3,
+          "patchWidth": 5,
+          "colours":[
+            {
+              "value": 0,
+              "rgb":[0, 0, 0],
+              "lab":[79.648,13.554,0.638]
+            },
+            {
+              "value": 5,
+              "rgb":[0, 0, 0],
+              "lab":[79.632,9.864,-2.068]
+            },
+            {
+              "value": 15,
+              "rgb":[0, 0, 0],
+              "lab":[76.358,3.688,0.204]
+            },
+            {
+              "value": 30,
+              "rgb":[0, 0, 0],
+              "lab":[77.88,-0.852,-2.726]
+            },
+            {
+              "value": 50,
+              "rgb":[0, 0, 0],
+              "lab":[72.364,-5.228,-2.328]
+            }
+          ],
+          "timeLapse":45,
+          "unit": "ppm"
+        }
+      ],
+      "instructions": [
+        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {"text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip", "png":"instruction_dip" },
+        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
+        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
+      ]
+    }
+  ]
+}

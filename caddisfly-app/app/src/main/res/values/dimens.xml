@@ -24,4 +24,11 @@
 
     <dimen name="flow_toolbar_height">52dp</dimen>
     <dimen name="flow_toolbar_margin">-5dp</dimen>
+
+    <!-- StripTest -->
+    <dimen name="quality_check_view_height">36dp</dimen>
+    <dimen name="ppm_circle_area">48dp</dimen>
+    <dimen name="smallTextSize">12sp</dimen>
+    <dimen name="mediumTextSize">16sp</dimen>
+
 </resources>

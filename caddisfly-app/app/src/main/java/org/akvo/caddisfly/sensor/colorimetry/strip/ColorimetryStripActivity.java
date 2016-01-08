@@ -1,61 +1,105 @@
-/*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
- *
- * This file is part of Akvo Caddisfly
- *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
- *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
- *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
- */
-
 package org.akvo.caddisfly.sensor.colorimetry.strip;
 
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailFragment;
+import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
-public class ColorimetryStripActivity extends AppCompatActivity {
+
+/**
+ * An activity representing a list of Instructions. This activity
+ * has different presentations for handset and tablet-size devices. On
+ * handsets, the activity presents a list of items, which when touched,
+ * lead to a {@link ColorimetryStripDetailActivity} representing
+ * item details. On tablets, the activity presents the list of items and
+ * item details side-by-side using two vertical panes.
+ * <p/>
+ * The activity makes heavy use of fragments. The list of items is a
+ * {@link ColorimetryStripListFragment} and the item details
+ * (if present) is a {@link ColorimetryStripDetailFragment}.
+ * <p/>
+ * This activity also implements the required
+ * {@link ColorimetryStripListFragment.Callbacks} interface
+ * to listen for item selections.
+ */
+public class ColorimetryStripActivity extends AppCompatActivity
+        implements ColorimetryStripListFragment.Callbacks {
+
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
+    private boolean mTwoPane;
+    private ColorimetryStripListFragment chooseStripTestListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_colorimetry_strip);
+        setContentView(R.layout.activity_choose_striptest_list);
 
-        Button backButton = (Button) findViewById(R.id.buttonOk);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
+//        final int memClass = ((ActivityManager) this.getSystemService(
+//                Context.ACTIVITY_SERVICE)).getMemoryClass();
+//        System.out.println("***Available memory: " + memClass);
+
+        if(savedInstanceState==null) {
+            if(chooseStripTestListFragment==null) {
+                chooseStripTestListFragment = new ColorimetryStripListFragment();
             }
-        });
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.activity_choose_striptestFragmentPlaceholder, chooseStripTestListFragment)
+                    .commit();
+        }
+
+        if (findViewById(R.id.choose_striptest_detail_container) != null) {
+            // The detail conStainer view will be present only in the
+            // large-screen layouts (res/values-large and
+            // res/values-w600dp). If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        }
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    /**
+     * Callback method from {@link ColorimetryStripListFragment.Callbacks}
+     * indicating that the item with the given ID was selected.
+     */
 
-        TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+    public void onItemSelected(String id) {
+        if (mTwoPane) {
 
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
+            // In two-pane mode, list items should be given the
+            // 'activated' state when touched.
+            if(chooseStripTestListFragment!=null)
+                chooseStripTestListFragment.setActivateOnItemClick(true);
 
-        //set the title to the test contaminant name
-        ((TextView) findViewById(R.id.textTitle)).setText(currentTestInfo.getName(conf.locale.getLanguage()));
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            ColorimetryStripDetailFragment fragment = ColorimetryStripDetailFragment.newInstance(id);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.choose_striptest_detail_container, fragment)
+                    .commit();
+
+        } else {
+            // In single-pane mode, simply start the detail activity
+            // for the selected item ID.
+            //System.out.println("***brandname in ChooseStripTestListActivity onItemSelected: " + id);
+
+            Intent detailIntent = new Intent(this, ColorimetryStripDetailActivity.class);
+            detailIntent.putExtra(Constant.BRAND, id);
+            detailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(detailIntent);
+
+        }
     }
 }
