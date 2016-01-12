@@ -169,7 +169,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
               // each parameter counts for 1/3 towards the final count shown.
               for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-                }
+              }
 
               count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
 
