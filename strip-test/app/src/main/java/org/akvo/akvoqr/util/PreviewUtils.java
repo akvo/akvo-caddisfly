@@ -74,9 +74,27 @@ public class PreviewUtils {
         return (result / points.length) * 100.0;
     }
 
+    private static float distance(double x1, double y1, double x2, double y2){
+      return (float) Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2 - y1,2));
     }
 
+    //method to calculate the amount of perspective, based on the difference of distances at the top and sides
+    // horizontal and vertical are according to calibration card in landscape view
+    public static float[] getTilt(FinderPatternInfo info)
     {
+      if(info==null) {
+        return null;
+      }
+
+      // compute distances
+      // in info, we have topleft, topright, bottomleft, bottomright
+      float distHtop = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
+      float distHbot = distance(info.getBottomRight().getX(),info.getBottomRight().getY(),info.getTopRight().getX(),info.getTopRight().getY());
+      float distVleft = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getBottomRight().getX(),info.getBottomRight().getY());
+      float distVright = distance(info.getTopRight().getX(),info.getTopRight().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
+
+      // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
+      return new float[]{distHtop/distHbot,distVleft/distVright};
     }
 
     public static String fromSecondsToMMSS(int seconds) throws Exception
