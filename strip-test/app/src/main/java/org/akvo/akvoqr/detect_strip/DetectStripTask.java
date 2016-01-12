@@ -280,9 +280,9 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
             Mat bgr = new Mat(height, width, CvType.CV_8UC3);
             Mat labImg = new Mat(height, width, CvType.CV_8UC3);
             Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-            convert_mYuv.put(0, 0, data);
             Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2RGB_NV21, bgr.channels());
             Imgproc.cvtColor(bgr, labImg, Imgproc.COLOR_RGB2Lab, bgr.channels());
+          convert_mYuv.put(0, 0, data);
 
             return labImg;
         }

@@ -146,11 +146,11 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 double maxmaxLum = luminosityCheck(lumList);
                 lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
-                // DETECT SHADOWS
-                if(bgr!=null) {
+              // DETECT SHADOWS
+              if(bgr != null) {
                     double shadowPercentage = detectShadows(info, bgr);
                     shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
-                }
+              }
 
                 //GET ANGLE
                 angles = PreviewUtils.getAngle(info);
@@ -208,8 +208,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     {
         double shadowPercentage = 101;
 
-        if(bgr==null)
-            return shadowPercentage;
+        if(bgr == null) {
+          return shadowPercentage;
+        }
 
         //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
         if(shadowTrack.size()>25) {
@@ -315,7 +316,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
                 else
                 {
-                    //optimum situation reached
+                //optimum situation reached
                 System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
                         EV/step);
 
@@ -332,8 +333,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     FinderPatternFinder finderPatternFinder;
 
     protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
-
-
         // crop preview image to only contain the known region for the finder patterns
         myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
@@ -360,7 +359,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             finally {
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
-                //detect centers that are to small in order to get rid of noise
+              //detect centers that are to small in order to get rid of noise
                 for(int i=0;i<possibleCenters.size();i++) {
                     if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
                         return null;

@@ -164,25 +164,24 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         if(wrCountQualityView!=null)
         {
             try {
+              int count = 0;
 
-                int count = 0;
-
-                for (int i : countMap.values()) {
+              for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
-                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+              count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
 
-                if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
-                    String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
-                    wrCountQualityView.get().setText(text);
+              if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
+                String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
+                wrCountQualityView.get().setText(text);
 
                     if (1 == 1) {
-                        wrCountQualityView.get().append("\n\n");
-                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
-                        }
                     }
+                  wrCountQualityView.get().append("\n\n");
+                  for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                    wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                  }
                 }
             }
             catch (Exception e)

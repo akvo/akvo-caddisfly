@@ -29,17 +29,18 @@ class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-        super.onPreviewFrame(data, camera);
+      super.onPreviewFrame(data, camera);
 
-        if(!stop && !running)
-            sendData(data);
+      if(!stop && !running) {
+        sendData(data);
+      }
     }
 
     protected void sendData(byte[] data)
     {
         running = true;
         try {
-            FinderPatternInfo  info = findPossibleCenters(data, previewSize);
+            FinderPatternInfo info = findPossibleCenters(data, previewSize);
 
             //check if quality of image is ok. if OK, value is 1, if not 0
             //the qualityChecks() method sends messages back to listener to update UI

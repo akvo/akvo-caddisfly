@@ -107,9 +107,7 @@ public class OpenCVUtils {
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
                                            double[] bottomleft, double[] bottomright, Mat bgr)
-            throws Exception
-    {
-
+            throws Exception {
 
         List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
 

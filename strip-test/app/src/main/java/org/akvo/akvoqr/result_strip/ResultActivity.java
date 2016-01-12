@@ -81,6 +81,7 @@ public class ResultActivity extends AppCompatActivity {
                     try {
                         System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
                         JSONArray array = imagePatchArray.getJSONArray(i);
+
                         // get the image number from the json array
                         int imageNo = array.getInt(0);
 
@@ -219,7 +220,7 @@ public class ResultActivity extends AppCompatActivity {
 
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
             int submatSize = 7;
-            if(mat.height()<submatSize)
+            if(mat.height() < submatSize)
                 return null;
 
             if (!invalid) {

@@ -325,7 +325,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
 
-        if(countArray==null)
+        if(countArray == null)
         {
             throw new NullPointerException("quality checks array is NULL");
         }

@@ -712,123 +712,123 @@ public class CalibrationCard{
             ResultPoint bottomLeft = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
             ResultPoint bottomRight = new ResultPoint((float) points.get(1).x,(float) points.get(1).y);
 
-            // get estimated module size
-            Detector detector = new Detector(image);
-            float modSize = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
+          // get estimated module size
+          Detector detector = new Detector(image);
+          float modSize = detector.calculateModuleSize(bottomLeft, bottomRight, bottomRight);
 
-            // go from one finder pattern to the other,
-            //because camera is in portrait mode, we need to shift x and y
-            double lrx = bottomRight.getX() - bottomLeft.getX();
-            double lry = bottomRight.getY() - bottomLeft.getY();
-            double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
+          // go from one finder pattern to the other,
+          //because camera is in portrait mode, we need to shift x and y
+          double lrx = bottomRight.getX() - bottomLeft.getX();
+          double lry = bottomRight.getY() - bottomLeft.getY();
+          double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
                     bottomRight.getX(), bottomRight.getY());
 
-            // check if left and right are ok
-            if (lry > 0) {
-                System.out.println("***decodeCallibrationCard lry > 0");
-                return CODE_NOT_FOUND;
+          // check if left and right are ok
+          if (lry > 0) {
+            System.out.println("***decodeCallibrationCard lry > 0");
+            return CODE_NOT_FOUND;
+          }
+
+          // create vector of length 1 pixel, in the direction of the bottomRight finder pattern
+          lrx /= hNorm;
+          lry /= hNorm;
+
+          // sample line into new row
+          boolean[] bits = new boolean[image.getHeight()];
+          int index = 0;
+          double px = bottomLeft.getX();
+          double py = bottomLeft.getY();
+          try {
+            while (px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()) {
+              bits[index] = image.get((int) Math.round(px), (int) Math.round(py));
+              px += lrx;
+              py += lry;
+              index++;
+            }
+          }
+          catch (Exception e)
+          {
+            System.out.println("***decodeCallibrationCard error sample line into new row");
+            e.printStackTrace();
+            return CODE_NOT_FOUND;
+          }
+
+          // starting index: 4.5 modules in the direction of the bottom right finder pattern
+          // end index: our pattern ends at module 17, so we take 25 to be sure.
+          int startIndex = (int) Math.abs(Math.round(4.5 * modSize / lry));
+          int endIndex = (int) Math.abs(Math.round(25 * modSize / lry));
+
+          // determine qualityChecksOK of pattern: first black bit. Approach from the left
+          try {
+            int startI = startIndex;
+            while (startI < endIndex && !bits[startI]) {
+              startI++;
             }
 
-            // create vector of length 1 pixel, in the direction of the bottomRight finder pattern
-            lrx /= hNorm;
-            lry /= hNorm;
-
-            // sample line into new row
-            boolean[] bits = new boolean[image.getHeight()];
-            int index = 0;
-            double px = bottomLeft.getX();
-            double py = bottomLeft.getY();
-            try {
-                while (px > 0 && py > 0 && px < image.getWidth() && py < image.getHeight()) {
-                    bits[index] = image.get((int) Math.round(px), (int) Math.round(py));
-                    px += lrx;
-                    py += lry;
-                    index++;
-                }
-            }
-            catch (Exception e)
-            {
-                System.out.println("***decodeCallibrationCard error sample line into new row");
-                e.printStackTrace();
-                return CODE_NOT_FOUND;
+            // determine end of pattern: last black bit. Approach from the right
+            int endI = endIndex;
+            while (endI > startI && !bits[endI]){
+              endI--;
             }
 
-            // starting index: 4.5 modules in the direction of the bottom right finder pattern
-            // end index: our pattern ends at module 17, so we take 25 to be sure.
-            int startIndex = (int) Math.abs(Math.round(4.5 * modSize / lry));
-            int endIndex = (int) Math.abs(Math.round(25 * modSize / lry));
+            int lengthPattern = endI - startI + 1;
 
-            // determine qualityChecksOK of pattern: first black bit. Approach from the left
-            try {
-                int startI = startIndex;
-                while (startI < endIndex && !bits[startI]) {
-                    startI++;
-                }
-
-                // determine end of pattern: last black bit. Approach from the right
-                int endI = endIndex;
-                while (endI > startI && !bits[endI]){
-                    endI--;
-                }
-
-                int lengthPattern = endI - startI + 1;
-
-                // sanity check on length of pattern.
-                // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
-                // which is too small.
-                if (lengthPattern < 20) {
-                    System.out.println("***decodeCallibrationCard lengthPattern < 20");
-                    return CODE_NOT_FOUND;
-                }
-
-                double pWidth = lengthPattern / 12.0;
-
-                // determine bits by majority voting
-                int[] bitVote = new int[12];
-                for (int i = 0; i < 12; i++){
-                    bitVote[i] = 0;
-                }
-
-                int bucket;
-                for (int i = startI; i <= endI; i++){
-                    bucket = (int) Math.round(Math.floor((i - startI) / pWidth));
-                    bitVote[bucket] += bits[i] ? 1 : -1;
-                }
-
-                // translate into information bits. Skip first and last, which are always 1
-                boolean[] bitResult = new boolean[10]; // will contain the information bits
-                for (int i = 1; i < 11; i++){
-                    bitResult[i - 1] = bitVote[i] > 0;
-                }
-
-                // check parity bit
-                if (parity(bitResult) != bitResult[9]) {
-                    System.out.println("***decodeCallibrationCard parity(bitResult) != bitResult[9]");
-                    return CODE_NOT_FOUND;
-                }
-
-                // compute result
-                int code = 0;
-                int count = 0;
-                for (int i = 8; i >= 0; i--){
-                    if (bitResult[i]){
-                        code += (int) Math.pow(2,count);
-                    }
-                    count ++;
-                }
-
-                return code;
+            // sanity check on length of pattern.
+            // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
+            // which is too small.
+            if (lengthPattern < 20) {
+              System.out.println("***decodeCallibrationCard lengthPattern < 20");
+              return CODE_NOT_FOUND;
             }
-            catch (Exception e)
-            {
-                System.out.println("***decodeCallibrationCard error ");
-                e.printStackTrace();
-                return CODE_NOT_FOUND;
+
+            double pWidth = lengthPattern / 12.0;
+
+            // determine bits by majority voting
+            int[] bitVote = new int[12];
+            for (int i = 0; i < 12; i++){
+              bitVote[i] = 0;
             }
+
+            int bucket;
+            for (int i = startI; i <= endI; i++){
+              bucket = (int) Math.round(Math.floor((i - startI) / pWidth));
+              bitVote[bucket] += bits[i] ? 1 : -1;
+            }
+
+            // translate into information bits. Skip first and last, which are always 1
+            boolean[] bitResult = new boolean[10]; // will contain the information bits
+            for (int i = 1; i < 11; i++){
+              bitResult[i - 1] = bitVote[i] > 0;
+            }
+
+            // check parity bit
+            if (parity(bitResult) != bitResult[9]) {
+              System.out.println("***decodeCallibrationCard parity(bitResult) != bitResult[9]");
+              return CODE_NOT_FOUND;
+            }
+
+            // compute result
+            int code = 0;
+            int count = 0;
+            for (int i = 8; i >= 0; i--){
+              if (bitResult[i]){
+                code += (int) Math.pow(2,count);
+              }
+              count ++;
+            }
+
+            return code;
+          }
+          catch (Exception e)
+          {
+            System.out.println("***decodeCallibrationCard error ");
+            e.printStackTrace();
+            return CODE_NOT_FOUND;
+          }
         }
         else {
-            System.out.println("***decodeCallibrationCard finder patterns < 4");
-            return CODE_NOT_FOUND;
+          System.out.println("***decodeCallibrationCard finder patterns < 4");
+          return CODE_NOT_FOUND;
         }
     }
 
