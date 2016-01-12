@@ -235,14 +235,26 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                                 Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),
                                         0), red, 2);
                             }
+                          try {
+                            // create byte[] from Mat and store it in internal storage
+                            // In order to restore the byte array, we also need the rows and columns dimensions
+                            // these are stored in the last 8 bytes
+                            int dataSize = labStrip.cols() * labStrip.rows() * 3;
+                            byte[] payload = new byte[dataSize + 8];
+                            byte[] matByteArray = new byte[dataSize];
 
-                            try {
-                                Mat rgb = new Mat();
-                                Imgproc.cvtColor(labStrip, rgb, Imgproc.COLOR_Lab2RGB);
-                                bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-                                Utils.matToBitmap(rgb, bitmap);
-                                fileStorage.writeBitmapToInternalStorage(Constant.STRIP + i + error, bitmap);
-                            }
+                            labStrip.get(0, 0, matByteArray);
+
+                            // pack cols and rows into byte arrays
+                            byte[] rows = fileStorage.IntToByteArray(labStrip.rows());
+                            byte[] cols = fileStorage.IntToByteArray(labStrip.cols());
+
+                            // append them to the end of the array, in order rows, cols
+                            System.arraycopy(matByteArray, 0, payload, 0, dataSize);
+                            System.arraycopy(rows, 0, payload, dataSize, 4);
+                            System.arraycopy(cols, 0, payload, dataSize + 4, 4);
+                            fileStorage.writeByteArray(payload,Constant.STRIP + i + error);
+                          }
                             catch (Exception e)
                             {
                                 e.printStackTrace();

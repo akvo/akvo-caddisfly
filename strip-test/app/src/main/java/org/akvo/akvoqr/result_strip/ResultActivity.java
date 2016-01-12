@@ -34,6 +34,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -90,25 +91,37 @@ public class ResultActivity extends AppCompatActivity {
 
                         String error = isInvalidStrip? Constant.ERROR: "";
 
+                        // read the Mat object from internal storage
                         byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
-                        if (data != null) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                      if (data != null) {
+                        // determine cols and rows dimensions
+                        byte[] rows = new byte[4];
+                        byte[] cols = new byte[4];
 
-                            strip = new Mat();
-                            Utils.bitmapToMat(bitmap, strip);
+                        int length = data.length;
+                        System.arraycopy(data,length - 8, rows, 0, 4);
+                        System.arraycopy(data,length - 4, cols, 0, 4);
 
                             double ratioW = strip.width() / brand.getStripLenght();
+                        int rowsNum = fileStorage.ByteArrayToInt(rows);
+                        int colsNum = fileStorage.ByteArrayToInt(cols);
 
                             //calculate center of patch in pixels
                             double x = patches.get(i).getPosition() * ratioW;
                             double y = strip.height() / 2;
                             Point centerPatch = new Point(x, y);
+                        // remove last part
+                        byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
 
                             //set the colours needed to calculate ppm
                             JSONArray colours = patches.get(i).getColours();
                             String unit = patches.get(i).getUnit();
+                        // reserve Mat of proper size:
+                        strip = new Mat(rowsNum, colsNum, CvType.CV_8UC3);
 
                             new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
+                        // put image data back in Mat:
+                        strip.put(0,0,imgData);
 
                         }
 
@@ -218,7 +231,6 @@ public class ResultActivity extends AppCompatActivity {
                 return null;
             }
 
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
             int submatSize = 7;
             if(mat.height() < submatSize)
                 return null;
