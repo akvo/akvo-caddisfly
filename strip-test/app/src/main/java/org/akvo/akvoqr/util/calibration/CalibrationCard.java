@@ -698,6 +698,7 @@ public class CalibrationCard{
      */
     public static int decodeCallibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
         // order points
+        // patterns are ordered top left, top right, bottom left, bottom right (in portrait mode, with black area to the right)
         if (patternInfo.size() == 4) {
             double[] p1 = new double[]{patternInfo.get(0).getX(), patternInfo.get(0).getY()};
             double[] p2 = new double[]{patternInfo.get(1).getX(), patternInfo.get(1).getY()};

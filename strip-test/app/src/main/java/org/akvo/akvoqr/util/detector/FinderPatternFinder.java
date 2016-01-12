@@ -79,6 +79,8 @@ public class FinderPatternFinder {
   *|          |
   *|          |
   *|o________o|
+  *
+  * It contains 4 finder patterns
   */
   public final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
     boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
@@ -92,11 +94,19 @@ public class FinderPatternFinder {
     // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
     // image, and then account for the center being 3 modules in size. This gives the smallest
     // number of pixels the center could be, so skip this often. When trying harder, look for all
+    // number of pixels the center could be, so skip this often at the start. When trying harder, look for all
     // QR versions regardless of how dense they are.
     int iSkip = (int) Math.round(3 * (3.0/4) * maxI / MAX_MODULES);
     if (iSkip < MIN_SKIP || tryHarder) {
       iSkip = MIN_SKIP;
     }
+
+    // states:
+    // 0: in outer black
+    // 1: in first inner white
+    // 2: inside center
+    // 3: in second inner white
+    // 4: in second outer black
 
     boolean done = false;
     int[] stateCount = new int[5];
@@ -109,25 +119,31 @@ public class FinderPatternFinder {
       stateCount[4] = 0;
       int currentState = 0;
       for (int j = 0; j < maxJ; j++) {
-        if (image.get(j, i)) {
+          if (image.get(j, i)) { // true means black
           // Black pixel
-          if ((currentState & 1) == 1) { // Counting white pixels
+          if ((currentState & 1) == 1) { // Selects 1,3: We were counting white pixels
+            // go to the next state: switch from counting white to counting black
             currentState++;
           }
           stateCount[currentState]++;
         } else { // White pixel
-          if ((currentState & 1) == 0) { // Counting black pixels
-            if (currentState == 4) { // A winner?
-              if (foundPatternCross(stateCount)) { // Yes
+          if ((currentState & 1) == 0) { // selects 0,2,4: We are counting black pixels. The else clause simply increases the number of white pixels in this run
+            if (currentState == 4) { // We have just switched from counting black to counting white, while in the second outer black. Is this a winner?
+              if (foundPatternCross(stateCount)) { // The rations check out, so it looks like a winner. Scan again to make sure
                 boolean confirmed = handlePossibleCenter(stateCount, i, j, pureBarcode);
-                if (confirmed) {
+                if (confirmed) { // it most definitely is a winner
                   // Start examining every other line. Checking each line turned out to be too
                   // expensive and didn't improve performance.
                   iSkip = 2;
+                  // haskipped can be set to true if we already have found two finder patterns.
+                  // this can happen only in findRowSkip(), and it means that we have applied a skip already
                   if (hasSkipped) {
+                    // done becomes true if we have found 4 finder patterns. In that case, we will break out of the row loop the next time around.
                     done = haveMultiplyConfirmedCenters();
                   } else {
+                    // see how far we skip. the previous test guarantees we only do it once
                     int rowSkip = findRowSkip();
+                    // if the rowskip is larger than the size of the center, apply the rowskip
                     if (rowSkip > stateCount[2]) {
                       // Skip rows between row of lower confirmed center
                       // and top of presumed third confirmed center

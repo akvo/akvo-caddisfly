@@ -141,6 +141,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
             }
 
+          // number of finder patterns can be anything here.
             if(info!=null) {
                 //DETECT BRIGHTNESS
                 double maxmaxLum = luminosityCheck(lumList);
@@ -336,6 +337,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
     protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
         // crop preview image to only contain the known region for the finder patterns
+        // this leads to an image in portrait view
         myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
                 (int) Math.round(size.height * Constant.CROP_FINDERPATTERN_FACTOR),

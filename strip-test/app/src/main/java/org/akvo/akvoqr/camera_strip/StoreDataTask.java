@@ -36,6 +36,7 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
     }
 
+    // The data here is still in the original YUV preview format.
     @Override
     protected Boolean doInBackground(Void... params) {
 
