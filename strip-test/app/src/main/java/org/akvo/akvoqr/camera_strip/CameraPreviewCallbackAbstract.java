@@ -102,7 +102,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 //convert preview data to Mat object
                 convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
                 convert_mYuv.put(0, 0, data);
-                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
+                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels()); // takes 40 msec
 
                 for (int i = 0; i < possibleCenters.size(); i++) {
                      esModSize = possibleCenters.get(i).getEstimatedModuleSize();
@@ -122,9 +122,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
                     //brightness: add lum. values to list
                     addLumToList(src_gray, lumList);
-
-                    //focus: add values to list
-                    //addFocusQualToList(src_gray, focusList);
                 }
             }
             else {
@@ -229,7 +226,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
             try
             {
-                //if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
                 if(caldata!=null){
                     shadowPercentage = PreviewUtils.getShadowPercentage(bgr, caldata);
                     shadowTrack.add(shadowPercentage);
@@ -288,14 +284,14 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                System.out.println("***under exposed. " + EV);
+                System.out.println("*** under exposed. " + EV);
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                System.out.println("***over exposed. " + EV);
+                System.out.println("*** over exposed. " + EV);
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
@@ -379,11 +375,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     try {
                         if (possibleCenters.size() == 4) {
                             int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-//                            System.out.println("***versionNumber: " + versionNumber);
                             if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
-                                CalibrationCard.addVersionNumber(versionNumber);
-                                //if(caldata==null) //less overhead, but what if caldata is for wrong version number?
-                                    caldata = CalibrationCard.readCalibrationFile(context);
+                              CalibrationCard.addVersionNumber(versionNumber);
+                              caldata = CalibrationCard.readCalibrationFile(context);  // takes about 15 ms
                             }
                         }
                     }
