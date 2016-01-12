@@ -15,8 +15,6 @@ import org.akvo.akvoqr.util.detector.FinderPatternInfo;
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
-
-
     private boolean stop;
     private boolean running;
 
@@ -37,12 +35,10 @@ class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
             sendData(data);
     }
 
-
     protected void sendData(byte[] data)
     {
         running = true;
         try {
-
             FinderPatternInfo  info = findPossibleCenters(data, previewSize);
 
             //check if quality of image is ok. if OK, value is 1, if not 0
@@ -52,17 +48,13 @@ class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
             //add countQuality to sum in listener
             if(listener!=null)
                 listener.addCountToQualityCheckCount(countQuality);
-
         }
         catch (Exception e) {
             e.printStackTrace();
-
         }
         finally {
             running = false;
-
         }
-
     }
 }
 

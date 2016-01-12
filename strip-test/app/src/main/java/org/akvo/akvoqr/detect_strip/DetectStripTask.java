@@ -206,12 +206,9 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
                         if (striparea != null) {
                             listener.showMessage(2);
-
-
                             Mat strip = null;
                             try {
                                 StripTest.Brand brand = stripTest.getBrand(context,brandname);
-
                                 strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                             }
                             catch (Exception e)
@@ -221,9 +218,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
                             String error = "";
                             if (strip != null) {
-
                                 labStrip = strip.clone();
-
                             } else {
                                 listener.showError(4);
                                 labStrip = striparea.clone();
@@ -250,7 +245,6 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 }

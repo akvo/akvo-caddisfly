@@ -70,6 +70,7 @@ public class FinderPatternFinder {
 
   /* Find finder patterns
   * The image we have is higher than it is wide, and contains the calibration card rotated:
+  *
   * ----------
   *|o        o|
   *|          |
@@ -84,6 +85,7 @@ public class FinderPatternFinder {
     boolean pureBarcode = hints != null && hints.containsKey(DecodeHintType.PURE_BARCODE);
     int maxI = image.getHeight();
     int maxJ = image.getWidth();
+
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
@@ -148,6 +150,7 @@ public class FinderPatternFinder {
                   currentState = 3;
                   continue;
                 }
+
                 // Clear state to qualityChecksOK looking again
                 currentState = 0;
                 stateCount[0] = 0;

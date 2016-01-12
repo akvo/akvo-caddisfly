@@ -161,7 +161,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     public void countQuality(Map<String, Integer> countMap)
     {
-
         if(wrCountQualityView!=null)
         {
             try {

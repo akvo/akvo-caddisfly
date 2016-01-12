@@ -64,7 +64,6 @@ public class ResultActivity extends AppCompatActivity {
 
             JSONArray imagePatchArray = null;
             try {
-
                 String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
                 if (json != null) {
                     imagePatchArray = new JSONArray(json);
@@ -75,16 +74,12 @@ public class ResultActivity extends AppCompatActivity {
             }
 
             if (imagePatchArray != null) {
-
                 for (int i = 0; i < patches.size(); i++) {
 
                     //the name of the patch
                     String desc = patches.get(i).getDesc();
-
                     try {
-
                         System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
-
                         JSONArray array = imagePatchArray.getJSONArray(i);
                         // get the image number from the json array
                         int imageNo = array.getInt(0);
@@ -223,14 +218,11 @@ public class ResultActivity extends AppCompatActivity {
             }
 
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
-
             int submatSize = 7;
-
             if(mat.height()<submatSize)
                 return null;
 
             if (!invalid) {
-
                 //make a submat around center of the patch and get mean color
                 int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
                 int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));

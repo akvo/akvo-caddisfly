@@ -331,6 +331,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         }
 
         int ci = 0;
+
         for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet())
         {
             entry.setValue(entry.getValue() + countArray[ci]);
@@ -345,13 +346,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         for(int i: qualityCountMap.values())
         {
             if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
-
                 show = false;
             }
-
         }
         if (show) {
-
             if (currentFragment != null) {
                 currentFragment.showStartButton();
             }

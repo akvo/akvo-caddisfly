@@ -36,11 +36,9 @@ class CameraScheduledExecutorService {
 
     public void cancelTasks(long delay)
     {
-
         scheduledExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
-
                 for (String s : tasks.keySet()) {
 
                     boolean canceled = tasks.get(s).cancel(true);
@@ -48,7 +46,6 @@ class CameraScheduledExecutorService {
                         tasks.remove(s);
 
                     System.out.println("***task key = " + s + " is canceled: " + canceled);
-
                 }
             }
         }, delay, TimeUnit.MILLISECONDS);

@@ -94,9 +94,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         int lumVal = 0;
         int shadVal = 0;
         int levVal = 0;
-
         try {
-
             if (possibleCenters != null && possibleCenters.size() > 3) {
 
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
@@ -144,7 +142,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             }
 
             if(info!=null) {
-
                 //DETECT BRIGHTNESS
                 double maxmaxLum = luminosityCheck(lumList);
                 lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
@@ -188,7 +185,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 //level: show on device
                 listener.showLevel(angles);
             }
-
         }  catch (Exception e) {
             // throw new RuntimeException(e);
             e.printStackTrace();
@@ -205,11 +201,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             if(convert_mYuv!=null)
                 convert_mYuv.release();
         }
-
         return qualityChecksArray;
-
     }
-
 
     private double detectShadows(FinderPatternInfo info, Mat bgr) throws Exception
     {
@@ -247,7 +240,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     bgr.release();
             }
         }
-
         return shadowPercentage;
 
     }
@@ -285,14 +277,12 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
         if(lumMinMax.length == 2) {
-
             lumList.add(lumMinMax);
         }
     }
 
     private double luminosityCheck(List<double[]> lumList)
     {
-
         double maxmaxLum = -1; //highest value of 'white'
 
         for(int i=0; i<lumList.size();i++) {
@@ -353,15 +343,12 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 else
                 {
                     //optimum situation reached
-
                 System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
                         EV/step);
 
                 }
             }
-
         }
-
         return maxmaxLum;
     }
 
@@ -383,33 +370,27 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
 
-
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
         } catch (NotFoundException | NullPointerException e) {
             e.printStackTrace();
-
         }
 
         if (bitMatrix != null) {
              finderPatternFinder = new FinderPatternFinder(bitMatrix);
 
             try {
-
                 info = finderPatternFinder.find(null);
-
             } catch (Exception e) {
                 // this only means not all patterns (=4) are detected.
             }
             finally {
-
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
                 //detect centers that are to small in order to get rid of noise
                 for(int i=0;i<possibleCenters.size();i++) {
                     if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
                         return null;
-
                     }
                 }
 
@@ -437,15 +418,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     {
                         e.printStackTrace();
                     }
-
                 }
-
-
             }
         }
-
-
         return info;
     }
-
 }

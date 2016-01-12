@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.akvo.akvoqr.util.OpenCVUtils.getOrderedPoints;
-
 // Performs the calibration of the image
 public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
@@ -128,7 +127,6 @@ public class CalibrationCard{
                 calData.stripArea[3] = stripArea.getDouble(3);
 
                 System.out.println("*** parsing complete: " + calData.toString());
-
                 return calData;
 
 

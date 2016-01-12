@@ -39,8 +39,6 @@ import org.akvo.akvoqr.util.detector.FinderPatternInfo;
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
-
-
     private boolean stop;
     private boolean running;
 
@@ -65,7 +63,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
     {
         running = true;
         try {
-
             FinderPatternInfo  info = findPossibleCenters(data, previewSize);
 
             //check if quality of image is ok. if OK, value is 1, if not 0
@@ -107,7 +104,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
 
                     listener.startNextPreview(0);
                 } else {
-
                     listener.takeNextPicture(500);
                 }
             }
