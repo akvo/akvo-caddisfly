@@ -244,33 +244,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
     }
 
-//    private void addFocusQualToList(Mat src_gray, List<Double> focusList)
-//    {
-//        double laplacian;
-//        double focusQual;
-//
-//        laplacian = PreviewUtils.focusLaplacian1(src_gray);
-//        // correct the focus quality parameter for the total luminosity range of the finder pattern
-//        // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
-//        double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
-//
-//        if(lumMinMax.length==2) {
-//            focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
-//
-//            //never more than 100%
-//            focusQual = Math.min(focusQual,100);
-//
-//            if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
-//                try {
-//                    focusList.add(Double.valueOf(focusQual));
-//                } catch (Exception e) {
-//                    System.out.println("***exception adding to focuslist.");
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-
     private void addLumToList(Mat src_gray, List<double[]> lumList)
     {
         double[] lumMinMax;
@@ -409,9 +382,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                                 //if(caldata==null) //less overhead, but what if caldata is for wrong version number?
                                     caldata = CalibrationCard.readCalibrationFile(context);
                             }
-                            //testing
-//                            Random random = new Random();
-//                            CalibrationCard.addVersionNumber(random.nextInt(10));
                         }
                     }
                     catch (Exception e)

@@ -75,13 +75,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
             if(listener!=null)
                 listener.addCountToQualityCheckCount(countQuality);
 
-            //logging
-//            System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
-//            System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-//            System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
-//            System.out.println("***CameraPreviewCallback info: " + count + " " + info);
-
-
             //sumQual should amount to 3, if all checks are OK: [1,1,1]
             int sumQual = 0;
             if(countQuality!=null) {
