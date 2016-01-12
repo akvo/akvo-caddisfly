@@ -64,40 +64,70 @@ public class OpenCVUtils {
         return cropped;
     }
 
-    }
+    /*
+    * Computes transform matrix from one set of 4 source points to another set of 4 destination points
+    * The points are ordered clockwise
+     */
+    public static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst){
 
+      //source quad
+      Point[] srcQuad = new Point[4];
+
+      //destination quad corresponding with srcQuad
+      Point[] dstQuad = new Point[4];
+
+      srcQuad[0] = new Point(p1Src[0],p1Src[1]);
+      srcQuad[1] = new Point(p2Src[0],p2Src[1]);
+      srcQuad[2] = new Point(p3Src[0],p3Src[1]);
+      srcQuad[3] = new Point(p4Src[0],p4Src[1]);
+
+      dstQuad[0] = new Point(p1Dst[0],p1Dst[1]);
+      dstQuad[1] = new Point(p2Dst[0],p2Dst[1]);
+      dstQuad[2] = new Point(p3Dst[0],p3Dst[1]);
+      dstQuad[3] = new Point(p4Dst[0],p4Dst[1]);
+
+      //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
+      MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
+      MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
+
+      //get a perspective transform matrix
+      Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
+      return warp_mat;
+    }
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
                                            double[] bottomleft, double[] bottomright, Mat bgr)
             throws Exception {
 
+      // determine the size of the destination Mat: use the positions of the finder patterns to determine the width and height.
+      // look out: the horizontal direction now refers again to the actual calibration card
+      int verSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - topright[0]),2) + Math.pow((topleft[1] - topright[1]),2)));
+      int horSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - bottomleft[0]),2) + Math.pow((topleft[1] - bottomleft[1]),2)));
 
-        //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
-        MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
-        MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
+      // we rotate the resulting image, so we go from a portrait view to the regular calibration card in landscape
+      // so the mapping is:
+      // top left source => top right destination
+      // top right source => bottom right destination
+      // bottom right source => bottom left destination
+      // bottom left source => top left destination
 
-        //make a destination mat for a warp
-        Mat warp_dst = Mat.zeros(bgr.rows(), bgr.cols(), bgr.type());
+      double[] trDest = new double[]{horSize - 1, 0};
+      double[] brDest = new double[]{horSize - 1, verSize - 1};
+      double[] blDest = new double[]{0, verSize - 1};
+      double[] tlDest = new double[]{0,0};
 
-        //get a perspective transform matrix
-        Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
+      Mat warp_mat = transformMatrix(topleft, topright, bottomright, bottomleft, trDest, brDest, blDest, tlDest);
 
-        //do the warp
-        Imgproc.warpPerspective(bgr, warp_dst, warp_mat, warp_dst.size());
+      //make a destination mat for a warp
+      Mat warp_dst = Mat.zeros(verSize, horSize, bgr.type());
 
-        //dst width and height taken from the position of the finder patterns
-        double dstWidth = srcList.get(2).y - srcList.get(0).y;
-        double dstHeight = srcList.get(1).x - srcList.get(0).x;
-        Size dstSize = new Size(dstWidth, dstHeight);
-
-        if(warp_dst!=null) {
-            if(dstHeight > 0 && dstWidth > 0)
-                Imgproc.resize(warp_dst, warp_dst, dstSize);
-        }
-
-        return warp_dst;
+      //do the warp
+      Imgproc.warpPerspective(bgr, warp_dst, warp_mat, warp_dst.size());
+      return warp_dst;
     }
 
+  // detect strip by multi-step method
+  // returns cut-out and rotated resulting strip as mat
     public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH){
         List<Mat> channels = new ArrayList<>();
         Mat sArea = striparea.clone();
