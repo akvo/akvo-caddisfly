@@ -64,44 +64,6 @@ public class OpenCVUtils {
         return cropped;
     }
 
-    public static List<Point> getOrderedPoints(double[] topleft, double[] topright,
-                                               double[] bottomleft, double[] bottomright)
-    {
-        List<Point> srcList = new ArrayList<Point>();
-
-        //coordinates for the rect (the finder pattern centers)
-        srcList.add(new Point(topleft));
-        srcList.add(new Point(topright));
-        srcList.add(new Point(bottomleft));
-        srcList.add(new Point(bottomright));
-
-//        System.out.println("***before sort:");
-//        System.out.println("***topleft: " + srcList.get(0).x + " ," + srcList.get(0).y);
-//        System.out.println("***topright: " + srcList.get(1).x + " ," + srcList.get(1).y);
-//        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
-//        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
-
-
-        return getOrderedPoints(srcList);
-    }
-
-    /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-       * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
-       * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
-       * Because top-left always has the lowest sum of x and y
-       * and bottom-right always the highest, they always come first and last.
-       */
-    private static List<Point> getOrderedPoints(List<Point> srcList)
-    {
-        Collections.sort(srcList, new PointComparator());
-
-//        System.out.println("***after sort:");
-//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-//        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
-//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
-
-        return srcList;
     }
 
 
@@ -109,45 +71,6 @@ public class OpenCVUtils {
                                            double[] bottomleft, double[] bottomright, Mat bgr)
             throws Exception {
 
-        List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
-
-        //source quad
-        Point[] srcQuad = new Point[4];
-        //destination quad corresponding with srcQuad
-        Point[] dstQuad = new Point[4];
-
-        //second and third Points in the list are top-right and bottom-left, but their order changes
-        //depending on if portrait or landscape
-        if(srcList.get(1).x > srcList.get(2).x) //it is portrait view
-        {
-            //clockwise: top-left, top-right, bottom-right, bottom-left
-            srcQuad[0]=srcList.get(0);
-            srcQuad[1]=srcList.get(1);
-            srcQuad[2]=srcList.get(3);
-            srcQuad[3]=srcList.get(2);
-
-            //Because camera is in portrait mode, we need to alter the order of the positions:
-            //rotating clockwise 90 degrees, bottom-left becomes top-left, top-left becomes top-right, etc.
-            dstQuad[0] = new Point( bgr.cols() - 1, 0 );
-            dstQuad[1] = new Point(bgr.cols()-1, bgr.rows()-1);
-            dstQuad[2] = new Point( 0, bgr.rows() - 1 );
-            dstQuad[3] = new Point( 0,0 );
-
-        }
-        else
-        {
-            //clockwise: top-left, top-right, bottom-right, bottom-left
-            srcQuad[0]=srcList.get(0);
-            srcQuad[1]=srcList.get(2);
-            srcQuad[2]=srcList.get(3);
-            srcQuad[3]=srcList.get(1);
-
-            dstQuad[0] = new Point( 0,0 );
-            dstQuad[1] = new Point( bgr.cols() - 1, 0 );
-            dstQuad[2] = new Point(bgr.cols()-1, bgr.rows()-1);
-            dstQuad[3] = new Point( 0, bgr.rows() - 1 );
-
-        }
 
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
@@ -415,24 +338,5 @@ public class OpenCVUtils {
         }
 
         return max;
-    }
-
-    public static class PointComparator implements Comparator<Point>
-    {
-
-        @Override
-        public int compare(Point lhs, Point rhs) {
-
-            if(lhs.x + lhs.y < rhs.x + rhs.y)
-            {
-                return -1;
-            }
-
-            else
-            {
-                return 1;
-            }
-
-        }
     }
 }

@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.akvo.akvoqr.util.OpenCVUtils.getOrderedPoints;
 // Performs the calibration of the image
 public class CalibrationCard{
     public static final int CODE_NOT_FOUND = -1;
@@ -126,7 +125,6 @@ public class CalibrationCard{
                 calData.stripArea[2] = stripArea.getDouble(2);
                 calData.stripArea[3] = stripArea.getDouble(3);
 
-                System.out.println("*** parsing complete: " + calData.toString());
                 return calData;
 
 
@@ -697,21 +695,10 @@ public class CalibrationCard{
      * @param patternInfo
      */
     public static int decodeCallibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
-        // order points
         // patterns are ordered top left, top right, bottom left, bottom right (in portrait mode, with black area to the right)
         if (patternInfo.size() == 4) {
-            double[] p1 = new double[]{patternInfo.get(0).getX(), patternInfo.get(0).getY()};
-            double[] p2 = new double[]{patternInfo.get(1).getX(), patternInfo.get(1).getY()};
-            double[] p3 = new double[]{patternInfo.get(2).getX(), patternInfo.get(2).getY()};
-            double[] p4 = new double[]{patternInfo.get(3).getX(), patternInfo.get(3).getY()};
-
-            // sort points in order top-left, bottom-left, top-right, bottom-right
-            List<Point> points = getOrderedPoints(p1,p2,p3,p4);
-
-            //because camera is in portrait mode, we need bottom-right and top-right patterns:
-            //the version number barcode lies next to bottom-right
-            ResultPoint bottomLeft = new ResultPoint((float) points.get(3).x,(float) points.get(3).y);
-            ResultPoint bottomRight = new ResultPoint((float) points.get(1).x,(float) points.get(1).y);
+          ResultPoint bottomLeft = new ResultPoint(patternInfo.get(3).getX(), patternInfo.get(3).getY());
+          ResultPoint bottomRight = new ResultPoint(patternInfo.get(1).getX(), patternInfo.get(1).getY());
 
           // get estimated module size
           Detector detector = new Detector(image);

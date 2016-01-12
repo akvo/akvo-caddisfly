@@ -31,11 +31,10 @@ public final class FinderPatternInfo {
   //private final int code;
 
   public FinderPatternInfo(FinderPattern[] patternCenters) {
-    this.bottomLeft = patternCenters[0];
-    this.topLeft = patternCenters[1];
-    this.topRight = patternCenters[2];
+    this.topLeft = patternCenters[0];
+    this.topRight = patternCenters[1];
+    this.bottomLeft = patternCenters[2];
     this.bottomRight = patternCenters[3];
-    //this.code = code;
   }
 
 

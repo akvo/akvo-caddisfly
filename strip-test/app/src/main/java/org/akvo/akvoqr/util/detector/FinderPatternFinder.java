@@ -36,7 +36,7 @@ public class FinderPatternFinder {
 
   private static final int CENTER_QUORUM = 2;
   private static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
+  private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view), so actually the width.
 
   private final BitMatrix image;
   private final List<FinderPattern> possibleCenters;
@@ -93,14 +93,8 @@ public class FinderPatternFinder {
 
     // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
     // image, and then account for the center being 3 modules in size. This gives the smallest
-    // number of pixels the center could be, so skip this often. When trying harder, look for all
     // number of pixels the center could be, so skip this often at the start. When trying harder, look for all
     // QR versions regardless of how dense they are.
-    int iSkip = (int) Math.round(3 * (3.0/4) * maxI / MAX_MODULES);
-    if (iSkip < MIN_SKIP || tryHarder) {
-      iSkip = MIN_SKIP;
-    }
-
     // states:
     // 0: in outer black
     // 1: in first inner white
@@ -108,6 +102,7 @@ public class FinderPatternFinder {
     // 3: in second inner white
     // 4: in second outer black
 
+    int iSkip = 2;
     boolean done = false;
     int[] stateCount = new int[5];
     for (int i = iSkip - 1; i < maxI && !done; i += iSkip) {
@@ -202,9 +197,8 @@ public class FinderPatternFinder {
       }
     }
 
+    // selectBestPatterns also orders the patterns in top left, top right, bottom left, bottom right.
     FinderPattern[] patternInfo = selectBestPatterns();
-    //ResultPoint.orderBestPatterns(patternInfo);
-
     return new FinderPatternInfo(patternInfo);
   }
 
@@ -567,9 +561,9 @@ public class FinderPatternFinder {
           // This is the case where you find top left last.
           hasSkipped = true;
           // the calibration card has a aspect ration of 1.75, so we can skip this much.
-          // To be on the safe side, we approximate this by 1.6
-          return (int) ((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
-                  Math.abs(firstConfirmedCenter.getY() - center.getY())) * 1.6);
+          // To be on the safe side, we approximate this by 1.65
+            return (int) Math.abs(((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
+              Math.abs(firstConfirmedCenter.getY() - center.getY())) * 1.65));
         }
       }
     }
@@ -661,6 +655,9 @@ public class FinderPatternFinder {
       possibleCenters.subList(4, possibleCenters.size()).clear();
     }
 
+    // order the points from top left, top right, bottom left, bottom right
+    Collections.sort(possibleCenters, new OrderComparator());
+
     return new FinderPattern[]{
             possibleCenters.get(0),
             possibleCenters.get(1),
@@ -705,4 +702,17 @@ public class FinderPatternFinder {
     }
   }
 
+  /**
+   * <p>Orders by x+y coordinates, ascending.</p>
+   */
+  private static final class OrderComparator implements Comparator<FinderPattern>, Serializable {
+
+    private OrderComparator() {
+    }
+
+    @Override
+    public int compare(FinderPattern fp1, FinderPattern fp2) {
+      return Math.round(fp1.getX() + fp1.getY() - fp2.getX() - fp2.getY());
+    }
+  }
 }

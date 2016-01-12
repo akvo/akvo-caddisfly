@@ -17,6 +17,14 @@
 package org.akvo.akvoqr.util.detector;
 
 
+import org.opencv.core.Point;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * <p>Encapsulates a point of interest in an image containing a barcode. Typically, this
  * would be the location of a finder pattern or the corner of the barcode, for example.</p>
@@ -71,19 +79,8 @@ public class ResultPoint {
    * @param pattern2 second pattern
    * @return distance between two points
    */
-  public static float distance(ResultPoint pattern1, ResultPoint pattern2) {
-    return MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
-  }
-
-  /**
-   * Returns the z component of the cross product between vectors BC and BA.
-   */
-  private static float crossProductZ(ResultPoint pointA,
-                                     ResultPoint pointB,
-                                     ResultPoint pointC) {
-    float bX = pointB.x;
-    float bY = pointB.y;
-    return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
+  public static float distance(ResultPoint pattern1, ResultPoint pattern2){
+    return MathUtils.distance(pattern1.x, pattern1.y ,pattern2.x ,pattern2.y);
   }
 }
 
