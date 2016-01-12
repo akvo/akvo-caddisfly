@@ -28,7 +28,7 @@ interface CameraViewListener {
 
     void showShadow(double value);
 
-    void showLevel(float[] angles);
+    void showLevel(float[] tilts);
 
     void addCountToQualityCheckCount(int[] countArray);
 

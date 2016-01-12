@@ -425,10 +425,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     @Override
-    public void showLevel(final float[] angles)
+    public void showLevel(final float[] tilts)
     {
         if(handler!=null) {
-            showLevelRunnable.setAngles(angles);
+            showLevelRunnable.setTilts(tilts);
             handler.post(showLevelRunnable);
         }
     }
@@ -631,15 +631,15 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     private class ShowLevelRunnable implements Runnable
     {
-        private float[] angles;
+        private float[] tilts;
         @Override
         public void run() {
             if(levelView!=null)
-                levelView.setAngles(angles);
+                levelView.setTilts(tilts);
         }
 
-        public void setAngles(float[] angles) {
-            this.angles = angles;
+        public void setTilts(float[] tilts) {
+            this.tilts = tilts;
         }
     }
 

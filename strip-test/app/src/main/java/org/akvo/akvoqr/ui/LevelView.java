@@ -17,7 +17,7 @@ import org.akvo.akvoqr.util.Constant;
  */
 public class LevelView extends View {
 
-    private float[] angles;
+    private float[] tilts;
     private final Paint redPaint;
     private final Bitmap arrowBitmap;
 
@@ -44,9 +44,9 @@ public class LevelView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if(angles!=null)
+        if(tilts != null)
         {
-            float degrees = getDegrees(angles);
+            float degrees = getDegrees(tilts);
             if(degrees!=0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2, canvas.getHeight() / 2);
@@ -59,37 +59,27 @@ public class LevelView extends View {
         super.onDraw(canvas);
     }
 
-    public void setAngles(float[] angles) {
+    public void setTilts(float[] tilts) {
 
-        this.angles = angles;
+        this.tilts = tilts;
 
         invalidate();
     }
 
-    private float getDegrees(float[] angles)
+    private float getDegrees(float[] tilts)
     {
 
-        float degrees = 0f;
+      float degrees = 0f;
 
+      // if the horizontal tilt is too large, indicate it
+      if (Math.abs(tilts[0] - 1) > Constant.MAX_TILT_DIFF){
+        degrees = tilts[0] - 1 < 0 ? -90 : 90;
+      }
 
-        if(angles[0] < -Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = -90;
-        }
-        else if(angles[0] > Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 90;
-        }
-
-        if(angles[1] < -Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 1;
-        }
-        else if(angles[1] > Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 180;
-        }
-
-        return degrees;
+      // if the vertical tilt is too large, indicate it
+      if (Math.abs(tilts[1] - 1) > Constant.MAX_TILT_DIFF){
+        degrees = tilts[1] - 1 < 0 ? 180 : 1;
+      }
+      return degrees;
     }
 }
