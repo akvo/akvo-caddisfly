@@ -97,19 +97,6 @@ public class PreviewUtils {
         return new float[]{distHtop/distHbot,distVleft/distVright};
     }
 
-    private static List<Point> sortFinderPatternInfo(FinderPatternInfo info)
-    {
-        List<Point> points = new ArrayList<>();
-        points.add(new Point(info.getTopRight().getX(),  info.getTopRight().getY()));
-        points.add(new Point(info.getTopLeft().getX(), info.getTopLeft().getY()));
-        points.add(new Point(info.getBottomLeft().getX(), info.getBottomLeft().getY()));
-        points.add(new Point(info.getBottomRight().getX(), info.getBottomRight().getY()));
-
-        Collections.sort(points, new OpenCVUtils.PointComparator());
-
-        return points;
-    }
-
     public static String fromSecondsToMMSS(int seconds) throws Exception
     {
         if(seconds>3600)

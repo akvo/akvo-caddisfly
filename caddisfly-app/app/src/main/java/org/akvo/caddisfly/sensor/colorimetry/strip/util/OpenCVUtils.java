@@ -64,119 +64,70 @@ public class OpenCVUtils {
         return cropped;
     }
 
-    public static List<Point> getOrderedPoints(double[] topleft, double[] topright,
-                                               double[] bottomleft, double[] bottomright)
-    {
-        List<Point> srcList = new ArrayList<Point>();
-
-        //coordinates for the rect (the finder pattern centers)
-        srcList.add(new Point(topleft));
-        srcList.add(new Point(topright));
-        srcList.add(new Point(bottomleft));
-        srcList.add(new Point(bottomright));
-
-//        System.out.println("***before sort:");
-//        System.out.println("***topleft: " + srcList.get(0).x + " ," + srcList.get(0).y);
-//        System.out.println("***topright: " + srcList.get(1).x + " ," + srcList.get(1).y);
-//        System.out.println("***bottomleft: " + srcList.get(2).x + " ," + srcList.get(2).y);
-//        System.out.println("***bottomright: " + srcList.get(3).x + ", " + srcList.get(3).y);
-
-
-        return getOrderedPoints(srcList);
-    }
-
-    /*Sort the arraylist of finder patterns based on a comparison of the sum of x and y values. Lowest values come first,
-       * so the result will be: top-left, bottom-left, top-right, bottom-right in case of landscape view.
-       * and: top-left, top-right, bottom-left, bottom-right in case of portrait view.
-       * Because top-left always has the lowest sum of x and y
-       * and bottom-right always the highest, they always come first and last.
-       */
-    private static List<Point> getOrderedPoints(List<Point> srcList)
-    {
-        Collections.sort(srcList, new PointComparator());
-
-//        System.out.println("***after sort:");
-//        System.out.println("***topleft: " + srcList.get(0).x +" ,"+ srcList.get(0).y);
-//        System.out.println("***second: " + srcList.get(1).x +" ,"+ srcList.get(1).y);
-//        System.out.println("***third: " + srcList.get(2).x + " ," + srcList.get(2).y);
-//        System.out.println("***bottomright: "+ srcList.get(3).x + ", "+ srcList.get(3).y);
-
-        return srcList;
-    }
-
-
-    public static Mat perspectiveTransform(double[] topleft, double[] topright,
-                                           double[] bottomleft, double[] bottomright, Mat bgr)
-            throws Exception
-    {
-
-
-        List<Point> srcList = getOrderedPoints(topleft, topright, bottomleft, bottomright);
+    /*
+     * Computes transform matrix from one set of 4 source points to another set of 4 destination points
+     * The points are ordered clockwise
+      */
+    public static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst){
 
         //source quad
         Point[] srcQuad = new Point[4];
+
         //destination quad corresponding with srcQuad
         Point[] dstQuad = new Point[4];
 
-        //second and third Points in the list are top-right and bottom-left, but their order changes
-        //depending on if portrait or landscape
-        if(srcList.get(1).x > srcList.get(2).x) //it is portrait view
-        {
-            //clockwise: top-left, top-right, bottom-right, bottom-left
-            srcQuad[0]=srcList.get(0);
-            srcQuad[1]=srcList.get(1);
-            srcQuad[2]=srcList.get(3);
-            srcQuad[3]=srcList.get(2);
+        srcQuad[0] = new Point(p1Src[0],p1Src[1]);
+        srcQuad[1] = new Point(p2Src[0],p2Src[1]);
+        srcQuad[2] = new Point(p3Src[0],p3Src[1]);
+        srcQuad[3] = new Point(p4Src[0],p4Src[1]);
 
-            //Because camera is in portrait mode, we need to alter the order of the positions:
-            //rotating clockwise 90 degrees, bottom-left becomes top-left, top-left becomes top-right, etc.
-            dstQuad[0] = new Point( bgr.cols() - 1, 0 );
-            dstQuad[1] = new Point(bgr.cols()-1, bgr.rows()-1);
-            dstQuad[2] = new Point( 0, bgr.rows() - 1 );
-            dstQuad[3] = new Point( 0,0 );
-
-        }
-        else
-        {
-            //clockwise: top-left, top-right, bottom-right, bottom-left
-            srcQuad[0]=srcList.get(0);
-            srcQuad[1]=srcList.get(2);
-            srcQuad[2]=srcList.get(3);
-            srcQuad[3]=srcList.get(1);
-
-            dstQuad[0] = new Point( 0,0 );
-            dstQuad[1] = new Point( bgr.cols() - 1, 0 );
-            dstQuad[2] = new Point(bgr.cols()-1, bgr.rows()-1);
-            dstQuad[3] = new Point( 0, bgr.rows() - 1 );
-
-        }
+        dstQuad[0] = new Point(p1Dst[0],p1Dst[1]);
+        dstQuad[1] = new Point(p2Dst[0],p2Dst[1]);
+        dstQuad[2] = new Point(p3Dst[0],p3Dst[1]);
+        dstQuad[3] = new Point(p4Dst[0],p4Dst[1]);
 
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
         MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
 
-        //make a destination mat for a warp
-        Mat warp_dst = Mat.zeros(bgr.rows(), bgr.cols(), bgr.type());
-
         //get a perspective transform matrix
         Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
+        return warp_mat;
+    }
+
+    public static Mat perspectiveTransform(double[] topleft, double[] topright,
+                                           double[] bottomleft, double[] bottomright, Mat bgr)
+        throws Exception {
+
+        // determine the size of the destination Mat: use the positions of the finder patterns to determine the width and height.
+        // look out: the horizontal direction now refers again to the actual calibration card
+        int verSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - topright[0]),2) + Math.pow((topleft[1] - topright[1]),2)));
+        int horSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - bottomleft[0]),2) + Math.pow((topleft[1] - bottomleft[1]),2)));
+
+        // we rotate the resulting image, so we go from a portrait view to the regular calibration card in landscape
+        // so the mapping is:
+        // top left source => top right destination
+        // top right source => bottom right destination
+        // bottom right source => bottom left destination
+        // bottom left source => top left destination
+
+        double[] trDest = new double[]{horSize - 1, 0};
+        double[] brDest = new double[]{horSize - 1, verSize - 1};
+        double[] blDest = new double[]{0, verSize - 1};
+        double[] tlDest = new double[]{0,0};
+
+        Mat warp_mat = transformMatrix(topleft, topright, bottomright, bottomleft, trDest, brDest, blDest, tlDest);
+
+        //make a destination mat for a warp
+        Mat warp_dst = Mat.zeros(verSize, horSize, bgr.type());
 
         //do the warp
         Imgproc.warpPerspective(bgr, warp_dst, warp_mat, warp_dst.size());
-
-        //dst width and height taken from the position of the finder patterns
-        double dstWidth = srcList.get(2).y - srcList.get(0).y;
-        double dstHeight = srcList.get(1).x - srcList.get(0).x;
-        Size dstSize = new Size(dstWidth, dstHeight);
-
-        if(warp_dst!=null) {
-            if(dstHeight > 0 && dstWidth > 0)
-                Imgproc.resize(warp_dst, warp_dst, dstSize);
-        }
-
         return warp_dst;
     }
 
+    // detect strip by multi-step method
+    // returns cut-out and rotated resulting strip as mat
     public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH){
         List<Mat> channels = new ArrayList<>();
         Mat sArea = striparea.clone();
@@ -416,24 +367,5 @@ public class OpenCVUtils {
         }
 
         return max;
-    }
-
-    public static class PointComparator implements Comparator<Point>
-    {
-
-        @Override
-        public int compare(Point lhs, Point rhs) {
-
-            if(lhs.x + lhs.y < rhs.x + rhs.y)
-            {
-                return -1;
-            }
-
-            else
-            {
-                return 1;
-            }
-
-        }
     }
 }
