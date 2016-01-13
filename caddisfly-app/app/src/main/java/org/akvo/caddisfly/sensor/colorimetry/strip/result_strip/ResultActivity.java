@@ -224,7 +224,7 @@ public class ResultActivity extends AppCompatActivity {
             if(mat.empty()) {
                 return null;
             }
-            
+
             int submatSize = 7;
 
             if(mat.height()<submatSize)
