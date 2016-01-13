@@ -52,7 +52,6 @@ public class CalibrationCard{
             if(freq > mostFreq)
             {
                 mostFreq = freq;
-
             }
         }
 
@@ -81,7 +80,6 @@ public class CalibrationCard{
 
         if(json!=null) {
             try {
-
                 CalibrationData calData = new CalibrationData();
 
                 JSONObject obj = new JSONObject(json);
@@ -131,10 +129,8 @@ public class CalibrationCard{
 
                 return calData;
 
-
             } catch (JSONException e) {
                 System.out.println("*** problem parsing JSON:" + e.toString());
-
             }
         }
         return null;

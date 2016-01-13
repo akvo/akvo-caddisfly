@@ -24,7 +24,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
  * @author Sean Owen
  */
 public class ResultPoint {
-
   private final float x;
   private final float y;
 
@@ -112,7 +111,6 @@ public class ResultPoint {
     patterns[2] = pointC;
   }
 
-
   /**
    * @param pattern1 first pattern
    * @param pattern2 second pattern
@@ -132,6 +130,4 @@ public class ResultPoint {
     float bY = pointB.y;
     return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
   }
-
-
 }

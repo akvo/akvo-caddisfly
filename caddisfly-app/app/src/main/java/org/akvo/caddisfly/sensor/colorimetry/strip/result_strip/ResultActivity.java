@@ -38,8 +38,6 @@ import java.util.List;
 
 
 public class ResultActivity extends AppCompatActivity {
-
-
 //    private static int countInstance = 0;
 
     @Override
@@ -51,7 +49,6 @@ public class ResultActivity extends AppCompatActivity {
 //        System.out.println("***ResultActivity countInstance: " + countInstance);
 
         if (savedInstanceState == null) {
-
             Intent intent = getIntent();
             final FileStorage fileStorage = new FileStorage(this);
             String brandName = intent.getStringExtra(Constant.BRAND);
@@ -64,7 +61,6 @@ public class ResultActivity extends AppCompatActivity {
 
             JSONArray imagePatchArray = null;
             try {
-
                 String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
                 if (json != null) {
                     imagePatchArray = new JSONArray(json);
@@ -77,12 +73,10 @@ public class ResultActivity extends AppCompatActivity {
             if (imagePatchArray != null) {
 
                 for (int i = 0; i < patches.size(); i++) {
-
                     //the name of the patch
                     String desc = patches.get(i).getDesc();
 
                     try {
-
                         System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
 
                         JSONArray array = imagePatchArray.getJSONArray(i);
@@ -113,11 +107,9 @@ public class ResultActivity extends AppCompatActivity {
                             String unit = patches.get(i).getUnit();
 
                             new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
-
                         }
 
                     } catch (Exception e) {
-
                         e.printStackTrace();
 
                         //TESTING
@@ -135,9 +127,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 //TESTING
                 new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
-
             }
-
 
             Button save = (Button) findViewById(R.id.activity_resultButtonSave);
             Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
@@ -166,15 +156,12 @@ public class ResultActivity extends AppCompatActivity {
                     ResultActivity.this.finish();
                 }
             });
-
-
         }
     }
 
     private Bitmap makeBitmap(Mat mat)
     {
         try {
-
             Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bitmap);
 
@@ -189,7 +176,6 @@ public class ResultActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -215,7 +201,6 @@ public class ResultActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Mat... params) {
-
             Mat mat = params[0];
 
             if(mat.empty()) {
@@ -230,7 +215,6 @@ public class ResultActivity extends AppCompatActivity {
                 return null;
 
             if (!invalid) {
-
                 //make a submat around center of the patch and get mean color
                 int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
                 int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
@@ -312,13 +296,10 @@ public class ResultActivity extends AppCompatActivity {
                 //TESTING
                 CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                 circleView.circleView(Color.RED);
-
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
-
             layout.addView(result_ppm_layout);
-
         }
     }
 
@@ -396,7 +377,6 @@ public class ResultActivity extends AppCompatActivity {
         double dist;
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
-
 
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance

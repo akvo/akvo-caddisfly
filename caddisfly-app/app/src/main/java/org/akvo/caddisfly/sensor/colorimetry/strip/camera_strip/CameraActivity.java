@@ -141,7 +141,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     private void init() {
-
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
@@ -153,7 +152,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else
         {
             try {
-
                 wrCamera = new WeakReference<Camera>(mCamera);
 
                 // Create our Preview view and set it as the content of our activity.
@@ -179,7 +177,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                 e.printStackTrace();
             }
 
-
             //schedule focus at fixed intervals
 //            if (cameraScheduledExecutorService!=null)
 //                cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(focus, 1000, 5000);
@@ -188,7 +185,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     }
 
     public void onPause() {
-
         cameraScheduledExecutorService.shutdown();
 
         if (mCamera != null) {
@@ -230,7 +226,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         else
         {
             throw new NullPointerException("Cannot proceed without brand.");
-
         }
 
         progressLayout.setVisibility(View.VISIBLE);
@@ -243,8 +238,8 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         super.onResume();
 
         Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
-
     }
+
     private class  DeleteTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -257,6 +252,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             return null;
         }
     }
+
     //store previewLayout info in global properties for later use
     //called at end of baseCameraView surfaceChanged()
     public void setPreviewProperties()
@@ -296,7 +292,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             cameraScheduledExecutorService.cancelTasks(timeMillis);
             cameraScheduledExecutorService.scheduleRunnable(takeNextPictureRunnable, timeMillis);
         }
-
     }
 
     @Override
@@ -325,12 +320,13 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
 
-        if(countArray==null)
+        if(countArray == null)
         {
             throw new NullPointerException("quality checks array is NULL");
         }
 
         int ci = 0;
+
         for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet())
         {
             entry.setValue(entry.getValue() + countArray[ci]);
@@ -345,13 +341,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         for(int i: qualityCountMap.values())
         {
             if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
-
                 show = false;
             }
-
         }
         if (show) {
-
             if (currentFragment != null) {
                 currentFragment.showStartButton();
             }

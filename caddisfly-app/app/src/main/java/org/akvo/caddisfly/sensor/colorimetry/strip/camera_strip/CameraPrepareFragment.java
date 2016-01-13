@@ -99,7 +99,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         if(startButton==null)
             return;
 
-        if(startButton.getVisibility()== View.GONE) {
+        if(startButton.getVisibility() == View.GONE) {
             startButton.setVisibility(View.VISIBLE);
             startButton.setBackgroundResource(android.R.drawable.btn_default);
             startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
@@ -161,11 +161,9 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     public void countQuality(Map<String, Integer> countMap)
     {
-
         if(wrCountQualityView!=null)
         {
             try {
-
                 int count = 0;
 
                 for (int i : countMap.values()) {
@@ -198,7 +196,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         //set focus area to upper third of preview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-
             List<Camera.Area> areas = new ArrayList<>();
 
             int ratioW = Math.round(1000f / previewSize.width);
@@ -215,7 +212,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
 
             if(mListener!=null)
                 mListener.setFocusAreas(areas);
-
         }
     }
 }

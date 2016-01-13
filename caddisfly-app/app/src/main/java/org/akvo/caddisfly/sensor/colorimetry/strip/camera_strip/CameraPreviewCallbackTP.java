@@ -39,8 +39,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
-
-
     private boolean stop;
     private boolean running;
 
@@ -65,7 +63,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
     {
         running = true;
         try {
-
             FinderPatternInfo  info = findPossibleCenters(data, previewSize);
 
             //check if quality of image is ok. if OK, value is 1, if not 0
@@ -78,13 +75,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
             if(listener!=null)
                 listener.addCountToQualityCheckCount(countQuality);
 
-            //logging
-//            System.out.println("***CameraPreviewCallback takePicture: " + count + " " + takePicture);
-//            System.out.println("***CameraPreviewCallback count quality: " + count + " " + countQuality);
-//            System.out.println("***CameraPreviewCallback listener quality checks ok: " + count + " " + listener.qualityChecksOK());
-//            System.out.println("***CameraPreviewCallback info: " + count + " " + info);
-
-
             //sumQual should amount to 3, if all checks are OK: [1,1,1]
             int sumQual = 0;
             if(countQuality!=null) {
@@ -95,7 +85,6 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
 
             if(listener!=null) {
                 if (info != null && sumQual == 3 && listener.qualityChecksOK()) {
-
                     long timePictureTaken = System.currentTimeMillis();
 
                     //freeze the screen and play a sound
@@ -107,11 +96,9 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
 
                     listener.startNextPreview(0);
                 } else {
-
                     listener.takeNextPicture(500);
                 }
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -120,9 +107,7 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
         finally {
             running = false;
         }
-
     }
-
 }
 
 

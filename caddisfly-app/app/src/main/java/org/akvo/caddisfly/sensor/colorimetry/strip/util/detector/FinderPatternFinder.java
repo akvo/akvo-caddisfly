@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +32,6 @@ import java.util.Map;
  * @author Sean Owen
  */
 public class FinderPatternFinder {
-
   private static final int CENTER_QUORUM = 2;
   private static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
   private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
@@ -67,7 +65,6 @@ public class FinderPatternFinder {
   public final List<FinderPattern> getPossibleCenters() {
     return possibleCenters;
   }
-
   /* Find finder patterns
   * The image we have is higher than it is wide, and contains the calibration card rotated:
   * ----------
@@ -148,6 +145,7 @@ public class FinderPatternFinder {
                   currentState = 3;
                   continue;
                 }
+
                 // Clear state to qualityChecksOK looking again
                 currentState = 0;
                 stateCount[0] = 0;
