@@ -96,7 +96,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     public void showStartButton() {
 
-        if(startButton==null)
+        if(startButton == null)
             return;
 
         if(startButton.getVisibility() == View.GONE) {
@@ -176,7 +176,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrCountQualityView.get().setText(text);
 
-                    if (1 == 1) {
+                    if (true) {
                         wrCountQualityView.get().append("\n\n");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");

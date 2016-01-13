@@ -369,7 +369,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_cameraFragmentPlaceholder, currentFragment)
                 .commit();
-
     }
 
     @Override
@@ -408,7 +407,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(currentFragment!=null)
             currentFragment.showBrightness(value);
-
     }
 
     @Override
@@ -416,7 +414,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         if(currentFragment!=null)
             currentFragment.showShadow(value);
-
     }
 
     @Override
@@ -452,7 +449,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
         //clear level indicator
         showLevel(null);
-
     }
 
     @Override
@@ -468,7 +464,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                         previewHeight);
             }
         }
-
     }
 
     @Override
@@ -529,12 +524,10 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             public void run() {
                 if(finish!=null)
                     finish.setText(R.string.analysing);
-
             }
         };
         if(handler!=null)
             handler.post(runnable);
-
     }
 
     @Override
@@ -566,7 +559,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
                         e.printStackTrace();
                     }
                 }
-
             }
         };
         if(handler!=null)
@@ -583,7 +575,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         resultIntent.putExtra(Constant.BRAND, brandName);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(resultIntent);
-
     }
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
@@ -621,7 +612,6 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
         public void setSize(Camera.Size size) {
             this.size = size;
         }
-
     }
 
     private class ShowLevelRunnable implements Runnable

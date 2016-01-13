@@ -275,12 +275,12 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     {
         if (format == ImageFormat.NV21) {
             //convert preview data to Mat object in CIELAB format
-            Mat bgr = new Mat(height, width, CvType.CV_8UC3);
+            Mat rgb = new Mat(height, width, CvType.CV_8UC3);
             Mat labImg = new Mat(height, width, CvType.CV_8UC3);
             Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
             convert_mYuv.put(0, 0, data);
-            Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2RGB_NV21, bgr.channels());
-            Imgproc.cvtColor(bgr, labImg, Imgproc.COLOR_RGB2Lab, bgr.channels());
+            Imgproc.cvtColor(convert_mYuv, rgb, Imgproc.COLOR_YUV2RGB_NV21, rgb.channels());
+            Imgproc.cvtColor(rgb, labImg, Imgproc.COLOR_RGB2Lab, rgb.channels());
 
             return labImg;
         }
@@ -314,18 +314,14 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     }
 
     private void divideIntoCalibrationAndStripArea(Context context) throws Exception {
-
-
         CalibrationData data = CalibrationCard.readCalibrationFile(context);
 
         if (warp_dst!=null && data != null) {
-
             double hsize = data.hsize;
             double vsize = data.vsize;
             double[] area = data.stripArea;
 
             if (area.length == 4) {
-
                 ratioW = warp_dst.width() / hsize;
                 ratioH = warp_dst.height() / vsize;
                 Point stripTopLeft = new Point(area[0] * ratioW + Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
@@ -339,18 +335,13 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                 //calarea rect
                 roiCalarea = new org.opencv.core.Rect(new Point(0, 0),
                         new Point(warp_dst.width(), area[1] * ratioH));
-
             }
         }
     }
 
     private CalibrationResultData getCalibratedImage(Mat mat) throws Exception
     {
-        //System.out.println("***version number detect: " + CalibrationCard.getMostFrequentVersionNumber());
-
-
-        if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND)
-        {
+        if(CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND) {
             throw new Exception("no version number set.");
         }
         CalibrationData data = CalibrationCard.readCalibrationFile(context);

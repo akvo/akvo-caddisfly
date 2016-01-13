@@ -120,9 +120,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
                     //brightness: add lum. values to list
                     addLumToList(src_gray, lumList);
-
-                    //focus: add values to list
-                    //addFocusQualToList(src_gray, focusList);
                 }
             }
             else {
@@ -300,11 +297,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 // we do not want to increase exp. comp. if the current brightness plus the max. brightness time the EV
                 // becomes larger that the UPPER limit
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
-
                     //luminosity is increasing; this is good, keep going in the same direction
                     System.out.println("***increasing exposure."  + EV);
-//                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
-
                     listener.adjustExposureCompensation(1);
                 }
                 else
@@ -367,7 +361,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     try {
                         if (possibleCenters.size() == 4) {
                             int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-                            // System.out.println("***versionNumber: " + versionNumber);
                             if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
                                 CalibrationCard.addVersionNumber(versionNumber);
                                 caldata = CalibrationCard.readCalibrationFile(context);
