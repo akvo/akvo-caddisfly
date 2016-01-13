@@ -74,33 +74,27 @@ public class PreviewUtils {
         return (result / points.length) * 100.0;
     }
 
-    //method to calculate angle the camera has to the test card
-    public static float[] getAngle(FinderPatternInfo info)
+    private static float distance(double x1, double y1, double x2, double y2){
+        return (float) Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2 - y1,2));
+    }
+
+    //method to calculate the amount of perspective, based on the difference of distances at the top and sides
+    // horizontal and vertical are according to calibration card in landscape view
+    public static float[] getTilt(FinderPatternInfo info)
     {
-        if(info==null)
+        if(info==null) {
             return null;
+        }
 
-        //sort the patterns
-        //in portrait mode the result will be: topleft-topright-bottomleft-bottomright
-        List<Point> points = sortFinderPatternInfo(info);
+        // compute distances
+        // in info, we have topleft, topright, bottomleft, bottomright
+        float distHtop = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
+        float distHbot = distance(info.getBottomRight().getX(),info.getBottomRight().getY(),info.getTopRight().getX(),info.getTopRight().getY());
+        float distVleft = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getBottomRight().getX(),info.getBottomRight().getY());
+        float distVright = distance(info.getTopRight().getX(),info.getTopRight().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
 
-        //angle in vertical direction of the device (= horizontal in preview data)
-        //between topleft and topright
-        double distanceTopHor = points.get(1).x - points.get(0).x;
-        double distanceTopVer = points.get(1).y - points.get(0).y;
-        float atan2Top = (float) Math.atan2(distanceTopVer, distanceTopHor);
-
-        //System.out.println("***atan2Top: " + atan2Top + " deg.: " + Math.toDegrees(atan2Top));
-
-        //angle in horizontal direction of the device (= vertical in preview)
-        //between topleft and bottomleft
-        double distanceLeftHor = points.get(2).x - points.get(0).x;
-        double distanceLeftVer = points.get(2).y - points.get(0).y;
-        float atan2Left = (float) Math.atan2(distanceLeftHor, distanceLeftVer); //switch hor and ver to make it approach zero
-
-        //System.out.println("***atan2Left: " + atan2Left + " deg.: " + Math.toDegrees(atan2Left));
-
-        return new float[]{(float) Math.toDegrees(atan2Top), (float) Math.toDegrees(atan2Left)};
+        // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
+        return new float[]{distHtop/distHbot,distVleft/distVright};
     }
 
     private static List<Point> sortFinderPatternInfo(FinderPatternInfo info)

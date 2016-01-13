@@ -88,7 +88,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
     protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         lumList.clear();
-        float[] angles = null;
+        float[] tilts = null;
         int lumVal = 0;
         int shadVal = 0;
         int levVal = 0;
@@ -148,10 +148,12 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
                 }
 
-                //GET ANGLE
-                angles = PreviewUtils.getAngle(info);
-                //the sum of the angles should approach zero: then the camera is hold even with the card
-                levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < 2*Constant.MAX_LEVEL_DIFF ? 1 : 0;
+                // Get Tilt
+                if (possibleCenters.size() == 4) {
+                    tilts = PreviewUtils.getTilt(info);
+                    // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
+                    levVal = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                }
             }
 
             //UPDATE VALUES IN ARRAY
@@ -178,7 +180,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
 
                 //level: show on device
-                listener.showLevel(angles);
+                listener.showLevel(tilts);
             }
         }  catch (Exception e) {
             // throw new RuntimeException(e);
