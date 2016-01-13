@@ -337,6 +337,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
             currentFragment.countQuality(qualityCountMap);
         }
 
+        // only show the start button if at least Constant.COUNT_QUALITY_CHECK_LIMIT positive tests have been done for all parameters
         boolean show = true;
         for(int i: qualityCountMap.values())
         {
@@ -634,9 +635,7 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
     private final Runnable startNextPreviewRunnable = new Runnable() {
         @Override
         public void run() {
-
             if(wrCamera!=null ) {
-
                 if(cameraPreviewCallbackSP==null)
                     cameraPreviewCallbackSP = new CameraPreviewCallbackSP(mActivity.get(), wrCamera.get().getParameters());
 

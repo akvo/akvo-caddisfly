@@ -26,6 +26,7 @@ import java.io.IOException;
 
 /**
  * Created by linda on 11/18/15.
+ * reads in the YUV images, and extracts the strips
  */
 public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
@@ -46,7 +47,6 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     private boolean develop = true;
 
     public DetectStripTask(Context listener) {
-
         try {
             this.listener = (DetectStripListener) listener;
             this.context = listener;
@@ -60,13 +60,11 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
 
     @Override
     protected void onPreExecute() {
-
         if(listener==null) {
             cancel(true);
         }
 
         try {
-
             listener.showSpinner();
         }
         catch (Exception e)
@@ -198,6 +196,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             listener.showImage(bitmap);
                         }
 
+                        // cut out black area that contains the strip
                         Mat striparea = null;
                         if (roiStriparea != null)
                             striparea = cal_dest.submat(roiStriparea);
@@ -271,6 +270,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
         }
     }
 
+    // Creates a lab image out of the original YUV preview data
+    // first casts to RGB, as we can't cast to LAB directly using openCV
     private Mat makeLab(byte[] data) throws Exception
     {
         if (format == ImageFormat.NV21) {

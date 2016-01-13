@@ -36,9 +36,9 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
     }
 
+    // The data here is still in the original YUV preview format.
     @Override
     protected Boolean doInBackground(Void... params) {
-
         FileStorage fileStorage = new FileStorage(context);
         fileStorage.writeByteArray(data,  Constant.DATA + imageCount);
         String json = FinderPatternInfoToJson.toJson(info);

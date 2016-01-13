@@ -84,10 +84,16 @@ public class FinderPatternFinder {
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
-    // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
-    // image, and then account for the center being 3 modules in size. This gives the smallest
-    // number of pixels the center could be, so skip this often. When trying harder, look for all
-    // QR versions regardless of how dense they are.
+      // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
+      // image, and then account for the center being 3 modules in size. This gives the smallest
+      // number of pixels the center could be, so skip this often at the start. When trying harder, look for all
+      // QR versions regardless of how dense they are.
+      // states:
+      // 0: in outer black
+      // 1: in first inner white
+      // 2: inside center
+      // 3: in second inner white
+
     int iSkip = (int) Math.round(3 * (3.0 / 4) * maxI / MAX_MODULES);
     if (iSkip < MIN_SKIP || tryHarder) {
       iSkip = MIN_SKIP;

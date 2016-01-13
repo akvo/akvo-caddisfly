@@ -166,6 +166,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             try {
                 int count = 0;
 
+                // each parameter counts for 1/3 towards the final count shown.
                 for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
@@ -176,6 +177,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrCountQualityView.get().setText(text);
 
+                    // next part is only for develop purposes. It shows the count per quality parameter
                     if (true) {
                         wrCountQualityView.get().append("\n\n");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
