@@ -29,11 +29,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -88,12 +90,28 @@ public class ResultActivity extends AppCompatActivity {
 
                         String error = isInvalidStrip? Constant.ERROR: "";
 
+                        // read the Mat object from internal storage
                         byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
                         if (data != null) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            // determine cols and rows dimensions
+                            byte[] rows = new byte[4];
+                            byte[] cols = new byte[4];
 
-                            strip = new Mat();
-                            Utils.bitmapToMat(bitmap, strip);
+                            int length = data.length;
+                            System.arraycopy(data,length - 8, rows, 0, 4);
+                            System.arraycopy(data,length - 4, cols, 0, 4);
+
+                            int rowsNum = fileStorage.ByteArrayToInt(rows);
+                            int colsNum = fileStorage.ByteArrayToInt(cols);
+
+                            // remove last part
+                            byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
+
+                            // reserve Mat of proper size:
+                            strip = new Mat(rowsNum, colsNum, CvType.CV_8UC3);
+
+                            // put image data back in Mat:
+                            strip.put(0,0,imgData);
 
                             double ratioW = strip.width() / brand.getStripLenght();
 
@@ -107,7 +125,7 @@ public class ResultActivity extends AppCompatActivity {
                             String unit = patches.get(i).getUnit();
 
                             new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
-                        }
+                      }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -206,9 +224,7 @@ public class ResultActivity extends AppCompatActivity {
             if(mat.empty()) {
                 return null;
             }
-
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
-
+            
             int submatSize = 7;
 
             if(mat.height()<submatSize)
