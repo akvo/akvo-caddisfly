@@ -95,7 +95,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         int shadVal = 0;
         int levVal = 0;
         try {
-            if (possibleCenters != null && possibleCenters.size() > 3) {
+            if (possibleCenters != null) {
 
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
@@ -145,7 +145,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
               // DETECT SHADOWS
-              if(bgr != null) {
+              if(bgr != null && possibleCenters.size() == 4) {
                     double shadowPercentage = detectShadows(info, bgr);
                     shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
               }
