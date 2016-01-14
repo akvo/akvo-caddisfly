@@ -44,7 +44,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
     private Context context;
     private FileStorage fileStorage;
     private Bitmap bitmap;
-    private boolean develop = false;
+    private boolean develop = true;
 
     public DetectStripTask(Context listener) {
 

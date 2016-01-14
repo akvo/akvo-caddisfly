@@ -574,7 +574,7 @@ public class CalibrationCard{
                 labImg = doIlluminationCorrection(labImg, calData);
             }
 
-            // 1D and 3D colour balance
+//            // 1D and 3D colour balance
             if(labImg!=null) {
                 System.out.println("*** ILLUM - starting 1D and 3D balance");
                 labImg = do1D_3DCorrection(labImg, calData);
@@ -583,7 +583,7 @@ public class CalibrationCard{
             // measure quality of the calibration
             double[] E94Result = computeE94Error(labImg, calData);
 
-            // insert calibration colours in image
+//            // insert calibration colours in image
             if(labImg!=null) {
                 System.out.println("*** ILLUM - adding colours");
                 addCalColours(labImg, calData);
