@@ -22,4 +22,5 @@ public interface AspectRatioViewInterface {
     void onPause();
 
     void onResume();
+
 }

@@ -206,10 +206,6 @@ public class CameraDialogFragment extends CameraDialog {
         }
     }
 
-    public interface Cancelled {
-        void dialogCancelled();
-    }
-
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         private final SurfaceHolder mHolder;
