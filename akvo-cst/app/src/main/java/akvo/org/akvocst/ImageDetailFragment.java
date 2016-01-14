@@ -19,6 +19,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import akvo.org.akvocst.calibration.CalibrationCard;
+import akvo.org.akvocst.calibration.CalibrationResultData;
 
 
 /**
@@ -100,17 +101,17 @@ public class ImageDetailFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
             try {
-                Mat mat = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8UC4);
+                Mat mat = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8UC3);
                 Utils.bitmapToMat(bitmap, mat);
-                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGRA2BGR);
+                Imgproc.cvtColor(mat,mat,Imgproc.COLOR_RGB2Lab);
 
                 CalibrationCard calibrationCard = new CalibrationCard();
-                mat = calibrationCard.calibrateImage(getActivity(), mat);
+                CalibrationResultData result = calibrationCard.calibrateImage(mat,getContext());
+                Mat matResult = result.calibratedImage;
+                Imgproc.cvtColor(matResult, matResult, Imgproc.COLOR_Lab2RGB);
 
-                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGBA);
-
-                calmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(mat, calmap);
+                calmap = Bitmap.createBitmap(matResult.width(), matResult.height(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(matResult, calmap);
 
                 if(calmap!=null)
                 {

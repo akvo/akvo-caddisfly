@@ -11,47 +11,48 @@ import java.util.Map;
 public class CalibrationData {
     public int hsizePixel;
     public int vsizePixel;
-    public double hfac;
-    public double vfac;
+    //    public double hfac;
+//    public double vfac;
     public String cardVersion;
     public String date;
     public String unit;
-    public Double patchSize;
-    public Double hsize;
-    public Double vsize;
+    public double patchSize;
+    public double hsize;
+    public double vsize;
     public Map<String,Location> locations;
     public Map<String,CalValue> calValues;
     public List<WhiteLine> whiteLines;
-    public Double[] stripArea;
+    public double[] stripArea;
 
     public CalibrationData(){
         this.locations = new HashMap<String,Location>();
         this.calValues = new HashMap<String,CalValue>();
         this.whiteLines = new ArrayList<WhiteLine>();
-        this.stripArea = new Double[4];
+        this.stripArea = new double[4];
     }
 
     public class Location {
         public Double x;
         public Double y;
+        public Boolean grayPatch;
 
-        public Location(Double x, Double y){
+        public Location(Double x, Double y, Boolean grayPatch){
             this.x = x;
             this.y = y;
+            this.grayPatch = grayPatch;
         }
     }
 
     public class CalValue {
-        public int R;
-        public int G;
-        public int B;
-        public Boolean grayPatch;
+        public double CIE_L;
+        public double CIE_A;
+        public double CIE_B;
 
-        public CalValue(int R, int G, int B, Boolean grayPatch){
-            this.R = R;
-            this.G = G;
-            this.B = B;
-            this.grayPatch = grayPatch;
+        public CalValue(double CIE_L, double CIE_A, double CIE_B){
+            this.CIE_L = CIE_L;
+            this.CIE_A = CIE_A;
+            this.CIE_B = CIE_B;
+
         }
     }
 
@@ -70,13 +71,13 @@ public class CalibrationData {
         }
     }
 
-    public void addLocation(String label, Double x, Double y){
-        Location loc = new Location(x,y);
+    public void addLocation(String label, Double x, Double y, Boolean grayPatch){
+        Location loc = new Location(x,y,grayPatch);
         this.locations.put(label,loc);
     }
 
-    public void addCal(String label, int R, int G, int B, Boolean grayPatch){
-        CalValue calVal = new CalValue(R,G,B,grayPatch);
+    public void addCal(String label, double CIE_L, double CIE_A, double CIE_B){
+        CalValue calVal = new CalValue(CIE_L,CIE_A,CIE_B);
         this.calValues.put(label,calVal);
     }
 
