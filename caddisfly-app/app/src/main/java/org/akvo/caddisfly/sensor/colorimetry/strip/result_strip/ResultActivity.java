@@ -1,5 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.result_strip;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,15 +8,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import org.akvo.caddisfly.sensor.colorimetry.strip.BaseActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
@@ -27,6 +27,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationC
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.color.ColorDetected;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -34,27 +35,26 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends BaseActivity{
 
-
-//    private static int countInstance = 0;
+    private JSONObject resultJsonObj = new JSONObject();
+    private JSONArray resultJsonArr = new JSONArray();
+    private FileStorage fileStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-//        countInstance++;
-//        System.out.println("***ResultActivity countInstance: " + countInstance);
-
         if (savedInstanceState == null) {
 
             Intent intent = getIntent();
-            final FileStorage fileStorage = new FileStorage(this);
-            String brandName = intent.getStringExtra(Constant.BRAND);
+            fileStorage = new FileStorage(this);
+            final String brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
             StripTest stripTest = new StripTest();
@@ -146,7 +146,17 @@ public class ResultActivity extends AppCompatActivity {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
+
+                    listener.onResult(resultJsonArr.toString());
+
+                    Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
+                    i.putExtra("finish", true);
+                    i.putExtra("response", resultJsonArr.toString());
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+
+                    finish();
                 }
             });
 
@@ -302,6 +312,24 @@ public class ResultActivity extends AppCompatActivity {
                             textView.setText(String.format("%.2f", ppm) + " " + unit);
                         } else {
                             textView.setText(String.format("%.1f", ppm) + " " + unit);
+                        }
+
+                        //put ppm and image in resultJsonArr
+                        try {
+                            JSONObject object = new JSONObject();
+                            object.put("name", desc);
+                            object.put("value", ppm);
+                            object.put("unit", unit);
+                            String img = fileStorage.bitmapToBase64String(stripBitmap);
+                            object.put("img", img);
+
+                            resultJsonArr.put(object);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
                         }
                     }
                 }

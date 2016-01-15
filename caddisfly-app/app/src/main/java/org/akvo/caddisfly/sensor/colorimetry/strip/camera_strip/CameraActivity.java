@@ -1,5 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.strip.BaseActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.result_strip.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.FinderPatternIndicatorView;
@@ -27,6 +29,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPattern;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternInfo;
+import org.akvo.caddisfly.ui.ExternalActionActivity;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -40,7 +43,7 @@ import java.util.Map;
  * Created by linda on 7/7/15.
  */
 @SuppressWarnings("deprecation")
-public class CameraActivity extends AppCompatActivity implements CameraViewListener, DetectStripListener {
+public class CameraActivity extends BaseActivity implements CameraViewListener, DetectStripListener {
 
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
@@ -595,11 +598,12 @@ public class CameraActivity extends AppCompatActivity implements CameraViewListe
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
 
-    /*********************************
-     *
-     * RUNNABLE DECLARATIONS
-     *
-     **********************************/
+
+        /*********************************
+         *
+         * RUNNABLE DECLARATIONS
+         *
+         **********************************/
     private class ShowFinderPatternRunnable implements Runnable
     {
         private int color;

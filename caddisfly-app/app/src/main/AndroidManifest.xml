@@ -12,7 +12,7 @@
   ~ See the GNU Affero General Public License included below for more details.
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -134,7 +134,6 @@
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.turbidity.TimeLapseActivity"
             android:screenOrientation="nosensor" />
@@ -143,14 +142,13 @@
         <activity
             android:name=".sensor.colorimetry.strip.result_strip.ResultActivity"
             android:label="@string/title_activity_result"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".sensor.colorimetry.strip.camera_strip.CameraActivity"
             android:label="@string/title_activity_camera"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".sensor.colorimetry.strip.instructions_strip.InstructionActivity"
             android:label="@string/title_instruction_list"
@@ -161,8 +159,8 @@
         </activity>
         <activity
             android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity"
-            android:label="@string/title_instruction_detail"
-            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
+            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
@@ -178,6 +176,7 @@
         <activity android:name=".sensor.colorimetry.strip.util.exception.UncaughtExceptionActivity">
             <intent-filter>
                 <action android:name="org.akvo.SEND_LOG" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -195,12 +194,12 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".sensor.turbidity.TurbidityStartReceiver"
             android:enabled="true"
             android:exported="false" />
 
+        <activity android:name=".sensor.colorimetry.strip.BaseActivity"></activity>
     </application>
 
 </manifest>

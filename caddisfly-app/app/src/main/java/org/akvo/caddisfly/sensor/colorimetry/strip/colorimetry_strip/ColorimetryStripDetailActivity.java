@@ -1,5 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -86,6 +87,7 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
     public void startCameraActivity(String brandname) {
 
         Intent intent = new Intent(this, CameraActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constant.BRAND, brandname);
         startActivity(intent);
     }
@@ -99,4 +101,18 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
 
     }
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        System.out.println("***onActivityResult ColorimetryStripDetailActivity resultCode: " + resultCode);
+//        //System.out.println("***onActivityResult ColorimetryStripDetailActivity finish: " + data.getBooleanExtra("finish", false));
+//
+//        if(resultCode == Activity.RESULT_OK)
+//        {
+//            setResult(Activity.RESULT_OK);
+//            finish();
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//    }
 }

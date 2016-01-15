@@ -33,4 +33,6 @@ public class Constant {
 
     public static final String ERROR = "org.akvo.akvoqr.error";
     public static final String STRIP = "org.akvo.akvoqr.strip";
+    public static final String RESPONSE = "org.akvo.akvoqr.response";
+    public static final int FINISH_ACTIVITY = 17;
 }

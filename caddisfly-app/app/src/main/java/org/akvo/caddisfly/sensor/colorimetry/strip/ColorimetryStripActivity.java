@@ -1,15 +1,20 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -29,7 +34,8 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * to listen for item selections.
  */
 public class ColorimetryStripActivity extends AppCompatActivity
-        implements ColorimetryStripListFragment.Callbacks {
+        implements ColorimetryStripListFragment.Callbacks, BaseActivity.ResultListener
+{
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -42,6 +48,9 @@ public class ColorimetryStripActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_striptest_list);
+
+        //set result listener
+        BaseActivity.setResultListener(this);
 
 //        final int memClass = ((ActivityManager) this.getSystemService(
 //                Context.ACTIVITY_SERVICE)).getMemoryClass();
@@ -62,10 +71,28 @@ public class ColorimetryStripActivity extends AppCompatActivity
             // res/values-w600dp). If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         }
 
+    }
+
+    public void onNewIntent(Intent intent)
+    {
+        System.out.println("***onNewIntent ColorimetryStripActivity called:");
+
+        setIntent(intent);
+    }
+    public void onResume()
+    {
+        super.onResume();
+
+        System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra("finish", false));
+
+        if(getIntent().getBooleanExtra("finish", false)){
+
+            finish();
+        }
     }
 
     /**
@@ -101,5 +128,24 @@ public class ColorimetryStripActivity extends AppCompatActivity
             startActivity(detailIntent);
 
         }
+    }
+
+    @Override
+    public void onResult(String result) {
+
+        System.out.println("***onResult ColorimetryStripActivity called");
+
+        try {
+            JSONArray array = new JSONArray(result);
+            System.out.println("***onResult ColorimetryStripActivity result: " + array.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Intent intent = new Intent(getIntent());
+        intent.putExtra("response", result);
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Base64;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,6 +18,7 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by linda on 9/13/15.
@@ -114,6 +116,16 @@ public class FileStorage {
 
     }
 
+    public String bitmapToBase64String(Bitmap bitmap) throws UnsupportedEncodingException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+
+        byte[] img = baos.toByteArray();
+        String str = Base64.encodeToString(img, Base64.DEFAULT);
+        return str;
+
+
+    }
     public String readFromInternalStorage(String fileName)
     {
 
