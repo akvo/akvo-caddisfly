@@ -34,7 +34,6 @@ import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
-import org.akvo.caddisfly.widget.CrossHairView;
 
 import java.util.List;
 
@@ -43,7 +42,6 @@ public class AlignmentActivity extends BaseActivity {
     private static final int REQUEST_TEST = 1;
     private CameraDialog mCameraDialog;
     private boolean mTestStarted = false;
-    private USBMonitor mUSBMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,21 +91,26 @@ public class AlignmentActivity extends BaseActivity {
             }
         }
 
-        mUSBMonitor = new USBMonitor(this, null);
+        USBMonitor usbMonitor = new USBMonitor(this, null);
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
-        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
         FrameLayout layoutCameraPreview = (FrameLayout) findViewById(R.id.layoutCameraPreview);
         if (usbDeviceList.size() > 0) {
             mCameraDialog = ExternalCameraFragment.newInstance();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutCameraPreview.getLayoutParams();
-            params.topMargin = 0;
-            params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params.topMargin = 40;
+            params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            //params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
             layoutCameraPreview.setLayoutParams(params);
 
-            CrossHairView crossHairView = (CrossHairView) findViewById(R.id.crossHairView);
-            crossHairView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            params.width = 576;
+            params.height = 430;
+
+            //params.leftMargin = 50;
+
+//            CrossHairView crossHairView = (CrossHairView) findViewById(R.id.crossHairView);
+//            crossHairView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         } else {
             mCameraDialog = CameraDialogFragment.newInstance();
         }

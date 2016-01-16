@@ -82,12 +82,12 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-40dp" />
 
-            <org.akvo.caddisfly.widget.CrossHairView
-                android:id="@+id/crossHairView"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_centerHorizontal="true"
-                android:layerType="software"/>
+            <!--<org.akvo.caddisfly.widget.CrossHairView-->
+            <!--android:id="@+id/crossHairView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="240dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layerType="software"/>-->
         </RelativeLayout>
 
         <Button
