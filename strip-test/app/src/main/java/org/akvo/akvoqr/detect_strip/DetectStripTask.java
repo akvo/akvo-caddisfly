@@ -246,8 +246,8 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             labStrip.get(0, 0, matByteArray);
 
                             // pack cols and rows into byte arrays
-                            byte[] rows = fileStorage.IntToByteArray(labStrip.rows());
-                            byte[] cols = fileStorage.IntToByteArray(labStrip.cols());
+                              byte[] rows = fileStorage.leIntToByteArray(labStrip.rows());
+                              byte[] cols = fileStorage.leIntToByteArray(labStrip.cols());
 
                             // append them to the end of the array, in order rows, cols
                             System.arraycopy(matByteArray, 0, payload, 0, dataSize);
