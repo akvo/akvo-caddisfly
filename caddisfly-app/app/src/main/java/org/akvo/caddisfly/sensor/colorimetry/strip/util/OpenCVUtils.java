@@ -287,7 +287,7 @@ public class OpenCVUtils {
         stripTopLeft = new Point(posLeft,0);
         stripBottomRight = new Point(posRight,binaryStrip.rows());
         stripArea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
-        Mat resultStrip = colourStrip.submat(stripArea);
+        Mat resultStrip = colourStrip.submat(stripArea).clone();
 
         // release Mat objects
         striparea.release();
