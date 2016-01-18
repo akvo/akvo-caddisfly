@@ -441,7 +441,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
         //set to true if you want to see the original and calibrated images in DetectStripActivity
         //set to false if you want to go to the ResultActivity directly
-        boolean develop = true;
+        boolean develop = false;
 
         //check if we do have images for all patches
         if(patchesCovered == patches.size()-1)
