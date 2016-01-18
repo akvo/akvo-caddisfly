@@ -24,10 +24,10 @@ android {
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 23
-        versionName "0.94 Beta"
-        versionCode 94
+        versionName "0.99 Beta"
+        versionCode 99
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,12 +42,14 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.caddisflyRelease
+            minifyEnabled true
+            shrinkResources true
         }
 
         release {
             signingConfig signingConfigs.caddisflyRelease
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
@@ -55,6 +57,11 @@ android {
 
     packagingOptions {
         exclude 'LICENSE.txt'
+    }
+
+    lintOptions {
+        checkReleaseBuilds true
+        abortOnError false
     }
 }
 

@@ -19,9 +19,12 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -29,6 +32,10 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.usb.DeviceFilter;
+import org.akvo.caddisfly.usb.USBMonitor;
+
+import java.util.List;
 
 public class AlignmentActivity extends BaseActivity {
 
@@ -53,7 +60,6 @@ public class AlignmentActivity extends BaseActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                 intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 mTestStarted = true;
-                //startActivityForResult(intent, REQUEST_TEST);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
@@ -85,7 +91,30 @@ public class AlignmentActivity extends BaseActivity {
             }
         }
 
-        mCameraDialog = CameraDialogFragment.newInstance();
+        USBMonitor usbMonitor = new USBMonitor(this, null);
+
+        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
+        List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
+        FrameLayout layoutCameraPreview = (FrameLayout) findViewById(R.id.layoutCameraPreview);
+        if (usbDeviceList.size() > 0) {
+            mCameraDialog = ExternalCameraFragment.newInstance();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutCameraPreview.getLayoutParams();
+            params.topMargin = 40;
+            params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            //params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params.height = 430;
+            layoutCameraPreview.setLayoutParams(params);
+
+//            params.width = 576;
+
+            //params.leftMargin = 50;
+
+//            CrossHairView crossHairView = (CrossHairView) findViewById(R.id.crossHairView);
+//            crossHairView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        } else {
+            mCameraDialog = CameraDialogFragment.newInstance();
+        }
+
         TextView textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
         textSubtitle.setText(R.string.alignChamber);

@@ -205,7 +205,7 @@ public class SensorActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getIntent());
-                if (mCurrentTestInfo.getCode().equals("TEMPE")) {
+                if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
                     intent.putExtra("response", mTemperature);
                 } else {
                     intent.putExtra("response", mEc25Value);
@@ -218,7 +218,7 @@ public class SensorActivity extends BaseActivity {
         layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
         Configuration config = getResources().getConfiguration();
-        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName(config.locale.getLanguage()));
         }
@@ -320,10 +320,10 @@ public class SensorActivity extends BaseActivity {
                     mEc25Value = "";
                 }
 
-                if (mCurrentTestInfo.getCode().equals("TEMPE")) {
+                if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
                     textSubtitle.setText(R.string.sensorConnected);
                     textResult.setText(mTemperature);
-                    if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                    if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
                         textUnit.setText(mCurrentTestInfo.getUnit());
                     }
                     buttonAcceptResult.setVisibility(View.VISIBLE);
@@ -333,7 +333,7 @@ public class SensorActivity extends BaseActivity {
                         textResult.setText("");
                         progressWait.setVisibility(View.VISIBLE);
                         //textUnit.setText("");
-                        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
                             textUnit.setText(mCurrentTestInfo.getUnit());
                         }
                         buttonAcceptResult.setVisibility(View.GONE);
@@ -343,7 +343,7 @@ public class SensorActivity extends BaseActivity {
                         progressWait.setVisibility(View.GONE);
                         buttonAcceptResult.setVisibility(View.VISIBLE);
                         textSubtitle.setText(R.string.sensorConnected);
-                        if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
                             textUnit.setText(mCurrentTestInfo.getUnit());
                         }
                     }

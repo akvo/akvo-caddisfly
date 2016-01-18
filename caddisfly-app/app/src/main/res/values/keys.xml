@@ -37,7 +37,9 @@
     <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey" translateable="false">totalFailedTests</string>
     <string name="turbiditySavePathKey">turbiditySavePath</string>
-    <string name="sampleIntervalMinutesKey">sampleIntervalMinutes</string> 
-    <string name="numberOfTurbiditySamplesKey">numberOfTurbiditySamples</string> 
+    <string name="fluor_IntervalMinutesKey">fluor_IntervalMinutes</string> 
+    <string name="fluor_NumberOfSamplesKey">fluor_NumberOfSamples</string>
+    <string name="colif_IntervalMinutesKey">colif_IntervalMinutes</string>
+    <string name="colif_NumberOfSamplesKey">colif_NumberOfSamples</string>
 
 </resources>

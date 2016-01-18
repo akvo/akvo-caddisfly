@@ -14,16 +14,10 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
+    android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.ExternalCameraFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    tools:context="org.akvo.caddisfly.sensor.CameraDialogFragment">
-
-    <FrameLayout
-        android:id="@+id/layoutCameraPreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</RelativeLayout>
+    tools:layout="@layout/fragment_external_camera" />

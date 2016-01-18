@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
@@ -38,7 +39,11 @@ import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
+import org.akvo.caddisfly.usb.DeviceFilter;
+import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.ImageUtil;
+
+import java.util.List;
 
 public class DiagnosticPreviewFragment extends DialogFragment {
 
@@ -46,6 +51,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
     private ShakeDetector mShakeDetector;
     private SoundPoolPlayer sound;
     private CameraDialog mCameraDialog;
+    private USBMonitor mUSBMonitor;
 
     public static DiagnosticPreviewFragment newInstance() {
         return new DiagnosticPreviewFragment();
@@ -59,7 +65,15 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         sound = new SoundPoolPlayer(getActivity());
 
-        mCameraDialog = CameraDialogFragment.newInstance();
+        mUSBMonitor = new USBMonitor(getActivity(), null);
+
+        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
+        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        if (usbDeviceList.size() > 0) {
+            mCameraDialog = ExternalCameraFragment.newInstance();
+        } else {
+            mCameraDialog = CameraDialogFragment.newInstance();
+        }
 
         final DiagnosticPreviewFragment currentDialog = this;
 

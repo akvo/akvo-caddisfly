@@ -32,13 +32,15 @@ public class TurbidityStartReceiver extends BroadcastReceiver {
         if (intent != null) {
             if (TurbidityConfig.ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
 
+                String testCode = intent.getStringExtra("testCode");
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TurbidityConfig.setRepeatingAlarm(context, -1);
+                    TurbidityConfig.setRepeatingAlarm(context, -1, testCode);
                 }
 
                 String folderName = intent.getStringExtra("savePath");
 
-                CameraHandler cameraHandler = new CameraHandler(context);
+                CameraHandler cameraHandler = new CameraHandler(context, testCode);
                 cameraHandler.takePicture(folderName);
             }
         }

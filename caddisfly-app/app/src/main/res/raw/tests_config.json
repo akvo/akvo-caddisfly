@@ -15,7 +15,7 @@
         "unit": "ppm",
         "calibrate": "true",
         "ranges": "0,0.5,1,1.5,2",
-        "defaultColors": "ff26ba,ff3381,ff3b59,ff3e37,ff5122",
+        "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
         "dilutions": "0,50,20",
         "monthsValid": "12"
       },
@@ -96,6 +96,18 @@
         "unit": "ppm",
         "calibrate": "false",
         "diagnostic": "true"
+      },
+      {
+        "name": [
+          {
+            "en": "Strip Tests"
+          }
+        ],
+        "type": "1",
+        "code": "strip",
+        "unit": "",
+        "calibrate": "false",
+        "ranges": "0"
       }
     ]
   }

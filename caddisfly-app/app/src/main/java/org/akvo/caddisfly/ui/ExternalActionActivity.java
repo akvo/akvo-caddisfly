@@ -38,8 +38,6 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
-import org.akvo.caddisfly.updater.UpdateCheckReceiver;
-import org.akvo.caddisfly.updater.UpdateHelper;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -54,14 +52,14 @@ public class ExternalActionActivity extends BaseActivity {
     private Boolean mIsExternalAppCall = false;
     //the language requested by the external app
     private String mExternalAppLanguageCode;
-    private UpdateCheckReceiver updateCheckReceiver;
+    //private UpdateCheckReceiver updateCheckReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_action);
 
-        updateCheckReceiver = UpdateHelper.checkUpdate(this, false);
+        //updateCheckReceiver = UpdateHelper.checkUpdate(this, false);
     }
 
     @Override
@@ -336,12 +334,12 @@ public class ExternalActionActivity extends BaseActivity {
 
     @Override
     public void onDestroy() {
-        try {
-            if (updateCheckReceiver != null) {
-                unregisterReceiver(updateCheckReceiver);
-            }
-        } catch (Exception ignored) {
-        }
+//        try {
+//            if (updateCheckReceiver != null) {
+//                unregisterReceiver(updateCheckReceiver);
+//            }
+//        } catch (Exception ignored) {
+//        }
         super.onDestroy();
     }
 

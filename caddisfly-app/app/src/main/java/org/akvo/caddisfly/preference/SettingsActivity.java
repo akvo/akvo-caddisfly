@@ -73,7 +73,11 @@ public class SettingsActivity extends BaseActivity
         mScrollView = (ScrollView) findViewById(R.id.scrollViewSettings);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        try {
+            setSupportActionBar(toolbar);
+        } catch (Throwable t) {
+            //Ignore crash in Samsung
+        }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
