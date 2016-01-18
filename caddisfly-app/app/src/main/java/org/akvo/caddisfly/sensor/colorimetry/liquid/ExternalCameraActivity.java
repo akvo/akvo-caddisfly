@@ -18,21 +18,13 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.FragmentManager;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.encoder.MediaMuxerWrapper;
-
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class ExternalCameraActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakeLock;
@@ -56,33 +48,33 @@ public class ExternalCameraActivity extends AppCompatActivity {
             wakeLock.acquire();
         }
 
-        fragment.pictureCallback = new ExternalCameraFragment.PictureCallback() {
-            @Override
-            public void onPictureTaken(Bitmap bitmap) {
-                try {
-                    // get buffered output stream for saving a captured still image as a file on external storage.
-                    // the file name is came from current time.
-                    // You should use extension name as same as CompressFormat when calling Bitmap#compress.
-                    final File outputFile = MediaMuxerWrapper.getCaptureFile(Environment.DIRECTORY_DCIM, ".png");
-                    assert outputFile != null;
-                    final BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(outputFile));
-                    //noinspection TryFinallyCanBeTryWithResources
-                    try {
-                        try {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-                            os.flush();
-                        } catch (final IOException ignored) {
-                        }
-                    } finally {
-                        os.close();
-                    }
-                } catch (final IOException ignored) {
-                }
-                if (fragment.hasTestCompleted()) {
-                    finish();
-                }
-            }
-        };
+//        fragment.pictureCallback = new ExternalCameraFragment.PictureCallback() {
+//            @Override
+//            public void onPictureTaken(Bitmap bitmap) {
+//                try {
+//                    // get buffered output stream for saving a captured still image as a file on external storage.
+//                    // the file name is came from current time.
+//                    // You should use extension name as same as CompressFormat when calling Bitmap#compress.
+//                    final File outputFile = MediaMuxerWrapper.getCaptureFile(Environment.DIRECTORY_DCIM, ".png");
+//                    assert outputFile != null;
+//                    final BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(outputFile));
+//                    //noinspection TryFinallyCanBeTryWithResources
+//                    try {
+//                        try {
+//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+//                            os.flush();
+//                        } catch (final IOException ignored) {
+//                        }
+//                    } finally {
+//                        os.close();
+//                    }
+//                } catch (final IOException ignored) {
+//                }
+//                if (fragment.hasTestCompleted()) {
+//                    finish();
+//                }
+//            }
+//        };
 
     }
 

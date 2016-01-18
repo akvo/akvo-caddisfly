@@ -26,4 +26,5 @@ public interface CameraViewInterface extends AspectRatioViewInterface {
     boolean hasSurface();
 
     Bitmap captureStillImage();
+
 }

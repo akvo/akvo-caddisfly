@@ -33,6 +33,6 @@ public class ColorimetryLiquidConfig {
     /**
      * Tolerance at which a calibrated color is valid when compared to expected color
      */
-    public static final int MAX_VALID_CALIBRATION_TOLERANCE = 140;
+    public static final int MAX_VALID_CALIBRATION_TOLERANCE = 250;
 
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public abstract class CameraDialog extends DialogFragment {
 
-    final ArrayList<PictureTaken> pictureTakenObservers = new ArrayList<>();
+    protected final ArrayList<PictureTaken> pictureTakenObservers = new ArrayList<>();
 
     public abstract void takePictureSingle();
 
@@ -34,6 +34,10 @@ public abstract class CameraDialog extends DialogFragment {
     }
 
     public abstract void stopCamera();
+
+    public interface Cancelled {
+        void dialogCancelled();
+    }
 
     public interface PictureTaken {
         void onPictureTaken(byte[] bytes, boolean completed);

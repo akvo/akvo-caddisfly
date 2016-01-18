@@ -232,7 +232,7 @@ public class ImageHelper {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isEdgePixel(int color) {
-        return ColorUtil.getBrightness(color) < 100;
+        return ColorUtil.getBrightness(color) < 120;
         //return (int) ColorUtil.getColorDistanceLab(color, Color.rgb(0, 0, 0)) < 30;
     }
 

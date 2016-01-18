@@ -65,7 +65,6 @@ import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,7 +75,8 @@ import java.util.Locale;
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
         HighLevelsDialogFragment.MessageDialogListener,
-        DiagnosticResultDialog.DiagnosticResultDialogListener {
+        DiagnosticResultDialog.DiagnosticResultDialogListener,
+        CameraDialog.Cancelled {
     private final Handler delayHandler = new Handler();
     private boolean mIsCalibration;
     private double mSwatchValue;
@@ -185,8 +185,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
             finish();
         }
 
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                SensorManager.SENSOR_DELAY_UI);
+        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
+        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+
+        if (usbDeviceList.size() > 0) {
+            startExternalTest();
+        } else {
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+        }
     }
 
 
@@ -256,7 +263,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     /**
      * In diagnostic mode show the diagnostic results dialog
      *
-     * @param testFailed    if test has failed then dialog know to show the retry button
+     * @param testFailed    if test has failed then dialog knows to show the retry button
      * @param result        the result shown to the user
      * @param color         the color that was used to get above result
      * @param isCalibration is it in calibration mode, then show only colors, no results
@@ -353,9 +360,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         //Quality too low reject this result
-        if (photoColor.getQuality() < 20) {
-            return;
-        }
+//        if (photoColor.getQuality() < 20) {
+//            return;
+//        }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -407,8 +414,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     private void startExternalTest() {
+
+        findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
+
         mResults = new ArrayList<>();
-        sound.playShortResource(R.raw.beep);
         (new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -421,30 +430,77 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 super.onPostExecute(result);
 
                 mCameraFragment = ExternalCameraFragment.newInstance();
-                mCameraFragment.setCancelable(false);
-                if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
+                mCameraFragment.setCancelable(true);
+                //if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
 
-                    ((ExternalCameraFragment) mCameraFragment).pictureCallback = new ExternalCameraFragment.PictureCallback() {
-                        @Override
-                        public void onPictureTaken(Bitmap bitmap) {
+                mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
+                    @Override
+                    public void onPictureTaken(byte[] bytes, boolean completed) {
+                        //Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
-                            Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                        //Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-                            getAnalyzedResult(croppedBitmap);
-                            //bitmap.recycle();
+                        //getAnalyzedResult(croppedBitmap);
+                        //bitmap.recycle();
 
-                            if (((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
-                                ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
-                                if (croppedBitmap != null) {
-                                    croppedBitmap.copyPixelsToBuffer(buffer);
-                                }
-                                byte[] data = buffer.array();
-                                AnalyzeFinalResult(data);
+
+                        Bitmap bitmap = ImageUtil.getBitmap(bytes);
+
+                        Display display = getWindowManager().getDefaultDisplay();
+                        int rotation = 0;
+                        switch (display.getRotation()) {
+                            case Surface.ROTATION_0:
+                                rotation = 90;
+                                break;
+                            case Surface.ROTATION_90:
+                                rotation = 0;
+                                break;
+                            case Surface.ROTATION_180:
+                                rotation = 270;
+                                break;
+                            case Surface.ROTATION_270:
+                                rotation = 180;
+                                break;
+                        }
+
+                        bitmap = ImageUtil.rotateImage(bitmap, rotation);
+
+                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                        //Ignore the first result as camera may not have focused correctly
+                        if (!mIsFirstResult) {
+                            if (croppedBitmap != null) {
+                                getAnalyzedResult(croppedBitmap);
+                            } else {
+                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
+                                mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
+                                return;
                             }
                         }
-                    };
-                }
+                        mIsFirstResult = false;
+
+                        if (completed) {
+                            AnalyzeFinalResult(bytes);
+                            mCameraFragment.dismiss();
+                        } else {
+                            sound.playShortResource(R.raw.beep);
+                        }
+
+
+//                        if (completed) {
+//                            ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
+//                            if (croppedBitmap != null) {
+//                                croppedBitmap.copyPixelsToBuffer(buffer);
+//                            }
+//                            byte[] data = buffer.array();
+//                            AnalyzeFinalResult(data);
+//                            mCameraFragment.dismiss();
+//                        }
+                    }
+                });
+                //}
 
                 acquireWakeLock();
 
@@ -459,6 +515,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         ft.addToBackStack(null);
                         try {
                             mCameraFragment.show(ft, "externalCameraDialog");
+                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
+                                    ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
                             e.printStackTrace();
                             finish();
@@ -720,8 +778,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                 ft.remove(fragment);
                             }
 
-                            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
-
                             mResultDialogFragment.setCancelable(false);
                             mResultDialogFragment.show(ft, "resultDialog");
                         }
@@ -858,5 +914,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         sound.release();
+    }
+
+    @Override
+    public void dialogCancelled() {
+        Intent intent = new Intent(getIntent());
+        intent.putExtra("response", String.valueOf(""));
+        this.setResult(Activity.RESULT_CANCELED, intent);
+        releaseResources();
+        finish();
+
     }
 }
