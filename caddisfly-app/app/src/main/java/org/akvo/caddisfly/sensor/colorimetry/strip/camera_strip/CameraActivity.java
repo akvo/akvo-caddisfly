@@ -144,7 +144,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     private void init() {
-
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
@@ -156,7 +155,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         else
         {
             try {
-
                 wrCamera = new WeakReference<Camera>(mCamera);
 
                 // Create our Preview view and set it as the content of our activity.
@@ -182,7 +180,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 e.printStackTrace();
             }
 
-
             //schedule focus at fixed intervals
 //            if (cameraScheduledExecutorService!=null)
 //                cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(focus, 1000, 5000);
@@ -191,7 +188,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     public void onPause() {
-
         cameraScheduledExecutorService.shutdown();
 
         if (mCamera != null) {
@@ -233,7 +229,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         else
         {
             throw new NullPointerException("Cannot proceed without brand.");
-
         }
 
         progressLayout.setVisibility(View.VISIBLE);
@@ -246,8 +241,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         super.onResume();
 
         Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
-
     }
+
     private class  DeleteTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -260,6 +255,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             return null;
         }
     }
+
     //store previewLayout info in global properties for later use
     //called at end of baseCameraView surfaceChanged()
     public void setPreviewProperties()
@@ -299,7 +295,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             cameraScheduledExecutorService.cancelTasks(timeMillis);
             cameraScheduledExecutorService.scheduleRunnable(takeNextPictureRunnable, timeMillis);
         }
-
     }
 
     @Override
@@ -328,12 +323,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
 
-        if(countArray==null)
+        if(countArray == null)
         {
             throw new NullPointerException("quality checks array is NULL");
         }
 
         int ci = 0;
+
         for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet())
         {
             entry.setValue(entry.getValue() + countArray[ci]);
@@ -344,17 +340,15 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             currentFragment.countQuality(qualityCountMap);
         }
 
+        // only show the start button if at least Constant.COUNT_QUALITY_CHECK_LIMIT positive tests have been done for all parameters
         boolean show = true;
         for(int i: qualityCountMap.values())
         {
             if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
-
                 show = false;
             }
-
         }
         if (show) {
-
             if (currentFragment != null) {
                 currentFragment.showStartButton();
             }
@@ -379,7 +373,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_cameraFragmentPlaceholder, currentFragment)
                 .commit();
-
     }
 
     @Override
@@ -418,7 +411,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         if(currentFragment!=null)
             currentFragment.showBrightness(value);
-
     }
 
     @Override
@@ -426,14 +418,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         if(currentFragment!=null)
             currentFragment.showShadow(value);
-
     }
 
     @Override
-    public void showLevel(final float[] angles)
+    public void showLevel(final float[] tilts)
     {
         if(handler!=null) {
-            showLevelRunnable.setAngles(angles);
+            showLevelRunnable.setAngles(tilts);
             handler.post(showLevelRunnable);
         }
     }
@@ -462,7 +453,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         //clear level indicator
         showLevel(null);
-
     }
 
     @Override
@@ -478,7 +468,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                         previewHeight);
             }
         }
-
     }
 
     @Override
@@ -539,12 +528,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             public void run() {
                 if(finish!=null)
                     finish.setText(R.string.analysing);
-
             }
         };
         if(handler!=null)
             handler.post(runnable);
-
     }
 
     @Override
@@ -576,7 +563,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                         e.printStackTrace();
                     }
                 }
-
             }
         };
         if(handler!=null)
@@ -593,7 +579,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         resultIntent.putExtra(Constant.BRAND, brandName);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(resultIntent);
-
     }
 
     //END DETECTSTRIPLISTENER INTERFACE METHODS
@@ -632,20 +617,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         public void setSize(Camera.Size size) {
             this.size = size;
         }
-
     }
 
     private class ShowLevelRunnable implements Runnable
     {
-        private float[] angles;
+        private float[] tilts;
         @Override
         public void run() {
             if(levelView!=null)
-                levelView.setAngles(angles);
+                levelView.setAngles(tilts);
         }
 
-        public void setAngles(float[] angles) {
-            this.angles = angles;
+        public void setAngles(float[] tilts) {
+            this.tilts = tilts;
         }
     }
 
@@ -655,9 +639,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private final Runnable startNextPreviewRunnable = new Runnable() {
         @Override
         public void run() {
-
             if(wrCamera!=null ) {
-
                 if(cameraPreviewCallbackSP==null)
                     cameraPreviewCallbackSP = new CameraPreviewCallbackSP(mActivity.get(), wrCamera.get().getParameters());
 

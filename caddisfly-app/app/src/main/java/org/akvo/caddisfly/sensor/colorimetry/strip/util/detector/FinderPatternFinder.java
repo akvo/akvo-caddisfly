@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,11 +32,9 @@ import java.util.Map;
  * @author Sean Owen
  */
 public class FinderPatternFinder {
-
   private static final int CENTER_QUORUM = 2;
   private static final int MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view)
-
+  private static final int MAX_MODULES = 143; // this is the height of our calibration card (rotated because of the portrait view), so actually the width.
   private final BitMatrix image;
   private final List<FinderPattern> possibleCenters;
   private boolean hasSkipped;
@@ -67,7 +64,6 @@ public class FinderPatternFinder {
   public final List<FinderPattern> getPossibleCenters() {
     return possibleCenters;
   }
-
   /* Find finder patterns
   * The image we have is higher than it is wide, and contains the calibration card rotated:
   * ----------
@@ -78,6 +74,7 @@ public class FinderPatternFinder {
   *|          |
   *|          |
   *|o________o|
+  * It contains 4 finder patterns
   */
   public final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
     boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
@@ -87,15 +84,17 @@ public class FinderPatternFinder {
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
-    // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
-    // image, and then account for the center being 3 modules in size. This gives the smallest
-    // number of pixels the center could be, so skip this often. When trying harder, look for all
-    // QR versions regardless of how dense they are.
-    int iSkip = (int) Math.round(3 * (3.0 / 4) * maxI / MAX_MODULES);
-    if (iSkip < MIN_SKIP || tryHarder) {
-      iSkip = MIN_SKIP;
-    }
+      // Let's assume that the maximum version QR Code we support takes up 3/4 the height of the
+      // image, and then account for the center being 3 modules in size. This gives the smallest
+      // number of pixels the center could be, so skip this often at the start. When trying harder, look for all
+      // QR versions regardless of how dense they are.
+      // states:
+      // 0: in outer black
+      // 1: in first inner white
+      // 2: inside center
+      // 3: in second inner white
 
+    int iSkip = 2;
     boolean done = false;
     int[] stateCount = new int[5];
     for (int i = iSkip - 1; i < maxI && !done; i += iSkip) {
@@ -107,25 +106,31 @@ public class FinderPatternFinder {
       stateCount[4] = 0;
       int currentState = 0;
       for (int j = 0; j < maxJ; j++) {
-        if (image.get(j, i)) {
+        if (image.get(j, i)) { // true means black
           // Black pixel
-          if ((currentState & 1) == 1) { // Counting white pixels
+          if ((currentState & 1) == 1) { // Selects 1,3: We were counting white pixels
+            // go to the next state: switch from counting white to counting black
             currentState++;
           }
           stateCount[currentState]++;
         } else { // White pixel
-          if ((currentState & 1) == 0) { // Counting black pixels
-            if (currentState == 4) { // A winner?
-              if (foundPatternCross(stateCount)) { // Yes
+          if ((currentState & 1) == 0) { // selects 0,2,4: We are counting black pixels. The else clause simply increases the number of white pixels in this run
+            if (currentState == 4) { // We have just switched from counting black to counting white, while in the second outer black. Is this a winner?
+              if (foundPatternCross(stateCount)) { // The rations check out, so it looks like a winner. Scan again to make sure
                 boolean confirmed = handlePossibleCenter(stateCount, i, j, pureBarcode);
-                if (confirmed) {
+                if (confirmed) { // it most definitely is a winner
                   // Start examining every other line. Checking each line turned out to be too
                   // expensive and didn't improve performance.
                   iSkip = 2;
+                  // haskipped can be set to true if we already have found two finder patterns.
+                  // this can happen only in findRowSkip(), and it means that we have applied a skip already
                   if (hasSkipped) {
+                    // done becomes true if we have found 4 finder patterns. In that case, we will break out of the row loop the next time around.
                     done = haveMultiplyConfirmedCenters();
                   } else {
+                    // see how far we skip. the previous test guarantees we only do it once
                     int rowSkip = findRowSkip();
+                    // if the rowskip is larger than the size of the center, apply the rowskip
                     if (rowSkip > stateCount[2]) {
                       // Skip rows between row of lower confirmed center
                       // and top of presumed third confirmed center
@@ -148,6 +153,7 @@ public class FinderPatternFinder {
                   currentState = 3;
                   continue;
                 }
+
                 // Clear state to qualityChecksOK looking again
                 currentState = 0;
                 stateCount[0] = 0;
@@ -182,10 +188,8 @@ public class FinderPatternFinder {
         }
       }
     }
-
+    // selectBestPatterns also orders the patterns in top left, top right, bottom left, bottom right.
     FinderPattern[] patternInfo = selectBestPatterns();
-    //ResultPoint.orderBestPatterns(patternInfo);
-
     return new FinderPatternInfo(patternInfo);
   }
 
@@ -548,9 +552,9 @@ public class FinderPatternFinder {
           // This is the case where you find top left last.
           hasSkipped = true;
           // the calibration card has a aspect ration of 1.75, so we can skip this much.
-          // To be on the safe side, we approximate this by 1.6
-          return (int) ((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
-                  Math.abs(firstConfirmedCenter.getY() - center.getY())) * 1.6);
+          // To be on the safe side, we approximate this by 1.65
+          return (int) Math.abs(((Math.abs(firstConfirmedCenter.getX() - center.getX()) -
+          Math.abs(firstConfirmedCenter.getY() - center.getY())) * 1.65));
         }
       }
     }
@@ -642,6 +646,9 @@ public class FinderPatternFinder {
       possibleCenters.subList(4, possibleCenters.size()).clear();
     }
 
+    // order the points from top left, top right, bottom left, bottom right
+    Collections.sort(possibleCenters, new OrderComparator());
+
     return new FinderPattern[]{
             possibleCenters.get(0),
             possibleCenters.get(1),
@@ -685,5 +692,17 @@ public class FinderPatternFinder {
       }
     }
   }
+    /**
+     * <p>Orders by x+y coordinates, ascending.</p>
+     */
+    private static final class OrderComparator implements Comparator<FinderPattern>, Serializable {
 
+        private OrderComparator() {
+        }
+
+        @Override
+        public int compare(FinderPattern fp1, FinderPattern fp2) {
+            return Math.round(fp1.getX() + fp1.getY() - fp2.getX() - fp2.getY());
+        }
+    }
 }

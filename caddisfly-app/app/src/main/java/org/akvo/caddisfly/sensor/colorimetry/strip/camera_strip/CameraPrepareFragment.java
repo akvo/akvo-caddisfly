@@ -96,10 +96,10 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     public void showStartButton() {
 
-        if(startButton==null)
+        if(startButton == null)
             return;
 
-        if(startButton.getVisibility()== View.GONE) {
+        if(startButton.getVisibility() == View.GONE) {
             startButton.setVisibility(View.VISIBLE);
             startButton.setBackgroundResource(android.R.drawable.btn_default);
             startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
@@ -161,13 +161,12 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     public void countQuality(Map<String, Integer> countMap)
     {
-
         if(wrCountQualityView!=null)
         {
             try {
-
                 int count = 0;
 
+                // each parameter counts for 1/3 towards the final count shown.
                 for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
@@ -178,7 +177,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrCountQualityView.get().setText(text);
 
-                    if (1 == 1) {
+                    // next part is only for develop purposes. It shows the count per quality parameter
+                    if (true) {
                         wrCountQualityView.get().append("\n\n");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
@@ -198,7 +198,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         //set focus area to upper third of preview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-
             List<Camera.Area> areas = new ArrayList<>();
 
             int ratioW = Math.round(1000f / previewSize.width);
@@ -215,7 +214,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
 
             if(mListener!=null)
                 mListener.setFocusAreas(areas);
-
         }
     }
 }

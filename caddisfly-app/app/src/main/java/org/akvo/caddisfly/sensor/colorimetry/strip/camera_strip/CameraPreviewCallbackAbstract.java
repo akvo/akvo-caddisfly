@@ -71,7 +71,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         step = camera.getParameters().getExposureCompensationStep();
         //make sure it never becomes zero
         EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
-
     }
 
     protected void sendData(byte[] data){};
@@ -88,17 +87,14 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     double esModSize;
 
     protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
-
         lumList.clear();
-        float[] angles = null;
+        float[] tilts = null;
         int lumVal = 0;
         int shadVal = 0;
         int levVal = 0;
 
         try {
-
             if (possibleCenters != null && possibleCenters.size() > 3) {
-
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -124,9 +120,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
                     //brightness: add lum. values to list
                     addLumToList(src_gray, lumList);
-
-                    //focus: add values to list
-                    //addFocusQualToList(src_gray, focusList);
                 }
             }
             else {
@@ -143,23 +136,24 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
             }
 
-            if(info!=null) {
-
+            // number of finder patterns can be anything here.
+            if(info != null) {
                 //DETECT BRIGHTNESS
                 double maxmaxLum = luminosityCheck(lumList);
                 lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // DETECT SHADOWS
-                if(bgr!=null) {
+                if(bgr != null) {
                     double shadowPercentage = detectShadows(info, bgr);
                     shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
                 }
 
-                //GET ANGLE
-                angles = PreviewUtils.getAngle(info);
-                //the sum of the angles should approach zero: then the camera is hold even with the card
-                levVal = Math.abs(angles[0]) + Math.abs(angles[1]) < 2*Constant.MAX_LEVEL_DIFF ? 1 : 0;
-
+                // Get Tilt
+                if (possibleCenters.size() == 4) {
+                    tilts = PreviewUtils.getTilt(info);
+                    // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
+                    levVal = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                }
             }
 
             //UPDATE VALUES IN ARRAY
@@ -168,7 +162,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             qualityChecksArray[2] = levVal;
 
             //SHOW VALUES ON SCREEN
-            if(listener!=null) {
+            if(listener != null) {
                 //brightness: show the values on device
                 if (lumTrack.size() < 1) {
                     //-1 means 'no data'
@@ -186,15 +180,14 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
 
                 //level: show on device
-                listener.showLevel(angles);
+                listener.showLevel(tilts);
             }
-
         }  catch (Exception e) {
             // throw new RuntimeException(e);
             e.printStackTrace();
 
         } finally {
-            if(bgr!=null) {
+            if(bgr != null) {
                 bgr.release();
                 bgr = null;
             }
@@ -205,9 +198,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             if(convert_mYuv!=null)
                 convert_mYuv.release();
         }
-
         return qualityChecksArray;
-
     }
 
 
@@ -215,8 +206,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     {
         double shadowPercentage = 101;
 
-        if(bgr==null)
+        if(bgr == null) {
             return shadowPercentage;
+        }
 
         //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
         if(shadowTrack.size()>25) {
@@ -232,7 +224,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
             try
             {
-                //if(versionNumber!=CalibrationCard.CODE_NOT_FOUND) {
                 if(caldata!=null){
                     shadowPercentage = PreviewUtils.getShadowPercentage(bgr, caldata);
                     shadowTrack.add(shadowPercentage);
@@ -249,35 +240,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         }
 
         return shadowPercentage;
-
     }
-
-//    private void addFocusQualToList(Mat src_gray, List<Double> focusList)
-//    {
-//        double laplacian;
-//        double focusQual;
-//
-//        laplacian = PreviewUtils.focusLaplacian1(src_gray);
-//        // correct the focus quality parameter for the total luminosity range of the finder pattern
-//        // the factor of 0.5 means that 100% corresponds to the pattern going from black to white within 2 pixels
-//        double[] lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
-//
-//        if(lumMinMax.length==2) {
-//            focusQual = (100 * (laplacian / (0.5d * (lumMinMax[1] - lumMinMax[0]))));
-//
-//            //never more than 100%
-//            focusQual = Math.min(focusQual,100);
-//
-//            if(focusQual!=Double.NaN && focusQual!=Double.POSITIVE_INFINITY && focusQual!=Double.NEGATIVE_INFINITY) {
-//                try {
-//                    focusList.add(Double.valueOf(focusQual));
-//                } catch (Exception e) {
-//                    System.out.println("***exception adding to focuslist.");
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
 
     private void addLumToList(Mat src_gray, List<double[]> lumList)
     {
@@ -292,11 +255,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
     private double luminosityCheck(List<double[]> lumList)
     {
-
         double maxmaxLum = -1; //highest value of 'white'
 
         for(int i=0; i<lumList.size();i++) {
-
             //store lum max value that corresponds with highest: we use it to check over- and under exposure
             if (lumList.get(i)[1] > maxmaxLum) {
                 maxmaxLum = lumList.get(i)[1];
@@ -308,7 +269,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         }
 
         if(lumList.size() > 0) {
-
             //add highest value of 'white' to track list
             lumTrack.addLast(100 * maxmaxLum/255);
 
@@ -321,47 +281,37 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 //enlarge
                 listener.adjustExposureCompensation(1);
 
-                System.out.println("***under exposed. " + EV);
+                System.out.println("*** under exposed. " + EV);
             }
 
             //compensate for over-exposure
             //if max values larger than 240
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                System.out.println("***over exposed. " + EV);
+                System.out.println("*** over exposed. " + EV);
                 //Change direction in which to compensate
                 listener.adjustExposureCompensation(-1);
             }
             else
             {
-
-                //System.out.println("***exp EV = " + EV + " EV * 255 = " + EV * 255 + "  " + maxmaxLum + EV * 255);
-
                 //we want to get it as bright as possible but without risking overexposure
                 // we assume that EV will be a factor that determines the amount with which brightness will increase
                 // after adjusting exp. comp.
                 // we do not want to increase exp. comp. if the current brightness plus the max. brightness time the EV
                 // becomes larger that the UPPER limit
                 if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
-
                     //luminosity is increasing; this is good, keep going in the same direction
                     System.out.println("***increasing exposure."  + EV);
-//                    System.out.println("***"  + count + " maxmaxLum: " + maxmaxLum + " EV * 255: " + (EV*255) + " sum: " + (maxmaxLum + EV*255));
-
                     listener.adjustExposureCompensation(1);
                 }
                 else
                 {
                     //optimum situation reached
-
-                System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
+                    System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
                         EV/step);
-
                 }
             }
-
         }
-
         return maxmaxLum;
     }
 
@@ -372,9 +322,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     FinderPatternFinder finderPatternFinder;
 
     protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
-
-
-        // crop preview image to only contain the known region for the finder patterns
+        // crop preview image to only contain the known region for the finder pattern
+        // this leads to an image in portrait view
         myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
                 (int) Math.round(size.height * Constant.CROP_FINDERPATTERN_FACTOR),
@@ -383,38 +332,32 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
 
-
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
         } catch (NotFoundException | NullPointerException e) {
             e.printStackTrace();
-
         }
 
         if (bitMatrix != null) {
              finderPatternFinder = new FinderPatternFinder(bitMatrix);
 
             try {
-
                 info = finderPatternFinder.find(null);
 
             } catch (Exception e) {
                 // this only means not all patterns (=4) are detected.
             }
             finally {
-
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
                 //detect centers that are to small in order to get rid of noise
                 for(int i=0;i<possibleCenters.size();i++) {
                     if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
                         return null;
-
                     }
                 }
 
                 if (possibleCenters != null && previewSize != null) {
-
                     if(listener!=null) {
                         listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
                     }
@@ -422,30 +365,19 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                     try {
                         if (possibleCenters.size() == 4) {
                             int versionNumber = CalibrationCard.decodeCallibrationCardCode(possibleCenters, bitMatrix);
-//                            System.out.println("***versionNumber: " + versionNumber);
                             if(versionNumber!= CalibrationCard.CODE_NOT_FOUND) {
                                 CalibrationCard.addVersionNumber(versionNumber);
-                                //if(caldata==null) //less overhead, but what if caldata is for wrong version number?
-                                    caldata = CalibrationCard.readCalibrationFile(context);
+                                caldata = CalibrationCard.readCalibrationFile(context);
                             }
-                            //testing
-//                            Random random = new Random();
-//                            CalibrationCard.addVersionNumber(random.nextInt(10));
                         }
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
                     }
-
                 }
-
-
             }
         }
-
-
         return info;
     }
-
 }

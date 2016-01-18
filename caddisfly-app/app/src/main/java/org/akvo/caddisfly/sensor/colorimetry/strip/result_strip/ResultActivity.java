@@ -30,28 +30,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-
-import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 
+import java.io.UnsupportedEncodingException;
 
 public class ResultActivity extends BaseActivity{
 
     private JSONObject resultJsonObj = new JSONObject();
     private JSONArray resultJsonArr = new JSONArray();
     private FileStorage fileStorage;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
         if (savedInstanceState == null) {
-
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
             final String brandName = intent.getStringExtra(Constant.BRAND);
@@ -64,7 +64,6 @@ public class ResultActivity extends BaseActivity{
 
             JSONArray imagePatchArray = null;
             try {
-
                 String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
                 if (json != null) {
                     imagePatchArray = new JSONArray(json);
@@ -77,12 +76,10 @@ public class ResultActivity extends BaseActivity{
             if (imagePatchArray != null) {
 
                 for (int i = 0; i < patches.size(); i++) {
-
                     //the name of the patch
                     String desc = patches.get(i).getDesc();
 
                     try {
-
                         System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
 
                         JSONArray array = imagePatchArray.getJSONArray(i);
@@ -94,12 +91,28 @@ public class ResultActivity extends BaseActivity{
 
                         String error = isInvalidStrip? Constant.ERROR: "";
 
+                        // read the Mat object from internal storage
                         byte[] data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
                         if (data != null) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            // determine cols and rows dimensions
+                            byte[] rows = new byte[4];
+                            byte[] cols = new byte[4];
 
-                            strip = new Mat();
-                            Utils.bitmapToMat(bitmap, strip);
+                            int length = data.length;
+                            System.arraycopy(data,length - 8, rows, 0, 4);
+                            System.arraycopy(data,length - 4, cols, 0, 4);
+
+                            int rowsNum = fileStorage.ByteArrayToInt(rows);
+                            int colsNum = fileStorage.ByteArrayToInt(cols);
+
+                            // remove last part
+                            byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
+
+                            // reserve Mat of proper size:
+                            strip = new Mat(rowsNum, colsNum, CvType.CV_8UC3);
+
+                            // put image data back in Mat:
+                            strip.put(0,0,imgData);
 
                             double ratioW = strip.width() / brand.getStripLenght();
 
@@ -113,11 +126,9 @@ public class ResultActivity extends BaseActivity{
                             String unit = patches.get(i).getUnit();
 
                             new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
-
-                        }
+                      }
 
                     } catch (Exception e) {
-
                         e.printStackTrace();
 
                         //TESTING
@@ -135,9 +146,7 @@ public class ResultActivity extends BaseActivity{
 
                 //TESTING
                 new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
-
             }
-
 
             Button save = (Button) findViewById(R.id.activity_resultButtonSave);
             Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
@@ -176,15 +185,12 @@ public class ResultActivity extends BaseActivity{
                     ResultActivity.this.finish();
                 }
             });
-
-
         }
     }
 
     private Bitmap makeBitmap(Mat mat)
     {
         try {
-
             Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bitmap);
 
@@ -199,7 +205,6 @@ public class ResultActivity extends BaseActivity{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -225,14 +230,11 @@ public class ResultActivity extends BaseActivity{
 
         @Override
         protected Void doInBackground(Mat... params) {
-
             Mat mat = params[0];
 
             if(mat.empty()) {
                 return null;
             }
-
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2Lab);
 
             int submatSize = 7;
 
@@ -240,7 +242,6 @@ public class ResultActivity extends BaseActivity{
                 return null;
 
             if (!invalid) {
-
                 //make a submat around center of the patch and get mean color
                 int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
                 int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
@@ -340,13 +341,10 @@ public class ResultActivity extends BaseActivity{
                 //TESTING
                 CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                 circleView.circleView(Color.RED);
-
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
-
             layout.addView(result_ppm_layout);
-
         }
     }
 
@@ -424,7 +422,6 @@ public class ResultActivity extends BaseActivity{
         double dist;
         int minPos = 0;
         double smallestE94Dist = Double.MAX_VALUE;
-
 
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance

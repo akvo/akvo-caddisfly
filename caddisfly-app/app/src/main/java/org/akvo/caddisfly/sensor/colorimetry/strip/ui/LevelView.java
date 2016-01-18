@@ -16,8 +16,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * Created by linda on 10/27/15.
  */
 public class LevelView extends View {
-
-    private float[] angles;
+    private float[] tilts;
     private final Paint redPaint;
     private final Bitmap arrowBitmap;
 
@@ -38,58 +37,42 @@ public class LevelView extends View {
         redPaint.setStrokeWidth(3);
 
         arrowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.level);
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if(angles!=null)
+        if(tilts != null)
         {
-            float degrees = getDegrees(angles);
+            float degrees = getDegrees(tilts);
             if(degrees!=0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2, canvas.getHeight() / 2);
                 canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
                 canvas.restore();
             }
-
         }
-
         super.onDraw(canvas);
     }
 
-    public void setAngles(float[] angles) {
-
-        this.angles = angles;
-
+    public void setAngles(float[] tilts) {
+        this.tilts = tilts;
         invalidate();
     }
 
-    private float getDegrees(float[] angles)
+    private float getDegrees(float[] tilts)
     {
-
         float degrees = 0f;
 
-
-        if(angles[0] < -Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = -90;
-        }
-        else if(angles[0] > Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 90;
+        // if the horizontal tilt is too large, indicate it
+        if (Math.abs(tilts[0] - 1) > Constant.MAX_TILT_DIFF){
+            degrees = tilts[0] - 1 < 0 ? -90 : 90;
         }
 
-        if(angles[1] < -Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 1;
+        // if the vertical tilt is too large, indicate it
+        if (Math.abs(tilts[1] - 1) > Constant.MAX_TILT_DIFF){
+            degrees = tilts[1] - 1 < 0 ? 180 : 1;
         }
-        else if(angles[1] > Constant.MAX_LEVEL_DIFF)
-        {
-            degrees = 180;
-        }
-
         return degrees;
     }
 }

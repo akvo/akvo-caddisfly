@@ -36,19 +36,15 @@ class CameraScheduledExecutorService {
 
     public void cancelTasks(long delay)
     {
-
         scheduledExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
-
                 for (String s : tasks.keySet()) {
-
                     boolean canceled = tasks.get(s).cancel(true);
                     if (canceled)
                         tasks.remove(s);
 
                     System.out.println("***task key = " + s + " is canceled: " + canceled);
-
                 }
             }
         }, delay, TimeUnit.MILLISECONDS);
@@ -66,7 +62,6 @@ class CameraScheduledExecutorService {
 
                 ScheduledFuture taskExecuted =  scheduledExecutorService.scheduleWithFixedDelay(runnable, initialDelay, delay, TimeUnit.MILLISECONDS);
                 tasks.put(runnable.toString(), taskExecuted);
-
             }
         }
         catch (Exception e)
@@ -75,11 +70,8 @@ class CameraScheduledExecutorService {
         }
     }
 
-
     public void shutdown()
     {
         scheduledExecutorService.shutdown();
     }
-
-
 }

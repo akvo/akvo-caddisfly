@@ -79,6 +79,28 @@ public class FileStorage {
         return data;
     }
 
+    public byte[] IntToByteArray( int data ) {
+        byte[] result = new byte[4];
+
+        result[0] = (byte) ((data & 0xFF000000) >> 24);
+        result[1] = (byte) ((data & 0x00FF0000) >> 16);
+        result[2] = (byte) ((data & 0x0000FF00) >> 8);
+        result[3] = (byte) ((data & 0x000000FF) >> 0);
+
+        return result;
+    }
+
+    public int ByteArrayToInt( byte[] data ) {
+        int result = 0;
+
+        result += data[0] << 24;
+        result += data[1] << 16;
+        result += data[2] << 8;
+        result += data[3];
+
+        return result;
+    }
+
     public void writeToInternalStorage(String name, String json)
     {
         String fileName = name +".txt";
