@@ -102,10 +102,10 @@ public class AlignmentActivity extends BaseActivity {
             params.topMargin = 40;
             params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
             //params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params.height = 430;
             layoutCameraPreview.setLayoutParams(params);
 
-            params.width = 576;
-            params.height = 430;
+//            params.width = 576;
 
             //params.leftMargin = 50;
 

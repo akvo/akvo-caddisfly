@@ -263,7 +263,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     /**
      * In diagnostic mode show the diagnostic results dialog
      *
-     * @param testFailed    if test has failed then dialog know to show the retry button
+     * @param testFailed    if test has failed then dialog knows to show the retry button
      * @param result        the result shown to the user
      * @param color         the color that was used to get above result
      * @param isCalibration is it in calibration mode, then show only colors, no results
@@ -360,9 +360,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
         ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         //Quality too low reject this result
-        if (photoColor.getQuality() < 20) {
-            return;
-        }
+//        if (photoColor.getQuality() < 20) {
+//            return;
+//        }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -414,8 +414,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     private void startExternalTest() {
+
+        findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
+
         mResults = new ArrayList<>();
-        sound.playShortResource(R.raw.beep);
         (new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -775,8 +777,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (fragment != null) {
                                 ft.remove(fragment);
                             }
-
-                            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
 
                             mResultDialogFragment.setCancelable(false);
                             mResultDialogFragment.show(ft, "resultDialog");
