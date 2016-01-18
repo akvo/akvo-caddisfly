@@ -102,8 +102,8 @@ public class ResultActivity extends BaseActivity{
                             System.arraycopy(data,length - 8, rows, 0, 4);
                             System.arraycopy(data,length - 4, cols, 0, 4);
 
-                            int rowsNum = fileStorage.ByteArrayToInt(rows);
-                            int colsNum = fileStorage.ByteArrayToInt(cols);
+                            int rowsNum = fileStorage.byteArrayToLeInt(rows);
+                            int colsNum = fileStorage.byteArrayToLeInt(cols);
 
                             // remove last part
                             byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
