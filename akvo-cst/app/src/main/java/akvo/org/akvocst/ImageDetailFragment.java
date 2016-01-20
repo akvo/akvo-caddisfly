@@ -110,6 +110,8 @@ public class ImageDetailFragment extends Fragment {
                 Mat matResult = result.calibratedImage;
                 Imgproc.cvtColor(matResult, matResult, Imgproc.COLOR_Lab2RGB);
 
+//                Imgproc.cvtColor(mat,mat,Imgproc.COLOR_Lab2RGB);
+//                Mat matResult = mat.clone();
                 calmap = Bitmap.createBitmap(matResult.width(), matResult.height(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(matResult, calmap);
 
