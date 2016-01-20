@@ -25,7 +25,7 @@
         android:paddingLeft="12sp"
         android:paddingRight="12sp"
         android:id="@+id/activity_instructionFooterArrowLeft"/>
-    <org.akvo.akvoqr.instructions_strip.InstructionFooterView
+    <org.akvo.caddisfly.sensor.colorimetry.strip.instructions_strip.InstructionFooterView
         android:layout_width="wrap_content"
         android:layout_height="48sp"
         android:layout_centerHorizontal="true"
