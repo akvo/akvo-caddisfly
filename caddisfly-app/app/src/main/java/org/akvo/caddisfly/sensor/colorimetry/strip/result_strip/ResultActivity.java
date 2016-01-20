@@ -25,6 +25,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtils;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.color.ColorDetected;
+import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,19 +34,23 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 
 public class ResultActivity extends BaseActivity{
 
     private JSONObject resultJsonObj = new JSONObject();
     private JSONArray resultJsonArr = new JSONArray();
     private FileStorage fileStorage;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +131,7 @@ public class ResultActivity extends BaseActivity{
                             String unit = patches.get(i).getUnit();
 
                             new BitmapTask(isInvalidStrip, desc, centerPatch, colours, unit).execute(strip);
-                      }
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -212,6 +217,8 @@ public class ResultActivity extends BaseActivity{
     {
         private boolean invalid;
         private Bitmap stripBitmap = null;
+        private Bitmap combinedBitmap = null;
+        private Mat combined;
         private String desc;
         private Point centerPatch;
         private JSONArray colours;
@@ -274,6 +281,144 @@ public class ResultActivity extends BaseActivity{
                 //Draw a green circle around each patch
                 Imgproc.circle(mat, new Point(centerPatch.x, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
                         new Scalar(0, 255, 0, 255), 2);
+
+                /*
+                 * Start making mats to put into image to be send back as an String to server
+                */
+                double xMargin = 10d;
+                int circleRadius = 10;
+                double xtrans = (mat.cols())/colours.length(); //calculate size of each color range block
+                double yColorRect = 20d; //distance from top Mat to top color rectangles
+                Point topleftColorRect = new Point(0, yColorRect);
+                Point bottomrightColorRect = new Point(xtrans - xMargin, xtrans + yColorRect - xMargin);
+                Point textposValueColorRect = new Point(0, 0);
+                boolean ppmIsDrawn = false;
+                Scalar labWhite =  new Scalar(255, 128, 128);
+                Scalar labGrey = new Scalar(128, 128, 128);
+                Scalar labBlack = new Scalar(0, 128, 128);
+
+                /*
+                * Create Mat to hold description of patch
+                 */
+                int[] baseline = new int[1];
+                Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, baseline);
+                Mat descMat = new Mat((int)Math.ceil(textSizeDesc.height) * 3, mat.cols(), CvType.CV_8UC3, labWhite);
+                Imgproc.putText(descMat, desc, new Point(2 , descMat.height() - textSizeDesc.height), Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_8, false);
+
+                 /*
+                * COLOR RANGE AS IN JSON FILE (FROM MANUFACTURER)
+                * Create Mat to hold a rectangle for each color
+                * the corresponding value written as text above that rectangle
+                 */
+                Mat colorRangeMat = new Mat((int)Math.ceil(bottomrightColorRect.y), mat.cols(), CvType.CV_8UC3, labWhite);
+
+                 /*
+                * VALUE MEASURED
+                * Create Mat to hold a line between min and max values, on it a circle filled with
+                * the color detected below which the ppm value measured
+                 */
+                Mat valueMeasuredMat = new Mat(50, mat.cols(), CvType.CV_8UC3, labWhite);
+
+                //grey line with ppm values at left and right
+                Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2*xMargin, 25), labGrey, 2, Core.LINE_AA, 0);
+
+                try {
+                    //get values for lowest and highest ppm values from striptest range
+                    double leftValue = colours.getJSONObject(0).getDouble("value");
+                    double rightValue = colours.getJSONObject(colours.length()-1).getDouble("value");
+                    Size textSizeLeftValue = Imgproc.getTextSize(String.format("%.0f", leftValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+                    Size textSizeRightValue = Imgproc.getTextSize(String.format("%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+
+                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans-xMargin)/2 - textSizeLeftValue.width/2, 15), Core.FONT_HERSHEY_SIMPLEX,
+                            0.3d, labGrey, 1, Core.LINE_AA, false );
+                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue), new Point(valueMeasuredMat.cols() - textSizeRightValue.width - 2*xMargin , 15),
+                            Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                JSONObject colourObj;
+                JSONObject nextcolourObj;
+
+                for(int d = 0; d < colours.length(); d++) {
+                    try {
+
+                        colourObj = colours.getJSONObject(d);
+                        if(d<colours.length()-1) {
+                            nextcolourObj = colours.getJSONObject(d + 1);
+                        }
+                        else nextcolourObj = colourObj;
+
+                        double value = colourObj.getDouble("value");
+                        double nextvalue = nextcolourObj.getDouble("value");
+                        JSONArray lab = colourObj.getJSONArray("lab");
+                        Scalar scalarLab = new Scalar(lab.getDouble(0)/100 * 255, lab.getDouble(1)+128, lab.getDouble(2)+128);
+                        Size textSizeValue = Imgproc.getTextSize(round(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+                        Point centerText = new Point((textposValueColorRect.x + (xtrans-xMargin)/2) - textSizeValue.width/2, yColorRect-textSizeValue.height );
+
+                        //draw a rectangle filled with color for ppm value
+                        //draw ppm value above rectangle
+                        Imgproc.rectangle(colorRangeMat, topleftColorRect, bottomrightColorRect, scalarLab,-1);
+                        Imgproc.putText(colorRangeMat, round(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+
+                         /*
+                         * VALUE MEASURED
+                         */
+                        if(ppm < nextvalue && !ppmIsDrawn) {
+
+                            double restPPM = ppm - (value) ; //calculate the amount above the lowest value
+                            double transX = xtrans * (restPPM  / (nextvalue - value)); //calculate number of pixs needed to translate in x direction
+
+                            //System.out.println("***restPPM #: " + d +" = " + restPPM + " (nextvalue - value): " + (nextvalue - value) + " transX: " + transX);
+
+                            Scalar ppmColor = colorDetected.getLab();
+                            Point centerCircle = topleftColorRect.x + transX < xMargin? new Point(xMargin, 25d): new Point(topleftColorRect.x + xMargin + transX, 25d);
+                            Size textSizePPM = Imgproc.getTextSize(round(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+
+                            Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
+                            Imgproc.putText(valueMeasuredMat, round(ppm), new Point(centerCircle.x - textSizePPM.width/2, 47d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
+                                    labGrey, 1, Core.LINE_AA, false);
+
+                            ppmIsDrawn = true;
+                        }
+
+                        //Translate (sort of)
+                        topleftColorRect = new Point(topleftColorRect.x + xtrans, topleftColorRect.y);
+                        bottomrightColorRect = new Point(bottomrightColorRect.x + xtrans, bottomrightColorRect.y);
+                        textposValueColorRect = new Point(textposValueColorRect.x + xtrans, textposValueColorRect.y);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //Putting all together
+                Imgproc.cvtColor(descMat, descMat, Imgproc.COLOR_Lab2RGB);
+                Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
+                Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
+
+                combined = new Mat(descMat.rows() + mat.rows() + colorRangeMat.rows() + valueMeasuredMat.rows(), mat.cols(), CvType.CV_8UC3);
+                Rect roi = new Rect(0, 0, descMat.width(), descMat.height());
+                Mat roiMat = combined.submat(roi);
+                descMat.copyTo(roiMat);
+
+                roi = new Rect(0, descMat.height(), mat.width(), mat.height());
+                roiMat = combined.submat(roi);
+                mat.copyTo(roiMat);
+
+                roi = new Rect(0, descMat.height() + mat.height(), colorRangeMat.width(), colorRangeMat.height());
+                roiMat = combined.submat(roi);
+                colorRangeMat.copyTo(roiMat);
+
+                roi = new Rect(0, descMat.height() + mat.height()+colorRangeMat.height(), valueMeasuredMat.width(), valueMeasuredMat.height());
+                roiMat = combined.submat(roi);
+                valueMeasuredMat.copyTo(roiMat);
+                 /*
+                 * End making mats to put into image to be send back as an String to server
+                */
             }
             else
             {
@@ -281,15 +426,21 @@ public class ResultActivity extends BaseActivity{
                 Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
             }
 
-            if(!mat.empty()) {
+            if(!combined.empty()) {
+
+                combinedBitmap = makeBitmap(combined);
+                FileStorage.writeToSDFile(combinedBitmap);
+            }
+
+            if(!mat.empty())
+            {
                 stripBitmap = makeBitmap(mat);
             }
 
             return null;
         }
 
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, null, false);
@@ -297,12 +448,13 @@ public class ResultActivity extends BaseActivity{
             TextView descView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutDescView);
             descView.setText(desc);
 
-            if(stripBitmap!=null) {
-                ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
-                imageView.setImageBitmap(stripBitmap);
+            ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
 
-                if(!invalid) {
-                    if(colorDetected!=null) {
+            if (stripBitmap != null) {
+                 imageView.setImageBitmap(stripBitmap);
+
+                if (!invalid) {
+                    if (colorDetected != null) {
                         CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                         circleView.circleView(colorDetected.getColor());
                     }
@@ -314,29 +466,9 @@ public class ResultActivity extends BaseActivity{
                         } else {
                             textView.setText(String.format("%.1f", ppm) + " " + unit);
                         }
-
-                        //put ppm and image in resultJsonArr
-                        try {
-                            JSONObject object = new JSONObject();
-                            object.put("name", desc);
-                            object.put("value", ppm);
-                            object.put("unit", unit);
-                            String img = fileStorage.bitmapToBase64String(stripBitmap);
-                            object.put("img", img);
-
-                            resultJsonArr.put(object);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
                 //TESTING
                 CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
@@ -345,6 +477,30 @@ public class ResultActivity extends BaseActivity{
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
             layout.addView(result_ppm_layout);
+
+            //put ppm and image in resultJsonArr
+            if (combinedBitmap != null) {
+
+                //TESTING COMBINED BITMAP
+                imageView.setImageBitmap(combinedBitmap);
+
+                try {
+                    JSONObject object = new JSONObject();
+                    object.put("name", desc);
+                    object.put("value", ppm);
+                    object.put("unit", unit);
+                    String img = fileStorage.bitmapToBase64String(combinedBitmap);
+                    object.put("img", img);
+
+                    resultJsonArr.put(object);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -437,6 +593,16 @@ public class ResultActivity extends BaseActivity{
         return result;
     }
 
+    private String round(double value)
+    {
+        String valueString = String.format(Locale.US, "%.2f", value);
+        int indexDecimal = valueString.indexOf(".");
+        double decimal = Double.valueOf(valueString.substring(indexDecimal+1));
+        if(decimal > 0)
+            return String.format("%.1f", value);
+        else
+            return String.format("%.0f", value);
+    }
     // old way of computing ppm value, using geometric method to determine closest point
 //    private double calculatePPM_old(double[] colorValues, JSONArray colours) throws Exception{
 //
