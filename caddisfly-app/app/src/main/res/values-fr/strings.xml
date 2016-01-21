@@ -118,11 +118,11 @@
     <string name="required">Obligatoire</string>
 
     <!--Strip Test-->
-    <string name="strips_json">strips_fr.json</string>
+    <string name="strips_instruction_json">fr/strips-instruction.json</string>
 
     <string name="action_settings">Reglage</string>
     <string name="app_name">AkvoQR</string>
-    <string name="cut_out_strip">Trouver la bande...</string>
+    <string name="cut_out_strip">Trouver la bande…</string>
     <string name="error_calibrating">Erreur calibrage</string>
     <string name="error_conversion">Erreur converter couleurs</string>
     <string name="error_cut_out_strip">Pas de bande trouvee.</string>
@@ -130,11 +130,11 @@
     <string name="error_no_finder_pattern_info">Pas de motifs</string>
     <string name="error_unknown">Erreur inconnu</string>
     <string name="error_warp">Erreur transformer perspective.</string>
-    <string name="finished">FINI</string>
+    <string name="finished">FIN</string>
     <string name="light">Lumiere</string>
     <string name="no_data">Pas de donnees pour patch no.</string>
-    <string name="please_wait">S.v.p. patienter...</string>
-    <string name="reading_data">Lire donnees...</string>
+    <string name="please_wait">S.v.p. patienter…</string>
+    <string name="reading_data">Lire donnees…</string>
     <string name="redo_test">De nouveau</string>
     <string name="thank_using_caddisfly">Merci pour choisir Akvo Caddisfly</string>
     <string name="title_activity_camera">Camera</string>
@@ -145,13 +145,13 @@
     <string name="to_results">Aux resultats</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Contrast</string>
-    <string name="init_camera">Initier camera ...</string>
-    <string name="analysing">Analyser image ...</string>
+    <string name="init_camera">Initier camera …</string>
+    <string name="analysing">Analyser image …</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instr">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="picture_taken">Photo a été prise</string>
-    <string name="ready_for_picture">"Prêt pour prendre photo"</string>
+    <string name="ready_for_picture">Prêt pour prendre photo</string>
     <string name="waiting">Attendez</string>
-    <string name="quality_checks_counter">"Conditions: "</string>
+    <string name="quality_checks_counter">Conditions: </string>
     <!--end Strip Test-->
 </resources>

@@ -90,13 +90,7 @@
           "timeLapse":0,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Move strip back and forward during 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
-        ]
+      ]
     },
     {
       "name": "Nitrate and Nitrite",
@@ -193,12 +187,6 @@
           "timeLapse":30,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Dip strip into water for 1 second.", "png": ""},
-        {"text": "<!>Do not shake excess water from the test strip.<!", "png":"" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     },
     {
@@ -257,14 +245,6 @@
           "timeLapse":0,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Fill sample vial HALF FULL with sample water.", "png": ""},
-        {"text": "Open one foil packet and add powder contents to vial.", "png": ""},
-        {"text": "Cap vial and shake rapidly for 5 seconds. Remove cap.", "png": ""},
-        {"text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.", "png":"" },
-        {"text": "Place strip onto black area.", "png": "instruction_place_strip"},
-        {"text": "After that: <!>Start test immediately.<!", "png": ""}
       ]
     },
     {
@@ -318,12 +298,6 @@
           "timeLapse":15,
           "unit": ""
         }
-      ],
-      "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water and remove immediately. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     },
     {
@@ -372,12 +346,6 @@
           "timeLapse":45,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     },
     {
@@ -429,13 +397,6 @@
           "timeLapse":0,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Collect 50 ml water sample using the provided bottle. <!>This sample size is for the range 0 - 500 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Follow the instructions that came with the testing kit for adding reagens"},
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     },
     {
@@ -483,13 +444,6 @@
           "timeLapse":0,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {"text": "Collect 9.6 ml water sample using the small square container. <!>This sample size is for the range 0 - 4000 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Follow the instructions that came with the testing kit for adding reagens"},
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": "instruction_start_button"}
       ]
     }
   ]

@@ -77,13 +77,14 @@ public class StripTest{
                 if (!object.isNull("strips")) {
                     JSONArray stripsJson = object.getJSONArray("strips");
                     JSONObject strip;
+
                     if (stripsJson != null) {
 
                         for (int i = 0; i < stripsJson.length(); i++) {
 
                             strip = stripsJson.getJSONObject(i);
 
-                            System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
+                            //System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
 
                             if (!strip.getString("brand").equalsIgnoreCase(brand)) {
                                 continue;
@@ -92,7 +93,6 @@ public class StripTest{
                                     this.stripLenght = strip.getDouble("length");
                                     this.stripHeight = strip.getDouble("height");
                                     this.name = strip.getString("name");
-                                    this.instructions = strip.getJSONArray("instructions");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArr.length(); ii++) {
@@ -117,6 +117,28 @@ public class StripTest{
                     }
                 }
 
+                //add instructions
+                String instructions = instructionsFromJson();
+                JSONObject instructionObj = new JSONObject(instructions);
+                JSONArray stripsJson = instructionObj.getJSONArray("strips");
+                JSONObject strip;
+
+                if (stripsJson != null) {
+
+                    for (int i = 0; i < stripsJson.length(); i++) {
+
+                        strip = stripsJson.getJSONObject(i);
+
+                        //System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
+
+                        if (!strip.getString("brand").equalsIgnoreCase(brand)) {
+                            continue;
+                        } else {
+                            this.instructions = strip.getJSONArray("instructions");
+
+                        }
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -206,6 +228,12 @@ public class StripTest{
 
     }
 
+    private String instructionsFromJson()
+    {
+        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_instruction_json);
+        return AssetsManager.getInstance().loadJSONFromAsset(filename);
+
+    }
     private class PatchComparator implements Comparator<Brand.Patch>
     {
 
