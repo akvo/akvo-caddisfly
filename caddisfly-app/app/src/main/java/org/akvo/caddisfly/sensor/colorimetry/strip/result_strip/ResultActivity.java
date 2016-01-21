@@ -373,7 +373,8 @@ public class ResultActivity extends BaseActivity{
                             //System.out.println("***restPPM #: " + d +" = " + restPPM + " (nextvalue - value): " + (nextvalue - value) + " transX: " + transX);
 
                             Scalar ppmColor = colorDetected.getLab();
-                            Point centerCircle = topleftColorRect.x + transX < xMargin? new Point(xMargin, 25d): new Point(topleftColorRect.x + xMargin + transX, 25d);
+                            Point centerCircle = topleftColorRect.x + transX < xMargin? new Point(xMargin, 25d):
+                                    new Point(topleftColorRect.x + (bottomrightColorRect.x -topleftColorRect.x)/2 + transX, 25d);
                             Size textSizePPM = Imgproc.getTextSize(round(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
 
                             Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
