@@ -85,7 +85,7 @@ public class ResultActivity extends BaseActivity{
                     String desc = patches.get(i).getDesc();
 
                     try {
-                        System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
+                        //System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
 
                         JSONArray array = imagePatchArray.getJSONArray(i);
                         // get the image number from the json array
@@ -156,11 +156,10 @@ public class ResultActivity extends BaseActivity{
             Button save = (Button) findViewById(R.id.activity_resultButtonSave);
             Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
 
-            //TODO onclicklistener for save button
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext(), R.string.thank_using_caddisfly, Toast.LENGTH_SHORT).show();
+
 
                     listener.onResult(resultJsonArr.toString());
 
@@ -494,6 +493,8 @@ public class ResultActivity extends BaseActivity{
 
                     resultJsonArr.put(object);
 
+                    //TESTING write image string to external storage
+                    FileStorage.writeLogToSDFile("base64.txt", img, false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

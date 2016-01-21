@@ -301,7 +301,7 @@ public class FileStorage {
         return String.valueOf(maxCount + 1);
     }
 
-    public static void writeLogToSDFile(String data){
+    public static void writeLogToSDFile(String filename, String data, boolean append){
 
         // Find the root of the external storage.
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
@@ -313,10 +313,10 @@ public class FileStorage {
 
         File dir = new File(root.getAbsolutePath() + "/download/striptest");
         dir.mkdirs();
-        File file = new File(dir, "log.txt");
+        File file = new File(dir, filename);
 
         try {
-            FileWriter writer = new FileWriter(file, true);
+            FileWriter writer = new FileWriter(file, append);
             writer.write(data);
 
             writer.close();
