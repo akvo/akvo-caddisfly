@@ -25,7 +25,7 @@ public class StripTest{
 
     }
 
-    public List<String> getBrandsAsList(Context context)
+    public List<String> getBrandsAsList()
     {
         List<String> brandnames = new ArrayList<>();
 
@@ -53,9 +53,9 @@ public class StripTest{
         return brandnames;
     }
 
-    public Brand getBrand(Context context, String brand)
+    public Brand getBrand(String brand)
     {
-        return new Brand(context, brand);
+        return new Brand(brand);
     }
 
     public class Brand
@@ -66,7 +66,7 @@ public class StripTest{
         private List<Patch> patches = new ArrayList<>();
         private JSONArray instructions;
 
-        public Brand(Context context, String brand) {
+        public Brand(String brand) {
 
             System.out.println("***Striptest brand: " + brand);
             try {

@@ -65,7 +65,7 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
             brandName = getArguments().getString(Constant.BRAND);
 
             StripTest stripTest = new StripTest();
-            JSONArray instructions = stripTest.getBrand(getActivity(),brandName).getInstructions();
+            JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
             TextView textView;
             try {
                 for (int i = 0; i < instructions.length(); i++) {

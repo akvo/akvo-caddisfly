@@ -83,7 +83,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
         String brandname = intent.getStringExtra(Constant.BRAND);
 
         stripTest = new StripTest();
-        int numPatches = stripTest.getBrand(context,brandname).getPatches().size();
+        int numPatches = stripTest.getBrand(brandname).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
         width = intent.getIntExtra(Constant.WIDTH, 0);
@@ -205,7 +205,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             listener.showMessage(2);
                             Mat strip = null;
                             try {
-                                StripTest.Brand brand = stripTest.getBrand(context,brandname);
+                                StripTest.Brand brand = stripTest.getBrand(brandname);
                                 strip = OpenCVUtils.detectStrip(striparea, brand, ratioW, ratioH);
                             }
                             catch (Exception e)

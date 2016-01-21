@@ -88,7 +88,7 @@ public class ColorimetryStripListFragment extends ListFragment {
         if(stripTest==null)
             stripTest = new StripTest();
 
-        brandnames = stripTest.getBrandsAsList(getActivity());
+        brandnames = stripTest.getBrandsAsList();
 
         if(brandnames!=null) {
             //order alpha-numeric on brand (same as the name of the .png file in assets)

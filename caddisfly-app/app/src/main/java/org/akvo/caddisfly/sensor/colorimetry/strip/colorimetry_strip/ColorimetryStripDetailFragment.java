@@ -97,7 +97,7 @@ public class ColorimetryStripDetailFragment extends Fragment {
 
                 StripTest stripTest = new StripTest();
                 TextView sectionLabelView = (TextView) rootView.findViewById(R.id.section_label);
-                sectionLabelView.setText(stripTest.getBrand(getActivity(), brandName).getName());
+                sectionLabelView.setText(stripTest.getBrand(brandName).getName());
 
                 //TODO not working with AppTheme.Orange
 //                AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());

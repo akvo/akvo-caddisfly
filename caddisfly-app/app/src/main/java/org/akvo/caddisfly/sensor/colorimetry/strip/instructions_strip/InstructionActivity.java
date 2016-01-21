@@ -52,7 +52,7 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
         try {
 
             StripTest stripTest = new StripTest();
-            StripTest.Brand brand = stripTest.getBrand(this, getIntent().getStringExtra(Constant.BRAND));
+            StripTest.Brand brand = stripTest.getBrand(getIntent().getStringExtra(Constant.BRAND));
             instructions = brand.getInstructions();
 
             for(int i=0;i<instructions.length();i++) {

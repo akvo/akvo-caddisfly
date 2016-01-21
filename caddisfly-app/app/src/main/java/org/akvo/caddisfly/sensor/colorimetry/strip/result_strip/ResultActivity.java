@@ -63,7 +63,7 @@ public class ResultActivity extends BaseActivity{
 
             Mat strip;
             StripTest stripTest = new StripTest();
-            StripTest.Brand brand = stripTest.getBrand(this, brandName);
+            StripTest.Brand brand = stripTest.getBrand(brandName);
 
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 

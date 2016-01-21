@@ -54,7 +54,7 @@ class ColorimetryStripAdapter extends ArrayAdapter<String> {
 
         if(brandnames!=null) {
             if (stripTest != null) {
-                StripTest.Brand brand = stripTest.getBrand(context, brandnames.get(position));
+                StripTest.Brand brand = stripTest.getBrand(brandnames.get(position));
 
                 if (brand != null) {
 
