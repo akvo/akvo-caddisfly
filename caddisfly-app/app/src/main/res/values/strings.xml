@@ -167,6 +167,7 @@
     <!--StripTest-->
     <!--paths to assets-->
     <string name="strips_json">strips.json</string>
+    <string name="strips_instruction_json">strips-instruction.json</string>
     <string name="striptest_images" translatable="false">images/striptest</string>
     <string name="instruction_images" translatable="false">images/instructions</string>
 
