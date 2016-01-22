@@ -286,30 +286,56 @@ public class ResultActivity extends BaseActivity{
                 */
                 double xMargin = 10d;
                 int circleRadius = 10;
-                double xtrans = (double)mat.cols()/(double)colours.length(); //calculate size of each color range block
+                double xtrans = (double) mat.cols() / (double) colours.length(); //calculate size of each color range block
                 double yColorRect = 20d; //distance from top Mat to top color rectangles
-                Point topleftColorRect = new Point(0, yColorRect);
-                Point bottomrightColorRect = new Point(xtrans - xMargin, xtrans - xMargin + yColorRect);
-                Point textposValueColorRect = new Point(0, 0);
                 boolean ppmIsDrawn = false;
-                Scalar labWhite =  new Scalar(255, 128, 128);
+                Scalar labWhite = new Scalar(255, 128, 128);
                 Scalar labGrey = new Scalar(128, 128, 128);
                 Scalar labBlack = new Scalar(0, 128, 128);
+                JSONObject colourObj;
+                JSONObject nextcolourObj;
 
                 /*
                 * Create Mat to hold description of patch
                  */
                 int[] baseline = new int[1];
                 Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, baseline);
-                Mat descMat = new Mat((int)Math.ceil(textSizeDesc.height) * 3, mat.cols(), CvType.CV_8UC3, labWhite);
-                Imgproc.putText(descMat, desc, new Point(2 , descMat.height() - textSizeDesc.height), Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_8, false);
+                Mat descMat = new Mat((int) Math.ceil(textSizeDesc.height) * 3, mat.cols(), CvType.CV_8UC3, labWhite);
+                Imgproc.putText(descMat, desc, new Point(2, descMat.height() - textSizeDesc.height), Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_8, false);
 
                  /*
                 * COLOR RANGE AS IN JSON FILE (FROM MANUFACTURER)
                 * Create Mat to hold a rectangle for each color
                 * the corresponding value written as text above that rectangle
                  */
-                Mat colorRangeMat = new Mat((int)Math.ceil(bottomrightColorRect.y), mat.cols(), CvType.CV_8UC3, labWhite);
+                Mat colorRangeMat = new Mat((int) Math.ceil(xtrans - xMargin + yColorRect), mat.cols(), CvType.CV_8UC3, labWhite);
+                for (int d = 0; d < colours.length(); d++) {
+                    try {
+
+                        colourObj = colours.getJSONObject(d);
+
+                        double value = colourObj.getDouble("value");
+                        JSONArray lab = colourObj.getJSONArray("lab");
+                        Scalar scalarLab = new Scalar(lab.getDouble(0) / 100 * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
+                        Size textSizeValue = Imgproc.getTextSize(round(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+
+                        //draw a rectangle filled with color for ppm value
+                        Point topleft = new Point(xtrans * d, yColorRect);
+                        Point bottomright =  new Point(topleft.x + xtrans - xMargin, yColorRect + xtrans);
+                        Imgproc.rectangle(colorRangeMat, topleft, bottomright, scalarLab, -1);
+
+                        //draw color value above rectangle
+                        Point centerText = new Point(topleft.x + (bottomright.x - topleft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
+                        Imgproc.putText(colorRangeMat, round(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                /*
+                * END COLOR RANGE
+                 */
 
                  /*
                 * VALUE MEASURED
@@ -319,123 +345,112 @@ public class ResultActivity extends BaseActivity{
                 Mat valueMeasuredMat = new Mat(50, mat.cols(), CvType.CV_8UC3, labWhite);
 
                 //grey line with ppm values at left and right
-                Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2*xMargin, 25), labGrey, 2, Core.LINE_AA, 0);
+                Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 2, Core.LINE_AA, 0);
 
                 try {
                     //get values for lowest and highest ppm values from striptest range
                     double leftValue = colours.getJSONObject(0).getDouble("value");
-                    double rightValue = colours.getJSONObject(colours.length()-1).getDouble("value");
+                    double rightValue = colours.getJSONObject(colours.length() - 1).getDouble("value");
                     Size textSizeLeftValue = Imgproc.getTextSize(String.format("%.0f", leftValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
                     Size textSizeRightValue = Imgproc.getTextSize(String.format("%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
-                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans-xMargin)/2 - textSizeLeftValue.width/2, 15), Core.FONT_HERSHEY_SIMPLEX,
-                            0.3d, labGrey, 1, Core.LINE_AA, false );
+                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans - xMargin) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
+                            0.3d, labGrey, 1, Core.LINE_AA, false);
                     Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue),
-                            new Point(valueMeasuredMat.cols() - xMargin - (xtrans-xMargin)/2 - textSizeRightValue.width/2 , 15),
+                            new Point(valueMeasuredMat.cols() - xMargin - (xtrans - xMargin) / 2 - textSizeRightValue.width / 2, 15),
                             Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
+                    for (int d = 0; d < colours.length(); d++) {
+                        try {
 
-                JSONObject colourObj;
-                JSONObject nextcolourObj;
+                            colourObj = colours.getJSONObject(d);
+                            if (d < colours.length() - 1) {
+                                nextcolourObj = colours.getJSONObject(d + 1);
+                            } else nextcolourObj = colourObj;
 
-                for(int d = 0; d < colours.length(); d++) {
-                    try {
+                            double value = colourObj.getDouble("value");
+                            double nextvalue = nextcolourObj.getDouble("value");
 
-                        colourObj = colours.getJSONObject(d);
-                        if(d<colours.length()-1) {
-                            nextcolourObj = colours.getJSONObject(d + 1);
+                            if (ppm < nextvalue && !ppmIsDrawn) {
+
+                                double restPPM = ppm - (value); //calculate the amount above the lowest value
+                                double transX = xtrans * (restPPM / (nextvalue - value)); //calculate number of pixs needed to translate in x direction
+
+                                Scalar ppmColor = colorDetected.getLab();
+                                //calculate where the center of the circle should be
+                                double left = xtrans * d;
+                                double right =  left + xtrans - xMargin;
+                                Point centerCircle = (transX) + xtrans * d < xMargin ? new Point(xMargin, 25d) :
+                                        new Point(left + (right - left)/2 + transX, 25d);
+
+                                //get text size of value test
+                                Size textSizePPM = Imgproc.getTextSize(round(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+
+                                Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
+                                Imgproc.putText(valueMeasuredMat, round(ppm), new Point(centerCircle.x - textSizePPM.width / 2, 47d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
+                                        labGrey, 1, Core.LINE_AA, false);
+
+                                ppmIsDrawn = true;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        else nextcolourObj = colourObj;
-
-                        double value = colourObj.getDouble("value");
-                        double nextvalue = nextcolourObj.getDouble("value");
-                        JSONArray lab = colourObj.getJSONArray("lab");
-                        Scalar scalarLab = new Scalar(lab.getDouble(0)/100 * 255, lab.getDouble(1)+128, lab.getDouble(2)+128);
-                        Size textSizeValue = Imgproc.getTextSize(round(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
-                        Point centerText = new Point((textposValueColorRect.x + (xtrans-xMargin)/2) - textSizeValue.width/2, yColorRect-textSizeValue.height );
-
-                        //draw a rectangle filled with color for ppm value
-                        //draw ppm value above rectangle
-                        Imgproc.rectangle(colorRangeMat, topleftColorRect, bottomrightColorRect, scalarLab,-1);
-                        Imgproc.putText(colorRangeMat, round(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
-
-                         /*
-                         * VALUE MEASURED
-                         */
-                        if(ppm < nextvalue && !ppmIsDrawn) {
-
-                            double restPPM = ppm - (value) ; //calculate the amount above the lowest value
-                            double transX = xtrans * (restPPM  / (nextvalue - value)); //calculate number of pixs needed to translate in x direction
-
-                            //System.out.println("***restPPM #: " + d +" = " + restPPM + " (nextvalue - value): " + (nextvalue - value) + " transX: " + transX);
-
-                            Scalar ppmColor = colorDetected.getLab();
-                            Point centerCircle = topleftColorRect.x + transX < xMargin? new Point(xMargin, 25d):
-                                    new Point(topleftColorRect.x + (bottomrightColorRect.x -topleftColorRect.x)/2 + transX, 25d);
-                            Size textSizePPM = Imgproc.getTextSize(round(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
-
-                            Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
-                            Imgproc.putText(valueMeasuredMat, round(ppm), new Point(centerCircle.x - textSizePPM.width/2, 47d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
-                                    labGrey, 1, Core.LINE_AA, false);
-
-                            ppmIsDrawn = true;
-                        }
-
-                        //Translate (sort of)
-                        topleftColorRect = new Point(topleftColorRect.x + xtrans, topleftColorRect.y);
-                        bottomrightColorRect = new Point(bottomrightColorRect.x + xtrans, bottomrightColorRect.y);
-                        textposValueColorRect = new Point(textposValueColorRect.x + xtrans, textposValueColorRect.y);
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
+                    /*
+                     * END VALUE MEASURED
+                    */
 
-                //Putting all together
-                Imgproc.cvtColor(descMat, descMat, Imgproc.COLOR_Lab2RGB);
-                Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
-                Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
-                combined = new Mat(descMat.rows() + mat.rows() + colorRangeMat.rows() + valueMeasuredMat.rows(), mat.cols(), CvType.CV_8UC3, new Scalar(255,255,255));
+                    /*
+                    * PUTTING ALL TOGETHER
+                    */
+                    Imgproc.cvtColor(descMat, descMat, Imgproc.COLOR_Lab2RGB);
+                    Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
+                    Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
-                Rect roi = new Rect(0, descMat.height(), mat.width(), mat.height());
-                Mat roiMat = combined.submat(roi);
-                mat.copyTo(roiMat);
+                    combined = new Mat(descMat.rows() + mat.rows() + colorRangeMat.rows() + valueMeasuredMat.rows(), mat.cols(), CvType.CV_8UC3, new Scalar(255, 255, 255));
 
-                roi = new Rect(0, descMat.height() + mat.height(), colorRangeMat.width(), colorRangeMat.height());
-                roiMat = combined.submat(roi);
-                colorRangeMat.copyTo(roiMat);
+                    Rect roi = new Rect(0, descMat.height(), mat.width(), mat.height());
+                    Mat roiMat = combined.submat(roi);
+                    mat.copyTo(roiMat);
 
-                roi = new Rect(0, descMat.height() + mat.height() + colorRangeMat.height(), valueMeasuredMat.width(), valueMeasuredMat.height());
-                roiMat = combined.submat(roi);
-                valueMeasuredMat.copyTo(roiMat);
+                    roi = new Rect(0, descMat.height() + mat.height(), colorRangeMat.width(), colorRangeMat.height());
+                    roiMat = combined.submat(roi);
+                    colorRangeMat.copyTo(roiMat);
 
-                //make bitmap to be rendered on screen
-                if(!combined.empty()) {
-                    stripBitmap = makeBitmap(combined);
-                }
+                    roi = new Rect(0, descMat.height() + mat.height() + colorRangeMat.height(), valueMeasuredMat.width(), valueMeasuredMat.height());
+                    roiMat = combined.submat(roi);
+                    valueMeasuredMat.copyTo(roiMat);
 
-                roi = new Rect(0, 0, descMat.width(), descMat.height());
-                roiMat = combined.submat(roi);
-                descMat.copyTo(roiMat);
+                    //make bitmap to be rendered on screen
+                    if (!combined.empty()) {
+                        stripBitmap = makeBitmap(combined);
+                    }
 
-                if(!combined.empty()) {
+                    //add name of patch to combined mat
+                    roi = new Rect(0, 0, descMat.width(), descMat.height());
+                    roiMat = combined.submat(roi);
+                    descMat.copyTo(roiMat);
 
-                    combinedBitmap = makeBitmap(combined);
-                    FileStorage.writeToSDFile(combinedBitmap);
-                }
+                    //make bitmap to be send to server
+                    if (!combined.empty()) {
+
+                        combinedBitmap = makeBitmap(combined);
+                        FileStorage.writeToSDFile(combinedBitmap);
+                    }
                  /*
                  * End making mats to put into image to be send back as an String to server
-                */
+                 */
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             else
             {
-                System.out.println("***invalid mat object***");
+                //System.out.println("***invalid mat object***");
 
                 if(!mat.empty())
                 {
@@ -460,7 +475,7 @@ public class ResultActivity extends BaseActivity{
             CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
 
             if (stripBitmap != null) {
-                 imageView.setImageBitmap(stripBitmap);
+                imageView.setImageBitmap(stripBitmap);
 
                 if (!invalid) {
                     if (colorDetected != null) {
