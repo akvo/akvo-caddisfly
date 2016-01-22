@@ -275,10 +275,10 @@ public class ResultActivity extends BaseActivity{
                 //wider than the strip itself. That is just because it looks nice.
                 int borderSize = (int) Math.ceil(mat.height() * 0.5);
 
-                Core.copyMakeBorder(mat, mat, borderSize, borderSize, 0, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+                Core.copyMakeBorder(mat, mat, borderSize, borderSize, borderSize, borderSize, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
                 //Draw a green circle around each patch
-                Imgproc.circle(mat, new Point(centerPatch.x, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
+                Imgproc.circle(mat, new Point(centerPatch.x + borderSize, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
                         new Scalar(0, 255, 0, 255), 2);
 
                 /*
@@ -286,10 +286,10 @@ public class ResultActivity extends BaseActivity{
                 */
                 double xMargin = 10d;
                 int circleRadius = 10;
-                double xtrans = (mat.cols())/colours.length(); //calculate size of each color range block
+                double xtrans = (double)mat.cols()/(double)colours.length(); //calculate size of each color range block
                 double yColorRect = 20d; //distance from top Mat to top color rectangles
                 Point topleftColorRect = new Point(0, yColorRect);
-                Point bottomrightColorRect = new Point(xtrans - xMargin, xtrans + yColorRect - xMargin);
+                Point bottomrightColorRect = new Point(xtrans - xMargin, xtrans - xMargin + yColorRect);
                 Point textposValueColorRect = new Point(0, 0);
                 boolean ppmIsDrawn = false;
                 Scalar labWhite =  new Scalar(255, 128, 128);
@@ -330,7 +330,8 @@ public class ResultActivity extends BaseActivity{
 
                     Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans-xMargin)/2 - textSizeLeftValue.width/2, 15), Core.FONT_HERSHEY_SIMPLEX,
                             0.3d, labGrey, 1, Core.LINE_AA, false );
-                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue), new Point(valueMeasuredMat.cols() - textSizeRightValue.width - 2*xMargin , 15),
+                    Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue),
+                            new Point(valueMeasuredMat.cols() - xMargin - (xtrans-xMargin)/2 - textSizeRightValue.width/2 , 15),
                             Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
                 } catch (JSONException e) {
@@ -400,22 +401,29 @@ public class ResultActivity extends BaseActivity{
                 Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
                 Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
-                combined = new Mat(descMat.rows() + mat.rows() + colorRangeMat.rows() + valueMeasuredMat.rows(), mat.cols(), CvType.CV_8UC3);
-                Rect roi = new Rect(0, 0, descMat.width(), descMat.height());
-                Mat roiMat = combined.submat(roi);
-                descMat.copyTo(roiMat);
+                combined = new Mat(descMat.rows() + mat.rows() + colorRangeMat.rows() + valueMeasuredMat.rows(), mat.cols(), CvType.CV_8UC3, new Scalar(255,255,255));
 
-                roi = new Rect(0, descMat.height(), mat.width(), mat.height());
-                roiMat = combined.submat(roi);
+                Rect roi = new Rect(0, descMat.height(), mat.width(), mat.height());
+                Mat roiMat = combined.submat(roi);
                 mat.copyTo(roiMat);
 
                 roi = new Rect(0, descMat.height() + mat.height(), colorRangeMat.width(), colorRangeMat.height());
                 roiMat = combined.submat(roi);
                 colorRangeMat.copyTo(roiMat);
 
-                roi = new Rect(0, descMat.height() + mat.height()+colorRangeMat.height(), valueMeasuredMat.width(), valueMeasuredMat.height());
+                roi = new Rect(0, descMat.height() + mat.height() + colorRangeMat.height(), valueMeasuredMat.width(), valueMeasuredMat.height());
                 roiMat = combined.submat(roi);
                 valueMeasuredMat.copyTo(roiMat);
+
+                //make bitmap to be rendered on screen
+                if(!combined.empty()) {
+                    stripBitmap = makeBitmap(combined);
+                }
+
+                roi = new Rect(0, 0, descMat.width(), descMat.height());
+                roiMat = combined.submat(roi);
+                descMat.copyTo(roiMat);
+
                  /*
                  * End making mats to put into image to be send back as an String to server
                 */
@@ -424,6 +432,10 @@ public class ResultActivity extends BaseActivity{
             {
                 //done with lab shema, make rgb to show in imageview
                 Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
+                if(!mat.empty())
+                {
+                    stripBitmap = makeBitmap(mat);
+                }
             }
 
             if(!combined.empty()) {
@@ -432,10 +444,7 @@ public class ResultActivity extends BaseActivity{
                 FileStorage.writeToSDFile(combinedBitmap);
             }
 
-            if(!mat.empty())
-            {
-                stripBitmap = makeBitmap(mat);
-            }
+
 
             return null;
         }
@@ -470,7 +479,7 @@ public class ResultActivity extends BaseActivity{
                 }
             } else {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
-                //TESTING
+
                 CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                 circleView.circleView(Color.RED);
             }
@@ -482,7 +491,7 @@ public class ResultActivity extends BaseActivity{
             if (combinedBitmap != null) {
 
                 //TESTING COMBINED BITMAP
-                imageView.setImageBitmap(combinedBitmap);
+                //imageView.setImageBitmap(combinedBitmap);
 
                 try {
                     JSONObject object = new JSONObject();
@@ -495,7 +504,7 @@ public class ResultActivity extends BaseActivity{
                     resultJsonArr.put(object);
 
                     //TESTING write image string to external storage
-                    FileStorage.writeLogToSDFile("base64.txt", img, false);
+                    //FileStorage.writeLogToSDFile("base64.txt", img, false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
