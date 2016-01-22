@@ -137,7 +137,7 @@ public class ResultActivity extends BaseActivity{
                         e.printStackTrace();
 
                         //TESTING
-                        new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
+                        //new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
 
                         continue;
                     }
@@ -150,7 +150,7 @@ public class ResultActivity extends BaseActivity{
                 layout.addView(textView);
 
                 //TESTING
-                new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
+                //new BitmapTask(true, null, new Point(1,1),null, null).execute(new Mat());
             }
 
             Button save = (Button) findViewById(R.id.activity_resultButtonSave);
@@ -424,27 +424,26 @@ public class ResultActivity extends BaseActivity{
                 roiMat = combined.submat(roi);
                 descMat.copyTo(roiMat);
 
+                if(!combined.empty()) {
+
+                    combinedBitmap = makeBitmap(combined);
+                    FileStorage.writeToSDFile(combinedBitmap);
+                }
                  /*
                  * End making mats to put into image to be send back as an String to server
                 */
             }
             else
             {
-                //done with lab shema, make rgb to show in imageview
-                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
+                System.out.println("***invalid mat object***");
+
                 if(!mat.empty())
                 {
+                    //done with lab shema, make rgb to show in imageview
+                    Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
                     stripBitmap = makeBitmap(mat);
                 }
             }
-
-            if(!combined.empty()) {
-
-                combinedBitmap = makeBitmap(combined);
-                FileStorage.writeToSDFile(combinedBitmap);
-            }
-
-
 
             return null;
         }
@@ -458,13 +457,13 @@ public class ResultActivity extends BaseActivity{
             descView.setText(desc);
 
             ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
+            CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
 
             if (stripBitmap != null) {
                  imageView.setImageBitmap(stripBitmap);
 
                 if (!invalid) {
                     if (colorDetected != null) {
-                        CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                         circleView.circleView(colorDetected.getColor());
                     }
 
@@ -480,7 +479,6 @@ public class ResultActivity extends BaseActivity{
             } else {
                 descView.append("\n\n" + getResources().getString(R.string.no_data));
 
-                CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
                 circleView.circleView(Color.RED);
             }
 
