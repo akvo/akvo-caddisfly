@@ -4,74 +4,74 @@
       //chlorine and free chlorine
       "brand": "HACH-27450-50",
       "instructions": [
-        {"text": "Collecter échantillon d'eau", "png": "instruction_collect_sample"},
-        {"text": "Bouger la bande avant et en arriere pendant 30 secs. Apres, sechez un peu.", "png":"instruction_dip" },
-        {"text": "Mettez la bande sur le carré noir. ", "png": "instruction_place_strip"},
-        {"text": "Appuyez bouton \'Commencer\'", "png": ""}
+        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
+        {"text": "Déplacez la bande d'avant en arrière pendant 30 secondes dans de l'eau. Ensuite, séchez l'excès d'eau. (placer sur une serviette)", "png":"instruction_dip" },
+        {"text": "Placez la bande sur la zone noire", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     },
     {
       //nitrate
       "brand": "HACH-27454-25",
       "instructions": [
-        {"text": "Dip strip into water for 1 second.", "png": ""},
-        {"text": "<!>Do not shake excess water from the test strip.<!", "png":"" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Plongez la bande dans l'eau pendant 1 seconde.", "png": ""},
+        {"text": "<!>Ne pas secouer l'excès d'eau de la bande test.<!", "png":"" },
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     },
     {
       //total iron
       "brand": "HACH-2745348",
       "instructions": [
-        {"text": "Fill sample vial HALF FULL with sample water.", "png": ""},
-        {"text": "Open one foil packet and add powder contents to vial.", "png": ""},
-        {"text": "Cap vial and shake rapidly for 5 seconds. Remove cap.", "png": ""},
-        {"text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.", "png":"" },
-        {"text": "Place strip onto black area.", "png": "instruction_place_strip"},
-        {"text": "After that: <!>Start test immediately.<!", "png": ""}
+        {"text": "Remplissez le flacon échantillon à moitié avec de l'eau de l'échantillon.", "png": ""},
+        {"text": "Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.", "png": ""},
+        {"text": "Rebouchez le flacon et agitez rapidement pendant 5 secondes. Enlever le bouchon.", "png": ""},
+        {"text": "Trempez une bande de test dans le flacon échantillon et remuez le rapidement d'avant en arrière sous l'eau pendant 15 secondes. Retirez la bande et secouez l'excès d'eau.", "png":"" },
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Après ceci: <!>Appuyez sur 'Démarrez' immédiatement<!", "png": ""}
       ]
     },
     {
       //pH 4-9
       "brand": "HACH-27456-50",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water and remove immediately. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
+        {"text": "Plongez la bande dans l'eau et retirez immédiatement. Ne sécher pas l'excès d'eau de la bande", "png":"instruction_dip" },
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     },
     {
       //Phosphate
       "brand": "HACH-27571-50",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
+        {"text": "Plongez la bande dans l'eau pendant 5 secondes et retirez la. Ne sécher pas l'excès d'eau de la bande", "png":"instruction_dip" },
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     },
     {
       //Dual Range Arsenic Test Strips (0-500 range)
       "brand": "HACH-28001-50-0-500",
       "instructions": [
-        {"text": "Collect 50 ml water sample using the provided bottle. <!>This sample size is for the range 0 - 500 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Follow the instructions that came with the testing kit for adding reagens"},
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!", "png": "instruction_collect_sample"},
+        {"text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"},
+        {"text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"},
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     },
     {
       //Dual Range Arsenic Test Strips (0-4000 range)
       "brand": "HACH-28001-50-0-4000",
       "instructions": [
-        {"text": "Collect 9.6 ml water sample using the small square container. <!>This sample size is for the range 0 - 4000 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Follow the instructions that came with the testing kit for adding reagens"},
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!", "png": "instruction_collect_sample"},
+        {"text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"},
+        {"text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"},
+        {"text": "Placez la bande sur la zone noire. ", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     }
   ]

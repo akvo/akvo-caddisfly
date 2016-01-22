@@ -144,7 +144,7 @@
     <string name="title_instruction_list">Instructions</string>
     <string name="to_results">Aux resultats</string>
     <string name="instructions">Instructions</string>
-    <string name="contrast">Contrast</string>
+    <string name="contrast">Ombres</string>
     <string name="init_camera">Initier camera …</string>
     <string name="analysing">Analyser image …</string>
     <string name="prepare_test">Preparez test</string>
@@ -152,6 +152,10 @@
     <string name="picture_taken">Photo a été prise</string>
     <string name="ready_for_picture">Prêt pour prendre photo</string>
     <string name="waiting">Attendez</string>
-    <string name="quality_checks_counter">Conditions: </string>
+    <string name="quality_checks_counter">Conditions: %1$s de %2$s</string>
+    <string name="confirm_quality_checks_ok">Très bien!\nAppuyex \'Suivant\'</string>
+    <string name="next">Suivant</string>
+    <string name="begin">Démarrez</string>
+
     <!--end Strip Test-->
 </resources>

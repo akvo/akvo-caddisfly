@@ -29,5 +29,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/activity_cameraStartButton"
         android:layout_alignParentBottom="true"
-        android:text="@string/start"/>
+        android:text="@string/begin"/>
 </RelativeLayout>

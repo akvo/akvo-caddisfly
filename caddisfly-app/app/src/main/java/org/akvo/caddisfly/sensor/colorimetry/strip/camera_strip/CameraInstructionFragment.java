@@ -80,7 +80,6 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
 
                         int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
                         textView.setPadding(0,0,0, padBottom);
-                        textView.setText(" - ");
 
                         int indexImp = instrArray[ii].indexOf(">");
                         if(indexImp >= 0)
@@ -92,9 +91,11 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
                             textView.setTextColor(Color.GRAY);
                         }
                         String text = instrArray[ii].replaceAll(">", "");
-                        textView.append(text);
-                        linearLayout.addView(textView);
-
+                        if(!text.isEmpty()) {
+                            textView.setText(" - ");
+                            textView.append(text);
+                            linearLayout.addView(textView);
+                        }
                     }
 
                 }
