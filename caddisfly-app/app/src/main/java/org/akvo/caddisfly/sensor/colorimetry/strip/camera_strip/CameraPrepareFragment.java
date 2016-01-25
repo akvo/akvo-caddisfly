@@ -114,7 +114,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
 
             if(messageView!=null)
             {
-                messageView.setText("Excellent! \nPlease go to the next step.");
+                messageView.setText(R.string.confirm_quality_checks_ok);
             }
         }
     }

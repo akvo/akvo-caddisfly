@@ -260,7 +260,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
             }
             else if (steps.get(i).animationEnded) {
-                message = getContext().getString(R.string.ready_for_picture) + String.valueOf(i + 1);
+                message = getContext().getString(R.string.ready_for_picture) + " " + String.valueOf(i + 1);
                 canvas.drawBitmap(background, 0, 0, paint);
 
             }
@@ -274,7 +274,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 if(i>0) {
                     if (steps.get(i - 1).animationEnded) {
                         try {
-                            message = getContext().getString(R.string.waiting) + PreviewUtils.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimelapse() - timeLapsed)) + " sec. ";
+                            message = getContext().getString(R.string.waiting) + " " + PreviewUtils.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimelapse() - timeLapsed)) + " sec. ";
                         } catch (Exception e) {
                             message = e.getMessage();
                         }
