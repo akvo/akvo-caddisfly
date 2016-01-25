@@ -69,8 +69,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         //get EV to use in order to avoid over exposure while trying to optimise brightness
         step = camera.getParameters().getExposureCompensationStep();
-        //make sure it never becomes zero
-        EV = Math.max(step, step * camera.getParameters().getExposureCompensation());
+        EV = step * camera.getParameters().getExposureCompensation();
     }
 
     protected void sendData(byte[] data){};
@@ -248,7 +247,6 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         lumMinMax = PreviewUtils.getDiffLuminosity(src_gray);
         if(lumMinMax.length == 2) {
-
             lumList.add(lumMinMax);
         }
     }
@@ -272,43 +270,35 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             //add highest value of 'white' to track list
             lumTrack.addLast(100 * maxmaxLum/255);
 
-            //System.out.println("***exp maxmaxLum: " + maxmaxLum);
-
             //compensate for under-exposure
             //if max values lower than 150
             if(maxmaxLum < Constant.MAX_LUM_LOWER)
             {
-                //enlarge
+                //The maximum is below the minimum value. Increase the exposure value
                 listener.adjustExposureCompensation(1);
-
-                System.out.println("*** under exposed. " + EV);
+                return maxmaxLum;
             }
 
             //compensate for over-exposure
-            //if max values larger than 240
+            //if max values larger than 254
             if(maxmaxLum > Constant.MAX_LUM_UPPER)
             {
-                System.out.println("*** over exposed. " + EV);
-                //Change direction in which to compensate
+                // the maximum is largen than the maximum value. We are likely overexposed
+                // adjust exposure downwards.
                 listener.adjustExposureCompensation(-1);
             }
             else
             {
                 //we want to get it as bright as possible but without risking overexposure
-                // we assume that EV will be a factor that determines the amount with which brightness will increase
-                // after adjusting exp. comp.
-                // we do not want to increase exp. comp. if the current brightness plus the max. brightness time the EV
-                // becomes larger that the UPPER limit
-                if(maxmaxLum + EV * 255 < Constant.MAX_LUM_UPPER) {
-                    //luminosity is increasing; this is good, keep going in the same direction
-                    System.out.println("***increasing exposure."  + EV);
+                if(maxmaxLum * Constant.PERCENT_ILLUM < Constant.MAX_LUM_UPPER) {
+                    // try to increase the exposure one more time
                     listener.adjustExposureCompensation(1);
                 }
                 else
                 {
                     //optimum situation reached
-                    System.out.println("***optimum exposure reached. " +  "  exp.comp. = " +
-                        EV/step);
+                    System.out.println("*** optimum exposure reached.  EV = " +
+                        EV);
                 }
             }
         }

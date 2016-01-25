@@ -18,7 +18,8 @@ public class Constant {
     public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
     public static final String IMAGE_PATCH = "org.akvo.akvoqr.imagepatch";
     public static final double MAX_LUM_LOWER = 150;
-    public static final double MAX_LUM_UPPER = 250;
+    public static final double MAX_LUM_UPPER = 254;
+    public static final double PERCENT_ILLUM = 1.05;
     public static final double MAX_LUM_PERCENTAGE = (MAX_LUM_UPPER / 255d) * 100;
     public static final double MAX_SHADOW_PERCENTAGE = 10;
     public static final double MIN_FOCUS_PERCENTAGE = 70;
