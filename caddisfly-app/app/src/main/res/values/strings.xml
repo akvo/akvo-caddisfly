@@ -113,6 +113,8 @@
     <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
     <string name="lowEcMeasurement">Low EC Measurement</string>
     <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
+    <string name="middleEcMeasurement">Middle EC Measurement</string>
+    <string name="suspendEcSensorInMiddle">Place EC Sensor in a MIDDLE EC solution and enter its pre-measured value below</string>
     <string name="highEcMeasurement">High EC Measurement</string>
     <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
