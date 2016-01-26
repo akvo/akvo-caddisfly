@@ -139,7 +139,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             if(info != null) {
                 //DETECT BRIGHTNESS
                 double maxmaxLum = luminosityCheck(lumList);
-                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum < Constant.MAX_LUM_UPPER ? 1 : 0;
+                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum <= Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // DETECT SHADOWS
                 if(bgr != null && possibleCenters.size() == 4) {
