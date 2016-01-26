@@ -7,6 +7,7 @@
       "id": "27450",
       "brand": "HACH-27450-50",
       "numPatch": 2,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.8,
       "height": 5.2,
@@ -99,6 +100,7 @@
       "id": "27454",
       "brand": "HACH-27454-25",
       "numPatch": 2,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.8,
       "height": 5.2,
@@ -196,6 +198,7 @@
       "id": "2745348",
       "brand": "HACH-2745348",
       "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.8,
       "height": 5.2,
@@ -254,6 +257,7 @@
       "id": "27456",
       "brand": "HACH-27456-50",
       "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.8,
       "height": 5.2,
@@ -307,6 +311,7 @@
       "id": "27571",
       "brand": "HACH-27571-50",
       "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.8,
       "height": 5.2,
@@ -355,6 +360,7 @@
       "id": "28001-0-500",
       "brand": "HACH-28001-50-0-500",
       "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.5,
       "height": 12.5,
@@ -406,6 +412,7 @@
       "id": "28001-0-4000",
       "brand": "HACH-28001-50-0-4000",
       "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
       "length": 82.5,
       "height": 12.5,
@@ -448,18 +455,20 @@
     },
     {
       "name": "pH MColorpHast range 0 - 14",
+      "comment":"patches are read from left to right, where the strip is placed with the patches towards the left",
       "calibration":"21 Jan 2016",
       "code": "strip-PH-MERCK-0-14",
       "id": "1.09535.0001-0-14",
       "brand": "MERCK-1095350001-100-0-14",
       "numPatch": 4,
+      "groupingType":"GROUP",
       "illuminant":"D65-2deg",
       "length": 74.3,
       "height": 5.8,
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"pH1",
+          "patchDesc":"pH",
           "patchPos":4.5,
           "patchWidth":6.05,
           "colours":[
@@ -528,7 +537,7 @@
           "unit": "pH"
         },
         {
-          "patchDesc":"pH2",
+          "patchDesc":"pH",
           "patchPos":10.55,
           "patchWidth":6.05,
           "colours":[
@@ -597,7 +606,7 @@
           "unit": "pH"
         },
         {
-          "patchDesc":"pH3",
+          "patchDesc":"pH",
           "patchPos":16.6,
           "patchWidth":6.05,
           "colours":[
@@ -666,7 +675,7 @@
           "unit": "pH"
         },
         {
-          "patchDesc":"pH4",
+          "patchDesc":"pH",
           "patchPos":22.65,
           "patchWidth":6.05,
           "colours":[

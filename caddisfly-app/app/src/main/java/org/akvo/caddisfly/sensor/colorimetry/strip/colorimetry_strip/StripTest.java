@@ -58,11 +58,14 @@ public class StripTest{
         return new Brand(brand);
     }
 
+    public enum groupType {GROUP, INDIVIDUAL};
+
     public class Brand
     {
         private String name;
         private double stripLenght;
         private double stripHeight;
+        private groupType groupingType;
         private List<Patch> patches = new ArrayList<>();
         private JSONArray instructions;
 
@@ -70,7 +73,7 @@ public class StripTest{
 
             System.out.println("***Striptest brand: " + brand);
             try {
-
+                // read the json file with strip information from assets
                 String json = fromJson();
                 JSONObject object = new JSONObject(json);
 
@@ -79,12 +82,8 @@ public class StripTest{
                     JSONObject strip;
 
                     if (stripsJson != null) {
-
                         for (int i = 0; i < stripsJson.length(); i++) {
-
                             strip = stripsJson.getJSONObject(i);
-
-                            //System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
 
                             if (!strip.getString("brand").equalsIgnoreCase(brand)) {
                                 continue;
@@ -92,6 +91,7 @@ public class StripTest{
                                 try {
                                     this.stripLenght = strip.getDouble("length");
                                     this.stripHeight = strip.getDouble("height");
+                                    this.groupingType = strip.getString("groupingType").equals(groupType.GROUP.toString()) ? groupType.GROUP : groupType.INDIVIDUAL;
                                     this.name = strip.getString("name");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
@@ -151,6 +151,10 @@ public class StripTest{
 //        public double getStripHeight() {
 //            return stripHeight;
 //        }
+
+        public groupType getGroupingType() {
+            return groupingType;
+        }
 
         public double getStripLenght() {
             return stripLenght;
