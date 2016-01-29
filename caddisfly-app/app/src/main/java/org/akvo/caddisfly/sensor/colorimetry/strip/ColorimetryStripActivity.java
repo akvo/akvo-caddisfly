@@ -133,14 +133,7 @@ public class ColorimetryStripActivity extends AppCompatActivity
     @Override
     public void onResult(String result) {
 
-        System.out.println("***onResult ColorimetryStripActivity called");
-
-        try {
-            JSONArray array = new JSONArray(result);
-            System.out.println("***onResult ColorimetryStripActivity result: " + array.toString(2));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        //System.out.println("***onResult ColorimetryStripActivity called");
 
         Intent intent = new Intent(getIntent());
         intent.putExtra("response", result);

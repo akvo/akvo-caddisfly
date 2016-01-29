@@ -52,6 +52,8 @@ public class ResultActivity extends BaseActivity{
     private JSONObject resultJsonObj = new JSONObject();
     private JSONArray resultJsonArr = new JSONArray();
     private FileStorage fileStorage;
+    private String brandName;
+    private StripTest.Brand brand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +63,13 @@ public class ResultActivity extends BaseActivity{
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
-            final String brandName = intent.getStringExtra(Constant.BRAND);
+            brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
             StripTest stripTest = new StripTest();
 
             // get information on the strip test from JSON
-            StripTest.Brand brand = stripTest.getBrand(brandName);
+            brand = stripTest.getBrand(brandName);
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
             // get the JSON describing the images of the patches that were stored before
@@ -141,11 +143,22 @@ public class ResultActivity extends BaseActivity{
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onResult(resultJsonArr.toString());
+
+                try {
+                    resultJsonObj.put("type", "caddisfly-strip");
+                    resultJsonObj.put("name", brand.getName());
+                    resultJsonObj.put("brand", brandName);
+                    resultJsonObj.put("code", brand.getCode());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                listener.onResult(resultJsonObj.toString());
 
                 Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
                 i.putExtra("finish", true);
-                i.putExtra("response", resultJsonArr.toString());
+                i.putExtra("response", resultJsonObj.toString());
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
 
@@ -697,17 +710,19 @@ public class ResultActivity extends BaseActivity{
             //put ppm and image in resultJsonArr
             if (combinedBitmap != null) {
                 try {
+
                     JSONObject object = new JSONObject();
                     object.put("name", desc);
                     object.put("value", ppm);
                     object.put("unit", unit);
                     String img = fileStorage.bitmapToBase64String(combinedBitmap);
                     object.put("img", img);
-
                     resultJsonArr.put(object);
+                    resultJsonObj.put("result", resultJsonArr);
 
                     //TESTING write image string to external storage
                     //FileStorage.writeLogToSDFile("base64.txt", img, false);
+                    FileStorage.writeLogToSDFile("json.txt", resultJsonObj.toString(), false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
