@@ -78,11 +78,11 @@
       //Merkc pH range 0 - 14
       "brand": "MERCK-1095350001-100-0-14",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip in the water for at least 2 seconds and remove."},
-        {"text": "Shake excess water from the strip"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
+        {"text": "Plongez la bande dans l'eau pendant 2 secondes et retirez la."},
+        {"text": "Séchez l'excès d'eau."},
+        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
+        {"text": "Appuyez sur 'Démarrez'", "png": ""}
       ]
     }
   ]
