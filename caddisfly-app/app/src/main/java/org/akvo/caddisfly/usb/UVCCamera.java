@@ -16,11 +16,9 @@
 
 package org.akvo.caddisfly.usb;
 
-import android.graphics.SurfaceTexture;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 
 import org.akvo.caddisfly.usb.USBMonitor.UsbControlBlock;
 
@@ -28,8 +26,8 @@ public class UVCCamera {
 
     public static final int DEFAULT_PREVIEW_MODE = 0;
     public static final int PIXEL_FORMAT_RAW = 0;
-    private static final int DEFAULT_PREVIEW_WIDTH = 640;
-    private static final int DEFAULT_PREVIEW_HEIGHT = 480;
+    private static final int DEFAULT_PREVIEW_WIDTH = 1280;
+    private static final int DEFAULT_PREVIEW_HEIGHT = 720;
     private static final String TAG = UVCCamera.class.getSimpleName();
     private static final String DEFAULT_USBFS = "/dev/bus/com.serenegiant.usb";
     private static boolean isLoaded;
@@ -72,10 +70,6 @@ public class UVCCamera {
 
     @SuppressWarnings("JniMissingFunction")
     private static native int nativeSetPreviewDisplay(long id_camera, Surface surface);
-
-    //private static native int nativeSetFrameCallback(long mNativePtr, IFrameCallback callback, int pixelFormat);
-
-    //private static native int nativeSetCaptureDisplay(long id_camera, Surface surface);
 
     /**
      * connect to a UVC camera
@@ -121,26 +115,26 @@ public class UVCCamera {
         }
     }
 
-    /**
-     * set preview surface with SurfaceHolder</br>
-     * you can use SurfaceHolder came from SurfaceView/GLSurfaceView
-     *
-     * @param holder
-     */
-    public void setPreviewDisplay(final SurfaceHolder holder) {
-        nativeSetPreviewDisplay(mNativePtr, holder.getSurface());
-    }
+//    /**
+//     * set preview surface with SurfaceHolder</br>
+//     * you can use SurfaceHolder came from SurfaceView/GLSurfaceView
+//     *
+//     * @param holder
+//     */
+//    public void setPreviewDisplay(final SurfaceHolder holder) {
+//        nativeSetPreviewDisplay(mNativePtr, holder.getSurface());
+//    }
 
-    /**
-     * set preview surface with SurfaceTexture.
-     * this method require API >= 14
-     *
-     * @param texture
-     */
-    public void setPreviewTexture(final SurfaceTexture texture) {    // API >= 11
-        final Surface surface = new Surface(texture);    // XXX API >= 14
-        nativeSetPreviewDisplay(mNativePtr, surface);
-    }
+//    /**ch
+//     * set preview surface with SurfaceTexture.
+//     * this method require API >= 14
+//     *
+//     * @param texture
+//     */
+//    public void setPreviewTexture(final SurfaceTexture texture) {    // API >= 11
+//        final Surface surface = new Surface(texture);    // XXX API >= 14
+//        nativeSetPreviewDisplay(mNativePtr, surface);
+//    }
 
     /**
      * set preview surface with Surface
@@ -150,18 +144,6 @@ public class UVCCamera {
     public void setPreviewDisplay(final Surface surface) {
         nativeSetPreviewDisplay(mNativePtr, surface);
     }
-
-    /**
-     * set frame callback
-     *
-     * @param callback
-     * @param pixelFormat
-     */
-//    private void setFrameCallback(final IFrameCallback callback, final int pixelFormat) {
-//        if (mNativePtr != 0) {
-//            nativeSetFrameCallback(mNativePtr, callback, pixelFormat);
-//        }
-//    }
 
     /**
      * start preview

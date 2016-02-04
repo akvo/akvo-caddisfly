@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?primaryBackgroundStyle"
-    tools:context="org.akvo.caddisfly.ExternalActionActivity"
+    tools:context="org.akvo.caddisfly.ui.ExternalActionActivity"
     tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar" />

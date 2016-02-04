@@ -47,7 +47,7 @@ public class ColorUtilTest extends TestCase {
         TestInfo testInfo = new TestInfo();
 
         for (int i = 0; i < 5; i++) {
-            Swatch swatch = new Swatch(((int) ((double) i * 10)) / 10f, Color.TRANSPARENT, Color.TRANSPARENT);
+            Swatch swatch = new Swatch(((double) i * 10) / 10f, Color.TRANSPARENT, Color.TRANSPARENT);
             testInfo.addSwatch(swatch);
         }
 

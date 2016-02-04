@@ -155,21 +155,21 @@ class TestHelper {
     }
 
 
-    public static void clickViewInScrollView(String buttonText) {
-        try {
-
-            UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-            appViews.setAsVerticalList();
-            appViews.flingToEnd(3);
-            appViews.getChildByText(
-                    new UiSelector().className(android.widget.Button.class.getName()), buttonText).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void clickViewInScrollView(String buttonText) {
+//        try {
+//
+//            UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+//            appViews.setAsVerticalList();
+//            appViews.flingToEnd(3);
+//            appViews.getChildByText(
+//                    new UiSelector().className(android.widget.Button.class.getName()), buttonText).click();
+//
+//            mDevice.waitForWindowUpdate("", 2000);
+//
+//        } catch (UiObjectNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static void clickExternalSourceButton(String buttonText) {
         try {

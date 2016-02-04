@@ -68,7 +68,7 @@ public class CalibrateListFragment extends ListFragment {
 
         CalibrationsAdapter calibrationsAdapter = new CalibrationsAdapter(getActivity(),
                 currentTestInfo.getSwatches().toArray(
-                        new Swatch[currentTestInfo.getSwatches().size()]));
+                        new Swatch[currentTestInfo.getSwatches().size()]), currentTestInfo.hasDecimalPlace());
 
         setListAdapter(calibrationsAdapter);
 

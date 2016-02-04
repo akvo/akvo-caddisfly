@@ -36,6 +36,7 @@ public class TestInfo {
     private final CaddisflyApp.TestType testType;
     private final ArrayList<Integer> dilutions;
     private final boolean requiresCalibration;
+    private boolean allInteger = true;
     private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
@@ -65,8 +66,12 @@ public class TestInfo {
                 defaultColor = Color.parseColor(hexColor);
             }
 
-            Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f,
+            Swatch swatch = new Swatch((Double.valueOf(range) * 10) / 10f,
                     Color.TRANSPARENT, defaultColor);
+
+            if (allInteger && swatch.getValue() % 1 != 0) {
+                allInteger = false;
+            }
             addSwatch(swatch);
 
         }
@@ -187,5 +192,9 @@ public class TestInfo {
 
     public int getMonthsValid() {
         return monthsValid;
+    }
+
+    public boolean hasDecimalPlace() {
+        return !allInteger;
     }
 }

@@ -169,7 +169,7 @@ public class TimeLapseActivity extends BaseActivity {
                 bundle.putString("textCode", mTestCode);
                 fragment.setArguments(bundle);
 
-                textTitle.setText("Coliform");
+                textTitle.setText("Coliforms");
                 break;
         }
 
