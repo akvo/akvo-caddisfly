@@ -146,7 +146,7 @@
         "code": "pesti",
         "unit": "ppm",
         "calibrate": "true",
-        "ranges": "0.25,0.5,0.75,1",
+        "ranges": "0,0.25,0.5,0.75,1",
         "diagnostic": "true",
         "monthsValid": "6"
       },

@@ -54,13 +54,13 @@ public final class ExternalCameraFragment extends CameraDialog {
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_WIDTH = 320;
+    private static final int PREVIEW_WIDTH = 1280;
     /**
      * preview resolution(height)
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_HEIGHT = 240;
+    private static final int PREVIEW_HEIGHT = 720;
     /**
      * preview mode
      * if your camera does not support specific resolution and mode,
@@ -275,7 +275,7 @@ public final class ExternalCameraFragment extends CameraDialog {
         }, mSamplingDelay);
     }
 
-    public boolean hasTestCompleted() {
+    private boolean hasTestCompleted() {
         return mPhotoCurrentCount >= mNumberOfPhotosToTake;
     }
 

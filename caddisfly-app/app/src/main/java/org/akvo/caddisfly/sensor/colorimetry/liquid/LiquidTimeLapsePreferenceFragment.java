@@ -51,7 +51,7 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
-        String testCode = getArguments().getString("testCode");
+        //String testCode = getArguments().getString("testCode");
 
         final EditTextPreference sampleIntervalPreference =
                 (EditTextPreference) findPreference(getString(R.string.fluor_IntervalMinutesKey));

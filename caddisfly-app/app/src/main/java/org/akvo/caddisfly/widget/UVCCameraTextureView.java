@@ -18,8 +18,6 @@ package org.akvo.caddisfly.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -40,8 +38,6 @@ public class UVCCameraTextureView extends TextureView
     private boolean mHasSurface;
     private Bitmap mTempBitmap;
     private boolean mRequestCaptureStillImage;
-    private Paint circleStroke;
-
 
     public UVCCameraTextureView(final Context context) {
         this(context, null, 0);
@@ -146,17 +142,6 @@ public class UVCCameraTextureView extends TextureView
                 mCaptureSync.notifyAll();
             }
         }
-    }
-
-    @Override
-    public void onDrawForeground(Canvas canvas) {
-        super.onDrawForeground(canvas);
-
-        int w = getWidth();
-        int h = getHeight();
-
-        canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
-
     }
 
     @Override

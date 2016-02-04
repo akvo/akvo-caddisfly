@@ -63,9 +63,9 @@ public final class DateUtil {
     }
 
 
-    public static String getDateTimeString() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
-    }
+//    public static String getDateTimeString() {
+//        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
+//    }
 
 
     public static Date convertStringToDate(String dateString, String format) {

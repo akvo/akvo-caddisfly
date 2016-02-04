@@ -66,7 +66,7 @@ public class TestInfo {
                 defaultColor = Color.parseColor(hexColor);
             }
 
-            Swatch swatch = new Swatch(((int) (Double.valueOf(range) * 10)) / 10f,
+            Swatch swatch = new Swatch((Double.valueOf(range) * 10) / 10f,
                     Color.TRANSPARENT, defaultColor);
 
             if (allInteger && swatch.getValue() % 1 != 0) {

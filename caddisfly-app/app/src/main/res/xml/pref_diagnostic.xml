@@ -26,7 +26,7 @@
             android:title="Colorimetric Test" />
         <Preference
             android:key="startTurbidityTest"
-            android:title="Coliform Test">
+            android:title="Coliforms Test">
             <intent
                 android:data="colif"
                 android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"

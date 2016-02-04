@@ -38,7 +38,7 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class UpdateHelper {
+final class UpdateHelper {
 
     public static UpdateCheckReceiver checkUpdate(final Context context, boolean showMessage) {
 

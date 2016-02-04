@@ -97,11 +97,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //updateCheckReceiver = UpdateHelper.checkUpdate(this, true);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        updateCheckReceiver = UpdateHelper.checkUpdate(this, true);
+//    }
 
     /**
      * Alert shown when a feature is not supported by the device

@@ -51,7 +51,6 @@ public class DiagnosticPreviewFragment extends DialogFragment {
     private ShakeDetector mShakeDetector;
     private SoundPoolPlayer sound;
     private CameraDialog mCameraDialog;
-    private USBMonitor mUSBMonitor;
 
     public static DiagnosticPreviewFragment newInstance() {
         return new DiagnosticPreviewFragment();
@@ -65,10 +64,10 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         sound = new SoundPoolPlayer(getActivity());
 
-        mUSBMonitor = new USBMonitor(getActivity(), null);
+        USBMonitor usbMonitor = new USBMonitor(getActivity(), null);
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
-        List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
+        List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
         if (usbDeviceList.size() > 0) {
             mCameraDialog = ExternalCameraFragment.newInstance();
         } else {
