@@ -230,7 +230,7 @@ public class CalibrateSensorActivity extends BaseActivity {
 
                                 @Override
                                 public void run() {
-                                    String requestCommand = "SET ValueLow " + editLowValue.getText() + "\r\n";
+                                    String requestCommand = "SET POINT1 " + editLowValue.getText() + "\r\n";
                                     usbService.write(requestCommand.getBytes());
                                     (new Handler()).postDelayed(new Runnable() {
                                         public void run() {
@@ -280,7 +280,7 @@ public class CalibrateSensorActivity extends BaseActivity {
 
                                 @Override
                                 public void run() {
-                                    String requestCommand = "SET ValueMiddle " + editMiddleValue.getText() + "\r\n";
+                                    String requestCommand = "SET POINT3" + editMiddleValue.getText() + "\r\n";
                                     usbService.write(requestCommand.getBytes());
                                     (new Handler()).postDelayed(new Runnable() {
                                         public void run() {
@@ -328,7 +328,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                             @Override
                             public void run() {
 
-                                String requestCommand = "SET ValueHigh " + editHighValue.getText() + "\r\n";
+                                String requestCommand = "SET POINT6 " + editHighValue.getText() + "\r\n";
                                 usbService.write(requestCommand.getBytes());
                                 (new Handler()).postDelayed(new Runnable() {
                                     public void run() {
