@@ -466,7 +466,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {
@@ -580,7 +580,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {

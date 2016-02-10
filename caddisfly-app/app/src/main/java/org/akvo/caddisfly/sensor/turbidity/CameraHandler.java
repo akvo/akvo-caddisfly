@@ -235,7 +235,7 @@ class CameraHandler implements Camera.PictureCallback {
                 Bitmap bitmap = ImageUtil.getBitmap(data);
 
                 Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
                 //Extract the color from the photo which will be used for comparison
                 ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
@@ -255,8 +255,9 @@ class CameraHandler implements Camera.PictureCallback {
 
                 bitmap = ImageUtil.getBitmap(data);
                 bitmap = ImageUtil.rotateImage(bitmap, 90);
+                bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
 
-                Bitmap croppedGrayBitmap = getGrayscale(ImageUtil.getCroppedBitmap(bitmap, 180));
+                Bitmap croppedGrayBitmap = getGrayscale(bitmap);
                 int[] brightnessValues = getContrast(croppedGrayBitmap);
 
                 int blackIndex = 0;

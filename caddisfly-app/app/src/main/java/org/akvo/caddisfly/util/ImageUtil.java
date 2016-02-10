@@ -59,7 +59,7 @@ public class ImageUtil {
      * @return the cropped bitmap
      */
     @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length) {
+    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length, boolean detectBackdrop) {
 
         int[] pixels = new int[length * length];
 
@@ -68,7 +68,7 @@ public class ImageUtil {
         int radius = 140;
         Point point;
 
-        if (AppPreferences.getNoBackdropDetection()) {
+        if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
             point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
