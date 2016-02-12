@@ -164,5 +164,7 @@
     <string name="update">Update</string>
     <string name="deviceConnected">Device connected</string>
     <string name="go">Go</string>
+    <string name="next">Next</string>
+    <string name="change">Change</string>
 
 </resources>

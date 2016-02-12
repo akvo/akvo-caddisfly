@@ -28,6 +28,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 import java.util.Set;
 
@@ -49,6 +51,8 @@ public class CalibrateSensorActivity extends BaseActivity {
     private static final String DEBUG_TAG = "SensorActivity";
 
     final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
+
+    private final Handler handler = new Handler();
 
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
@@ -82,10 +86,19 @@ public class CalibrateSensorActivity extends BaseActivity {
     private TextView textInformation;
     private Context mContext;
     private UsbService usbService;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            requestResult();
+        }
+    };
+    private TextView textId;
+    private MyHandler mHandler;
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(mHandler);
         }
 
         @Override
@@ -93,6 +106,7 @@ public class CalibrateSensorActivity extends BaseActivity {
             usbService = null;
         }
     };
+    private String mReceivedData = "";
 
     @Override
     public void onResume() {
@@ -146,10 +160,13 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         mContext = this;
 
+        mHandler = new MyHandler(this);
+
         final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
         Button buttonStartCalibrate = (Button) findViewById(R.id.buttonStartCalibrate);
         Button buttonCalibrate = (Button) findViewById(R.id.buttonCalibrate);
+        Button buttonNext = (Button) findViewById(R.id.buttonNext);
 
         Configuration conf = getResources().getConfiguration();
         if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
@@ -160,22 +177,24 @@ public class CalibrateSensorActivity extends BaseActivity {
         textHeading = (TextView) findViewById(R.id.textHeading);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         textInformation = (TextView) findViewById(R.id.textInformation);
+        textId = (TextView) findViewById(R.id.textId);
 
         buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (usbService.isUsbConnected()) {
 
-                    final ProgressDialog dialog = ProgressDialog.show(mContext,
-                            getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true);
-                    dialog.setCancelable(false);
-                    dialog.show();
+                    final ProgressDialog progressDialog = ProgressDialog.show(mContext,
+                            getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true, false);
+
+                    handler.postDelayed(runnable, 100);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            dialog.dismiss();
+                            progressDialog.dismiss();
                             viewAnimator.showNext();
+
 
                             displayInformation(calibrationIndex);
                         }
@@ -187,6 +206,12 @@ public class CalibrateSensorActivity extends BaseActivity {
             }
         });
 
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewAnimator.showNext();
+            }
+        });
 
         buttonCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,6 +227,7 @@ public class CalibrateSensorActivity extends BaseActivity {
     }
 
     private void displayInformation(int calibrationIndex) {
+
         textHeading.setText(String.format(Locale.US,
                 getString(R.string.calibratePoint),
                 calibrationPoints[calibrationIndex]));
@@ -212,13 +238,51 @@ public class CalibrateSensorActivity extends BaseActivity {
 
     }
 
+    private void requestResult() {
+        //Log.d(DEBUG_TAG, "Request Result");
+        String data = "GET ID\r\n";
+        if (usbService != null && usbService.isUsbConnected()) {
+            // if UsbService was correctly bound, Send data
+            usbService.write(data.getBytes());
+        }
+    }
+
     public void CalibratePoint(final int[] calibrationPoints, final int index) {
-        final ProgressDialog dialog = ProgressDialog.show(mContext,
-                getString(R.string.pleaseWait), getString(R.string.calibrating), true);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.pleaseWait);
+        progressDialog.setMessage(getString(R.string.calibrating));
+        progressDialog.setIndeterminate(false);
+        progressDialog.setMax(15);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
 
-        dialog.setCancelable(false);
+        final Handler handle = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                progressDialog.incrementProgressBy(1);
+            }
+        };
 
-        dialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (progressDialog.getProgress() <= progressDialog
+                            .getMax()) {
+                        Thread.sleep(1000);
+                        handle.sendMessage(handle.obtainMessage());
+                        if (progressDialog.getProgress() == progressDialog
+                                .getMax()) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
 
         new Handler().postDelayed(new Runnable() {
 
@@ -232,7 +296,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
 
-                        dialog.dismiss();
+                        progressDialog.dismiss();
 
                         if (calibrationIndex > 5) {
 
@@ -275,5 +339,39 @@ public class CalibrateSensorActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
+    }
+
+    private void displayId(String value) {
+        value = value.replace("\r\n", "");
+        textId.setText(value);
+    }
+
+    /*
+    * This handler will be passed to UsbService.
+    * Data received from serial port is displayed through this handler
+    */
+    private static class MyHandler extends Handler {
+        private final WeakReference<CalibrateSensorActivity> mActivity;
+
+        public MyHandler(CalibrateSensorActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UsbService.MESSAGE_FROM_SERIAL_PORT:
+                    String data = (String) msg.obj;
+                    CalibrateSensorActivity sensorActivity = mActivity.get();
+                    if (sensorActivity != null) {
+                        sensorActivity.mReceivedData += data;
+                        if (sensorActivity.mReceivedData.contains("\r\n")) {
+                            sensorActivity.displayId(sensorActivity.mReceivedData);
+                            sensorActivity.mReceivedData = "";
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }
