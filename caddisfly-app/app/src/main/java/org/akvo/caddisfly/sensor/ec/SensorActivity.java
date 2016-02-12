@@ -44,6 +44,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
@@ -83,16 +84,18 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
-            {
-                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
+//            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
+//            {
+//                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
+//            } else
+
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
             {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
             {
-                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
             {
@@ -306,13 +309,19 @@ public class SensorActivity extends BaseActivity {
                     resultArray[i] = resultArray[i].trim();
                 }
 
-                mTemperature = resultArray[0];
-                mEc25Value = resultArray[1];
+                double temperature;
+                long ec25Value;
 
-                double temperature = Double.parseDouble(mTemperature);
-                mTemperature = String.format("%.1f", temperature);
-                //mTemperature = mTemperature.replace(".0", "");
-                long ec25Value = Math.round(Double.parseDouble(mEc25Value));
+                try {
+                    temperature = Double.parseDouble(resultArray[0]);
+                    mTemperature = String.format(Locale.US, "%.1f", temperature);
+
+                    ec25Value = Math.round(Double.parseDouble(resultArray[1]));
+
+                } catch (NumberFormatException e) {
+                    mTemperature = "";
+                    ec25Value = -1;
+                }
 
                 if (ec25Value > -1) {
                     mEc25Value = Long.toString(ec25Value);
@@ -332,14 +341,13 @@ public class SensorActivity extends BaseActivity {
                     if (mEc25Value.isEmpty()) {
                         textResult.setText("");
                         progressWait.setVisibility(View.VISIBLE);
-                        //textUnit.setText("");
                         if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
                             textUnit.setText(mCurrentTestInfo.getUnit());
                         }
                         buttonAcceptResult.setVisibility(View.GONE);
                         textSubtitle.setText(R.string.dipSensorInSample);
                     } else {
-                        textResult.setText(String.format("%d", ec25Value));
+                        textResult.setText(String.format(Locale.US, "%d", ec25Value));
                         progressWait.setVisibility(View.GONE);
                         buttonAcceptResult.setVisibility(View.VISIBLE);
                         textSubtitle.setText(R.string.sensorConnected);

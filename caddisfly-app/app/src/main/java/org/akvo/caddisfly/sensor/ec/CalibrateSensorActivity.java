@@ -29,13 +29,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
@@ -44,30 +40,34 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity {
 
     private static final String DEBUG_TAG = "SensorActivity";
+
+    final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
+
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
-            {
-                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
+//            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
+//            {
+//                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
+//            } else
+
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
             {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
-            {
-                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
+            }
+//            else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
+//            {
+//                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
+//            }
+            else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
             {
                 Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
@@ -76,7 +76,10 @@ public class CalibrateSensorActivity extends BaseActivity {
             }
         }
     };
+    int calibrationIndex = 0;
+    private TextView textHeading;
     private TextView textSubtitle;
+    private TextView textInformation;
     private Context mContext;
     private UsbService usbService;
     private final ServiceConnection usbConnection = new ServiceConnection() {
@@ -90,7 +93,6 @@ public class CalibrateSensorActivity extends BaseActivity {
             usbService = null;
         }
     };
-    private EditText mCurrentEditText;
 
     @Override
     public void onResume() {
@@ -137,19 +139,6 @@ public class CalibrateSensorActivity extends BaseActivity {
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private void setEditTextFocus(EditText editText, boolean isFocused) {
-        editText.setCursorVisible(isFocused);
-        editText.setFocusable(isFocused);
-        editText.setFocusableInTouchMode(isFocused);
-
-        if (isFocused) {
-            editText.requestFocus();
-        }
-
-        mCurrentEditText = editText;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,9 +149,7 @@ public class CalibrateSensorActivity extends BaseActivity {
         final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
         Button buttonStartCalibrate = (Button) findViewById(R.id.buttonStartCalibrate);
-        final EditText editLowValue = (EditText) findViewById(R.id.editLowValue);
-        final EditText editMiddleValue = (EditText) findViewById(R.id.editMiddleValue);
-        final EditText editHighValue = (EditText) findViewById(R.id.editHighValue);
+        Button buttonCalibrate = (Button) findViewById(R.id.buttonCalibrate);
 
         Configuration conf = getResources().getConfiguration();
         if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
@@ -170,14 +157,10 @@ public class CalibrateSensorActivity extends BaseActivity {
                     CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
         }
 
+        textHeading = (TextView) findViewById(R.id.textHeading);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        textInformation = (TextView) findViewById(R.id.textInformation);
 
-        String calibratedDate = PreferencesUtil.getString(this, R.string.sensorCalibratedDateKey, "");
-        if (!calibratedDate.isEmpty()) {
-            textSubtitle.setText(String.format("Calibrated: %s", calibratedDate));
-        }
-
-        final Context context = this;
         buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,14 +175,9 @@ public class CalibrateSensorActivity extends BaseActivity {
                         @Override
                         public void run() {
                             dialog.dismiss();
-                            textSubtitle.setText(R.string.lowEcMeasurement);
                             viewAnimator.showNext();
 
-                            setEditTextFocus(editLowValue, true);
-                            InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                                    Context.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
+                            displayInformation(calibrationIndex);
                         }
                     }, 2000);
 
@@ -209,154 +187,70 @@ public class CalibrateSensorActivity extends BaseActivity {
             }
         });
 
-        editLowValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+        buttonCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((actionId == EditorInfo.IME_ACTION_DONE) ||
-                        ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) &&
-                                (event.getAction() == KeyEvent.ACTION_DOWN))) {
-                    if (validInput(editLowValue.getText().toString())) {
-                        closeKeyboard(editLowValue);
-
-                        if (usbService.isUsbConnected()) {
-//                            if (mEcValue != -1) {
-
-                            final ProgressDialog dialog = ProgressDialog.show(mContext,
-                                    getString(R.string.pleaseWait), getString(R.string.calibrating), true);
-                            dialog.setCancelable(false);
-                            dialog.show();
-
-                            new Handler().postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    String requestCommand = "SET POINT1 " + editLowValue.getText() + "\r\n";
-                                    usbService.write(requestCommand.getBytes());
-                                    (new Handler()).postDelayed(new Runnable() {
-                                        public void run() {
-                                            dialog.dismiss();
-                                            textSubtitle.setText(R.string.middleEcMeasurement);
-                                            viewAnimator.showNext();
-                                            setEditTextFocus(editMiddleValue, true);
-
-                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                                                    Context.INPUT_METHOD_SERVICE);
-                                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-                                        }
-                                    }, 1000);
-                                }
-                            }, 4000);
-                        } else {
-                            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
-                        }
-                    } else {
-                        editLowValue.setError(getString(R.string.pleaseEnterValue));
-                    }
-                }
-                return true;
-
-            }
-        });
-
-        editMiddleValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((actionId == EditorInfo.IME_ACTION_DONE) ||
-                        ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) &&
-                                (event.getAction() == KeyEvent.ACTION_DOWN))) {
-                    if (validInput(editMiddleValue.getText().toString())) {
-                        closeKeyboard(editMiddleValue);
-
-                        if (usbService.isUsbConnected()) {
-//                            if (mEcValue != -1) {
-
-                            final ProgressDialog dialog = ProgressDialog.show(mContext,
-                                    getString(R.string.pleaseWait), getString(R.string.calibrating), true);
-                            dialog.setCancelable(false);
-                            dialog.show();
-
-                            new Handler().postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    String requestCommand = "SET POINT3" + editMiddleValue.getText() + "\r\n";
-                                    usbService.write(requestCommand.getBytes());
-                                    (new Handler()).postDelayed(new Runnable() {
-                                        public void run() {
-                                            dialog.dismiss();
-                                            textSubtitle.setText(R.string.highEcMeasurement);
-                                            viewAnimator.showNext();
-                                            setEditTextFocus(editHighValue, true);
-
-                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                                                    Context.INPUT_METHOD_SERVICE);
-                                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-                                        }
-                                    }, 1000);
-                                }
-                            }, 4000);
-                        } else {
-                            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
-                        }
-                    } else {
-                        editMiddleValue.setError(getString(R.string.pleaseEnterValue));
-                    }
-                }
-                return true;
-
-            }
-        });
-
-        editHighValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (validInput(editHighValue.getText().toString())) {
-                    closeKeyboard(editHighValue);
-
-                    if (usbService.isUsbConnected()) {
-
-                        final ProgressDialog dialog = ProgressDialog.show(mContext,
-                                getString(R.string.pleaseWait),
-                                getString(R.string.calibrating), true);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-
-                                String requestCommand = "SET POINT6 " + editHighValue.getText() + "\r\n";
-                                usbService.write(requestCommand.getBytes());
-                                (new Handler()).postDelayed(new Runnable() {
-                                    public void run() {
-                                        dialog.dismiss();
-                                        PreferencesUtil.setString(context, R.string.sensorCalibratedDateKey,
-                                                new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date()));
-                                        AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
-                                                R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        finish();
-                                                    }
-                                                }, null, null);
-                                    }
-                                }, 1000);
-                            }
-                        }, 4000);
-                    } else {
-                        AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
-                    }
-
+            public void onClick(View view) {
+                if (usbService.isUsbConnected()) {
+                    CalibratePoint(calibrationPoints, calibrationIndex);
+                    calibrationIndex++;
                 } else {
-                    editHighValue.setError(getString(R.string.pleaseEnterValue));
+                    AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
                 }
-                return true;
-
             }
         });
+    }
+
+    private void displayInformation(int calibrationIndex) {
+        textHeading.setText(String.format(Locale.US,
+                getString(R.string.calibratePoint),
+                calibrationPoints[calibrationIndex]));
+        textSubtitle.setText(String.format(Locale.US, "Step %d of 6", calibrationIndex + 1));
+        textInformation.setText(String.format(Locale.US,
+                getString(R.string.getEcSolutionReady),
+                calibrationPoints[calibrationIndex]));
+
+    }
+
+    public void CalibratePoint(final int[] calibrationPoints, final int index) {
+        final ProgressDialog dialog = ProgressDialog.show(mContext,
+                getString(R.string.pleaseWait), getString(R.string.calibrating), true);
+
+        dialog.setCancelable(false);
+
+        dialog.show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrationPoints[index] + "\r\n";
+
+                usbService.write(requestCommand.getBytes());
+
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+
+                        dialog.dismiss();
+
+                        if (calibrationIndex > 5) {
+
+                            AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
+                                    R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }, null, null);
+
+                        } else {
+                            displayInformation(calibrationIndex);
+                        }
+                    }
+                }, 1000);
+            }
+        }, 15000);
     }
 
     @Override
@@ -366,23 +260,10 @@ public class CalibrateSensorActivity extends BaseActivity {
         setTitle(R.string.calibrate);
     }
 
-    private boolean validInput(String input) {
-        return input.trim().length() > 0;
-    }
-
-    private void closeKeyboard(EditText input) {
-        if (input != null) {
-            InputMethodManager imm = (InputMethodManager) this.getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                closeKeyboard(mCurrentEditText);
                 onBackPressed();
                 return true;
         }
@@ -393,7 +274,6 @@ public class CalibrateSensorActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        closeKeyboard(mCurrentEditText);
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 }
