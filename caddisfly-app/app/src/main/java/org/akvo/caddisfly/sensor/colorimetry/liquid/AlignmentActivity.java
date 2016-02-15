@@ -37,6 +37,7 @@ import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 
 import java.util.List;
+import java.util.Locale;
 
 public class AlignmentActivity extends BaseActivity {
 
@@ -71,7 +72,7 @@ public class AlignmentActivity extends BaseActivity {
                 CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
 
         if (getIntent().getBooleanExtra("isCalibration", false)) {
-            String subTitle = String.format("%s %.2f %s",
+            String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
                     getResources().getString(R.string.calibrate),
                     getIntent().getDoubleExtra("swatchValue", 0),
                     CaddisflyApp.getApp().getCurrentTestInfo().getUnit());

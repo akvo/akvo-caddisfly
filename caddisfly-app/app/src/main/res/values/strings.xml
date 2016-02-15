@@ -170,5 +170,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="saving">Saving</string>
+    <string name="sensorDetails">Sensor Details</string>
+    <string name="verifySensorDetails">Verify sensor details</string>
+    <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
+    <string name="ecSensorId">EC Sensor Id</string>
 
 </resources>

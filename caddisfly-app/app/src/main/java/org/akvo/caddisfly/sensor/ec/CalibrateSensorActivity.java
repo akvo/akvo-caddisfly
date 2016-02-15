@@ -52,8 +52,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     private static final String DEBUG_TAG = "SensorActivity";
 
-    final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
-    private final Handler handler = new Handler();
+    private final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -80,9 +79,11 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         }
     };
-    ViewAnimator viewAnimator;
-    boolean deviceHasId = false;
-    int calibrationIndex = 0;
+    private final WeakRefHandler progressHandler = new WeakRefHandler(this);
+    private ProgressDialog progressDialog;
+    private ViewAnimator viewAnimator;
+    private boolean deviceHasId = false;
+    private int calibrationIndex = 0;
     private TextView textHeading;
     private TextView textSubtitle;
     private TextView textInformation;
@@ -95,7 +96,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
     };
     private TextView textId;
-    private MyHandler mHandler;
+    private UsbDataHandler mHandler;
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
@@ -163,7 +164,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         mContext = this;
 
-        mHandler = new MyHandler(this);
+        mHandler = new UsbDataHandler(this);
 
         viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
@@ -201,7 +202,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     final ProgressDialog progressDialog = ProgressDialog.show(mContext,
                             getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true, false);
 
-                    handler.postDelayed(runnable, 100);
+                    new Handler().postDelayed(runnable, 100);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -209,7 +210,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                             if (deviceHasId) {
                                 viewAnimator.showNext();
                                 fabEdit.setVisibility(View.VISIBLE);
-                                textSubtitle.setText("Verify device details");
+                                textSubtitle.setText(R.string.verifySensorDetails);
 
                             } else {
                                 showEditDetailsDialog();
@@ -277,22 +278,16 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
     }
 
-    public void CalibratePoint(final int[] calibrationPoints, final int index) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+    private void CalibratePoint(final int[] calibrationPoints, final int index) {
+
+        progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(R.string.pleaseWait);
         progressDialog.setMessage(getString(R.string.calibrating));
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(15);
+        progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
-
-        final Handler handle = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                progressDialog.incrementProgressBy(1);
-            }
-        };
 
         new Thread(new Runnable() {
             @Override
@@ -301,7 +296,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     while (progressDialog.getProgress() <= progressDialog
                             .getMax()) {
                         Thread.sleep(1000);
-                        handle.sendMessage(handle.obtainMessage());
+                        progressHandler.sendMessage(progressHandler.obtainMessage());
                         if (progressDialog.getProgress() == progressDialog
                                 .getMax()) {
                             progressDialog.dismiss();
@@ -312,7 +307,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 }
             }
         }).start();
-
 
         new Handler().postDelayed(new Runnable() {
 
@@ -405,14 +399,31 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     }
 
+    /**
+     * Handler to restart the app after language has been changed
+     */
+    private static class WeakRefHandler extends Handler {
+        private final WeakReference<CalibrateSensorActivity> ref;
+
+        public WeakRefHandler(CalibrateSensorActivity ref) {
+            this.ref = new WeakReference<>(ref);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            CalibrateSensorActivity f = ref.get();
+            f.progressDialog.incrementProgressBy(1);
+        }
+    }
+
     /*
     * This handler will be passed to UsbService.
     * Data received from serial port is displayed through this handler
     */
-    private static class MyHandler extends Handler {
+    private static class UsbDataHandler extends Handler {
         private final WeakReference<CalibrateSensorActivity> mActivity;
 
-        public MyHandler(CalibrateSensorActivity activity) {
+        public UsbDataHandler(CalibrateSensorActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 

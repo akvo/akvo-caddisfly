@@ -32,7 +32,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:labelFor="@+id/editBatchCode"
-        android:text="Enter a unique Id for this device"
+        android:text="@string/enterAnIdForSensor"
         android:textSize="16sp" />
 
     <TextView
@@ -41,8 +41,8 @@
         android:layout_marginEnd="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:labelFor="@+id/editBatchCode"
-        android:text="EC Sensor Id"
+        android:labelFor="@+id/editId"
+        android:text="@string/ecSensorId"
         android:textColor="#999999"
         android:textSize="16sp"
         android:textStyle="bold" />

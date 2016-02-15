@@ -68,7 +68,7 @@ public class EditSensorIdentity extends DialogFragment {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.calibrationDetails)
+                .setTitle(R.string.sensorDetails)
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
