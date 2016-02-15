@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -68,7 +69,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             mCameraDialog = ExternalCameraFragment.newInstance();
         } else {
             mCameraDialog = CameraDialogFragment.newInstance();

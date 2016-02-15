@@ -14,7 +14,8 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,11 +27,13 @@
         android:id="@+id/layoutTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:background="?colorPrimary"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:paddingEnd="10dp"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        tools:ignore="UnknownIdInLayout">
 
         <TextView
             android:id="@+id/textTitle"
@@ -46,16 +49,17 @@
             android:id="@+id/textSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Prepare for calibration"
             android:textColor="#d6f6fdf6"
-            android:textSize="16sp"
-            tools:text="Calibrated: 22-Dec-2015" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <ViewAnimator
         android:id="@+id/viewAnimator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutTitleBar"
         android:inAnimation="@anim/slide_in_right"
         android:outAnimation="@anim/slide_out_left"
         tools:context="org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity">
@@ -74,8 +78,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -164,39 +166,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
                     android:text="EC Sensor ID"
+                    android:textColor="#999999"
                     android:textSize="19sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/textId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Change only if necessary"
-                    android:textSize="14sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:id="@+id/textId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="36sp" />
-
-                    <Button
-                        android:id="@+id/buttonChangeId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="@string/change" />
-
-                </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="50dp"
+                    android:textStyle="bold"
+                    tools:text="123213" />
 
                 <Button
                     android:id="@+id/buttonNext"
@@ -204,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/next"
                     android:theme="?primaryButtonStyle" />
 
@@ -265,7 +250,19 @@
                 android:text="@string/go"
                 android:theme="?primaryButtonStyle" />
         </LinearLayout>
-
-
     </ViewAnimator>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabEdit"
+        style="@style/floating_action_button_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/layoutTitleBar"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_menu_edit"
+        android:visibility="invisible"
+        app:backgroundTint="?primaryButtonColor"
+        app:borderWidth="0dp"
+        tools:ignore="RelativeOverlap" />
+
+</RelativeLayout>

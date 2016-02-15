@@ -29,6 +29,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,14 +48,12 @@ import java.lang.ref.WeakReference;
 import java.util.Locale;
 import java.util.Set;
 
-public class CalibrateSensorActivity extends BaseActivity {
+public class CalibrateSensorActivity extends BaseActivity implements EditSensorIdentity.OnFragmentInteractionListener {
 
     private static final String DEBUG_TAG = "SensorActivity";
 
     final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
-
     private final Handler handler = new Handler();
-
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -80,6 +80,8 @@ public class CalibrateSensorActivity extends BaseActivity {
             }
         }
     };
+    ViewAnimator viewAnimator;
+    boolean deviceHasId = false;
     int calibrationIndex = 0;
     private TextView textHeading;
     private TextView textSubtitle;
@@ -107,6 +109,7 @@ public class CalibrateSensorActivity extends BaseActivity {
         }
     };
     private String mReceivedData = "";
+    private FloatingActionButton fabEdit;
 
     @Override
     public void onResume() {
@@ -162,11 +165,15 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         mHandler = new MyHandler(this);
 
-        final ViewAnimator viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
+        viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
         Button buttonStartCalibrate = (Button) findViewById(R.id.buttonStartCalibrate);
         Button buttonCalibrate = (Button) findViewById(R.id.buttonCalibrate);
         Button buttonNext = (Button) findViewById(R.id.buttonNext);
+
+        fabEdit =
+                (FloatingActionButton) findViewById(R.id.fabEdit);
+
 
         Configuration conf = getResources().getConfiguration();
         if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
@@ -178,6 +185,13 @@ public class CalibrateSensorActivity extends BaseActivity {
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         textInformation = (TextView) findViewById(R.id.textInformation);
         textId = (TextView) findViewById(R.id.textId);
+
+        fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditDetailsDialog();
+            }
+        });
 
         buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,11 +206,15 @@ public class CalibrateSensorActivity extends BaseActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            if (deviceHasId) {
+                                viewAnimator.showNext();
+                                fabEdit.setVisibility(View.VISIBLE);
+                                textSubtitle.setText("Verify device details");
+
+                            } else {
+                                showEditDetailsDialog();
+                            }
                             progressDialog.dismiss();
-                            viewAnimator.showNext();
-
-
-                            displayInformation(calibrationIndex);
                         }
                     }, 2000);
 
@@ -209,7 +227,15 @@ public class CalibrateSensorActivity extends BaseActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewAnimator.showNext();
+                if (deviceHasId) {
+                    viewAnimator.showNext();
+                    fabEdit.setVisibility(View.INVISIBLE);
+
+                    displayInformation(calibrationIndex);
+                } else {
+                    showEditDetailsDialog();
+                }
+
             }
         });
 
@@ -226,6 +252,12 @@ public class CalibrateSensorActivity extends BaseActivity {
         });
     }
 
+    private void showEditDetailsDialog() {
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        EditSensorIdentity editSensorIdentity = EditSensorIdentity.newInstance();
+        editSensorIdentity.show(ft, "editSensorIdentity");
+    }
+
     private void displayInformation(int calibrationIndex) {
 
         textHeading.setText(String.format(Locale.US,
@@ -239,10 +271,8 @@ public class CalibrateSensorActivity extends BaseActivity {
     }
 
     private void requestResult() {
-        //Log.d(DEBUG_TAG, "Request Result");
         String data = "GET ID\r\n";
         if (usbService != null && usbService.isUsbConnected()) {
-            // if UsbService was correctly bound, Send data
             usbService.write(data.getBytes());
         }
     }
@@ -344,6 +374,35 @@ public class CalibrateSensorActivity extends BaseActivity {
     private void displayId(String value) {
         value = value.replace("\r\n", "");
         textId.setText(value);
+        deviceHasId = (!value.trim().equals("") && !value.trim().equals("0"));
+    }
+
+    @Override
+    public void onFragmentInteraction(String value) {
+        String requestCommand = "SET ID " + value + "\r\n";
+
+        usbService.write(requestCommand.getBytes());
+
+        final ProgressDialog progressDialog = ProgressDialog.show(mContext,
+                getString(R.string.pleaseWait), getString(R.string.saving), true, false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String getIdRequest = "GET ID" + "\r\n";
+                usbService.write(getIdRequest.getBytes());
+
+                progressDialog.dismiss();
+
+                displayInformation(calibrationIndex);
+
+                if (viewAnimator.getDisplayedChild() == 0) {
+                    viewAnimator.showNext();
+                    fabEdit.setVisibility(View.VISIBLE);
+                }
+            }
+        }, 4000);
+
     }
 
     /*
@@ -366,7 +425,9 @@ public class CalibrateSensorActivity extends BaseActivity {
                     if (sensorActivity != null) {
                         sensorActivity.mReceivedData += data;
                         if (sensorActivity.mReceivedData.contains("\r\n")) {
-                            sensorActivity.displayId(sensorActivity.mReceivedData);
+                            if (!sensorActivity.mReceivedData.contains("OK")) {
+                                sensorActivity.displayId(sensorActivity.mReceivedData);
+                            }
                             sensorActivity.mReceivedData = "";
                         }
                     }

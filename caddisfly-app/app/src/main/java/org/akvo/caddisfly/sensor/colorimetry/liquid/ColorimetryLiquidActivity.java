@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
@@ -188,7 +189,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
 
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             startExternalTest();
         } else {
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -220,7 +221,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             startExternalTest();
         } else {
             startTest();

@@ -32,6 +32,11 @@ public class AppConfig {
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     /**
+     * Vendor Id for Sensor devices
+     */
+    public static final int ARDUINO_VENDOR_ID = 9025;
+
+    /**
      * The sound volume for the beeps and other sound effects
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
