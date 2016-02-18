@@ -63,7 +63,7 @@ public class StripTest{
     public class Brand
     {
         private String name;
-        private String code;
+        private String uuid;
         private double stripLenght;
         private double stripHeight;
         private groupType groupingType;
@@ -90,11 +90,11 @@ public class StripTest{
                                 continue;
                             } else {
                                 try {
+                                    this.uuid = strip.getString("uuid");
                                     this.stripLenght = strip.getDouble("length");
                                     this.stripHeight = strip.getDouble("height");
                                     this.groupingType = strip.getString("groupingType").equals(groupType.GROUP.toString()) ? groupType.GROUP : groupType.INDIVIDUAL;
                                     this.name = strip.getString("name");
-                                    this.code = strip.getString("code");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArr.length(); ii++) {
@@ -166,6 +166,10 @@ public class StripTest{
             return name;
         }
 
+        public String getUuid() {
+            return uuid;
+        }
+
         public JSONArray getInstructions() {
             return instructions;
         }
@@ -175,10 +179,6 @@ public class StripTest{
         {
             Collections.sort(patches, new PatchComparator());
             return patches;
-        }
-
-        public String getCode() {
-            return code;
         }
 
         public class Patch {
