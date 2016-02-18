@@ -9,7 +9,7 @@ public class BaseActivity extends AppCompatActivity
 
     public interface ResultListener{
 
-        void onResult(String result);
+        void onResult(String result, String images);
     }
 
     protected static ResultListener listener;

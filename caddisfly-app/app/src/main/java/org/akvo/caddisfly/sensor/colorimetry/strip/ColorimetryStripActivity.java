@@ -131,12 +131,13 @@ public class ColorimetryStripActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResult(String result) {
+    public void onResult(String result, String images) {
 
         //System.out.println("***onResult ColorimetryStripActivity called");
 
         Intent intent = new Intent(getIntent());
         intent.putExtra("response", result);
+        intent.putExtra("images", images);
         setResult(Activity.RESULT_OK, intent);
 
         finish();

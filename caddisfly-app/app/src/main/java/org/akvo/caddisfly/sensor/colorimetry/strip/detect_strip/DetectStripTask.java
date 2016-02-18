@@ -23,6 +23,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by linda on 11/18/15.
@@ -159,7 +160,7 @@ public class DetectStripTask extends AsyncTask<Intent,Void, Void> {
                             Utils.matToBitmap(rgb, bitmap);
 
                             if (FileStorage.checkExternalMedia()) {
-                                FileStorage.writeToSDFile(bitmap);
+                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
                                 System.out.println("***image written");
                             }
                             else {
