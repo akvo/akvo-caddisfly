@@ -19,7 +19,9 @@ package org.akvo.caddisfly.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -57,7 +59,7 @@ public class ImageUtil {
      * @return the cropped bitmap
      */
     @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length) {
+    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length, boolean detectBackdrop) {
 
         int[] pixels = new int[length * length];
 
@@ -66,7 +68,7 @@ public class ImageUtil {
         int radius = 140;
         Point point;
 
-        if (AppPreferences.getNoBackdropDetection()) {
+        if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
             point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
@@ -88,19 +90,19 @@ public class ImageUtil {
         croppedBitmap = ImageUtil.getRoundedShape(croppedBitmap, length);
         croppedBitmap.setHasAlpha(true);
 
-//        Canvas canvas = new Canvas(bitmap);
+        Canvas canvas = new Canvas(bitmap);
 
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setColor(Color.GREEN);
-//        paint.setStrokeWidth(3);
-//        paint.setStyle(Paint.Style.STROKE);
-//        canvas.drawBitmap(bitmap, new Matrix(), null);
-//        canvas.drawCircle(point.x, point.y, 50, paint);
-//
-//        paint.setColor(Color.YELLOW);
-//        paint.setStrokeWidth(2);
-//        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, 20, paint);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.GREEN);
+        paint.setStrokeWidth(3);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawBitmap(bitmap, new Matrix(), null);
+        canvas.drawCircle(point.x, point.y, 50, paint);
+
+        paint.setColor(Color.YELLOW);
+        paint.setStrokeWidth(2);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, 20, paint);
 
         return croppedBitmap;
     }

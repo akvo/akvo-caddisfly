@@ -302,7 +302,9 @@ public class AnalysisTest {
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+//        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
 
         onView(withId(R.id.editBatchCode))
                 .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());

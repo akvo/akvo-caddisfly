@@ -20,8 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -39,10 +41,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -237,7 +235,7 @@ class CameraHandler implements Camera.PictureCallback {
                 Bitmap bitmap = ImageUtil.getBitmap(data);
 
                 Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
                 //Extract the color from the photo which will be used for comparison
                 ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
@@ -254,8 +252,29 @@ class CameraHandler implements Camera.PictureCallback {
                 break;
 
             case "colif":
-                int blurriness = getBlurriness(data);
-                fileName = date + "_" + blurriness + "_" + batteryPercent;
+
+                bitmap = ImageUtil.getBitmap(data);
+                bitmap = ImageUtil.rotateImage(bitmap, 90);
+                bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
+
+                Bitmap croppedGrayBitmap = getGrayscale(bitmap);
+                int[] brightnessValues = getContrast(croppedGrayBitmap);
+
+                int blackIndex = 0;
+                for (int i = 0; i < brightnessValues.length; i++) {
+                    if (brightnessValues[blackIndex] > brightnessValues[i]) {
+                        blackIndex = i;
+                    }
+                }
+
+                int whiteIndex = 0;
+                for (int i = 0; i < brightnessValues.length; i++) {
+                    if (brightnessValues[whiteIndex] < brightnessValues[i]) {
+                        whiteIndex = i;
+                    }
+                }
+
+                fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
 
                 folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE, mSavePath);
 
@@ -279,41 +298,47 @@ class CameraHandler implements Camera.PictureCallback {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
-    private int getBlurriness(byte[] data) {
+    private Bitmap getGrayscale(Bitmap src) {
 
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inDither = true;
-        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
-        int l = CvType.CV_8UC1; //8-bit grey scale image
-        Mat matImage = new Mat();
-        Utils.bitmapToMat(image, matImage);
-        Mat matImageGrey = new Mat();
-        Imgproc.cvtColor(matImage, matImageGrey, Imgproc.COLOR_BGR2GRAY);
+        //Custom color matrix to convert to GrayScale
+        float[] matrix = new float[]{
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0, 0, 0, 1, 0,};
 
-        Bitmap destImage;
-        destImage = Bitmap.createBitmap(image);
-        Mat dst2 = new Mat();
-        Utils.bitmapToMat(destImage, dst2);
-        Mat laplacianImage = new Mat();
-        dst2.convertTo(laplacianImage, l);
-        Imgproc.Laplacian(matImageGrey, laplacianImage, CvType.CV_8U);
-        Mat laplacianImage8bit = new Mat();
-        laplacianImage.convertTo(laplacianImage8bit, l);
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(),
+                src.getHeight(),
+                src.getConfig());
 
-        Bitmap bmp = Bitmap.createBitmap(laplacianImage8bit.cols(),
-                laplacianImage8bit.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(laplacianImage8bit, bmp);
-        int[] pixels = new int[bmp.getHeight() * bmp.getWidth()];
-        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        Canvas canvas = new Canvas(dest);
+        Paint paint = new Paint();
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        paint.setColorFilter(filter);
+        canvas.drawBitmap(src, 0, 0, paint);
 
-        int maxLap = -16777216;
+        return dest;
+    }
 
-        for (int pixel : pixels) {
-            if (pixel > maxLap)
-                maxLap = pixel;
-        }
+    public int[] getContrast(Bitmap image) {
 
-        return maxLap;
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        int posX1 = width / 4;
+        int posX2 = posX1 * 3;
+
+        int posY1 = height / 4;
+        int posY2 = posY1 * 3;
+
+
+        int pixel1 = ColorUtil.getBrightness(image.getPixel(posX1, posY1));
+        int pixel2 = ColorUtil.getBrightness(image.getPixel(posX2, posY1));
+        int pixel3 = ColorUtil.getBrightness(image.getPixel(posX1, posY2));
+        int pixel4 = ColorUtil.getBrightness(image.getPixel(posX2, posY2));
+
+        return new int[]{pixel1, pixel2, pixel3, pixel4};
+
     }
 }

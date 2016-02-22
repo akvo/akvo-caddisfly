@@ -226,17 +226,17 @@ public final class SwatchHelper {
                 int greenDifference = Color.green(swatch1.getColor()) - Color.green(previousSwatch.getColor());
                 int blueDifference = Color.blue(swatch1.getColor()) - Color.blue(previousSwatch.getColor());
 
-                if (Math.abs(swatch1.getRedDifference() - redDifference) > 100) {
+                if (Math.abs(swatch1.getRedDifference() - redDifference) > 150) {
                     result = false;
                     break;
                 }
 
-                if (Math.abs(swatch1.getGreenDifference() - greenDifference) > 100) {
+                if (Math.abs(swatch1.getGreenDifference() - greenDifference) > 150) {
                     result = false;
                     break;
                 }
 
-                if (Math.abs(swatch1.getBlueDifference() - blueDifference) > 100) {
+                if (Math.abs(swatch1.getBlueDifference() - blueDifference) > 150) {
                     result = false;
                     break;
                 }
@@ -274,23 +274,27 @@ public final class SwatchHelper {
 
         for (int i = 0; i < results.size(); i++) {
 
-            int color1 = results.get(i).getResults().get(0).getColor();
+            if (results.get(i).getResults().get(0).getColorModel() == ColorUtil.ColorModel.RGB) {
+                int color1 = results.get(i).getResults().get(0).getColor();
 
-            //if invalid color return 0
-            if (color1 == 0) {
-                return 0;
-            }
-
-            //check all the colors are mostly similar otherwise return 0
-            for (int j = 0; j < results.size(); j++) {
-                int color2 = results.get(j).getResults().get(0).getColor();
-                if (ColorUtil.areColorsTooDissimilar(color1, color2)) {
+                //if invalid color return 0
+                if (color1 == 0) {
                     return 0;
                 }
+
+                //check all the colors are mostly similar otherwise return 0
+                for (int j = 0; j < results.size(); j++) {
+                    if (results.get(j).getResults().get(0).getColorModel() == ColorUtil.ColorModel.RGB) {
+                        int color2 = results.get(j).getResults().get(0).getColor();
+                        if (ColorUtil.areColorsTooDissimilar(color1, color2)) {
+                            return 0;
+                        }
+                    }
+                }
+                red += Color.red(color1);
+                green += Color.green(color1);
+                blue += Color.blue(color1);
             }
-            red += Color.red(color1);
-            green += Color.green(color1);
-            blue += Color.blue(color1);
         }
 
         //return an average color

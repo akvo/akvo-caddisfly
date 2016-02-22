@@ -149,7 +149,7 @@ public class CaddisflyApp extends Application {
             for (String word : words) {
                 try {
                     Double versionNumber = Double.parseDouble(word);
-                    versionString += String.format(Locale.US, "%.2f", versionNumber);
+                    versionString += String.format(Locale.US, "%.3f", versionNumber);
                 } catch (NumberFormatException e) {
                     int id = context.getResources()
                             .getIdentifier(word.toLowerCase(), "string", context.getPackageName());

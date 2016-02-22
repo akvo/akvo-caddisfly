@@ -161,7 +161,7 @@ public class SensorActivity extends BaseActivity {
 
     private void requestResult() {
         //Log.d(DEBUG_TAG, "Request Result");
-        String data = "r";
+        String data = "r\r\n";
         if (usbService != null && usbService.isUsbConnected()) {
             // if UsbService was correctly bound, Send data
             usbService.write(data.getBytes());

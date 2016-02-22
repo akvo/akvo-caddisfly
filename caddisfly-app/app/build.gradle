@@ -26,8 +26,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 17
         targetSdkVersion 23
-        versionName "0.97 Beta"
-        versionCode 97
+        versionName "0.102 Beta"
+        versionCode 102
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,13 +41,10 @@ android {
     }
 
     buildTypes {
-        debug {
-           // signingConfig signingConfigs.caddisflyRelease
-        }
-
         release {
             signingConfig signingConfigs.caddisflyRelease
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
@@ -76,7 +73,7 @@ dependencies {
     compile project(':opencv300')
     compile 'org.apache.commons:commons-math3:3.5'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.2.0'
+    testCompile 'org.assertj:assertj-core:3.3.0'
     testCompile 'org.robolectric:robolectric:3.0'
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile 'com.android.support.test:runner:0.4.1'

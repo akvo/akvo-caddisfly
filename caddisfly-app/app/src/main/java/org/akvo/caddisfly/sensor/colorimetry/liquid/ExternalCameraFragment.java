@@ -18,6 +18,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.usb.UsbDevice;
@@ -31,17 +32,16 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.usb.UVCCamera;
 import org.akvo.caddisfly.widget.CameraViewInterface;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -49,19 +49,18 @@ public final class ExternalCameraFragment extends CameraDialog {
     private static final boolean DEBUG = false;    // TODO set false on release
     private static final String TAG = "ExternalCameraFragment";
     private static final String ARG_PREVIEW_ONLY = "preview";
-
     /**
      * preview resolution(width)
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_WIDTH = 320;
+    private static final int PREVIEW_WIDTH = 1280;
     /**
      * preview resolution(height)
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
      */
-    private static final int PREVIEW_HEIGHT = 240;
+    private static final int PREVIEW_HEIGHT = 720;
     /**
      * preview mode
      * if your camera does not support specific resolution and mode,
@@ -69,7 +68,8 @@ public final class ExternalCameraFragment extends CameraDialog {
      */
     private static final int PREVIEW_MODE = UVCCamera.PIXEL_FORMAT_RAW;
     private final Handler delayHandler = new Handler();
-    public PictureCallback pictureCallback;
+    private int mNumberOfPhotosToTake;
+    private int mPhotoCurrentCount = 0;
     private SoundPoolPlayer sound;
 
     /**
@@ -91,7 +91,7 @@ public final class ExternalCameraFragment extends CameraDialog {
     private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
         @Override
         public void onAttach(final UsbDevice device) {
-            Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -111,15 +111,14 @@ public final class ExternalCameraFragment extends CameraDialog {
 
         @Override
         public void onDetach(final UsbDevice device) {
-            Toast.makeText(getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel() {
         }
     };
-    private int samplingCount;
-    private int picturesTaken;
+    private long mSamplingDelay;
 
     /**
      * Use this factory method to create a new instance of
@@ -175,13 +174,26 @@ public final class ExternalCameraFragment extends CameraDialog {
         Dialog dialog = new Dialog(getActivity(), getTheme()) {
             @Override
             public void onBackPressed() {
+                if (getActivity() != null && getActivity() instanceof Cancelled) {
+                    ((Cancelled) getActivity()).dialogCancelled();
+                }
                 dismiss();
             }
         };
 
+//        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (getActivity() != null && getActivity() instanceof Cancelled) {
+            ((Cancelled) getActivity()).dialogCancelled();
+        }
+        super.onCancel(dialog);
     }
 
     @Override
@@ -247,18 +259,6 @@ public final class ExternalCameraFragment extends CameraDialog {
         mHandler.startPreview(mSurface);
     }
 
-    private void startTakingPictures() {
-        samplingCount = 0;
-        picturesTaken = 0;
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                takePicture();
-            }
-        }, ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
-    }
-
     private void takePicture() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -272,30 +272,38 @@ public final class ExternalCameraFragment extends CameraDialog {
                     }
                 }
             }
-        }, ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
+        }, mSamplingDelay);
     }
 
-    public boolean hasTestCompleted() {
-        return samplingCount > AppPreferences.getSamplingTimes() || picturesTaken > 10;
+    private boolean hasTestCompleted() {
+        return mPhotoCurrentCount >= mNumberOfPhotosToTake;
     }
 
     @Override
     public void takePictureSingle() {
-
+        mNumberOfPhotosToTake = 1;
+        mPhotoCurrentCount = 0;
+        takePicture();
     }
 
     @Override
     public void takePictures(int count, long delay) {
+        mNumberOfPhotosToTake = count;
+        mPhotoCurrentCount = 0;
+        mSamplingDelay = delay;
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                takePicture();
+            }
+        }, delay);
     }
 
     @Override
     public void stopCamera() {
 
-    }
-
-    public interface PictureCallback {
-        void onPictureTaken(Bitmap bitmap);
     }
 
     /**
@@ -387,7 +395,6 @@ public final class ExternalCameraFragment extends CameraDialog {
             }
         }
 
-
         private static final class CameraThread extends Thread {
             private static final String TAG_THREAD = "CameraThread";
             private final Object mSync = new Object();
@@ -477,20 +484,27 @@ public final class ExternalCameraFragment extends CameraDialog {
                 }
             }
 
+
             public void handleCaptureStill() {
                 if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");
                 final ExternalCameraFragment parent = mWeakParent.get();
                 if (parent == null) return;
-                parent.sound.playShortResource(R.raw.beep);
+                //parent.sound.playShortResource(R.raw.beep);
                 final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
 
-                parent.samplingCount++;
-                parent.picturesTaken++;
+                parent.mPhotoCurrentCount++;
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                for (PictureTaken pictureTakenObserver : parent.pictureTakenObservers) {
+                    pictureTakenObserver.onPictureTaken(byteArray, parent.hasTestCompleted());
+                }
+
                 //if (!mCancelled) {
-                if (parent.hasTestCompleted()) {
-                    parent.pictureCallback.onPictureTaken(bitmap);
-                } else {
-                    parent.pictureCallback.onPictureTaken(bitmap);
+                if (!parent.hasTestCompleted()) {
+                    //parent.pictureCallback.onPictureTaken(bitmap);
                     parent.takePicture();
                 }
                 //}

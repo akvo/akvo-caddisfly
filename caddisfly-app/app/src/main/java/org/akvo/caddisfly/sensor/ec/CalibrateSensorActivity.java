@@ -161,6 +161,7 @@ public class CalibrateSensorActivity extends BaseActivity {
 
         Button buttonStartCalibrate = (Button) findViewById(R.id.buttonStartCalibrate);
         final EditText editLowValue = (EditText) findViewById(R.id.editLowValue);
+        final EditText editMiddleValue = (EditText) findViewById(R.id.editMiddleValue);
         final EditText editHighValue = (EditText) findViewById(R.id.editHighValue);
 
         Configuration conf = getResources().getConfiguration();
@@ -229,7 +230,57 @@ public class CalibrateSensorActivity extends BaseActivity {
 
                                 @Override
                                 public void run() {
-                                    String requestCommand = "L," + editLowValue.getText();
+                                    String requestCommand = "SET POINT1 " + editLowValue.getText() + "\r\n";
+                                    usbService.write(requestCommand.getBytes());
+                                    (new Handler()).postDelayed(new Runnable() {
+                                        public void run() {
+                                            dialog.dismiss();
+                                            textSubtitle.setText(R.string.middleEcMeasurement);
+                                            viewAnimator.showNext();
+                                            setEditTextFocus(editMiddleValue, true);
+
+                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                                                    Context.INPUT_METHOD_SERVICE);
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                                        }
+                                    }, 1000);
+                                }
+                            }, 4000);
+                        } else {
+                            AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+                        }
+                    } else {
+                        editLowValue.setError(getString(R.string.pleaseEnterValue));
+                    }
+                }
+                return true;
+
+            }
+        });
+
+        editMiddleValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId == EditorInfo.IME_ACTION_DONE) ||
+                        ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) &&
+                                (event.getAction() == KeyEvent.ACTION_DOWN))) {
+                    if (validInput(editMiddleValue.getText().toString())) {
+                        closeKeyboard(editMiddleValue);
+
+                        if (usbService.isUsbConnected()) {
+//                            if (mEcValue != -1) {
+
+                            final ProgressDialog dialog = ProgressDialog.show(mContext,
+                                    getString(R.string.pleaseWait), getString(R.string.calibrating), true);
+                            dialog.setCancelable(false);
+                            dialog.show();
+
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    String requestCommand = "SET POINT3" + editMiddleValue.getText() + "\r\n";
                                     usbService.write(requestCommand.getBytes());
                                     (new Handler()).postDelayed(new Runnable() {
                                         public void run() {
@@ -250,7 +301,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                             AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
                         }
                     } else {
-                        editLowValue.setError(getString(R.string.pleaseEnterValue));
+                        editMiddleValue.setError(getString(R.string.pleaseEnterValue));
                     }
                 }
                 return true;
@@ -277,9 +328,7 @@ public class CalibrateSensorActivity extends BaseActivity {
                             @Override
                             public void run() {
 
-                                String requestCommand = "H," + editHighValue.getText();
-                                usbService.write(requestCommand.getBytes());
-                                requestCommand = "C";
+                                String requestCommand = "SET POINT6 " + editHighValue.getText() + "\r\n";
                                 usbService.write(requestCommand.getBytes());
                                 (new Handler()).postDelayed(new Runnable() {
                                     public void run() {

@@ -68,6 +68,74 @@
       {
         "name": [
           {
+            "en": "pH-1"
+          },
+          {
+            "fr": "pH-1"
+          }
+        ],
+        "type": "0",
+        "code": "phyd1",
+        "unit": "",
+        "calibrate": "true",
+        "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "pH-2"
+          },
+          {
+            "fr": "pH-2"
+          }
+        ],
+        "type": "0",
+        "code": "phyd2",
+        "unit": "",
+        "calibrate": "true",
+        "ranges": "4,5,6,7,8,9,10,11",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Turbidity"
+          },
+          {
+            "fr": "Turbidity"
+          }
+        ],
+        "type": "0",
+        "code": "turbi",
+        "unit": "NTU",
+        "calibrate": "true",
+        "ranges": "0,5,10,15,20",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic"
+          },
+          {
+            "fr": "Arsenic"
+          }
+        ],
+        "type": "0",
+        "code": "arsen",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,20,30,40",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
             "en": "Pesticides"
           },
           {
@@ -78,7 +146,7 @@
         "code": "pesti",
         "unit": "ppm",
         "calibrate": "true",
-        "ranges": "0,1,2,3,4",
+        "ranges": "0,0.25,0.5,0.75,1",
         "diagnostic": "true",
         "monthsValid": "6"
       },

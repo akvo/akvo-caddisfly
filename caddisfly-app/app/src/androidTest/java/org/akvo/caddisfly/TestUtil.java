@@ -17,12 +17,8 @@
 package org.akvo.caddisfly;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.test.internal.util.Checks;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.support.test.uiautomator.UiObject;
@@ -30,13 +26,10 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Collection;
 
@@ -74,37 +67,37 @@ class TestUtil {
         return stringHolder[0];
     }
 
-    private static Matcher<View> withBackgroundColor(final int color) {
-        Checks.checkNotNull(color);
-        return new BoundedMatcher<View, Button>(Button.class) {
-            @Override
-            public boolean matchesSafely(Button button) {
-                int buttonColor = ((ColorDrawable) button.getBackground()).getColor();
-                return Color.red(color) == Color.red(buttonColor) &&
-                        Color.green(color) == Color.green(buttonColor) &&
-                        Color.blue(color) == Color.blue(buttonColor);
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with background color: " + color);
-            }
-        };
-    }
-
-    private static Matcher<String> isEmpty() {
-        return new TypeSafeMatcher<String>() {
-            @Override
-            public boolean matchesSafely(String target) {
-                return target.length() == 0;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("is empty");
-            }
-        };
-    }
+//    private static Matcher<View> withBackgroundColor(final int color) {
+//        Checks.checkNotNull(color);
+//        return new BoundedMatcher<View, Button>(Button.class) {
+//            @Override
+//            public boolean matchesSafely(Button button) {
+//                int buttonColor = ((ColorDrawable) button.getBackground()).getColor();
+//                return Color.red(color) == Color.red(buttonColor) &&
+//                        Color.green(color) == Color.green(buttonColor) &&
+//                        Color.blue(color) == Color.blue(buttonColor);
+//            }
+//
+//            @Override
+//            public void describeTo(Description description) {
+//                description.appendText("with background color: " + color);
+//            }
+//        };
+//    }
+//
+//    private static Matcher<String> isEmpty() {
+//        return new TypeSafeMatcher<String>() {
+//            @Override
+//            public boolean matchesSafely(String target) {
+//                return target.length() == 0;
+//            }
+//
+//            @Override
+//            public void describeTo(Description description) {
+//                description.appendText("is empty");
+//            }
+//        };
+//    }
 
     public static void sleep(int time) {
         try {

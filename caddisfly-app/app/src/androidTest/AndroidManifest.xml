@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
@@ -14,10 +15,8 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment"
-    android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.ExternalCameraFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout="@layout/fragment_external_camera" />
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    package="org.akvo.caddisfly">
+
+    <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
+</manifest>

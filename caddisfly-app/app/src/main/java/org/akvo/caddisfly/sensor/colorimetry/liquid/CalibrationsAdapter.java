@@ -43,10 +43,12 @@ import java.util.ArrayList;
 class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
+    private final boolean mDisplayDecimal;
 
-    public CalibrationsAdapter(Activity activity, Swatch[] rangeArray) {
+    public CalibrationsAdapter(Activity activity, Swatch[] rangeArray, boolean displayDecimal) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
+        mDisplayDecimal = displayDecimal;
     }
 
     @Override
@@ -61,15 +63,17 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         Swatch swatch = swatches.get(position);
 
         TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
-        TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
-        TextView textHsv = (TextView) rowView.findViewById(R.id.textHsv);
-        TextView textBrightness = (TextView) rowView.findViewById(R.id.textBrightness);
         TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
         int color = swatch.getColor();
 
         //display unit value
-        Spannable word = new SpannableString(String.format("%.2f ", swatch.getValue()));
+        Spannable word;
+        if (mDisplayDecimal) {
+            word = new SpannableString(String.format("%.2f ", swatch.getValue()));
+        } else {
+            word = new SpannableString(String.format("%.0f ", swatch.getValue()));
+        }
         textUnit.setText(word);
 
         //append the unit
@@ -92,6 +96,11 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
             //display additional information if we are in diagnostic mode
             if (AppPreferences.isDiagnosticMode()) {
+
+                TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
+                TextView textHsv = (TextView) rowView.findViewById(R.id.textHsv);
+                TextView textBrightness = (TextView) rowView.findViewById(R.id.textBrightness);
+
                 double distance = 0;
                 if (position > 0) {
                     int previousColor = swatches.get(position - 1).getColor();
