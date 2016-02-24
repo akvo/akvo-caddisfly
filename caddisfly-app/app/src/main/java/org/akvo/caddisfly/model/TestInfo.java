@@ -31,6 +31,7 @@ import java.util.Hashtable;
 public class TestInfo {
     private final Hashtable names;
     private final String code;
+    private final ArrayList<String> uuid;
     private final String unit;
     private final ArrayList<Swatch> swatches;
     private final CaddisflyApp.TestType testType;
@@ -43,11 +44,12 @@ public class TestInfo {
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
-                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid) {
+                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids) {
         this.names = names;
         this.testType = testType;
         this.code = code;
         this.unit = unit;
+        this.uuid = uuids;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
         this.requiresCalibration = requiresCalibration;
@@ -102,6 +104,7 @@ public class TestInfo {
         names = null;
         testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
         this.code = "";
+        this.uuid = new ArrayList<>();
         this.unit = "";
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
@@ -136,6 +139,10 @@ public class TestInfo {
 
     public String getCode() {
         return code;
+    }
+
+    public ArrayList<String> getUuid() {
+        return uuid;
     }
 
     public String getUnit() {

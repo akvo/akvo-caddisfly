@@ -53,6 +53,36 @@ public class StripTest{
         return brandnames;
     }
 
+    /*
+    * Matches a test UUID to a brand name
+    * if not found, returns null
+     */
+    public String matchUuidToBrand(String uuid){
+        String json = fromJson();
+        String result = null;
+        try {
+            JSONObject object = new JSONObject(json);
+
+            if (!object.isNull("strips")) {
+                JSONArray stripsJson = object.getJSONArray("strips");
+                JSONObject strip;
+                if (stripsJson != null) {
+                    for (int i = 0; i < stripsJson.length(); i++) {
+                        strip = stripsJson.getJSONObject(i);
+                        if (strip.getString("uuid").equals(uuid)){
+                            result = strip.getString("brand");
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            return result;
+        }
+        return result;
+    }
+
     public Brand getBrand(String brand)
     {
         return new Brand(brand);

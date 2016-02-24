@@ -32,6 +32,11 @@ public class AppConfig {
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     /**
+     * The intent action string used by the caddisfly question type
+     */
+    public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
+
+    /**
      * The sound volume for the beeps and other sound effects
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;

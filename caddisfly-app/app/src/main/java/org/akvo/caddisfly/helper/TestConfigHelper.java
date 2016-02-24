@@ -54,6 +54,25 @@ public final class TestConfigHelper {
     }
 
     /**
+     * Returns a TestInfo instance filled with test config for the given uuid
+     *
+     * @param jsonText the json config text
+     * @param uuid the test uuid
+     * @return the TestInfo instance
+     */
+    public static TestInfo loadTestConfigurationByUuid(String jsonText, String uuid) {
+
+        ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
+
+        for (TestInfo test : tests) {
+            if (test.getUuid().contains(uuid)){
+                return test;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Load all the tests and their configurations from the json config text
      *
      * @param jsonText the json text
@@ -102,6 +121,13 @@ public final class TestConfigHelper {
 
                     Hashtable<String, String> namesHashTable =
                             new Hashtable<>(nameArray.length(), nameArray.length());
+
+                    // get uuids
+                    JSONArray uuid = item.getJSONArray("uuid");
+                    ArrayList<String> uuids = new ArrayList<String>();
+                    for (int ii = 0; ii < uuid.length();ii++){
+                        uuids.add(uuid.getString(ii));
+                    }
 
                     //Load test names in different languages
                     for (int j = 0; j < nameArray.length(); j++) {
@@ -155,7 +181,7 @@ public final class TestConfigHelper {
                             //if calibrate not specified then default to true otherwise use specified value
                             !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
                             rangesArray, defaultColorsArray,
-                            dilutionsArray, isDiagnostic, monthsValid));
+                            dilutionsArray, isDiagnostic, monthsValid, uuids));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

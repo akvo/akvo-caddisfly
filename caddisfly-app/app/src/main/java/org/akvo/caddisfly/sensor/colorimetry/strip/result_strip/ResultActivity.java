@@ -152,28 +152,27 @@ public class ResultActivity extends BaseActivity{
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONArray imgs = new JSONArray();
+                String path="";
                 try {
                     // store image on sd card
-                    String path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage),"/images",resultImageUrl);
+                    path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage),"/images",resultImageUrl);
 
                     resultJsonObj.put("type", "caddisfly");
                     resultJsonObj.put("name", brand.getName());
-                    resultJsonObj.put("keyId", brand.getKeyId());
+                    resultJsonObj.put("uuid", brand.getUuid());
                     if (path.length() > 0){
                         resultJsonObj.put("image",resultImageUrl);
-                        imgs.put(path);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                listener.onResult(resultJsonObj.toString(),imgs.toString());
+                listener.onResult(resultJsonObj.toString(),path);
 
                 Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
                 i.putExtra("finish", true);
                 i.putExtra("response", resultJsonObj.toString());
-                i.putExtra("imagePaths",imgs.toString());
+                i.putExtra("image",path);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
 

@@ -88,8 +88,8 @@ public class CaddisflyApp extends Application {
         PackageManager packageManager = context.getPackageManager();
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             AlertUtil.showAlert(context, R.string.cameraNotAvailable,
-                    R.string.cameraRequired,
-                    R.string.ok, onClickListener, null, null);
+                R.string.cameraRequired,
+                R.string.ok, onClickListener, null, null);
             return false;
         }
         return true;
@@ -221,7 +221,31 @@ public class CaddisflyApp extends Application {
     public void loadTestConfiguration(String testCode) {
 
         mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(
-                FileHelper.getConfigJson(), testCode.toUpperCase());
+            FileHelper.getConfigJson(), testCode.toUpperCase());
+
+        if (mCurrentTestInfo != null) {
+            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+                loadCalibratedSwatches(mCurrentTestInfo);
+
+                if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
+                    try {
+                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Load the test configuration for the given uuid
+     *
+     * @param uuid the uuid of the test
+     */
+    public void loadTestConfigurationByUuid(String uuid) {
+
+        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByUuid(
+            FileHelper.getConfigJson(), uuid);
 
         if (mCurrentTestInfo != null) {
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {

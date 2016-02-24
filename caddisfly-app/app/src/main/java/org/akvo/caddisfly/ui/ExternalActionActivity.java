@@ -77,6 +77,7 @@ public class ExternalActionActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String type = intent.getType();
+        String caddisflyResourceUuid;
         String mQuestionTitle;
 
         if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
@@ -110,11 +111,45 @@ public class ExternalActionActivity extends BaseActivity {
                                         }
                                     }
                             )) {
-                        startTest();
+                        startTest(null);
+                    }
+                }
+            }
+        } else if (AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction()) && type != null) {
+            if ("text/plain".equals(type)) { //NON-NLS
+                mIsExternalAppCall = true;
+                caddisflyResourceUuid = intent.getStringExtra("caddisflyResourceUuid");
+
+                mExternalAppLanguageCode = intent.getStringExtra("language");
+
+                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+
+                //Extract the 5 letter code in the question and load the test config
+                CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
+
+                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+                    ((TextView) findViewById(R.id.textTitle)).setText("unknown test");
+                    alertTestTypeNotSupported("unknown test");
+                } else {
+                    Configuration config = getResources().getConfiguration();
+                    ((TextView) findViewById(R.id.textTitle)).setText(
+                        CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
+                    if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
+                        CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                            R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }
+                        )) {
+                        startTest(caddisflyResourceUuid);
                     }
                 }
             }
         }
+
     }
 
     private void alertCalibrationExpired() {
@@ -189,7 +224,7 @@ public class ExternalActionActivity extends BaseActivity {
     /**
      * Start the appropriate test based on the current test type
      */
-    private void startTest() {
+    private void startTest(String caddisflyResourceUuid) {
         Context context = this;
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
@@ -225,6 +260,7 @@ public class ExternalActionActivity extends BaseActivity {
             case COLORIMETRIC_STRIP:
 
                 final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
+                colorimetricStripIntent.putExtra("caddisflyResourceUuid",caddisflyResourceUuid);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;

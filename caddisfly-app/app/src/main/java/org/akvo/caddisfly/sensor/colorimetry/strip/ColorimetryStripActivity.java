@@ -11,6 +11,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
+import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +75,6 @@ public class ColorimetryStripActivity extends AppCompatActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         }
-
     }
 
     public void onNewIntent(Intent intent)
@@ -88,11 +88,24 @@ public class ColorimetryStripActivity extends AppCompatActivity
         super.onResume();
 
         System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra("finish", false));
-
-        if(getIntent().getBooleanExtra("finish", false)){
-
+        Intent intent = getIntent();
+        String cadUuid = intent.getExtras().getString("caddisflyResourceUuid");
+        if(intent.getBooleanExtra("finish", false)){
             finish();
+        } else if (cadUuid != null && cadUuid.length() > 0){
+            // when we get back here, we want to go straight back to the FLOW app
+            intent.putExtra("finish",true);
+
+            // find brand which goes with this test uuid
+            // and if found, go there immediately.
+            StripTest stripTest = new StripTest();
+            String brand = stripTest.matchUuidToBrand(cadUuid);
+            if (brand != null & brand.length() > 0)
+            onItemSelected(brand);
         }
+
+        // check if the caddisflyResourceUuid is present in the intent,
+        // and if so, fire the corresponding test
     }
 
     /**
@@ -131,13 +144,13 @@ public class ColorimetryStripActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResult(String result, String images) {
+    public void onResult(String result, String imagePath) {
 
         //System.out.println("***onResult ColorimetryStripActivity called");
 
         Intent intent = new Intent(getIntent());
         intent.putExtra("response", result);
-        intent.putExtra("images", images);
+        intent.putExtra("image", imagePath);
         setResult(Activity.RESULT_OK, intent);
 
         finish();
