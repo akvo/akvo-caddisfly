@@ -318,6 +318,7 @@ public class ExternalActionActivity extends BaseActivity {
                     //return the test result to the external app
                     Intent intent = new Intent(getIntent());
                     intent.putExtra("response", data.getStringExtra("response"));
+                    intent.putExtra("image",data.getStringExtra("image"));
                     this.setResult(Activity.RESULT_OK, intent);
                 }
                 finish();
