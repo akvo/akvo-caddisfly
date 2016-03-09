@@ -469,6 +469,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
+                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+                        //todo: fix this hardcoding
+                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        }
+
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {
                             if (croppedBitmap != null) {
@@ -582,6 +589,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+                        //todo: fix this hardcoding
+                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        }
 
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {

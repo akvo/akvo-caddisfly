@@ -136,6 +136,23 @@
       {
         "name": [
           {
+            "en": "Chromium"
+          },
+          {
+            "fr": "Chromium"
+          }
+        ],
+        "type": "0",
+        "code": "chrom",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,5,10,15,20",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
             "en": "Pesticides"
           },
           {

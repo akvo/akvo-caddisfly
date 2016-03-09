@@ -169,7 +169,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
 
         Button buttonStartCalibrate = (Button) findViewById(R.id.buttonStartCalibrate);
-        Button buttonCalibrate = (Button) findViewById(R.id.buttonCalibrate);
+        Button buttonFinishCalibrate = (Button) findViewById(R.id.buttonFinishCalibrate);
         Button buttonNext = (Button) findViewById(R.id.buttonNext);
 
         fabEdit =
@@ -240,7 +240,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         });
 
-        buttonCalibrate.setOnClickListener(new View.OnClickListener() {
+        buttonFinishCalibrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (usbService.isUsbConnected()) {

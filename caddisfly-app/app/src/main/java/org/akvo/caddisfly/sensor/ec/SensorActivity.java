@@ -315,11 +315,13 @@ public class SensorActivity extends BaseActivity {
                 try {
                     temperature = Double.parseDouble(resultArray[0]);
                     mTemperature = String.format(Locale.US, "%.1f", temperature);
-
-                    ec25Value = Math.round(Double.parseDouble(resultArray[1]));
-
                 } catch (NumberFormatException e) {
                     mTemperature = "";
+                }
+
+                try {
+                    ec25Value = Math.round(Double.parseDouble(resultArray[1]));
+                } catch (NumberFormatException e) {
                     ec25Value = -1;
                 }
 

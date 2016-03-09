@@ -242,7 +242,7 @@
                 android:textSize="17sp" />
 
             <Button
-                android:id="@+id/buttonCalibrate"
+                android:id="@+id/buttonFinishCalibrate"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
