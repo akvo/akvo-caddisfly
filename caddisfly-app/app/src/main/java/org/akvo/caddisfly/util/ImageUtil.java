@@ -72,7 +72,7 @@ public class ImageUtil {
         if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
-            point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
+            point = ImageHelper.getCenter(radius, bitmap, false);
             if (point == null) {
                 return null;
             }

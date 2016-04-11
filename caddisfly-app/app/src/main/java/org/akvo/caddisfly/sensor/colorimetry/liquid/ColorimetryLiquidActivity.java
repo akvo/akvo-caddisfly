@@ -65,6 +65,9 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +82,20 @@ public class ColorimetryLiquidActivity extends BaseActivity
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
     private final Handler delayHandler = new Handler();
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -100,6 +117,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
