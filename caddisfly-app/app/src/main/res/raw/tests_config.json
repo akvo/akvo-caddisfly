@@ -49,7 +49,7 @@
         "code": "chlor",
         "unit": "ppm",
         "calibrate": "true",
-        "ranges": "0,0.1,0.5,0.8,1.0",
+        "ranges": "0,0.25,0.5,0.75,1.0",
         "monthsValid": "24"
       },
       {
@@ -164,6 +164,40 @@
         "unit": "ppb",
         "calibrate": "true",
         "ranges": "0,10,50,100",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic 3"
+          },
+          {
+            "fr": "Arsenic 3"
+          }
+        ],
+        "type": "0",
+        "code": "ars3n",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,20,30,40,50,100",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic 4"
+          },
+          {
+            "fr": "Arsenic 4"
+          }
+        ],
+        "type": "0",
+        "code": "ars4n",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,20,30,40,50",
         "diagnostic": "true",
         "monthsValid": "6"
       },
