@@ -22,7 +22,7 @@ package org.akvo.caddisfly;
 public class AppConfig {
 
     /**
-     * To launch FLOW app
+     * To launch Flow app
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
@@ -35,6 +35,11 @@ public class AppConfig {
      * The intent action string used by the caddisfly question type
      */
     public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
+
+    /**
+     * Vendor Id for Sensor devices
+     */
+    public static final int ARDUINO_VENDOR_ID = 9025;
 
     /**
      * The sound volume for the beeps and other sound effects

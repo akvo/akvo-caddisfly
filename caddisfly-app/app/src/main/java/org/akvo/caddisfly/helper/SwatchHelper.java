@@ -69,19 +69,13 @@ public final class SwatchHelper {
     public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, ArrayList<Swatch> swatches,
                                             ColorUtil.ColorModel colorModel) {
 
-        //Find the color that matches the photoColor from the calibrated colorRange
-        ColorCompareInfo colorCompareInfo = getNearestColorFromSwatches(
-                photoColor.getColor(), swatches, true);
+        ColorCompareInfo colorCompareInfo;
 
-        //If there are no exact color matches in the swatches then generate a gradient by interpolation
-        if (colorCompareInfo.getResult() < 0) {
+        ArrayList<Swatch> gradientSwatches = ColorUtil.generateGradient(swatches, colorModel, 0.01);
 
-            ArrayList<Swatch> gradientSwatches = ColorUtil.generateGradient(swatches, colorModel, 0.01);
-
-            //Find the color within the generated gradient that matches the photoColor
-            colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
-                    gradientSwatches, false);
-        }
+        //Find the color within the generated gradient that matches the photoColor
+        colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
+                gradientSwatches, false);
 
         //set the result
         ResultDetail resultDetail = new ResultDetail(-1, photoColor.getColor());

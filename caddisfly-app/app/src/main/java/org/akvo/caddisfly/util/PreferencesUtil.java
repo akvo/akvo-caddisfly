@@ -259,6 +259,7 @@ public class PreferencesUtil {
         editor.apply();
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void removeKey(Context context, @StringRes int keyId) {
         removeKey(context, getKey(context, keyId));
     }

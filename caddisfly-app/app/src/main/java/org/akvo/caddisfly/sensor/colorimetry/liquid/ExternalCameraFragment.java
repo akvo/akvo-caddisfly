@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.CameraDialog;
@@ -196,6 +197,7 @@ public final class ExternalCameraFragment extends CameraDialog {
         super.onCancel(dialog);
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -206,7 +208,7 @@ public final class ExternalCameraFragment extends CameraDialog {
                 if (mHandler != null && !mHandler.isCameraOpened()) {
                     final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
                     List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                    if (usbDeviceList.size() > 0) {
+                    if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
                         final Object item = usbDeviceList.get(0);
                         mUSBMonitor.requestPermission((UsbDevice) item);
                     }

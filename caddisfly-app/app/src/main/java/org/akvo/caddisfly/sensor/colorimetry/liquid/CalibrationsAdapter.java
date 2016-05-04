@@ -36,6 +36,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * The calibrated swatches and values for each test type
@@ -70,9 +71,9 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         //display unit value
         Spannable word;
         if (mDisplayDecimal) {
-            word = new SpannableString(String.format("%.2f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%.2f ", swatch.getValue()));
         } else {
-            word = new SpannableString(String.format("%.0f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%.0f ", swatch.getValue()));
         }
         textUnit.setText(word);
 
@@ -110,8 +111,8 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
-                textHsv.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
-                textBrightness.setText(String.format("d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
+                textHsv.setText(String.format(Locale.getDefault(), "h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
+                textBrightness.setText(String.format(Locale.getDefault(), "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
                 textRgb.setVisibility(View.VISIBLE);
                 textHsv.setVisibility(View.VISIBLE);
                 textBrightness.setVisibility(View.VISIBLE);

@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -71,7 +72,7 @@ public class ImageUtil {
         if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
-            point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
+            point = ImageHelper.getCenter(radius, bitmap, false);
             if (point == null) {
                 return null;
             }
@@ -105,6 +106,30 @@ public class ImageUtil {
         canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, 20, paint);
 
         return croppedBitmap;
+    }
+
+
+    public static Bitmap getGrayscale(Bitmap src) {
+
+        //Custom color matrix to convert to GrayScale
+        float[] matrix = new float[]{
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0, 0, 0, 1, 0,};
+
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(),
+                src.getHeight(),
+                src.getConfig());
+
+        Canvas canvas = new Canvas(dest);
+        Paint paint = new Paint();
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        paint.setColorFilter(filter);
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        return dest;
     }
 
     /**

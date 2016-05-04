@@ -120,7 +120,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.7));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(1.63, result, 0);
+        assertEquals(-1, result, 0);
     }
 
     public void testAverage7() {
@@ -133,7 +133,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.5));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.63, result, 0);
     }
 
     public void testAverage8() {
@@ -147,7 +147,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.6));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.63, result, 0);
     }
 
     public void testGetAverageColor1() {
@@ -161,7 +161,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.6, Color.rgb(230, 230, 230)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(0, color);
+        assertEquals(-16777216, color);
     }
 
     public void testGetAverageColor2() {
@@ -172,7 +172,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.7, Color.rgb(240, 240, 240)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(0, color);
+        assertEquals(-16777216, color);
     }
 
     public void testGetAverageColor3() {
@@ -185,7 +185,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.5, Color.rgb(210, 230, 210)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(0, color);
+        assertEquals(-16777216, color);
     }
 
     public void testGetAverageColor4() {
@@ -198,7 +198,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(254, 250, 250)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(Color.rgb(252, 252, 250), color);
+        assertEquals(-16777216, color);
     }
 
     public void testGetAverageColor5() {
@@ -211,7 +211,7 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(225, 1, 3)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(Color.rgb(223, 1, 1), color);
+        assertEquals(-16777216, color);
     }
 
     public void testGetAverageColor6() {
@@ -224,6 +224,6 @@ public class SwatchHelperTest extends TestCase {
         results.add(createNewResult(1.8, Color.rgb(175, 124, 77)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(Color.rgb(176, 125, 77), color);
+        assertEquals(-16777216, color);
     }
 }
