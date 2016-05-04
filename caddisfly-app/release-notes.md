@@ -1,3 +1,33 @@
+v0.105 beta
+----------
+1. Remove rounding off of result
+2. FLOW renamed to Flow
+
+v0.104 beta
+----------
+1. Fix temperature reading
+
+v0.103 beta
+----------
+1. 6 step calibration for EC
+
+v0.102 beta
+----------
+1. Fix for external 720 pix camera
+
+v0.101 beta
+----------
+1. Third party notices
+
+v0.100 beta
+----------
+1. Fix carriage return issue with EC Sensor
+
+v0.99 beta
+----------
+1. External Camera
+2. Tolerance Changes
+
 v0.93 beta
 ----------
 1. Added default colors for swatches in json config
@@ -24,7 +54,7 @@ v0.91 beta
 ----------
 1. Release for Beta
 2. Added software licences dialog
-3. Fix: Expect 2 letter language code from FLOW
+3. Fix: Expect 2 letter language code from Flow
 
 v0.90 beta
 ----------
@@ -49,7 +79,7 @@ v0.87 beta
 
 v0.86 beta
 ----------
-1. Added shared id, process and task affinity to launch in same process as FLOW
+1. Added shared id, process and task affinity to launch in same process as Flow
 2. Changed protocol for EC Sensor as per new specifications
         R - Will return the current temperature and Compensated EC
 3. Fix calibration batch expiry save per test type (WIP)
@@ -344,7 +374,7 @@ v0.43 alpha
 -----------
 1. moved test properties to json file
 2. test type selection dropdown added on calibration screen
-3. integration with new flow app 2+
+3. integration with new Flow app 2+
 4. removed one step calibration
 5. test name added on test progress screen
 6. added save original photo preference

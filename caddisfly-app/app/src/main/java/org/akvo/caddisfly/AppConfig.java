@@ -22,7 +22,7 @@ package org.akvo.caddisfly;
 public class AppConfig {
 
     /**
-     * To launch FLOW app
+     * To launch Flow app
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 

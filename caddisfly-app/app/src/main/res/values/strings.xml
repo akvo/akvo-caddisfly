@@ -62,7 +62,7 @@
     <string name="cameraNotAvailable">Camera not available</string>
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, please restart this device</string>
-    <string name="errorAkvoFlowRequired">Please install Akvo FLOW app</string>
+    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 
     <!--Main Screen-->
     <string name="cannotCalibrate">Cannot calibrate</string>
