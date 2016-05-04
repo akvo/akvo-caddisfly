@@ -62,7 +62,7 @@
     <string name="cameraNotAvailable">Camera not available</string>
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, please restart this device</string>
-    <string name="errorAkvoFlowRequired">Please install Akvo FLOW app</string>
+    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 
     <!--Main Screen-->
     <string name="cannotCalibrate">Cannot calibrate</string>
@@ -111,12 +111,10 @@
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
     <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
-    <string name="lowEcMeasurement">Low EC Measurement</string>
-    <string name="suspendEcSensorInLow">Place EC Sensor in a LOW EC solution and enter its pre-measured value below</string>
-    <string name="middleEcMeasurement">Middle EC Measurement</string>
-    <string name="suspendEcSensorInMiddle">Place EC Sensor in a MIDDLE EC solution and enter its pre-measured value below</string>
-    <string name="highEcMeasurement">High EC Measurement</string>
-    <string name="suspendEcSensorInHigh">Place EC Sensor in a HIGH EC solution and enter its pre-measured value below</string>
+    <string name="calibratePoint">Calibrate %d μS/cm</string>
+    <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
+    <string name="getEcSolutionReady">Get ready the fluid with EC of %d μS/cm</string>
+    <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
     <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
@@ -165,5 +163,16 @@
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="update">Update</string>
     <string name="deviceConnected">Device connected</string>
+    <string name="go">Go</string>
+    <string name="next">Next</string>
+    <string name="change">Change</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="saving">Saving</string>
+    <string name="sensorDetails">Sensor Details</string>
+    <string name="verifySensorDetails">Verify sensor details</string>
+    <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
+    <string name="ecSensorId">EC Sensor Id</string>
 
 </resources>

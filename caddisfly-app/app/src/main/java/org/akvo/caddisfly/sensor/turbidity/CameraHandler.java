@@ -55,9 +55,9 @@ class CameraHandler implements Camera.PictureCallback {
 
     private final PowerManager.WakeLock wakeLock;
     private final Context mContext;
+    private final String mTestCode;
     private Camera mCamera;
     private String mSavePath;
-    private String mTestCode;
 
     public CameraHandler(Context context, String testCode) {
         mContext = context;

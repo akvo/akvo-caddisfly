@@ -52,16 +52,7 @@ import java.util.Locale;
 
 public class TimeLapseActivity extends BaseActivity {
 
-    private SoundPoolPlayer sound;
-    private TextView textSampleCount;
-    private TextView textCountdown;
-    private Calendar futureDate;
-    private ShakeDetector mShakeDetector;
-    private SensorManager mSensorManager;
-    private boolean mWaitingForStillness = false;
-    private Runnable runnable;
-    private Handler handler;
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
@@ -75,6 +66,15 @@ public class TimeLapseActivity extends BaseActivity {
             }
         }
     };
+    private SoundPoolPlayer sound;
+    private TextView textSampleCount;
+    private TextView textCountdown;
+    private Calendar futureDate;
+    private ShakeDetector mShakeDetector;
+    private SensorManager mSensorManager;
+    private boolean mWaitingForStillness = false;
+    private Runnable runnable;
+    private Handler handler;
     private String mTestCode;
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override

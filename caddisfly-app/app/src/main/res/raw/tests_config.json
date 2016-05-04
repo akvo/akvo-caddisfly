@@ -22,6 +22,23 @@
       {
         "name": [
           {
+            "en": "Fluoride - High Range"
+          },
+          {
+            "fr": "Fluorure - High Range"
+          }
+        ],
+        "type": "0",
+        "code": "fluhi",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,2,4,6",
+        "dilutions": "0,50,20",
+        "monthsValid": "12"
+      },
+      {
+        "name": [
+          {
             "en": "Free Chlorine"
           },
           {
@@ -32,7 +49,7 @@
         "code": "chlor",
         "unit": "ppm",
         "calibrate": "true",
-        "ranges": "0,0.1,0.5,0.8,1.0",
+        "ranges": "0,0.25,0.5,0.75,1.0",
         "monthsValid": "24"
       },
       {
@@ -130,6 +147,74 @@
         "unit": "ppb",
         "calibrate": "true",
         "ranges": "0,10,20,30,40",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic 2"
+          },
+          {
+            "fr": "Arsenic 2"
+          }
+        ],
+        "type": "0",
+        "code": "ars2n",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,50,100",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic 3"
+          },
+          {
+            "fr": "Arsenic 3"
+          }
+        ],
+        "type": "0",
+        "code": "ars3n",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,20,30,40,50,100",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Arsenic 4"
+          },
+          {
+            "fr": "Arsenic 4"
+          }
+        ],
+        "type": "0",
+        "code": "ars4n",
+        "unit": "ppb",
+        "calibrate": "true",
+        "ranges": "0,10,20,30,40,50",
+        "diagnostic": "true",
+        "monthsValid": "6"
+      },
+      {
+        "name": [
+          {
+            "en": "Chromium"
+          },
+          {
+            "fr": "Chromium"
+          }
+        ],
+        "type": "0",
+        "code": "chrom",
+        "unit": "ppm",
+        "calibrate": "true",
+        "ranges": "0,5,10,15,20",
         "diagnostic": "true",
         "monthsValid": "6"
       },

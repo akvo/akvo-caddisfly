@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
@@ -64,6 +65,9 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,6 +82,20 @@ public class ColorimetryLiquidActivity extends BaseActivity
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
     private final Handler delayHandler = new Handler();
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -99,6 +117,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -188,7 +212,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
 
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             startExternalTest();
         } else {
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -220,7 +244,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             startExternalTest();
         } else {
             startTest();
@@ -468,6 +492,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
 
+                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+                        //todo: fix this hardcoding
+                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        }
+
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {
                             if (croppedBitmap != null) {
@@ -581,6 +612,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                 ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+                        //todo: fix this hardcoding
+                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        }
 
                         //Ignore the first result as camera may not have focused correctly
                         if (!mIsFirstResult) {

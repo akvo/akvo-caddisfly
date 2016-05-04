@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.CameraDialog;
@@ -36,6 +37,7 @@ import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 
 import java.util.List;
+import java.util.Locale;
 
 public class AlignmentActivity extends BaseActivity {
 
@@ -70,7 +72,7 @@ public class AlignmentActivity extends BaseActivity {
                 CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
 
         if (getIntent().getBooleanExtra("isCalibration", false)) {
-            String subTitle = String.format("%s %.2f %s",
+            String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
                     getResources().getString(R.string.calibrate),
                     getIntent().getDoubleExtra("swatchValue", 0),
                     CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
@@ -96,7 +98,7 @@ public class AlignmentActivity extends BaseActivity {
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
         FrameLayout layoutCameraPreview = (FrameLayout) findViewById(R.id.layoutCameraPreview);
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             mCameraDialog = ExternalCameraFragment.newInstance();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutCameraPreview.getLayoutParams();
             params.topMargin = 40;
@@ -106,9 +108,8 @@ public class AlignmentActivity extends BaseActivity {
             layoutCameraPreview.setLayoutParams(params);
 
 //            params.width = 576;
-
-            //params.leftMargin = 50;
-
+//            params.leftMargin = 50;
+//
 //            CrossHairView crossHairView = (CrossHairView) findViewById(R.id.crossHairView);
 //            crossHairView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         } else {
