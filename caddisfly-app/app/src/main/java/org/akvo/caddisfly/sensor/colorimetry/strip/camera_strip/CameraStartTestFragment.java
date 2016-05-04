@@ -393,7 +393,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                 //keep track of which image belongs to which patch
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
-                array.put(patches.get(i).getOrder());
+                array.put(patches.get(i).getId());
                 imagePatchArray.put(array);
 
             }

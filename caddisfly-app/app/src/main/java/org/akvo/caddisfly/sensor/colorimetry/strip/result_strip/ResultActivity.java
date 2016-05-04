@@ -212,6 +212,7 @@ public class ResultActivity extends BaseActivity{
         private int patchNum;
         private Mat strip;
         String unit;
+        int id;
         String desc;
 
         public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand, List<StripTest.Brand.Patch> patches, int patchNum)
@@ -247,6 +248,7 @@ public class ResultActivity extends BaseActivity{
             // get the name and unit of the patch
             desc = patches.get(patchNum).getDesc();
             unit = patches.get(patchNum).getUnit();
+            id = patches.get(patchNum).getId();
 
             // depending on the boolean grouped, we either handle all patches at once, or we handle only a single one
 
@@ -367,6 +369,7 @@ public class ResultActivity extends BaseActivity{
                     object.put("name", desc);
                     object.put("value", ResultUtils.roundSignificant(ppm));
                     object.put("unit", unit);
+                    object.put("id",id);
                     resultJsonArr.put(object);
                     resultJsonObj.put("result", resultJsonArr);
 

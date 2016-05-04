@@ -133,12 +133,13 @@ public class StripTest{
 
                                         String patchDesc = patchObj.getString("patchDesc");
                                         int patchPos = patchObj.getInt("patchPos");
+                                        int id = patchObj.getInt("id");
                                         int patchWidth = patchObj.getInt("patchWidth");
                                         double timeLapse = patchObj.getDouble("timeLapse");
                                         String unit = patchObj.getString("unit");
                                         JSONArray colours = patchObj.getJSONArray("colours");
 
-                                        patches.add(new Patch(ii, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
+                                        patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
                                     }
 
                                 } catch (JSONException e) {
@@ -212,18 +213,19 @@ public class StripTest{
         }
 
         public class Patch {
-            int order;
+            int id;
             String desc;
             double width; //mm
             double height;//mm
             double position;//x in mm
             double timeLapse; //seconds between this and previous patch
             String unit;
+
             JSONArray colours;
 
-            public Patch(int order, String desc, double width, double height, double position,
+            public Patch(int id, String desc, double width, double height, double position,
                          double timeLapse, String unit, JSONArray colours) {
-                this.order = order;
+                this.id = id;
                 this.desc = desc;
                 this.width = width;
                 this.height = height;
@@ -233,8 +235,8 @@ public class StripTest{
                 this.colours = colours;
             }
 
-            public int getOrder() {
-                return order;
+            public int getId() {
+                return id;
             }
 
             public String getDesc() {

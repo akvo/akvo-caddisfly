@@ -1,5 +1,5 @@
 {
-  "comment":"This file contains the metadata on the strip tests. Please *DONT* change the keyId values, as they are shared with the FLOW backend.",
+  "comment":"This file contains the metadata on the strip tests. Please *DONT* change the uuid values, as they are shared with the FLOW backend.",
   "strips":[
     {
       "name": "Chlorine and Free Chlorine",
