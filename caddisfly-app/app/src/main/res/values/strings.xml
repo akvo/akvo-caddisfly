@@ -167,7 +167,6 @@
     <string name="next">Next</string>
     <string name="change">Change</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="saving">Saving</string>
     <string name="sensorDetails">Sensor Details</string>
@@ -184,7 +183,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="app_name">AkvoQR</string>
-    <string name="cut_out_strip">Cutting out strip...</string>
+    <string name="cut_out_strip">Cutting out strip…</string>
     <string name="error_calibrating">Calibration failed</string>
     <string name="error_conversion">Could not convert image.</string>
     <string name="error_cut_out_strip">No strip found.</string>
@@ -195,8 +194,8 @@
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch.</string>
-    <string name="please_wait">Please wait...</string>
-    <string name="reading_data">Reading data from storage...</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="reading_data">Reading data from storage…</string>
     <string name="redo_test">Redo Test</string>
     <string name="thank_using_caddisfly">Thank you for using Akvo Caddisfly</string>
     <string name="title_activity_camera">Camera</string>
@@ -207,11 +206,10 @@
     <string name="to_results">To results</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
-    <string name="init_camera">Initialising camera ...</string>
-    <string name="analysing">Analysing image ...</string>
+    <string name="init_camera">Initialising camera…</string>
+    <string name="analysing">Analysing image…</string>
     <string name="prepare_test">Prepare for test</string>
     <string name="prepare_camera_instr">NB: Do not take a sample yet.\nHold camera above card.\nAdjust your position until checks are OK.</string>
-    <string name="next">Next</string>
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>
