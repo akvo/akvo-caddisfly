@@ -57,6 +57,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
@@ -65,6 +66,9 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -74,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
@@ -118,6 +123,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -145,8 +151,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         setTitle("Analysis");
 
-        mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
-        mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
+        Intent intent = getIntent();
+        mIsCalibration = intent.getBooleanExtra("isCalibration", false);
+        mSwatchValue = intent.getDoubleExtra("swatchValue", 0);
 
         sound = new SoundPoolPlayer(this);
 
@@ -219,7 +226,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     SensorManager.SENSOR_DELAY_UI);
         }
     }
-
 
     /**
      * Acquire a wake lock to prevent the screen from turning off during the analysis process
@@ -513,7 +519,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         mIsFirstResult = false;
 
                         if (completed) {
-                            AnalyzeFinalResult(bytes);
+                            AnalyzeFinalResult(bytes, croppedBitmap);
                             mCameraFragment.dismiss();
                         } else {
                             sound.playShortResource(R.raw.beep);
@@ -633,7 +639,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         mIsFirstResult = false;
 
                         if (completed) {
-                            AnalyzeFinalResult(bytes);
+                            AnalyzeFinalResult(bytes, croppedBitmap);
                             mCameraFragment.dismiss();
                         } else {
                             sound.playShortResource(R.raw.beep);
@@ -674,9 +680,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
      * <p/>
      * If the result value is too high then display the high contamination level message
      *
-     * @param data image data to be displayed if error in analysis
+     * @param data          image data to be displayed if error in analysis
+     * @param croppedBitmap cropped image used for analysis
      */
-    private void AnalyzeFinalResult(byte[] data) {
+    private void AnalyzeFinalResult(byte[] data, Bitmap croppedBitmap) {
 
         releaseResources();
 
@@ -706,12 +713,48 @@ public class ColorimetryLiquidActivity extends BaseActivity
             }
 
             int color = SwatchHelper.getAverageColor(mResults);
-            Intent intent = new Intent(getIntent());
-            intent.putExtra("result", result);
-            intent.putExtra("color", color);
-            //intent.putExtra("questionId", mQuestionId);
-            intent.putExtra("response", String.format("%.2f", result));
-            setResult(Activity.RESULT_OK, intent);
+
+            Intent intent = getIntent();
+            String cadUuid = intent.getExtras().getString("caddisflyResourceUuid");
+
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+            JSONObject resultJsonObj = new JSONObject();
+            JSONArray resultJsonArr = new JSONArray();
+
+            Intent resultIntent = new Intent(intent);
+            resultIntent.putExtra("result", result);
+            resultIntent.putExtra("color", color);
+
+            if (cadUuid != null) {
+                try {
+                    TestInfo.SubTest subTest = testInfo.getSubTests().get(0);
+                    JSONObject object = new JSONObject();
+
+                    String resultImageUrl = UUID.randomUUID().toString() + ".png";
+                    String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/images", resultImageUrl);
+                    if (path.length() > 0) {
+                        resultJsonObj.put("image", resultImageUrl);
+                    }
+
+                    object.put("name", subTest.getDesc());
+                    object.put("value", String.format(Locale.US, "%.2f", result));
+                    object.put("unit", subTest.getUnit());
+                    object.put("id", subTest.getUnit());
+                    resultJsonArr.put(object);
+                    resultJsonObj.put("result", resultJsonArr);
+                    resultJsonObj.put("type", "caddisfly");
+                    resultJsonObj.put("name", testInfo.getName("en"));
+                    resultJsonObj.put("uuid", testInfo.getUuid());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                resultIntent.putExtra("response", resultJsonObj.toString());
+            } else {
+                resultIntent.putExtra("response", String.format("%.2f", result));
+            }
+
+            setResult(Activity.RESULT_OK, resultIntent);
             mTestCompleted = true;
 
             if (isCalibration && color != Color.TRANSPARENT) {

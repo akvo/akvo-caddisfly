@@ -57,7 +57,7 @@ public final class TestConfigHelper {
      * Returns a TestInfo instance filled with test config for the given uuid
      *
      * @param jsonText the json config text
-     * @param uuid the test uuid
+     * @param uuid     the test uuid
      * @return the TestInfo instance
      */
     public static TestInfo loadTestConfigurationByUuid(String jsonText, String uuid) {
@@ -65,7 +65,7 @@ public final class TestConfigHelper {
         ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
 
         for (TestInfo test : tests) {
-            if (test.getUuid().contains(uuid)){
+            if (test.getUuid().contains(uuid)) {
                 return test;
             }
         }
@@ -80,12 +80,17 @@ public final class TestConfigHelper {
      */
     public static ArrayList<TestInfo> loadConfigurationsForAllTests(String jsonText) {
 
-        JSONObject jsonObject;
-
         ArrayList<TestInfo> tests = new ArrayList<>();
         try {
-            jsonObject = new JSONObject(jsonText).getJSONObject("tests");
-            JSONArray array = jsonObject.getJSONArray("test");
+            JSONArray array;
+
+            try {
+                array = new JSONObject(jsonText).getJSONArray("tests");
+            } catch (JSONException e) {
+                //TODO: Backward compatibility can be removed
+                array = new JSONObject(jsonText).getJSONObject("tests").getJSONArray("test");
+            }
+
             for (int i = 0; i < array.length(); i++) {
 
                 try {
@@ -116,18 +121,18 @@ public final class TestConfigHelper {
                         continue;
                     }
 
+                    // get uuids
+                    JSONArray uuid = item.getJSONArray("uuid");
+                    ArrayList<String> uuids = new ArrayList<>();
+                    for (int ii = 0; ii < uuid.length(); ii++) {
+                        uuids.add(uuid.getString(ii));
+                    }
+
                     //Get the name for this test
                     JSONArray nameArray = item.getJSONArray("name");
 
                     Hashtable<String, String> namesHashTable =
                             new Hashtable<>(nameArray.length(), nameArray.length());
-
-                    // get uuids
-                    JSONArray uuid = item.getJSONArray("uuid");
-                    ArrayList<String> uuids = new ArrayList<String>();
-                    for (int ii = 0; ii < uuid.length();ii++){
-                        uuids.add(uuid.getString(ii));
-                    }
 
                     //Load test names in different languages
                     for (int j = 0; j < nameArray.length(); j++) {
@@ -138,6 +143,9 @@ public final class TestConfigHelper {
                             namesHashTable.put(key, name);
                         }
                     }
+
+                    //Load results
+                    JSONArray resultsArray = item.getJSONArray("results");
 
                     //Load the dilution percentages
                     String dilutions = "0";
@@ -181,14 +189,14 @@ public final class TestConfigHelper {
                             //if calibrate not specified then default to true otherwise use specified value
                             !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
                             rangesArray, defaultColorsArray,
-                            dilutionsArray, isDiagnostic, monthsValid, uuids));
+                            dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception ignored) {
-
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return tests;
     }

@@ -77,7 +77,7 @@ public class SelectDilutionActivity extends BaseActivity {
 
     private void startTest(int dilution) {
         final Intent intent = new Intent(getIntent());
-        intent.setClass(getBaseContext(), AlignmentActivity.class);
+        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
         intent.putExtra("dilution", dilution);
         startActivityForResult(intent, REQUEST_TEST);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);

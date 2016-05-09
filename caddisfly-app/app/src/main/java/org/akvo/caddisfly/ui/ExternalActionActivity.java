@@ -32,8 +32,8 @@ import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.AlignmentActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
@@ -124,7 +124,7 @@ public class ExternalActionActivity extends BaseActivity {
 
                 CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 
-                //Extract the 5 letter code in the question and load the test config
+                //Get the test config by uuid
                 CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
@@ -133,17 +133,17 @@ public class ExternalActionActivity extends BaseActivity {
                 } else {
                     Configuration config = getResources().getConfiguration();
                     ((TextView) findViewById(R.id.textTitle)).setText(
-                        CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
+                            CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
                     if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
-                        CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                            R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            }
-                        )) {
+                            CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                                    R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }
+                            )) {
                         startTest(caddisflyResourceUuid);
                     }
                 }
@@ -252,15 +252,18 @@ public class ExternalActionActivity extends BaseActivity {
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    intent.setClass(context, AlignmentActivity.class);
+                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+                    //intent.setClass(context, AlignmentActivity.class);
                 }
+
+                intent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);
                 startActivityForResult(intent, REQUEST_TEST);
 
                 break;
             case COLORIMETRIC_STRIP:
 
                 final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
-                colorimetricStripIntent.putExtra("caddisflyResourceUuid",caddisflyResourceUuid);
+                colorimetricStripIntent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;
@@ -270,6 +273,7 @@ public class ExternalActionActivity extends BaseActivity {
                 boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     final Intent sensorIntent = new Intent(context, SensorActivity.class);
+                    sensorIntent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);
                     startActivityForResult(sensorIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();
@@ -318,7 +322,7 @@ public class ExternalActionActivity extends BaseActivity {
                     //return the test result to the external app
                     Intent intent = new Intent(getIntent());
                     intent.putExtra("response", data.getStringExtra("response"));
-                    intent.putExtra("image",data.getStringExtra("image"));
+                    intent.putExtra("image", data.getStringExtra("image"));
                     this.setResult(Activity.RESULT_OK, intent);
                 }
                 finish();

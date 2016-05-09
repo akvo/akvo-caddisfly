@@ -1,285 +1,430 @@
 {
-  "tests": {
-    "test": [
-      {
-        "name": [
-          {
-            "en": "Fluoride"
-          },
-          {
-            "fr": "Fluorure"
-          }
-        ],
-        "type": "0",
-        "uuid": ["f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"],
-        "code": "fluor",
-        "unit": "ppm",
-        "calibrate": "true",
-        "ranges": "0,0.5,1,1.5,2",
-        "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
-        "dilutions": "0,50,20",
-        "monthsValid": "12"
-      },
-      {
-        "name": [
-          {
-            "en": "Fluoride - High Range"
-          },
-          {
-            "fr": "Fluorure - High Range"
-          }
-        ],
-        "type": "0",
-        "code": "fluhi",
-        "unit": "ppm",
-        "calibrate": "true",
-        "ranges": "0,2,4,6",
-        "dilutions": "0,50,20",
-        "monthsValid": "12"
-      },
-      {
-        "name": [
-          {
-            "en": "Free Chlorine"
-          },
-          {
-            "fr": "Chlore libre"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "chlor",
-        "unit": "ppm",
-        "calibrate": "true",
-        "ranges": "0,0.25,0.5,0.75,1.0",
-        "monthsValid": "24"
-      },
-      {
-        "name": [
-          {
-            "en": "Electrical Conductivity"
-          },
-          {
-            "fr": "Conductivité Electrique"
-          }
-        ],
-        "type": "2",
-        "uuid": ["f88237b7-be3d-4fac-bbee-ab328eefcd14"],
-        "code": "econd",
-        "unit": "μS/cm",
-        "calibrate": "true",
-        "ranges": "0"
-      },
-      {
-        "name": [
-          {
-            "en": "Temperature"
-          },
-          {
-            "fr": "Température"
-          }
-        ],
-        "type": "2",
-        "uuid":[],
-        "code": "tempe",
-        "unit": "°Celsius",
-        "calibrate": "false",
-        "ranges": "0"
-      },
-      {
-        "name": [
-          {
-            "en": "pH-1"
-          },
-          {
-            "fr": "pH-1"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "phyd1",
-        "unit": "",
-        "calibrate": "true",
-        "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "pH-2"
-          },
-          {
-            "fr": "pH-2"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "phyd2",
-        "unit": "",
-        "calibrate": "true",
-        "ranges": "4,5,6,7,8,9,10,11",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Turbidity"
-          },
-          {
-            "fr": "Turbidity"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "turbi",
-        "unit": "NTU",
-        "calibrate": "true",
-        "ranges": "0,5,10,15,20",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Arsenic"
-          },
-          {
-            "fr": "Arsenic"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "arsen",
-        "unit": "ppb",
-        "calibrate": "true",
-        "ranges": "0,10,20,30,40",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Arsenic 2"
-          },
-          {
-            "fr": "Arsenic 2"
-          }
-        ],
-        "type": "0",
-        "code": "ars2n",
-        "unit": "ppb",
-        "calibrate": "true",
-        "ranges": "0,10,50,100",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Arsenic 3"
-          },
-          {
-            "fr": "Arsenic 3"
-          }
-        ],
-        "type": "0",
-        "code": "ars3n",
-        "unit": "ppb",
-        "calibrate": "true",
-        "ranges": "0,10,20,30,40,50,100",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Arsenic 4"
-          },
-          {
-            "fr": "Arsenic 4"
-          }
-        ],
-        "type": "0",
-        "code": "ars4n",
-        "unit": "ppb",
-        "calibrate": "true",
-        "ranges": "0,10,20,30,40,50",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Chromium"
-          },
-          {
-            "fr": "Chromium"
-          }
-        ],
-        "type": "0",
-        "code": "chrom",
-        "unit": "ppm",
-        "calibrate": "true",
-        "ranges": "0,5,10,15,20",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Pesticides"
-          },
-          {
-            "fr": "Pesticides"
-          }
-        ],
-        "type": "0",
-        "uuid":[],
-        "code": "pesti",
-        "unit": "ppm",
-        "calibrate": "true",
-        "ranges": "0,0.25,0.5,0.75,1",
-        "diagnostic": "true",
-        "monthsValid": "6"
-      },
-      {
-        "name": [
-          {
-            "en": "Coliforms"
-          },
-          {
-            "fr": "Coliforms"
-          }
-        ],
-        "type": "3",
-        "uuid":[],
-        "code": "colif",
-        "unit": "ppm",
-        "calibrate": "false",
-        "diagnostic": "true"
-      },
-      {
-        "name": [
-          {
-            "en": "Strip Tests"
-          }
-        ],
-        "type": "1",
-        "uuid":["bf1c19c0-9788-4e26-999e-1b5c6ca28111",
-          "c801b70c-39e4-493a-b20e-6843158b47b4",
-          "459a42d9-0834-4656-9e5a-e3bde46bdcff",
-          "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
-          "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
-          "c2669bb7-ad63-4a69-a16a-798b81d2b019",
-          "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
-          "beca9731-63f4-434f-a3c2-ac33b44f9992"],
-        "code": "strip",
-        "unit": "",
-        "calibrate": "false",
-        "ranges": "0"
-      }
-    ]
-  }
+  "tests": [
+    {
+      "name": [
+        {
+          "en": "Fluoride"
+        },
+        {
+          "fr": "Fluorure"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
+      ],
+      "code": "fluor",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,0.5,1,1.5,2",
+      "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
+      "dilutions": "0,50,20",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Fluoride",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Fluoride - High Range"
+        },
+        {
+          "fr": "Fluorure - High Range"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "7e8c1440-f014-4973-b47c-2b315c143d70"
+      ],
+      "code": "fluhi",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,2,4,6",
+      "dilutions": "0,50,20",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Fluoride - High Range",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Free Chlorine"
+        },
+        {
+          "fr": "Chlore libre"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "c3535e72-ff77-4225-9f4a-41d3288780c6"
+      ],
+      "code": "chlor",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,0.25,0.5,0.75,1.0",
+      "monthsValid": "24",
+      "results": [
+        {
+          "description": "Free Chlorine",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Electrical Conductivity"
+        },
+        {
+          "fr": "Conductivité Electrique"
+        }
+      ],
+      "type": "2",
+      "uuid": [
+        "f88237b7-be3d-4fac-bbee-ab328eefcd14"
+      ],
+      "code": "econd",
+      "unit": "μS/cm",
+      "calibrate": "true",
+      "ranges": "0",
+      "results": [
+        {
+          "description": "Electrical Conductivity",
+          "id": 1,
+          "unit": "μS/cm"
+        },
+        {
+          "description": "Temperature",
+          "id": 2,
+          "unit": "°Celsius"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Temperature"
+        },
+        {
+          "fr": "Température"
+        }
+      ],
+      "type": "2",
+      "uuid": [
+        "d40d013a-10b1-44c4-bcea-02f8f7024105"
+      ],
+      "code": "tempe",
+      "unit": "°Celsius",
+      "calibrate": "false",
+      "ranges": "0",
+      "results": [
+        {
+          "description": "Temperature",
+          "id": 1,
+          "unit": "°Celsius"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "pH-1"
+        },
+        {
+          "fr": "pH-1"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "b8e39123-1e44-4a23-a17e-972896c7d9f4"
+      ],
+      "code": "phyd1",
+      "unit": "",
+      "calibrate": "true",
+      "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "pH-1",
+          "id": 1,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "pH-2"
+        },
+        {
+          "fr": "pH-2"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "ca52b1a5-46b4-499d-97d3-4131e1619d70"
+      ],
+      "code": "phyd2",
+      "unit": "",
+      "calibrate": "true",
+      "ranges": "4,5,6,7,8,9,10,11",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "pH-2",
+          "id": 1,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Turbidity"
+        },
+        {
+          "fr": "Turbidity"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "a81f5663-b512-4dad-a4c3-651caf7f567a"
+      ],
+      "code": "turbi",
+      "unit": "NTU",
+      "calibrate": "true",
+      "ranges": "0,5,10,15,20",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Turbidity",
+          "id": 1,
+          "unit": "NTU"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic"
+        },
+        {
+          "fr": "Arsenic"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "fd1cd7f4-c866-49f1-a175-9ef32c28eddf"
+      ],
+      "code": "arsen",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 2"
+        },
+        {
+          "fr": "Arsenic 2"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "9e1a3d62-f811-446d-8ad7-5a2c3b692084"
+      ],
+      "code": "ars2n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,50,100",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 2",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 3"
+        },
+        {
+          "fr": "Arsenic 3"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "0f5c230d-6143-41de-9a71-074fbe01a863"
+      ],
+      "code": "ars3n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40,50,100",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 3",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 4"
+        },
+        {
+          "fr": "Arsenic 4"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "eb5030c5-a72f-4d16-af4d-971ea1d8afbd"
+      ],
+      "code": "ars4n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40,50",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 4",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Chromium"
+        },
+        {
+          "fr": "Chromium"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "082ec36a-71af-49d5-add8-5c03fc1c2f0b"
+      ],
+      "code": "chrom",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,5,10,15,20",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Chromium",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Pesticides"
+        },
+        {
+          "fr": "Pesticides"
+        }
+      ],
+      "type": "0",
+      "uuid": [
+        "e74ed7c7-6116-4970-b01d-338be374eeca"
+      ],
+      "code": "pesti",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,0.25,0.5,0.75,1",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Pesticides",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Coliforms"
+        },
+        {
+          "fr": "Coliforms"
+        }
+      ],
+      "type": "3",
+      "uuid": [
+        "df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
+      ],
+      "code": "colif",
+      "unit": "ppm",
+      "calibrate": "false",
+      "diagnostic": "true",
+      "results": [
+        {
+          "description": "Coliforms",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Strip Tests"
+        }
+      ],
+      "type": "1",
+      "uuid": [
+        "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
+        "c801b70c-39e4-493a-b20e-6843158b47b4",
+        "459a42d9-0834-4656-9e5a-e3bde46bdcff",
+        "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
+        "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
+        "c2669bb7-ad63-4a69-a16a-798b81d2b019",
+        "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
+        "beca9731-63f4-434f-a3c2-ac33b44f9992"
+      ],
+      "code": "strip",
+      "unit": "",
+      "calibrate": "false",
+      "ranges": "0"
+    }
+  ]
 }

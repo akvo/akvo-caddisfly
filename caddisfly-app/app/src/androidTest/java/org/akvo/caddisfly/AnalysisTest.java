@@ -101,7 +101,7 @@ public class AnalysisTest {
         prefs.edit().clear().apply();
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12));
+                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
 
         resetLanguage();
     }

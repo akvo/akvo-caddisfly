@@ -19,11 +19,15 @@ package org.akvo.caddisfly.model;
 import android.graphics.Color;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Model to hold test configuration information
@@ -41,10 +45,12 @@ public class TestInfo {
     private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
+    private List<SubTest> subTests = new ArrayList<>();
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
-                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids) {
+                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids,
+                    JSONArray resultsArray) {
         this.names = names;
         this.testType = testType;
         this.code = code;
@@ -98,6 +104,16 @@ public class TestInfo {
         for (String dilution : dilutionsArray) {
             addDilution(Integer.parseInt(dilution));
         }
+
+        for (int ii = 0; ii < resultsArray.length(); ii++) {
+            try {
+                JSONObject patchObj = resultsArray.getJSONObject(ii);
+                subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public TestInfo() {
@@ -203,5 +219,34 @@ public class TestInfo {
 
     public boolean hasDecimalPlace() {
         return !allInteger;
+    }
+
+    public List<SubTest> getSubTests() {
+        return subTests;
+    }
+
+    public class SubTest {
+        int id;
+        String desc;
+        String unit;
+
+        public SubTest(int id, String desc, String unit) {
+            this.id = id;
+            this.desc = desc;
+            this.unit = unit;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
     }
 }

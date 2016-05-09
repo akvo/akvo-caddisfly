@@ -42,6 +42,9 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
@@ -189,7 +192,9 @@ public class SensorActivity extends BaseActivity {
 
         setContentView(R.layout.activity_sensor);
 
-        mIsInternal = getIntent().getBooleanExtra("internal", false);
+        final Intent intent = getIntent();
+        final String cadUuid = intent.getExtras().getString("caddisflyResourceUuid");
+        mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
         textResult = (TextView) findViewById(R.id.textResult);
@@ -207,13 +212,50 @@ public class SensorActivity extends BaseActivity {
         buttonAcceptResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getIntent());
-                if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
-                    intent.putExtra("response", mTemperature);
+
+                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+                JSONObject resultJsonObj = new JSONObject();
+                JSONArray resultJsonArr = new JSONArray();
+
+                Intent resultIntent = new Intent(intent);
+
+                if (cadUuid != null) {
+                    try {
+                        for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                            JSONObject object = new JSONObject();
+                            object.put("name", subTest.getDesc());
+                            object.put("unit", subTest.getUnit());
+                            object.put("id", subTest.getUnit());
+                            switch (subTest.getId()) {
+                                case 1:
+                                    object.put("value", mEc25Value);
+                                    break;
+                                case 2:
+                                    object.put("value", mTemperature);
+                                    break;
+                            }
+                            resultJsonArr.put(object);
+                        }
+
+                        resultJsonObj.put("result", resultJsonArr);
+                        resultJsonObj.put("type", "caddisfly");
+                        resultJsonObj.put("name", testInfo.getName("en"));
+                        resultJsonObj.put("uuid", testInfo.getUuid());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    resultIntent.putExtra("response", resultJsonObj.toString());
                 } else {
-                    intent.putExtra("response", mEc25Value);
+                    if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
+                        resultIntent.putExtra("response", mTemperature);
+                    } else {
+                        resultIntent.putExtra("response", mEc25Value);
+                    }
+
                 }
-                setResult(Activity.RESULT_OK, intent);
+
+                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }
         });
@@ -229,7 +271,7 @@ public class SensorActivity extends BaseActivity {
         if (mIsInternal) {
             textTemperature.setVisibility(View.VISIBLE);
             textUnit2.setVisibility(View.VISIBLE);
-        } else {
+        } else if (cadUuid == null) {
             textTemperature.setVisibility(View.GONE);
             textUnit2.setVisibility(View.GONE);
         }
@@ -359,8 +401,9 @@ public class SensorActivity extends BaseActivity {
                     }
                 }
 
+                textTemperature.setText(mTemperature);
+
                 if (mIsInternal) {
-                    textTemperature.setText(mTemperature);
                     buttonAcceptResult.setVisibility(View.GONE);
                 }
 
