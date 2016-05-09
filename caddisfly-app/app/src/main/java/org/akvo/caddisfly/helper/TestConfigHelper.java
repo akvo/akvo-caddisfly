@@ -145,7 +145,10 @@ public final class TestConfigHelper {
                     }
 
                     //Load results
-                    JSONArray resultsArray = item.getJSONArray("results");
+                    JSONArray resultsArray = null;
+                    if (item.has("results")) {
+                        resultsArray = item.getJSONArray("results");
+                    }
 
                     //Load the dilution percentages
                     String dilutions = "0";

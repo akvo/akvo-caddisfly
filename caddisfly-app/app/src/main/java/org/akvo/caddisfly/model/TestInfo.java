@@ -105,12 +105,14 @@ public class TestInfo {
             addDilution(Integer.parseInt(dilution));
         }
 
-        for (int ii = 0; ii < resultsArray.length(); ii++) {
-            try {
-                JSONObject patchObj = resultsArray.getJSONObject(ii);
-                subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if (resultsArray != null) {
+            for (int ii = 0; ii < resultsArray.length(); ii++) {
+                try {
+                    JSONObject patchObj = resultsArray.getJSONObject(ii);
+                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

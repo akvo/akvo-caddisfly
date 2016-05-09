@@ -734,6 +734,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/images", resultImageUrl);
                     if (path.length() > 0) {
                         resultJsonObj.put("image", resultImageUrl);
+                        resultIntent.putExtra("image", path);
                     }
 
                     object.put("name", subTest.getDesc());
@@ -749,6 +750,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     e.printStackTrace();
                 }
 
+                resultIntent.putExtra("finish", true);
                 resultIntent.putExtra("response", resultJsonObj.toString());
             } else {
                 resultIntent.putExtra("response", String.format("%.2f", result));
