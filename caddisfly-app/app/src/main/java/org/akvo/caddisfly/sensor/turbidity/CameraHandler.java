@@ -321,7 +321,7 @@ class CameraHandler implements Camera.PictureCallback {
         return dest;
     }
 
-    public int[] getContrast(Bitmap image) {
+    private int[] getContrast(Bitmap image) {
 
         int width = image.getWidth();
         int height = image.getHeight();

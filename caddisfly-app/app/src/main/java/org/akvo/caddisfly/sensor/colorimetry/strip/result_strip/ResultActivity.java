@@ -1,10 +1,8 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.result_strip;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,37 +13,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.BaseActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.CircleView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtils;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.color.ColorDetected;
-import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
 import java.util.UUID;
 
 public class ResultActivity extends BaseActivity{
@@ -155,7 +140,7 @@ public class ResultActivity extends BaseActivity{
                 String path="";
                 try {
                     // store image on sd card
-                    path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage),"/images",resultImageUrl);
+                    path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage), "/result-images", resultImageUrl);
 
                     resultJsonObj.put("type", "caddisfly");
                     resultJsonObj.put("name", brand.getName());
@@ -199,6 +184,9 @@ public class ResultActivity extends BaseActivity{
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void>
     {
+        String unit;
+        int id;
+        String desc;
         private boolean invalid;
         private Bitmap stripBitmap = null;
         private Bitmap combinedBitmap = null;
@@ -211,9 +199,6 @@ public class ResultActivity extends BaseActivity{
         private List<StripTest.Brand.Patch> patches;
         private int patchNum;
         private Mat strip;
-        String unit;
-        int id;
-        String desc;
 
         public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand, List<StripTest.Brand.Patch> patches, int patchNum)
         {

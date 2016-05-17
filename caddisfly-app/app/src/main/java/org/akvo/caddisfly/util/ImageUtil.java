@@ -66,13 +66,12 @@ public class ImageUtil {
 
         int centerX = bitmap.getWidth() / 2;
         int centerY = bitmap.getHeight() / 2;
-        int radius = 140;
         Point point;
 
         if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
-            point = ImageHelper.getCenter(radius, bitmap, false);
+            point = ImageHelper.getCenter(bitmap);
             if (point == null) {
                 return null;
             }

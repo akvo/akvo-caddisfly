@@ -108,15 +108,18 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
                 bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
-
-                Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
+                Bitmap croppedBitmap;
                 //todo: fix this hardcoding
                 if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
+
                     croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                } else {
+                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
                 }
 
                 DiagnosticDetailsFragment diagnosticDetailsFragment =

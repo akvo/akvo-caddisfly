@@ -78,12 +78,11 @@ public class ExternalActionActivity extends BaseActivity {
         Intent intent = getIntent();
         String type = intent.getType();
         String caddisflyResourceUuid;
-        String mQuestionTitle;
 
         if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 mIsExternalAppCall = true;
-                mQuestionTitle = intent.getStringExtra("questionTitle");
+                String questionTitle = intent.getStringExtra("questionTitle");
 
                 mExternalAppLanguageCode = intent.getStringExtra("language");
 
@@ -91,12 +90,12 @@ public class ExternalActionActivity extends BaseActivity {
 
                 //Extract the 5 letter code in the question and load the test config
                 CaddisflyApp.getApp().loadTestConfiguration(
-                        mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
+                        questionTitle.substring(Math.max(0, questionTitle.length() - 5))
                 );
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
-                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(mQuestionTitle));
-                    alertTestTypeNotSupported(mQuestionTitle);
+                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
+                    alertTestTypeNotSupported();
                 } else {
                     Configuration config = getResources().getConfiguration();
                     ((TextView) findViewById(R.id.textTitle)).setText(
@@ -128,8 +127,7 @@ public class ExternalActionActivity extends BaseActivity {
                 CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
-                    ((TextView) findViewById(R.id.textTitle)).setText("unknown test");
-                    alertTestTypeNotSupported("unknown test");
+                    alertTestTypeNotSupported();
                 } else {
                     Configuration config = getResources().getConfiguration();
                     ((TextView) findViewById(R.id.textTitle)).setText(
@@ -334,11 +332,10 @@ public class ExternalActionActivity extends BaseActivity {
     /**
      * Alert displayed when an unsupported contaminant test type was requested
      *
-     * @param title the name of the test contaminant
      */
-    private void alertTestTypeNotSupported(String title) {
+    private void alertTestTypeNotSupported() {
 
-        String message = getString(R.string.errorTestNotAvailable, getTestName(title));
+        String message = getString(R.string.errorTestNotAvailable);
         message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message,

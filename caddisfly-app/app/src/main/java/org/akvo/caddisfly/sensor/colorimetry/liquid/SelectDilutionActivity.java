@@ -30,6 +30,8 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 
+import java.util.Locale;
+
 public class SelectDilutionActivity extends BaseActivity {
     private static final int REQUEST_TEST = 1;
 
@@ -45,8 +47,8 @@ public class SelectDilutionActivity extends BaseActivity {
         Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
 
         //todo: remove hardcoding of dilution times
-        percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
-        percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
+        percentButton1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
+        percentButton2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
 
         noDilutionButton.setOnClickListener(new View.OnClickListener() {
             @Override

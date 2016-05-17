@@ -16,7 +16,7 @@
 
 package org.akvo.caddisfly.widget;
 
-public interface AspectRatioViewInterface {
+interface AspectRatioViewInterface {
     void setAspectRatio(double aspectRatio);
 
     void onPause();

@@ -103,17 +103,22 @@ public class FileHelper {
      */
     public static String getConfigJson() {
 
-        File file = new File(getFilesDir(FileType.CONFIG), CONFIG_FILE);
-        String text;
 
-        //Look for external json config file otherwise use the internal default one
-        if (file.exists()) {
-            text = FileUtil.loadTextFromFile(file);
-        } else {
-            text = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
-        }
+//        todo: Change to only load new tests from external config file
+//        File file = new File(getFilesDir(FileType.CONFIG), CONFIG_FILE);
+//        String text;
+//
+//        //Look for external json config file otherwise use the internal default one
+//        if (file.exists()) {
+//            text = FileUtil.loadTextFromFile(file);
+//        } else {
+//            text = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
+//        }
+//
+//        return text;
 
-        return text;
+        return FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
+
     }
 
     public static void cleanInstallFolder(boolean keepLatest) {

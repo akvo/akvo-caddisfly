@@ -30,6 +30,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * List of swatches including the generated gradient swatches
@@ -61,7 +62,7 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
 
             //display unit value
             ((TextView) rowView.findViewById(R.id.textUnit)).setText(
-                    String.format("%.2f", colorArray.get(position).getValue()));
+                    String.format(Locale.getDefault(), "%.2f", colorArray.get(position).getValue()));
 
             double distance = 0;
             double distanceRgb = 0;
@@ -76,10 +77,10 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             Color.colorToHSV(color, colorHSV);
 
             ((TextView) rowView.findViewById(R.id.textRgb)).setText(
-                    String.format("d:%.2f  %s: %s",
+                    String.format(Locale.getDefault(), "d:%.2f  %s: %s",
                             distanceRgb, "rgb", ColorUtil.getColorRgbString(color)));
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
-                    String.format("d:%.2f  %s: %.0f  %.2f  %.2f",
+                    String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
                             distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
         }
         return rowView;

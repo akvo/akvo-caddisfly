@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.util.FileUtil;
+import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.util.HashMap;
@@ -45,8 +46,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.object.HasToString.hasToString;
 
 class TestHelper {
 
@@ -83,7 +82,7 @@ class TestHelper {
         addString("electricalConductivity", "Electrical Conductivity", "Conductivité Electrique");
         addString("unnamedDataPoint", "Unnamed data point", "Donnée non nommée");
         addString("createNewDataPoint", "Add Data Point", "CRÉER UN NOUVEAU POINT");
-        addString("useExternalSource", "Use External Source", "Utiliser source externe");
+        addString("useExternalSource", "Go to test", "Go to test");
         addString("next", "Next", "Suivant");
 
         addCalibration("TestValid", "0.0=255  38  186\n"
@@ -257,7 +256,7 @@ class TestHelper {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
 
         mDevice.waitForIdle();
 
@@ -267,7 +266,7 @@ class TestHelper {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
 
         mDevice.waitForIdle();
 

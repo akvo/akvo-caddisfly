@@ -27,6 +27,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class DiagnosticInfoActivity extends BaseActivity {
 
@@ -41,11 +42,11 @@ public class DiagnosticInfoActivity extends BaseActivity {
 
         ArrayList<String> infoList = new ArrayList<>();
 
-        infoList.add(String.format("Number of calibrations\ns:%d  e:%d",
+        infoList.add(String.format(Locale.getDefault(), "Number of calibrations\ns:%d  e:%d",
                 PreferencesUtil.getInt(this, R.string.totalSuccessfulCalibrationsKey, 0),
                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0)));
 
-        infoList.add(String.format("Number of tests\ns:%d  e:%d",
+        infoList.add(String.format(Locale.getDefault(), "Number of tests\ns:%d  e:%d",
                 PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0),
                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0)));
 
@@ -62,6 +63,8 @@ public class DiagnosticInfoActivity extends BaseActivity {
         }
         ArrayAdapter<String> infoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, infoList);
 
-        mListView.setAdapter(infoAdapter);
+        if (mListView != null) {
+            mListView.setAdapter(infoAdapter);
+        }
     }
 }

@@ -36,6 +36,8 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
+import java.util.Locale;
+
 public class DiagnosticDetailsFragment extends DialogFragment {
 
     private Bitmap mExtractBitmap;
@@ -94,14 +96,14 @@ public class DiagnosticDetailsFragment extends DialogFragment {
                 double result = resultDetail.getResult();
                 int color = resultDetail.getColor();
                 int swatchColor = resultDetail.getMatchedColor();
-                textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
+                textDistance.setText(String.format(Locale.getDefault(), "D: %.2f", resultDetail.getDistance()));
                 buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
                 textSwatchRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
 
-                textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
+                textQuality.setText(String.format(Locale.getDefault(), "Q: %.0f%%", photoColor.getQuality()));
 
                 if (result > -1) {
-                    textResult.setText(String.format("%s : %.2f %s", currentTestInfo.getName("en"),
+                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getName("en"),
                             result, currentTestInfo.getUnit()));
                 } else {
                     textResult.setText(String.format("%s", currentTestInfo.getName("en")));

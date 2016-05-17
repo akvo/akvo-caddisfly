@@ -15,8 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-optimizationpasses 5
+
 -keepclassmembers public class org.akvo.caddisfly.usb.UVCCamera {
     public *;
     protected *;
     private *;
 }
+
+-keep class org.akvo.caddisfly.usb.USBMonitor$UsbControlBlock
+
+-dontwarn org.apache.commons.math3.**

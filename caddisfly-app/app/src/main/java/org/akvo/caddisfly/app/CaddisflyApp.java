@@ -216,8 +216,11 @@ public class CaddisflyApp extends Application {
     /**
      * Load the test configuration for the given test code
      *
+     * @deprecated use #loadTestConfigurationByUuid(String uuid) instead
+     *
      * @param testCode the test code
      */
+    @Deprecated
     public void loadTestConfiguration(String testCode) {
 
         mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(

@@ -99,7 +99,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+        String message = String.format("%s\r\n\r\n%s",
+                getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notSupported, message);

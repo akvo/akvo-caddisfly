@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -225,7 +226,7 @@ public class SensorActivity extends BaseActivity {
                             JSONObject object = new JSONObject();
                             object.put("name", subTest.getDesc());
                             object.put("unit", subTest.getUnit());
-                            object.put("id", subTest.getUnit());
+                            object.put("id", subTest.getId());
                             switch (subTest.getId()) {
                                 case 1:
                                     object.put("value", mEc25Value);
@@ -241,6 +242,10 @@ public class SensorActivity extends BaseActivity {
                         resultJsonObj.put("type", "caddisfly");
                         resultJsonObj.put("name", testInfo.getName("en"));
                         resultJsonObj.put("uuid", testInfo.getUuid());
+
+                        resultJsonObj.put("phone_model", Build.MODEL);
+                        resultJsonObj.put("phone_manufacturer", Build.MANUFACTURER);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -301,7 +306,7 @@ public class SensorActivity extends BaseActivity {
                 public void run() {
                     finish();
                 }
-            }, 4000);
+            }, 3000);
         }
     }
 

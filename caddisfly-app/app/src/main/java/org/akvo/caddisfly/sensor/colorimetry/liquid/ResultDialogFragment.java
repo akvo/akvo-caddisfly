@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
+import java.util.Locale;
+
 /**
  * Displays the results of an test analysis
  */
@@ -65,7 +67,8 @@ public class ResultDialogFragment extends DialogFragment {
 
         //determine whether to display decimal places
         ((TextView) view.findViewById(R.id.textResult)).setText(result > 999 ?
-                String.format("%.0f", result) : String.format("%.2f", result));
+                String.format(Locale.getDefault(), "%.0f", result) :
+                String.format(Locale.getDefault(), "%.2f", result));
 
         //display dilution information
         TextView textDilution = (TextView) view.findViewById(R.id.textDilution);

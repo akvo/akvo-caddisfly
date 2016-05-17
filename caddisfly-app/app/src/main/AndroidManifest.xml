@@ -110,11 +110,6 @@
             android:name=".sensor.colorimetry.liquid.SelectDilutionActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.AlignmentActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:noHistory="true"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".ui.TypeListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
@@ -167,8 +162,8 @@
         </activity>
         <activity
             android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity"
-            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
@@ -207,7 +202,7 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".sensor.colorimetry.strip.BaseActivity"></activity>
+        <activity android:name=".sensor.colorimetry.strip.BaseActivity" />
     </application>
 
 </manifest>

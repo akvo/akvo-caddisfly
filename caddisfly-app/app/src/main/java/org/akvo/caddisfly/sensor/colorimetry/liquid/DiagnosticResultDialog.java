@@ -37,6 +37,7 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * A Dialog to display detailed result information of the analysis
@@ -123,7 +124,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtil.getColorRgbString(mColor)));
             } else {
-                getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
+                getDialog().setTitle(String.format(Locale.getDefault(), "%s: %.2f", getString(R.string.result), result));
             }
 
             buttonCancel.setVisibility(View.GONE);
@@ -189,7 +190,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 int g = Color.green(color);
                 int b = Color.blue(color);
 
-                textRgb.setText(String.format("%d  %d  %d", r, g, b));
+                textRgb.setText(String.format(Locale.getDefault(), "%d  %d  %d", r, g, b));
 
                 ListView listResults = (ListView) rowView.findViewById(R.id.listResults);
 
@@ -260,9 +261,9 @@ public class DiagnosticResultDialog extends DialogFragment {
                         case LAB:
                             textResult = (TextView) rowView.findViewById(R.id.textLabResult);
                             if (resultDetail.getResult() > -1) {
-                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                                textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
-                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
+                                textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
 
                                 textResult.setTextColor(getResources().getColor(R.color.diagnostic));
                                 textResult.setTextSize(14);
@@ -271,9 +272,9 @@ public class DiagnosticResultDialog extends DialogFragment {
                         case RGB:
                             textResult = (TextView) rowView.findViewById(R.id.textRgbResult);
                             if (resultDetail.getResult() > -1) {
-                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                                textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
-                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
+                                textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
                                 textResult.setTextColor(getResources().getColor(R.color.diagnostic));
                                 textResult.setTextSize(14);
                             }

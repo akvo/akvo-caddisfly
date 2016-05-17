@@ -75,7 +75,7 @@ public final class SwatchHelper {
 
         //Find the color within the generated gradient that matches the photoColor
         colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
-                gradientSwatches, false);
+                gradientSwatches);
 
         //set the result
         ResultDetail resultDetail = new ResultDetail(-1, photoColor.getColor());
@@ -98,14 +98,10 @@ public final class SwatchHelper {
      * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
      */
     private static ColorCompareInfo getNearestColorFromSwatches(
-            int colorToFind, ArrayList<Swatch> swatches, boolean exactMatch) {
+            int colorToFind, ArrayList<Swatch> swatches) {
 
         double distance;
-        if (exactMatch) {
-            distance = ColorUtil.getMinDistance();
-        } else {
-            distance = ColorUtil.getMaxDistance();
-        }
+        distance = ColorUtil.getMaxDistance();
 
         double resultValue = -1;
         int matchedColor = -1;
@@ -419,7 +415,7 @@ public final class SwatchHelper {
         final StringBuilder calibrationDetails = new StringBuilder();
 
         for (Swatch swatch : CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) {
-            calibrationDetails.append(String.format("%.2f", swatch.getValue()))
+            calibrationDetails.append(String.format(Locale.US, "%.2f", swatch.getValue()))
                     .append("=")
                     .append(ColorUtil.getColorRgbString(swatch.getColor()));
             calibrationDetails.append('\n');

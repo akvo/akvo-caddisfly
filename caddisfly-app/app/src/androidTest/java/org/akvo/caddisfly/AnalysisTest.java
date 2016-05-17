@@ -68,9 +68,9 @@ import static org.akvo.caddisfly.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.getText;
 import static org.akvo.caddisfly.TestUtil.sleep;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.object.HasToString.hasToString;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -152,7 +152,7 @@ public class AnalysisTest {
         onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
@@ -177,7 +177,7 @@ public class AnalysisTest {
         //Test Start Screen
         takeScreenshot();
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
                 .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
@@ -202,7 +202,7 @@ public class AnalysisTest {
         onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
                 .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
@@ -266,7 +266,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonNoDilution)).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         mDevice.waitForWindowUpdate("", 1000);
 
@@ -320,7 +320,7 @@ public class AnalysisTest {
 
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         mDevice.pressHome();
 
@@ -340,7 +340,9 @@ public class AnalysisTest {
 
         mDevice.waitForWindowUpdate("", 1000);
 
-        clickListViewItem("Automated Tests");
+        //clickListViewItem("Automated Tests");
+
+        clickListViewItem("test caddisfly");
 
     }
 
@@ -391,7 +393,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonNoDilution)).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
                 ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);

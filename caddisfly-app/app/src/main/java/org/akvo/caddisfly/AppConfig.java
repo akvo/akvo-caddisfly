@@ -28,7 +28,10 @@ public class AppConfig {
 
     /**
      * The intent action string used to connect to external app
+     *
+     * @deprecated use {@link #FLOW_ACTION_CADDISFLY} instead
      */
+    @Deprecated
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
 
     /**

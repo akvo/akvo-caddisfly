@@ -63,8 +63,8 @@ import static org.akvo.caddisfly.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.TestUtil.sleep;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.object.HasToString.hasToString;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -193,7 +193,7 @@ public class NavigationTest {
 
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         saveCalibration("TestValid");
 

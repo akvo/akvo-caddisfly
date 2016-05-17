@@ -41,6 +41,7 @@ public final class TestConfigHelper {
      * @param testCode the test code
      * @return the TestInfo instance
      */
+    @Deprecated
     public static TestInfo loadTestConfigurationByCode(String jsonText, String testCode) {
 
         ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
@@ -98,7 +99,29 @@ public final class TestConfigHelper {
 
                     //Get the test type
                     CaddisflyApp.TestType type;
-                    if (item.has("type")) {
+                    if (item.has("subtype")) {
+                        switch (item.getString("subtype")) {
+                            case "color":
+                            case "colour":
+                                type = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+                                break;
+                            case "strip":
+                            case "striptest":
+                                type = CaddisflyApp.TestType.COLORIMETRIC_STRIP;
+                                break;
+                            case "sensor":
+                                type = CaddisflyApp.TestType.SENSOR;
+                                break;
+                            case "coliform":
+                            case "coliforms":
+                                type = CaddisflyApp.TestType.TURBIDITY_COLIFORMS;
+                                break;
+                            default:
+                                //Invalid test type skip it
+                                continue;
+                        }
+                    } else if (item.has("type")) {
+                        // Backward compatibility
                         switch (item.getInt("type")) {
                             case 0:
                                 type = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
@@ -186,8 +209,8 @@ public final class TestConfigHelper {
                     //Create TestInfo object
                     tests.add(new TestInfo(
                             namesHashTable,
-                            item.getString("code").toUpperCase(),
-                            item.getString("unit"),
+                            item.has("code") ? item.getString("code").toUpperCase() : "",
+                            item.has("unit") ? item.getString("unit") : "",
                             type,
                             //if calibrate not specified then default to true otherwise use specified value
                             !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),

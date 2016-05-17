@@ -53,7 +53,6 @@
     <string name="cannotCalibrate">Impossible d\'étalonner</string>
     <string name="errorCameraFlashRequired">Le flash de l\'appareil est introuvable</string>
     <string name="cannotStartTest">Impossible de commencer le test</string>
-    <string name="errorTestNotAvailable">Aucun étalonnage pour le %1$s </string>
     <string name="errorCalibrationIncomplete">L\'étalonnage du %1$s est incomplet</string>
     <string name="doYouWantToCalibrate">Voulez-vous étalonner maintenant?</string>
     <!--Settings Screen-->

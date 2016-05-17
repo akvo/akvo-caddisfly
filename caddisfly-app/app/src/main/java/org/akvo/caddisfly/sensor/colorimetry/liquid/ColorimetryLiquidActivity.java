@@ -75,6 +75,7 @@ import org.opencv.android.OpenCVLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -135,7 +136,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
         if (getSupportActionBar() != null) {
             if (mIsCalibration) {
-                String subTitle = String.format("%s %.2f %s",
+                String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
                         getResources().getString(R.string.calibrate),
                         mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                 textDilution.setText(subTitle);
@@ -495,14 +496,18 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                         bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
-                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-
                         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
+                        Bitmap croppedBitmap;
                         //todo: fix this hardcoding
                         if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
+
                             croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        } else {
+                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
                         }
 
                         //Ignore the first result as camera may not have focused correctly
@@ -616,13 +621,18 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                         bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
-                        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-
                         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+                        Bitmap croppedBitmap;
                         //todo: fix this hardcoding
                         if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
+
                             croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                        } else {
+                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
                         }
 
                         //Ignore the first result as camera may not have focused correctly
@@ -730,22 +740,52 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     TestInfo.SubTest subTest = testInfo.getSubTests().get(0);
                     JSONObject object = new JSONObject();
 
+                    object.put("name", subTest.getDesc());
+                    object.put("value", String.format(Locale.US, "%.2f", result));
+                    object.put("unit", subTest.getUnit());
+                    object.put("id", subTest.getId());
+
+                    //TextUtils.join(",",testInfo.getSwatches());
+                    JSONArray calibrationJsonArr = new JSONArray();
+                    for (Swatch swatch : testInfo.getSwatches()) {
+                        calibrationJsonArr.put(Integer.toHexString(swatch.getColor() & 0x00FFFFFF));
+                    }
+
+                    object.put("result-color", Integer.toHexString(color & 0x00FFFFFF));
+                    object.put("calibration", calibrationJsonArr);
+
+                    resultJsonObj.put("type", "caddisfly");
+                    resultJsonObj.put("name", testInfo.getName("en"));
+                    resultJsonObj.put("uuid", testInfo.getUuid());
+
+                    resultJsonArr.put(object);
+                    resultJsonObj.put("result", resultJsonArr);
+
                     String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                    String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/images", resultImageUrl);
+                    String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
                     if (path.length() > 0) {
                         resultJsonObj.put("image", resultImageUrl);
                         resultIntent.putExtra("image", path);
                     }
 
-                    object.put("name", subTest.getDesc());
-                    object.put("value", String.format(Locale.US, "%.2f", result));
-                    object.put("unit", subTest.getUnit());
-                    object.put("id", subTest.getUnit());
-                    resultJsonArr.put(object);
-                    resultJsonObj.put("result", resultJsonArr);
-                    resultJsonObj.put("type", "caddisfly");
-                    resultJsonObj.put("name", testInfo.getName("en"));
-                    resultJsonObj.put("uuid", testInfo.getUuid());
+                    resultJsonObj.put("test_date", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+                            .format(Calendar.getInstance().getTime()));
+                    resultJsonObj.put("calibrated_date", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+                            .format(Calendar.getInstance().getTime()));
+                    resultJsonObj.put("reagent_expiry", new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                            .format(Calendar.getInstance().getTime()));
+                    resultJsonObj.put("reagent_batch", "OIUNPOIUN553443");
+
+                    resultJsonObj.put("app_version", CaddisflyApp.getAppVersion(this));
+
+                    resultJsonObj.put("device_model", Build.MODEL);
+                    resultJsonObj.put("device_product", Build.PRODUCT);
+                    resultJsonObj.put("device_manufacturer", Build.MANUFACTURER);
+                    resultJsonObj.put("device_os", "Android - " + android.os.Build.VERSION.RELEASE + " (" +
+                            android.os.Build.VERSION.SDK_INT + ")");
+                    resultJsonObj.put("device_country", Locale.getDefault().getCountry());
+                    resultJsonObj.put("device_language", Locale.getDefault().getLanguage());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -753,7 +793,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 resultIntent.putExtra("finish", true);
                 resultIntent.putExtra("response", resultJsonObj.toString());
             } else {
-                resultIntent.putExtra("response", String.format("%.2f", result));
+                resultIntent.putExtra("response", String.format(Locale.US, "%.2f", result));
             }
 
             setResult(Activity.RESULT_OK, resultIntent);
@@ -886,7 +926,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         ImageUtil.saveImage(data, CaddisflyApp.getApp().getCurrentTestInfo().getCode(), date + "_"
-                + (mIsCalibration ? "C" : "T") + "_" + String.format("%.2f", result)
+                + (mIsCalibration ? "C" : "T") + "_" + String.format(Locale.US, "%.2f", result)
                 + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
     }
 

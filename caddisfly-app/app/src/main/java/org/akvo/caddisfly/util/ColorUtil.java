@@ -27,6 +27,7 @@ import org.akvo.caddisfly.model.XyzColor;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Set of utility functions for color calculations and analysis
@@ -328,7 +329,7 @@ public final class ColorUtil {
      * @return The rgb value as string
      */
     public static String getColorRgbString(int color) {
-        return String.format("%d  %d  %d", Color.red(color), Color.green(color), Color.blue(color));
+        return String.format(Locale.getDefault(), "%d  %d  %d", Color.red(color), Color.green(color), Color.blue(color));
     }
 
     /**

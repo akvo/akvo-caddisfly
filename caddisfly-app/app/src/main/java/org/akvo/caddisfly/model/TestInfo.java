@@ -41,11 +41,11 @@ public class TestInfo {
     private final CaddisflyApp.TestType testType;
     private final ArrayList<Integer> dilutions;
     private final boolean requiresCalibration;
+    private final List<SubTest> subTests = new ArrayList<>();
     private boolean allInteger = true;
     private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
-    private List<SubTest> subTests = new ArrayList<>();
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
@@ -228,9 +228,9 @@ public class TestInfo {
     }
 
     public class SubTest {
-        int id;
-        String desc;
-        String unit;
+        final int id;
+        final String desc;
+        final String unit;
 
         public SubTest(int id, String desc, String unit) {
             this.id = id;

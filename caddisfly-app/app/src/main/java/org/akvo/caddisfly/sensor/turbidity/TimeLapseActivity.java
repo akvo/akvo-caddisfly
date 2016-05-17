@@ -103,7 +103,7 @@ public class TimeLapseActivity extends BaseActivity {
                 TurbidityConfig.stopRepeatingAlarm(context, mTestCode);
                 finish();
             } else {
-                textSampleCount.setText(String.format("%s: %d", "Samples done", folder.listFiles().length));
+                textSampleCount.setText(String.format(Locale.getDefault(), "%s: %d", "Samples done", folder.listFiles().length));
                 futureDate = Calendar.getInstance();
                 futureDate.add(Calendar.MINUTE, delayMinute);
             }
@@ -127,7 +127,7 @@ public class TimeLapseActivity extends BaseActivity {
                         long minutes = diff / (60 * 1000);
                         diff -= minutes * (60 * 1000);
                         long seconds = diff / 1000;
-                        textCountdown.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+                        textCountdown.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -213,7 +213,7 @@ public class TimeLapseActivity extends BaseActivity {
 
                         String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
                         ((TextView) findViewById(R.id.textSubtitle))
-                                .setText(String.format("%s %s", "Started", date));
+                                .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
 
                         futureDate = Calendar.getInstance();
                         futureDate.add(Calendar.SECOND, 10);
@@ -222,7 +222,7 @@ public class TimeLapseActivity extends BaseActivity {
                         int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                                 mTestCode + "_IntervalMinutes", "1"));
 
-                        textInterval.setText(String.format("Every %d minutes", interval));
+                        textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
 
                         startCountdownTimer();
                     }

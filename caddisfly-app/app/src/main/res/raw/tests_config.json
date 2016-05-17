@@ -9,7 +9,7 @@
           "fr": "Fluorure"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
       ],
@@ -37,7 +37,7 @@
           "fr": "Fluorure - High Range"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "7e8c1440-f014-4973-b47c-2b315c143d70"
       ],
@@ -64,7 +64,7 @@
           "fr": "Chlore libre"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "c3535e72-ff77-4225-9f4a-41d3288780c6"
       ],
@@ -90,7 +90,7 @@
           "fr": "Conductivité Electrique"
         }
       ],
-      "type": "2",
+      "subtype": "sensor",
       "uuid": [
         "f88237b7-be3d-4fac-bbee-ab328eefcd14"
       ],
@@ -120,7 +120,7 @@
           "fr": "Température"
         }
       ],
-      "type": "2",
+      "subtype": "sensor",
       "uuid": [
         "d40d013a-10b1-44c4-bcea-02f8f7024105"
       ],
@@ -145,7 +145,7 @@
           "fr": "pH-1"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "b8e39123-1e44-4a23-a17e-972896c7d9f4"
       ],
@@ -172,7 +172,7 @@
           "fr": "pH-2"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "ca52b1a5-46b4-499d-97d3-4131e1619d70"
       ],
@@ -199,7 +199,7 @@
           "fr": "Turbidity"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "a81f5663-b512-4dad-a4c3-651caf7f567a"
       ],
@@ -226,7 +226,7 @@
           "fr": "Arsenic"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "fd1cd7f4-c866-49f1-a175-9ef32c28eddf"
       ],
@@ -253,7 +253,7 @@
           "fr": "Arsenic 2"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "9e1a3d62-f811-446d-8ad7-5a2c3b692084"
       ],
@@ -280,7 +280,7 @@
           "fr": "Arsenic 3"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "0f5c230d-6143-41de-9a71-074fbe01a863"
       ],
@@ -307,7 +307,7 @@
           "fr": "Arsenic 4"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "eb5030c5-a72f-4d16-af4d-971ea1d8afbd"
       ],
@@ -334,7 +334,7 @@
           "fr": "Chromium"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "082ec36a-71af-49d5-add8-5c03fc1c2f0b"
       ],
@@ -361,7 +361,7 @@
           "fr": "Pesticides"
         }
       ],
-      "type": "0",
+      "subtype": "color",
       "uuid": [
         "e74ed7c7-6116-4970-b01d-338be374eeca"
       ],
@@ -388,7 +388,7 @@
           "fr": "Coliforms"
         }
       ],
-      "type": "3",
+      "subtype": "coliform",
       "uuid": [
         "df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
       ],
@@ -410,7 +410,7 @@
           "en": "Strip Tests"
         }
       ],
-      "type": "1",
+      "subtype": "striptest",
       "uuid": [
         "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
         "c801b70c-39e4-493a-b20e-6843158b47b4",
@@ -421,10 +421,7 @@
         "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
         "beca9731-63f4-434f-a3c2-ac33b44f9992"
       ],
-      "code": "strip",
-      "unit": "",
-      "calibrate": "false",
-      "ranges": "0"
+      "calibrate": "false"
     }
   ]
 }

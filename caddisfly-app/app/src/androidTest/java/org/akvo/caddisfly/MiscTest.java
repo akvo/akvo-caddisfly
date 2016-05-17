@@ -51,14 +51,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
+import static org.akvo.caddisfly.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestUtil.getActivityInstance;
-import static org.akvo.caddisfly.TestHelper.goToMainScreen;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -198,7 +198,7 @@ public class MiscTest {
 
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         final Activity activity = getActivityInstance();
         activity.runOnUiThread(new Runnable() {
