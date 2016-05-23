@@ -322,6 +322,8 @@ public class ExternalActionActivity extends BaseActivity {
                     intent.putExtra("response", data.getStringExtra("response"));
                     intent.putExtra("image", data.getStringExtra("image"));
                     this.setResult(Activity.RESULT_OK, intent);
+                }else {
+                    this.setResult(Activity.RESULT_OK, getIntent());
                 }
                 finish();
                 break;

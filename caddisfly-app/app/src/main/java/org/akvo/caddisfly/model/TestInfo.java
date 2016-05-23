@@ -40,12 +40,13 @@ public class TestInfo {
     private final ArrayList<Swatch> swatches;
     private final CaddisflyApp.TestType testType;
     private final ArrayList<Integer> dilutions;
-    private final boolean requiresCalibration;
     private final List<SubTest> subTests = new ArrayList<>();
+    private boolean requiresCalibration;
     private boolean allInteger = true;
     private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
+    private boolean isGroup;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
@@ -202,6 +203,10 @@ public class TestInfo {
         return isDiagnostic;
     }
 
+    public void setIsDiagnostic(boolean value) {
+        isDiagnostic = value;
+    }
+
     /**
      * Gets if this test type requires calibration
      *
@@ -209,6 +214,10 @@ public class TestInfo {
      */
     public boolean getRequiresCalibration() {
         return requiresCalibration;
+    }
+
+    public void setRequiresCalibration(boolean value) {
+        requiresCalibration = value;
     }
 
     public boolean requiresCameraFlash() {
@@ -225,6 +234,14 @@ public class TestInfo {
 
     public List<SubTest> getSubTests() {
         return subTests;
+    }
+
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public void setGroup(boolean group) {
+        isGroup = group;
     }
 
     public class SubTest {

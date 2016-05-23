@@ -1,0 +1,272 @@
+{
+  "tests": [
+    {
+      "name": [
+        {
+          "en": "pH-1"
+        },
+        {
+          "fr": "pH-1"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "b8e39123-1e44-4a23-a17e-972896c7d9f4"
+      ],
+      "code": "phyd1",
+      "unit": "",
+      "calibrate": "true",
+      "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "pH-1",
+          "id": 1,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "pH-2"
+        },
+        {
+          "fr": "pH-2"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "ca52b1a5-46b4-499d-97d3-4131e1619d70"
+      ],
+      "code": "phyd2",
+      "unit": "",
+      "calibrate": "true",
+      "ranges": "4,5,6,7,8,9,10,11",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "pH-2",
+          "id": 1,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Turbidity"
+        },
+        {
+          "fr": "Turbidity"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "a81f5663-b512-4dad-a4c3-651caf7f567a"
+      ],
+      "code": "turbi",
+      "unit": "NTU",
+      "calibrate": "true",
+      "ranges": "0,5,10,15,20",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Turbidity",
+          "id": 1,
+          "unit": "NTU"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic"
+        },
+        {
+          "fr": "Arsenic"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "fd1cd7f4-c866-49f1-a175-9ef32c28eddf"
+      ],
+      "code": "arsen",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 2"
+        },
+        {
+          "fr": "Arsenic 2"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "9e1a3d62-f811-446d-8ad7-5a2c3b692084"
+      ],
+      "code": "ars2n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,50,100",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 2",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 3"
+        },
+        {
+          "fr": "Arsenic 3"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "0f5c230d-6143-41de-9a71-074fbe01a863"
+      ],
+      "code": "ars3n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40,50,100",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 3",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Arsenic 4"
+        },
+        {
+          "fr": "Arsenic 4"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "eb5030c5-a72f-4d16-af4d-971ea1d8afbd"
+      ],
+      "code": "ars4n",
+      "unit": "ppb",
+      "calibrate": "true",
+      "ranges": "0,10,20,30,40,50",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Arsenic 4",
+          "id": 1,
+          "unit": "ppb"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Chromium"
+        },
+        {
+          "fr": "Chromium"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "082ec36a-71af-49d5-add8-5c03fc1c2f0b"
+      ],
+      "code": "chrom",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,5,10,15,20",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Chromium",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Pesticides"
+        },
+        {
+          "fr": "Pesticides"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "e74ed7c7-6116-4970-b01d-338be374eeca"
+      ],
+      "code": "pesti",
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,0.25,0.5,0.75,1",
+      "diagnostic": "true",
+      "monthsValid": "6",
+      "results": [
+        {
+          "description": "Pesticides",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Coliforms"
+        },
+        {
+          "fr": "Coliforms"
+        }
+      ],
+      "subtype": "coliform",
+      "uuid": [
+        "df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
+      ],
+      "code": "colif",
+      "unit": "ppm",
+      "calibrate": "false",
+      "diagnostic": "true",
+      "results": [
+        {
+          "description": "Coliforms",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    }
+  ]
+}

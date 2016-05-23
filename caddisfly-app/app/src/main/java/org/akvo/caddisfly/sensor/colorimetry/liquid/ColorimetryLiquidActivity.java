@@ -87,6 +87,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         HighLevelsDialogFragment.MessageDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
+    private static final int RESULT_RESTART_TEST = 3;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -870,39 +871,25 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                     message = String.format(getString(R.string.tryWithDilutedSample), 5);
                                     break;
                             }
-
-                            HighLevelsDialogFragment mHighLevelsDialogFragment =
-                                    HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
-                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-                            if (fragment != null) {
-                                ft.remove(fragment);
-                            }
-
-                            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
-
-                            mHighLevelsDialogFragment.setCancelable(false);
-                            mHighLevelsDialogFragment.show(ft, "resultDialog");
-
                         } else {
                             sound.playShortResource(R.raw.done);
-
-                            PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
-                                    PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
-
-                            ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
-                                    mDilutionLevel, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
-                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-                            if (fragment != null) {
-                                ft.remove(fragment);
-                            }
-
-                            mResultDialogFragment.setCancelable(false);
-                            mResultDialogFragment.show(ft, "resultDialog");
                         }
+
+                        PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
+                                PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
+
+                        ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title,
+                                String.format(Locale.getDefault(), "%s: %.2f", getString(R.string.result), result),
+                                mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                        Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+                        if (fragment != null) {
+                            ft.remove(fragment);
+                        }
+
+                        mResultDialogFragment.setCancelable(false);
+                        mResultDialogFragment.show(ft, "resultDialog");
                     }
                 }
             }
@@ -931,8 +918,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     @Override
-    public void onSuccessFinishDialog() {
-        finish();
+    public void onSuccessFinishDialog(boolean resultOk) {
+        if (resultOk) {
+            finish();
+        } else {
+            this.setResult(RESULT_RESTART_TEST);
+            finish();
+        }
     }
 
     private void releaseResources() {
@@ -980,15 +972,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     @Override
-    public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration) {
+    public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, String result, boolean isCalibration) {
         mResultFragment.dismiss();
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);
             String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
 
-            //todo: remove hard coding of dilution levels
             String message = "";
+            //todo: remove hard coding of dilution levels
             switch (mDilutionLevel) {
                 case 0:
                     message = String.format(getString(R.string.tryWithDilutedSample), 2);
@@ -998,7 +990,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     break;
             }
 
-            HighLevelsDialogFragment mHighLevelsDialogFragment = HighLevelsDialogFragment.newInstance(title, message, mDilutionLevel);
+            ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
+                    mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
             Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
@@ -1006,10 +999,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 ft.remove(fragment);
             }
 
-            findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
-
-            mHighLevelsDialogFragment.setCancelable(false);
-            mHighLevelsDialogFragment.show(ft, "resultDialog");
+            mResultDialogFragment.setCancelable(false);
+            mResultDialogFragment.show(ft, "resultDialog");
 
         } else if (retry) {
             mCameraFragment.dismiss();

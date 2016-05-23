@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity;
@@ -13,9 +12,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.Colorimetry
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**
@@ -35,8 +31,7 @@ import org.json.JSONObject;
  * to listen for item selections.
  */
 public class ColorimetryStripActivity extends AppCompatActivity
-        implements ColorimetryStripListFragment.Callbacks, BaseActivity.ResultListener
-{
+        implements ColorimetryStripListFragment.Callbacks, BaseActivity.ResultListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -57,8 +52,8 @@ public class ColorimetryStripActivity extends AppCompatActivity
 //                Context.ACTIVITY_SERVICE)).getMemoryClass();
 //        System.out.println("***Available memory: " + memClass);
 
-        if(savedInstanceState==null) {
-            if(chooseStripTestListFragment==null) {
+        if (savedInstanceState == null) {
+            if (chooseStripTestListFragment == null) {
                 chooseStripTestListFragment = new ColorimetryStripListFragment();
             }
             getSupportFragmentManager().beginTransaction().
@@ -77,31 +72,33 @@ public class ColorimetryStripActivity extends AppCompatActivity
         }
     }
 
-    public void onNewIntent(Intent intent)
-    {
+    public void onNewIntent(Intent intent) {
         System.out.println("***onNewIntent ColorimetryStripActivity called:");
 
         setIntent(intent);
     }
-    public void onResume()
-    {
+
+    public void onResume() {
         super.onResume();
 
         System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra("finish", false));
         Intent intent = getIntent();
-        String cadUuid = intent.getExtras().getString("caddisflyResourceUuid");
-        if(intent.getBooleanExtra("finish", false)){
+        String cadUuid = null;
+        if (intent.hasExtra("caddisflyResourceUuid")) {
+            cadUuid = intent.getStringExtra("caddisflyResourceUuid");
+        }
+        if (intent.getBooleanExtra("finish", false)) {
             finish();
-        } else if (cadUuid != null && cadUuid.length() > 0){
+        } else if (cadUuid != null && cadUuid.length() > 0) {
             // when we get back here, we want to go straight back to the FLOW app
-            intent.putExtra("finish",true);
+            intent.putExtra("finish", true);
 
             // find brand which goes with this test uuid
             // and if found, go there immediately.
             StripTest stripTest = new StripTest();
             String brand = stripTest.matchUuidToBrand(cadUuid);
-            if (brand != null & brand.length() > 0)
-            onItemSelected(brand);
+            if (brand != null && brand.length() > 0)
+                onItemSelected(brand);
         }
 
         // check if the caddisflyResourceUuid is present in the intent,
@@ -118,7 +115,7 @@ public class ColorimetryStripActivity extends AppCompatActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            if(chooseStripTestListFragment!=null)
+            if (chooseStripTestListFragment != null)
                 chooseStripTestListFragment.setActivateOnItemClick(true);
 
             // In two-pane mode, show the detail view in this activity by

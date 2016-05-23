@@ -30,7 +30,6 @@ import android.support.annotation.StringRes;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Swatch;
@@ -204,7 +203,7 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        tests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+        tests = TestConfigHelper.loadConfigurationsForAllTests();
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
@@ -223,8 +222,7 @@ public class CaddisflyApp extends Application {
     @Deprecated
     public void loadTestConfiguration(String testCode) {
 
-        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(
-            FileHelper.getConfigJson(), testCode.toUpperCase());
+        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(testCode.toUpperCase());
 
         if (mCurrentTestInfo != null) {
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
@@ -247,8 +245,7 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfigurationByUuid(String uuid) {
 
-        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByUuid(
-            FileHelper.getConfigJson(), uuid);
+        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByUuid(uuid);
 
         if (mCurrentTestInfo != null) {
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {

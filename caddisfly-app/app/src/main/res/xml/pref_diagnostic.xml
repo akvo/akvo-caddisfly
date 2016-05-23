@@ -25,6 +25,9 @@
             android:key="startTest"
             android:title="Colorimetric Test" />
         <Preference
+            android:key="startStripTest"
+            android:title="Strip Test" />
+        <Preference
             android:key="startTurbidityTest"
             android:title="Coliforms Test">
             <intent

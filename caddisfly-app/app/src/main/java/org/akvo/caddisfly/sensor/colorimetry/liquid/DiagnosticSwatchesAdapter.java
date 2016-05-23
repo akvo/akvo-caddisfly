@@ -61,7 +61,7 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             rowView.findViewById(R.id.textSwatch).setBackgroundColor(color);
 
             //display unit value
-            ((TextView) rowView.findViewById(R.id.textUnit)).setText(
+            ((TextView) rowView.findViewById(R.id.textName)).setText(
                     String.format(Locale.getDefault(), "%.2f", colorArray.get(position).getValue()));
 
             double distance = 0;

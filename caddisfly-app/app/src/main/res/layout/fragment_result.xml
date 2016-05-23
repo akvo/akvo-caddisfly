@@ -28,7 +28,7 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textSize="30sp"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:background="@color/amber"
         android:gravity="center"
         android:padding="7dp"
@@ -61,7 +61,7 @@
         tools:text="15000" />
 
     <TextView
-        android:id="@+id/textUnit"
+        android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -76,7 +76,54 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/backToSurvey"
+        android:text="Accept Result"
         android:theme="?primaryButtonStyle" />
 
+    <LinearLayout
+        android:id="@+id/dilutionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/amber"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="@string/highContamination" />
+
+        <TextView
+            android:id="@+id/textMessage1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/highLevelsFound" />
+
+        <TextView
+            android:id="@+id/textMessage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp"
+            tools:text="@string/tryWithDilutedSample" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Test with Dilution"
+            android:theme="?primaryButtonStyle" />
+    </LinearLayout>
 </LinearLayout>

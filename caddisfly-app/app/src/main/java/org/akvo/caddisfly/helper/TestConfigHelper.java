@@ -16,12 +16,16 @@
 
 package org.akvo.caddisfly.helper;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -31,20 +35,22 @@ import java.util.Iterator;
  */
 public final class TestConfigHelper {
 
+    // Files
+    private static final String CONFIG_FILE = "tests.json";
+
     private TestConfigHelper() {
     }
 
     /**
      * Returns a TestInfo instance filled with test config for the given test code
      *
-     * @param jsonText the json config text
      * @param testCode the test code
      * @return the TestInfo instance
      */
     @Deprecated
-    public static TestInfo loadTestConfigurationByCode(String jsonText, String testCode) {
+    public static TestInfo loadTestConfigurationByCode(String testCode) {
 
-        ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
+        ArrayList<TestInfo> tests = loadConfigurationsForAllTests();
 
         for (TestInfo test : tests) {
             if (test.getCode().equalsIgnoreCase(testCode)) {
@@ -57,13 +63,12 @@ public final class TestConfigHelper {
     /**
      * Returns a TestInfo instance filled with test config for the given uuid
      *
-     * @param jsonText the json config text
-     * @param uuid     the test uuid
+     * @param uuid the test uuid
      * @return the TestInfo instance
      */
-    public static TestInfo loadTestConfigurationByUuid(String jsonText, String uuid) {
+    public static TestInfo loadTestConfigurationByUuid(String uuid) {
 
-        ArrayList<TestInfo> tests = loadConfigurationsForAllTests(jsonText);
+        ArrayList<TestInfo> tests = loadConfigurationsForAllTests();
 
         for (TestInfo test : tests) {
             if (test.getUuid().contains(uuid)) {
@@ -76,23 +81,63 @@ public final class TestConfigHelper {
     /**
      * Load all the tests and their configurations from the json config text
      *
-     * @param jsonText the json text
      * @return ArrayList of TestInfo instances filled with config
      */
-    public static ArrayList<TestInfo> loadConfigurationsForAllTests(String jsonText) {
+    public static ArrayList<TestInfo> loadConfigurationsForAllTests() {
 
+        JSONArray customTestsArray = null, array;
         ArrayList<TestInfo> tests = new ArrayList<>();
-        try {
-            JSONArray array;
+
+        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
+
+        //Look for external json config file otherwise use the internal default one
+        String jsonText;
+        if (file.exists()) {
+            jsonText = FileUtil.loadTextFromFile(file);
 
             try {
-                array = new JSONObject(jsonText).getJSONArray("tests");
+                customTestsArray = new JSONObject(jsonText).getJSONArray("tests");
             } catch (JSONException e) {
-                //TODO: Backward compatibility can be removed
-                array = new JSONObject(jsonText).getJSONObject("tests").getJSONArray("test");
+                e.printStackTrace();
+            }
+        }
+
+        jsonText = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
+        try {
+
+            array = new JSONObject(jsonText).getJSONArray("tests");
+
+            int customIndex = -1;
+            if (customTestsArray != null) {
+                customIndex = array.length() - 1;
+                for (int i = 0; i < customTestsArray.length(); i++) {
+                    array.put(customTestsArray.get(i));
+                }
+            }
+
+            int experimentalIndex = -1;
+            if (AppPreferences.isDiagnosticMode()) {
+                jsonText = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.experimental_tests_config);
+                JSONArray experimentalArray = new JSONObject(jsonText).getJSONArray("tests");
+
+                experimentalIndex = array.length();
+
+                for (int i = 0; i < experimentalArray.length(); i++) {
+                    array.put(experimentalArray.get(i));
+                }
             }
 
             for (int i = 0; i < array.length(); i++) {
+
+                if (customIndex == i || experimentalIndex == i) {
+                    TestInfo testGroup = new TestInfo();
+                    testGroup.setGroup(true);
+                    if (experimentalIndex == i) {
+                        testGroup.setIsDiagnostic(true);
+                    }
+                    testGroup.setRequiresCalibration(true);
+                    tests.add(testGroup);
+                }
 
                 try {
                     JSONObject item = array.getJSONObject(i);
@@ -145,10 +190,27 @@ public final class TestConfigHelper {
                     }
 
                     // get uuids
-                    JSONArray uuid = item.getJSONArray("uuid");
+                    JSONArray uuidArray = item.getJSONArray("uuid");
                     ArrayList<String> uuids = new ArrayList<>();
-                    for (int ii = 0; ii < uuid.length(); ii++) {
-                        uuids.add(uuid.getString(ii));
+                    for (int ii = 0; ii < uuidArray.length(); ii++) {
+
+                        String newUuid = uuidArray.getString(ii);
+                        boolean found = false;
+                        for (TestInfo test : tests) {
+                            for (String uuid : test.getUuid()) {
+                                if (uuid.equalsIgnoreCase(newUuid)) {
+                                    found = true;
+                                }
+                            }
+
+                        }
+                        if (!found) {
+                            uuids.add(newUuid);
+                        }
+                    }
+
+                    if (uuids.isEmpty()) {
+                        continue;
                     }
 
                     //Get the name for this test
@@ -188,7 +250,6 @@ public final class TestConfigHelper {
 
                     String[] rangesArray = ranges.split(",");
 
-                    //Load the ranges
                     boolean isDiagnostic = false;
                     if (item.has("diagnostic")) {
                         isDiagnostic = item.getString("diagnostic").equalsIgnoreCase("true");
@@ -212,8 +273,8 @@ public final class TestConfigHelper {
                             item.has("code") ? item.getString("code").toUpperCase() : "",
                             item.has("unit") ? item.getString("unit") : "",
                             type,
-                            //if calibrate not specified then default to true otherwise use specified value
-                            !item.has("calibrate") || item.getString("calibrate").equalsIgnoreCase("true"),
+                            //if calibrate not specified then default to false otherwise use specified value
+                            item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"),
                             rangesArray, defaultColorsArray,
                             dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray));
 

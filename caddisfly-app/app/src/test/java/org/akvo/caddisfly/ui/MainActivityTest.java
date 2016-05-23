@@ -287,7 +287,7 @@ public class MainActivityTest {
                 "    }\n" +
                 "  ]\n" +
                 "}\n";
-        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid(jsonText, "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
+        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
         assert testInfo != null;
         assertEquals("FLUOR", testInfo.getCode());
     }

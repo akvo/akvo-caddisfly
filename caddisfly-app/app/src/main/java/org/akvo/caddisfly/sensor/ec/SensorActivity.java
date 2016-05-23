@@ -201,7 +201,7 @@ public class SensorActivity extends BaseActivity {
         textResult = (TextView) findViewById(R.id.textResult);
         textTemperature = (TextView) findViewById(R.id.textTemperature);
         progressWait = (ProgressBar) findViewById(R.id.progressWait);
-        textUnit = (TextView) findViewById(R.id.textUnit);
+        textUnit = (TextView) findViewById(R.id.textName);
         TextView textUnit2 = (TextView) findViewById(R.id.textUnit2);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);

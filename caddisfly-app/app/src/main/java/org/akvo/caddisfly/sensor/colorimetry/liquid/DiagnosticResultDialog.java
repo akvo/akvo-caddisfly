@@ -105,7 +105,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, true, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(false, true, "", mIsCalibration);
 
                 }
             });
@@ -115,12 +115,12 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(true, false, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(true, false, "", mIsCalibration);
 
                 }
             });
         } else {
-            double result = getArguments().getDouble("result");
+            final double result = getArguments().getDouble("result");
             if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtil.getColorRgbString(mColor)));
             } else {
@@ -136,7 +136,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, false, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(false, false, String.format(Locale.getDefault(), "%.2f", result), mIsCalibration);
 
                 }
             });
@@ -145,7 +145,7 @@ public class DiagnosticResultDialog extends DialogFragment {
     }
 
     public interface DiagnosticResultDialogListener {
-        void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration);
+        void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, String result, boolean isCalibration);
     }
 
     private class ResultListAdapter extends BaseAdapter {

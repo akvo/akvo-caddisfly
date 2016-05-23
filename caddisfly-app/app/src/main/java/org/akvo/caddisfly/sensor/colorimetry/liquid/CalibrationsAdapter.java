@@ -63,7 +63,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         ArrayList<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
         Swatch swatch = swatches.get(position);
 
-        TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
+        TextView textName = (TextView) rowView.findViewById(R.id.textName);
         TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
         int color = swatch.getColor();
@@ -75,7 +75,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         } else {
             word = new SpannableString(String.format(Locale.getDefault(), "%.0f ", swatch.getValue()));
         }
-        textUnit.setText(word);
+        textName.setText(word);
 
         //append the unit
         Spannable wordTwo = new SpannableString(CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
@@ -85,7 +85,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
         wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
 
-        textUnit.append(wordTwo);
+        textName.append(wordTwo);
 
         if (color == Color.TRANSPARENT || color == Color.BLACK) {
             //not calibrated so just show a '?' instead of color

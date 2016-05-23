@@ -1,3 +1,17 @@
+v0.108 beta
+----------
+1. Test type list grouping
+2. Separate Experimental test types to another file
+
+v0.107 beta
+----------
+1. Strip test added to diagnostic menu
+
+v0.106 beta
+----------
+1. JSON result format changed
+2. JSON config file format changed
+
 v0.105 beta
 ----------
 1. Remove rounding off of result

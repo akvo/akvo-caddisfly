@@ -16,7 +16,6 @@
 
 package org.akvo.caddisfly.helper;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.FileUtil;
 
@@ -29,8 +28,6 @@ public class FileHelper {
     /**
      * The user created configuration file name
      */
-    // Files
-    private static final String CONFIG_FILE = "tests.json";
     // Folders
     private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
@@ -48,7 +45,7 @@ public class FileHelper {
      * @return File representing the root directory for the given FileType.
      */
     @SuppressWarnings("SameParameterValue")
-    private static File getFilesDir(FileType type) {
+    public static File getFilesDir(FileType type) {
         return getFilesDir(type, "");
     }
 
@@ -94,32 +91,6 @@ public class FileHelper {
         return dir;
     }
 
-    /**
-     * Loads the tests from the json config file.
-     * <p/>
-     * Looks for the user created json file. If not found loads the internal json config file
-     *
-     * @return json configuration text
-     */
-    public static String getConfigJson() {
-
-
-//        todo: Change to only load new tests from external config file
-//        File file = new File(getFilesDir(FileType.CONFIG), CONFIG_FILE);
-//        String text;
-//
-//        //Look for external json config file otherwise use the internal default one
-//        if (file.exists()) {
-//            text = FileUtil.loadTextFromFile(file);
-//        } else {
-//            text = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
-//        }
-//
-//        return text;
-
-        return FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
-
-    }
 
     public static void cleanInstallFolder(boolean keepLatest) {
         File directory = FileHelper.getFilesDir(FileHelper.FileType.DOWNLOAD, "");

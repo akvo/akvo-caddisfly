@@ -16,31 +16,43 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-
-import java.util.Locale;
 
 /**
  * Displays the results of an test analysis
  */
 public class ResultDialogFragment extends DialogFragment {
 
-    public static ResultDialogFragment newInstance(String title, double result, int dilutionLevel, String unit) {
+    public static ResultDialogFragment newInstance(String title, String result, int dilutionLevel,
+                                                   String message, String unit) {
         ResultDialogFragment fragment = new ResultDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putDouble("result", result);
+        args.putString("result", result);
         args.putInt("dilution", dilutionLevel);
+        args.putString("message", message);
         args.putString("unit", unit);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // request a window without the title
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Override
@@ -56,19 +68,47 @@ public class ResultDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 ResultDialogListener listener = (ResultDialogListener) getActivity();
-                listener.onSuccessFinishDialog();
+                listener.onSuccessFinishDialog(true);
             }
         });
 
+        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ResultDialogListener listener = (ResultDialogListener) getActivity();
+                listener.onSuccessFinishDialog(false);
+            }
+        });
+
+
         //display the title
         ((TextView) view.findViewById(R.id.textTitle)).setText(getArguments().getString("title", ""));
+        LinearLayout dilutionLayout = (LinearLayout) view.findViewById(R.id.dilutionLayout);
 
-        double result = getArguments().getDouble("result", -1);
+        String result = getArguments().getString("result");
 
+        String message = getArguments().getString("message");
+
+        if (message != null && !message.isEmpty()) {
+            dilutionLayout.setVisibility(View.VISIBLE);
+
+            TextView textMessage1 = (TextView) view.findViewById(R.id.textMessage1);
+
+            final String title = getArguments().getString("title");
+            textMessage1.setText(String.format(getString(R.string.highLevelsFound), title));
+
+            TextView textMessage2 = (TextView) view.findViewById(R.id.textMessage2);
+            textMessage2.setText(message);
+
+        } else {
+            dilutionLayout.setVisibility(View.GONE);
+        }
+
+        ((TextView) view.findViewById(R.id.textResult)).setText(result);
         //determine whether to display decimal places
-        ((TextView) view.findViewById(R.id.textResult)).setText(result > 999 ?
-                String.format(Locale.getDefault(), "%.0f", result) :
-                String.format(Locale.getDefault(), "%.2f", result));
+//        ((TextView) view.findViewById(R.id.textResult)).setText(result > 999 ?
+//                String.format(Locale.getDefault(), "%.0f", result) :
+//                String.format(Locale.getDefault(), "%.2f", result));
 
         //display dilution information
         TextView textDilution = (TextView) view.findViewById(R.id.textDilution);
@@ -93,12 +133,12 @@ public class ResultDialogFragment extends DialogFragment {
         }
 
         //display the unit
-        ((TextView) view.findViewById(R.id.textUnit)).setText(getArguments().getString("unit", ""));
+        ((TextView) view.findViewById(R.id.textName)).setText(getArguments().getString("unit", ""));
 
         return view;
     }
 
     public interface ResultDialogListener {
-        void onSuccessFinishDialog();
+        void onSuccessFinishDialog(boolean resultOk);
     }
 }
