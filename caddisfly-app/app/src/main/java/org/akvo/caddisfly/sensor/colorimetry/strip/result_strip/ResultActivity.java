@@ -37,8 +37,6 @@ public class ResultActivity extends BaseActivity{
 
     private JSONObject resultJsonObj = new JSONObject();
     private JSONArray resultJsonArr = new JSONArray();
-    private JSONArray imageJsonArr = new JSONArray();
-    private JSONArray imgPathJsonArr = new JSONArray();
     private Mat resultImage = null;
     private FileStorage fileStorage;
     private String brandName;
@@ -148,9 +146,7 @@ public class ResultActivity extends BaseActivity{
                     resultJsonObj.put("name", brand.getName());
                     resultJsonObj.put("uuid", brand.getUuid());
                     if (path.length() > 0){
-                        imageJsonArr.put(resultImageUrl);
-                        imgPathJsonArr.put(path);
-                        resultJsonObj.put("image",imageJsonArr);
+                        resultJsonObj.put("image",resultImageUrl);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -161,7 +157,7 @@ public class ResultActivity extends BaseActivity{
                 Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
                 i.putExtra("finish", true);
                 i.putExtra("response", resultJsonObj.toString());
-                i.putExtra("image",imgPathJsonArr.toString());
+                i.putExtra("image",path);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
 
