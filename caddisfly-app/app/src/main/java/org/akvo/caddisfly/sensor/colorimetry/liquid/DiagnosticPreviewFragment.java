@@ -48,7 +48,7 @@ import org.akvo.caddisfly.util.ImageUtil;
 
 import java.util.List;
 
-public class DiagnosticPreviewFragment extends DialogFragment {
+public class DiagnosticPreviewFragment extends DialogFragment implements CameraDialog.Cancelled {
 
     private SensorManager mSensorManager;
     private ShakeDetector mShakeDetector;
@@ -210,5 +210,14 @@ public class DiagnosticPreviewFragment extends DialogFragment {
         super.onDestroy();
         unregisterShakeDetector();
 
+    }
+
+    @Override
+    public void dialogCancelled() {
+        try {
+            this.dismiss();
+        } catch (Exception ignored) {
+
+        }
     }
 }

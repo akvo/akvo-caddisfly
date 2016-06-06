@@ -28,6 +28,7 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -410,7 +411,7 @@ public final class SwatchHelper {
     }
 
     public static String generateCalibrationFile(Context context, String testCode, String batchCode,
-                                                 long calibrationDate, long expiryDate) {
+                                                 long calibrationDate, long expiryDate, String ledBrightness) {
 
         final StringBuilder calibrationDetails = new StringBuilder();
 
@@ -429,6 +430,9 @@ public final class SwatchHelper {
         calibrationDetails.append("\n");
         calibrationDetails.append("Calibrated: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("LedBrightness: ");
+        calibrationDetails.append(ledBrightness);
         calibrationDetails.append("\n");
         calibrationDetails.append("ReagentExpiry: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(expiryDate));
@@ -505,9 +509,11 @@ public final class SwatchHelper {
             if (swatchList.size() > 0) {
                 SwatchHelper.saveCalibratedSwatches(context, swatchList);
 
-                Toast.makeText(context,
-                        String.format(context.getString(R.string.calibrationLoaded), fileName),
-                        Toast.LENGTH_SHORT).show();
+                if (AppPreferences.isDiagnosticMode()) {
+                    Toast.makeText(context,
+                            String.format(context.getString(R.string.calibrationLoaded), fileName),
+                            Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 throw new Exception();

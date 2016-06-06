@@ -47,7 +47,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 public final class ExternalCameraFragment extends CameraDialog {
-    private static final boolean DEBUG = false;    // TODO set false on release
+    private static final boolean DEBUG = true;    // TODO set false on release
     private static final String TAG = "ExternalCameraFragment";
     private static final String ARG_PREVIEW_ONLY = "preview";
     /**
@@ -93,18 +93,19 @@ public final class ExternalCameraFragment extends CameraDialog {
         @Override
         public void onAttach(final UsbDevice device) {
             //Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
+            if (DEBUG) Log.d(TAG, "onAttach:");
         }
 
         @Override
         public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
-            if (DEBUG) Log.v(TAG, "onConnect:");
+            if (DEBUG) Log.d(TAG, "onConnect:");
             mHandler.openCamera(ctrlBlock);
             startPreview();
         }
 
         @Override
         public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
-            if (DEBUG) Log.v(TAG, "onDisconnect:");
+            if (DEBUG) Log.d(TAG, "onDisconnect:");
             if (mHandler != null) {
                 mHandler.closeCamera();
             }
@@ -112,6 +113,10 @@ public final class ExternalCameraFragment extends CameraDialog {
 
         @Override
         public void onDetach(final UsbDevice device) {
+            if (DEBUG) Log.d(TAG, "onDetach:");
+            if (mHandler != null) {
+                mHandler.closeCamera();
+            }
             //Toast.makeText(getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
 
@@ -257,6 +262,7 @@ public final class ExternalCameraFragment extends CameraDialog {
         if (mSurface != null) {
             mSurface.release();
         }
+
         mSurface = new Surface(st);
         mHandler.startPreview(mSurface);
     }
@@ -453,6 +459,14 @@ public final class ExternalCameraFragment extends CameraDialog {
                     mUVCCamera.stopPreview();
                     mUVCCamera.destroy();
                     mUVCCamera = null;
+
+//                    if(mWeakParent.get().getParentFragment()!= null &&
+//                            mWeakParent.get().getParentFragment() instanceof Cancelled){
+//                        ((Cancelled) mWeakParent.get().getParentFragment()).dialogCancelled();
+//                    }
+//                    if (mWeakParent.get().getActivity() != null && mWeakParent.get().getActivity() instanceof Cancelled) {
+//                        ((Cancelled) mWeakParent.get().getActivity()).dialogCancelled();
+//                    }
                 }
             }
 

@@ -94,7 +94,7 @@
     <string name="result">Result</string>
     <string name="backToSurvey">Back to Survey</string>
     <string name="highContamination">High Contamination</string>
-    <string name="highLevelsFound">%1$s content is very high</string>
+    <string name="highLevelsFound">High level of contamination</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--Dilution Selection Dialog-->
@@ -216,5 +216,7 @@
     <string name="quality_checks_counter">Quality checks: %1$s out of %2$s</string>
     <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
     <string name="begin">Start</string>
+    <string name="customTests">Custom tests</string>
+    <string name="experimental">Experimental</string>
 
 </resources>

@@ -64,11 +64,11 @@ public class DiagnosticResultDialog extends DialogFragment {
      * @return the dialog
      */
     public static DiagnosticResultDialog newInstance(ArrayList<Result> results, boolean allowRetry,
-                                                     double result, int color, boolean isCalibration) {
+                                                     String result, int color, boolean isCalibration) {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
-        args.putDouble("result", result);
+        args.putString("result", result);
         args.putInt("color", color);
         args.putBoolean("calibration", isCalibration);
         fragment.mResults = results;
@@ -120,11 +120,11 @@ public class DiagnosticResultDialog extends DialogFragment {
                 }
             });
         } else {
-            final double result = getArguments().getDouble("result");
+            final String result = getArguments().getString("result");
             if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtil.getColorRgbString(mColor)));
             } else {
-                getDialog().setTitle(String.format(Locale.getDefault(), "%s: %.2f", getString(R.string.result), result));
+                getDialog().setTitle(result);
             }
 
             buttonCancel.setVisibility(View.GONE);
@@ -136,7 +136,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, false, String.format(Locale.getDefault(), "%.2f", result), mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(false, false, result, mIsCalibration);
 
                 }
             });

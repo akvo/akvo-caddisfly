@@ -66,6 +66,9 @@ public class UsbConnectionActivity extends Activity {
                     public void run() {
                         try {
                             progressDialog.dismiss();
+//                            Intent intent = new Intent("my-event");
+//                            intent.putExtra("message", "data");
+//                            LocalBroadcastManager.getInstance(CaddisflyApp.getApp()).sendBroadcast(intent);
                         } catch (Exception ignored) {
 
                         }

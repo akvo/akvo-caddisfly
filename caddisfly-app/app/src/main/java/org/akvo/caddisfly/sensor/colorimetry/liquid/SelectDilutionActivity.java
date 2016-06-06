@@ -94,8 +94,10 @@ public class SelectDilutionActivity extends BaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Intent intent = new Intent(data);
                     this.setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else if (resultCode != ColorimetryLiquidActivity.RESULT_RESTART_TEST) {
+                    finish();
                 }
-                finish();
                 break;
             default:
         }

@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
+import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.json.JSONArray;
@@ -47,6 +48,8 @@ public class TestInfo {
     private boolean mIsDirty;
     private int monthsValid = 12;
     private boolean isGroup;
+    @StringRes
+    private int groupName;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
@@ -242,6 +245,14 @@ public class TestInfo {
 
     public void setGroup(boolean group) {
         isGroup = group;
+    }
+
+    public int getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(@StringRes int groupName) {
+        this.groupName = groupName;
     }
 
     public class SubTest {

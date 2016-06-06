@@ -56,9 +56,7 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
 
         if (testInfo.isGroup()) {
             rowView.findViewById(R.id.textGroup).setVisibility(View.VISIBLE);
-            if (testInfo.getIsDiagnostic()) {
-                ((TextView) rowView.findViewById(R.id.textGroup)).setText("Experimental");
-            }
+            ((TextView) rowView.findViewById(R.id.textGroup)).setText(mActivity.getString(testInfo.getGroupName()));
             rowView.findViewById(R.id.typeLayout).setVisibility(View.GONE);
         } else {
             rowView.findViewById(R.id.textGroup).setVisibility(View.GONE);
