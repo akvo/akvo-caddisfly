@@ -115,6 +115,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private final Handler handler = new Handler();
     boolean mStatus = false;
     boolean mDebug;
+    private Toast toast;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -123,32 +124,41 @@ public class ColorimetryLiquidActivity extends BaseActivity
 //            {
 //                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
 //            } else
+
+            if (toast != null) {
+                toast.cancel();
+            }
             if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
             {
                 if (mDebug) {
-                    Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
             {
                 if (mDebug) {
-                    Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
             {
                 if (mDebug) {
-                    Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
                 //releaseResources();
                 //finish();
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
             {
                 if (mDebug) {
-                    Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB NOT SUPPORTED
             {
                 if (mDebug) {
-                    Toast.makeText(arg0, "USB device connected", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(arg0, "USB device connected", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         }
@@ -214,8 +224,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
     };
 
     private void displayResult(final String value) {
+
         if (mDebug) {
-            Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT);
+            toast.show();
         }
 
         final ColorimetryLiquidActivity context = this;
@@ -230,40 +242,40 @@ public class ColorimetryLiquidActivity extends BaseActivity
 //                } else if (value.trim().toLowerCase(Locale.US).contains("akvo caddisfly")) {
                     //Turn Camera On
                     requestResult("SET CAMERA ON\r\n");
-                    if (mDebug) {
-                        Toast.makeText(context, "SET CAMERA ON", Toast.LENGTH_SHORT).show();
-                    }
                 } else if (value.trim().equalsIgnoreCase("ON")) {
                     String brightness = PreferencesUtil.getString(context,
                             CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                             R.string.ledBrightnessKey, "150");
                     //Set LED brightness
                     requestResult(String.format("SET LED %s\r\n", brightness));
-                    if (mDebug) {
-                        Toast.makeText(context, String.format("SET LED %s", brightness), Toast.LENGTH_SHORT).show();
-                    }
                 } else if (value.trim().contains("OK")) {
-                    if (mDebug) {
-                        Toast.makeText(context, "Starting Preview", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Initializing", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(context, "Initializing", Toast.LENGTH_SHORT).show();
 
-                    initializeHandler.postDelayed(initializeRunnable, 17000);
+                    initializeHandler.postDelayed(initializeRunnable, 14000);
 
                 } else {
                     mStatus = false;
-                    Toast.makeText(context, "Error initializing camera", Toast.LENGTH_SHORT).show();
-                    releaseResources();
-                    finish();
+                    if (usbService != null) {
+                        Toast.makeText(context, "Error initializing camera", Toast.LENGTH_SHORT).show();
+                        releaseResources();
+                        finish();
+                    }
                 }
             }
-        }, 1000);
+        }, 500);
     }
 
     private void requestResult(String command) {
         //Log.d(DEBUG_TAG, "Request Result");
         if (usbService != null && usbService.isUsbConnected()) {
+            if (mDebug) {
+                if (toast != null) {
+                    toast.cancel();
+                }
+                toast = Toast.makeText(this, command.trim(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
             // if UsbService was correctly bound, Send data
             usbService.write(command.getBytes());
         }
@@ -296,10 +308,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         }
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
-        if (mDebug) {
-            Toast.makeText(this, "STATUS", Toast.LENGTH_SHORT).show();
-        }
 
         handler.postDelayed(runnable, 1000);
     }
@@ -1136,12 +1144,19 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     private void releaseResources() {
 
-        try {
-            handler.removeCallbacks(runnable);
-            unregisterReceiver(mUsbReceiver);
-            unbindService(usbConnection);
-        } catch (Exception ignored) {
+        if (usbService != null) {
+            requestResult("SET CAMERA OFF\r\n");
 
+            requestResult("SET LED 0\r\n");
+
+            try {
+                handler.removeCallbacks(runnable);
+                unregisterReceiver(mUsbReceiver);
+                unbindService(usbConnection);
+                usbService = null;
+            } catch (Exception ignored) {
+
+            }
         }
 
         initializeHandler.removeCallbacks(initializeRunnable);

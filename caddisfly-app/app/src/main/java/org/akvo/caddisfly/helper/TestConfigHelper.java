@@ -80,14 +80,6 @@ public final class TestConfigHelper {
         return null;
     }
 
-//    public static ArrayList<TestInfo> loadConfig(String jsonText){
-//        try {
-//            loadTests(new JSONObject(jsonText).getJSONArray("tests"));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     /**
      * Load all the tests and their configurations from the json config text
      *
