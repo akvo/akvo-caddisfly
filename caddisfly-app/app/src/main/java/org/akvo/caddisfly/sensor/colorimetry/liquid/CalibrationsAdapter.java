@@ -111,7 +111,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
-                textHsv.setText(String.format(Locale.getDefault(), "h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
+                textHsv.setText(String.format(Locale.getDefault(), "h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[2]));
                 textBrightness.setText(String.format(Locale.getDefault(), "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
                 textRgb.setVisibility(View.VISIBLE);
                 textHsv.setVisibility(View.VISIBLE);
