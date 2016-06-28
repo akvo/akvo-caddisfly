@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.support.annotation.StringRes;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
@@ -85,60 +87,43 @@ public final class TestConfigHelper {
      */
     public static ArrayList<TestInfo> loadConfigurationsForAllTests() {
 
-        JSONArray customTestsArray = null, array;
         ArrayList<TestInfo> tests = new ArrayList<>();
 
+        // Load the pre-configured tests from the app
+        loadTests(tests, FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config), false, -1);
+
+        // Load any custom tests from the custom test config file
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
-
-        //Look for external json config file otherwise use the internal default one
-        String jsonText;
         if (file.exists()) {
-            jsonText = FileUtil.loadTextFromFile(file);
-
-            try {
-                customTestsArray = new JSONObject(jsonText).getJSONArray("tests");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            loadTests(tests, FileUtil.loadTextFromFile(file), false, R.string.customTests);
         }
 
-        jsonText = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
+        // Load any experimental tests if app is in diagnostic mode
+        if (AppPreferences.isDiagnosticMode()) {
+            loadTests(tests, FileUtil.readRawTextFile(CaddisflyApp.getApp(),
+                    R.raw.experimental_tests_config), true, R.string.experimental);
+        }
+
+        return tests;
+    }
+
+    public static void loadTests(ArrayList<TestInfo> tests, String jsonText, boolean isDiagnostic, @StringRes int groupName) {
+
+        if (groupName != -1) {
+            TestInfo testGroup = new TestInfo();
+            testGroup.setGroup(true);
+            testGroup.setRequiresCalibration(true);
+            testGroup.setGroupName(groupName);
+            if (isDiagnostic) {
+                testGroup.setIsDiagnostic(true);
+            }
+            tests.add(testGroup);
+        }
+
+        JSONArray array;
         try {
-
             array = new JSONObject(jsonText).getJSONArray("tests");
-
-            int customIndex = -1;
-            if (customTestsArray != null) {
-                customIndex = array.length() - 1;
-                for (int i = 0; i < customTestsArray.length(); i++) {
-                    array.put(customTestsArray.get(i));
-                }
-            }
-
-            int experimentalIndex = -1;
-            if (AppPreferences.isDiagnosticMode()) {
-                jsonText = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.experimental_tests_config);
-                JSONArray experimentalArray = new JSONObject(jsonText).getJSONArray("tests");
-
-                experimentalIndex = array.length();
-
-                for (int i = 0; i < experimentalArray.length(); i++) {
-                    array.put(experimentalArray.get(i));
-                }
-            }
-
             for (int i = 0; i < array.length(); i++) {
-
-                if (customIndex == i || experimentalIndex == i) {
-                    TestInfo testGroup = new TestInfo();
-                    testGroup.setGroup(true);
-                    if (experimentalIndex == i) {
-                        testGroup.setIsDiagnostic(true);
-                    }
-                    testGroup.setRequiresCalibration(true);
-                    tests.add(testGroup);
-                }
-
                 try {
                     JSONObject item = array.getJSONObject(i);
 
@@ -165,25 +150,6 @@ public final class TestConfigHelper {
                                 //Invalid test type skip it
                                 continue;
                         }
-                    } else if (item.has("type")) {
-                        // Backward compatibility
-                        switch (item.getInt("type")) {
-                            case 0:
-                                type = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
-                                break;
-                            case 1:
-                                type = CaddisflyApp.TestType.COLORIMETRIC_STRIP;
-                                break;
-                            case 2:
-                                type = CaddisflyApp.TestType.SENSOR;
-                                break;
-                            case 3:
-                                type = CaddisflyApp.TestType.TURBIDITY_COLIFORMS;
-                                break;
-                            default:
-                                //Invalid test type skip it
-                                continue;
-                        }
                     } else {
                         //Invalid test type skip it
                         continue;
@@ -202,7 +168,6 @@ public final class TestConfigHelper {
                                     found = true;
                                 }
                             }
-
                         }
                         if (!found) {
                             uuids.add(newUuid);
@@ -250,11 +215,6 @@ public final class TestConfigHelper {
 
                     String[] rangesArray = ranges.split(",");
 
-                    boolean isDiagnostic = false;
-                    if (item.has("diagnostic")) {
-                        isDiagnostic = item.getString("diagnostic").equalsIgnoreCase("true");
-                    }
-
                     //Load the ranges
                     int monthsValid = 6;
                     if (item.has("monthsValid")) {
@@ -285,6 +245,5 @@ public final class TestConfigHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return tests;
     }
 }

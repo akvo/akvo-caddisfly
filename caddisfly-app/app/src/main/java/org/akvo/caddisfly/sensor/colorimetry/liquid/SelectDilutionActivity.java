@@ -94,8 +94,10 @@ public class SelectDilutionActivity extends BaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Intent intent = new Intent(data);
                     this.setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    finish();
                 }
-                finish();
                 break;
             default:
         }

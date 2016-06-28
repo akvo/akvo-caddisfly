@@ -72,14 +72,13 @@ public class ResultDialogFragment extends DialogFragment {
             }
         });
 
-        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.buttonDilutionTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ResultDialogListener listener = (ResultDialogListener) getActivity();
                 listener.onSuccessFinishDialog(false);
             }
         });
-
 
         //display the title
         ((TextView) view.findViewById(R.id.textTitle)).setText(getArguments().getString("title", ""));
@@ -95,10 +94,10 @@ public class ResultDialogFragment extends DialogFragment {
             TextView textMessage1 = (TextView) view.findViewById(R.id.textMessage1);
 
             final String title = getArguments().getString("title");
-            textMessage1.setText(String.format(getString(R.string.highLevelsFound), title));
+            textMessage1.setText(getString(R.string.highLevelsFound));
 
-            TextView textMessage2 = (TextView) view.findViewById(R.id.textMessage2);
-            textMessage2.setText(message);
+            //TextView textMessage2 = (TextView) view.findViewById(R.id.textMessage2);
+            //textMessage2.setText(message);
 
         } else {
             dilutionLayout.setVisibility(View.GONE);

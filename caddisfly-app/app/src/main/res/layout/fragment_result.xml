@@ -45,7 +45,7 @@
         android:gravity="center"
         android:padding="7dp"
         android:textColor="#fff"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
         tools:text="@string/timesDilution" />
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-30dp"
         android:gravity="center_vertical"
         android:textSize="80sp"
         tools:text="15000" />
@@ -65,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="-40dp"
         android:textColor="#333"
         android:textSize="20sp"
@@ -75,7 +76,6 @@
         style="@style/Button"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
         android:text="Accept Result"
         android:theme="?primaryButtonStyle" />
 
@@ -87,26 +87,27 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:text="@string/highContamination" />
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/warning"
+            android:textAllCaps="true"
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textMessage1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="20dp"
-            android:textSize="18sp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="6dp"
+            android:textColor="#ededed"
+            android:textSize="19sp"
             android:textStyle="bold"
+            android:visibility="gone"
             tools:text="@string/highLevelsFound" />
 
         <TextView
@@ -114,16 +115,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textSize="18sp"
-            tools:text="@string/tryWithDilutedSample" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="4dp"
+            android:text="Due to high level of contamination, it is recommended to test with dilution"
+            android:textColor="#e9e9e9"
+            android:textSize="18sp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonDilutionTest"
             style="@style/Button"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:text="Test with Dilution"
+            android:textColor="#d8e4e9"
             android:theme="?primaryButtonStyle" />
     </LinearLayout>
 </LinearLayout>

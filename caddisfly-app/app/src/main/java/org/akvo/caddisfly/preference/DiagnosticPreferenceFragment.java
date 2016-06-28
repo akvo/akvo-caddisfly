@@ -47,6 +47,7 @@ import org.akvo.caddisfly.util.ListViewUtil;
 public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
+    private DiagnosticPreviewFragment diagnosticPreviewFragment;
 
     public DiagnosticPreferenceFragment() {
         // Required empty public constructor
@@ -128,7 +129,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                         if (isCameraAvailable()) {
                             CaddisflyApp.getApp().initializeCurrentTest();
                             final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+                            diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
                             diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
                         }
                     }
@@ -209,4 +210,5 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         ListViewUtil.setListViewHeightBasedOnChildren(list, 0);
     }
+
 }
