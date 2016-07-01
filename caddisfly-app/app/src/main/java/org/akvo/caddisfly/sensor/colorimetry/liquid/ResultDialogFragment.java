@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.SensorConstants;
 
 /**
  * Displays the results of an test analysis
@@ -38,7 +39,7 @@ public class ResultDialogFragment extends DialogFragment {
         ResultDialogFragment fragment = new ResultDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putString("result", result);
+        args.putString(SensorConstants.RESULT, result);
         args.putInt("dilution", dilutionLevel);
         args.putString("message", message);
         args.putString("unit", unit);
@@ -84,7 +85,7 @@ public class ResultDialogFragment extends DialogFragment {
         ((TextView) view.findViewById(R.id.textTitle)).setText(getArguments().getString("title", ""));
         LinearLayout dilutionLayout = (LinearLayout) view.findViewById(R.id.dilutionLayout);
 
-        String result = getArguments().getString("result");
+        String result = getArguments().getString(SensorConstants.RESULT);
 
         String message = getArguments().getString("message");
 
@@ -93,7 +94,7 @@ public class ResultDialogFragment extends DialogFragment {
 
             TextView textMessage1 = (TextView) view.findViewById(R.id.textMessage1);
 
-            final String title = getArguments().getString("title");
+            //final String title = getArguments().getString("title");
             textMessage1.setText(getString(R.string.highLevelsFound));
 
             //TextView textMessage2 = (TextView) view.findViewById(R.id.textMessage2);

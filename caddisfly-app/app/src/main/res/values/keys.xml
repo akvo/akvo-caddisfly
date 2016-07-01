@@ -36,11 +36,11 @@
     <string name="totalFailedCalibrationsKey" translateable="false">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey" translateable="false">totalFailedTests</string>
-    <string name="turbiditySavePathKey">turbiditySavePath</string>
-    <string name="fluor_IntervalMinutesKey">fluor_IntervalMinutes</string> 
-    <string name="fluor_NumberOfSamplesKey">fluor_NumberOfSamples</string>
-    <string name="colif_IntervalMinutesKey">colif_IntervalMinutes</string>
-    <string name="colif_NumberOfSamplesKey">colif_NumberOfSamples</string>
-    <string name="ledBrightnessKey">ledBrightness</string>
+    <string name="turbiditySavePathKey" translateable="false">turbiditySavePath</string>
+    <string name="fluor_IntervalMinutesKey" translateable="false">fluor_IntervalMinutes</string> 
+    <string name="fluor_NumberOfSamplesKey" translateable="false">fluor_NumberOfSamples</string>
+    <string name="colif_IntervalMinutesKey" translateable="false">colif_IntervalMinutes</string>
+    <string name="colif_NumberOfSamplesKey" translateable="false">colif_NumberOfSamples</string>
+    <string name="ledBrightnessKey" translateable="false">ledBrightness</string>
 
 </resources>

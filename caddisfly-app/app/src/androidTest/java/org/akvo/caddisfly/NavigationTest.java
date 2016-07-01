@@ -21,10 +21,10 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.ui.MainActivity;
@@ -270,7 +270,7 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -289,50 +289,40 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("next");
+        //clickExternalSourceButton("next");
 
-        clickExternalSourceButton("useExternalSource");
-
-        //Calibration incomplete
-        takeScreenshot();
-
-        onView(withId(android.R.id.button2)).perform(click());
-
-        clickExternalSourceButton("next");
+//        clickExternalSourceButton("useExternalSource", 0);
+//
+//        //Calibration incomplete
+//        takeScreenshot();
+//
+//        onView(withId(android.R.id.button2)).perform(click());
 
         //EC
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 1);
 
         //Connect EC Sensor Screen
         takeScreenshot();
 
-        mDevice.pressBack();
-
-        clickExternalSourceButton("next");
-
-        //Temperature
-        clickExternalSourceButton("useExternalSource");
-
-        mDevice.pressBack();
-
-        clickExternalSourceButton("next");
+        //mDevice.pressBack();
 
         //pH
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 2);
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+        //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.ok)).perform(click());
+        //onView(withText(R.string.ok)).perform(click());
 
-        clickExternalSourceButton("next");
+        mDevice.pressBack();
 
         //Caffeine
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 3);
 
         //Test type not available
         takeScreenshot();
 
-        onView(withId(android.R.id.button1)).perform(click());
+        mDevice.pressBack();
+        //onView(withId(android.R.id.button1)).perform(click());
 
     }
 }

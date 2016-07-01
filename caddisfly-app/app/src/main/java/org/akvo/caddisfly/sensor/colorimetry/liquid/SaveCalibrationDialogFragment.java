@@ -60,7 +60,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
-    private EditText editLedBrightnesss;
     private boolean isEditing = false;
 
     public SaveCalibrationDialogFragment() {
@@ -108,8 +107,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
-        editLedBrightnesss = (EditText) view.findViewById(R.id.editLedBrightness);
-
         long milliseconds = PreferencesUtil.getLong(getActivity(),
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.calibrationExpiryDateKey);
@@ -125,8 +122,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                         .format(new Date(expiryDate)));
             }
         }
-
-        editLedBrightnesss.setText(PreferencesUtil.getString(context, testCode, R.string.ledBrightnessKey, "").trim());
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener,
                 calendar.get(Calendar.YEAR),
@@ -255,9 +250,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     PreferencesUtil.setString(context, testCode,
                             R.string.batchNumberKey, editBatchCode.getText().toString().trim());
 
-                    PreferencesUtil.setString(context, testCode,
-                            R.string.ledBrightnessKey, editLedBrightnesss.getText().toString().trim());
-
 
                     ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
                 }
@@ -293,7 +285,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
                 testCode, editBatchCode.getText().toString().trim(),
                 Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis(), editLedBrightnesss.getText().toString());
+                calendar.getTimeInMillis());
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 

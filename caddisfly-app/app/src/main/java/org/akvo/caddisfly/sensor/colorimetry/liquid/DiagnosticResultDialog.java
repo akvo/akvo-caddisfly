@@ -34,6 +34,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class DiagnosticResultDialog extends DialogFragment {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
-        args.putString("result", result);
+        args.putString(SensorConstants.RESULT, result);
         args.putInt("color", color);
         args.putBoolean("calibration", isCalibration);
         fragment.mResults = results;
@@ -120,7 +121,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 }
             });
         } else {
-            final String result = getArguments().getString("result");
+            final String result = getArguments().getString(SensorConstants.RESULT);
             if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtil.getColorRgbString(mColor)));
             } else {

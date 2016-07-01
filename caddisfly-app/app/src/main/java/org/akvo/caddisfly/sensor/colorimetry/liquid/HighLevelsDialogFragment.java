@@ -59,8 +59,7 @@ public class HighLevelsDialogFragment extends DialogFragment {
 
         TextView textMessage1 = (TextView) view.findViewById(R.id.textMessage1);
 
-        final String title = getArguments().getString("title");
-        textMessage1.setText(String.format(getString(R.string.highLevelsFound), title));
+        textMessage1.setText(getString(R.string.highLevelsFound));
 
         TextView textMessage2 = (TextView) view.findViewById(R.id.textMessage2);
         final String message = getArguments().getString("message");

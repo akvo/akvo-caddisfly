@@ -133,14 +133,19 @@ public class CaddisflyApp extends Application {
         return hasCameraFlash;
     }
 
+    public static String getAppLanguage() {
+        Configuration config = getApp().getResources().getConfiguration();
+        return config.locale.getLanguage().substring(0, 2);
+    }
+
     /**
      * Gets the app version
      *
-     * @param context The context
      * @return The version name and number
      */
-    public static String getAppVersion(Context context) {
+    public static String getAppVersion() {
         try {
+            Context context = getApp();
             String version = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0).versionName;
             String[] words = version.split("\\s");

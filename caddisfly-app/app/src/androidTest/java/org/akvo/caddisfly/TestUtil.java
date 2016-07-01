@@ -131,7 +131,6 @@ class TestUtil {
         }
     }
 
-
     public static boolean clickListViewItem(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector());
         listView.setMaxSearchSwipes(4);

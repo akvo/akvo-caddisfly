@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -40,8 +39,10 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,18 +89,12 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-//            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
-//            {
-//                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
-//            } else
-
             if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
             {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
             {
-                //Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
             {
@@ -147,7 +142,6 @@ public class SensorActivity extends BaseActivity {
 
     @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        //Log.d(DEBUG_TAG, "Start Service");
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);
@@ -167,7 +161,6 @@ public class SensorActivity extends BaseActivity {
     }
 
     private void requestResult() {
-        //Log.d(DEBUG_TAG, "Request Result");
         String data = "r\r\n";
         if (usbService != null && usbService.isUsbConnected()) {
             // if UsbService was correctly bound, Send data
@@ -194,7 +187,7 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
-        final String cadUuid = intent.getExtras().getString("caddisflyResourceUuid");
+        final String cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
@@ -214,50 +207,56 @@ public class SensorActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                // Build the result json to be returned
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-                JSONObject resultJsonObj = new JSONObject();
-                JSONArray resultJsonArr = new JSONArray();
+                JSONObject resultJson = new JSONObject();
+                JSONArray resultsJsonArray = new JSONArray();
 
                 Intent resultIntent = new Intent(intent);
 
                 if (cadUuid != null) {
                     try {
                         for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
-                            JSONObject object = new JSONObject();
-                            object.put("name", subTest.getDesc());
-                            object.put("unit", subTest.getUnit());
-                            object.put("id", subTest.getId());
+                            JSONObject subTestJson = new JSONObject();
+                            subTestJson.put(SensorConstants.NAME, subTest.getDesc());
+                            subTestJson.put(SensorConstants.UNIT, subTest.getUnit());
+                            subTestJson.put(SensorConstants.ID, subTest.getId());
                             switch (subTest.getId()) {
                                 case 1:
-                                    object.put("value", mEc25Value);
+                                    subTestJson.put(SensorConstants.VALUE, mEc25Value);
                                     break;
                                 case 2:
-                                    object.put("value", mTemperature);
+                                    subTestJson.put(SensorConstants.VALUE, mTemperature);
                                     break;
                             }
-                            resultJsonArr.put(object);
+                            resultsJsonArray.put(subTestJson);
                         }
 
-                        resultJsonObj.put("result", resultJsonArr);
-                        resultJsonObj.put("type", "caddisfly");
-                        resultJsonObj.put("name", testInfo.getName("en"));
-                        resultJsonObj.put("uuid", testInfo.getUuid());
+                        resultJson.put(SensorConstants.RESULT, resultsJsonArray);
+                        resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
+                        resultJson.put(SensorConstants.NAME, testInfo.getName());
+                        resultJson.put(SensorConstants.UUID, testInfo.getUuid());
 
-                        resultJsonObj.put("phone_model", Build.MODEL);
-                        resultJsonObj.put("phone_manufacturer", Build.MANUFACTURER);
+                        // Add app details to the result
+                        resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
+
+                        // Add standard diagnostic details to the result
+                        resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    resultIntent.putExtra("response", resultJsonObj.toString());
+                    // Add standard diagnostic details to the result
+                    resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
                 } else {
+                    // TODO: Remove this when obsolete
+                    // Backward compatibility. Return plain text result
                     if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
-                        resultIntent.putExtra("response", mTemperature);
+                        resultIntent.putExtra(SensorConstants.RESPONSE, mTemperature);
                     } else {
-                        resultIntent.putExtra("response", mEc25Value);
+                        resultIntent.putExtra(SensorConstants.RESPONSE, mEc25Value);
                     }
-
                 }
 
                 setResult(Activity.RESULT_OK, resultIntent);
@@ -320,14 +319,11 @@ public class SensorActivity extends BaseActivity {
             return;
         }
 
-        //Log.d(DEBUG_TAG, "display Result");
         Configuration config = getResources().getConfiguration();
 
-        String newline = System.getProperty("line.separator");
-
         value = value.trim();
-        if (value.contains(newline)) {
-            String[] values = value.split(newline);
+        if (value.contains("\r\n")) {
+            String[] values = value.split("\r\n");
             if (values.length > 0) {
                 value = values[1];
             }
@@ -414,8 +410,6 @@ public class SensorActivity extends BaseActivity {
 
                 layoutResult.animate().alpha(1f).setDuration(500);
                 imageUsbConnection.animate().alpha(0f).setDuration(500);
-
-                //Log.d(DEBUG_TAG, "display result view");
             }
         }
     }
@@ -450,18 +444,6 @@ public class SensorActivity extends BaseActivity {
                             sensorActivity.displayResult(sensorActivity.mReceivedData);
                             sensorActivity.mReceivedData = "";
                         }
-
-
-//                        if (data.contains("\r\n") || sensorActivity.mReceivedData.contains("\r\n")) {
-//                            //Log.d(DEBUG_TAG, "result: " + sensorActivity.mReceivedData);
-//                            sensorActivity.mReceivedData += data;
-//                            sensorActivity.displayResult(sensorActivity.mReceivedData);
-//                            sensorActivity.mReceivedData = "";
-//                        } else {
-//                            //Log.d(DEBUG_TAG, "serial: *" + data + "*");
-//
-//                            //Log.d(DEBUG_TAG, "serial result: " + sensorActivity.mReceivedData);
-//                        }
                     }
                     break;
             }

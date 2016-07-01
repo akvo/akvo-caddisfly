@@ -20,15 +20,19 @@ import android.graphics.Color;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Model to hold test configuration information
@@ -50,6 +54,9 @@ public class TestInfo {
     private boolean isGroup;
     @StringRes
     private int groupName;
+    private String batchNumber;
+    private long calibrationDate;
+    private long expiryDate;
 
     public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
@@ -142,6 +149,10 @@ public class TestInfo {
                 return Double.compare(c1.getValue(), (c2.getValue()));
             }
         });
+    }
+
+    public String getName() {
+        return getName("en");
     }
 
     public String getName(String languageCode) {
@@ -253,6 +264,39 @@ public class TestInfo {
 
     public void setGroupName(@StringRes int groupName) {
         this.groupName = groupName;
+    }
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+    public long getCalibrationDate() {
+        return calibrationDate;
+    }
+
+    public void setCalibrationDate(long calibrationDate) {
+        this.calibrationDate = calibrationDate;
+    }
+
+    public long getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(long expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getCalibrationDateString() {
+        return new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US).format(calibrationDate);
+    }
+
+    public String getExpiryDateString() {
+        return new SimpleDateFormat(SensorConstants.DATE_FORMAT, Locale.US)
+                .format(Calendar.getInstance().getTime());
     }
 
     public class SubTest {

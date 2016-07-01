@@ -53,7 +53,7 @@ import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -167,22 +167,25 @@ public class CalibrateListActivity extends BaseActivity
 
     private void loadDetails() {
 
-        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        long calibrationDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey);
+        testInfo.setCalibrationDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationDateKey));
 
-        if (calibrationDate >= 0) {
-            textSubtitle1.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate)));
+        if (testInfo.getCalibrationDate() >= 0) {
+            textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                    .format(new Date(testInfo.getCalibrationDate())));
         }
 
-        Long expiryDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey);
+        testInfo.setExpiryDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationExpiryDateKey));
 
-        if (expiryDate >= 0) {
+        if (testInfo.getExpiryDate() >= 0) {
             textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
-                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(testInfo.getExpiryDate()))));
         }
 
-        textSubtitle.setText(PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""));
+        testInfo.setBatchNumber(PreferencesUtil.getString(this, testInfo.getCode(), R.string.batchNumberKey, ""));
+
+        textSubtitle.setText(testInfo.getBatchNumber());
 
         CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
@@ -304,8 +307,7 @@ public class CalibrateListActivity extends BaseActivity
                 testCode,
                 PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""),
                 PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey),
-                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey),
-                PreferencesUtil.getString(this, testCode, R.string.ledBrightnessKey, "150"));
+                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey));
 
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
 

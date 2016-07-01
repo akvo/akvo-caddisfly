@@ -70,7 +70,6 @@
     <string name="result">Résultat</string>
     <string name="backToSurvey">Retour à l\'enquête</string>
     <string name="highContamination">Forte contamination</string>
-    <string name="highLevelsFound">La contamination en %1$s est très élevée</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Réessayez avec une dilution par %1$d</string>
     <!--Dilution Selection Dialog-->
     <string name="noDilution">Pas de dilution</string>

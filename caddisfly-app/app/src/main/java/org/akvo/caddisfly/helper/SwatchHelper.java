@@ -411,7 +411,7 @@ public final class SwatchHelper {
     }
 
     public static String generateCalibrationFile(Context context, String testCode, String batchCode,
-                                                 long calibrationDate, long expiryDate, String ledBrightness) {
+                                                 long calibrationDate, long expiryDate) {
 
         final StringBuilder calibrationDetails = new StringBuilder();
 
@@ -431,9 +431,6 @@ public final class SwatchHelper {
         calibrationDetails.append("Calibrated: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
         calibrationDetails.append("\n");
-        calibrationDetails.append("LedBrightness: ");
-        calibrationDetails.append(ledBrightness);
-        calibrationDetails.append("\n");
         calibrationDetails.append("ReagentExpiry: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(expiryDate));
         calibrationDetails.append("\n");
@@ -441,7 +438,7 @@ public final class SwatchHelper {
         calibrationDetails.append(batchCode);
         calibrationDetails.append("\n");
         calibrationDetails.append("Version: ");
-        calibrationDetails.append(CaddisflyApp.getAppVersion(context));
+        calibrationDetails.append(CaddisflyApp.getAppVersion());
         calibrationDetails.append("\n");
         calibrationDetails.append("Model: ");
         calibrationDetails.append(android.os.Build.MODEL).append(" (")

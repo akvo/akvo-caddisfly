@@ -57,7 +57,7 @@ public class AboutActivity extends BaseActivity {
         });
 
         TextView textVersion = (TextView) findViewById(R.id.textVersion);
-        textVersion.setText(CaddisflyApp.getAppVersion(this));
+        textVersion.setText(CaddisflyApp.getAppVersion());
 
         textVersion.setOnClickListener(new View.OnClickListener() {
             int clickCount = 0;

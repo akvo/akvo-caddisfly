@@ -21,10 +21,10 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -115,7 +115,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
+        String version = CaddisflyApp.getAppVersion();
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -141,7 +141,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         sleep(1000);
 
@@ -160,12 +160,12 @@ public class AnalysisTest {
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
                 ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
-        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 2)))
+        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
 
@@ -179,13 +179,13 @@ public class AnalysisTest {
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
+//        onView(allOf(withId(R.id.textDilution), withText(mActivityRule.getActivity()
+//                .getString(R.string.testWithDilution)))).check(matches(isCompletelyDisplayed()));
 
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
                 ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
-        onView(withText(String.format(mActivityRule.getActivity().getString(R.string.tryWithDilutedSample), 5)))
+        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
         //High levels found dialog
@@ -193,7 +193,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
 
@@ -204,8 +204,8 @@ public class AnalysisTest {
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
-        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
+//        onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
+//                .getString(R.string.timesDilution), 5)))).check(matches(isCompletelyDisplayed()));
 
         //Test Progress Screen
         takeScreenshot();
@@ -213,7 +213,7 @@ public class AnalysisTest {
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000) *
                 ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
-        double result = Double.valueOf(getText(withId(R.id.textResult)));
+        double result = Double.valueOf(getText(withId(R.id.textResult)).replace(">", "").trim());
         assertTrue("Result is wrong", result > 9);
 
         onView(withId(R.id.buttonOk)).perform(click());
@@ -256,7 +256,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -355,7 +355,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
+        String version = CaddisflyApp.getAppVersion();
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -385,7 +385,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         sleep(1000);
 

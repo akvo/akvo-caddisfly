@@ -35,6 +35,7 @@ import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -46,6 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
+import static org.akvo.caddisfly.TestUtil.sleep;
 
 class TestHelper {
 
@@ -170,19 +172,33 @@ class TestHelper {
 //        }
 //    }
 
-    public static void clickExternalSourceButton(String buttonText) {
-        try {
+    public static void clickExternalSourceButton(String buttonText, int index) {
 
-            findButtonInScrollable(buttonText);
+        findButtonInScrollable(buttonText);
 
-            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonText)));
+        buttons.get(buttons.size() - 1 - index).click();
 
-            mDevice.waitForWindowUpdate("", 2000);
+        //mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
 
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        mDevice.waitForWindowUpdate("", 2000);
+
+        sleep(4000);
     }
+
+//    public static void clickExternalSourceButton(String buttonText) {
+//        try {
+//
+//            findButtonInScrollable(buttonText);
+//
+//            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+//
+//            mDevice.waitForWindowUpdate("", 2000);
+//
+//        } catch (UiObjectNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static void startApp() {
         // Start from the home screen
@@ -235,6 +251,8 @@ class TestHelper {
                 e.printStackTrace();
             }
         }
+
+        mDevice.findObject(By.text("caddisfly test")).click();
     }
 
     public static void enterDiagnosticMode() {

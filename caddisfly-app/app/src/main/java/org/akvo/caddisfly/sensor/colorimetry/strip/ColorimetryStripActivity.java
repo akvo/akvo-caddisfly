@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
@@ -81,17 +82,17 @@ public class ColorimetryStripActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
-        System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra("finish", false));
+        System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra(SensorConstants.FINISH, false));
         Intent intent = getIntent();
         String cadUuid = null;
         if (intent.hasExtra("caddisflyResourceUuid")) {
             cadUuid = intent.getStringExtra("caddisflyResourceUuid");
         }
-        if (intent.getBooleanExtra("finish", false)) {
+        if (intent.getBooleanExtra(SensorConstants.FINISH, false)) {
             finish();
         } else if (cadUuid != null && cadUuid.length() > 0) {
             // when we get back here, we want to go straight back to the FLOW app
-            intent.putExtra("finish", true);
+            intent.putExtra(SensorConstants.FINISH, true);
 
             // find brand which goes with this test uuid
             // and if found, go there immediately.

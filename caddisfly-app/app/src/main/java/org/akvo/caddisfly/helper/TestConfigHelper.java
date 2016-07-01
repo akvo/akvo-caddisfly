@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.os.Build;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
@@ -31,6 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Utility functions to parse a text config json text
@@ -107,18 +109,9 @@ public final class TestConfigHelper {
         return tests;
     }
 
-    public static void loadTests(ArrayList<TestInfo> tests, String jsonText, boolean isDiagnostic, @StringRes int groupName) {
+    private static void loadTests(ArrayList<TestInfo> tests, String jsonText, boolean isDiagnostic, @StringRes int groupName) {
 
-        if (groupName != -1) {
-            TestInfo testGroup = new TestInfo();
-            testGroup.setGroup(true);
-            testGroup.setRequiresCalibration(true);
-            testGroup.setGroupName(groupName);
-            if (isDiagnostic) {
-                testGroup.setIsDiagnostic(true);
-            }
-            tests.add(testGroup);
-        }
+        int groupIndex = tests.size();
 
         JSONArray array;
         try {
@@ -242,8 +235,42 @@ public final class TestConfigHelper {
                     e.printStackTrace();
                 }
             }
+
+            // If custom tests were added then add a dummy test object for group name
+            if (tests.size() > groupIndex && groupName != -1) {
+                TestInfo testGroup = new TestInfo();
+                testGroup.setGroup(true);
+                testGroup.setRequiresCalibration(true);
+                testGroup.setGroupName(groupName);
+                if (isDiagnostic) {
+                    testGroup.setIsDiagnostic(true);
+                }
+                tests.add(groupIndex, testGroup);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
+
+    public static JSONObject getDeviceDetails() throws JSONException {
+        JSONObject details = new JSONObject();
+        details.put("model", Build.MODEL);
+        details.put("product", Build.PRODUCT);
+        details.put("manufacturer", Build.MANUFACTURER);
+        details.put("os", "Android - " + Build.VERSION.RELEASE + " (" +
+                Build.VERSION.SDK_INT + ")");
+        details.put("country", Locale.getDefault().getCountry());
+        details.put("language", Locale.getDefault().getLanguage());
+        return details;
+    }
+
+    public static JSONObject getAppDetails() throws JSONException {
+        JSONObject details = new JSONObject();
+        details.put("appVersion", CaddisflyApp.getAppVersion());
+        details.put("language", CaddisflyApp.getAppLanguage());
+        return details;
+    }
+
 }

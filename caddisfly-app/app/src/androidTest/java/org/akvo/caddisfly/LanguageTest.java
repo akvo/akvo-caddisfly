@@ -17,10 +17,10 @@
 package org.akvo.caddisfly;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
@@ -80,7 +80,7 @@ public class LanguageTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
+        String version = CaddisflyApp.getAppVersion();
 
         onView(withText(version)).check(matches(isDisplayed()));
 

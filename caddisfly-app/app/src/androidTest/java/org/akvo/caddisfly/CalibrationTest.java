@@ -21,10 +21,10 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.ui.MainActivity;
@@ -217,6 +217,7 @@ public class CalibrationTest {
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
+
         onView(withText(R.string.cancel)).perform(click());
 
         goToMainScreen();
@@ -225,7 +226,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         sleep(2000);
 
@@ -267,7 +268,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         sleep(2000);
 
@@ -275,16 +276,14 @@ public class CalibrationTest {
 
     }
 
-    @Test
+    //@Test
     public void testIncompleteCalibration() {
 
         onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("next");
-
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton("useExternalSource", 0);
 
         mDevice.waitForWindowUpdate("", 2000);
 

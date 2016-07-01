@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.BaseActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
@@ -142,11 +143,11 @@ public class ResultActivity extends BaseActivity{
                     // store image on sd card
                     path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage), "/result-images", resultImageUrl);
 
-                    resultJsonObj.put("type", "caddisfly");
-                    resultJsonObj.put("name", brand.getName());
-                    resultJsonObj.put("uuid", brand.getUuid());
+                    resultJsonObj.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
+                    resultJsonObj.put(SensorConstants.NAME, brand.getName());
+                    resultJsonObj.put(SensorConstants.UUID, brand.getUuid());
                     if (path.length() > 0){
-                        resultJsonObj.put("image",resultImageUrl);
+                        resultJsonObj.put(SensorConstants.IMAGE, resultImageUrl);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,9 +156,9 @@ public class ResultActivity extends BaseActivity{
                 listener.onResult(resultJsonObj.toString(),path);
 
                 Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
-                i.putExtra("finish", true);
-                i.putExtra("response", resultJsonObj.toString());
-                i.putExtra("image",path);
+                i.putExtra(SensorConstants.FINISH, true);
+                i.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+                i.putExtra(SensorConstants.IMAGE, path);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
 
@@ -351,12 +352,12 @@ public class ResultActivity extends BaseActivity{
             if (!combined.empty()) {
                 try {
                     JSONObject object = new JSONObject();
-                    object.put("name", desc);
-                    object.put("value", ResultUtils.roundSignificant(ppm));
-                    object.put("unit", unit);
-                    object.put("id",id);
+                    object.put(SensorConstants.NAME, desc);
+                    object.put(SensorConstants.VALUE, ResultUtils.roundSignificant(ppm));
+                    object.put(SensorConstants.UNIT, unit);
+                    object.put(SensorConstants.ID, id);
                     resultJsonArr.put(object);
-                    resultJsonObj.put("result", resultJsonArr);
+                    resultJsonObj.put(SensorConstants.RESULT, resultJsonArr);
 
                     //TESTING write image string to external storage
                     //FileStorage.writeLogToSDFile("base64.txt", img, false);

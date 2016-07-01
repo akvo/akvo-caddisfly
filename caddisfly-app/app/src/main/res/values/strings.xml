@@ -174,6 +174,12 @@
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>
 
+    <string name="customTests">Custom tests</string>
+    <string name="experimental">Experimental</string>
+    <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
+    <string name="testWithDilution">Test with Dilution</string>
+
+
     <!--StripTest-->
     <!--paths to assets-->
     <string name="strips_json">strips.json</string>
@@ -216,7 +222,5 @@
     <string name="quality_checks_counter">Quality checks: %1$s out of %2$s</string>
     <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
     <string name="begin">Start</string>
-    <string name="customTests">Custom tests</string>
-    <string name="experimental">Experimental</string>
 
 </resources>
