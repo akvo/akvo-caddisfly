@@ -44,11 +44,10 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
@@ -209,46 +208,19 @@ public class SensorActivity extends BaseActivity {
 
                 // Build the result json to be returned
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-                JSONObject resultJson = new JSONObject();
-                JSONArray resultsJsonArray = new JSONArray();
 
                 Intent resultIntent = new Intent(intent);
 
+                // If a UUID exists return result in json format otherwise return plain text result
                 if (cadUuid != null) {
-                    try {
-                        for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
-                            JSONObject subTestJson = new JSONObject();
-                            subTestJson.put(SensorConstants.NAME, subTest.getDesc());
-                            subTestJson.put(SensorConstants.UNIT, subTest.getUnit());
-                            subTestJson.put(SensorConstants.ID, subTest.getId());
-                            switch (subTest.getId()) {
-                                case 1:
-                                    subTestJson.put(SensorConstants.VALUE, mEc25Value);
-                                    break;
-                                case 2:
-                                    subTestJson.put(SensorConstants.VALUE, mTemperature);
-                                    break;
-                            }
-                            resultsJsonArray.put(subTestJson);
-                        }
 
-                        resultJson.put(SensorConstants.RESULT, resultsJsonArray);
-                        resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
-                        resultJson.put(SensorConstants.NAME, testInfo.getName());
-                        resultJson.put(SensorConstants.UUID, testInfo.getUuid());
+                    ArrayList<String> results = new ArrayList<>();
+                    results.add(mEc25Value);
+                    results.add(mTemperature);
 
-                        // Add app details to the result
-                        resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
-
-                        // Add standard diagnostic details to the result
-                        resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    // Add standard diagnostic details to the result
+                    JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
                     resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+
                 } else {
                     // TODO: Remove this when obsolete
                     // Backward compatibility. Return plain text result

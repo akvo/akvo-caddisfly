@@ -68,8 +68,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -77,7 +75,6 @@ import org.opencv.android.OpenCVLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -126,7 +123,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
-
 
     @Override
     protected void onResume() {
@@ -721,7 +717,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 String cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
 
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-                JSONObject resultJson = new JSONObject();
 
                 Intent resultIntent = new Intent(intent);
                 resultIntent.putExtra(SensorConstants.RESULT, resultText);
@@ -729,70 +724,29 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 // If a UUID exists return result in json format otherwise return plain text result
                 if (cadUuid != null) {
-                    try {
-                        TestInfo.SubTest subTest = testInfo.getSubTests().get(0);
-                        JSONObject subTestJson = new JSONObject();
 
-                        subTestJson.put(SensorConstants.NAME, subTest.getDesc());
-                        subTestJson.put(SensorConstants.VALUE, resultText);
-                        subTestJson.put(SensorConstants.UNIT, subTest.getUnit());
-                        subTestJson.put(SensorConstants.ID, subTest.getId());
+                    // Save photo taken during the test
+                    String resultImageUrl = UUID.randomUUID().toString() + ".png";
+                    String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
 
-                        subTestJson.put("resultColor", Integer.toHexString(color & 0x00FFFFFF));
+                    ArrayList<String> results = new ArrayList<>();
+                    results.add(resultText);
 
-                        // Add calibration details to result
-                        subTestJson.put("calibratedDate", testInfo.getCalibrationDateString());
-                        subTestJson.put("reagentExpiry", testInfo.getExpiryDateString());
-                        subTestJson.put("reagentBatch", testInfo.getBatchNumber());
+                    JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
 
-                        JSONArray calibrationSwatches = new JSONArray();
-                        for (Swatch swatch : testInfo.getSwatches()) {
-                            calibrationSwatches.put(Integer.toHexString(swatch.getColor() & 0x00FFFFFF));
-                        }
-                        subTestJson.put("calibration", calibrationSwatches);
-
-                        resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
-                        resultJson.put(SensorConstants.NAME, testInfo.getName());
-                        resultJson.put(SensorConstants.UUID, testInfo.getUuid());
-
-                        resultJson.put(SensorConstants.RESULT, (new JSONArray()).put(subTestJson));
-
-                        // Save photo taken during the test
-                        String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                        String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
-                        if (path.length() > 0) {
-                            resultJson.put(SensorConstants.IMAGE, resultImageUrl);
-                            resultIntent.putExtra(SensorConstants.IMAGE, path);
-                        }
-
-                        // Add current date to result
-                        resultJson.put("testDate", new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US)
-                                .format(Calendar.getInstance().getTime()));
-
-                        // Add app details to the result
-                        resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
-
-                        // Add standard diagnostic details to the result
-                        resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    resultIntent.putExtra(SensorConstants.IMAGE, path);
                     resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
                 } else {
                     // TODO: Remove this when obsolete
                     // Backward compatibility. Return plain text result
                     resultIntent.putExtra(SensorConstants.RESPONSE, resultText);
                 }
-
                 setResult(Activity.RESULT_OK, resultIntent);
             }
             // Show the result dialog
             ShowResult(data, result, resultText, color);
         }
     }
-
 
     private void ShowResult(byte[] data, double result, String resultText, int color) {
 

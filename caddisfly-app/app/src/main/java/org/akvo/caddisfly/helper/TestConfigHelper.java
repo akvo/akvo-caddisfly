@@ -21,15 +21,19 @@ import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Locale;
@@ -252,6 +256,70 @@ public final class TestConfigHelper {
             e.printStackTrace();
         }
 
+    }
+
+    public static JSONObject getJsonResult(TestInfo testInfo, ArrayList<String> results, int color,
+                                           String resultImageUrl) {
+
+        JSONObject resultJson = new JSONObject();
+
+        try {
+
+            resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
+            resultJson.put(SensorConstants.NAME, testInfo.getName());
+            resultJson.put(SensorConstants.UUID, testInfo.getUuid());
+
+
+            JSONArray resultsJsonArray = new JSONArray();
+            for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                JSONObject subTestJson = new JSONObject();
+                subTestJson.put(SensorConstants.NAME, subTest.getDesc());
+                subTestJson.put(SensorConstants.UNIT, subTest.getUnit());
+                subTestJson.put(SensorConstants.ID, subTest.getId());
+
+                // If a result exists for the sub test id then add it
+                if (results.size() >= subTest.getId()) {
+                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId() - 1));
+                }
+
+                if (color > -1) {
+                    subTestJson.put("resultColor", Integer.toHexString(color & 0x00FFFFFF));
+
+                    // Add calibration details to result
+                    subTestJson.put("calibratedDate", testInfo.getCalibrationDateString());
+                    subTestJson.put("reagentExpiry", testInfo.getExpiryDateString());
+                    subTestJson.put("reagentBatch", testInfo.getBatchNumber());
+
+                    JSONArray calibrationSwatches = new JSONArray();
+                    for (Swatch swatch : testInfo.getSwatches()) {
+                        calibrationSwatches.put(Integer.toHexString(swatch.getColor() & 0x00FFFFFF));
+                    }
+                    subTestJson.put("calibration", calibrationSwatches);
+                }
+
+                resultsJsonArray.put(subTestJson);
+            }
+
+            resultJson.put(SensorConstants.RESULT, resultsJsonArray);
+
+            if (!resultImageUrl.isEmpty()) {
+                resultJson.put(SensorConstants.IMAGE, resultImageUrl);
+            }
+
+            // Add current date to result
+            resultJson.put("testDate", new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US)
+                    .format(Calendar.getInstance().getTime()));
+
+            // Add app details to the result
+            resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
+
+            // Add standard diagnostic details to the result
+            resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultJson;
     }
 
     public static JSONObject getDeviceDetails() throws JSONException {
