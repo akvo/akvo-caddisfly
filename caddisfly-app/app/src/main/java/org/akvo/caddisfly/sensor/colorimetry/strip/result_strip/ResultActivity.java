@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,15 +33,15 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
-public class ResultActivity extends BaseActivity{
+public class ResultActivity extends BaseActivity {
 
-    private JSONObject resultJsonObj = new JSONObject();
-    private JSONArray resultJsonArr = new JSONArray();
+    private final JSONObject resultJsonObj = new JSONObject();
+    private final JSONArray resultJsonArr = new JSONArray();
     private Mat resultImage = null;
     private FileStorage fileStorage;
-    private String brandName;
     private String resultImageUrl;
     private StripTest.Brand brand;
 
@@ -53,7 +54,7 @@ public class ResultActivity extends BaseActivity{
             resultImageUrl = UUID.randomUUID().toString() + ".png";
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
-            brandName = intent.getStringExtra(Constant.BRAND);
+            String brandName = intent.getStringExtra(Constant.BRAND);
 
             Mat strip;
             StripTest stripTest = new StripTest();
@@ -82,8 +83,7 @@ public class ResultActivity extends BaseActivity{
                     // handle grouping case
 
                     // get the first patch image
-                    String desc = patches.get(0).getDesc();
-                    JSONArray array = null;
+                    JSONArray array;
                     try {
                         // get strip image into Mat object
                         array = imagePatchArray.getJSONArray(0);
@@ -101,7 +101,7 @@ public class ResultActivity extends BaseActivity{
                 } else {
                     // if this strip is of type 'INDIVIDUAL' handle patch by patch
                     for (int i = 0; i < patches.size(); i++) { // handle patch
-                        JSONArray array = null;
+                        JSONArray array;
                         try {
                             array = imagePatchArray.getJSONArray(i);
 
@@ -110,10 +110,10 @@ public class ResultActivity extends BaseActivity{
                             boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
 
                             // read strip from file
-                            strip = ResultUtils.getMatFromFile(fileStorage,imageNo);
+                            strip = ResultUtils.getMatFromFile(fileStorage, imageNo);
 
                             if (strip != null) {
-                                if (i == 0){
+                                if (i == 0) {
                                     // create empty mat to serve as a template
                                     resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3, new Scalar(255, 255, 255));
                                 }
@@ -126,7 +126,7 @@ public class ResultActivity extends BaseActivity{
                 }
             } else {
                 TextView textView = new TextView(this);
-                textView.setText("no data");
+                textView.setText(R.string.noData);
                 LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);
 
                 layout.addView(textView);
@@ -138,7 +138,7 @@ public class ResultActivity extends BaseActivity{
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path="";
+                String path = "";
                 try {
                     // store image on sd card
                     path = FileStorage.writeBitmapToExternalStorage(ResultUtils.makeBitmap(resultImage), "/result-images", resultImageUrl);
@@ -146,14 +146,14 @@ public class ResultActivity extends BaseActivity{
                     resultJsonObj.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
                     resultJsonObj.put(SensorConstants.NAME, brand.getName());
                     resultJsonObj.put(SensorConstants.UUID, brand.getUuid());
-                    if (path.length() > 0){
+                    if (path.length() > 0) {
                         resultJsonObj.put(SensorConstants.IMAGE, resultImageUrl);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                listener.onResult(resultJsonObj.toString(),path);
+                listener.onResult(resultJsonObj.toString(), path);
 
                 Intent i = new Intent(v.getContext(), ColorimetryStripActivity.class);
                 i.putExtra(SensorConstants.FINISH, true);
@@ -185,26 +185,24 @@ public class ResultActivity extends BaseActivity{
         });
     }
 
-    private class BitmapTask extends AsyncTask<Mat, Void, Void>
-    {
+    private class BitmapTask extends AsyncTask<Mat, Void, Void> {
+        private final boolean invalid;
+        private final Boolean grouped;
+        private final StripTest.Brand brand;
+        private final List<StripTest.Brand.Patch> patches;
+        private final int patchNum;
+        private final Mat strip;
         String unit;
         int id;
         String desc;
-        private boolean invalid;
         private Bitmap stripBitmap = null;
-        private Bitmap combinedBitmap = null;
         private Mat combined;
         private ColorDetected colorDetected;
         private ColorDetected[] colorsDetected;
         private double ppm = -1;
-        private Boolean grouped;
-        private StripTest.Brand brand;
-        private List<StripTest.Brand.Patch> patches;
-        private int patchNum;
-        private Mat strip;
 
-        public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand, List<StripTest.Brand.Patch> patches, int patchNum)
-        {
+        public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand,
+                          List<StripTest.Brand.Patch> patches, int patchNum) {
             this.invalid = invalid;
             this.grouped = grouped;
             this.strip = strip;
@@ -216,17 +214,17 @@ public class ResultActivity extends BaseActivity{
         @Override
         protected Void doInBackground(Mat... params) {
             Mat mat = params[0];
-            int submatSize = 7;
+            int subMatSize = 7;
             int borderSize = (int) Math.ceil(mat.height() * 0.5);
 
-            if(mat.empty() || mat.height() < submatSize) {
+            if (mat.empty() || mat.height() < subMatSize) {
                 return null;
             }
 
-            if (invalid){
+            if (invalid) {
                 //System.out.println("***invalid mat object***");
-                if(!mat.empty()) {
-                    //done with lab shema, make rgb to show in imageview
+                if (!mat.empty()) {
+                    //done with lab schema, make rgb to show in image view
                     Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
                     stripBitmap = ResultUtils.makeBitmap(mat);
                 }
@@ -240,25 +238,27 @@ public class ResultActivity extends BaseActivity{
 
             // depending on the boolean grouped, we either handle all patches at once, or we handle only a single one
 
-            JSONArray colours = null;
+            JSONArray colours;
             Point centerPatch = null;
 
+            double xTranslate;
+
             // compute location of point to be sampled
-            if (grouped){
+            if (grouped) {
                 // collect colours
                 double ratioW = strip.width() / brand.getStripLenght();
                 colorsDetected = new ColorDetected[patches.size()];
                 double[][] colorsValueLab = new double[patches.size()][3];
-                for (int p = 0; p < patches.size(); p++){
+                for (int p = 0; p < patches.size(); p++) {
                     double x = patches.get(p).getPosition() * ratioW;
                     double y = strip.height() / 2;
                     centerPatch = new Point(x, y);
 
-                    colorDetected = ResultUtils.getPatchColour(mat, centerPatch, submatSize);
+                    colorDetected = ResultUtils.getPatchColour(mat, centerPatch, subMatSize);
                     double[] colorValueLab = colorDetected.getLab().val;
 
                     colorsDetected[p] = colorDetected;
-                    colorsValueLab[p]= colorValueLab;
+                    colorsValueLab[p] = colorValueLab;
                 }
 
                 try {
@@ -268,6 +268,10 @@ public class ResultActivity extends BaseActivity{
                     ppm = Double.NaN;
                 }
 
+                // calculate size of each color range block
+                // divide the original strip width by the number of colours
+                colours = patches.get(0).getColours();
+                xTranslate = (double) mat.cols() / (double) colours.length();
 
             } else {
                 double ratioW = strip.width() / brand.getStripLenght();
@@ -275,7 +279,7 @@ public class ResultActivity extends BaseActivity{
                 double y = strip.height() / 2;
                 centerPatch = new Point(x, y);
 
-                colorDetected = ResultUtils.getPatchColour(mat, centerPatch, submatSize);
+                colorDetected = ResultUtils.getPatchColour(mat, centerPatch, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
 
                 //set the colours needed to calculate ppm
@@ -287,19 +291,13 @@ public class ResultActivity extends BaseActivity{
                     e.printStackTrace();
                     ppm = Double.NaN;
                 }
+
+                // calculate size of each color range block
+                // divide the original strip width by the number of colours
+                xTranslate = (double) mat.cols() / (double) colours.length();
             }
 
             ////////////// Create Image ////////////////////
-            // calculate size of each color range block
-            // divide the original strip width by the number of colours
-            double xtrans;
-
-            if (grouped){
-                colours = patches.get(0).getColours();
-                xtrans = (double) mat.cols() / (double) colours.length();
-            } else {
-                xtrans = (double) mat.cols() / (double) colours.length();
-            }
 
             // create Mat to hold strip itself
             mat = ResultUtils.createStripMat(mat, borderSize, centerPatch, grouped);
@@ -309,22 +307,22 @@ public class ResultActivity extends BaseActivity{
 
             // Create Mat to hold the colour range
             Mat colorRangeMat;
-            if (grouped){
-                colorRangeMat = ResultUtils.createColourRangeMatGroup(patches, mat.cols(), xtrans);
+            if (grouped) {
+                colorRangeMat = ResultUtils.createColourRangeMatGroup(patches, mat.cols(), xTranslate);
             } else {
-                colorRangeMat = ResultUtils.createColourRangeMatSingle(patches, patchNum, mat.cols(), xtrans);
+                colorRangeMat = ResultUtils.createColourRangeMatSingle(patches, patchNum, mat.cols(), xTranslate);
             }
 
 
             // create Mat to hold value measured
-            Mat valueMeasuredMat = null;
-            if (grouped){
-                valueMeasuredMat = ResultUtils.createValueMeasuredMatGroup(colours, ppm, colorsDetected, mat.cols(), xtrans);
-            } else{
-                valueMeasuredMat = ResultUtils.createValueMeasuredMatSingle(colours, ppm, colorDetected, mat.cols(), xtrans);
+            Mat valueMeasuredMat;
+            if (grouped) {
+                valueMeasuredMat = ResultUtils.createValueMeasuredMatGroup(colours, ppm, colorsDetected, mat.cols(), xTranslate);
+            } else {
+                valueMeasuredMat = ResultUtils.createValueMeasuredMatSingle(colours, ppm, colorDetected, mat.cols(), xTranslate);
             }
 
-            //PUTTING IT ALL TOGETHER
+            // PUTTING IT ALL TOGETHER
             // transform all mats to RGB. The strip Mat is already RGB
             Imgproc.cvtColor(descMat, descMat, Imgproc.COLOR_Lab2RGB);
             Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
@@ -381,7 +379,8 @@ public class ResultActivity extends BaseActivity{
         protected void onPostExecute(Void result) {
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, null, false);
+            final ViewGroup nullParent = null;
+            LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, nullParent, false);
 
             TextView descView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutDescView);
             descView.setText(desc);
@@ -400,9 +399,9 @@ public class ResultActivity extends BaseActivity{
                     TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
                     if (ppm > -1) {
                         if (ppm < 1.0) {
-                            textView.setText(String.format("%.2f", ppm) + " " + unit);
+                            textView.setText(String.format(Locale.getDefault(), "%.2f %s", ppm, unit));
                         } else {
-                            textView.setText(String.format("%.1f", ppm) + " " + unit);
+                            textView.setText(String.format(Locale.getDefault(), "%.1f %s", ppm, unit));
                         }
                     }
                 }

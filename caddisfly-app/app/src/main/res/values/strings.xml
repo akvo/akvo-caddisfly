@@ -222,5 +222,6 @@
     <string name="quality_checks_counter">Quality checks: %1$s out of %2$s</string>
     <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
     <string name="begin">Start</string>
+    <string name="noData">No data</string>
 
 </resources>
