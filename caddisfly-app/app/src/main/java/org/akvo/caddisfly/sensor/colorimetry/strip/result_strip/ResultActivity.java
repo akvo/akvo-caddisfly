@@ -175,10 +175,12 @@ public class ResultActivity extends BaseActivity{
                     fileStorage.deleteFromInternalStorage(Constant.STRIP);
                 }
 
-                Intent intentRedo = new Intent(ResultActivity.this, ColorimetryStripActivity.class);
+                Intent intentRedo = new Intent(getBaseContext(), ColorimetryStripActivity.class);
+                intentRedo.putExtra(SensorConstants.FINISH, true);
+                intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(intentRedo);
-                ResultActivity.this.finish();
+                finish();
             }
         });
     }
