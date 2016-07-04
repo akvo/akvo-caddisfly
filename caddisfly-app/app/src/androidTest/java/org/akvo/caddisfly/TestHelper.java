@@ -25,9 +25,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.util.FileUtil;
@@ -44,7 +42,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
 import static org.akvo.caddisfly.TestUtil.sleep;
@@ -155,23 +152,6 @@ class TestHelper {
         }
     }
 
-
-//    public static void clickViewInScrollView(String buttonText) {
-//        try {
-//
-//            UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-//            appViews.setAsVerticalList();
-//            appViews.flingToEnd(3);
-//            appViews.getChildByText(
-//                    new UiSelector().className(android.widget.Button.class.getName()), buttonText).click();
-//
-//            mDevice.waitForWindowUpdate("", 2000);
-//
-//        } catch (UiObjectNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public static void clickExternalSourceButton(String buttonText, int index) {
 
         findButtonInScrollable(buttonText);
@@ -179,56 +159,9 @@ class TestHelper {
         List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonText)));
         buttons.get(buttons.size() - 1 - index).click();
 
-        //mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
-
         mDevice.waitForWindowUpdate("", 2000);
 
         sleep(4000);
-    }
-
-//    public static void clickExternalSourceButton(String buttonText) {
-//        try {
-//
-//            findButtonInScrollable(buttonText);
-//
-//            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
-//
-//            mDevice.waitForWindowUpdate("", 2000);
-//
-//        } catch (UiObjectNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public static void startApp() {
-        // Start from the home screen
-        mDevice.pressHome();
-        mDevice.waitForWindowUpdate("", 2000);
-        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
-        allAppsButton.click();
-        mDevice.waitForWindowUpdate("", 2000);
-
-        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-        appViews.setAsHorizontalList();
-
-        UiObject settingsApp = null;
-        try {
-            String appName = "Akvo Caddisfly";
-            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (settingsApp != null) {
-                settingsApp.clickAndWaitForNewWindow();
-            }
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.waitForWindowUpdate("", 2000);
-
-        assertTrue("Unable to detect app", settingsApp != null);
     }
 
     public static void saveCalibration(String name) {

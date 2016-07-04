@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -61,7 +62,6 @@ import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
@@ -219,8 +219,9 @@ public class CalibrationTest {
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
+        mDevice.pressBack();
 
-        onView(withText(R.string.cancel)).perform(click());
+        onView(withId(android.R.id.button2)).perform(click());
 
         goToMainScreen();
 
@@ -240,7 +241,7 @@ public class CalibrationTest {
             onView(withText(R.string.ok)).perform(click());
         }
 
-        startApp();
+        mActivityRule.launchActivity(new Intent());
 
         onView(withText(R.string.calibrate)).perform(click());
 

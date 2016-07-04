@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -60,7 +61,6 @@ import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.Matchers.hasToString;
@@ -283,7 +283,7 @@ public class NavigationTest {
         mDevice.pressBack();
         mDevice.pressBack();
 
-        startApp();
+        mActivityRule.launchActivity(new Intent());
 
         onView(withId(R.id.buttonSurvey)).perform(click());
 
