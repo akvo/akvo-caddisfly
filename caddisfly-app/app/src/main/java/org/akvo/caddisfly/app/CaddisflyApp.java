@@ -138,6 +138,10 @@ public class CaddisflyApp extends Application {
         return config.locale.getLanguage().substring(0, 2);
     }
 
+    public static String getPreferenceLanguage() {
+        return PreferencesUtil.getString(getApp(), R.string.languageKey, "");
+    }
+
     /**
      * Gets the app version
      *

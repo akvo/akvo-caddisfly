@@ -337,7 +337,10 @@ public final class TestConfigHelper {
     public static JSONObject getAppDetails() throws JSONException {
         JSONObject details = new JSONObject();
         details.put("appVersion", CaddisflyApp.getAppVersion());
+        // The current active language of the app
         details.put("language", CaddisflyApp.getAppLanguage());
+        // The language set by the user in preferences
+        details.put("prefLanguage", CaddisflyApp.getPreferenceLanguage());
         return details;
     }
 
