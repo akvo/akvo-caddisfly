@@ -3,5 +3,5 @@
     android:id="@+id/choose_striptest_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".colorimetry_strip.ColorimetryStripDetailActivity"
+    tools:context=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity"
     tools:ignore="MergeRootFrame" />

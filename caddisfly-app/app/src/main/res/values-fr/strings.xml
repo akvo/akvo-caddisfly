@@ -38,17 +38,11 @@
     <string name="done">Effectué</string>
     <string name="survey">Enquête</string>
     <!--External-->
-    <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Conductivité Electrique</string>
-    <string name="fluoride" tools:ignore="UnusedResources">Fluorure</string>
-    <string name="freeChlorine" tools:ignore="UnusedResources">Chlore libre</string>
-    <string name="iron" tools:ignore="UnusedResources">Fer</string>
-    <string name="coliforms" tools:ignore="UnusedResources">Coliformes</string>
     <!--Messages-->
     <string name="pleaseWait">Veuillez attendre…</string>
     <string name="notSupported">Non pris en charge</string>
     <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
-    <string name="pleaseEnterValue">Entrer une valeur</string>
     <!--Main Screen-->
     <string name="cannotCalibrate">Impossible d\'étalonner</string>
     <string name="errorCameraFlashRequired">Le flash de l\'appareil est introuvable</string>
@@ -68,7 +62,6 @@
     <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
     <!--Result Screen-->
     <string name="result">Résultat</string>
-    <string name="backToSurvey">Retour à l\'enquête</string>
     <string name="highContamination">Forte contamination</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Réessayez avec une dilution par %1$d</string>
     <!--Dilution Selection Dialog-->
@@ -82,10 +75,6 @@
     <string name="incorrectCalibrationCanAffect">Un étalonnage incorrect peut affecter le fonctionnement du capteur</string>
     <string name="sensorNotFound">Capteur introuvable</string>
     <string name="deviceConnectSensor">Veuillez connecter le capteur de conductivité Akvo et réessayez</string>
-    <string name="lowEcMeasurement">Mesure d\'EC faible</string>
-    <string name="suspendEcSensorInLow">Placez le capteur de conductivité dans une solution de faible EC et entrez sa valeur théorique</string>
-    <string name="highEcMeasurement">Forte mesure d\'EC</string>
-    <string name="suspendEcSensorInHigh">Placez le capteur de conductivité dans une solution de forte EC et entrez sa valeur théorique</string>
     <string name="calibrationSuccessful">Etalonnage réussi avec succès</string>
     <string name="sensorCalibrated">Le capteur d\'EC est étalonné</string>
     <!--About Screen-->
@@ -134,11 +123,9 @@
     <string name="please_wait">S.v.p. patienter…</string>
     <string name="reading_data">Lire donnees…</string>
     <string name="redo_test">De nouveau</string>
-    <string name="thank_using_caddisfly">Merci pour choisir Akvo Caddisfly</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_detect_strip">Recherche</string>
     <string name="title_activity_result">Resultats</string>
-    <string name="title_instruction_detail">Instruction Detail</string>
     <string name="title_instruction_list">Instructions</string>
     <string name="to_results">Aux resultats</string>
     <string name="instructions">Instructions</string>

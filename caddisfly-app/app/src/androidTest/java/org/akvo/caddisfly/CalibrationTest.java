@@ -71,9 +71,6 @@ import static org.hamcrest.object.HasToString.hasToString;
 @LargeTest
 public class CalibrationTest {
 
-    //    public void testStartCalibrate() {
-//        startCalibrate(2, 4);
-//    }
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -81,8 +78,6 @@ public class CalibrationTest {
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            loadData(mCurrentLanguage);
 
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
@@ -92,6 +87,8 @@ public class CalibrationTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
@@ -229,7 +226,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         sleep(2000);
 
@@ -271,7 +268,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         sleep(2000);
 
@@ -286,7 +283,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         mDevice.waitForWindowUpdate("", 2000);
 

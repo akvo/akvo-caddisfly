@@ -181,6 +181,7 @@ public class PreferencesUtil {
      * @param context the context
      * @param key     the int key id
      */
+    @SuppressWarnings("WeakerAccess")
     public static void setLong(Context context, String key, long value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -251,6 +252,7 @@ public class PreferencesUtil {
      * @param context the context
      * @param keyId   the key id
      */
+    @SuppressWarnings("WeakerAccess")
     public static void setString(Context context, String keyId, String value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -259,7 +261,7 @@ public class PreferencesUtil {
         editor.apply();
     }
 
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings({"SameParameterValue", "unused"})
     public static void removeKey(Context context, @StringRes int keyId) {
         removeKey(context, getKey(context, keyId));
     }

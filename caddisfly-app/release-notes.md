@@ -1,3 +1,13 @@
+v0.110 beta
+----------
+1. Fix redo return to flow after strip test
+2. Remove app update feature
+3. Change min os version to KitKat
+
+v0.109 beta
+----------
+1. JSON result format changed
+
 v0.108 beta
 ----------
 1. Test type list grouping
@@ -353,7 +363,7 @@ v0.50 alpha
 
 v0.49 alpha
 -----------
-1. 'developer mode' for installing cartridge, extracting images
+1. 'developer mode' for installing test chamber, extracting images
 
 v0.48 alpha
 -----------
@@ -369,7 +379,7 @@ example:
     2.0 = 244  180  86
     2.5 = 236  172  81
     3.0 = 254  169  61
-5. small circle on camera preview screen for aligning cartridge
+5. small circle on camera preview screen for aligning test chamber
 6. longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. swatch validation disabled
 8. removed reliance on separate developer app for enabling controls 
@@ -504,7 +514,7 @@ v0.27 alpha
 v0.26 alpha
 -----------
 1. multiple sampling for calibration (result will be an average color)
-2. cropping photo to circle before analysis (to match the cartridge shape)
+2. cropping photo to circle before analysis (to match the test chamber shape)
 3. setting : photo sample dimension, default: 200
 4. setting : save original photo, default: false (to avoid running out of space)
 5. some ui changes on calibration and result screens

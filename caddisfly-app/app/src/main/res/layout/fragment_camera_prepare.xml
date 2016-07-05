@@ -1,44 +1,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    tools:context=".camera_strip.CameraPrepareFragment"
-    android:id="@+id/overlay"
     android:background="@android:color/background_light"
-    android:visibility="invisible">
+    android:visibility="invisible"
+    tools:context=".sensor.colorimetry.strip.camera_strip.CameraPrepareFragment">
 
     <include layout="@layout/quality_checks" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_above="@+id/activity_cameraStartButton"
         android:gravity="center"
-        android:layout_below="@+id/activity_cameraMessagesLayout"
-        android:layout_above="@+id/activity_cameraStartButton">
+        android:orientation="vertical">
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
+        android:id="@+id/activity_cameraPrepareTextView"
         style="@android:style/TextAppearance.Medium"
-        android:textColor="@android:color/darker_gray"
-        android:text="@string/prepare_camera_instr"
-        android:id="@+id/activity_cameraPrepareTextView"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_vertical"
-        android:id="@+id/activity_cameraPrepareCountQualityView"/>
+        android:text="@string/prepare_camera_instr"
+        android:textColor="@android:color/darker_gray" />
+    <TextView
+        android:id="@+id/activity_cameraPrepareCountQualityView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:gravity="center_vertical" />
     </LinearLayout>
     <Button
+        android:id="@+id/activity_cameraStartButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/activity_vertical_margin"
         android:background="@android:color/transparent"
-        android:id="@+id/activity_cameraStartButton"/>
+        android:padding="@dimen/activity_vertical_margin" />
 
 </RelativeLayout>
 

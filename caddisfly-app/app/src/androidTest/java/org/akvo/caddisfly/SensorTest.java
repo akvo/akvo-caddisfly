@@ -58,8 +58,6 @@ public class SensorTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            loadData(mCurrentLanguage);
-
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
             }
@@ -68,6 +66,8 @@ public class SensorTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());

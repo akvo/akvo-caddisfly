@@ -162,14 +162,14 @@ public class TimeLapseActivity extends BaseActivity {
                 bundle.putString("textCode", mTestCode);
                 fragment.setArguments(bundle);
 
-                textTitle.setText("Fluoride");
+                textTitle.setText(R.string.fluoride);
                 break;
             case "colif":
                 fragment = new TimeLapsePreferenceFragment();
                 bundle.putString("textCode", mTestCode);
                 fragment.setArguments(bundle);
 
-                textTitle.setText("Coliforms");
+                textTitle.setText(R.string.coliforms);
                 break;
         }
 

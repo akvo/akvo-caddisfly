@@ -3,40 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    tools:context=".result_strip.ResultActivity">
+    tools:context=".sensor.colorimetry.strip.result_strip.ResultActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/activity_resultLinearLayoutBottom">
+        android:layout_above="@+id/activity_resultLinearLayoutBottom"
+        android:layout_alignParentTop="true">
         <LinearLayout
+            android:id="@+id/activity_resultLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@android:color/background_light"
-            android:id="@+id/activity_resultLinearLayout"
+            android:orientation="vertical"
             >
         </LinearLayout>
     </ScrollView>
     <LinearLayout
+        android:id="@+id/activity_resultLinearLayoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/activity_resultLinearLayoutBottom">
+        android:layout_alignParentBottom="true">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:layout_weight="1"
             android:id="@+id/activity_resultButtonSave"
-            android:background="@color/skyblue"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/redo_test"
             android:layout_weight="1"
+            android:background="@color/skyblue"
+            android:text="@string/save" />
+        <Button
             android:id="@+id/activity_resultButtonRedo"
-            android:background="@android:color/transparent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/redo_test" />
     </LinearLayout>
 </RelativeLayout>

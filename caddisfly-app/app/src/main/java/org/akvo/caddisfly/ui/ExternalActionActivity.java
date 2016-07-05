@@ -52,14 +52,11 @@ public class ExternalActionActivity extends BaseActivity {
     private Boolean mIsExternalAppCall = false;
     //the language requested by the external app
     private String mExternalAppLanguageCode;
-    //private UpdateCheckReceiver updateCheckReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_action);
-
-        //updateCheckReceiver = UpdateHelper.checkUpdate(this, false);
     }
 
     @Override
@@ -331,7 +328,6 @@ public class ExternalActionActivity extends BaseActivity {
 
     /**
      * Alert displayed when an unsupported contaminant test type was requested
-     *
      */
     private void alertTestTypeNotSupported() {
 
@@ -372,12 +368,6 @@ public class ExternalActionActivity extends BaseActivity {
 
     @Override
     public void onDestroy() {
-//        try {
-//            if (updateCheckReceiver != null) {
-//                unregisterReceiver(updateCheckReceiver);
-//            }
-//        } catch (Exception ignored) {
-//        }
         super.onDestroy();
     }
 

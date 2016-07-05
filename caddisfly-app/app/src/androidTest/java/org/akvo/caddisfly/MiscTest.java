@@ -65,14 +65,11 @@ import static org.akvo.caddisfly.TestUtil.getActivityInstance;
 public class MiscTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
-    //private UiDevice mDevice;
 
     @BeforeClass
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            loadData(mCurrentLanguage);
 
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
@@ -82,6 +79,9 @@ public class MiscTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
+
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();

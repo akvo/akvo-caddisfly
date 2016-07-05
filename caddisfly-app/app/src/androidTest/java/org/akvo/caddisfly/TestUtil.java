@@ -121,6 +121,7 @@ class TestUtil {
         return activity[0];
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void findButtonInScrollable(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector().className(ScrollView.class.getName()));
         listView.setMaxSearchSwipes(10);

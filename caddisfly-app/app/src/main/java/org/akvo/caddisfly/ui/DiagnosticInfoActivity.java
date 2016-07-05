@@ -20,13 +20,11 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 public class DiagnosticInfoActivity extends BaseActivity {
@@ -52,15 +50,6 @@ public class DiagnosticInfoActivity extends BaseActivity {
 
         infoList.add(String.format("Installed from\n%s", ApiUtil.isStoreVersion(this) ? "Play store" : "apk file"));
 
-        long updateLastCheck = PreferencesUtil.getLong(this, R.string.lastUpdateCheckKey);
-        if (updateLastCheck > -1) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(updateLastCheck);
-            infoList.add(String.format("Last check for update\n%s", calendar.getTime()));
-
-            calendar.setTimeInMillis(calendar.getTimeInMillis() + AppConfig.UPDATE_CHECK_INTERVAL);
-            infoList.add(String.format("Next check for update\n%s", calendar.getTime()));
-        }
         ArrayAdapter<String> infoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, infoList);
 
         if (mListView != null) {

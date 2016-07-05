@@ -73,6 +73,7 @@ class CameraHandler implements Camera.PictureCallback {
 
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Boolean takePicture(String savePath) {
 
         mSavePath = savePath;

@@ -77,8 +77,6 @@ public class NavigationTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            loadData(mCurrentLanguage);
-
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
             }
@@ -87,6 +85,8 @@ public class NavigationTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
@@ -270,7 +270,7 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -299,7 +299,7 @@ public class NavigationTest {
 //        onView(withId(android.R.id.button2)).perform(click());
 
         //EC
-        clickExternalSourceButton("useExternalSource", 1);
+        clickExternalSourceButton(1);
 
         //Connect EC Sensor Screen
         takeScreenshot();
@@ -307,7 +307,7 @@ public class NavigationTest {
         //mDevice.pressBack();
 
         //pH
-        clickExternalSourceButton("useExternalSource", 2);
+        clickExternalSourceButton(2);
 
         //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
@@ -316,7 +316,7 @@ public class NavigationTest {
         mDevice.pressBack();
 
         //Caffeine
-        clickExternalSourceButton("useExternalSource", 3);
+        clickExternalSourceButton(3);
 
         //Test type not available
         takeScreenshot();

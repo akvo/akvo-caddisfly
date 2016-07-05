@@ -7,17 +7,17 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:textIsSelectable="true"
-    tools:context="org.akvo.akvoqr.instructions_strip.InstructionDetailFragment" >
+    tools:context=".sensor.colorimetry.strip.instructions_strip.InstructionBrandDetailFragment">
 
     <TextView
+        android:id="@+id/fragment_instruction_detailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12sp"
-        android:id="@+id/fragment_instruction_detailTextView"/>
+        android:paddingBottom="12sp" />
     <ImageView
+        android:id="@+id/fragment_instruction_detailImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:scaleType="fitStart"
-        android:id="@+id/fragment_instruction_detailImageView"/>
+        android:scaleType="fitStart" />
     </LinearLayout>

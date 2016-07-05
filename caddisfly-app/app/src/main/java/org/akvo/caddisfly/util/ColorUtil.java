@@ -65,6 +65,7 @@ public final class ColorUtil {
     private ColorUtil() {
     }
 
+    @SuppressWarnings("unused")
     public static double getMinDistance() {
         switch (DEFAULT_COLOR_MODEL) {
             case RGB:

@@ -45,18 +45,12 @@
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
     <!--External-->
-    <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
-    <string name="fluoride" tools:ignore="UnusedResources">Fluoride</string>
-    <string name="freeChlorine" tools:ignore="UnusedResources">Free Chlorine</string>
-    <string name="iron" tools:ignore="UnusedResources">Iron</string>
-    <string name="coliforms" tools:ignore="UnusedResources">Coliforms</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
     <string name="notSupported">Not Supported</string>
     <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
-    <string name="pleaseEnterValue">Enter a value</string>
     <string name="cameraBusy">Camera Busy</string>
     <string name="cannotUseCamera">Can\'t use camera. Make sure flashlight is off and close any apps that may be using the camera</string>
     <string name="cameraNotAvailable">Camera not available</string>
@@ -88,11 +82,10 @@
     <!--Test Progress Screen-->
     <string name="placeDevice">Place device face down on a flat surface</string>
     <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
-    <string name="errorTestFailed">Solution color out of range. Check cartridge placement</string>
+    <string name="errorTestFailed">Color does not match any calibrated colors. Check chamber placement</string>
 
     <!--Result Screen-->
     <string name="result">Result</string>
-    <string name="backToSurvey">Back to Survey</string>
     <string name="highContamination">High Contamination</string>
     <string name="highLevelsFound">High level of contamination</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
@@ -119,7 +112,6 @@
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
     <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
-    <string name="alignChamber">Align chamber and press Start</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample liquid</string>
@@ -132,10 +124,6 @@
     <string name="selectTest">Select Test</string>
     <string name="calibrationDetails">Calibration Details</string>
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
-
-    <!--Update-->
-    <string name="updateAvailable">A new version of Akvo Caddisfly is available. Do you want to update now?</string>
-    <string name="remindLater">Later</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
@@ -161,13 +149,10 @@
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
-    <string name="update">Update</string>
     <string name="deviceConnected">Device connected</string>
     <string name="go">Go</string>
     <string name="next">Next</string>
-    <string name="change">Change</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="saving">Saving</string>
     <string name="sensorDetails">Sensor Details</string>
     <string name="verifySensorDetails">Verify sensor details</string>
@@ -203,11 +188,9 @@
     <string name="please_wait">Please wait…</string>
     <string name="reading_data">Reading data from storage…</string>
     <string name="redo_test">Redo Test</string>
-    <string name="thank_using_caddisfly">Thank you for using Akvo Caddisfly</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_detect_strip">DetectStripActivity</string>
     <string name="title_activity_result">Results</string>
-    <string name="title_instruction_detail">Instruction Detail</string>
     <string name="title_instruction_list">Instructions</string>
     <string name="to_results">To results</string>
     <string name="instructions">Instructions</string>

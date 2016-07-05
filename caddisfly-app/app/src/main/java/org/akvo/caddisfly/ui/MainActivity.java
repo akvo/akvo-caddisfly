@@ -41,7 +41,6 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends BaseActivity {
 
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    //private UpdateCheckReceiver updateCheckReceiver;
     private boolean mShouldClose = false;
 
     @Override
@@ -96,12 +95,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        updateCheckReceiver = UpdateHelper.checkUpdate(this, true);
-//    }
 
     /**
      * Alert shown when a feature is not supported by the device
@@ -201,12 +194,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onDestroy() {
-//        try {
-//            if (updateCheckReceiver != null) {
-//                unregisterReceiver(updateCheckReceiver);
-//            }
-//        } catch (Exception ignored) {
-//        }
         super.onDestroy();
     }
 

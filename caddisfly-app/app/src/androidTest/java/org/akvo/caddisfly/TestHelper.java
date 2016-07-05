@@ -16,6 +16,10 @@
 
 package org.akvo.caddisfly;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.support.test.espresso.Espresso;
@@ -26,6 +30,7 @@ import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
+import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.util.FileUtil;
@@ -34,6 +39,7 @@ import org.hamcrest.Matchers;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -66,23 +72,36 @@ class TestHelper {
         calibrationHashMap.put(key, colors);
     }
 
-    public static void loadData(String languageCode) {
+    @SuppressWarnings("deprecation")
+    public static void loadData(Activity activity, String languageCode) {
         mCurrentLanguage = languageCode;
+
+        String testLanguage = "fr";
 
         stringHashMapEN.clear();
         stringHashMapFR.clear();
         calibrationHashMap.clear();
 
+        Resources currentResources = activity.getResources();
+        AssetManager assets = currentResources.getAssets();
+        DisplayMetrics metrics = currentResources.getDisplayMetrics();
+        Configuration config = new Configuration(currentResources.getConfiguration());
+        config.locale = new Locale(testLanguage);
+        Resources res = new Resources(assets, metrics, config);
+
         addString("language", "English", "Français");
         addString("otherLanguage", "Français", "English");
-        addString("fluoride", "Fluoride", "Fluorure");
-        addString("chlorine", "Free Chlorine", "Chlore libre");
-        addString("survey", "Survey", "Enquête");
-        addString("electricalConductivity", "Electrical Conductivity", "Conductivité Electrique");
-        addString("unnamedDataPoint", "Unnamed data point", "Donnée non nommée");
-        addString("createNewDataPoint", "Add Data Point", "CRÉER UN NOUVEAU POINT");
-        addString("useExternalSource", "Go to test", "Go to test");
-        addString("next", "Next", "Suivant");
+        addString("fluoride", "Fluoride", res.getString(R.string.fluoride));
+        addString("chlorine", "Free Chlorine", res.getString(R.string.freeChlorine));
+        addString("survey", "Survey", res.getString(R.string.survey));
+        addString("electricalConductivity", "Electrical Conductivity", res.getString(R.string.electricalConductivity));
+        addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unamedDataPoint));
+        addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
+        addString("useExternalSource", "Go to test", res.getString(R.string.goToText));
+        addString("next", "Next", res.getString(R.string.next));
+
+        // Restore device-specific locale
+        new Resources(assets, metrics, currentResources.getConfiguration());
 
         addCalibration("TestValid", "0.0=255  38  186\n"
                 + "0.5=255  51  129\n"
@@ -152,12 +171,19 @@ class TestHelper {
         }
     }
 
-    public static void clickExternalSourceButton(String buttonText, int index) {
+    public static void clickExternalSourceButton(int index) {
 
-        findButtonInScrollable(buttonText);
+        findButtonInScrollable("useExternalSource");
 
-        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonText)));
+        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get("useExternalSource")));
         buttons.get(buttons.size() - 1 - index).click();
+
+        // New Android OS seems to popup a button for external app
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            sleep(1000);
+            mDevice.findObject(By.text("Akvo Caddisfly")).click();
+            sleep(1000);
+        }
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -224,4 +250,5 @@ class TestHelper {
         goToMainScreen();
 
     }
+
 }

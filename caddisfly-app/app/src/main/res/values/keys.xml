@@ -27,11 +27,8 @@
     <string name="calibrationDateKey" translateable="false">calibrationDateTime</string>
     <string name="calibrationExpiryDateKey" translateable="false">calibrationExpiryDate</string>
     <string name="batchNumberKey" translateable="false">batchNumber</string>
-    <string name="sensorCalibratedDateKey" translateable="false">sensorCalibratedDate</string>
     <string name="themeChangedKey" translateable="false">themeChanged</string>
     <string name="saveImagesKey" translateable="false">saveImages</string>
-    <string name="lastUpdateCheckKey" translateable="false">lastUpdateCheck</string>
-    <string name="updateInfoDateKey" translateable="false">updateInfoDate</string>
     <string name="totalSuccessfulCalibrationsKey" translateable="false">totalSuccessfulCalibrations</string>
     <string name="totalFailedCalibrationsKey" translateable="false">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
@@ -41,6 +38,5 @@
     <string name="fluor_NumberOfSamplesKey" translateable="false">fluor_NumberOfSamples</string>
     <string name="colif_IntervalMinutesKey" translateable="false">colif_IntervalMinutes</string>
     <string name="colif_NumberOfSamplesKey" translateable="false">colif_NumberOfSamples</string>
-    <string name="ledBrightnessKey" translateable="false">ledBrightness</string>
 
 </resources>

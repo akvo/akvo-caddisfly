@@ -181,6 +181,7 @@
                     android:layout_gravity="center_horizontal"
                     android:textSize="50dp"
                     android:textStyle="bold"
+                    tools:ignore="SpUsage"
                     tools:text="123213" />
 
                 <Button

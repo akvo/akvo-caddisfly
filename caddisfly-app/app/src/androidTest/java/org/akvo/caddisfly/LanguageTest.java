@@ -57,8 +57,6 @@ public class LanguageTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            loadData(mCurrentLanguage);
-
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
             }
@@ -67,6 +65,8 @@ public class LanguageTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
@@ -108,7 +108,7 @@ public class LanguageTest {
     private void languageTest(String language) {
         onView(withId(R.id.actionSettings)).perform(click());
 
-        loadData(language);
+        loadData(mActivityRule.getActivity(), language);
 
         try {
             onView(withText(currentHashMap.get("language"))).perform(click());

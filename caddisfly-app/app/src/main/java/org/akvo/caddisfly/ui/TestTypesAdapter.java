@@ -64,7 +64,6 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
                     testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
         }
 
-
         return rowView;
     }
 }

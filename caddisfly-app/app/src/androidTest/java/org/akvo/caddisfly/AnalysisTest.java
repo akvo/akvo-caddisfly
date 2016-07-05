@@ -85,8 +85,6 @@ public class AnalysisTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            loadData(mCurrentLanguage);
-
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
             }
@@ -95,6 +93,8 @@ public class AnalysisTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
@@ -141,7 +141,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         sleep(1000);
 
@@ -165,7 +165,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
 
@@ -193,7 +193,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.buttonOk)).perform(click());
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
 
@@ -256,7 +256,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
@@ -385,7 +385,7 @@ public class AnalysisTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource", 0);
+        clickExternalSourceButton(0);
 
         sleep(1000);
 

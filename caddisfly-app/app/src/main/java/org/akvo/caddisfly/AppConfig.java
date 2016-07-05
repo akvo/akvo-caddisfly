@@ -49,15 +49,4 @@ public class AppConfig {
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
 
-    /**
-     * The url to check for update version
-     */
-    public static final String UPDATE_CHECK_URL
-            = "http://caddisfly.ternup.com/app/deviceapprest?action=getLatestVersion&deviceType=androidPhone&appCode=caddisflyapp";
-
-    /**
-     * Update check interval
-     */
-    public static final long UPDATE_CHECK_INTERVAL = 86400000; // 24 hours
-
 }

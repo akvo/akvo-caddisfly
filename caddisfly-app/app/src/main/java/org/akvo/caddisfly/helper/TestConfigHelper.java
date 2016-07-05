@@ -322,7 +322,7 @@ public final class TestConfigHelper {
         return resultJson;
     }
 
-    public static JSONObject getDeviceDetails() throws JSONException {
+    private static JSONObject getDeviceDetails() throws JSONException {
         JSONObject details = new JSONObject();
         details.put("model", Build.MODEL);
         details.put("product", Build.PRODUCT);
@@ -334,7 +334,7 @@ public final class TestConfigHelper {
         return details;
     }
 
-    public static JSONObject getAppDetails() throws JSONException {
+    private static JSONObject getAppDetails() throws JSONException {
         JSONObject details = new JSONObject();
         details.put("appVersion", CaddisflyApp.getAppVersion());
         // The current active language of the app

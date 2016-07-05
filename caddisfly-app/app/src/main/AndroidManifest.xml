@@ -129,10 +129,6 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".updater.UpdateActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Translucent" />
-        <activity
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
@@ -186,16 +182,7 @@
         <service
             android:name=".sensor.ec.UsbService"
             android:enabled="true" />
-        <service android:name=".updater.UpdateIntentService" />
 
-        <receiver
-            android:name=".updater.DownloadReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".sensor.turbidity.TurbidityStartReceiver"
             android:enabled="true"
