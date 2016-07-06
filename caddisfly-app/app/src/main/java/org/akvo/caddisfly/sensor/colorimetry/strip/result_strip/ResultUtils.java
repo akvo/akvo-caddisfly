@@ -24,10 +24,9 @@ import org.opencv.imgproc.Imgproc;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
- * Created by markwestra on 18/02/16.
+ * Created by markwestra on 18/02/16
  */
 public class ResultUtils {
     static Scalar labWhite = new Scalar(255, 128, 128);
@@ -57,8 +56,8 @@ public class ResultUtils {
                 System.arraycopy(data, length - 8, rows, 0, 4);
                 System.arraycopy(data, length - 4, cols, 0, 4);
 
-                int rowsNum = fileStorage.byteArrayToLeInt(rows);
-                int colsNum = fileStorage.byteArrayToLeInt(cols);
+                int rowsNum = FileStorage.byteArrayToLeInt(rows);
+                int colsNum = FileStorage.byteArrayToLeInt(cols);
 
                 // remove last part
                 byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
@@ -76,15 +75,14 @@ public class ResultUtils {
         return null;
     }
 
-    public static Bitmap makeBitmap(Mat mat)
-    {
+    public static Bitmap makeBitmap(Mat mat) {
         try {
             Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bitmap);
 
-            double max = bitmap.getHeight()>bitmap.getWidth()? bitmap.getHeight(): bitmap.getWidth();
-            double min = bitmap.getHeight()<bitmap.getWidth()? bitmap.getHeight(): bitmap.getWidth();
-            double ratio = (double) min / (double) max;
+            double max = bitmap.getHeight() > bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
+            double min = bitmap.getHeight() < bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
+            double ratio = min / max;
             int width = (int) Math.max(400, max);
             int height = (int) Math.round(ratio * width);
 
@@ -96,8 +94,8 @@ public class ResultUtils {
         return null;
     }
 
-    public static Mat createStripMat(Mat mat, int borderSize, Point centerPatch, boolean grouped){
-        //done with lab shema, make rgb to show in imageview
+    public static Mat createStripMat(Mat mat, int borderSize, Point centerPatch, boolean grouped) {
+        //done with lab schema, make rgb to show in image view
         // mat holds the strip image
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
 
@@ -111,12 +109,12 @@ public class ResultUtils {
         // only draw if this is not a 'grouped' strip
         if (!grouped) {
             Imgproc.circle(mat, new Point(centerPatch.x + borderSize, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
-                new Scalar(0, 255, 0, 255), 2);
+                    new Scalar(0, 255, 0, 255), 2);
         }
         return mat;
     }
 
-    public static Mat createDescriptionMat(String desc,int width){
+    public static Mat createDescriptionMat(String desc, int width) {
         int[] baseline = new int[1];
         Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, baseline);
         Mat descMat = new Mat((int) Math.ceil(textSizeDesc.height) * 3, width, CvType.CV_8UC3, labWhite);
@@ -130,7 +128,7 @@ public class ResultUtils {
       * Create Mat to hold a rectangle for each color
       * the corresponding value written as text above that rectangle
       */
-    public static Mat createColourRangeMatSingle(List<StripTest.Brand.Patch> patches, int patchNum, int width, double xtrans){
+    public static Mat createColourRangeMatSingle(List<StripTest.Brand.Patch> patches, int patchNum, int width, double xtrans) {
         // horizontal size of mat: width
         // vertical size of mat: size of colour block - xmargin + top distance
         Mat colorRangeMat = new Mat((int) Math.ceil(xtrans - xMargin + yColorRect), width, CvType.CV_8UC3, labWhite);
@@ -148,12 +146,12 @@ public class ResultUtils {
                 Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
                 //draw a rectangle filled with color for ppm value
-                Point topleft = new Point(xtrans * d, yColorRect);
-                Point bottomright = new Point(topleft.x + xtrans - xMargin, yColorRect + xtrans);
-                Imgproc.rectangle(colorRangeMat, topleft, bottomright, scalarLab, -1);
+                Point topLeft = new Point(xtrans * d, yColorRect);
+                Point bottomRight = new Point(topLeft.x + xtrans - xMargin, yColorRect + xtrans);
+                Imgproc.rectangle(colorRangeMat, topLeft, bottomRight, scalarLab, -1);
 
                 //draw color value above rectangle
-                Point centerText = new Point(topleft.x + (bottomright.x - topleft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
+                Point centerText = new Point(topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
                 Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
             } catch (JSONException e) {
@@ -168,7 +166,7 @@ public class ResultUtils {
   * Create Mat to hold a rectangle for each color
   * the corresponding value written as text above that rectangle
   */
-    public static Mat createColourRangeMatGroup(List<StripTest.Brand.Patch> patches, int width,double xtrans){
+    public static Mat createColourRangeMatGroup(List<StripTest.Brand.Patch> patches, int width, double xtrans) {
         // horizontal size of mat: width
         // vertical size of mat: size of colour block - xmargin + top distance
 
@@ -215,10 +213,10 @@ public class ResultUtils {
        * Create Mat to hold a line between min and max values, on it a circle filled with
        * the color detected below which the ppm value measured
        */
-    public static Mat createValueMeasuredMatSingle(JSONArray colours,double ppm, ColorDetected colorDetected, int width,double xtrans){
+    public static Mat createValueMeasuredMatSingle(JSONArray colours, double ppm, ColorDetected colorDetected, int width, double xtrans) {
         Mat valueMeasuredMat = new Mat(50, width, CvType.CV_8UC3, labWhite);
         JSONObject colourObj;
-        JSONObject nextcolourObj;
+        JSONObject nextColourObj;
         boolean ppmIsDrawn = false;
 
         //grey line with ppm values at left and right
@@ -234,40 +232,40 @@ public class ResultUtils {
             Size textSizeRightValue = Imgproc.getTextSize(String.format("%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
             Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans - xMargin) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
-                0.3d, labGrey, 1, Core.LINE_AA, false);
+                    0.3d, labGrey, 1, Core.LINE_AA, false);
             Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue),
-                new Point(valueMeasuredMat.cols() - xMargin - (xtrans - xMargin) / 2 - textSizeRightValue.width / 2, 15),
-                Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+                    new Point(valueMeasuredMat.cols() - xMargin - (xtrans - xMargin) / 2 - textSizeRightValue.width / 2, 15),
+                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
 
             // we need to iterate over the ppm values to determine where the circle should be placed
             for (int d = 0; d < colours.length(); d++) {
                 colourObj = colours.getJSONObject(d);
                 if (d < colours.length() - 1) {
-                    nextcolourObj = colours.getJSONObject(d + 1);
-                } else nextcolourObj = colourObj;
+                    nextColourObj = colours.getJSONObject(d + 1);
+                } else nextColourObj = colourObj;
 
                 double value = colourObj.getDouble("value");
-                double nextvalue = nextcolourObj.getDouble("value");
+                double nextValue = nextColourObj.getDouble("value");
 
-                if (ppm < nextvalue && !ppmIsDrawn) {
+                if (ppm < nextValue && !ppmIsDrawn) {
 
                     double restPPM = ppm - (value); //calculate the amount above the lowest value
-                    double transX = xtrans * (restPPM / (nextvalue - value)); //calculate number of pixs needed to translate in x direction
+                    double transX = xtrans * (restPPM / (nextValue - value)); //calculate number of pixs needed to translate in x direction
 
                     Scalar ppmColor = colorDetected.getLab();
                     //calculate where the center of the circle should be
                     double left = xtrans * d;
                     double right = left + xtrans - xMargin;
                     Point centerCircle = (transX) + xtrans * d < xMargin ? new Point(xMargin, 25d) :
-                        new Point(left + (right - left) / 2 + transX, 25d);
+                            new Point(left + (right - left) / 2 + transX, 25d);
 
                     //get text size of value test
                     Size textSizePPM = Imgproc.getTextSize(roundMeas(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
 
                     Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
                     Imgproc.putText(valueMeasuredMat, roundMeas(ppm), new Point(centerCircle.x - textSizePPM.width / 2, 47d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
-                        labGrey, 1, Core.LINE_AA, false);
+                            labGrey, 1, Core.LINE_AA, false);
 
                     ppmIsDrawn = true;
                 }
@@ -285,12 +283,12 @@ public class ResultUtils {
        * Create Mat to hold a line between min and max values, on it a circle filled with
        * the color detected below which the ppm value measured
        */
-    public static Mat createValueMeasuredMatGroup(JSONArray colours,double ppm, ColorDetected[] colorsDetected, int width, double xtrans){
+    public static Mat createValueMeasuredMatGroup(JSONArray colours, double ppm, ColorDetected[] colorsDetected, int width, double xtrans) {
         int size = 50 + colorsDetected.length * (2 * circleRadius + 5);
         Mat valueMeasuredMat = new Mat(size, width, CvType.CV_8UC3, labWhite);
 
         JSONObject colourObj;
-        JSONObject nextcolourObj;
+        JSONObject nextColourObj;
         boolean ppmIsDrawn = false;
 
         //grey line with ppm values at left and right
@@ -306,21 +304,21 @@ public class ResultUtils {
             Size textSizeRightValue = Imgproc.getTextSize(String.format("%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
             Imgproc.putText(valueMeasuredMat, String.format("%.0f", leftValue), new Point((xtrans - xMargin) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
-                0.3d, labGrey, 1, Core.LINE_AA, false);
+                    0.3d, labGrey, 1, Core.LINE_AA, false);
             Imgproc.putText(valueMeasuredMat, String.format("%.0f", rightValue),
-                new Point(valueMeasuredMat.cols() - xMargin - (xtrans - xMargin) / 2 - textSizeRightValue.width / 2, 15),
-                Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+                    new Point(valueMeasuredMat.cols() - xMargin - (xtrans - xMargin) / 2 - textSizeRightValue.width / 2, 15),
+                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
 
             // we need to iterate over the ppm values to determine where the circle should be placed
             for (int d = 0; d < colours.length(); d++) {
                 colourObj = colours.getJSONObject(d);
                 if (d < colours.length() - 1) {
-                    nextcolourObj = colours.getJSONObject(d + 1);
-                } else nextcolourObj = colourObj;
+                    nextColourObj = colours.getJSONObject(d + 1);
+                } else nextColourObj = colourObj;
 
                 double value = colourObj.getDouble("value");
-                double nextvalue = nextcolourObj.getDouble("value");
+                double nextvalue = nextColourObj.getDouble("value");
 
                 if (ppm < nextvalue && !ppmIsDrawn) {
 
@@ -332,17 +330,17 @@ public class ResultUtils {
                     double left = xtrans * d;
                     double right = left + xtrans - xMargin;
                     Point centerCircle = (transX) + xtrans * d < xMargin ? new Point(xMargin, 25d) :
-                        new Point(left + (right - left) / 2 + transX, 25d);
+                            new Point(left + (right - left) / 2 + transX, 25d);
 
                     //get text size of value test
                     Size textSizePPM = Imgproc.getTextSize(String.format("%.1f", ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
                     Imgproc.putText(valueMeasuredMat, String.format("%.1f", ppm), new Point(centerCircle.x - textSizePPM.width / 2, 15d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
-                        labGrey, 1, Core.LINE_AA, false);
+                            labGrey, 1, Core.LINE_AA, false);
 
                     double offset = circleRadius + 5;
                     for (int p = 0; p < colorsDetected.length; p++) {
                         Scalar ppmColor = colorsDetected[p].getLab();
-                        Imgproc.circle(valueMeasuredMat, new Point(centerCircle.x,centerCircle.y + offset), circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
+                        Imgproc.circle(valueMeasuredMat, new Point(centerCircle.x, centerCircle.y + offset), circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
                         offset += 2 * circleRadius + 5;
                     }
 
@@ -356,8 +354,8 @@ public class ResultUtils {
         return valueMeasuredMat;
     }
 
-    public static Mat concatenate(Mat m1, Mat m2){
-        int width = Math.max(m1.cols(),m2.cols());
+    public static Mat concatenate(Mat m1, Mat m2) {
+        int width = Math.max(m1.cols(), m2.cols());
         int height = m1.rows() + m2.rows();
 
         Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(255, 255, 255));
@@ -374,15 +372,15 @@ public class ResultUtils {
         return result;
     }
 
-    public static ColorDetected getPatchColour(Mat mat, Point centerPatch, int submatSize){
+    public static ColorDetected getPatchColour(Mat mat, Point centerPatch, int subMatSize) {
 
-        //make a submat around center of the patch
-        int minRow = (int) Math.round(Math.max(centerPatch.y - submatSize, 0));
-        int maxRow = (int) Math.round(Math.min(centerPatch.y + submatSize, mat.height()));
-        int minCol = (int) Math.round(Math.max(centerPatch.x - submatSize, 0));
-        int maxCol = (int) Math.round(Math.min(centerPatch.x + submatSize, mat.width()));
+        //make a subMat around center of the patch
+        int minRow = (int) Math.round(Math.max(centerPatch.y - subMatSize, 0));
+        int maxRow = (int) Math.round(Math.min(centerPatch.y + subMatSize, mat.height()));
+        int minCol = (int) Math.round(Math.max(centerPatch.x - subMatSize, 0));
+        int maxCol = (int) Math.round(Math.min(centerPatch.x + subMatSize, mat.width()));
 
-        //  create submat
+        //  create subMat
         Mat patch = mat.submat(minRow, maxRow, minCol, maxCol);
 
         // compute the mean colour and return it
@@ -400,9 +398,9 @@ public class ResultUtils {
         }
     }
 
-    public static double[][] createInterpolTable(JSONArray colours){
+    public static double[][] createInterpolTable(JSONArray colours) {
         JSONArray patchColorValues;
-        double ppmPatchValueStart,ppmPatchValueEnd;
+        double ppmPatchValueStart, ppmPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
         double LInter, aInter, bInter, vInter;
@@ -463,7 +461,7 @@ public class ResultUtils {
 
         // determine closest value
         // create interpolation and extrapolation tables using linear approximation
-        if (colorValues == null || colorValues.length < 3){
+        if (colorValues == null || colorValues.length < 3) {
             throw new Exception("no valid lab colour data.");
         }
 
@@ -478,7 +476,7 @@ public class ResultUtils {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize
             dist = CalibrationCard.E94(labPoint[0], labPoint[1], labPoint[2], interpolTable[j][0], interpolTable[j][1], interpolTable[j][2], false);
-            if (dist < smallestE94Dist){
+            if (dist < smallestE94Dist) {
                 smallestE94Dist = dist;
                 minPos = j;
             }
@@ -487,17 +485,17 @@ public class ResultUtils {
         return interpolTable[minPos][3];
     }
 
-    public static double calculatePpmGroup(double[][] colorsValueLab, List<StripTest.Brand.Patch>patches) throws Exception{
+    public static double calculatePpmGroup(double[][] colorsValueLab, List<StripTest.Brand.Patch> patches) throws Exception {
         double[][][] interpolTables = new double[patches.size()][][];
 
         // create all interpol tables
-        for (int p = 0; p < patches.size(); p++){
+        for (int p = 0; p < patches.size(); p++) {
             JSONArray colours = patches.get(p).getColours();
 
             // create interpol table for this patch
             interpolTables[p] = createInterpolTable(colours);
 
-            if (colorsValueLab[p] == null || colorsValueLab[p].length < 3){
+            if (colorsValueLab[p] == null || colorsValueLab[p].length < 3) {
                 throw new Exception("no valid lab colour data.");
             }
         }
@@ -517,11 +515,11 @@ public class ResultUtils {
 
         for (int j = 0; j < interpolTables[0].length; j++) {
             dist = 0;
-            for (int p = 0; p < patches.size(); p++){
-                dist += CalibrationCard.E94(labPoint[p][0],labPoint[p][1],
-                    labPoint[p][2],interpolTables[p][j][0], interpolTables[p][j][1], interpolTables[p][j][2], false);
+            for (int p = 0; p < patches.size(); p++) {
+                dist += CalibrationCard.E94(labPoint[p][0], labPoint[p][1],
+                        labPoint[p][2], interpolTables[p][j][0], interpolTables[p][j][1], interpolTables[p][j][2], false);
             }
-            if (dist < smallestE94Dist){
+            if (dist < smallestE94Dist) {
                 smallestE94Dist = dist;
                 minPos = j;
             }

@@ -1,10 +1,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip;
 
-import android.content.Context;
-
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.App;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,18 +13,16 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by linda on 8/19/15.
+ * Created by linda on 8/19/15
  */
-public class StripTest{
+public class StripTest {
 
-    public StripTest()
-    {
+    public StripTest() {
 
     }
 
-    public List<String> getBrandsAsList()
-    {
-        List<String> brandnames = new ArrayList<>();
+    public List<String> getBrandsAsList() {
+        List<String> brandNames = new ArrayList<>();
 
         String json = fromJson();
         try {
@@ -40,24 +35,22 @@ public class StripTest{
                     for (int i = 0; i < stripsJson.length(); i++) {
 
                         strip = stripsJson.getJSONObject(i);
-                        brandnames.add(strip.getString("brand"));
+                        brandNames.add(strip.getString("brand"));
 
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
-        return brandnames;
+        return brandNames;
     }
 
     /*
     * Matches a test UUID to a brand name
     * if not found, returns null
      */
-    public String matchUuidToBrand(String uuid){
+    public String matchUuidToBrand(String uuid) {
         String json = fromJson();
         String result = null;
         try {
@@ -69,32 +62,41 @@ public class StripTest{
                 if (stripsJson != null) {
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
-                        if (strip.getString("uuid").equals(uuid)){
+                        if (strip.getString("uuid").equals(uuid)) {
                             result = strip.getString("brand");
                         }
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return result;
         }
         return result;
     }
 
-    public Brand getBrand(String brand)
-    {
+    public Brand getBrand(String brand) {
         return new Brand(brand);
     }
 
-    public enum groupType {GROUP, INDIVIDUAL};
+    private String fromJson() {
+        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_json);
 
-    public class Brand
-    {
+        return AssetsManager.getInstance().loadJSONFromAsset(filename);
+
+    }
+
+    private String instructionsFromJson() {
+        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_instruction_json);
+        return AssetsManager.getInstance().loadJSONFromAsset(filename);
+
+    }
+
+    public enum groupType {GROUP, INDIVIDUAL}
+
+    public class Brand {
         private String name;
         private String uuid;
-        private double stripLenght;
+        private double stripLength;
         private double stripHeight;
         private groupType groupingType;
         private List<Patch> patches = new ArrayList<>();
@@ -116,12 +118,10 @@ public class StripTest{
                         for (int i = 0; i < stripsJson.length(); i++) {
                             strip = stripsJson.getJSONObject(i);
 
-                            if (!strip.getString("brand").equalsIgnoreCase(brand)) {
-                                continue;
-                            } else {
+                            if (strip.getString("brand").equalsIgnoreCase(brand)) {
                                 try {
                                     this.uuid = strip.getString("uuid");
-                                    this.stripLenght = strip.getDouble("length");
+                                    this.stripLength = strip.getDouble("length");
                                     this.stripHeight = strip.getDouble("height");
                                     this.groupingType = strip.getString("groupingType").equals(groupType.GROUP.toString()) ? groupType.GROUP : groupType.INDIVIDUAL;
                                     this.name = strip.getString("name");
@@ -164,9 +164,7 @@ public class StripTest{
 
                         //System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
 
-                        if (!strip.getString("brand").equalsIgnoreCase(brand)) {
-                            continue;
-                        } else {
+                        if (strip.getString("brand").equalsIgnoreCase(brand)) {
                             this.instructions = strip.getJSONArray("instructions");
 
                         }
@@ -189,8 +187,8 @@ public class StripTest{
             return groupingType;
         }
 
-        public double getStripLenght() {
-            return stripLenght;
+        public double getStripLength() {
+            return stripLength;
         }
 
         public String getName() {
@@ -206,8 +204,7 @@ public class StripTest{
         }
 
 
-        public List<Patch> getPatchesOrderedByTimelapse()
-        {
+        public List<Patch> getPatchesOrderedByTimeLapse() {
             Collections.sort(patches, new PatchComparator());
             return patches;
         }
@@ -262,28 +259,13 @@ public class StripTest{
         }
     }
 
-    private String fromJson()
-    {
-        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_json);
-
-        return AssetsManager.getInstance().loadJSONFromAsset(filename);
-
-    }
-
-    private String instructionsFromJson()
-    {
-        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_instruction_json);
-        return AssetsManager.getInstance().loadJSONFromAsset(filename);
-
-    }
-    private class PatchComparator implements Comparator<Brand.Patch>
-    {
+    private class PatchComparator implements Comparator<Brand.Patch> {
 
         @Override
         public int compare(Brand.Patch lhs, Brand.Patch rhs) {
             if (lhs.timeLapse < rhs.timeLapse)
                 return -1;
-            if(lhs.timeLapse == rhs.timeLapse)
+            if (lhs.timeLapse == rhs.timeLapse)
                 return 0;
 
             return 1;

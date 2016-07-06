@@ -23,53 +23,53 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
  * @author Sean Owen
  */
 public class ResultPoint {
-  private final float x;
-  private final float y;
+    private final float x;
+    private final float y;
 
-  public ResultPoint(float x, float y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  public final float getX() {
-    return x;
-  }
-
-  public final float getY() {
-    return y;
-  }
-
-  @Override
-  public final boolean equals(Object other) {
-    if (other instanceof ResultPoint) {
-      ResultPoint otherPoint = (ResultPoint) other;
-      return x == otherPoint.x && y == otherPoint.y;
+    public ResultPoint(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
-    return false;
-  }
 
-  @Override
-  public final int hashCode() {
-    return 31 * Float.floatToIntBits(x) + Float.floatToIntBits(y);
-  }
+    /**
+     * @param pattern1 first pattern
+     * @param pattern2 second pattern
+     * @return distance between two points
+     */
+    public static float distance(ResultPoint pattern1, ResultPoint pattern2) {
+        return MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
+    }
 
-  @Override
-  public final String toString() {
-    StringBuilder result = new StringBuilder(25);
-    result.append('(');
-    result.append(x);
-    result.append(',');
-    result.append(y);
-    result.append(')');
-    return result.toString();
-  }
+    public final float getX() {
+        return x;
+    }
 
-  /**
-   * @param pattern1 first pattern
-   * @param pattern2 second pattern
-   * @return distance between two points
-   */
-  public static float distance(ResultPoint pattern1, ResultPoint pattern2) {
-    return MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
-  }
+    public final float getY() {
+        return y;
+    }
+
+    @Override
+    public final boolean equals(Object other) {
+        if (other instanceof ResultPoint) {
+            ResultPoint otherPoint = (ResultPoint) other;
+            return x == otherPoint.x && y == otherPoint.y;
+        }
+        return false;
+    }
+
+    @Override
+    public final int hashCode() {
+        return 31 * Float.floatToIntBits(x) + Float.floatToIntBits(y);
+    }
+
+    @Override
+    public final String toString() {
+        StringBuilder result = new StringBuilder(25);
+        result.append('(');
+        result.append(x);
+        result.append(',');
+        result.append(y);
+        result.append(')');
+        return result.toString();
+    }
 }

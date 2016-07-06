@@ -8,8 +8,9 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
 import java.util.List;
 
 /**
- * Created by linda on 6/26/15.
+ * Created by linda on 6/26/15
  */
+@SuppressWarnings("deprecation")
 interface CameraViewListener {
 
     void adjustExposureCompensation(int direction);

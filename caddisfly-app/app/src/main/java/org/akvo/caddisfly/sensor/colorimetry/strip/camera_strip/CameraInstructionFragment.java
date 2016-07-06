@@ -25,14 +25,16 @@ import org.json.JSONException;
  * to handle interaction events.
  * Use the {@link CameraInstructionFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p>
  * This fragment shows instructions for a particular strip test. They are read from strips.json in assets
  */
 public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
 
     private CameraViewListener mListener;
-    private Button startButton;
-    private String brandName;
+
+    public CameraInstructionFragment() {
+        // Required empty public constructor
+    }
 
     public static CameraInstructionFragment newInstance(String brandName) {
         CameraInstructionFragment fragment = new CameraInstructionFragment();
@@ -40,10 +42,6 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
         args.putString(Constant.BRAND, brandName);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public CameraInstructionFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -57,12 +55,12 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_instructions, container, false);
-        startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
+        Button startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
         LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_camera_instructionsLinearLayout);
 
-        if(getArguments()!=null) {
+        if (getArguments() != null) {
 
-            brandName = getArguments().getString(Constant.BRAND);
+            String brandName = getArguments().getString(Constant.BRAND);
 
             StripTest stripTest = new StripTest();
             JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
@@ -74,24 +72,21 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
 
                     String[] instrArray = instr.split("<!");
 
-                    for(int ii=0; ii < instrArray.length;ii++) {
+                    for (int ii = 0; ii < instrArray.length; ii++) {
                         textView = new TextView(getActivity());
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mediumTextSize));
 
                         int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
-                        textView.setPadding(0,0,0, padBottom);
+                        textView.setPadding(0, 0, 0, padBottom);
 
                         int indexImp = instrArray[ii].indexOf(">");
-                        if(indexImp >= 0)
-                        {
+                        if (indexImp >= 0) {
                             textView.setTextColor(Color.RED);
-                        }
-                        else
-                        {
+                        } else {
                             textView.setTextColor(Color.GRAY);
                         }
                         String text = instrArray[ii].replaceAll(">", "");
-                        if(!text.isEmpty()) {
+                        if (!text.isEmpty()) {
                             textView.setText(" - ");
                             textView.append(text);
                             linearLayout.addView(textView);
@@ -99,9 +94,7 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
                     }
 
                 }
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -134,7 +127,7 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());

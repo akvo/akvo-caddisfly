@@ -1,7 +1,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 /**
- * Created by linda on 9/3/15.
+ * Created by linda on 9/3/15
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public class Constant {

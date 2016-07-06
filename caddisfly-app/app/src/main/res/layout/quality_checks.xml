@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_cameraMessagesLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:layout_alignParentLeft="true"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:layout_alignParentTop="true"
     android:background="@android:color/background_light"
-    android:id="@+id/activity_cameraMessagesLayout"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/activity_vertical_margin"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckBrightnessView
+            android:id="@+id/activity_cameraImageViewExposure"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/quality_check_view_height"
-            android:id="@+id/activity_cameraImageViewExposure" />
+            android:layout_height="@dimen/quality_check_view_height" />
 
         <TextView
             android:id="@+id/camera_preview_messageLightView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textColor="@android:color/darker_gray"
             android:text="@string/light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckShadowsView
+            android:id="@+id/activity_cameraImageViewContrast"
             android:layout_width="match_parent"
             android:layout_height="@dimen/quality_check_view_height"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:id="@+id/activity_cameraImageViewContrast" />
+            android:gravity="center_horizontal" />
 
         <TextView
+            android:id="@+id/camera_preview_messageContrastView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:id="@+id/camera_preview_messageContrastView"
-            android:textColor="@android:color/darker_gray"
             android:text="@string/contrast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColor="@android:color/darker_gray" />
 
     </LinearLayout>
 </LinearLayout>

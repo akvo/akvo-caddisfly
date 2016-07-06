@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class InstructionActivity extends AppCompatActivity implements  InstructionsListener{
+public class InstructionActivity extends AppCompatActivity implements InstructionsListener {
 
     /**
      * This class assumes that there are .png images in res/drawable that have the same name
@@ -55,9 +55,9 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             StripTest.Brand brand = stripTest.getBrand(getIntent().getStringExtra(Constant.BRAND));
             instructions = brand.getInstructions();
 
-            for(int i=0;i<instructions.length();i++) {
+            for (int i = 0; i < instructions.length(); i++) {
                 fragments.add(InstructionBrandDetailFragment.newInstance(countFragments));
-                countFragments ++;
+                countFragments++;
             }
 
             footerView = (InstructionFooterView) findViewById(R.id.activity_instructionFooterView);
@@ -106,8 +106,8 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             @Override
             public void onClick(View v) {
                 v.setActivated(!v.isActivated());
-                int itemid = Math.max(0, mViewPager.getCurrentItem() - 1);
-                mViewPager.setCurrentItem(itemid);
+                int itemId = Math.max(0, mViewPager.getCurrentItem() - 1);
+                mViewPager.setCurrentItem(itemId);
             }
         });
 
@@ -115,8 +115,8 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             @Override
             public void onClick(View v) {
                 v.setActivated(!v.isActivated());
-                int itemid = Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1);
-                mViewPager.setCurrentItem(itemid);
+                int itemId = Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1);
+                mViewPager.setCurrentItem(itemId);
             }
         });
     }
@@ -149,21 +149,61 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
         return super.onOptionsItemSelected(item);
     }
 
-   /* @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
+    //
+    @Override
+    public String getInstruction(int id) throws JSONException {
+        return instructions.getJSONObject(id).getString("text");
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public Drawable getInstructionDrawable(int id) throws JSONException {
+        String resName = instructions.getJSONObject(id).getString("png");
+
+        String path = getResources().getString(R.string.instruction_images);
+
+        path = getPathToDrawable(path, resName);
+
+        try {
+            // get input stream
+            InputStream ims = getAssets().open(path + "/" + resName.toLowerCase(Locale.US) + ".png");
+            // load image as Drawable
+            // set image to ImageView
+            return Drawable.createFromStream(ims, null);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    //change path to file in assets if file is available for locale
+    private String getPathToDrawable(String path, String resName) {
+        String localeLanguage = Locale.getDefault().getLanguage();
+        try {
+
+            getAssets().open(path + "-" + localeLanguage + "/" + resName.toLowerCase(Locale.US) + ".png");
+
+            path += "-" + localeLanguage;
+        } catch (IOException ex) {
+            //ignore
+        }
+        return path;
     }
-*/
+
+    /* @Override
+     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+         // When the given tab is selected, switch to the corresponding page in
+         // the ViewPager.
+         mViewPager.setCurrentItem(tab.getPosition());
+     }
+
+     @Override
+     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+     }
+
+     @Override
+     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+     }
+ */
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -188,53 +228,5 @@ public class InstructionActivity extends AppCompatActivity implements  Instructi
             return String.valueOf(position + 1).toUpperCase(l);
 
         }
-    }
-
-    //
-    @Override
-    public String getInstruction(int id) throws JSONException {
-        return instructions.getJSONObject(id).getString("text");
-    }
-
-    @Override
-    public Drawable getInstructionDrawable(int id) throws JSONException
-    {
-        String resName =  instructions.getJSONObject(id).getString("png");
-
-        String path = getResources().getString(R.string.instruction_images);
-
-        path = getPathToDrawable(path, resName);
-
-        try {
-            // get input stream
-            InputStream ims = getAssets().open(path + "/" + resName.toLowerCase(Locale.US)+".png");
-            // load image as Drawable
-            Drawable d = Drawable.createFromStream(ims, null);
-            // set image to ImageView
-            return d;
-        }
-        catch(IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    //change path to file in assets if file is available for locale
-    private String getPathToDrawable(String path, String resName)
-    {
-        String localeLanguage = Locale.getDefault().getLanguage();
-        try {
-
-            getAssets().open(path + "-" + localeLanguage + "/" + resName.toLowerCase(Locale.US) + ".png");
-
-            path += "-" + localeLanguage;
-        }
-        catch(IOException ex) {
-            //ignore
-        }
-        finally {
-            return path;
-        }
-
     }
 }

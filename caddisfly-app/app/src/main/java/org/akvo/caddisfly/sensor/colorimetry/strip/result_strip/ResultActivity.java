@@ -246,7 +246,7 @@ public class ResultActivity extends BaseActivity {
             // compute location of point to be sampled
             if (grouped) {
                 // collect colours
-                double ratioW = strip.width() / brand.getStripLenght();
+                double ratioW = strip.width() / brand.getStripLength();
                 colorsDetected = new ColorDetected[patches.size()];
                 double[][] colorsValueLab = new double[patches.size()][3];
                 for (int p = 0; p < patches.size(); p++) {
@@ -274,7 +274,7 @@ public class ResultActivity extends BaseActivity {
                 xTranslate = (double) mat.cols() / (double) colours.length();
 
             } else {
-                double ratioW = strip.width() / brand.getStripLenght();
+                double ratioW = strip.width() / brand.getStripLength();
                 double x = patches.get(patchNum).getPosition() * ratioW;
                 double y = strip.height() / 2;
                 centerPatch = new Point(x, y);

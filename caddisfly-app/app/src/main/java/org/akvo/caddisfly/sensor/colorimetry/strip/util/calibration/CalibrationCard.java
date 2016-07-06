@@ -20,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,42 +27,37 @@ import java.util.List;
 import java.util.Map;
 
 // Performs the calibration of the image
-public class CalibrationCard{
+public class CalibrationCard {
     public static final int CODE_NOT_FOUND = -1;
-    private static final double ONE_OVER_NINE = 1.0/9;
+    private static final double ONE_OVER_NINE = 1.0 / 9;
     private static Map<Integer, Integer> versionNumberMap = new HashMap<>();
 
     //put version number in HashMap: number, frequency
-    public static void addVersionNumber(Integer number)
-    {
-        int existingFrequency = versionNumberMap.get(number)==null? 0: versionNumberMap.get(number);
-        versionNumberMap.put(number, existingFrequency+1);
+    public static void addVersionNumber(Integer number) {
+        int existingFrequency = versionNumberMap.get(number) == null ? 0 : versionNumberMap.get(number);
+        versionNumberMap.put(number, existingFrequency + 1);
     }
 
-    public static int getMostFrequentVersionNumber()
-    {
+    public static int getMostFrequentVersionNumber() {
         int mostFreq = 0;
         List<Integer> versionNumbers = new ArrayList<>();
         //what is the most frequent value
-        for(Integer freq: versionNumberMap.values())
-        {
-            if(freq > mostFreq)
-            {
+        for (Integer freq : versionNumberMap.values()) {
+            if (freq > mostFreq) {
                 mostFreq = freq;
             }
         }
 
         //collect the keys that have mostFreq as value
-        for(Map.Entry<Integer, Integer> entry: versionNumberMap.entrySet())
-        {
+        for (Map.Entry<Integer, Integer> entry : versionNumberMap.entrySet()) {
 //            System.out.println("***saved version number: " + entry.getKey());
 
-            if(entry.getValue().equals(mostFreq))
+            if (entry.getValue().equals(mostFreq))
                 versionNumbers.add(entry.getKey());
         }
 
         //return the first match (hopefully there will be one and only one match)
-        if(versionNumbers.size()>0) {
+        if (versionNumbers.size() > 0) {
 
             return versionNumbers.get(0);
         }
@@ -71,12 +65,12 @@ public class CalibrationCard{
         return CODE_NOT_FOUND;
     }
 
-    public static CalibrationData readCalibrationFile(Context context){
+    public static CalibrationData readCalibrationFile(Context context) {
 
         String calFileName = "calibration" + getMostFrequentVersionNumber() + ".json";
         String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
-        if(json!=null) {
+        if (json != null) {
             try {
                 CalibrationData calData = new CalibrationData();
 
@@ -132,7 +126,7 @@ public class CalibrationCard{
         return null;
     }
 
-    private static int capValue(int val, int min, int max){
+    private static int capValue(int val, int min, int max) {
         if (val > max) {
             return max;
         }
@@ -142,14 +136,14 @@ public class CalibrationCard{
     // computes the colour around a single point
     // x and y in pixels
     // This method expects a cielab file
-    private static double[] getWhiteVal(Mat lab, int x, int y, int dp){
+    private static double[] getWhiteVal(Mat lab, int x, int y, int dp) {
         double totLum = 0;
         double totA = 0;
         double totB = 0;
 
         int totNum = 0;
-        for (int i = -dp; i <= dp; i++){
-            for (int ii = -dp; ii <= dp; ii++){
+        for (int i = -dp; i <= dp; i++) {
+            for (int ii = -dp; ii <= dp; ii++) {
                 totLum = totLum + lab.get(y + i, x + ii)[0];
                 totA = totA + lab.get(y + i, x + ii)[1];
                 totB = totB + lab.get(y + i, x + ii)[2];
@@ -163,8 +157,7 @@ public class CalibrationCard{
     * Samples the white area of a calibration card. This information is used to straighten out the illumination.
     * @result: array of point vectors, with the structure [x,y,L,A,B]
      */
-    public static double[][] createWhitePointArray(Mat lab, CalibrationData calData)
-    {
+    public static double[][] createWhitePointArray(Mat lab, CalibrationData calData) {
         List<CalibrationData.WhiteLine> lines = calData.whiteLines;
         int numLines = lines.size() * 10; // on each line, we sample 10 points
         double[][] points = new double[numLines][5];
@@ -175,7 +168,7 @@ public class CalibrationCard{
         calData.vsizePixel = lab.rows();
         double vfac = calData.vsizePixel / calData.vsize; // pixel per mm in the vertical direction
 
-        for (CalibrationData.WhiteLine line : lines){
+        for (CalibrationData.WhiteLine line : lines) {
             double xStart = line.p[0];
             double yStart = line.p[1];
             double xEnd = line.p[2];
@@ -183,18 +176,18 @@ public class CalibrationCard{
             double xdiff = (xEnd - xStart) * ONE_OVER_NINE;
             double ydiff = (yEnd - yStart) * ONE_OVER_NINE;
             int dp = (int) Math.round(line.width * hfac * 0.5);
-            if (dp == 0){
+            if (dp == 0) {
                 dp = 1; // minimum of one pixel
             }
 
             // sample line
-            for (int i = 0; i <= 9 ; i++){
+            for (int i = 0; i <= 9; i++) {
                 int xp = (int) Math.round((xStart + i * xdiff) * hfac);
                 int yp = (int) Math.round((yStart + i * ydiff) * vfac);
 
                 points[index * 10 + i][0] = xp;
                 points[index * 10 + i][1] = yp;
-                double[] whiteVal = getWhiteVal(lab,xp, yp, dp);
+                double[] whiteVal = getWhiteVal(lab, xp, yp, dp);
                 points[index * 10 + i][2] = whiteVal[0];
                 points[index * 10 + i][3] = whiteVal[1];
                 points[index * 10 + i][4] = whiteVal[2];
@@ -216,9 +209,9 @@ public class CalibrationCard{
     * Straightens the illumination of the calibration file. It does this by sampling the white areas
     * and compute a quadratic profile. The image is then corrected using this profile.
      */
-    private static Mat doIlluminationCorrection(Mat imgLab, CalibrationData calData){
+    private static Mat doIlluminationCorrection(Mat imgLab, CalibrationData calData) {
         // create HLS image for homogenous illumination calibration
-        int pheight =  imgLab.rows();
+        int pheight = imgLab.rows();
         int pwidth = imgLab.cols();
 
 
@@ -227,16 +220,16 @@ public class CalibrationCard{
         // create coefficient matrix for all three variables L,A,B
         // the model for all three is y = ax + bx^2 + cy + dy^2 + exy + f
         // 6th row is the constant 1
-        RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(),6);
-        coef.setColumnMatrix(0,points.getColumnMatrix(0));
-        coef.setColumnMatrix(2,points.getColumnMatrix(1));
+        RealMatrix coef = new Array2DRowRealMatrix(points.getRowDimension(), 6);
+        coef.setColumnMatrix(0, points.getColumnMatrix(0));
+        coef.setColumnMatrix(2, points.getColumnMatrix(1));
 
         //create constant, x^2, y^2 and xy terms
-        for (int i = 0; i < points.getRowDimension(); i++){
-            coef.setEntry(i,1, Math.pow(coef.getEntry(i, 0), 2)); // x^2
-            coef.setEntry(i,3, Math.pow(coef.getEntry(i, 2), 2)); // y^2
-            coef.setEntry(i,4,coef.getEntry(i,0) * coef.getEntry(i,2)); // xy
-            coef.setEntry(i,5,1d); // constant = 1
+        for (int i = 0; i < points.getRowDimension(); i++) {
+            coef.setEntry(i, 1, Math.pow(coef.getEntry(i, 0), 2)); // x^2
+            coef.setEntry(i, 3, Math.pow(coef.getEntry(i, 2), 2)); // y^2
+            coef.setEntry(i, 4, coef.getEntry(i, 0) * coef.getEntry(i, 2)); // xy
+            coef.setEntry(i, 5, 1d); // constant = 1
         }
 
         // create vectors
@@ -251,26 +244,26 @@ public class CalibrationCard{
         RealVector solutionB = solver.solve(B);
 
         // get individual coefficients
-        float La = (float)solutionL.getEntry(0);
-        float Lb = (float)solutionL.getEntry(1);
-        float Lc = (float)solutionL.getEntry(2);
-        float Ld = (float)solutionL.getEntry(3);
-        float Le = (float)solutionL.getEntry(4);
-        float Lf = (float)solutionL.getEntry(5);
+        float La = (float) solutionL.getEntry(0);
+        float Lb = (float) solutionL.getEntry(1);
+        float Lc = (float) solutionL.getEntry(2);
+        float Ld = (float) solutionL.getEntry(3);
+        float Le = (float) solutionL.getEntry(4);
+        float Lf = (float) solutionL.getEntry(5);
 
-        float Aa = (float)solutionA.getEntry(0);
-        float Ab = (float)solutionA.getEntry(1);
-        float Ac = (float)solutionA.getEntry(2);
-        float Ad = (float)solutionA.getEntry(3);
-        float Ae = (float)solutionA.getEntry(4);
-        float Af = (float)solutionA.getEntry(5);
+        float Aa = (float) solutionA.getEntry(0);
+        float Ab = (float) solutionA.getEntry(1);
+        float Ac = (float) solutionA.getEntry(2);
+        float Ad = (float) solutionA.getEntry(3);
+        float Ae = (float) solutionA.getEntry(4);
+        float Af = (float) solutionA.getEntry(5);
 
-        float Ba = (float)solutionB.getEntry(0);
-        float Bb = (float)solutionB.getEntry(1);
-        float Bc = (float)solutionB.getEntry(2);
-        float Bd = (float)solutionB.getEntry(3);
-        float Be = (float)solutionB.getEntry(4);
-        float Bf = (float)solutionB.getEntry(5);
+        float Ba = (float) solutionB.getEntry(0);
+        float Bb = (float) solutionB.getEntry(1);
+        float Bc = (float) solutionB.getEntry(2);
+        float Bd = (float) solutionB.getEntry(3);
+        float Be = (float) solutionB.getEntry(4);
+        float Bf = (float) solutionB.getEntry(5);
 
         // compute mean (the luminosity value of the plane in the middle of the image)
         float Lmean = (float) (0.5 * La * pwidth + 0.5 * Lc * pheight + Lb * pwidth * pwidth / 3.0 + Ld * pheight * pheight / 3.0 + Le * 0.25 * pheight * pwidth + Lf);
@@ -302,34 +295,34 @@ public class CalibrationCard{
         float[] Bci = new float[imgRows];
         float[] BdiSq = new float[imgRows];
 
-        for (ii = 0; ii < imgCols; ii++){
+        for (ii = 0; ii < imgCols; ii++) {
             iiSq = ii * ii;
             Laii[ii] = La * ii;
             LbiiSq[ii] = Lb * iiSq;
-            Aaii[ii] = Aa * ii ;
+            Aaii[ii] = Aa * ii;
             AbiiSq[ii] = Ab * iiSq;
             Baii[ii] = Ba * ii;
             BbiiSq[ii] = Bb * iiSq;
         }
 
-        for (int i = 0; i < imgRows; i++){
+        for (int i = 0; i < imgRows; i++) {
             iSq = i * i;
             Lci[i] = Lc * i;
             LdiSq[i] = Ld * iSq;
             Aci[i] = Ac * i;
-            AdiSq[i] =Ad * iSq;
+            AdiSq[i] = Ad * iSq;
             Bci[i] = Bc * i;
             BdiSq[i] = Bd * iSq;
         }
 
         // TODO we can also improve the performance of the i,ii term, if we want, but it won't make much difference.
-        for (int i = 0; i < imgRows; i++){ // y
+        for (int i = 0; i < imgRows; i++) { // y
             imgLab.get(i, 0, temp);
             ii3 = 0;
-            for (ii = 0; ii < imgCols; ii++){  //x
-                valL = capValue((int) Math.round((temp[ii3 + 0] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean),0,255);
-                valA = capValue((int) Math.round((temp[ii3 + 1] & 0xFF) - (Aaii[ii] + AbiiSq[ii] + Aci[i] + AdiSq[i] + Ae * i * ii + Af) + Amean),0,255);
-                valB = capValue((int) Math.round((temp[ii3 + 2] & 0xFF) - (Baii[ii] + BbiiSq[ii] + Bci[i] + BdiSq[i] + Be * i * ii + Bf) + Bmean),0,255);
+            for (ii = 0; ii < imgCols; ii++) {  //x
+                valL = capValue(Math.round((temp[ii3 + 0] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean), 0, 255);
+                valA = capValue(Math.round((temp[ii3 + 1] & 0xFF) - (Aaii[ii] + AbiiSq[ii] + Aci[i] + AdiSq[i] + Ae * i * ii + Af) + Amean), 0, 255);
+                valB = capValue(Math.round((temp[ii3 + 2] & 0xFF) - (Baii[ii] + BbiiSq[ii] + Bci[i] + BdiSq[i] + Be * i * ii + Bf) + Bmean), 0, 255);
 
                 temp[ii3] = (byte) valL;
                 temp[ii3 + 1] = (byte) valA;
@@ -342,7 +335,7 @@ public class CalibrationCard{
         return imgLab;
     }
 
-    private static float[] measurePatch(Mat imgMat, double x, double y, CalibrationData calData){
+    private static float[] measurePatch(Mat imgMat, double x, double y, CalibrationData calData) {
         float[] LABresult = new float[3];
         float totL = 0;
         float totA = 0;
@@ -359,10 +352,10 @@ public class CalibrationCard{
         int dp = (int) Math.round(calData.patchSize * hfac * 0.25);
         byte[] temp = new byte[(2 * dp + 1) * imgMat.channels()];
         int ii3;
-        for (int i = -dp; i <= dp; i++){
+        for (int i = -dp; i <= dp; i++) {
             imgMat.get(yp - i, xp - dp, temp);
             ii3 = 0;
-            for (int ii = 0; ii <= 2 * dp; ii++){
+            for (int ii = 0; ii <= 2 * dp; ii++) {
                 totL += temp[ii3] & 0xFF; //imgMat.get(yp + i, xp + ii)[0];
                 totA += temp[ii3 + 1] & 0xFF; //imgMat.get(yp + i, xp + ii)[1];
                 totB += temp[ii3 + 2] & 0xFF; //imgMat.get(yp + i, xp + ii)[2];
@@ -383,7 +376,7 @@ public class CalibrationCard{
      */
     private static Mat do1D_3DCorrection(Mat imgMat, CalibrationData calData) throws Exception {
 
-        if(calData==null) {
+        if (calData == null) {
             throw new Exception("no calibration data.");
         }
 
@@ -391,7 +384,7 @@ public class CalibrationCard{
         final WeightedObservedPoints obsA = new WeightedObservedPoints();
         final WeightedObservedPoints obsB = new WeightedObservedPoints();
 
-        Map<String,double[]> calResultIllum = new HashMap<String,double[]>();
+        Map<String, double[]> calResultIllum = new HashMap<>();
         // iterate over all patches
         try {
             for (String label : calData.calValues.keySet()) {
@@ -401,11 +394,9 @@ public class CalibrationCard{
                 obsL.add(LABcol[0], cal.CIE_L);
                 obsA.add(LABcol[1], cal.CIE_A);
                 obsB.add(LABcol[2], cal.CIE_B);
-                calResultIllum.put(label,new double[]{LABcol[0],LABcol[1],LABcol[2]});
+                calResultIllum.put(label, new double[]{LABcol[0], LABcol[1], LABcol[2]});
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("1D calibration: error iterating over all patches.");
         }
@@ -424,7 +415,7 @@ public class CalibrationCard{
             double Lorig, Aorig, Borig, Lnew, Anew, Bnew;
 
             // transform patch values using the 1d calibration results
-            Map<String,double[]> calResult1D = new HashMap<String,double[]>();
+            Map<String, double[]> calResult1D = new HashMap<>();
             for (String label : calData.calValues.keySet()) {
                 valIllum = calResultIllum.get(label);
 
@@ -436,28 +427,28 @@ public class CalibrationCard{
                 Anew = coeffA[2] * Aorig * Aorig + coeffA[1] * Aorig + coeffA[0];
                 Bnew = coeffB[2] * Borig * Borig + coeffB[1] * Borig + coeffB[0];
 
-                calResult1D.put(label,new double[]{Lnew,Anew,Bnew});
+                calResult1D.put(label, new double[]{Lnew, Anew, Bnew});
             }
 
             // use the 1D calibration result for the second calibration step
             // Following http://docs.scipy.org/doc/scipy/reference/tutorial/linalg.html#solving-linear-least-squares-problems-and-pseudo-inverses
             // we will solve P = M x
             int total = calData.locations.keySet().size();
-            RealMatrix coef = new Array2DRowRealMatrix(total,3);
-            RealMatrix cal = new Array2DRowRealMatrix(total,3);
+            RealMatrix coef = new Array2DRowRealMatrix(total, 3);
+            RealMatrix cal = new Array2DRowRealMatrix(total, 3);
             int index = 0;
 
             // create coefficient and calibration vectors
-            for (String label : calData.calValues.keySet()){
+            for (String label : calData.calValues.keySet()) {
                 CalibrationData.CalValue calv = calData.calValues.get(label);
                 double[] cal1dResult = calResult1D.get(label);
-                coef.setEntry(index,0,cal1dResult[0]);
-                coef.setEntry(index,1,cal1dResult[1]);
-                coef.setEntry(index,2,cal1dResult[2]);
+                coef.setEntry(index, 0, cal1dResult[0]);
+                coef.setEntry(index, 1, cal1dResult[1]);
+                coef.setEntry(index, 2, cal1dResult[2]);
 
-                cal.setEntry(index,0,calv.CIE_L);
-                cal.setEntry(index,1,calv.CIE_A);
-                cal.setEntry(index,2,calv.CIE_B);
+                cal.setEntry(index, 0, calv.CIE_L);
+                cal.setEntry(index, 1, calv.CIE_A);
+                cal.setEntry(index, 2, calv.CIE_B);
                 index++;
             }
 
@@ -465,25 +456,25 @@ public class CalibrationCard{
             RealMatrix sol = solver.solve(cal);
 
             float a_L, b_L, c_L, a_A, b_A, c_A, a_B, b_B, c_B;
-            a_L = (float)sol.getEntry(0,0);
-            b_L = (float)sol.getEntry(1,0);
-            c_L = (float)sol.getEntry(2,0);
-            a_A = (float)sol.getEntry(0,1);
-            b_A = (float)sol.getEntry(1,1);
-            c_A = (float)sol.getEntry(2,1);
-            a_B = (float)sol.getEntry(0,2);
-            b_B = (float)sol.getEntry(1,2);
-            c_B = (float)sol.getEntry(2,2);
+            a_L = (float) sol.getEntry(0, 0);
+            b_L = (float) sol.getEntry(1, 0);
+            c_L = (float) sol.getEntry(2, 0);
+            a_A = (float) sol.getEntry(0, 1);
+            b_A = (float) sol.getEntry(1, 1);
+            c_A = (float) sol.getEntry(2, 1);
+            a_B = (float) sol.getEntry(0, 2);
+            b_B = (float) sol.getEntry(1, 2);
+            c_B = (float) sol.getEntry(2, 2);
 
             //use the solution to correct the image
             double Ltemp, Atemp, Btemp, Lmid, Amid, Bmid;
             int Lfin, Afin, Bfin;
             int ii3;
             byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
-            for (int i = 0; i < imgMat.rows(); i++){ // y
+            for (int i = 0; i < imgMat.rows(); i++) { // y
                 imgMat.get(i, 0, temp);
                 ii3 = 0;
-                for (int ii = 0; ii < imgMat.cols(); ii++){  //x
+                for (int ii = 0; ii < imgMat.cols(); ii++) {  //x
                     Ltemp = temp[ii3] & 0xFF;
                     Atemp = temp[ii3 + 1] & 0xFF;
                     Btemp = temp[ii3 + 2] & 0xFF;
@@ -497,9 +488,9 @@ public class CalibrationCard{
                     Bfin = (int) Math.round(a_B * Lmid + b_B * Amid + c_B * Bmid);
 
                     // cap values
-                    Lfin = capValue(Lfin,0,255);
-                    Afin = capValue(Afin,0,255);
-                    Bfin = capValue(Bfin,0,255);
+                    Lfin = capValue(Lfin, 0, 255);
+                    Afin = capValue(Afin, 0, 255);
+                    Bfin = capValue(Bfin, 0, 255);
 
                     temp[ii3] = (byte) Lfin;
                     temp[ii3 + 1] = (byte) Afin;
@@ -511,11 +502,9 @@ public class CalibrationCard{
             }
 
             return imgMat;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("error while performing calibration: ",e);
+            throw new Exception("error while performing calibration: ", e);
         }
     }
 
@@ -531,21 +520,21 @@ public class CalibrationCard{
         int xp = (int) Math.round(x * hfac);
         int yp = (int) Math.round(y * vfac);
         int dp = (int) Math.round(calData.patchSize * hfac * 0.150);
-        for (int i = -dp; i <= dp; i++){
-            for (int ii = -dp; ii <= dp; ii++){
+        for (int i = -dp; i <= dp; i++) {
+            for (int ii = -dp; ii <= dp; ii++) {
                 byte[] col = new byte[3];
                 col[0] = (byte) Math.round(calValue.CIE_L);
                 col[1] = (byte) Math.round(calValue.CIE_A);
                 col[2] = (byte) Math.round(calValue.CIE_B);
-                imgMat.put(yp + i, xp + ii,col);
+                imgMat.put(yp + i, xp + ii, col);
             }
         }
     }
 
     private static void addCalColours(Mat imgMat, CalibrationData calData) {
-        for (String label : calData.locations.keySet()){
+        for (String label : calData.locations.keySet()) {
             CalibrationData.Location loc = calData.locations.get(label);
-            addPatch(imgMat,loc.x,loc.y,calData, label);
+            addPatch(imgMat, loc.x, loc.y, calData, label);
         }
     }
 
@@ -563,15 +552,15 @@ public class CalibrationCard{
     public static CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws Exception {
         System.out.println("*** qualityChecksOK of calibration");
 
-        if(calData!=null) {
+        if (calData != null) {
             // illumination correction
-            if(labImg!=null) {
+            if (labImg != null) {
                 System.out.println("*** ILLUM - starting illumination correction");
                 labImg = doIlluminationCorrection(labImg, calData);
             }
 
             // 1D and 3D colour balance
-            if(labImg!=null) {
+            if (labImg != null) {
                 System.out.println("*** ILLUM - starting 1D and 3D balance");
                 labImg = do1D_3DCorrection(labImg, calData);
             }
@@ -580,14 +569,12 @@ public class CalibrationCard{
             double[] E94Result = computeE94Error(labImg, calData);
 
             // insert calibration colours in image
-            if(labImg!=null) {
+            if (labImg != null) {
                 System.out.println("*** ILLUM - adding colours");
                 addCalColours(labImg, calData);
             }
 
-            CalibrationResultData calResult = new CalibrationResultData(labImg,E94Result[0],E94Result[1],E94Result[2]);
-
-            return calResult;
+            return new CalibrationResultData(labImg, E94Result[0], E94Result[1], E94Result[2]);
         }
         return null;
     }
@@ -601,9 +588,9 @@ public class CalibrationCard{
     *
     * @returns: E94 distance
      */
-    public static double E94(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise){
+    public static double E94(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise) {
 
-        if (normalise){
+        if (normalise) {
             // normalise values to standard ranges
             l1 = l1 / 2.55;
             l2 = l2 / 2.55;
@@ -622,7 +609,7 @@ public class CalibrationCard{
         double dH2 = da * da + db * db - dC * dC;
         double dH;
 
-        if (dH2 < 0){
+        if (dH2 < 0) {
             dH = 0;
         } else {
             dH = Math.sqrt(dH2);
@@ -632,8 +619,7 @@ public class CalibrationCard{
         double SC = 1.0 + 0.045 * C1;
         double SH = 1.0 + 0.015 * C1;
 
-        double dE94 = Math.sqrt(Math.pow(dL / SL, 2) + Math.pow(dC / SC, 2) + Math.pow(dH / SH, 2));
-        return dE94;
+        return Math.sqrt(Math.pow(dL / SL, 2) + Math.pow(dC / SC, 2) + Math.pow(dH / SH, 2));
     }
 
     /*
@@ -652,15 +638,13 @@ public class CalibrationCard{
                 // as both measured and calibration values are in openCV range, we need to normalise the values
                 double E94Dist = E94(LABcol[0], LABcol[1], LABcol[2], cal.CIE_L, cal.CIE_A, cal.CIE_B, true);
                 totE94 += E94Dist;
-                if (E94Dist > maxE94){
+                if (E94Dist > maxE94) {
                     maxE94 = E94Dist;
                 }
                 num++;
             }
-            return new double[]{totE94/num, maxE94, totE94};
-        }
-        catch (Exception e)
-        {
+            return new double[]{totE94 / num, maxE94, totE94};
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error determining E94 calibration distance");
         }
@@ -668,7 +652,7 @@ public class CalibrationCard{
     }
 
     /**
-     * find and decode the code of the callibration card
+     * find and decode the code of the calibration card
      * The code is stored as a simple barcode. It starts 4.5 modules from the center of the bottom left finder pattern
      * and extends to module 29.5.
      * It has 12 bits, of 2 modules wide each.
@@ -690,7 +674,7 @@ public class CalibrationCard{
      *
      * @param patternInfo
      */
-    public static int decodeCallibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
+    public static int decodeCalibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
         // patterns are ordered top left, top right, bottom left, bottom right (in portrait mode, with black area to the right)
         if (patternInfo.size() == 4) {
             ResultPoint bottomLeft = new ResultPoint(patternInfo.get(3).getX(), patternInfo.get(3).getY());
@@ -705,11 +689,11 @@ public class CalibrationCard{
             double lrx = bottomRight.getX() - bottomLeft.getX();
             double lry = bottomRight.getY() - bottomLeft.getY();
             double hNorm = MathUtils.distance(bottomLeft.getX(), bottomLeft.getY(),
-                bottomRight.getX(), bottomRight.getY());
+                    bottomRight.getX(), bottomRight.getY());
 
             // check if left and right are ok
             if (lry > 0) {
-                System.out.println("***decodeCallibrationCard lry > 0");
+                System.out.println("***decodeCalibrationCard lry > 0");
                 return CODE_NOT_FOUND;
             }
 
@@ -729,10 +713,8 @@ public class CalibrationCard{
                     py += lry;
                     index++;
                 }
-            }
-            catch (Exception e)
-            {
-                System.out.println("***decodeCallibrationCard error sample line into new row");
+            } catch (Exception e) {
+                System.out.println("***decodeCalibrationCard error sample line into new row");
                 e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
@@ -751,7 +733,7 @@ public class CalibrationCard{
 
                 // determine end of pattern: last black bit. Approach from the right
                 int endI = endIndex;
-                while (endI > startI && !bits[endI]){
+                while (endI > startI && !bits[endI]) {
                     endI--;
                 }
 
@@ -761,7 +743,7 @@ public class CalibrationCard{
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    System.out.println("***decodeCallibrationCard lengthPattern < 20");
+                    System.out.println("***decodeCalibrationCard lengthPattern < 20");
                     return CODE_NOT_FOUND;
                 }
 
@@ -769,49 +751,46 @@ public class CalibrationCard{
 
                 // determine bits by majority voting
                 int[] bitVote = new int[12];
-                for (int i = 0; i < 12; i++){
+                for (int i = 0; i < 12; i++) {
                     bitVote[i] = 0;
                 }
 
                 int bucket;
-                for (int i = startI; i <= endI; i++){
+                for (int i = startI; i <= endI; i++) {
                     bucket = (int) Math.round(Math.floor((i - startI) / pWidth));
                     bitVote[bucket] += bits[i] ? 1 : -1;
                 }
 
                 // translate into information bits. Skip first and last, which are always 1
                 boolean[] bitResult = new boolean[10]; // will contain the information bits
-                for (int i = 1; i < 11; i++){
+                for (int i = 1; i < 11; i++) {
                     bitResult[i - 1] = bitVote[i] > 0;
                 }
 
                 // check parity bit
                 if (parity(bitResult) != bitResult[9]) {
-                    System.out.println("***decodeCallibrationCard parity(bitResult) != bitResult[9]");
+                    System.out.println("***decodeCalibrationCard parity(bitResult) != bitResult[9]");
                     return CODE_NOT_FOUND;
                 }
 
                 // compute result
                 int code = 0;
                 int count = 0;
-                for (int i = 8; i >= 0; i--){
-                    if (bitResult[i]){
-                        code += (int) Math.pow(2,count);
+                for (int i = 8; i >= 0; i--) {
+                    if (bitResult[i]) {
+                        code += (int) Math.pow(2, count);
                     }
-                    count ++;
+                    count++;
                 }
 
                 return code;
-            }
-            catch (Exception e)
-            {
-                System.out.println("***decodeCallibrationCard error ");
+            } catch (Exception e) {
+                System.out.println("***decodeCalibrationCard error ");
                 e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
-        }
-        else {
-            System.out.println("***decodeCallibrationCard finder patterns < 4");
+        } else {
+            System.out.println("***decodeCalibrationCard finder patterns < 4");
             return CODE_NOT_FOUND;
         }
     }
@@ -819,7 +798,7 @@ public class CalibrationCard{
     /**
      * Compute even parity, where last bit is the even parity bit
      */
-    private static boolean parity(boolean[] bits){
+    private static boolean parity(boolean[] bits) {
         int oneCount = 0;
         for (int i = 0; i < bits.length - 1; i++) {  // skip parity bit in calculation of parity
             if (bits[i]) {

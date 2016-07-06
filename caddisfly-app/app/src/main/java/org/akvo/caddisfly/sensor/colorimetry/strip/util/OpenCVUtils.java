@@ -17,18 +17,15 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by linda on 7/23/15.
+ * Created by linda on 7/23/15
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public class OpenCVUtils {
 
-    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize) throws Exception
-    {
+    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize) throws Exception {
         Mat rot_mat;
         Mat cropped = new Mat();
 
@@ -50,14 +47,14 @@ public class OpenCVUtils {
         Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
 
         // crop the resulting image
-        if(!warp_rotate_dst.empty()) {
+        if (!warp_rotate_dst.empty()) {
             Point centerBrand = new Point(
-                    rotatedRect.center.x + (rotatedRect.size.width - brandSize.width)/2,
-                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height)/4);
+                    rotatedRect.center.x + (rotatedRect.size.width - brandSize.width) / 2,
+                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height) / 4);
 
             System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
-                    + " diff width: " + (rotatedRect.size.width - brandSize.width)/2
-                    + " diff height: " + (rotatedRect.size.height - brandSize.height)/4);
+                    + " diff width: " + (rotatedRect.size.width - brandSize.width) / 2
+                    + " diff height: " + (rotatedRect.size.height - brandSize.height) / 4);
 
             Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
         }
@@ -68,7 +65,7 @@ public class OpenCVUtils {
      * Computes transform matrix from one set of 4 source points to another set of 4 destination points
      * The points are ordered clockwise
       */
-    public static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst){
+    public static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst) {
 
         //source quad
         Point[] srcQuad = new Point[4];
@@ -76,33 +73,32 @@ public class OpenCVUtils {
         //destination quad corresponding with srcQuad
         Point[] dstQuad = new Point[4];
 
-        srcQuad[0] = new Point(p1Src[0],p1Src[1]);
-        srcQuad[1] = new Point(p2Src[0],p2Src[1]);
-        srcQuad[2] = new Point(p3Src[0],p3Src[1]);
-        srcQuad[3] = new Point(p4Src[0],p4Src[1]);
+        srcQuad[0] = new Point(p1Src[0], p1Src[1]);
+        srcQuad[1] = new Point(p2Src[0], p2Src[1]);
+        srcQuad[2] = new Point(p3Src[0], p3Src[1]);
+        srcQuad[3] = new Point(p4Src[0], p4Src[1]);
 
-        dstQuad[0] = new Point(p1Dst[0],p1Dst[1]);
-        dstQuad[1] = new Point(p2Dst[0],p2Dst[1]);
-        dstQuad[2] = new Point(p3Dst[0],p3Dst[1]);
-        dstQuad[3] = new Point(p4Dst[0],p4Dst[1]);
+        dstQuad[0] = new Point(p1Dst[0], p1Dst[1]);
+        dstQuad[1] = new Point(p2Dst[0], p2Dst[1]);
+        dstQuad[2] = new Point(p3Dst[0], p3Dst[1]);
+        dstQuad[3] = new Point(p4Dst[0], p4Dst[1]);
 
         //srcQuad and destQuad to MatOfPoint2f objects, needed in perspective transform
         MatOfPoint2f srcMat2f = new MatOfPoint2f(srcQuad);
         MatOfPoint2f dstMat2f = new MatOfPoint2f(dstQuad);
 
         //get a perspective transform matrix
-        Mat warp_mat = Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
-        return warp_mat;
+        return Imgproc.getPerspectiveTransform(srcMat2f, dstMat2f);
     }
 
     public static Mat perspectiveTransform(double[] topleft, double[] topright,
                                            double[] bottomleft, double[] bottomright, Mat bgr)
-        throws Exception {
+            throws Exception {
 
         // determine the size of the destination Mat: use the positions of the finder patterns to determine the width and height.
         // look out: the horizontal direction now refers again to the actual calibration card
-        int verSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - topright[0]),2) + Math.pow((topleft[1] - topright[1]),2)));
-        int horSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - bottomleft[0]),2) + Math.pow((topleft[1] - bottomleft[1]),2)));
+        int verSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - topright[0]), 2) + Math.pow((topleft[1] - topright[1]), 2)));
+        int horSize = (int) Math.round(Math.sqrt(Math.pow((topleft[0] - bottomleft[0]), 2) + Math.pow((topleft[1] - bottomleft[1]), 2)));
 
         // we rotate the resulting image, so we go from a portrait view to the regular calibration card in landscape
         // so the mapping is:
@@ -114,7 +110,7 @@ public class OpenCVUtils {
         double[] trDest = new double[]{horSize - 1, 0};
         double[] brDest = new double[]{horSize - 1, verSize - 1};
         double[] blDest = new double[]{0, verSize - 1};
-        double[] tlDest = new double[]{0,0};
+        double[] tlDest = new double[]{0, 0};
 
         Mat warp_mat = transformMatrix(topleft, topright, bottomright, bottomleft, trDest, brDest, blDest, tlDest);
 
@@ -128,7 +124,7 @@ public class OpenCVUtils {
 
     // detect strip by multi-step method
     // returns cut-out and rotated resulting strip as mat
-    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH){
+    public static Mat detectStrip(Mat striparea, StripTest.Brand brand, double ratioW, double ratioH) {
         List<Mat> channels = new ArrayList<>();
         Mat sArea = striparea.clone();
 
@@ -147,16 +143,16 @@ public class OpenCVUtils {
         final WeightedObservedPoints corrPoints = new WeightedObservedPoints();
 
         double tot, ytot;
-        for (int i = 0; i < binary.cols(); i++){ // iterate over cols
+        for (int i = 0; i < binary.cols(); i++) { // iterate over cols
             tot = 0;
             ytot = 0;
-            for (int j = 0; j < binary.rows(); j++){ // iterate over rows
-                if (binary.get(j,i)[0] > 128){
+            for (int j = 0; j < binary.rows(); j++) { // iterate over rows
+                if (binary.get(j, i)[0] > 128) {
                     ytot += j;
                     tot++;
                 }
             }
-            if (tot > 0){
+            if (tot > 0) {
                 points.add((double) i, ytot / tot);
             }
         }
@@ -169,10 +165,10 @@ public class OpenCVUtils {
         // second pass, remove outliers
         double estimate, actual;
 
-        for (int i = 0; i < pointsList.size(); i++){
+        for (int i = 0; i < pointsList.size(); i++) {
             estimate = coeff[1] * pointsList.get(i).getX() + coeff[0];
             actual = pointsList.get(i).getY();
-            if (actual > 0.9 * estimate && actual <  1.1 * estimate) { //if the point differs less than +/- 10 %, keep the point
+            if (actual > 0.9 * estimate && actual < 1.1 * estimate) { //if the point differs less than +/- 10 %, keep the point
                 corrPoints.add(pointsList.get(i).getX(), pointsList.get(i).getY());
             }
         }
@@ -185,12 +181,12 @@ public class OpenCVUtils {
         double rotAngleDeg = Math.atan(slope) * 180 / Math.PI;
 
         //determine a point on the line, in the middle of strip, in the horizontal middle of the whole image
-        int midpointx = (int) Math.round(binary.cols() / 2);
+        int midpointx = Math.round(binary.cols() / 2);
         int midpointy = (int) Math.round(midpointx * slope + offset);
 
         // rotate around the midpoint, to straighten the binary strip
         Mat dstBinary = new Mat(binary.rows(), binary.cols(), binary.type());
-        Point center = new Point(midpointx,midpointy);
+        Point center = new Point(midpointx, midpointy);
         Mat rotMat = Imgproc.getRotationMatrix2D(center, rotAngleDeg, 1.0);
         Imgproc.warpAffine(binary, dstBinary, rotMat, binary.size(), Imgproc.INTER_CUBIC + Imgproc.WARP_FILL_OUTLIERS);
 
@@ -201,10 +197,10 @@ public class OpenCVUtils {
         // Compute white points in each row
         double[] rowCount = new double[dstBinary.rows()];
         int rowTot;
-        for (int i = 0; i < dstBinary.rows(); i++){ // iterate over rows
+        for (int i = 0; i < dstBinary.rows(); i++) { // iterate over rows
             rowTot = 0;
-            for (int j = 0; j < dstBinary.cols(); j++){ // iterate over cols
-                if (dstBinary.get(i,j)[0] > 128){
+            for (int j = 0; j < dstBinary.cols(); j++) { // iterate over cols
+                if (dstBinary.get(i, j)[0] > 128) {
                     rowTot++;
                 }
             }
@@ -230,8 +226,8 @@ public class OpenCVUtils {
         }
 
         // cut out binary strip
-        Point stripTopLeft = new Point(0,risePos);
-        Point stripBottomRight = new Point(dstBinary.cols(),fallPos);
+        Point stripTopLeft = new Point(0, risePos);
+        Point stripBottomRight = new Point(dstBinary.cols(), fallPos);
 
         org.opencv.core.Rect stripArea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
         Mat binaryStrip = dstBinary.submat(stripArea);
@@ -244,10 +240,10 @@ public class OpenCVUtils {
 
         double[] colCount = new double[binaryStrip.cols()];
         int colTot;
-        for (int i = 0; i < binaryStrip.cols(); i++){ // iterate over cols
+        for (int i = 0; i < binaryStrip.cols(); i++) { // iterate over cols
             colTot = 0;
-            for (int j = 0; j < binaryStrip.rows(); j++){ // iterate over rows
-                if (binaryStrip.get(j,i)[0] > 128){
+            for (int j = 0; j < binaryStrip.rows(); j++) { // iterate over rows
+                if (binaryStrip.get(j, i)[0] > 128) {
                     colTot++;
                 }
             }
@@ -260,8 +256,8 @@ public class OpenCVUtils {
         // moving from the right, determine the first point that crosses the treshold
         boolean found = false;
         int posRight = binaryStrip.cols() - 1;
-        while(!found && posRight > 0){
-            if (colCount[posRight] > treshold){
+        while (!found && posRight > 0) {
+            if (colCount[posRight] > treshold) {
                 found = true;
             } else {
                 posRight--;
@@ -280,12 +276,12 @@ public class OpenCVUtils {
 //        }
 
         // use known length of strip to determine left side
-        int length = (int) Math.round(brand.getStripLenght() * ratioW);
+        int length = (int) Math.round(brand.getStripLength() * ratioW);
         int posLeft = posRight - length;
 
         // cut out final strip
-        stripTopLeft = new Point(posLeft,0);
-        stripBottomRight = new Point(posRight,binaryStrip.rows());
+        stripTopLeft = new Point(posLeft, 0);
+        stripBottomRight = new Point(posRight, binaryStrip.rows());
         stripArea = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
         Mat resultStrip = colourStrip.submat(stripArea).clone();
 
@@ -299,15 +295,14 @@ public class OpenCVUtils {
         colourStrip.release();
 
         // sanity check: the strip should be at least larger than half of the black area
-        if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5){
+        if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5) {
             return null;
         }
 
         return resultStrip;
     }
 
-    public static ColorDetected detectStripColorBrandKnown(Mat lab)
-    {
+    public static ColorDetected detectStripColorBrandKnown(Mat lab) {
         // compute mean lab colour. This is the value that will be
         // used for the ppm computation
         Scalar mean = Core.mean(lab);
@@ -328,41 +323,40 @@ public class OpenCVUtils {
         return colorDetected;
     }
 
-    public static int getMinX(List<Point> list)
-    {
+    public static int getMinX(List<Point> list) {
         int min = Integer.MAX_VALUE;
-        for(Point p: list){
-            if(p.x < min)
+        for (Point p : list) {
+            if (p.x < min)
                 min = (int) Math.round(p.x);
         }
 
         return min;
     }
-    public static int getMaxX(List<Point> list)
-    {
+
+    public static int getMaxX(List<Point> list) {
         int max = Integer.MIN_VALUE;
-        for(Point p: list){
-            if(p.x>max)
+        for (Point p : list) {
+            if (p.x > max)
                 max = (int) Math.round(p.x);
         }
 
         return max;
     }
-    public static int getMinY(List<Point> list)
-    {
+
+    public static int getMinY(List<Point> list) {
         int min = Integer.MAX_VALUE;
-        for(Point p: list){
-            if(p.y < min)
+        for (Point p : list) {
+            if (p.y < min)
                 min = (int) Math.round(p.y);
         }
 
         return min;
     }
-    public static int getMaxY(List<Point> list)
-    {
+
+    public static int getMaxY(List<Point> list) {
         int max = Integer.MIN_VALUE;
-        for(Point p: list){
-            if(p.y>max)
+        for (Point p : list) {
+            if (p.y > max)
                 max = (int) Math.round(p.y);
         }
 

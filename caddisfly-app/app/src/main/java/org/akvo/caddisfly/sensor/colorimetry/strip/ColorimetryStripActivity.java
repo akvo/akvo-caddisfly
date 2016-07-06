@@ -22,11 +22,11 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * lead to a {@link ColorimetryStripDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
- * <p/>
+ * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link ColorimetryStripListFragment} and the item details
  * (if present) is a {@link ColorimetryStripDetailFragment}.
- * <p/>
+ * <p>
  * This activity also implements the required
  * {@link ColorimetryStripListFragment.Callbacks} interface
  * to listen for item selections.
@@ -131,7 +131,7 @@ public class ColorimetryStripActivity extends AppCompatActivity
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            //System.out.println("***brandname in ChooseStripTestListActivity onItemSelected: " + id);
+            //System.out.println("***brandName in ChooseStripTestListActivity onItemSelected: " + id);
 
             Intent detailIntent = new Intent(this, ColorimetryStripDetailActivity.class);
             detailIntent.putExtra(Constant.BRAND, id);

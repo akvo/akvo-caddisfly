@@ -27,7 +27,7 @@ import java.util.Map;
  * to handle interaction events.
  * Use the {@link CameraPrepareFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p>
  * This fragment is used to show the quality checks done in CameraPreviewCallback
  */
 @SuppressWarnings("deprecation")
@@ -40,13 +40,13 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     private WeakReference<QualityCheckView> wrExposureView;
     private WeakReference<QualityCheckView> wrContrastView;
 
+    public CameraPrepareFragment() {
+        // Required empty public constructor
+    }
+
     public static CameraPrepareFragment newInstance() {
 
         return new CameraPrepareFragment();
-    }
-
-    public CameraPrepareFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -62,12 +62,12 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         messageView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareTextView);
         TextView countQualityView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareCountQualityView);
 
-        wrCountQualityView = new WeakReference<TextView>(countQualityView);
-        wrExposureView = new WeakReference<QualityCheckView>(exposureView);
-        wrContrastView = new WeakReference<QualityCheckView>(contrastView);
+        wrCountQualityView = new WeakReference<>(countQualityView);
+        wrExposureView = new WeakReference<>(exposureView);
+        wrContrastView = new WeakReference<>(contrastView);
 
         //use brightness view as a button to switch on and off the flash
-        if(exposureView !=null) {
+        if (exposureView != null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,24 +82,24 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     protected void showBrightness(double value) {
 
-        if(wrExposureView!=null)
+        if (wrExposureView != null)
             wrExposureView.get().setPercentage((float) value);
     }
 
     @Override
     protected void showShadow(double value) {
 
-        if(wrContrastView!=null)
+        if (wrContrastView != null)
             wrContrastView.get().setPercentage((float) value);
     }
 
     @Override
     public void showStartButton() {
 
-        if(startButton == null)
+        if (startButton == null)
             return;
 
-        if(startButton.getVisibility() == View.GONE) {
+        if (startButton.getVisibility() == View.GONE) {
             startButton.setVisibility(View.VISIBLE);
             startButton.setBackgroundResource(android.R.drawable.btn_default);
             startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
@@ -112,18 +112,17 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                 }
             });
 
-            if(messageView!=null)
-            {
+            if (messageView != null) {
                 messageView.setText(R.string.confirm_quality_checks_ok);
             }
         }
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -142,7 +141,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         try {
@@ -151,18 +150,15 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             if (mListener != null) {
                 mListener.startNextPreview(0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
     }
 
     @Override
-    public void countQuality(Map<String, Integer> countMap)
-    {
-        if(wrCountQualityView!=null)
-        {
+    public void countQuality(Map<String, Integer> countMap) {
+        if (wrCountQualityView != null) {
             try {
                 int count = 0;
 
@@ -178,16 +174,12 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     wrCountQualityView.get().setText(text);
 
                     // next part is only for develop purposes. It shows the count per quality parameter
-                    if (true) {
-                        wrCountQualityView.get().append("\n\n");
-                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
-                        }
+                    wrCountQualityView.get().append("\n\n");
+                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                        wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -212,7 +204,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
 
             areas.add(new Camera.Area(focusArea, 1));
 
-            if(mListener!=null)
+            if (mListener != null)
                 mListener.setFocusAreas(areas);
         }
     }

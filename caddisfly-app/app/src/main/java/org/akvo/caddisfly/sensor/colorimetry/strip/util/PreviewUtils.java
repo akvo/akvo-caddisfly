@@ -5,22 +5,16 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationD
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternInfo;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Created by linda on 10/3/15.
+ * Created by linda on 10/3/15
  */
 public class PreviewUtils {
-    public static double[] getDiffLuminosity(Mat src_gray)
-    {
+    public static double[] getDiffLuminosity(Mat src_gray) {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(src_gray);
-        return new double[]{ result.minVal, result.maxVal};
+        return new double[]{result.minVal, result.maxVal};
     }
 
     /*method for shadow detection
@@ -41,26 +35,24 @@ public class PreviewUtils {
         double[][] points = CalibrationCard.createWhitePointArray(lab, data);
 
         //get the sum total of luminosity values
-        for(int i=0; i< points.length; i++) {
+        for (int i = 0; i < points.length; i++) {
             sumLum += points[i][2];
         }
 
         double avgLum = sumLum / points.length;
         double avgLumReciproc = 1.0 / avgLum;
 
-        for(int i=0; i < points.length; i++) {
+        for (int i = 0; i < points.length; i++) {
             double lum = points[i][2];
             deviation = Math.abs(lum - avgLum) * avgLumReciproc;
 
             // count number of points that differ more than CONTRAST_DEVIATION_FRACTION from the average
-            if(deviation > Constant.CONTRAST_DEVIATION_FRACTION)
-            {
+            if (deviation > Constant.CONTRAST_DEVIATION_FRACTION) {
                 countDev++;
             }
 
             // count number of points that differ more than CONTRAST_MAX_DEVIATION_FRACTION from the average
-            if(deviation > Constant.CONTRAST_MAX_DEVIATION_FRACTION)
-            {
+            if (deviation > Constant.CONTRAST_MAX_DEVIATION_FRACTION) {
                 countMaxDev++;
             }
         }
@@ -74,39 +66,37 @@ public class PreviewUtils {
         return (result / points.length) * 100.0;
     }
 
-    private static float distance(double x1, double y1, double x2, double y2){
-        return (float) Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2 - y1,2));
+    private static float distance(double x1, double y1, double x2, double y2) {
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     //method to calculate the amount of perspective, based on the difference of distances at the top and sides
     // horizontal and vertical are according to calibration card in landscape view
-    public static float[] getTilt(FinderPatternInfo info)
-    {
-        if(info==null) {
+    public static float[] getTilt(FinderPatternInfo info) {
+        if (info == null) {
             return null;
         }
 
         // compute distances
-        // in info, we have topleft, topright, bottomleft, bottomright
-        float distHtop = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
-        float distHbot = distance(info.getBottomRight().getX(),info.getBottomRight().getY(),info.getTopRight().getX(),info.getTopRight().getY());
-        float distVleft = distance(info.getBottomLeft().getX(),info.getBottomLeft().getY(),info.getBottomRight().getX(),info.getBottomRight().getY());
-        float distVright = distance(info.getTopRight().getX(),info.getTopRight().getY(),info.getTopLeft().getX(),info.getTopLeft().getY());
+        // in info, we have topLeft, topRight, bottomLeft, bottomRight
+        float distHtop = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
+        float distHbot = distance(info.getBottomRight().getX(), info.getBottomRight().getY(), info.getTopRight().getX(), info.getTopRight().getY());
+        float distVleft = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getBottomRight().getX(), info.getBottomRight().getY());
+        float distVright = distance(info.getTopRight().getX(), info.getTopRight().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
 
         // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
-        return new float[]{distHtop/distHbot,distVleft/distVright};
+        return new float[]{distHtop / distHbot, distVleft / distVright};
     }
 
-    public static String fromSecondsToMMSS(int seconds) throws Exception
-    {
-        if(seconds>3600)
+    public static String fromSecondsToMMSS(int seconds) throws Exception {
+        if (seconds > 3600)
             throw new Exception("more than an hour");
 
         int m = (int) Math.floor(seconds / 60);
         int s = seconds - (m * 60);
 
-        String mm = m>0? String.format("%2d", m) + ":": "";
-        String ss = m>0? String.format("%02d", s): String.format("%2d", s);
+        String mm = m > 0 ? String.format("%2d", m) + ":" : "";
+        String ss = m > 0 ? String.format("%02d", s) : String.format("%2d", s);
 
         return mm + ss;
     }

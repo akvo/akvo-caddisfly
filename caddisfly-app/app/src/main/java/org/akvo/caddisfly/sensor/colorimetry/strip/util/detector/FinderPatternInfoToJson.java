@@ -6,34 +6,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by linda on 9/13/15.
+ * Created by linda on 9/13/15
  */
 public class FinderPatternInfoToJson {
 
-    public static String toJson(FinderPatternInfo info)
-    {
+    public static String toJson(FinderPatternInfo info) {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            JSONArray topleft = new JSONArray();
-            topleft.put(info.getTopLeft().getX());
-            topleft.put(info.getTopLeft().getY());
-            jsonObject.put(Constant.TOPLEFT, topleft);
+            JSONArray topLeft = new JSONArray();
+            topLeft.put(info.getTopLeft().getX());
+            topLeft.put(info.getTopLeft().getY());
+            jsonObject.put(Constant.TOPLEFT, topLeft);
 
-            JSONArray topright = new JSONArray();
-            topright.put(info.getTopRight().getX());
-            topright.put(info.getTopRight().getY());
-            jsonObject.put(Constant.TOPRIGHT, topright);
+            JSONArray topRight = new JSONArray();
+            topRight.put(info.getTopRight().getX());
+            topRight.put(info.getTopRight().getY());
+            jsonObject.put(Constant.TOPRIGHT, topRight);
 
-            JSONArray bottomleft = new JSONArray();
-            bottomleft.put(info.getBottomLeft().getX());
-            bottomleft.put(info.getBottomLeft().getY());
-            jsonObject.put(Constant.BOTTOMLEFT, bottomleft);
+            JSONArray bottomLeft = new JSONArray();
+            bottomLeft.put(info.getBottomLeft().getX());
+            bottomLeft.put(info.getBottomLeft().getY());
+            jsonObject.put(Constant.BOTTOMLEFT, bottomLeft);
 
-            JSONArray bottomright = new JSONArray();
-            bottomright.put(info.getBottomRight().getX());
-            bottomright.put(info.getBottomRight().getY());
-            jsonObject.put(Constant.BOTTOMRIGHT, bottomright);
+            JSONArray bottomRight = new JSONArray();
+            bottomRight.put(info.getBottomRight().getX());
+            bottomRight.put(info.getBottomRight().getY());
+            jsonObject.put(Constant.BOTTOMRIGHT, bottomRight);
 
             return jsonObject.toString();
 

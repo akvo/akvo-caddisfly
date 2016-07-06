@@ -3,7 +3,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip;
 import android.graphics.Bitmap;
 
 /**
- * Created by linda on 6/26/15.
+ * Created by linda on 6/26/15
  */
 public interface DetectStripListener {
 

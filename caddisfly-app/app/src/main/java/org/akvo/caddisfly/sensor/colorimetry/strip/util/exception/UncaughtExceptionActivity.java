@@ -17,7 +17,7 @@ public class UncaughtExceptionActivity extends AppCompatActivity {
 
         String error = getIntent().getStringExtra(Constant.ERROR);
 
-        if(error!=null) {
+        if (error != null) {
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_uncaught_exceptionLinearLayout);
             TextView view = new TextView(this);
             view.setText(error);

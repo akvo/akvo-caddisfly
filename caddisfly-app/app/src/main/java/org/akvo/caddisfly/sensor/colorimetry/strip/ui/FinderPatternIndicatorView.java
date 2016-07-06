@@ -12,7 +12,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPattern;
 import java.util.List;
 
 /**
- * Created by linda on 9/9/15.
+ * Created by linda on 9/9/15
  */
 public class FinderPatternIndicatorView extends SurfaceView {
 
@@ -36,8 +36,7 @@ public class FinderPatternIndicatorView extends SurfaceView {
         paint.setColor(Color.RED);
     }
 
-    public void showPatterns(List<FinderPattern> patterns, int width, int height)
-    {
+    public void showPatterns(List<FinderPattern> patterns, int width, int height) {
 
         this.patterns = patterns;
         this.width = width;
@@ -47,19 +46,17 @@ public class FinderPatternIndicatorView extends SurfaceView {
 
     }
 
-    public void setColor(int color)
-    {
+    public void setColor(int color) {
         paint.setColor(color);
     }
 
     @Override
-    public void onDraw(Canvas canvas)
-    {
+    public void onDraw(Canvas canvas) {
 
         // Have the view being transparent
         canvas.drawARGB(0, 0, 0, 0);
 
-        if(patterns!=null) {
+        if (patterns != null) {
             //canvas has a rotation of 90 degrees in respect to the camera preview
             //Camera preview size is in landscape mode, canvas is in portrait mode
             //the width of the canvas corresponds to the height of the size,

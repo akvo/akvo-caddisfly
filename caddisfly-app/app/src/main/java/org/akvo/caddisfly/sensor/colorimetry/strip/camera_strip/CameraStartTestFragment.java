@@ -36,26 +36,28 @@ import java.util.Map;
  * to handle interaction events.
  * Use the {@link CameraStartTestFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p>
  * This fragment shows the progress of the strip test.
- *
+ * <p>
  * At the beginning, we start a countdown.
  * We need to know when it is time for each patch to get its picture taken.
- *
+ * <p>
  * Then we update the UI:
  * First it shows if quality checks are OK
- *
+ * <p>
  * It uses an instance of
  * ProgressIndicatorView to indicate if
  * a. it is time to take a picture
  * b. the picture is taken
- *
+ * <p>
  * If all pictures are taken it
  * a. if develop is false: shows an animation of a spinning circle while doing a DetectStripTask
  * b. if develop is true: starts the DetectStripActivity (which does a DetectStripTask)
  */
 public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
+    WeakReference<Button> wrStartButton;
+    WeakReference<TextView> wrCountQualityView;
     private CameraViewListener mListener;
     //private Button startButton;
     private List<StripTest.Brand.Patch> patches;
@@ -71,8 +73,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     //private TextView countQualityView;
     private QualityCheckView exposureView;
     private QualityCheckView contrastView;
-    WeakReference<Button> wrStartButton;
-    WeakReference<TextView> wrCountQualityView;
     private ImageView finishImage;
     private Animation rotate;
 
@@ -84,7 +84,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         @Override
         public void run() {
 
-            if(progressIndicatorViewAnim!=null && handler!=null) {
+            if (progressIndicatorViewAnim != null && handler != null) {
 
                 timeLapsed = (int) Math.floor((System.currentTimeMillis() - initTimeMillis) / 1000);
                 progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
@@ -95,6 +95,10 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     };
 
 
+    public CameraStartTestFragment() {
+        // Required empty public constructor
+    }
+
     public static CameraStartTestFragment newInstance(String brandName) {
 
         CameraStartTestFragment fragment = new CameraStartTestFragment();
@@ -102,10 +106,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         args.putString(Constant.BRAND, brandName);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public CameraStartTestFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -131,8 +131,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         TextView countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
         finishImage = (ImageView) rootView.findViewById(R.id.activity_cameraFinishImage);
 
-        wrStartButton = new WeakReference<Button>(startButton);
-        wrCountQualityView  = new WeakReference<TextView>(countQualityView);
+        wrStartButton = new WeakReference<>(startButton);
+        wrCountQualityView = new WeakReference<>(countQualityView);
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -153,20 +153,20 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 //        });
         // ************* END HACK FOR TESTING ******************
 
-        if(getArguments()!=null) {
+        if (getArguments() != null) {
 
             brandName = getArguments().getString(Constant.BRAND);
 
             StripTest stripTest = new StripTest();
             //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
+            patches = stripTest.getBrand(brandName).getPatchesOrderedByTimeLapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.activity_cameraProgressIndicatorViewAnim);
 
             //Add a step per time lapse to progressIndicatorView
             for (int i = 0; i < patches.size(); i++) {
 
-                //Skip if there is no timelapse.
+                //Skip if there is no timeLapse.
                 if (i > 0) {
                     if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
                         continue;
@@ -182,7 +182,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         //use brightness view as a button to switch on and off the flash
         //TODO: remove in release version?
         QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
-        if(exposureView!=null) {
+        if (exposureView != null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -206,7 +206,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         }
 
         //reset quality checks count to zero
-        if(mListener!=null)
+        if (mListener != null)
             mListener.setQualityCheckCountZero();
 
         rotate = AnimationUtils.loadAnimation(activity, R.anim.rotate);
@@ -225,7 +225,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     * Then we start a countdown.
      */
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         try {
@@ -233,17 +233,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
             setHeightOfOverlay(0);
 
             startCountdown();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onPause() {
-        if(handler!=null)
-        {
+        if (handler != null) {
             handler.removeCallbacks(countdownRunnable);
         }
         super.onPause();
@@ -252,14 +249,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     @Override
     protected void showBrightness(double value) {
 
-        if(exposureView!=null)
-            exposureView.setPercentage((float)value);
+        if (exposureView != null)
+            exposureView.setPercentage((float) value);
     }
 
     @Override
     protected void showShadow(double value) {
 
-        if(contrastView!=null)
+        if (contrastView != null)
             contrastView.setPercentage((float) value);
     }
 
@@ -285,7 +282,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
         //post the runnable responsible for updating the
         // ProgressIndicatorView
-        if(handler!=null) {
+        if (handler != null) {
             handler.post(countdownRunnable);
         }
 
@@ -295,11 +292,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         brandName = getArguments().getString(Constant.BRAND);
 
-        System.out.println("***brandname: " + brandName);
+        System.out.println("***brandName: " + brandName);
 
         StripTest stripTest = new StripTest();
 
-        patches = stripTest.getBrand(brandName).getPatchesOrderedByTimelapse();
+        patches = stripTest.getBrand(brandName).getPatchesOrderedByTimeLapse();
 
         for (int i = 0; i < patches.size(); i++) {
 
@@ -310,10 +307,10 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                 }
             }
             //tell CameraActivity when it is time to take the next picture
-            //add 10 milliseconds to avoid it being on same time as preview if timelapse is 0;
+            //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
 
-            System.out.println("***posting takeNextPicture: " + i + " timelapse: " + patches.get(i).getTimeLapse());
+            System.out.println("***posting takeNextPicture: " + i + " timeLapse: " + patches.get(i).getTimeLapse());
         }
 
     }
@@ -326,12 +323,12 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     @Override
     public void showStartButton() {
 
-        if(wrStartButton==null)
+        if (wrStartButton == null)
             return;
 
         wrStartButton.get().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
-        if(progressIndicatorViewAnim!=null) {
+        if (progressIndicatorViewAnim != null) {
             progressIndicatorViewAnim.setStart(true);
         }
     }
@@ -339,18 +336,17 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     /*
     * Update progressIndicatorView with the number of steps that we have a picture of
      */
-    public void setStepsTaken(final int number)
-    {
+    public void setStepsTaken(final int number) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(progressIndicatorViewAnim!=null) {
+                if (progressIndicatorViewAnim != null) {
                     progressIndicatorViewAnim.setStepsTaken(number);
                 }
             }
         };
 
-        if(handler!=null) {
+        if (handler != null) {
             handler.post(runnable);
         }
 
@@ -361,10 +357,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     * Update JSONArray imagePatchArray to keep track of which picture goes with which patch.
      */
     public void sendData(final byte[] data, long timeMillis,
-                         final FinderPatternInfo info)
-    {
+                         final FinderPatternInfo info) {
         //check if image count is lower than patches size. if not, abort
-        if(imageCount >= patches.size())
+        if (imageCount >= patches.size())
             return;
 
         //what happens in the for-loop:
@@ -376,7 +371,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         // before this loop has run.
         //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
         // the list of patches, which of course starts counting at 0.
-        for(int i = patchesCovered + 1; i < patches.size(); i++) {
+        for (int i = patchesCovered + 1; i < patches.size(); i++) {
 
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
@@ -387,7 +382,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                 //keep track of stepsCovered ('step' is the patches that have the same time lapse)
                 if (i > 0) {
                     if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
-                        stepsCovered ++;
+                        stepsCovered++;
                     }
                 }
                 //keep track of which image belongs to which patch
@@ -408,20 +403,20 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         // and imagePatchArray contains a value that corresponds with that.
         new StoreDataTask(getActivity(), imageCount, data, info).execute();
 
-        System.out.println("***xxximageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
+        System.out.println("***imageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
 
         //add one to imageCount
         imageCount++;
 
     }
 
-    public void showSpinner()
-    {
-        if(finishImage!=null) {
+    public void showSpinner() {
+        if (finishImage != null) {
             finishImage.setImageResource(R.drawable.spinner);
             finishImage.startAnimation(rotate);
         }
     }
+
     /*
     * If picture data (Camera Preview data) is stored,
     * proceed to calibrate and detect the strip from it.
@@ -435,7 +430,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     * if all patches are 'covered', meaning that we have counted that number beforehand,
     * in the 'sendData' method above.
     *
-    * @params: format, widht, height. Those should be the format, width and height of the Camera.Size
+    * @params: format, width, height. Those should be the format, width and height of the Camera.Size
      */
     public void dataSent(int format, int width, int height) {
 
@@ -444,16 +439,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         boolean develop = false;
 
         //check if we do have images for all patches
-        if(patchesCovered == patches.size()-1)
-        {
+        if (patchesCovered == patches.size() - 1) {
             //stop the preview callback from repeating itself
-            if(mListener!=null)
-            {
+            if (mListener != null) {
                 mListener.stopCallback(true);
             }
 
             //check if we really do have data in the json-array
-            if(imagePatchArray.length()>0) {
+            if (imagePatchArray.length() > 0) {
                 //write image/patch info to internal storage
                 FileStorage fileStorage = new FileStorage(getActivity());
                 fileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
@@ -485,8 +478,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     *
     * in the method dataSent() above
      */
-    private Intent createDetectStripIntent(int format, int width, int height)
-    {
+    private Intent createDetectStripIntent(int format, int width, int height) {
         Intent detectStripIntent = new Intent();
         //put Extras into intent
         detectStripIntent.putExtra(Constant.BRAND, brandName);
@@ -500,19 +492,17 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     }
 
     /*
-    *  Show the number of succesful quality checks as text on the start button
+    *  Show the number of successful quality checks as text on the start button
      */
     @Override
-    public void countQuality(Map<String, Integer> countMap)
-    {
+    public void countQuality(Map<String, Integer> countMap) {
 
-        if(wrStartButton!=null)
-        {
+        if (wrStartButton != null) {
             try {
 
                 int count = 0;
 
-                for(int i: countMap.values()){
+                for (int i : countMap.values()) {
                     count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
 
@@ -522,16 +512,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                     String text = new String(getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT));
                     wrStartButton.get().setText(text);
 
-                    if(1==1) {
+                    if (1 == 1) {
                         wrCountQualityView.get().setText("");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

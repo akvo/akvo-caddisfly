@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * Created by linda on 9/13/15.
+ * Created by linda on 9/13/15
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public class FileStorage {
@@ -31,8 +31,7 @@ public class FileStorage {
     public static String ROOTDIR = "/Akvo Caddisfly";
     private Context context;
 
-    public FileStorage(Context context)
-    {
+    public FileStorage(Context context) {
         this.context = context;
     }
 
@@ -150,9 +149,8 @@ public class FileStorage {
         System.out.println("\n\nFile written to " + file);
     }
 
-    public boolean writeByteArray(byte[] data, String name)
-    {
-        String fileName = name +".txt";
+    public boolean writeByteArray(byte[] data, String name) {
+        String fileName = name + ".txt";
 
         FileOutputStream outputStream;
 
@@ -173,7 +171,7 @@ public class FileStorage {
     }
 
     public byte[] readByteArray(String name) throws IOException {
-        String fileName = name +".txt";
+        String fileName = name + ".txt";
         byte[] data;
         int c;
 
@@ -181,8 +179,7 @@ public class FileStorage {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedInputStream bos = new BufferedInputStream(fis);
 
-        while((c = bos.read()) != -1)
-        {
+        while ((c = bos.read()) != -1) {
             baos.write(c);
 
         }
@@ -196,9 +193,8 @@ public class FileStorage {
         return data;
     }
 
-    public void writeToInternalStorage(String name, String json)
-    {
-        String fileName = name +".txt";
+    public void writeToInternalStorage(String name, String json) {
+        String fileName = name + ".txt";
 
         FileOutputStream outputStream;
 
@@ -213,8 +209,7 @@ public class FileStorage {
         }
     }
 
-    public void writeBitmapToInternalStorage(String name, Bitmap bitmap)
-    {
+    public void writeBitmapToInternalStorage(String name, Bitmap bitmap) {
 
         try {
 
@@ -238,14 +233,12 @@ public class FileStorage {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
 
         byte[] img = baos.toByteArray();
-        String str = Base64.encodeToString(img, Base64.DEFAULT);
-        return str;
+        return Base64.encodeToString(img, Base64.DEFAULT);
 
 
     }
 
-    public String readFromInternalStorage(String fileName)
-    {
+    public String readFromInternalStorage(String fileName) {
 
         File file = new File(context.getFilesDir(), fileName);
 
@@ -271,8 +264,7 @@ public class FileStorage {
         return null;
     }
 
-    public boolean checkIfFilenameContainsString(final String contains)
-    {
+    public boolean checkIfFilenameContainsString(final String contains) {
 
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
@@ -285,12 +277,11 @@ public class FileStorage {
 
         System.out.println("***files that contain string: " + files.length);
 
-        return files.length>0;
+        return files.length > 0;
 
     }
 
-    public void deleteFromInternalStorage(final String contains)
-    {
+    public void deleteFromInternalStorage(final String contains) {
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
@@ -299,8 +290,7 @@ public class FileStorage {
             }
         };
         File[] files = file.listFiles(filter);
-        for(File f: files)
-        {
+        for (File f : files) {
             boolean deleted = f.delete();
 
             System.out.println("***deleted file : " + f.getName() + ": " + deleted);

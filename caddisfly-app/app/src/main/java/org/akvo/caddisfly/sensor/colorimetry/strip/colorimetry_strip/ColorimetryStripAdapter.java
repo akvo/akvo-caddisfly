@@ -12,27 +12,27 @@ import org.akvo.caddisfly.R;
 import java.util.List;
 
 /**
- * Created by linda on 9/5/15.
+ * Created by linda on 9/5/15
  */
 class ColorimetryStripAdapter extends ArrayAdapter<String> {
 
-    private List<String> brandnames;
+    private List<String> brandNames;
     private int resource;
     private Context context;
     private StripTest stripTest;
 
-    public ColorimetryStripAdapter(Context context, int resource, List<String> brandnames) {
+    public ColorimetryStripAdapter(Context context, int resource, List<String> brandNames) {
         super(context, resource);
 
         this.context = context;
         this.resource = resource;
-        this.brandnames = brandnames;
+        this.brandNames = brandNames;
         this.stripTest = new StripTest();
     }
 
     @Override
     public int getCount() {
-        return brandnames.size();
+        return brandNames.size();
     }
 
     @Override
@@ -41,20 +41,18 @@ class ColorimetryStripAdapter extends ArrayAdapter<String> {
         View view = convertView;
         ViewHolder holder;
 
-        if(convertView==null)
-        {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(resource, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        if(brandnames!=null) {
+        if (brandNames != null) {
             if (stripTest != null) {
-                StripTest.Brand brand = stripTest.getBrand(brandnames.get(position));
+                StripTest.Brand brand = stripTest.getBrand(brandNames.get(position));
 
                 if (brand != null) {
 
@@ -72,21 +70,18 @@ class ColorimetryStripAdapter extends ArrayAdapter<String> {
                         holder.subtextView.setText(subtext);
                     }
                 }
-            }
-            else holder.textView.setText(brandnames.get(position));
+            } else holder.textView.setText(brandNames.get(position));
         }
         return view;
 
     }
 
-    private static class ViewHolder
-    {
+    private static class ViewHolder {
 
         private TextView textView;
         private TextView subtextView;
 
-        public ViewHolder(View v)
-        {
+        public ViewHolder(View v) {
 
             textView = (TextView) v.findViewById(R.id.adapter_instructionsTextView);
             subtextView = (TextView) v.findViewById(R.id.adapter_instructionsSubTextView);

@@ -14,12 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.result_strip.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
-public class DetectStripActivity extends AppCompatActivity implements DetectStripListener{
+public class DetectStripActivity extends AppCompatActivity implements DetectStripListener {
 
     private LinearLayout linearLayout;
     private Handler handler;
@@ -76,7 +76,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
                 textView.setText(message);
                 linearLayout.addView(textView);
 
-                View lastView = scrollView.getChildAt(scrollView.getChildCount()-1);
+                View lastView = scrollView.getChildAt(scrollView.getChildCount() - 1);
                 scrollView.smoothScrollTo(0, lastView.getBottom());
 
                 //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -98,8 +98,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
         handler = new Handler();
 
         brandName = getIntent().getStringExtra(Constant.BRAND);
-        if(brandName == null)
-        {
+        if (brandName == null) {
             throw new NullPointerException("Cannot proceed without brand name.");
         }
         new DetectStripTask(this).execute(getIntent());
@@ -152,7 +151,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
                 textView.setText(messages[what]);
                 linearLayout.addView(textView);
 
-                View lastView = scrollView.getChildAt(scrollView.getChildCount()-1);
+                View lastView = scrollView.getChildAt(scrollView.getChildCount() - 1);
                 scrollView.smoothScrollTo(0, lastView.getBottom());
 
                 //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -183,7 +182,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
                 textView.setText(messages[what]);
                 linearLayout.addView(textView);
 
-                View lastView = scrollView.getChildAt(scrollView.getChildCount()-1);
+                View lastView = scrollView.getChildAt(scrollView.getChildCount() - 1);
                 scrollView.smoothScrollTo(0, lastView.getBottom());
 
                 //scrollView.fullScroll(ScrollView.FOCUS_DOWN);

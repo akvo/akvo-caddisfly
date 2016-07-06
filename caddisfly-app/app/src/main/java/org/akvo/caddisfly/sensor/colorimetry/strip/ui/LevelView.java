@@ -13,12 +13,12 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 /**
- * Created by linda on 10/27/15.
+ * Created by linda on 10/27/15
  */
 public class LevelView extends View {
-    private float[] tilts;
     private final Paint redPaint;
     private final Bitmap arrowBitmap;
+    private float[] tilts;
 
     public LevelView(Context context) {
         this(context, null);
@@ -42,10 +42,9 @@ public class LevelView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if(tilts != null)
-        {
+        if (tilts != null) {
             float degrees = getDegrees(tilts);
-            if(degrees!=0) {
+            if (degrees != 0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2, canvas.getHeight() / 2);
                 canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
@@ -60,17 +59,16 @@ public class LevelView extends View {
         invalidate();
     }
 
-    private float getDegrees(float[] tilts)
-    {
+    private float getDegrees(float[] tilts) {
         float degrees = 0f;
 
         // if the horizontal tilt is too large, indicate it
-        if (Math.abs(tilts[0] - 1) > Constant.MAX_TILT_DIFF){
+        if (Math.abs(tilts[0] - 1) > Constant.MAX_TILT_DIFF) {
             degrees = tilts[0] - 1 < 0 ? -90 : 90;
         }
 
         // if the vertical tilt is too large, indicate it
-        if (Math.abs(tilts[1] - 1) > Constant.MAX_TILT_DIFF){
+        if (Math.abs(tilts[1] - 1) > Constant.MAX_TILT_DIFF) {
             degrees = tilts[1] - 1 < 0 ? 180 : 1;
         }
         return degrees;

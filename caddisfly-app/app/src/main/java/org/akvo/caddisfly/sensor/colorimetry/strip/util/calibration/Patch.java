@@ -1,7 +1,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration;
 
 /**
- * Created by linda on 7/28/15.
+ * Created by linda on 7/28/15
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public class Patch {

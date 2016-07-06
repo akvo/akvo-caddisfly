@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by linda on 12/13/15.
+ * Created by linda on 12/13/15
  */
 class CameraScheduledExecutorService {
 
@@ -24,18 +24,15 @@ class CameraScheduledExecutorService {
         try {
             if (!scheduledExecutorService.isShutdown()) {
 
-               scheduledExecutorService.schedule(runnable, initialDelay, TimeUnit.MILLISECONDS);
+                scheduledExecutorService.schedule(runnable, initialDelay, TimeUnit.MILLISECONDS);
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void cancelTasks(long delay)
-    {
+    public void cancelTasks(long delay) {
         scheduledExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
@@ -53,25 +50,21 @@ class CameraScheduledExecutorService {
     /*
         * Schedule a runnable with a delay in milliseconds
         * This method schedules a task to be executed periodically.
-        * The task is executed the first time after the initialDelay, and then recurringly every time the period expires.
+        * The task is executed the first time after the initialDelay, and then repeats every time the period expires.
          */
-    public void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay)
-    {
+    public void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay) {
         try {
             if (!scheduledExecutorService.isShutdown()) {
 
-                ScheduledFuture taskExecuted =  scheduledExecutorService.scheduleWithFixedDelay(runnable, initialDelay, delay, TimeUnit.MILLISECONDS);
+                ScheduledFuture taskExecuted = scheduledExecutorService.scheduleWithFixedDelay(runnable, initialDelay, delay, TimeUnit.MILLISECONDS);
                 tasks.put(runnable.toString(), taskExecuted);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void shutdown()
-    {
+    public void shutdown() {
         scheduledExecutorService.shutdown();
     }
 }

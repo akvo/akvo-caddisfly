@@ -3,7 +3,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.color;
 import org.opencv.core.Scalar;
 
 /**
- * Created by linda on 8/26/15.
+ * Created by linda on 8/26/15
  */
 public class ColorDetected {
 
@@ -19,24 +19,24 @@ public class ColorDetected {
         this.x = x;
     }
 
-    public void setColor(int color) {
-        this.color = color;
-    }
-
     public int getColor() {
         return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getX() {
         return x;
     }
 
-    public void setPpm(double ppm) {
-        this.ppm = ppm;
-    }
-
     public double getPpm() {
         return ppm;
+    }
+
+    public void setPpm(double ppm) {
+        this.ppm = ppm;
     }
 
     public Scalar getRgb() {

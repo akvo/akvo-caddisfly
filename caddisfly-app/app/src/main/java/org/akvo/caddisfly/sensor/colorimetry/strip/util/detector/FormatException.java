@@ -25,23 +25,24 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
  */
 public final class FormatException extends ReaderException {
 
-  private static final FormatException INSTANCE = new FormatException();
-  static {
-    INSTANCE.setStackTrace(NO_TRACE); // since it's meaningless
-  }
+    private static final FormatException INSTANCE = new FormatException();
 
-  private FormatException() {
-  }
+    static {
+        INSTANCE.setStackTrace(NO_TRACE); // since it's meaningless
+    }
 
-  private FormatException(Throwable cause) {
-    super(cause);
-  }
+    private FormatException() {
+    }
 
-  public static FormatException getFormatInstance() {
-    return isStackTrace ? new FormatException() : INSTANCE;
-  }
-  
-  public static FormatException getFormatInstance(Throwable cause) {
-    return isStackTrace ? new FormatException(cause) : INSTANCE;
-  }
+    private FormatException(Throwable cause) {
+        super(cause);
+    }
+
+    public static FormatException getFormatInstance() {
+        return isStackTrace ? new FormatException() : INSTANCE;
+    }
+
+    public static FormatException getFormatInstance(Throwable cause) {
+        return isStackTrace ? new FormatException(cause) : INSTANCE;
+    }
 }

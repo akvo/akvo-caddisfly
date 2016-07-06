@@ -4,6 +4,5 @@
     <dimen name="activity_vertical_margin">24dp</dimen> -->
     <dimen name="quality_check_view_height">64dp</dimen>
     <dimen name="ppm_circle_area">96dp</dimen>
-    <dimen name="smallTextSize">18sp</dimen>
     <dimen name="mediumTextSize">24sp</dimen>
 </resources>

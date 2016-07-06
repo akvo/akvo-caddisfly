@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import org.json.JSONException;
 
 /**
- * Created by linda on 9/21/15.
+ * Created by linda on 9/21/15
  */
 public interface InstructionsListener {
 

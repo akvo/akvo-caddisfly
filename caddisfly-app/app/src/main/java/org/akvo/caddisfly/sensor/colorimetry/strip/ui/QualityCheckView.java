@@ -10,15 +10,15 @@ import android.view.View;
 import org.akvo.caddisfly.R;
 
 /**
- * Created by linda on 11/5/15.
+ * Created by linda on 11/5/15
  */
 public class QualityCheckView extends View {
 
+    protected final int NUMBER_OF_BARS = 6;
     private final Paint paint;
     private final int green;
     private final int orange;
     private final int red;
-    protected final int NUMBER_OF_BARS = 6;
     protected float percentage = Float.NaN;
 
     public QualityCheckView(Context context) {
@@ -65,7 +65,7 @@ public class QualityCheckView extends View {
             paint.setColor(Color.LTGRAY);
 
             //check if we have valid data
-            if(number >= 0) {
+            if (number >= 0) {
 
                 //change color depending on value of percentage
                 if (i < 2) { //0 1
@@ -73,7 +73,7 @@ public class QualityCheckView extends View {
                     // paint red if percentage is lower than i+1
                     // so two red dots if perc. < 1
                     // one red dot (right, second) if perc. > 1
-                    if(number <= i + 1 )
+                    if (number <= i + 1)
                         paint.setColor(red);
 
                 } else if (i < 4) { //2 3
@@ -82,7 +82,7 @@ public class QualityCheckView extends View {
                     // so if perc. == 1.5 we get a red followed by orange dot,
                     // if perc. == 2.5 we get two orange dots
                     // if perc. == 3.5 we get an orange dot on the right, second of the two
-                    if(number >= i - 1 && number <= i + 2 )
+                    if (number >= i - 1 && number <= i + 2)
                         paint.setColor(orange);
 
                 } else { // 4 5
@@ -90,18 +90,16 @@ public class QualityCheckView extends View {
                     //paint green if perc. larger than 4
                     //so if perc. == 4.5 we get two green dots
                     // and if perc. == 6 also two
-                    if(number > i ) {
+                    if (number > i) {
 
                         //if percentage exceeds optimum
-                        if(number > NUMBER_OF_BARS)
-                        {
+                        if (number > NUMBER_OF_BARS) {
                             //option to show all circles with a yellow color
                             paint.setColor(Color.YELLOW);
 
                             //trick code into showing the two orange circles
                             //number = NUMBER_OF_BARS * 0.5;
-                        }
-                        else {
+                        } else {
                             paint.setColor(green);
                         }
                     }
@@ -129,8 +127,7 @@ public class QualityCheckView extends View {
         invalidate();
     }
 
-    protected double fromPercentageToNumber()
-    {
+    protected double fromPercentageToNumber() {
         //Override in child class
 
         return Double.NaN;

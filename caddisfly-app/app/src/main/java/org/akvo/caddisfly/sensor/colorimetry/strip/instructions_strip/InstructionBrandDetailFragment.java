@@ -23,19 +23,19 @@ public class InstructionBrandDetailFragment extends Fragment {
     private Drawable instructionDrawable;
     private InstructionsListener listener;
 
-    public static InstructionBrandDetailFragment newInstance(int itemid)
-    {
-        InstructionBrandDetailFragment fragment = new InstructionBrandDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_ITEM_ID, itemid);
-        fragment.setArguments(args);
-        return fragment;
-    }
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public InstructionBrandDetailFragment() {
+    }
+
+    public static InstructionBrandDetailFragment newInstance(int itemId) {
+        InstructionBrandDetailFragment fragment = new InstructionBrandDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_ITEM_ID, itemId);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -59,12 +59,10 @@ public class InstructionBrandDetailFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        try{
+        try {
             listener = (InstructionsListener) activity;
-        }
-        catch (ClassCastException e)
-        {
-            throw  new ClassCastException("must implement InstructionActivity");
+        } catch (ClassCastException e) {
+            throw new ClassCastException("must implement InstructionActivity");
         }
     }
 
@@ -78,7 +76,7 @@ public class InstructionBrandDetailFragment extends Fragment {
             textView.setText(instructionText);
         }
 
-        if(instructionDrawable != null) {
+        if (instructionDrawable != null) {
             ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_instruction_detailImageView);
             imageView.setImageDrawable(instructionDrawable);
         }

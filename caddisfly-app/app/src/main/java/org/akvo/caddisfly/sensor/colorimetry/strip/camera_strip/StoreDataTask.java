@@ -9,7 +9,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternInfoToJson;
 
 /**
- * Created by linda on 11/19/15.
+ * Created by linda on 11/19/15
  */
 public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -20,13 +20,11 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     private Context context;
 
     public StoreDataTask(Context listener,
-                          int imageCount, byte[] data, FinderPatternInfo info) {
+                         int imageCount, byte[] data, FinderPatternInfo info) {
 
-        try{
+        try {
             this.listener = (CameraViewListener) listener;
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             throw new ClassCastException("must implement listener");
         }
         this.imageCount = imageCount;
@@ -40,7 +38,7 @@ public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         FileStorage fileStorage = new FileStorage(context);
-        fileStorage.writeByteArray(data,  Constant.DATA + imageCount);
+        fileStorage.writeByteArray(data, Constant.DATA + imageCount);
         String json = FinderPatternInfoToJson.toJson(info);
         fileStorage.writeToInternalStorage(Constant.INFO + imageCount, json);
         return true;

@@ -24,34 +24,33 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
  */
 public final class FinderPatternInfo {
 
-  private final FinderPattern bottomLeft;
-  private final FinderPattern bottomRight;
-  private final FinderPattern topLeft;
-  private final FinderPattern topRight;
-  //private final int code;
+    private final FinderPattern bottomLeft;
+    private final FinderPattern bottomRight;
+    private final FinderPattern topLeft;
+    private final FinderPattern topRight;
+    //private final int code;
 
-  public FinderPatternInfo(FinderPattern[] patternCenters) {
-    this.topLeft = patternCenters[0];
-    this.topRight = patternCenters[1];
-    this.bottomLeft = patternCenters[2];
-    this.bottomRight = patternCenters[3];
-  }
-
+    public FinderPatternInfo(FinderPattern[] patternCenters) {
+        this.topLeft = patternCenters[0];
+        this.topRight = patternCenters[1];
+        this.bottomLeft = patternCenters[2];
+        this.bottomRight = patternCenters[3];
+    }
 
 
     public FinderPattern getBottomLeft() {
-    return bottomLeft;
-  }
+        return bottomLeft;
+    }
 
-  public FinderPattern getTopLeft() {
-    return topLeft;
-  }
+    public FinderPattern getTopLeft() {
+        return topLeft;
+    }
 
-  public FinderPattern getTopRight() {
-    return topRight;
-  }
+    public FinderPattern getTopRight() {
+        return topRight;
+    }
 
-  public FinderPattern getBottomRight() {
-    return bottomRight;
-  }
+    public FinderPattern getBottomRight() {
+        return bottomRight;
+    }
 }

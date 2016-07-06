@@ -1,6 +1,5 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -10,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +27,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPattern;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternInfo;
-import org.akvo.caddisfly.ui.ExternalActionActivity;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -40,32 +37,123 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by linda on 7/7/15.
+ * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
 public class CameraActivity extends BaseActivity implements CameraViewListener, DetectStripListener {
 
+    private final String TAG = "CameraActivity"; //NON-NLS
+    private final MyHandler handler = new MyHandler();
+    private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
+    private final Runnable focus = new Runnable() {
+
+        boolean focused;
+
+        //String focusMode = mCamera.getParameters().getFocusMode();
+        @Override
+        public void run() {
+
+            try {
+                if (mCamera != null) {
+
+                    WeakReference<Camera> wrCamera = new WeakReference<>(mCamera);
+
+                    if (!focused)
+                        wrCamera.get().autoFocus(new Camera.AutoFocusCallback() {
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+                                focused = success;
+
+                                System.out.println("***focused: " + focused);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                                    System.out.println("***auto exposure: " + camera.getParameters().getAutoExposureLock());
+                                }
+                            }
+                        });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
     private WeakReference<Camera> wrCamera;
     private FrameLayout previewLayout;
     private BaseCameraView baseCameraView;
-    private final String TAG = "CameraActivity"; //NON-NLS
-    private final MyHandler handler = new MyHandler();
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private LevelView levelView;
     private String brandName;
     private LinearLayout progressLayout;
     private CameraSharedFragmentAbstract currentFragment;
-    private int previewFormat= -1;
+    //OPENCV MANAGER
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i("", "OpenCV loaded successfully");
+
+                    init();
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+
+                break;
+            }
+        }
+    };
+    private int previewFormat = -1;
     private int previewWidth = 0;
     private int previewHeight = 0;
-    private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private ShowFinderPatternRunnable showFinderPatternRunnable;
     private ShowLevelRunnable showLevelRunnable;
     private CameraScheduledExecutorService cameraScheduledExecutorService;
     private CameraPreviewCallbackSP cameraPreviewCallbackSP;
+    //get instance of CameraPreviewCallback
+    //and do a oneShotPreviewCallback.
+    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
+    private final Runnable startNextPreviewRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (wrCamera != null) {
+                if (cameraPreviewCallbackSP == null)
+                    cameraPreviewCallbackSP = new CameraPreviewCallbackSP(mActivity.get(), wrCamera.get().getParameters());
+
+                if (currentFragment != null) {
+                    if (currentFragment instanceof CameraPrepareFragment) {
+
+                        wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackSP);
+                    }
+                    if (currentFragment instanceof CameraStartTestFragment) {
+
+                        wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackSP);
+                    }
+                }
+                // System.out.println("***calling startNextPreviewRunnable runnable");
+
+            }
+        }
+    };
     private CameraPreviewCallbackTP cameraPreviewCallbackTP;
+    //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
+    private final Runnable takeNextPictureRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (wrCamera != null) {
+
+                if (cameraPreviewCallbackTP == null)
+                    cameraPreviewCallbackTP = new CameraPreviewCallbackTP(mActivity.get(), wrCamera.get().getParameters());
+
+                wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackTP);
+
+                System.out.println("***calling takeNextPictureRunnable runnable");
+
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +165,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 Configuration.SCREENLAYOUT_SIZE_MASK;
 
         String toastMsg;
-        switch(screenSize) {
+        switch (screenSize) {
             case Configuration.SCREENLAYOUT_SIZE_LARGE:
                 toastMsg = "Large screen";
                 break;
@@ -94,18 +182,17 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         //END LOGGING SCREEN SIZE
 
         //LOG DENSITY
-        int density= getResources().getDisplayMetrics().densityDpi;
+        int density = getResources().getDisplayMetrics().densityDpi;
         String msg;
-        switch(density)
-        {
+        switch (density) {
             case DisplayMetrics.DENSITY_LOW:
                 msg = "LDPI";
                 break;
             case DisplayMetrics.DENSITY_MEDIUM:
-                msg =  "MDPI";
+                msg = "MDPI";
                 break;
             case DisplayMetrics.DENSITY_HIGH:
-                msg =  "HDPI";
+                msg = "HDPI";
                 break;
             case DisplayMetrics.DENSITY_XHIGH:
                 msg = "XHDPI";
@@ -128,7 +215,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 (FinderPatternIndicatorView) findViewById(R.id.activity_cameraFinderPatternIndicatorView);
         levelView = (LevelView) findViewById(R.id.activity_cameraImageViewLevel);
 
-        //RUNNABLES
         showFinderPatternRunnable = new ShowFinderPatternRunnable();
         showLevelRunnable = new ShowLevelRunnable();
 
@@ -137,7 +223,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         qualityCountMap.put("S", 0);
         qualityCountMap.put("L", 0);
 
-        mActivity = new WeakReference<CameraActivity>(this);
+        mActivity = new WeakReference<>(this);
 
         cameraScheduledExecutorService = new CameraScheduledExecutorService();
 
@@ -147,15 +233,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
 
-        if(mCamera == null)
-        {
+        if (mCamera == null) {
             Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera", Toast.LENGTH_SHORT).show();
             finish();
-        }
-        else
-        {
+        } else {
             try {
-                wrCamera = new WeakReference<Camera>(mCamera);
+                wrCamera = new WeakReference<>(mCamera);
 
                 // Create our Preview view and set it as the content of our activity.
                 baseCameraView = new BaseCameraView(this, mCamera);
@@ -174,9 +257,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 getSupportFragmentManager().beginTransaction().replace(
                         R.id.activity_cameraFragmentPlaceholder, currentFragment
                 ).commit();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -199,18 +280,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             mCamera = null;
         }
 
-        if(mActivity!=null)
-        {
+        if (mActivity != null) {
             mActivity.clear();
             mActivity = null;
         }
-        if(wrCamera!=null)
-        {
+        if (wrCamera != null) {
             wrCamera.clear();
             wrCamera = null;
         }
 
-        if (baseCameraView != null && previewLayout!=null) {
+        if (baseCameraView != null && previewLayout != null) {
             previewLayout.removeView(baseCameraView);
             baseCameraView = null;
         }
@@ -225,9 +304,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         if (getIntent().getStringExtra(Constant.BRAND) != null) {
             this.brandName = getIntent().getStringExtra(Constant.BRAND);
-        }
-        else
-        {
+        } else {
             throw new NullPointerException("Cannot proceed without brand.");
         }
 
@@ -243,24 +320,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Log.d(TAG, "onResume OUT mCamera, mCameraPreview: " + mCamera + ", " + baseCameraView);
     }
 
-    private class  DeleteTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            final FileStorage fileStorage = new FileStorage(CameraActivity.this);
-
-            fileStorage.deleteFromInternalStorage(Constant.INFO);
-            fileStorage.deleteFromInternalStorage(Constant.DATA);
-            fileStorage.deleteFromInternalStorage(Constant.STRIP);
-
-            return null;
-        }
-    }
-
     //store previewLayout info in global properties for later use
     //called at end of baseCameraView surfaceChanged()
-    public void setPreviewProperties()
-    {
-        if(mCamera!=null && baseCameraView!=null) {
+    public void setPreviewProperties() {
+        if (mCamera != null && baseCameraView != null) {
 
             previewFormat = mCamera.getParameters().getPreviewFormat();
             previewWidth = mCamera.getParameters().getPreviewSize().width;
@@ -270,9 +333,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     /*********************************************
-     *
-     * START CAMERAVIEWLISTENER INTERFACE METHODS
-     *
+     * START CAMERA VIEW LISTENER INTERFACE METHODS
      *********************************************/
     @Override
     public void switchFlash() {
@@ -282,16 +343,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     //prevents or enables the CameraPreviewCallback to execute ...
     @Override
     public void stopCallback(boolean stop) {
-        if(cameraPreviewCallbackSP!=null)
+        if (cameraPreviewCallbackSP != null)
             cameraPreviewCallbackSP.setStop(true);
-        if(cameraPreviewCallbackTP!=null)
+        if (cameraPreviewCallbackTP != null)
             cameraPreviewCallbackTP.setStop(true);
     }
 
     @Override
     public void takeNextPicture(long timeMillis) {
 
-        if(cameraScheduledExecutorService!=null) {
+        if (cameraScheduledExecutorService != null) {
             cameraScheduledExecutorService.cancelTasks(timeMillis);
             cameraScheduledExecutorService.scheduleRunnable(takeNextPictureRunnable, timeMillis);
         }
@@ -300,14 +361,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void startNextPreview(long timeMillis) {
 
-        if(cameraScheduledExecutorService!=null) {
+        if (cameraScheduledExecutorService != null) {
             cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(startNextPreviewRunnable, timeMillis, 500);
         }
     }
 
     @Override
     public void setFocusAreas(List<Camera.Area> areas) {
-        if (mCamera!=null && baseCameraView != null) {
+        if (mCamera != null && baseCameraView != null) {
             baseCameraView.setFocusAreas(areas);
         }
     }
@@ -315,7 +376,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void setQualityCheckCountZero() {
 
-        for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : qualityCountMap.entrySet()) {
             entry.setValue(0);
         }
     }
@@ -323,17 +384,15 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void addCountToQualityCheckCount(int[] countArray) {
 
-        if(countArray == null)
-        {
+        if (countArray == null) {
             throw new NullPointerException("quality checks array is NULL");
         }
 
         int ci = 0;
 
-        for(Map.Entry<String, Integer> entry: qualityCountMap.entrySet())
-        {
+        for (Map.Entry<String, Integer> entry : qualityCountMap.entrySet()) {
             entry.setValue(entry.getValue() + countArray[ci]);
-            ci ++;
+            ci++;
         }
 
         if (currentFragment != null) {
@@ -342,9 +401,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         // only show the start button if at least Constant.COUNT_QUALITY_CHECK_LIMIT positive tests have been done for all parameters
         boolean show = true;
-        for(int i: qualityCountMap.values())
-        {
-            if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
+        for (int i : qualityCountMap.values()) {
+            if (i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
                 show = false;
             }
         }
@@ -358,14 +416,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void nextFragment() {
 
-        //System.out.println("***brandname CameraActivity nextFragment: " + brandName);
+        //System.out.println("***brand name CameraActivity nextFragment: " + brandName);
 
-        if(currentFragment instanceof CameraPrepareFragment) {
+        if (currentFragment instanceof CameraPrepareFragment) {
             //start instruction fragment
             currentFragment = CameraInstructionFragment.newInstance(brandName);
 
-        }
-        else if(currentFragment instanceof CameraInstructionFragment) {
+        } else if (currentFragment instanceof CameraInstructionFragment) {
             currentFragment = CameraStartTestFragment.newInstance(brandName);
 
         }
@@ -380,10 +437,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         boolean OK = true;
 
-        for(int i: qualityCountMap.values())
-        {
-            if(i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size())
-            {
+        for (int i : qualityCountMap.values()) {
+            if (i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
                 OK = false;
             }
         }
@@ -391,65 +446,60 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         return OK;
     }
 
-
     @Override
-    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color)
-    {
-        if(handler!=null) {
-            showFinderPatternRunnable.setPatterns(patterns);
-            showFinderPatternRunnable.setSize(size);
-            showFinderPatternRunnable.setColor(color);
-            handler.post(showFinderPatternRunnable);
-        }
+    public void showFinderPatterns(final List<FinderPattern> patterns, final Camera.Size size, final int color) {
+        showFinderPatternRunnable.setPatterns(patterns);
+        showFinderPatternRunnable.setSize(size);
+        showFinderPatternRunnable.setColor(color);
+        handler.post(showFinderPatternRunnable);
     }
 
     @Override
-    public void showFocusValue(final double value) {}
+    public void showFocusValue(final double value) {
+    }
 
     @Override
-    public void showBrightness(final double value){
+    public void showBrightness(final double value) {
 
-        if(currentFragment!=null)
+        if (currentFragment != null)
             currentFragment.showBrightness(value);
     }
 
     @Override
-    public void showShadow(final double value){
+    public void showShadow(final double value) {
 
-        if(currentFragment!=null)
+        if (currentFragment != null)
             currentFragment.showShadow(value);
     }
 
     @Override
-    public void showLevel(final float[] tilts)
-    {
-        if(handler!=null) {
-            showLevelRunnable.setAngles(tilts);
-            handler.post(showLevelRunnable);
-        }
+    public void showLevel(final float[] tilts) {
+        showLevelRunnable.setAngles(tilts);
+        handler.post(showLevelRunnable);
     }
 
     @Override
-    public void adjustExposureCompensation(int direction)
-    {
-        if(baseCameraView!=null) {
+    public void adjustExposureCompensation(int direction) {
+        if (baseCameraView != null) {
 
             baseCameraView.adjustExposure(direction);
         }
     }
+    //END CAMERA VIEW LISTENER INTERFACE METHODS
 
+
+    //DETECT STRIP LISTENER INTERFACE METHODS
 
     @Override
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info) {
 
-        if(currentFragment instanceof CameraStartTestFragment)
-        {
+        if (currentFragment instanceof CameraStartTestFragment) {
             ((CameraStartTestFragment) currentFragment).sendData(data, timeMillis, info);
         }
 
         //clear the finder pattern view after one second and qualityChecksOK the previewLayout again
-        showFinderPatterns(null,null,1);
+        showFinderPatterns(null, null, 1);
 
         //clear level indicator
         showLevel(null);
@@ -460,9 +510,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         //System.out.println("***previewLayout data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
 
-        if(currentFragment instanceof CameraStartTestFragment)
-        {
-            if(previewFormat > 0 && previewWidth > 0 && previewHeight > 0 ) {
+        if (currentFragment instanceof CameraStartTestFragment) {
+            if (previewFormat > 0 && previewWidth > 0 && previewHeight > 0) {
                 ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
                         previewWidth,
                         previewHeight);
@@ -471,8 +520,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void playSound()
-    {
+    public void playSound() {
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
         mp.start();
 
@@ -483,15 +531,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             }
         });
     }
-    //END CAMERAVIEWLISTENER INTERFACE METHODS
-
-
-    //DETECTSTRIPLISTENER INTERFACE METHODS
 
     @Override
     public void showSpinner() {
-        if(currentFragment instanceof CameraStartTestFragment)
-        {
+        if (currentFragment instanceof CameraStartTestFragment) {
             ((CameraStartTestFragment) currentFragment).showSpinner();
         }
     }
@@ -511,13 +554,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(finish!=null)
+                if (finish != null)
                     finish.setText(R.string.analysing);
 
             }
         };
-        if(handler!=null)
-            handler.post(runnable);
+        handler.post(runnable);
     }
 
     @Override
@@ -526,13 +568,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(finish!=null)
+                if (finish != null)
                     finish.setText(R.string.analysing);
             }
         };
-        if(handler!=null)
-            handler.post(runnable);
+        handler.post(runnable);
     }
+
+    //END DETECT STRIP LISTENER INTERFACE METHODS
 
     @Override
     public void showError(final int what) {
@@ -553,24 +596,22 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(finish!=null) {
+                if (finish != null) {
                     try {
                         int mesNo = what < messages.length ? what : messages.length - 1;
                         finish.setText(messages[mesNo]);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         };
-        if(handler!=null)
-            handler.post(runnable);
+        handler.post(runnable);
     }
 
     @Override
-    public void showImage(Bitmap bitmap){ }
+    public void showImage(Bitmap bitmap) {
+    }
 
     @Override
     public void showResults() {
@@ -580,140 +621,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(resultIntent);
     }
-
-    //END DETECTSTRIPLISTENER INTERFACE METHODS
-
-
-        /*********************************
-         *
-         * RUNNABLE DECLARATIONS
-         *
-         **********************************/
-    private class ShowFinderPatternRunnable implements Runnable
-    {
-        private int color;
-        private List<FinderPattern> patterns;
-        private Camera.Size size;
-        private WeakReference<FinderPatternIndicatorView> wrFinderPatternIndicatorView =
-                new WeakReference<FinderPatternIndicatorView>(finderPatternIndicatorView);
-
-        @Override
-        public void run() {
-            if(wrFinderPatternIndicatorView != null) {
-
-                wrFinderPatternIndicatorView.get().setColor(color);
-                wrFinderPatternIndicatorView.get().showPatterns(patterns, size==null? 0: size.width, size==null? 0: size.height);
-            }
-        }
-
-        public void setColor(int color) {
-            this.color = color;
-        }
-
-        public void setPatterns(List<FinderPattern> patterns) {
-            this.patterns = patterns;
-        }
-
-        public void setSize(Camera.Size size) {
-            this.size = size;
-        }
-    }
-
-    private class ShowLevelRunnable implements Runnable
-    {
-        private float[] tilts;
-        @Override
-        public void run() {
-            if(levelView!=null)
-                levelView.setAngles(tilts);
-        }
-
-        public void setAngles(float[] tilts) {
-            this.tilts = tilts;
-        }
-    }
-
-    //get instance of CameraPreviewCallback
-    //and do a oneShotPreviewCallback.
-    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
-    private final Runnable startNextPreviewRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if(wrCamera!=null ) {
-                if(cameraPreviewCallbackSP==null)
-                    cameraPreviewCallbackSP = new CameraPreviewCallbackSP(mActivity.get(), wrCamera.get().getParameters());
-
-                if(currentFragment!=null) {
-                    if (currentFragment instanceof CameraPrepareFragment) {
-
-                        wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackSP);
-                    }
-                    if (currentFragment instanceof CameraStartTestFragment) {
-
-                        wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackSP);
-                    }
-                }
-                // System.out.println("***calling startNextPreviewRunnable runnable");
-
-            }
-        }
-    };
-
-    //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
-    private final Runnable takeNextPictureRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (wrCamera != null) {
-
-                if(cameraPreviewCallbackTP==null)
-                    cameraPreviewCallbackTP = new CameraPreviewCallbackTP(mActivity.get(), wrCamera.get().getParameters());
-
-                wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackTP);
-
-                System.out.println("***calling takeNextPictureRunnable runnable");
-
-            }
-        }
-    };
-
-    private final Runnable focus = new Runnable() {
-
-        boolean focused;
-        //String focusMode = mCamera.getParameters().getFocusMode();
-        @Override
-        public void run() {
-
-            try {
-                if (mCamera != null) {
-
-                    WeakReference<Camera> wrCamera = new WeakReference<Camera>(mCamera);
-
-                    if(!focused)
-                        wrCamera.get().autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                focused = success;
-
-                                System.out.println("***focused: " + focused);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                                    System.out.println("***auto exposure: " + camera.getParameters().getAutoExposureLock());
-                                }
-                            }
-                        });
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    /*********************************
-     *
-     * END RUNNABLE DECLARATIONS
-     *
-     **********************************/
 
     /**
      * Instances of static inner classes do not hold an implicit
@@ -734,23 +641,68 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 //        }
     }
 
-    //OPENCV MANAGER
-    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    private class DeleteTask extends AsyncTask<Void, Void, Void> {
         @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("", "OpenCV loaded successfully");
+        protected Void doInBackground(Void... params) {
+            final FileStorage fileStorage = new FileStorage(CameraActivity.this);
 
-                    init();
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
+            fileStorage.deleteFromInternalStorage(Constant.INFO);
+            fileStorage.deleteFromInternalStorage(Constant.DATA);
+            fileStorage.deleteFromInternalStorage(Constant.STRIP);
 
-                break;
+            return null;
+        }
+    }
+
+    /*********************************
+     *
+     * END RUNNABLE DECLARATIONS
+     *
+     **********************************/
+
+    /*********************************
+     * RUNNABLE DECLARATIONS
+     **********************************/
+    private class ShowFinderPatternRunnable implements Runnable {
+        private int color;
+        private List<FinderPattern> patterns;
+        private Camera.Size size;
+        private WeakReference<FinderPatternIndicatorView> wrFinderPatternIndicatorView =
+                new WeakReference<>(finderPatternIndicatorView);
+
+        @Override
+        public void run() {
+            if (wrFinderPatternIndicatorView != null) {
+
+                wrFinderPatternIndicatorView.get().setColor(color);
+                wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width, size == null ? 0 : size.height);
             }
         }
-    };
+
+        public void setColor(int color) {
+            this.color = color;
+        }
+
+        public void setPatterns(List<FinderPattern> patterns) {
+            this.patterns = patterns;
+        }
+
+        public void setSize(Camera.Size size) {
+            this.size = size;
+        }
+    }
+
+    private class ShowLevelRunnable implements Runnable {
+        private float[] tilts;
+
+        @Override
+        public void run() {
+            if (levelView != null)
+                levelView.setAngles(tilts);
+        }
+
+        public void setAngles(float[] tilts) {
+            this.tilts = tilts;
+        }
+    }
 }

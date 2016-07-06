@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 /**
- * Created by linda on 11/5/15.
+ * Created by linda on 11/5/15
  */
 public class QualityCheckShadowsView extends QualityCheckView {
 
@@ -25,11 +25,10 @@ public class QualityCheckShadowsView extends QualityCheckView {
     }
 
     @Override
-    protected double fromPercentageToNumber()
-    {
+    protected double fromPercentageToNumber() {
         // calculate the percentage back to value that fits NUMBER_OF_BARS
         // we want the number to range between 0 (= heavy shadow) and 6 (no shadow)
-        return  (100 - percentage) * NUMBER_OF_BARS * 0.01 ;
+        return (100 - percentage) * NUMBER_OF_BARS * 0.01;
 
     }
 }

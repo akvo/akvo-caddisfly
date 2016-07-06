@@ -24,17 +24,18 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util.detector;
  */
 public final class NotFoundException extends ReaderException {
 
-  private static final NotFoundException INSTANCE = new NotFoundException();
-  static {
-    INSTANCE.setStackTrace(NO_TRACE); // since it's meaningless
-  }
+    private static final NotFoundException INSTANCE = new NotFoundException();
 
-  private NotFoundException() {
-    // do nothing
-  }
+    static {
+        INSTANCE.setStackTrace(NO_TRACE); // since it's meaningless
+    }
 
-  public static NotFoundException getNotFoundInstance() {
-    return INSTANCE;
-  }
+    private NotFoundException() {
+        // do nothing
+    }
+
+    public static NotFoundException getNotFoundInstance() {
+        return INSTANCE;
+    }
 
 }

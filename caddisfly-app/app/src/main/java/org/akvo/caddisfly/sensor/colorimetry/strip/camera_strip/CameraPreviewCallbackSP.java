@@ -8,10 +8,9 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
 
 /**
  * Created by linda on 6/26/15.
- *
+ * <p>
  * This class is meant to be called in the setOnShotCameraPreviewCallback(Camera.PreviewCallback)
  * method of a class that holds an instance of the Android Camera.
- *
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
@@ -22,8 +21,7 @@ class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
         super(context, parameters);
     }
 
-    public void setStop(boolean stop)
-    {
+    public void setStop(boolean stop) {
         this.stop = stop;
     }
 
@@ -31,29 +29,26 @@ class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
     public void onPreviewFrame(byte[] data, Camera camera) {
         super.onPreviewFrame(data, camera);
 
-        if(!stop && !running)
+        if (!stop && !running)
             sendData(data);
     }
 
-    protected void sendData(byte[] data)
-    {
+    protected void sendData(byte[] data) {
         running = true;
         try {
-            FinderPatternInfo  info = findPossibleCenters(data, previewSize);
+            FinderPatternInfo info = findPossibleCenters(data, previewSize);
 
             //check if quality of image is ok. if OK, value is 1, if not 0
             //the qualityChecks() method sends messages back to listener to update UI
             int[] countQuality = qualityChecks(data, info);
 
             //add countQuality to sum in listener
-            if(listener!=null)
+            if (listener != null)
                 listener.addCountToQualityCheckCount(countQuality);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             running = false;
         }
     }

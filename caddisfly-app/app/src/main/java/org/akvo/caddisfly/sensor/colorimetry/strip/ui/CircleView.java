@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by linda on 9/4/15.
+ * Created by linda on 9/4/15
  */
 public class CircleView extends View {
 
@@ -30,22 +30,20 @@ public class CircleView extends View {
         paint.setAntiAlias(true);
     }
 
-    public void circleView(int color)
-    {
+    public void circleView(int color) {
         paint.setColor(color);
         invalidate();
     }
 
     @Override
-    public void onMeasure(int w, int h)
-    {
-        int smallest = w > h? h: w;
+    public void onMeasure(int w, int h) {
+        int smallest = w > h ? h : w;
 
         setMeasuredDimension(smallest, smallest);
     }
+
     @Override
-    public void onDraw(Canvas canvas)
-    {
-        canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, canvas.getWidth()/3, paint);
+    public void onDraw(Canvas canvas) {
+        canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getWidth() / 3, paint);
     }
 }

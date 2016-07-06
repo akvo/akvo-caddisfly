@@ -18,7 +18,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link ColorimetryStripActivity}.
- * <p/>
+ * <p>
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ColorimetryStripDetailFragment}.
  */
@@ -35,19 +35,16 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onResume()
-    {
-        String brandname = getIntent().getStringExtra(Constant.BRAND);
+    public void onResume() {
+        String brandName = getIntent().getStringExtra(Constant.BRAND);
 
-        System.out.println("*** ChooseStripTestDetailActivity onResume called with brandname: " + brandname);
+        System.out.println("*** ChooseStripTestDetailActivity onResume called with brandName: " + brandName);
 
-        if(brandname==null)
-        {
-            Toast.makeText(this.getApplicationContext(), "Cannot proceed without brandname", Toast.LENGTH_SHORT).show();
+        if (brandName == null) {
+            Toast.makeText(this.getApplicationContext(), "Cannot proceed without brandName", Toast.LENGTH_SHORT).show();
             finish();
-        }
-        else {
-            ColorimetryStripDetailFragment fragment = ColorimetryStripDetailFragment.newInstance(brandname);
+        } else {
+            ColorimetryStripDetailFragment fragment = ColorimetryStripDetailFragment.newInstance(brandName);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.choose_striptest_detail_container, fragment)
@@ -59,12 +56,12 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onNewIntent(Intent intent)
-    {
+    public void onNewIntent(Intent intent) {
         System.out.println("***Expecting a call when FLAG_ACTIVITY_CLEAR_TOP is passed in the intent");
 
         super.onNewIntent(intent);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -83,19 +80,19 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void startCameraActivity(String brandname) {
+    public void startCameraActivity(String brandName) {
 
         Intent intent = new Intent(this, CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constant.BRAND, brandname);
+        intent.putExtra(Constant.BRAND, brandName);
         startActivity(intent);
     }
 
     @Override
-    public void startInstructionActivity(String brandname) {
+    public void startInstructionActivity(String brandName) {
 
         Intent intent = new Intent(this, InstructionActivity.class);
-        intent.putExtra(Constant.BRAND, brandname);
+        intent.putExtra(Constant.BRAND, brandName);
         startActivity(intent);
 
     }

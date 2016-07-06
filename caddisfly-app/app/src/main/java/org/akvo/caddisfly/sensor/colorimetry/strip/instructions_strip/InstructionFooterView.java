@@ -8,13 +8,12 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by linda on 9/21/15.
+ * Created by linda on 9/21/15
  */
 public class InstructionFooterView extends View {
 
     private int numSteps = 3;
     private int activeStep = 0;
-    private int radius = 6;
     private float distance = 24;
     private Paint fillPaint;
     private Paint strokePaint;
@@ -45,27 +44,25 @@ public class InstructionFooterView extends View {
         invalidate();
     }
 
-    public void setActive(int active)
-    {
+    public void setActive(int active) {
         this.activeStep = active;
         invalidate();
     }
 
-    public void onMeasure(int w, int h)
-    {
+    public void onMeasure(int w, int h) {
         w = (int) Math.ceil(distance * numSteps);
         setMeasuredDimension(w, h);
     }
-    @Override
-    public void onDraw(Canvas canvas)
-    {
 
-        for(int i=0;i<numSteps;i++)
-        {
-            if(activeStep == i)
-                canvas.drawCircle(distance*i + radius , canvas.getHeight()/2, radius, fillPaint);
+    @Override
+    public void onDraw(Canvas canvas) {
+
+        for (int i = 0; i < numSteps; i++) {
+            int radius = 6;
+            if (activeStep == i)
+                canvas.drawCircle(distance * i + radius, canvas.getHeight() / 2, radius, fillPaint);
             else
-                canvas.drawCircle(distance*i + radius, canvas.getHeight()/2, radius-strokePaint.getStrokeWidth(), strokePaint);
+                canvas.drawCircle(distance * i + radius, canvas.getHeight() / 2, radius - strokePaint.getStrokeWidth(), strokePaint);
         }
     }
 }

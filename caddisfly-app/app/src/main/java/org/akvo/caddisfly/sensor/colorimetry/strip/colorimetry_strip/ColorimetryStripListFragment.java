@@ -18,45 +18,17 @@ import java.util.List;
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
  * currently being viewed in a {@link ColorimetryStripDetailFragment}.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
 public class ColorimetryStripListFragment extends ListFragment {
-
-    private ColorimetryStripAdapter adapter;
-    private StripTest stripTest;
-    private List<String> brandnames;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
      */
     private static final String STATE_ACTIVATED_POSITION = "activated_position"; //NON-NLS
-
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
-        void onItemSelected(String id);
-    }
-
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
@@ -66,6 +38,18 @@ public class ColorimetryStripListFragment extends ListFragment {
         public void onItemSelected(String id) {
         }
     };
+    private ColorimetryStripAdapter adapter;
+    private StripTest stripTest;
+    private List<String> brandNames;
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private Callbacks mCallbacks = sDummyCallbacks;
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -85,18 +69,18 @@ public class ColorimetryStripListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_choose_striptest_list, container, false);
 
-        if(stripTest==null)
+        if (stripTest == null)
             stripTest = new StripTest();
 
-        brandnames = stripTest.getBrandsAsList();
+        brandNames = stripTest.getBrandsAsList();
 
-        if(brandnames!=null) {
+        if (brandNames != null) {
             //order alpha-numeric on brand (same as the name of the .png file in assets)
-            Collections.sort(brandnames);
+            Collections.sort(brandNames);
 
             if (adapter == null) {
                 adapter = new ColorimetryStripAdapter(getActivity(),
-                        R.layout.adapter_choose_striptest, brandnames);
+                        R.layout.adapter_choose_striptest, brandNames);
             }
             setListAdapter(adapter);
         }
@@ -142,8 +126,8 @@ public class ColorimetryStripListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-       // System.out.println("***brandname in ChooseStripTestListFragment: " + brandnames.get(position));
-        mCallbacks.onItemSelected(brandnames.get(position));
+        // System.out.println("***brandName in ChooseStripTestListFragment: " + brandNames.get(position));
+        mCallbacks.onItemSelected(brandNames.get(position));
     }
 
     @Override
@@ -175,5 +159,17 @@ public class ColorimetryStripListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void onItemSelected(String id);
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,15 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import java.io.InputStream;
 
 /**
- * Created by linda on 9/12/15.
+ * Created by linda on 9/12/15
  */
 public class ColorimetryStripDetailFragment extends Fragment {
 
     private Callbacks mCallbacks;
+
+    public ColorimetryStripDetailFragment() {
+
+    }
 
     public static ColorimetryStripDetailFragment newInstance(String brandName) {
         ColorimetryStripDetailFragment fragment = new ColorimetryStripDetailFragment();
@@ -30,10 +33,6 @@ public class ColorimetryStripDetailFragment extends Fragment {
         args.putString(Constant.BRAND, brandName);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ColorimetryStripDetailFragment() {
-
     }
 
     @Override
@@ -52,10 +51,10 @@ public class ColorimetryStripDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
-        if(getArguments()!=null) {
+        if (getArguments() != null) {
             final String brandName = getArguments().getString(Constant.BRAND);
 
-            //System.out.println("***brandname ChooseStripTestDetailFragment onCreateView: " + brandName);
+            //System.out.println("***brandName ChooseStripTestDetailFragment onCreateView: " + brandName);
 
             if (brandName != null) {
 
@@ -135,10 +134,10 @@ public class ColorimetryStripDetailFragment extends Fragment {
         /**
          * Callback for when an item has been selected.
          */
-        void startCameraActivity(String brandname);
-        void startInstructionActivity(String brandname);
-    }
+        void startCameraActivity(String brandName);
 
+        void startInstructionActivity(String brandName);
+    }
 
 
 }

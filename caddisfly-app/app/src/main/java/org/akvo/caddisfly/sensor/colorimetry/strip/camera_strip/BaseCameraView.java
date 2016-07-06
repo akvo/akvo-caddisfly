@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by linda on 7/7/15.
+ * Created by linda on 7/7/15
  */
-public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback{
+@SuppressWarnings("deprecation")
+public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback {
 
     private final Camera mCamera;
     private CameraActivity activity;
@@ -27,9 +28,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         try {
             activity = (CameraActivity) context;
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             throw new ClassCastException("must have CameraActivity as Context.");
         }
         // Install a SurfaceHolder.Callback so we get notified when the
@@ -62,13 +61,12 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         // If your preview can change or rotate, take care of those events here.
         // Make sure to stop the preview before resizing or reformatting it.
 
-        if (holder.getSurface() == null){
+        if (holder.getSurface() == null) {
             // preview surface does not exist
             return;
         }
 
-        if(mCamera == null)
-        {
+        if (mCamera == null) {
             //Camera was released
             return;
         }
@@ -76,7 +74,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         // stop preview before making changes
         try {
             mCamera.stopPreview();
-        } catch (Exception e){
+        } catch (Exception e) {
             // ignore: tried to stop a non-existent preview
         }
 
@@ -85,14 +83,11 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         try {
             parameters = mCamera.getParameters();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
-        if(parameters == null)
-        {
+        if (parameters == null) {
             return;
         }
 
@@ -100,9 +95,9 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         Camera.Size bestSize = null;
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
-        for(Camera.Size size: sizes) {
+        for (Camera.Size size : sizes) {
             System.out.println("***supported preview sizes w, h: " + size.width + ", " + size.height);
-            if(size.width>1300)
+            if (size.width > 1300)
                 continue;
             if (size.width > maxWidth) {
                 bestSize = size;
@@ -114,7 +109,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mCamera.setDisplayOrientation(90);
 
         //preview size
-       // System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
+        // System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
         assert bestSize != null;
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
@@ -123,17 +118,15 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         boolean canAutoFocus = false;
         boolean disableContinuousFocus = true;
         List<String> modes = mCamera.getParameters().getSupportedFocusModes();
-        for(String s: modes) {
+        for (String s : modes) {
 
             System.out.println("***supported focus modes: " + s);
 
-            if(s.equals(Camera.Parameters.FOCUS_MODE_AUTO))
-            {
+            if (s.equals(Camera.Parameters.FOCUS_MODE_AUTO)) {
                 canAutoFocus = true;
 
             }
-            if(s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
-            {
+            if (s.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                 disableContinuousFocus = false;
             }
         }
@@ -141,15 +134,12 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         try {
             CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //white balance
-        if(parameters.getWhiteBalance()!=null)
-        {
+        if (parameters.getWhiteBalance() != null) {
             //TODO check if this optimise the code
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         }
@@ -158,7 +148,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
             mCamera.setParameters(parameters);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.d("", "Error setting camera parameters: " + e.getMessage());
         }
 
@@ -173,29 +163,27 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     }
 
-    public void switchFlashMode()
-    {
-        if(mCamera==null)
+    public void switchFlashMode() {
+        if (mCamera == null)
             return;
         parameters = mCamera.getParameters();
 
-        String flashmode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)?
-                Camera.Parameters.FLASH_MODE_TORCH: Camera.Parameters.FLASH_MODE_OFF;
-        parameters.setFlashMode(flashmode);
+        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF) ?
+                Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+        parameters.setFlashMode(flashMode);
 
         mCamera.setParameters(parameters);
     }
 
     //exposure compensation
-    public void adjustExposure(int direction) throws RuntimeException
-    {
-        if(mCamera==null)
+    public void adjustExposure(int direction) throws RuntimeException {
+        if (mCamera == null)
             return;
 
         //parameters = mCamera.getParameters();
         mCamera.cancelAutoFocus();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if(!parameters.getAutoExposureLock()) {
+            if (!parameters.getAutoExposureLock()) {
                 parameters.setAutoExposureLock(true);
                 mCamera.setParameters(parameters);
                 System.out.println("*** locking auto-exposure. ");
@@ -204,21 +192,17 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
         int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
 
-        if(direction > 0)
-        {
+        if (direction > 0) {
             parameters.setExposureCompensation(compPlus);
-        }
-        else if(direction < 0)
-        {
+        } else if (direction < 0) {
             parameters.setExposureCompensation(compMinus);
-        }
-        else if(direction == 0) {
+        } else if (direction == 0) {
             parameters.setExposureCompensation(0);
         }
 
         //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if(parameters.getAutoExposureLock()) {
+            if (parameters.getAutoExposureLock()) {
                 parameters.setAutoExposureLock(false);
                 mCamera.setParameters(parameters);
                 System.out.println("***unlocking auto-exposure. ");
@@ -228,14 +212,13 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
-    public void setFocusAreas(List<Camera.Area> areas)
-    {
-        if(mCamera==null)
+    public void setFocusAreas(List<Camera.Area> areas) {
+        if (mCamera == null)
             return;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 
-            if(parameters.getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
+            if (parameters.getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
                 try {
                     //make sure area list does not exceed max num areas allowed
                     int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
