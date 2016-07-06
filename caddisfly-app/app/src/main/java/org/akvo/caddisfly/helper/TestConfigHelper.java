@@ -26,6 +26,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -310,6 +311,9 @@ public final class TestConfigHelper {
             resultJson.put("testDate", new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US)
                     .format(Calendar.getInstance().getTime()));
 
+            // Add user preference details to the result
+            resultJson.put(SensorConstants.USER, TestConfigHelper.getUserPreferences());
+
             // Add app details to the result
             resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
 
@@ -339,8 +343,13 @@ public final class TestConfigHelper {
         details.put("appVersion", CaddisflyApp.getAppVersion());
         // The current active language of the app
         details.put("language", CaddisflyApp.getAppLanguage());
-        // The language set by the user in preferences
-        details.put("prefLanguage", CaddisflyApp.getPreferenceLanguage());
+        return details;
+    }
+
+    private static JSONObject getUserPreferences() throws JSONException {
+        JSONObject details = new JSONObject();
+        details.put("backDropDetection", !AppPreferences.getNoBackdropDetection());
+        details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
     }
 

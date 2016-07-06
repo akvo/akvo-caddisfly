@@ -14,7 +14,7 @@
  *  The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.util;
+package org.akvo.caddisfly.test.util;
 
 import junit.framework.Assert;
 

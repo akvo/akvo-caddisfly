@@ -87,8 +87,8 @@ public class CaddisflyApp extends Application {
         PackageManager packageManager = context.getPackageManager();
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             AlertUtil.showAlert(context, R.string.cameraNotAvailable,
-                R.string.cameraRequired,
-                R.string.ok, onClickListener, null, null);
+                    R.string.cameraRequired,
+                    R.string.ok, onClickListener, null, null);
             return false;
         }
         return true;
@@ -136,10 +136,6 @@ public class CaddisflyApp extends Application {
     public static String getAppLanguage() {
         Configuration config = getApp().getResources().getConfiguration();
         return config.locale.getLanguage().substring(0, 2);
-    }
-
-    public static String getPreferenceLanguage() {
-        return PreferencesUtil.getString(getApp(), R.string.languageKey, "");
     }
 
     /**
@@ -224,9 +220,8 @@ public class CaddisflyApp extends Application {
     /**
      * Load the test configuration for the given test code
      *
-     * @deprecated use #loadTestConfigurationByUuid(String uuid) instead
-     *
      * @param testCode the test code
+     * @deprecated use #loadTestConfigurationByUuid(String uuid) instead
      */
     @Deprecated
     public void loadTestConfiguration(String testCode) {

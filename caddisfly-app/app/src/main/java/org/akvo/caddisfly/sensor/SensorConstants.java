@@ -26,4 +26,5 @@ public class SensorConstants {
     public static final String UUID = "uuid";
     public static final String COLOR = "color";
     public static final String FINISH = "finish";
+    public static final String USER = "user";
 }
