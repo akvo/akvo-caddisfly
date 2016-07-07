@@ -18,8 +18,7 @@
         android:gravity="left|center_vertical"
         android:text="@string/start"
         android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/mediumTextSize"
-        />
+        android:textSize="@dimen/mediumTextSize" />
 
     <org.akvo.caddisfly.sensor.colorimetry.strip.ui.ProgressIndicatorView
         android:id="@+id/activity_cameraProgressIndicatorViewAnim"
@@ -29,9 +28,8 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_weight="0"
         android:gravity="bottom"
-        android:orientation="vertical"
-        >
-    </org.akvo.caddisfly.sensor.colorimetry.strip.ui.ProgressIndicatorView>
+        android:orientation="vertical" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,12 +38,14 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="0.1">
+
         <ImageView
             android:id="@+id/activity_cameraFinishImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/unchecked_box" />
+
         <TextView
             android:id="@+id/activity_cameraFinishText"
             android:layout_width="match_parent"
@@ -55,7 +55,6 @@
             android:background="@android:color/transparent"
             android:text="@string/finished"
             android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/mediumTextSize"
-            />
+            android:textSize="@dimen/mediumTextSize" />
     </LinearLayout>
 </LinearLayout>

@@ -2,38 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/background_white_black_line_bottom">
+    android:background="@drawable/background_white_black_line_bottom"
+    android:orientation="horizontal">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="5sp"
-        android:paddingTop="10sp"
-        android:paddingBottom="5sp"
-        android:id="@+id/adapter_instructionsTextView"
-        android:textStyle="bold" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="7sp"
-        android:paddingBottom="7dp"
-        android:id="@+id/adapter_instructionsSubTextView"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/adapter_instructionsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="5sp"
+            android:paddingLeft="5sp"
+            android:paddingTop="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/adapter_instructionsSubTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="7dp"
+            android:paddingLeft="7sp" />
     </LinearLayout>
+
     <ImageView
+        android:id="@+id/adapter_instructionsImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:src="@drawable/button_arrow_right_selector"
-        android:scaleType="centerInside"
         android:layout_weight="3"
-        android:id="@+id/adapter_instructionsImageView"/>
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/button_arrow_right_selector" />
 
 </LinearLayout>

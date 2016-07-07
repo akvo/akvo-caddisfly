@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/activity_detect_strip_timelapseWaitTextView"
         android:layout_width="match_parent"
@@ -9,6 +10,7 @@
         android:layout_alignParentTop="true"
         android:padding="12sp"
         android:text="@string/please_wait" />
+
     <ScrollView
         android:id="@+id/activity_detect_strip_timelapseScrollView"
         android:layout_width="match_parent"
@@ -16,13 +18,14 @@
         android:layout_above="@+id/activity_detect_strip_timelapseButtonLayout"
         android:layout_below="@+id/activity_detect_strip_timelapseWaitTextView"
         android:fillViewport="true">
+
         <LinearLayout
             android:id="@+id/activity_detect_strip_timelapseLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical" />
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/activity_detect_strip_timelapseButtonLayout"
         android:layout_width="match_parent"
@@ -30,12 +33,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="12dp"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/activity_detect_strip_timelapseButtonRedo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/redo_test" />
+
         <Button
             android:id="@+id/activity_detect_strip_timelapseButtonToResults"
             android:layout_width="match_parent"

@@ -4,17 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:background="@android:color/background_light"
-    tools:context=".sensor.colorimetry.strip.camera_strip.CameraPrepareFragment"
-    >
+    tools:context=".sensor.colorimetry.strip.camera_strip.CameraPrepareFragment">
 
     <include layout="@layout/quality_checks" />
 
-<TextView
-    android:id="@+id/fragment_camera_starttestCountQualityTextView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_above="@+id/include_layout_progress"
-    android:layout_margin="@dimen/activity_horizontal_margin"/>
+    <TextView
+        android:id="@+id/fragment_camera_starttestCountQualityTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/include_layout_progress"
+        android:layout_margin="@dimen/activity_horizontal_margin" />
 
     <include
         android:id="@+id/include_layout_progress"

@@ -10,20 +10,21 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/activity_resultLinearLayoutBottom"
         android:layout_alignParentTop="true">
+
         <LinearLayout
             android:id="@+id/activity_resultLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
-            android:orientation="vertical"
-            >
-        </LinearLayout>
+            android:orientation="vertical" />
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/activity_resultLinearLayoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+
         <Button
             android:id="@+id/activity_resultButtonSave"
             android:layout_width="wrap_content"
@@ -31,6 +32,7 @@
             android:layout_weight="1"
             android:background="@color/skyblue"
             android:text="@string/save" />
+
         <Button
             android:id="@+id/activity_resultButtonRedo"
             android:layout_width="wrap_content"

@@ -8,10 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity">
 
-    <TextView android:id="@+id/section_label"
+    <TextView
+        android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/fragment_choose_strip_testButtonPerform"
@@ -35,7 +36,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter" />
 
 
     <Button

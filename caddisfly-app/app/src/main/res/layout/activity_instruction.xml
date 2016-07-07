@@ -2,34 +2,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<android.support.v4.view.ViewPager
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/activity_instructionFooterLinLayout"
-    tools:context=".sensor.colorimetry.strip.instructions_strip.InstructionActivity" />
+    <android.support.v4.view.ViewPager xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_instructionFooterLinLayout"
+        tools:context=".sensor.colorimetry.strip.instructions_strip.InstructionActivity" />
 
     <RelativeLayout
         android:id="@+id/activity_instructionFooterLinLayout"
         android:layout_width="match_parent"
         android:layout_height="48sp"
         android:layout_alignParentBottom="true">
-    <ImageView
-        android:id="@+id/activity_instructionFooterArrowLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:adjustViewBounds="true"
-        android:paddingLeft="12sp"
-        android:paddingRight="12sp"
-        android:scaleType="centerInside"
-        android:src="@drawable/button_arrow_left_selector" />
-    <org.akvo.caddisfly.sensor.colorimetry.strip.instructions_strip.InstructionFooterView
-        android:id="@+id/activity_instructionFooterView"
-        android:layout_width="wrap_content"
-        android:layout_height="48sp"
-        android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/activity_instructionFooterArrowLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:adjustViewBounds="true"
+            android:paddingLeft="12sp"
+            android:paddingRight="12sp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_arrow_left_selector" />
+
+        <org.akvo.caddisfly.sensor.colorimetry.strip.instructions_strip.InstructionFooterView
+            android:id="@+id/activity_instructionFooterView"
+            android:layout_width="wrap_content"
+            android:layout_height="48sp"
+            android:layout_centerHorizontal="true" />
+
         <ImageView
             android:id="@+id/activity_instructionFooterArrowRight"
             android:layout_width="wrap_content"
