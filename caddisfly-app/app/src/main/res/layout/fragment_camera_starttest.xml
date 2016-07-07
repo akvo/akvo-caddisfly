@@ -9,7 +9,7 @@
     <include layout="@layout/quality_checks" />
 
     <TextView
-        android:id="@+id/fragment_camera_starttestCountQualityTextView"
+        android:id="@+id/text_cameraStartTest_qualityCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/include_layout_progress"

@@ -206,5 +206,7 @@
     <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
     <string name="begin">Start</string>
     <string name="noData">No data</string>
+    <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
+    <string name="prepareForCalibration">Prepare for calibration</string>
 
 </resources>

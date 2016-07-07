@@ -21,9 +21,10 @@
         android:layout_below="@+id/section_label"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_blue_selector"
-        android:drawableRight="@drawable/arrow_black_right_semi_transp"
+        android:drawableEnd="@drawable/arrow_black_right"
         android:gravity="center"
-        android:paddingRight="12sp"
+        android:paddingEnd="12dp"
+        android:paddingStart="0dp"
         android:text="@string/prepare_test"
         android:textColor="@android:color/white" />
 
@@ -36,6 +37,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:adjustViewBounds="true"
+        android:contentDescription="@null"
         android:scaleType="fitCenter" />
 
 
@@ -46,8 +48,8 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="0dp"
         android:background="#ffa5d390"
-        android:drawableRight="@drawable/arrow_black_right_semi_transp"
-        android:gravity="left|center_vertical"
+        android:drawableEnd="@drawable/arrow_black_right"
+        android:gravity="start|center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="@string/instructions"

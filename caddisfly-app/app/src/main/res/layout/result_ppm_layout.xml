@@ -9,7 +9,7 @@
         android:id="@+id/result_ppm_layoutDescView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12sp"
+        android:layout_marginStart="12sp"
         android:layout_marginTop="5sp"
         android:textStyle="bold" />
 
@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="15sp"
+        android:contentDescription="@null"
         android:scaleType="centerInside" />
 
     <LinearLayout
@@ -32,10 +33,11 @@
             android:layout_height="@dimen/ppm_circle_area" />
 
         <TextView
-            android:id="@+id/result_ppm_layoutPPMtextView"
+            android:id="@+id/text_ppm_result"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin" />
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin" />
     </LinearLayout>
 </LinearLayout>

@@ -55,7 +55,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
             }
         });
 
-        toResultsButton.setBackgroundColor(getResources().getColor(R.color.skyblue));
+        toResultsButton.setBackgroundColor(getResources().getColor(R.color.sky_blue));
         toResultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,10 +91,10 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect_strip_timelapse);
 
-        linearLayout = (LinearLayout) findViewById(R.id.activity_detect_strip_timelapseLinearLayout);
-        toResultsButton = (Button) findViewById(R.id.activity_detect_strip_timelapseButtonToResults);
-        redoTestButton = (Button) findViewById(R.id.activity_detect_strip_timelapseButtonRedo);
-        scrollView = (ScrollView) findViewById(R.id.activity_detect_strip_timelapseScrollView);
+        linearLayout = (LinearLayout) findViewById(R.id.layoutTimeLapse);
+        toResultsButton = (Button) findViewById(R.id.button_detect_strip_time_lapse_results);
+        redoTestButton = (Button) findViewById(R.id.button_detect_strip_time_lapse_redo);
+        scrollView = (ScrollView) findViewById(R.id.scrollTimeLapse);
         handler = new Handler();
 
         brandName = getIntent().getStringExtra(Constant.BRAND);

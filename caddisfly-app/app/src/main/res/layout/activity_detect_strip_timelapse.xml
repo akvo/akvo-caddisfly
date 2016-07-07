@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/activity_detect_strip_timelapseWaitTextView"
+        android:id="@+id/textWait"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -12,22 +12,23 @@
         android:text="@string/please_wait" />
 
     <ScrollView
-        android:id="@+id/activity_detect_strip_timelapseScrollView"
+        android:id="@+id/scrollTimeLapse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_detect_strip_timelapseButtonLayout"
-        android:layout_below="@+id/activity_detect_strip_timelapseWaitTextView"
+        android:layout_above="@+id/layout_detect_strip_time_lapse"
+        android:layout_below="@+id/textWait"
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/activity_detect_strip_timelapseLinearLayout"
+            android:id="@+id/layoutTimeLapse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/activity_detect_strip_timelapseButtonLayout"
+        android:id="@+id/layout_detect_strip_time_lapse"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -35,18 +36,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/activity_detect_strip_timelapseButtonRedo"
+            android:id="@+id/button_detect_strip_time_lapse_redo"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/redo_test" />
 
         <Button
-            android:id="@+id/activity_detect_strip_timelapseButtonToResults"
+            android:id="@+id/button_detect_strip_time_lapse_results"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/mediumblue"
+            android:background="@color/medium_blue"
             android:text="@string/to_results" />
     </LinearLayout>
 </RelativeLayout>

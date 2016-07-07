@@ -102,7 +102,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         if (startButton.getVisibility() == View.GONE) {
             startButton.setVisibility(View.VISIBLE);
             startButton.setBackgroundResource(android.R.drawable.btn_default);
-            startButton.setBackgroundColor(getResources().getColor(R.color.springgreen));
+            startButton.setBackgroundColor(getResources().getColor(R.color.spring_green));
             startButton.setText(R.string.next);
             startButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -128,7 +128,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
 
-        TextView countQualityView = (TextView) rootView.findViewById(R.id.fragment_camera_starttestCountQualityTextView);
+        TextView countQualityView = (TextView) rootView.findViewById(R.id.text_cameraStartTest_qualityCount);
         finishImage = (ImageView) rootView.findViewById(R.id.activity_cameraFinishImage);
 
         wrStartButton = new WeakReference<>(startButton);

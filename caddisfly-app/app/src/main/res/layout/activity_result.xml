@@ -21,24 +21,32 @@
 
     <LinearLayout
         android:id="@+id/activity_resultLinearLayoutBottom"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/activity_resultButtonSave"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/skyblue"
-            android:text="@string/save" />
+            android:background="@color/sky_blue"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/save"
+            android:textColor="@android:color/primary_text_dark" />
 
         <Button
             android:id="@+id/activity_resultButtonRedo"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="@string/redo_test" />
     </LinearLayout>
 </RelativeLayout>

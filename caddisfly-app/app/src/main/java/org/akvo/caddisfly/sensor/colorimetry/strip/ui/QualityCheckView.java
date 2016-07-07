@@ -16,10 +16,10 @@ public class QualityCheckView extends View {
 
     protected final int NUMBER_OF_BARS = 6;
     private final Paint paint;
-    private final int green;
-    private final int orange;
-    private final int red;
     protected float percentage = Float.NaN;
+    private int green = 0;
+    private int orange = 0;
+    private int red = 0;
 
     public QualityCheckView(Context context) {
         this(context, null);
@@ -37,9 +37,11 @@ public class QualityCheckView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
 
-        green = context.getResources().getColor(R.color.springgreen);
-        orange = context.getResources().getColor(R.color.orange);
-        red = context.getResources().getColor(R.color.clear_bordeaux);
+        if (!isInEditMode()) {
+            green = context.getResources().getColor(R.color.spring_green);
+            orange = context.getResources().getColor(R.color.orange);
+            red = context.getResources().getColor(R.color.clear_bordeaux);
+        }
 
     }
 

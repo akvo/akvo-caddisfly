@@ -25,7 +25,7 @@
     <string name="coliforms" tools:ignore="UnusedResources">Coliformes</string>
 
     <!--Akvo Flow -->
-    <string name="unamedDataPoint">Donnée non nommée</string>
+    <string name="unnamedDataPoint">Donnée non nommée</string>
     <string name="addDataPoint">CRÉER UN NOUVEAU POINT</string>
     <string name="goToText">Go to test</string>
 </resources>

@@ -396,7 +396,7 @@ public class ResultActivity extends BaseActivity {
                         circleView.circleView(colorDetected.getColor());
                     }
 
-                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutPPMtextView);
+                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.text_ppm_result);
                     if (ppm > -1) {
                         if (ppm < 1.0) {
                             textView.setText(String.format(Locale.getDefault(), "%.2f %s", ppm, unit));

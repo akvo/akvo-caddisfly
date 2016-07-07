@@ -7,6 +7,6 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
     <item name="activity_choose_striptest_list" type="layout">
-        @layout/activity_choose_striptest_twopane
+        @layout/activity_choose_striptest_two_pane
     </item>
 </resources>

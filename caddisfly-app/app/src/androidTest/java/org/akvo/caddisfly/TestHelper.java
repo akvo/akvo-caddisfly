@@ -95,7 +95,7 @@ class TestHelper {
         addString("chlorine", "Free Chlorine", res.getString(R.string.freeChlorine));
         addString("survey", "Survey", res.getString(R.string.survey));
         addString("electricalConductivity", "Electrical Conductivity", res.getString(R.string.electricalConductivity));
-        addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unamedDataPoint));
+        addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
         addString("useExternalSource", "Go to test", res.getString(R.string.goToText));
         addString("next", "Next", res.getString(R.string.next));

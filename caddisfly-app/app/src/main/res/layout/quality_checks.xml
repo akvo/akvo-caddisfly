@@ -3,9 +3,10 @@
     android:id="@+id/activity_cameraMessagesLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
     android:background="@android:color/background_light"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     android:paddingTop="@dimen/activity_vertical_margin">
 
@@ -23,8 +24,7 @@
         <TextView
             android:id="@+id/camera_preview_messageLightView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/light"
             android:textColor="@android:color/darker_gray" />
@@ -40,14 +40,12 @@
             android:id="@+id/activity_cameraImageViewContrast"
             android:layout_width="match_parent"
             android:layout_height="@dimen/quality_check_view_height"
-            android:layout_weight="1"
             android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/camera_preview_messageContrastView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/contrast"
             android:textColor="@android:color/darker_gray" />

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
     <Button
@@ -13,9 +13,9 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_weight="0.1"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/unchecked_box"
         android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:gravity="left|center_vertical"
+        android:drawableStart="@drawable/unchecked_box"
+        android:gravity="start|center_vertical"
         android:text="@string/start"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/mediumTextSize" />
@@ -43,6 +43,7 @@
             android:id="@+id/activity_cameraFinishImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             android:scaleType="fitXY"
             android:src="@drawable/unchecked_box" />
 
@@ -50,8 +51,8 @@
             android:id="@+id/activity_cameraFinishText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:background="@android:color/transparent"
             android:text="@string/finished"
             android:textColor="@android:color/darker_gray"
