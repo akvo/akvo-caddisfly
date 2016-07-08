@@ -11,7 +11,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
 /**
  * Created by linda on 11/19/15
  */
-public class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
+class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
     private int imageCount;
     private byte[] data;

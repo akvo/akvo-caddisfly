@@ -1,9 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
 import android.app.Activity;
-import android.graphics.Rect;
-import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +13,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -119,11 +114,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -148,7 +138,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             setHeightOfOverlay(0);
 
             if (mListener != null) {
-                mListener.startNextPreview(0);
+                mListener.startNextPreview();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,27 +175,27 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         }
     }
 
-    @Override
-    public void setFocusAreas(Camera.Size previewSize) {
-        //set focus area to upper third of preview
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-            List<Camera.Area> areas = new ArrayList<>();
-
-            int ratioW = Math.round(1000f / previewSize.width);
-            int ratioH = Math.round(1000f / previewSize.height);
-
-            Rect focusArea = new Rect(
-                    -1000 + ratioW,
-                    -1000 + ratioH,
-                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERA_VIEW_FACTOR),
-                    -1000 + ratioH * previewSize.height
-            );
-
-            areas.add(new Camera.Area(focusArea, 1));
-
-            if (mListener != null)
-                mListener.setFocusAreas(areas);
-        }
-    }
+//    @Override
+//    public void setFocusAreas(Camera.Size previewSize) {
+//        //set focus area to upper third of preview
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//
+//            List<Camera.Area> areas = new ArrayList<>();
+//
+//            int ratioW = Math.round(1000f / previewSize.width);
+//            int ratioH = Math.round(1000f / previewSize.height);
+//
+//            Rect focusArea = new Rect(
+//                    -1000 + ratioW,
+//                    -1000 + ratioH,
+//                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERA_VIEW_FACTOR),
+//                    -1000 + ratioH * previewSize.height
+//            );
+//
+//            areas.add(new Camera.Area(focusArea, 1));
+//
+//            if (mListener != null)
+//                mListener.setFocusAreas(areas);
+//        }
+//    }
 }

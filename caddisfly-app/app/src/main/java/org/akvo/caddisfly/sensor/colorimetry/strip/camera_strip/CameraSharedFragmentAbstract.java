@@ -1,6 +1,5 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
-import android.hardware.Camera;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,22 +22,22 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public abstract class CameraSharedFragmentAbstract extends Fragment {
 
-    public void setFocusAreas(Camera.Size previewSize) {
-    }
+    //public abstract void setFocusAreas(Camera.Size previewSize);
 
     public void countQuality(Map<String, Integer> countArray) {
     }
 
-    protected void showBrightness(double value) {
+    void showBrightness(double value) {
     }
 
-    protected void showShadow(double value) {
+    void showShadow(double value) {
     }
 
     public void showStartButton() {
     }
 
-    protected void setHeightOfOverlay(int shrinkOrEnlarge) {
+    @SuppressWarnings("SameParameterValue")
+    void setHeightOfOverlay(int shrinkOrEnlarge) {
         try {
             final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
 

@@ -30,35 +30,27 @@ import java.util.List;
  * Created by linda on 12/17/15
  */
 @SuppressWarnings("deprecation")
-public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
-    protected final LinkedList<Double> lumTrack = new LinkedList<>();
-    protected final LinkedList<Double> shadowTrack = new LinkedList<>();
-    final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
-    final List<double[]> lumList = new ArrayList<>();
+abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
+    private final LinkedList<Double> lumTrack = new LinkedList<>();
+    private final LinkedList<Double> shadowTrack = new LinkedList<>();
+    private final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
+    private final List<double[]> lumList = new ArrayList<>();
+    private final Mat src_gray = new Mat();
+    CameraViewListener listener;
+    Camera.Size previewSize;
+    boolean stop;
     //private int count;
-    protected List<FinderPattern> possibleCenters;
-    protected int finderPatternColor;
-    protected CameraViewListener listener;
-    protected CalibrationData calibrationData;
-    protected Camera.Size previewSize;
-    protected Context context;
-    protected float EV;
-    Mat bgr = null;
-    Mat convert_mYuv = null;
-    Mat src_gray = new Mat();
-    double minX;
-    double minY;
-    double maxX;
-    double maxY;
-    double esModSize;
-    FinderPatternInfo info = null;
-    PlanarYUVLuminanceSource myYUV;
-    BinaryBitmap binaryBitmap;
-    BitMatrix bitMatrix = null;
-    FinderPatternFinder finderPatternFinder;
+    private List<FinderPattern> possibleCenters;
+    private int finderPatternColor;
+    private CalibrationData calibrationData;
+    private Context context;
+    private float EV;
+    private Mat bgr = null;
+    private Mat convert_mYuv = null;
+    private FinderPatternInfo info = null;
+    private BitMatrix bitMatrix = null;
 
-
-    public CameraPreviewCallbackAbstract(Context context, Camera.Parameters parameters) {
+    CameraPreviewCallbackAbstract(Context context, Camera.Parameters parameters) {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
@@ -67,14 +59,15 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         this.context = context;
 
-        finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/springgreen
+        finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/spring_green
 
         possibleCenters = new ArrayList<>();
 
         previewSize = parameters.getPreviewSize();
     }
 
-    public void setStop(boolean stop) {
+    public void stop() {
+        this.stop = true;
     }
 
     @Override
@@ -88,10 +81,9 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         EV = step * camera.getParameters().getExposureCompensation();
     }
 
-    protected void sendData(byte[] data) {
-    }
+    protected abstract void sendData(byte[] data);
 
-    protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
+    int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         lumList.clear();
         float[] tilts = null;
         int lumVal = 0;
@@ -108,17 +100,17 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
                 for (int i = 0; i < possibleCenters.size(); i++) {
-                    esModSize = possibleCenters.get(i).getEstimatedModuleSize();
+                    double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
 
                     // find top left and bottom right coordinates of finder pattern
-                    minX = Math.max(possibleCenters.get(i).getX() - 4 * esModSize, 0);
-                    minY = Math.max(possibleCenters.get(i).getY() - 4 * esModSize, 0);
-                    maxX = Math.min(possibleCenters.get(i).getX() + 4 * esModSize, bgr.width());
-                    maxY = Math.min(possibleCenters.get(i).getY() + 4 * esModSize, bgr.height());
+                    double minX = Math.max(possibleCenters.get(i).getX() - 4 * esModSize, 0);
+                    double minY = Math.max(possibleCenters.get(i).getY() - 4 * esModSize, 0);
+                    double maxX = Math.min(possibleCenters.get(i).getX() + 4 * esModSize, bgr.width());
+                    double maxY = Math.min(possibleCenters.get(i).getY() + 4 * esModSize, bgr.height());
                     Point topLeft = new Point(minX, minY);
                     Point bottomRight = new Point(maxX, maxY);
 
-                    // make grayscale submat of finder pattern
+                    // make grayscale subMat of finder pattern
                     org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
 
                     Imgproc.cvtColor(bgr.submat(roi), src_gray, Imgproc.COLOR_BGR2GRAY);
@@ -143,8 +135,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
             // number of finder patterns can be anything here.
             if (info != null) {
                 //DETECT BRIGHTNESS
-                double maxmaxLum = luminosityCheck(lumList);
-                lumVal = maxmaxLum > Constant.MAX_LUM_LOWER && maxmaxLum <= Constant.MAX_LUM_UPPER ? 1 : 0;
+                double maxLuminance = luminosityCheck(lumList);
+                lumVal = maxLuminance > Constant.MAX_LUM_LOWER && maxLuminance <= Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // DETECT SHADOWS
                 if (bgr != null && possibleCenters.size() == 4) {
@@ -205,7 +197,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         return qualityChecksArray;
     }
 
-    private double detectShadows(FinderPatternInfo info, Mat bgr) throws Exception {
+    private double detectShadows(FinderPatternInfo info, Mat bgr) {
         double shadowPercentage = 101;
 
         if (bgr == null) {
@@ -250,12 +242,12 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
     }
 
     private double luminosityCheck(List<double[]> lumList) {
-        double maxmaxLum = -1; //highest value of 'white'
+        double maxLuminance = -1; //highest value of 'white'
 
         for (int i = 0; i < lumList.size(); i++) {
             //store lum max value that corresponds with highest: we use it to check over- and under exposure
-            if (lumList.get(i)[1] > maxmaxLum) {
-                maxmaxLum = lumList.get(i)[1];
+            if (lumList.get(i)[1] > maxLuminance) {
+                maxLuminance = lumList.get(i)[1];
             }
         }
         //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
@@ -265,25 +257,25 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
 
         if (lumList.size() > 0) {
             //add highest value of 'white' to track list
-            lumTrack.addLast(100 * maxmaxLum / 255);
+            lumTrack.addLast(100 * maxLuminance / 255);
 
             //compensate for under-exposure
             //if max values lower than 150
-            if (maxmaxLum < Constant.MAX_LUM_LOWER) {
+            if (maxLuminance < Constant.MAX_LUM_LOWER) {
                 //The maximum is below the minimum value. Increase the exposure value
                 listener.adjustExposureCompensation(1);
-                return maxmaxLum;
+                return maxLuminance;
             }
 
             //compensate for over-exposure
             //if max values larger than 254
-            if (maxmaxLum > Constant.MAX_LUM_UPPER) {
-                // the maximum is largen than the maximum value. We are likely overexposed
+            if (maxLuminance > Constant.MAX_LUM_UPPER) {
+                // the maximum is larger than the maximum value. We are likely overexposed
                 // adjust exposure downwards.
                 listener.adjustExposureCompensation(-1);
             } else {
                 //we want to get it as bright as possible but without risking overexposure
-                if (maxmaxLum * Constant.PERCENT_ILLUMINATION < Constant.MAX_LUM_UPPER) {
+                if (maxLuminance * Constant.PERCENT_ILLUMINATION < Constant.MAX_LUM_UPPER) {
                     // try to increase the exposure one more time
                     listener.adjustExposureCompensation(1);
                 } else {
@@ -293,19 +285,19 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 }
             }
         }
-        return maxmaxLum;
+        return maxLuminance;
     }
 
-    protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
+    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
         // crop preview image to only contain the known region for the finder pattern
         // this leads to an image in portrait view
-        myYUV = new PlanarYUVLuminanceSource(data, size.width,
+        PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
                 (int) Math.round(size.height * Constant.CROP_FINDER_PATTERN_FACTOR),
                 size.height,
                 false);
 
-        binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(myYUV));
 
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
@@ -314,14 +306,10 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         }
 
         if (bitMatrix != null) {
-            finderPatternFinder = new FinderPatternFinder(bitMatrix);
+            FinderPatternFinder finderPatternFinder = new FinderPatternFinder(bitMatrix);
 
             try {
                 info = finderPatternFinder.find(null);
-
-            } catch (Exception e) {
-                // this only means not all patterns (=4) are detected.
-            } finally {
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
                 //detect centers that are to small in order to get rid of noise
@@ -348,6 +336,8 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                         e.printStackTrace();
                     }
                 }
+            } catch (Exception ignored) {
+                // this only means not all patterns (=4) are detected.
             }
         }
         return info;

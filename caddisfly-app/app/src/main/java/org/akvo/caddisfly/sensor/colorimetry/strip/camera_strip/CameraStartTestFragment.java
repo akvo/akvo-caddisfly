@@ -58,9 +58,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
     //set to true if you want to see the original and calibrated images in DetectStripActivity
     //set to false if you want to go to the ResultActivity directly
-    static final boolean DEVELOP_MODE = false;
-    WeakReference<Button> wrStartButton;
-    WeakReference<TextView> wrCountQualityView;
+    private static final boolean DEVELOP_MODE = false;
+    private WeakReference<Button> wrStartButton;
+    private WeakReference<TextView> wrCountQualityView;
     private CameraViewListener mListener;
     //private Button startButton;
     private List<StripTest.Brand.Patch> patches;
@@ -73,15 +73,10 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     private int imageCount = 0;
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
-    //private TextView countQualityView;
-    private QualityCheckView exposureView;
-    private QualityCheckView contrastView;
-    private ImageView finishImage;
-    private Animation rotate;
     /*
      * Update the ProgressIndicatorView every second
     */
-    private Runnable countdownRunnable = new Runnable() {
+    private final Runnable countdownRunnable = new Runnable() {
         @Override
         public void run() {
 
@@ -94,6 +89,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
             }
         }
     };
+    //private TextView countQualityView;
+    private QualityCheckView exposureView;
+    private QualityCheckView contrastView;
+    private ImageView finishImage;
+    private Animation rotate;
 
 
     public CameraStartTestFragment() {
@@ -337,7 +337,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     /*
     * Update progressIndicatorView with the number of steps that we have a picture of
      */
-    public void setStepsTaken(final int number) {
+    private void setStepsTaken(final int number) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -439,7 +439,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         if (patchesCovered == patches.size() - 1) {
             //stop the preview callback from repeating itself
             if (mListener != null) {
-                mListener.stopCallback(true);
+                mListener.stopCallback();
             }
 
             //check if we really do have data in the json-array

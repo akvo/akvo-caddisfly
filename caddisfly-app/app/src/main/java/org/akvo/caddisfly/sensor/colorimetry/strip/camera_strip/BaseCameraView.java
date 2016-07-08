@@ -212,31 +212,31 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
-    public void setFocusAreas(List<Camera.Area> areas) {
-        if (mCamera == null)
-            return;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-            if (parameters.getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
-                try {
-                    //make sure area list does not exceed max num areas allowed
-                    int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
-                    List<Camera.Area> subAreas = areas.subList(0, length);
-
-                    mCamera.cancelAutoFocus();
-
-                    //parameters = mCamera.getParameters();
-                    parameters.setFocusAreas(subAreas);
-                    mCamera.setParameters(parameters);
-
-                } catch (Exception e) {
-                    System.out.println("***Exception setting parameters for focus areas.");
-                    e.printStackTrace();
-
-                }
-            }
-        }
-    }
+//    public void setFocusAreas(List<Camera.Area> areas) {
+//        if (mCamera == null)
+//            return;
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//
+//            if (parameters.getMaxNumFocusAreas() > 0 && areas != null && areas.size() > 0) {
+//                try {
+//                    //make sure area list does not exceed max num areas allowed
+//                    int length = Math.min(areas.size(), mCamera.getParameters().getMaxNumFocusAreas());
+//                    List<Camera.Area> subAreas = areas.subList(0, length);
+//
+//                    mCamera.cancelAutoFocus();
+//
+//                    //parameters = mCamera.getParameters();
+//                    parameters.setFocusAreas(subAreas);
+//                    mCamera.setParameters(parameters);
+//
+//                } catch (Exception e) {
+//                    System.out.println("***Exception setting parameters for focus areas.");
+//                    e.printStackTrace();
+//
+//                }
+//            }
+//        }
+//    }
 }
 

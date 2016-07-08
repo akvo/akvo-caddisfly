@@ -33,11 +33,11 @@ interface CameraViewListener {
 
     void addCountToQualityCheckCount(int[] countArray);
 
-    void startNextPreview(long timeMillis);
+    void startNextPreview();
 
     void takeNextPicture(long timeMillis);
 
-    void stopCallback(boolean stop);
+    void stopCallback();
 
     void nextFragment();
 
@@ -45,7 +45,7 @@ interface CameraViewListener {
 
     void setQualityCheckCountZero();
 
-    void setFocusAreas(List<Camera.Area> areas);
+    //void setFocusAreas(List<Camera.Area> areas);
 
     void switchFlash();
 }

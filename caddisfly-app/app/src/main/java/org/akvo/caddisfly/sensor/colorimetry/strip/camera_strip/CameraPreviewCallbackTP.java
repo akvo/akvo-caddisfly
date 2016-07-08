@@ -39,15 +39,10 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
-    private boolean stop;
     private boolean running;
 
     public CameraPreviewCallbackTP(Context context, Camera.Parameters parameters) {
         super(context, parameters);
-    }
-
-    public void setStop(boolean stop) {
-        this.stop = stop;
     }
 
     @Override
@@ -73,16 +68,16 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
             if (listener != null)
                 listener.addCountToQualityCheckCount(countQuality);
 
-            //sumQual should amount to 3, if all checks are OK: [1,1,1]
-            int sumQual = 0;
+            //sumQuality should amount to 3, if all checks are OK: [1,1,1]
+            int sumQuality = 0;
             if (countQuality != null) {
                 for (int i : countQuality) {
-                    sumQual += i;
+                    sumQuality += i;
                 }
             }
 
             if (listener != null) {
-                if (info != null && sumQual == 3 && listener.qualityChecksOK()) {
+                if (info != null && sumQuality == 3 && listener.qualityChecksOK()) {
                     long timePictureTaken = System.currentTimeMillis();
 
                     //freeze the screen and play a sound
@@ -92,7 +87,7 @@ class CameraPreviewCallbackTP extends CameraPreviewCallbackAbstract {
                     //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
                     listener.sendData(data, timePictureTaken, info);
 
-                    listener.startNextPreview(0);
+                    listener.startNextPreview();
                 } else {
                     listener.takeNextPicture(500);
                 }

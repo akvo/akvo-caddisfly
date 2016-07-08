@@ -14,15 +14,10 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternIn
  */
 @SuppressWarnings("deprecation")
 class CameraPreviewCallbackSP extends CameraPreviewCallbackAbstract {
-    private boolean stop;
     private boolean running;
 
     public CameraPreviewCallbackSP(Context context, Camera.Parameters parameters) {
         super(context, parameters);
-    }
-
-    public void setStop(boolean stop) {
-        this.stop = stop;
     }
 
     @Override

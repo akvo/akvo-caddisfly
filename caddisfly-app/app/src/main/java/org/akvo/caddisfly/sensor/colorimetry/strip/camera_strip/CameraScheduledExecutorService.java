@@ -15,7 +15,7 @@ class CameraScheduledExecutorService {
     private final ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
 
-    private Map<String, ScheduledFuture> tasks = new HashMap<>();
+    private final Map<String, ScheduledFuture> tasks = new HashMap<>();
 
     /*
     * Schedule a runnable with an initial delay in milliseconds
@@ -48,10 +48,10 @@ class CameraScheduledExecutorService {
     }
 
     /*
-        * Schedule a runnable with a delay in milliseconds
         * This method schedules a task to be executed periodically.
         * The task is executed the first time after the initialDelay, and then repeats every time the period expires.
-         */
+    */
+    @SuppressWarnings("SameParameterValue")
     public void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay) {
         try {
             if (!scheduledExecutorService.isShutdown()) {

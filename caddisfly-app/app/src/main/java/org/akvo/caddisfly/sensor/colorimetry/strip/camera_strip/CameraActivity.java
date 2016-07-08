@@ -42,6 +42,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class CameraActivity extends BaseActivity implements CameraViewListener, DetectStripListener {
 
+    private static final long CAMERA_PREVIEW_DELAY = 500;
     private final String TAG = "CameraActivity"; //NON-NLS
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
@@ -114,7 +115,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private CameraPreviewCallbackSP cameraPreviewCallbackSP;
     //get instance of CameraPreviewCallback
     //and do a oneShotPreviewCallback.
-    //do not do this if currentFragment is instructions, only for prepare and starttest fragments
+    //do not do this if currentFragment is instructions, only for prepare and start test fragments
     private final Runnable startNextPreviewRunnable = new Runnable() {
         @Override
         public void run() {
@@ -342,11 +343,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     //prevents or enables the CameraPreviewCallback to execute ...
     @Override
-    public void stopCallback(boolean stop) {
+    public void stopCallback() {
         if (cameraPreviewCallbackSP != null)
-            cameraPreviewCallbackSP.setStop(true);
+            cameraPreviewCallbackSP.stop();
         if (cameraPreviewCallbackTP != null)
-            cameraPreviewCallbackTP.setStop(true);
+            cameraPreviewCallbackTP.stop();
     }
 
     @Override
@@ -359,19 +360,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void startNextPreview(long timeMillis) {
+    public void startNextPreview() {
 
         if (cameraScheduledExecutorService != null) {
-            cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(startNextPreviewRunnable, timeMillis, 500);
+            cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(startNextPreviewRunnable, 0, CAMERA_PREVIEW_DELAY);
         }
     }
 
-    @Override
-    public void setFocusAreas(List<Camera.Area> areas) {
-        if (mCamera != null && baseCameraView != null) {
-            baseCameraView.setFocusAreas(areas);
-        }
-    }
+//    @Override
+//    public void setFocusAreas(List<Camera.Area> areas) {
+//        if (mCamera != null && baseCameraView != null) {
+//            baseCameraView.setFocusAreas(areas);
+//        }
+//    }
 
     @Override
     public void setQualityCheckCountZero() {
@@ -664,19 +665,17 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
      * RUNNABLE DECLARATIONS
      **********************************/
     private class ShowFinderPatternRunnable implements Runnable {
+        private final WeakReference<FinderPatternIndicatorView> wrFinderPatternIndicatorView =
+                new WeakReference<>(finderPatternIndicatorView);
         private int color;
         private List<FinderPattern> patterns;
         private Camera.Size size;
-        private WeakReference<FinderPatternIndicatorView> wrFinderPatternIndicatorView =
-                new WeakReference<>(finderPatternIndicatorView);
 
         @Override
         public void run() {
-            if (wrFinderPatternIndicatorView != null) {
 
-                wrFinderPatternIndicatorView.get().setColor(color);
-                wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width, size == null ? 0 : size.height);
-            }
+            wrFinderPatternIndicatorView.get().setColor(color);
+            wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width, size == null ? 0 : size.height);
         }
 
         public void setColor(int color) {
