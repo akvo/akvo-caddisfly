@@ -47,37 +47,37 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
-    private final Runnable focus = new Runnable() {
-
-        boolean focused;
-
-        //String focusMode = mCamera.getParameters().getFocusMode();
-        @Override
-        public void run() {
-
-            try {
-                if (mCamera != null) {
-
-                    WeakReference<Camera> wrCamera = new WeakReference<>(mCamera);
-
-                    if (!focused)
-                        wrCamera.get().autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                focused = success;
-
-                                System.out.println("***focused: " + focused);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                                    System.out.println("***auto exposure: " + camera.getParameters().getAutoExposureLock());
-                                }
-                            }
-                        });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    //    private final Runnable focus = new Runnable() {
+//
+//        boolean focused;
+//
+//        //String focusMode = mCamera.getParameters().getFocusMode();
+//        @Override
+//        public void run() {
+//
+//            try {
+//                if (mCamera != null) {
+//
+//                    WeakReference<Camera> wrCamera = new WeakReference<>(mCamera);
+//
+//                    if (!focused)
+//                        wrCamera.get().autoFocus(new Camera.AutoFocusCallback() {
+//                            @Override
+//                            public void onAutoFocus(boolean success, Camera camera) {
+//                                focused = success;
+//
+//                                System.out.println("***focused: " + focused);
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                                    System.out.println("***auto exposure: " + camera.getParameters().getAutoExposureLock());
+//                                }
+//                            }
+//                        });
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
     private WeakReference<Camera> wrCamera;
     private FrameLayout previewLayout;
     private BaseCameraView baseCameraView;
@@ -454,9 +454,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         handler.post(showFinderPatternRunnable);
     }
 
-    @Override
-    public void showFocusValue(final double value) {
-    }
+//    @Override
+//    public void showFocusValue(final double value) {
+//    }
 
     @Override
     public void showBrightness(final double value) {
@@ -541,14 +541,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     @Override
     public void showMessage(int what) {
-        String[] messages = new String[]
-                {
-                        getString(R.string.reading_data), //0
-                        getString(R.string.calibrating), //1
-                        getString(R.string.cut_out_strip), //2
-                        "\n\n" + getString(R.string.finished) //3
-
-                };
+//        String[] messages = new String[]
+//                {
+//                        getString(R.string.reading_data), //0
+//                        getString(R.string.calibrating), //1
+//                        getString(R.string.cut_out_strip), //2
+//                        "\n\n" + getString(R.string.finished) //3
+//
+//                };
 
         final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
         Runnable runnable = new Runnable() {

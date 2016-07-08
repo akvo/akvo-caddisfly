@@ -31,6 +31,7 @@ import java.util.UUID;
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
+    final static boolean DEVELOP_MODE = false;
     private int format;
     private int width;
     private int height;
@@ -41,7 +42,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     private DetectStripListener listener;
     private Context context;
     private FileStorage fileStorage;
-    private Bitmap bitmap;
 
     public DetectStripTask(Context listener) {
         try {
@@ -146,8 +146,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
 
                         // save warped image to external storage
-                        boolean develop = false;
-                        if (develop) {
+                        if (DEVELOP_MODE) {
                             Mat rgb = new Mat();
                             Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_Lab2RGB);
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
@@ -171,7 +170,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             cal_dest = calResult.calibratedImage;
                             System.out.println("*** E94 error mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94) + ", total: " + String.format("%.2f", calResult.totalE94));
 
-                            if (develop) {
+                            if (DEVELOP_MODE) {
                                 listener.showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
                             }
                         } catch (Exception e) {
@@ -182,7 +181,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
 
                         //show calibrated image
-                        if (develop) {
+                        if (DEVELOP_MODE) {
                             Mat rgb = new Mat();
                             Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_Lab2RGB);
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
@@ -266,10 +265,11 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         if (listener != null) {
 
             listener.showResults();
-        } else {
+        }
+        //else {
             //System.out.println("***listener is null");
             //TODO what now?
-        }
+        //}
     }
 
     // Creates a lab image out of the original YUV preview data
@@ -301,10 +301,10 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         }
 
         JSONObject jsonObject = new JSONObject(jsonInfo);
-        JSONArray tl = jsonObject.getJSONArray(Constant.TOPLEFT);
-        JSONArray tr = jsonObject.getJSONArray(Constant.TOPRIGHT);
-        JSONArray bl = jsonObject.getJSONArray(Constant.BOTTOMLEFT);
-        JSONArray br = jsonObject.getJSONArray(Constant.BOTTOMRIGHT);
+        JSONArray tl = jsonObject.getJSONArray(Constant.TOP_LEFT);
+        JSONArray tr = jsonObject.getJSONArray(Constant.TOP_RIGHT);
+        JSONArray bl = jsonObject.getJSONArray(Constant.BOTTOM_LEFT);
+        JSONArray br = jsonObject.getJSONArray(Constant.BOTTOM_RIGHT);
         double[] topleft = new double[]{tl.getDouble(0), tl.getDouble(1)};
         double[] topright = new double[]{tr.getDouble(0), tr.getDouble(1)};
         double[] bottomleft = new double[]{bl.getDouble(0), bl.getDouble(1)};

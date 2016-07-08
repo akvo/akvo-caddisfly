@@ -55,8 +55,8 @@ public abstract class CameraSharedFragmentAbstract extends Fragment {
             //shrinkOrEnlarge the overlay view based on a factor of its parent height
             switch (shrinkOrEnlarge) {
                 case 0: //shrink
-                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
-                    paramsP.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERAVIEW_FACTOR);
+                    params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
+                    paramsP.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
                     break;
                 case 1: //enlarge
                     params.height = ViewGroup.LayoutParams.MATCH_PARENT;

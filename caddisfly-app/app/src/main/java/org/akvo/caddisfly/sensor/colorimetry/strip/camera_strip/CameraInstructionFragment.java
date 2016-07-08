@@ -72,20 +72,20 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
 
                     String[] instrArray = instr.split("<!");
 
-                    for (int ii = 0; ii < instrArray.length; ii++) {
+                    for (String anInstrArray : instrArray) {
                         textView = new TextView(getActivity());
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mediumTextSize));
 
                         int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
                         textView.setPadding(0, 0, 0, padBottom);
 
-                        int indexImp = instrArray[ii].indexOf(">");
+                        int indexImp = anInstrArray.indexOf(">");
                         if (indexImp >= 0) {
                             textView.setTextColor(Color.RED);
                         } else {
                             textView.setTextColor(Color.GRAY);
                         }
-                        String text = instrArray[ii].replaceAll(">", "");
+                        String text = anInstrArray.replaceAll(">", "");
                         if (!text.isEmpty()) {
                             textView.setText(" - ");
                             textView.append(text);

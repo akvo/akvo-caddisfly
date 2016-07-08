@@ -43,7 +43,7 @@ public class ResultUtils {
         String error = isInvalidStrip ? Constant.ERROR : "";
 
         // read the Mat object from internal storage
-        byte[] data = new byte[0];
+        byte[] data;
         try {
             data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
 
@@ -132,7 +132,7 @@ public class ResultUtils {
         // horizontal size of mat: width
         // vertical size of mat: size of colour block - xmargin + top distance
         Mat colorRangeMat = new Mat((int) Math.ceil(xtrans - xMargin + yColorRect), width, CvType.CV_8UC3, labWhite);
-        JSONArray colours = null;
+        JSONArray colours;
         colours = patches.get(patchNum).getColours();
 
         for (int d = 0; d < colours.length(); d++) {
@@ -338,8 +338,8 @@ public class ResultUtils {
                             labGrey, 1, Core.LINE_AA, false);
 
                     double offset = circleRadius + 5;
-                    for (int p = 0; p < colorsDetected.length; p++) {
-                        Scalar ppmColor = colorsDetected[p].getLab();
+                    for (ColorDetected aColorsDetected : colorsDetected) {
+                        Scalar ppmColor = aColorsDetected.getLab();
                         Imgproc.circle(valueMeasuredMat, new Point(centerCircle.x, centerCircle.y + offset), circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
                         offset += 2 * circleRadius + 5;
                     }

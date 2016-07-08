@@ -283,7 +283,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
                 listener.adjustExposureCompensation(-1);
             } else {
                 //we want to get it as bright as possible but without risking overexposure
-                if (maxmaxLum * Constant.PERCENT_ILLUM < Constant.MAX_LUM_UPPER) {
+                if (maxmaxLum * Constant.PERCENT_ILLUMINATION < Constant.MAX_LUM_UPPER) {
                     // try to increase the exposure one more time
                     listener.adjustExposureCompensation(1);
                 } else {
@@ -301,7 +301,7 @@ public abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCal
         // this leads to an image in portrait view
         myYUV = new PlanarYUVLuminanceSource(data, size.width,
                 size.height, 0, 0,
-                (int) Math.round(size.height * Constant.CROP_FINDERPATTERN_FACTOR),
+                (int) Math.round(size.height * Constant.CROP_FINDER_PATTERN_FACTOR),
                 size.height,
                 false);
 

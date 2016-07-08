@@ -198,7 +198,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             Rect focusArea = new Rect(
                     -1000 + ratioW,
                     -1000 + ratioH,
-                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERAVIEW_FACTOR),
+                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERA_VIEW_FACTOR),
                     -1000 + ratioH * previewSize.height
             );
 

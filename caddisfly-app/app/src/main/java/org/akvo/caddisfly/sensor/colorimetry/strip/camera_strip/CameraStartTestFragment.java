@@ -56,6 +56,9 @@ import java.util.Map;
  */
 public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
+    //set to true if you want to see the original and calibrated images in DetectStripActivity
+    //set to false if you want to go to the ResultActivity directly
+    static final boolean DEVELOP_MODE = false;
     WeakReference<Button> wrStartButton;
     WeakReference<TextView> wrCountQualityView;
     private CameraViewListener mListener;
@@ -75,8 +78,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     private QualityCheckView contrastView;
     private ImageView finishImage;
     private Animation rotate;
-
-
     /*
      * Update the ProgressIndicatorView every second
     */
@@ -434,10 +435,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
      */
     public void dataSent(int format, int width, int height) {
 
-        //set to true if you want to see the original and calibrated images in DetectStripActivity
-        //set to false if you want to go to the ResultActivity directly
-        boolean develop = false;
-
         //check if we do have images for all patches
         if (patchesCovered == patches.size() - 1) {
             //stop the preview callback from repeating itself
@@ -453,8 +450,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
                 Intent detectStripIntent = createDetectStripIntent(format, width, height);
 
-                //if develop
-                if (develop) {
+                if (DEVELOP_MODE) {
                     detectStripIntent.setClass(getActivity(), DetectStripActivity.class);
                     startActivity(detectStripIntent);
                 } else {
@@ -509,15 +505,15 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
                 if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
 
-                    String text = new String(getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT));
+                    String text = getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrStartButton.get().setText(text);
 
-                    if (1 == 1) {
+                    //if (1 == 1) {
                         wrCountQualityView.get().setText("");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
                         }
-                    }
+                    //}
                 }
             } catch (Exception e) {
                 e.printStackTrace();

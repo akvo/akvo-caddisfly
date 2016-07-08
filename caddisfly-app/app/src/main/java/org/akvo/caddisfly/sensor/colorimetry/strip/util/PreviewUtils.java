@@ -35,15 +35,15 @@ public class PreviewUtils {
         double[][] points = CalibrationCard.createWhitePointArray(lab, data);
 
         //get the sum total of luminosity values
-        for (int i = 0; i < points.length; i++) {
-            sumLum += points[i][2];
+        for (double[] point : points) {
+            sumLum += point[2];
         }
 
         double avgLum = sumLum / points.length;
         double avgLumReciproc = 1.0 / avgLum;
 
-        for (int i = 0; i < points.length; i++) {
-            double lum = points[i][2];
+        for (double[] point : points) {
+            double lum = point[2];
             deviation = Math.abs(lum - avgLum) * avgLumReciproc;
 
             // count number of points that differ more than CONTRAST_DEVIATION_FRACTION from the average

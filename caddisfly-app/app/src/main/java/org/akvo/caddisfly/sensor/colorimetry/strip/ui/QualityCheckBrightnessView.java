@@ -34,6 +34,4 @@ public class QualityCheckBrightnessView extends QualityCheckView {
         // we want the number to range between 0 (= dark) and 6 (bright).
         return (percentage / Constant.MAX_LUM_PERCENTAGE) * NUMBER_OF_BARS;
     }
-
-
 }

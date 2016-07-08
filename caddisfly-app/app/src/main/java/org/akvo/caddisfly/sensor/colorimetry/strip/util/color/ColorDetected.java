@@ -10,7 +10,6 @@ public class ColorDetected {
     private int color;
     private Scalar rgb;
     private Scalar lab;
-    private Scalar hsv;
     private int x;
     private double ppm;
 
@@ -53,13 +52,5 @@ public class ColorDetected {
 
     public void setLab(Scalar lab) {
         this.lab = lab;
-    }
-
-    public Scalar getHsv() {
-        return hsv;
-    }
-
-    public void setHsv(Scalar hsv) {
-        this.hsv = hsv;
     }
 }

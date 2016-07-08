@@ -3,7 +3,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.Base64;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,13 +11,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -54,25 +50,25 @@ public class FileStorage {
      */
 
     public static boolean checkExternalMedia() {
-        boolean mExternalStorageAvailable = false;
-        boolean mExternalStorageWriteable = false;
+        boolean mExternalStorageAvailable;
+        boolean mExternalStorageWritable;
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // Can read and write the media
-            mExternalStorageAvailable = mExternalStorageWriteable = true;
+            mExternalStorageAvailable = mExternalStorageWritable = true;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // Can only read the media
             mExternalStorageAvailable = true;
-            mExternalStorageWriteable = false;
+            mExternalStorageWritable = false;
         } else {
             // Can't read or write
-            mExternalStorageAvailable = mExternalStorageWriteable = false;
+            mExternalStorageAvailable = mExternalStorageWritable = false;
         }
         System.out.println("\n\nExternal Media: readable="
-                + mExternalStorageAvailable + " writable=" + mExternalStorageWriteable);
+                + mExternalStorageAvailable + " writable=" + mExternalStorageWritable);
 
-        return mExternalStorageWriteable;
+        return mExternalStorageWritable;
     }
 
     /**
@@ -111,8 +107,6 @@ public class FileStorage {
                 baos.close();
                 f.close();
                 return file.getAbsolutePath();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -121,33 +115,31 @@ public class FileStorage {
         return "";
     }
 
-    public static void writeLogToSDFile(String filename, String data, boolean append) {
-
-        // Find the root of the external storage.
-        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
-
-        File root = android.os.Environment.getExternalStorageDirectory();
-        System.out.println("\nExternal file system root: " + root);
-
-        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
-
-        File dir = new File(root.getAbsolutePath() + "/download/striptest");
-        dir.mkdirs();
-        File file = new File(dir, filename);
-
-        try {
-            FileWriter writer = new FileWriter(file, append);
-            writer.write(data);
-
-            writer.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("\n\nFile written to " + file);
-    }
+//    public static void writeLogToSDFile(String filename, String data, boolean append) {
+//
+//        // Find the root of the external storage.
+//        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
+//
+//        File root = android.os.Environment.getExternalStorageDirectory();
+//        System.out.println("\nExternal file system root: " + root);
+//
+//        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
+//
+//        File dir = new File(root.getAbsolutePath() + "/download/striptest");
+//        dir.mkdirs();
+//        File file = new File(dir, filename);
+//
+//        try {
+//            FileWriter writer = new FileWriter(file, append);
+//            writer.write(data);
+//
+//            writer.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("\n\nFile written to " + file);
+//    }
 
     public boolean writeByteArray(byte[] data, String name) {
         String fileName = name + ".txt";
@@ -209,34 +201,28 @@ public class FileStorage {
         }
     }
 
-    public void writeBitmapToInternalStorage(String name, Bitmap bitmap) {
+//    public void writeBitmapToInternalStorage(String name, Bitmap bitmap) {
+//        try {
+//
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+//
+//            writeByteArray(baos.toByteArray(), name);
+//
+//            baos.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        try {
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
-
-            writeByteArray(baos.toByteArray(), name);
-
-            baos.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String bitmapToBase64String(Bitmap bitmap) throws UnsupportedEncodingException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
-
-        byte[] img = baos.toByteArray();
-        return Base64.encodeToString(img, Base64.DEFAULT);
-
-
-    }
+//    public String bitmapToBase64String(Bitmap bitmap) throws UnsupportedEncodingException {
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+//
+//        byte[] img = baos.toByteArray();
+//        return Base64.encodeToString(img, Base64.DEFAULT);
+//    }
 
     public String readFromInternalStorage(String fileName) {
 

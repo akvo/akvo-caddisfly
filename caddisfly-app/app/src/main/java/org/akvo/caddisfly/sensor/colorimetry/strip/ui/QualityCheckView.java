@@ -42,7 +42,6 @@ public class QualityCheckView extends View {
             orange = context.getResources().getColor(R.color.orange);
             red = context.getResources().getColor(R.color.clear_bordeaux);
         }
-
     }
 
     @Override

@@ -23,7 +23,7 @@ interface CameraViewListener {
 
     void showFinderPatterns(List<FinderPattern> info, Camera.Size previewSize, int color);
 
-    void showFocusValue(double value);
+    //void showFocusValue(double value);
 
     void showBrightness(double value);
 

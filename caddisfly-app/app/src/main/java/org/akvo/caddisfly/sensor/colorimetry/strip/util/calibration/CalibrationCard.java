@@ -320,7 +320,7 @@ public class CalibrationCard {
             imgLab.get(i, 0, temp);
             ii3 = 0;
             for (ii = 0; ii < imgCols; ii++) {  //x
-                valL = capValue(Math.round((temp[ii3 + 0] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean), 0, 255);
+                valL = capValue(Math.round((temp[ii3] & 0xFF) - (Laii[ii] + LbiiSq[ii] + Lci[i] + LdiSq[i] + Le * i * ii + Lf) + Lmean), 0, 255);
                 valA = capValue(Math.round((temp[ii3 + 1] & 0xFF) - (Aaii[ii] + AbiiSq[ii] + Aci[i] + AdiSq[i] + Ae * i * ii + Af) + Amean), 0, 255);
                 valB = capValue(Math.round((temp[ii3 + 2] & 0xFF) - (Baii[ii] + BbiiSq[ii] + Bci[i] + BdiSq[i] + Be * i * ii + Bf) + Bmean), 0, 255);
 
@@ -510,7 +510,7 @@ public class CalibrationCard {
 
     private static void addPatch(Mat imgMat, Double x, Double y, CalibrationData calData, String label) {
 
-        Map<String, CalibrationData.CalValue> calValueMap = calData.calValues;
+        //Map<String, CalibrationData.CalValue> calValueMap = calData.calValues;
         CalibrationData.CalValue calValue = calData.calValues.get(label);
         calData.hsizePixel = imgMat.cols();
         double hfac = calData.hsizePixel / calData.hsize; // pixel per mm
@@ -672,7 +672,6 @@ public class CalibrationCard {
      * ||2_____________3|                                       |
      * |________________________________________________________|
      *
-     * @param patternInfo
      */
     public static int decodeCalibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
         // patterns are ordered top left, top right, bottom left, bottom right (in portrait mode, with black area to the right)

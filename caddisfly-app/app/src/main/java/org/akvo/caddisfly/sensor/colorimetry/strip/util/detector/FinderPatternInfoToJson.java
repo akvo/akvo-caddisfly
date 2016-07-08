@@ -17,22 +17,22 @@ public class FinderPatternInfoToJson {
             JSONArray topLeft = new JSONArray();
             topLeft.put(info.getTopLeft().getX());
             topLeft.put(info.getTopLeft().getY());
-            jsonObject.put(Constant.TOPLEFT, topLeft);
+            jsonObject.put(Constant.TOP_LEFT, topLeft);
 
             JSONArray topRight = new JSONArray();
             topRight.put(info.getTopRight().getX());
             topRight.put(info.getTopRight().getY());
-            jsonObject.put(Constant.TOPRIGHT, topRight);
+            jsonObject.put(Constant.TOP_RIGHT, topRight);
 
             JSONArray bottomLeft = new JSONArray();
             bottomLeft.put(info.getBottomLeft().getX());
             bottomLeft.put(info.getBottomLeft().getY());
-            jsonObject.put(Constant.BOTTOMLEFT, bottomLeft);
+            jsonObject.put(Constant.BOTTOM_LEFT, bottomLeft);
 
             JSONArray bottomRight = new JSONArray();
             bottomRight.put(info.getBottomRight().getX());
             bottomRight.put(info.getBottomRight().getY());
-            jsonObject.put(Constant.BOTTOMRIGHT, bottomRight);
+            jsonObject.put(Constant.BOTTOM_RIGHT, bottomRight);
 
             return jsonObject.toString();
 
