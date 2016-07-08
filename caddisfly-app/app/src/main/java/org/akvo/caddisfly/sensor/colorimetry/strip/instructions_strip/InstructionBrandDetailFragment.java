@@ -18,7 +18,7 @@ public class InstructionBrandDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id"; //NON-NLS
+    private static final String ARG_ITEM_ID = "item_id"; //NON-NLS
     private String instructionText;
     private Drawable instructionDrawable;
     private InstructionsListener listener;

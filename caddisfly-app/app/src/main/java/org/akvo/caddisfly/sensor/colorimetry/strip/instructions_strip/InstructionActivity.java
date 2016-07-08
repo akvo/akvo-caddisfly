@@ -27,21 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/*
+This class assumes that there are .png images in res/drawable that have the same name
+as the String 'brand' in the JsonObject 'strip' in strips.json from assets
+*/
 public class InstructionActivity extends AppCompatActivity implements InstructionsListener {
 
-    /**
-     * This class assumes that there are .png images in res/drawable that have the same name
-     * as the String 'brand' in the JsonObject 'strip' in strips.json from assets
-     */
-
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
-    InstructionFooterView footerView;
-    ImageView arrowLeft;
-    ImageView arrowRight;
-    JSONArray instructions;
-
-    List<Fragment> fragments = new ArrayList<>();
+    private final List<Fragment> fragments = new ArrayList<>();
+    private ViewPager mViewPager;
+    private InstructionFooterView footerView;
+    private ImageView arrowLeft;
+    private ImageView arrowRight;
+    private JSONArray instructions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +70,11 @@ public class InstructionActivity extends AppCompatActivity implements Instructio
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(sectionsPagerAdapter);
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -91,14 +88,14 @@ public class InstructionActivity extends AppCompatActivity implements Instructio
         });
 
         // For each of the sections in the app, add a tab to the action bar.
-//        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+//        for (int i = 0; i < sectionsPagerAdapter.getCount(); i++) {
 //            // Create a tab with text corresponding to the page title defined by
 //            // the adapter. Also specify this Activity object, which implements
 //            // the TabListener interface, as the callback (listener) for when
 //            // this tab is selected.
 //            actionBar.addTab(
 //                    actionBar.newTab()
-//                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+//                            .setText(sectionsPagerAdapter.getPageTitle(i))
 //                            .setTabListener(this));
 //        }
 

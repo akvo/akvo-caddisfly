@@ -14,9 +14,9 @@ import org.akvo.caddisfly.R;
  */
 public class QualityCheckView extends View {
 
-    protected final int NUMBER_OF_BARS = 6;
+    final int NUMBER_OF_BARS = 6;
     private final Paint paint;
-    protected float percentage = Float.NaN;
+    float percentage = Float.NaN;
     private int green = 0;
     private int orange = 0;
     private int red = 0;
@@ -71,26 +71,26 @@ public class QualityCheckView extends View {
                 //change color depending on value of percentage
                 if (i < 2) { //0 1
 
-                    // paint red if percentage is lower than i+1
-                    // so two red dots if perc. < 1
-                    // one red dot (right, second) if perc. > 1
+                    // paint red if qualityValue is lower than i+1
+                    // so two red dots if qualityValue < 1
+                    // one red dot (right, second) if qualityValue > 1
                     if (number <= i + 1)
                         paint.setColor(red);
 
                 } else if (i < 4) { //2 3
 
-                    // paint orange if perc. between 1 and 4
-                    // so if perc. == 1.5 we get a red followed by orange dot,
-                    // if perc. == 2.5 we get two orange dots
-                    // if perc. == 3.5 we get an orange dot on the right, second of the two
+                    // paint orange if qualityValue between 1 and 4
+                    // so if qualityValue == 1.5 we get a red followed by orange dot,
+                    // if qualityValue == 2.5 we get two orange dots
+                    // if qualityValue == 3.5 we get an orange dot on the right, second of the two
                     if (number >= i - 1 && number <= i + 2)
                         paint.setColor(orange);
 
                 } else { // 4 5
 
-                    //paint green if perc. larger than 4
-                    //so if perc. == 4.5 we get two green dots
-                    // and if perc. == 6 also two
+                    //paint green if qualityValue larger than 4
+                    //so if qualityValue == 4.5 we get two green dots
+                    // and if qualityValue == 6 also two
                     if (number > i) {
 
                         //if percentage exceeds optimum
@@ -128,7 +128,7 @@ public class QualityCheckView extends View {
         invalidate();
     }
 
-    protected double fromPercentageToNumber() {
+    double fromPercentageToNumber() {
         //Override in child class
 
         return Double.NaN;

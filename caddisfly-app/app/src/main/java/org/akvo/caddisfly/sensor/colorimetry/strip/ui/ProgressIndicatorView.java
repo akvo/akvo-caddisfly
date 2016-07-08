@@ -26,18 +26,18 @@ import java.util.List;
  */
 public class ProgressIndicatorView extends LinearLayout {
 
-    private Bitmap checked;
-    private Bitmap unchecked_light;
-    private Bitmap background;
+    private final Bitmap checked;
+    private final Bitmap unchecked_light;
+    private final Bitmap background;
+    private final Context context;
+    private final Paint paint;
+    private final TextPaint textPaint;
+    private final float horMargin;
     private boolean set;
     private boolean start;
     private List<Step> steps;
     private int stepsTaken = 0;
     private int timeLapsed = 0;
-    private Context context;
-    private Paint paint;
-    private TextPaint textPaint;
-    private float horMargin;
     private float verMargin;
     private boolean running = false;
 
@@ -129,7 +129,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
         this.stepsTaken = stepsTaken;
 
-        //System.out.println("***xxxsteps taken: " + stepsTaken);
+        //System.out.println("***steps taken: " + stepsTaken);
 
         if (steps != null) {
             for (int i = 0; i < steps.size(); i++) {
@@ -261,8 +261,8 @@ public class ProgressIndicatorView extends LinearLayout {
              */
 
             float textHeight = Math.abs(textPaint.ascent());//+ Math.abs(textPaint.descent());
-            float ypos = background.getHeight() / 2 + textHeight / 2;
-            canvas.drawText(message, background.getWidth() + horMargin, ypos, textPaint);
+            float yPos = background.getHeight() / 2 + textHeight / 2;
+            canvas.drawText(message, background.getWidth() + horMargin, yPos, textPaint);
 
             canvas.translate(0f, background.getHeight());
 
@@ -274,7 +274,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
     private class BlinkAnimListener implements Animation.AnimationListener {
 
-        private int i;
+        private final int i;
 
         public BlinkAnimListener(int i) {
             this.i = i;
@@ -303,8 +303,8 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     private class Step {
-        int order;
-        int timeLapse;
+        final int order;
+        final int timeLapse;
         boolean animationEnded = false;
         boolean pictureTaken = false;
 

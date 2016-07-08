@@ -164,9 +164,11 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     wrCountQualityView.get().setText(text);
 
                     // next part is only for develop purposes. It shows the count per quality parameter
-                    wrCountQualityView.get().append("\n\n");
-                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                        wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                    if (true) {
+                        wrCountQualityView.get().append("\n\n");
+                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
+                        }
                     }
                 }
             } catch (Exception e) {

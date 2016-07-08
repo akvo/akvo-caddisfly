@@ -111,6 +111,7 @@ public class ColorimetryStripActivity extends AppCompatActivity
      * indicating that the item with the given ID was selected.
      */
 
+    @Override
     public void onItemSelected(String id) {
         if (mTwoPane) {
 

@@ -10,12 +10,8 @@ public class ColorDetected {
     private int color;
     private Scalar rgb;
     private Scalar lab;
-    private int x;
-    private double ppm;
 
-    public ColorDetected(int x) {
-
-        this.x = x;
+    public ColorDetected() {
     }
 
     public int getColor() {
@@ -24,18 +20,6 @@ public class ColorDetected {
 
     public void setColor(int color) {
         this.color = color;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public double getPpm() {
-        return ppm;
-    }
-
-    public void setPpm(double ppm) {
-        this.ppm = ppm;
     }
 
     public Scalar getRgb() {

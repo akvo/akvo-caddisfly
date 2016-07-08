@@ -16,11 +16,12 @@ import java.util.List;
  */
 class ColorimetryStripAdapter extends ArrayAdapter<String> {
 
-    private List<String> brandNames;
-    private int resource;
-    private Context context;
-    private StripTest stripTest;
+    private final List<String> brandNames;
+    private final int resource;
+    private final Context context;
+    private final StripTest stripTest;
 
+    @SuppressWarnings("SameParameterValue")
     public ColorimetryStripAdapter(Context context, int resource, List<String> brandNames) {
         super(context, resource);
 
@@ -78,8 +79,8 @@ class ColorimetryStripAdapter extends ArrayAdapter<String> {
 
     private static class ViewHolder {
 
-        private TextView textView;
-        private TextView subtextView;
+        private final TextView textView;
+        private final TextView subtextView;
 
         public ViewHolder(View v) {
 

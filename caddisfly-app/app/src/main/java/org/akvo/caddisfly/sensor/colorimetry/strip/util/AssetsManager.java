@@ -13,7 +13,7 @@ import java.io.InputStream;
 public class AssetsManager {
 
     private static AssetsManager assetsManager;
-    private AssetManager manager;
+    private final AssetManager manager;
 
     private AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();

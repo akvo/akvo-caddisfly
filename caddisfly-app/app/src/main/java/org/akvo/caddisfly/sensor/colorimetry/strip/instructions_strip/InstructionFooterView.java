@@ -12,11 +12,11 @@ import android.view.View;
  */
 public class InstructionFooterView extends View {
 
+    private final float distance = 24;
+    private final Paint fillPaint;
+    private final Paint strokePaint;
     private int numSteps = 3;
     private int activeStep = 0;
-    private float distance = 24;
-    private Paint fillPaint;
-    private Paint strokePaint;
 
     public InstructionFooterView(Context context) {
         this(context, null);

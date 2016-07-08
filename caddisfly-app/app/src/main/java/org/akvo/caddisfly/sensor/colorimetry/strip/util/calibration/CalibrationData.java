@@ -9,20 +9,18 @@ import java.util.Map;
  * Created by markwestra on 01/08/2015
  */
 public class CalibrationData {
-    public int hsizePixel;
-    public int vsizePixel;
-    //    public double hfac;
-//    public double vfac;
+    public final Map<String, Location> locations;
+    public final Map<String, CalValue> calValues;
+    public final List<WhiteLine> whiteLines;
+    public final double[] stripArea;
+    public int hSizePixel;
+    public int vSizePixel;
     public String cardVersion;
     public String date;
     public String unit;
     public double patchSize;
-    public double hsize;
-    public double vsize;
-    public Map<String, Location> locations;
-    public Map<String, CalValue> calValues;
-    public List<WhiteLine> whiteLines;
-    public double[] stripArea;
+    public double hSize;
+    public double vSize;
 
     public CalibrationData() {
         this.locations = new HashMap<>();
@@ -47,9 +45,9 @@ public class CalibrationData {
     }
 
     public class Location {
-        public Double x;
-        public Double y;
-        public Boolean grayPatch;
+        public final Double x;
+        public final Double y;
+        public final Boolean grayPatch;
 
         public Location(Double x, Double y, Boolean grayPatch) {
             this.x = x;
@@ -59,9 +57,9 @@ public class CalibrationData {
     }
 
     public class CalValue {
-        public double CIE_L;
-        public double CIE_A;
-        public double CIE_B;
+        public final double CIE_L;
+        public final double CIE_A;
+        public final double CIE_B;
 
         public CalValue(double CIE_L, double CIE_A, double CIE_B) {
             this.CIE_L = CIE_L;
@@ -72,8 +70,8 @@ public class CalibrationData {
     }
 
     public class WhiteLine {
-        public Double[] p;
-        public Double width;
+        public final Double[] p;
+        public final Double width;
 
         public WhiteLine(Double x1, Double y1, Double x2, Double y2, Double width) {
             Double[] pArray = new Double[4];

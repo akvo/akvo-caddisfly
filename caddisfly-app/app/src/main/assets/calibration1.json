@@ -3,11 +3,11 @@
 	"cardCode":1,
 	"date":"15-1-2016",
 	"unit":"mm",
-	"comment":"D65 illuminant. hsize and vsize area measured from the centers of the finder patterns. X and Y positions are measured from the center of the top left finder pattern. Measured using 4 cards, using xrite i1 profiler",
+	"comment": "D65 illuminant. hSize and vSize area measured from the centers of the finder patterns. X and Y positions are measured from the center of the top left finder pattern. Measured using 4 cards, using x-Rite i1 profiler",
 	"calData":{
 		"patchSize":7,
-		"hsize":136,
-		"vsize":77,
+		"hSize": 136,
+		"vSize": 77,
 		"locations":[
 		{"l":"A1","x":8,"y":8,"gray":"true"},
 		{"l":"A2","x":8,"y":18,"gray":"true"},

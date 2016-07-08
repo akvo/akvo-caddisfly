@@ -7,6 +7,8 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.Locale;
+
 /**
  * Created by linda on 10/3/15
  */
@@ -40,11 +42,11 @@ public class PreviewUtils {
         }
 
         double avgLum = sumLum / points.length;
-        double avgLumReciproc = 1.0 / avgLum;
+        double avgLumReciprocal = 1.0 / avgLum;
 
         for (double[] point : points) {
             double lum = point[2];
-            deviation = Math.abs(lum - avgLum) * avgLumReciproc;
+            deviation = Math.abs(lum - avgLum) * avgLumReciprocal;
 
             // count number of points that differ more than CONTRAST_DEVIATION_FRACTION from the average
             if (deviation > Constant.CONTRAST_DEVIATION_FRACTION) {
@@ -79,13 +81,13 @@ public class PreviewUtils {
 
         // compute distances
         // in info, we have topLeft, topRight, bottomLeft, bottomRight
-        float distHtop = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
-        float distHbot = distance(info.getBottomRight().getX(), info.getBottomRight().getY(), info.getTopRight().getX(), info.getTopRight().getY());
-        float distVleft = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getBottomRight().getX(), info.getBottomRight().getY());
-        float distVright = distance(info.getTopRight().getX(), info.getTopRight().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
+        float hDistanceTop = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
+        float hDistanceBottom = distance(info.getBottomRight().getX(), info.getBottomRight().getY(), info.getTopRight().getX(), info.getTopRight().getY());
+        float vDistanceLeft = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getBottomRight().getX(), info.getBottomRight().getY());
+        float vDistanceRight = distance(info.getTopRight().getX(), info.getTopRight().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
 
         // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
-        return new float[]{distHtop / distHbot, distVleft / distVright};
+        return new float[]{hDistanceTop / hDistanceBottom, vDistanceLeft / vDistanceRight};
     }
 
     public static String fromSecondsToMMSS(int seconds) throws Exception {
@@ -95,8 +97,8 @@ public class PreviewUtils {
         int m = (int) Math.floor(seconds / 60);
         int s = seconds - (m * 60);
 
-        String mm = m > 0 ? String.format("%2d", m) + ":" : "";
-        String ss = m > 0 ? String.format("%02d", s) : String.format("%2d", s);
+        String mm = m > 0 ? String.format(Locale.US, "%2d", m) + ":" : "";
+        String ss = m > 0 ? String.format(Locale.US, "%02d", s) : String.format(Locale.US, "%2d", s);
 
         return mm + ss;
     }

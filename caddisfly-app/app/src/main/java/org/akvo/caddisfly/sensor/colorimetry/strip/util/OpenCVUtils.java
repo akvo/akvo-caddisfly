@@ -304,7 +304,7 @@ public class OpenCVUtils {
         // compute mean lab colour. This is the value that will be
         // used for the ppm computation
         Scalar mean = Core.mean(lab);
-        ColorDetected colorDetected = new ColorDetected(0);
+        ColorDetected colorDetected = new ColorDetected();
         colorDetected.setLab(mean);
 
         // compute rgb colour. This will be used for display only.

@@ -43,7 +43,6 @@ abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
     private CalibrationData calibrationData;
-    private Context context;
     private float EV;
     private Mat bgr = null;
     private Mat convert_mYuv = null;
@@ -56,8 +55,6 @@ abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
         } catch (ClassCastException e) {
             throw new ClassCastException(" must implement camera view Listener");
         }
-
-        this.context = context;
 
         finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/spring_green
 
@@ -329,7 +326,7 @@ abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
                             int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
                             if (versionNumber != CalibrationCard.CODE_NOT_FOUND) {
                                 CalibrationCard.addVersionNumber(versionNumber);
-                                calibrationData = CalibrationCard.readCalibrationFile(context);
+                                calibrationData = CalibrationCard.readCalibrationFile();
                             }
                         }
                     } catch (Exception e) {

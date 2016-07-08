@@ -94,12 +94,12 @@ public class StripTest {
     public enum groupType {GROUP, INDIVIDUAL}
 
     public class Brand {
+        private final List<Patch> patches = new ArrayList<>();
         private String name;
         private String uuid;
         private double stripLength;
         private double stripHeight;
         private groupType groupingType;
-        private List<Patch> patches = new ArrayList<>();
         private JSONArray instructions;
 
         public Brand(String brand) {
@@ -210,16 +210,17 @@ public class StripTest {
         }
 
         public class Patch {
-            int id;
-            String desc;
-            double width; //mm
-            double height;//mm
-            double position;//x in mm
-            double timeLapse; //seconds between this and previous patch
-            String unit;
+            final int id;
+            final String desc;
+            final double width; //mm
+            final double height;//mm
+            final double position;//x in mm
+            final double timeLapse; //seconds between this and previous patch
+            final String unit;
 
-            JSONArray colours;
+            final JSONArray colours;
 
+            @SuppressWarnings("SameParameterValue")
             public Patch(int id, String desc, double width, double height, double position,
                          double timeLapse, String unit, JSONArray colours) {
                 this.id = id;

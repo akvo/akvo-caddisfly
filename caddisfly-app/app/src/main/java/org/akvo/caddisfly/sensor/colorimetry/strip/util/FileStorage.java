@@ -24,8 +24,8 @@ import java.nio.ByteOrder;
 @SuppressWarnings("HardCodedStringLiteral")
 public class FileStorage {
 
-    public static String ROOTDIR = "/Akvo Caddisfly";
-    private Context context;
+    private static final String ROOT_DIRECTORY = "/Akvo Caddisfly";
+    private final Context context;
 
     public FileStorage(Context context) {
         this.context = context;
@@ -84,7 +84,7 @@ public class FileStorage {
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
         File root = android.os.Environment.getExternalStorageDirectory();
-        File dir = new File(root.getAbsolutePath() + ROOTDIR + dirPath);
+        File dir = new File(root.getAbsolutePath() + ROOT_DIRECTORY + dirPath);
         File file = new File(dir, fileName);
 
         // check if directory exists and if not, create it
@@ -97,14 +97,14 @@ public class FileStorage {
             try {
                 FileOutputStream f = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(f);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
 
-                for (byte s : baos.toByteArray()) {
+                for (byte s : byteArrayOutputStream.toByteArray()) {
                     bos.write(s);
                 }
                 bos.close();
-                baos.close();
+                byteArrayOutputStream.close();
                 f.close();
                 return file.getAbsolutePath();
             } catch (IOException e) {
@@ -168,18 +168,18 @@ public class FileStorage {
         int c;
 
         FileInputStream fis = context.openFileInput(fileName);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedInputStream bos = new BufferedInputStream(fis);
 
         while ((c = bos.read()) != -1) {
-            baos.write(c);
+            byteArrayOutputStream.write(c);
 
         }
 
-        data = baos.toByteArray();
+        data = byteArrayOutputStream.toByteArray();
 
         bos.close();
-        baos.close();
+        byteArrayOutputStream.close();
         fis.close();
 
         return data;
@@ -204,12 +204,12 @@ public class FileStorage {
 //    public void writeBitmapToInternalStorage(String name, Bitmap bitmap) {
 //        try {
 //
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
 //
-//            writeByteArray(baos.toByteArray(), name);
+//            writeByteArray(byteArrayOutputStream.toByteArray(), name);
 //
-//            baos.close();
+//            byteArrayOutputStream.close();
 //
 //        } catch (IOException e) {
 //            e.printStackTrace();
@@ -217,10 +217,10 @@ public class FileStorage {
 //    }
 
 //    public String bitmapToBase64String(Bitmap bitmap) throws UnsupportedEncodingException {
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
 //
-//        byte[] img = baos.toByteArray();
+//        byte[] img = byteArrayOutputStream.toByteArray();
 //        return Base64.encodeToString(img, Base64.DEFAULT);
 //    }
 

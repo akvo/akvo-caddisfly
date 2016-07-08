@@ -508,12 +508,12 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrStartButton.get().setText(text);
 
-                    //if (1 == 1) {
+                    if (1 == 1) {
                         wrCountQualityView.get().setText("");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
                         }
-                    //}
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

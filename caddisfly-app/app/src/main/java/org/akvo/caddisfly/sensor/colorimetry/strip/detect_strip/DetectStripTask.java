@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -23,6 +24,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -31,7 +33,7 @@ import java.util.UUID;
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
-    final static boolean DEVELOP_MODE = false;
+    private final static boolean DEVELOP_MODE = false;
     private int format;
     private int width;
     private int height;
@@ -139,7 +141,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         //divide into calibration and strip areas
                         try {
                             if (context != null)
-                                divideIntoCalibrationAndStripArea(context);
+                                divideIntoCalibrationAndStripArea();
                         } catch (Exception e) {
                             listener.showError(1);
                             continue;
@@ -168,10 +170,13 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             listener.showMessage(1);
                             CalibrationResultData calResult = getCalibratedImage(warp_dst);
                             cal_dest = calResult.calibratedImage;
-                            System.out.println("*** E94 error mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94) + ", total: " + String.format("%.2f", calResult.totalE94));
+                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
+                                    ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94) +
+                                    ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
                             if (DEVELOP_MODE) {
-                                listener.showMessage("E94 mean: " + String.format("%.2f", calResult.meanE94) + ", max: " + String.format("%.2f", calResult.maxE94));
+                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
+                                        ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94));
                             }
                         } catch (Exception e) {
                             System.out.println("cal. failed: " + e.getMessage());
@@ -274,9 +279,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
     // Creates a lab image out of the original YUV preview data
     // first casts to RGB, as we can't cast to LAB directly using openCV
-    private Mat makeLab(byte[] data) throws Exception {
+    private Mat makeLab(byte[] data) {
         if (format == ImageFormat.NV21) {
-            //convert preview data to Mat object in CIELAB format
+            //convert preview data to Mat object in CIELab format
             Mat rgb = new Mat(height, width, CvType.CV_8UC3);
             Mat labImg = new Mat(height, width, CvType.CV_8UC3);
             Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
@@ -305,25 +310,25 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         JSONArray tr = jsonObject.getJSONArray(Constant.TOP_RIGHT);
         JSONArray bl = jsonObject.getJSONArray(Constant.BOTTOM_LEFT);
         JSONArray br = jsonObject.getJSONArray(Constant.BOTTOM_RIGHT);
-        double[] topleft = new double[]{tl.getDouble(0), tl.getDouble(1)};
-        double[] topright = new double[]{tr.getDouble(0), tr.getDouble(1)};
-        double[] bottomleft = new double[]{bl.getDouble(0), bl.getDouble(1)};
-        double[] bottomright = new double[]{br.getDouble(0), br.getDouble(1)};
+        double[] topLeft = new double[]{tl.getDouble(0), tl.getDouble(1)};
+        double[] topRight = new double[]{tr.getDouble(0), tr.getDouble(1)};
+        double[] bottomLeft = new double[]{bl.getDouble(0), bl.getDouble(1)};
+        double[] bottomRight = new double[]{br.getDouble(0), br.getDouble(1)};
 
-        warp_dst = OpenCVUtils.perspectiveTransform(topleft, topright, bottomleft, bottomright, labImg);
+        warp_dst = OpenCVUtils.perspectiveTransform(topLeft, topRight, bottomLeft, bottomRight, labImg);
     }
 
-    private void divideIntoCalibrationAndStripArea(Context context) throws Exception {
-        CalibrationData data = CalibrationCard.readCalibrationFile(context);
+    private void divideIntoCalibrationAndStripArea() {
+        CalibrationData data = CalibrationCard.readCalibrationFile();
 
         if (warp_dst != null && data != null) {
-            double hsize = data.hsize;
-            double vsize = data.vsize;
+            double hSize = data.hSize;
+            double vSize = data.vSize;
             double[] area = data.stripArea;
 
             if (area.length == 4) {
-                ratioW = warp_dst.width() / hsize;
-                ratioH = warp_dst.height() / vsize;
+                ratioW = warp_dst.width() / hSize;
+                ratioH = warp_dst.height() / vSize;
                 Point stripTopLeft = new Point(area[0] * ratioW + Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
                         area[1] * ratioH + Constant.PIXEL_MARGIN_STRIP_AREA_HEIGHT);
                 Point stripBottomRight = new Point(area[2] * ratioW - Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
@@ -343,7 +348,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         if (CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND) {
             throw new Exception("no version number set.");
         }
-        CalibrationData data = CalibrationCard.readCalibrationFile(context);
+        CalibrationData data = CalibrationCard.readCalibrationFile();
         return CalibrationCard.calibrateImage(mat, data);
     }
 }

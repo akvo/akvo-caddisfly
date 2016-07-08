@@ -12,7 +12,7 @@ import android.view.View;
  */
 public class CircleView extends View {
 
-    private Paint paint;
+    private final Paint paint;
 
     public CircleView(Context context) {
         this(context, null);
