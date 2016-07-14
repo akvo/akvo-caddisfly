@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip.DetectStripActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip.DetectStripTask;
@@ -197,12 +198,12 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (CameraViewListener) activity;
+            mListener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement CameraViewListener");
         }
 
@@ -210,8 +211,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         if (mListener != null)
             mListener.setQualityCheckCountZero();
 
-        rotate = AnimationUtils.loadAnimation(activity, R.anim.rotate);
-
+        rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
     }
 
     @Override
@@ -330,7 +330,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         wrStartButton.get().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
         if (progressIndicatorViewAnim != null) {
-            progressIndicatorViewAnim.setStart(true);
+            progressIndicatorViewAnim.start();
         }
     }
 
@@ -508,7 +508,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrStartButton.get().setText(text);
 
-                    if (1 == 1) {
+                    if (AppPreferences.isDiagnosticMode()) {
                         wrCountQualityView.get().setText("");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");

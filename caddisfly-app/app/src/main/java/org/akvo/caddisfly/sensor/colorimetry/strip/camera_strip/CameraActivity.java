@@ -12,13 +12,13 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.BaseActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.result_strip.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.FinderPatternIndicatorView;
@@ -27,6 +27,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPattern;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPatternInfo;
+import org.akvo.caddisfly.ui.BaseActivity;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -159,6 +160,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_camera);
 
         //LOGGING SCREEN SIZE
@@ -231,8 +235,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     private void init() {
-        // Create an instance of Camera
-        mCamera = TheCamera.getCameraInstance();
+        baseCameraView = new BaseCameraView(this);
+        mCamera = baseCameraView.getCamera();
 
         if (mCamera == null) {
             Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera", Toast.LENGTH_SHORT).show();
@@ -242,7 +246,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 wrCamera = new WeakReference<>(mCamera);
 
                 // Create our Preview view and set it as the content of our activity.
-                baseCameraView = new BaseCameraView(this, mCamera);
                 previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
                 previewLayout.removeAllViews();
                 previewLayout.addView(baseCameraView);
@@ -417,8 +420,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void nextFragment() {
 
-        //System.out.println("***brand name CameraActivity nextFragment: " + brandName);
-
         if (currentFragment instanceof CameraPrepareFragment) {
             //start instruction fragment
             currentFragment = CameraInstructionFragment.newInstance(brandName);
@@ -454,10 +455,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         showFinderPatternRunnable.setColor(color);
         handler.post(showFinderPatternRunnable);
     }
-
-//    @Override
-//    public void showFocusValue(final double value) {
-//    }
 
     @Override
     public void showBrightness(final double value) {
@@ -508,8 +505,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     @Override
     public void dataSent() {
-
-        //System.out.println("***previewLayout data dataSent(): " + previewFormat + " " + previewWidth + " " + previewHeight);
 
         if (currentFragment instanceof CameraStartTestFragment) {
             if (previewFormat > 0 && previewWidth > 0 && previewHeight > 0) {

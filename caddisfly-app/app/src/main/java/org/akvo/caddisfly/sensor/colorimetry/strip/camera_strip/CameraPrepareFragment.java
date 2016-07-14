@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
@@ -53,7 +54,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewExposure);
         QualityCheckView contrastView = (QualityCheckView) rootView.findViewById(R.id.activity_cameraImageViewContrast);
         startButton = (Button) rootView.findViewById(R.id.activity_cameraStartButton);
-        startButton.setVisibility(View.GONE);
+        startButton.setVisibility(View.INVISIBLE);
         messageView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareTextView);
         TextView countQualityView = (TextView) rootView.findViewById(R.id.activity_cameraPrepareCountQualityView);
 
@@ -94,10 +95,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         if (startButton == null)
             return;
 
-        if (startButton.getVisibility() == View.GONE) {
+        if (startButton.getVisibility() == View.INVISIBLE) {
             startButton.setVisibility(View.VISIBLE);
-            startButton.setBackgroundResource(android.R.drawable.btn_default);
-            startButton.setBackgroundColor(getResources().getColor(R.color.spring_green));
             startButton.setText(R.string.next);
             startButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,8 +162,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
                     String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
                     wrCountQualityView.get().setText(text);
 
-                    // next part is only for develop purposes. It shows the count per quality parameter
-                    if (true) {
+                    // only for development purposes. It shows the count per quality parameter
+                    if (AppPreferences.isDiagnosticMode()) {
                         wrCountQualityView.get().append("\n\n");
                         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
                             wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
@@ -176,28 +175,4 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             }
         }
     }
-
-//    @Override
-//    public void setFocusAreas(Camera.Size previewSize) {
-//        //set focus area to upper third of preview
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//
-//            List<Camera.Area> areas = new ArrayList<>();
-//
-//            int ratioW = Math.round(1000f / previewSize.width);
-//            int ratioH = Math.round(1000f / previewSize.height);
-//
-//            Rect focusArea = new Rect(
-//                    -1000 + ratioW,
-//                    -1000 + ratioH,
-//                    -1000 + ratioW * (int) (previewSize.width * Constant.CROP_CAMERA_VIEW_FACTOR),
-//                    -1000 + ratioH * previewSize.height
-//            );
-//
-//            areas.add(new Camera.Area(focusArea, 1));
-//
-//            if (mListener != null)
-//                mListener.setFocusAreas(areas);
-//        }
-//    }
 }

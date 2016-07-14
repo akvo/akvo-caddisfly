@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.instructions_strip;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,16 +51,14 @@ public class InstructionBrandDetailFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            listener = (InstructionsListener) activity;
+            listener = (InstructionsListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException("must implement InstructionActivity");
         }

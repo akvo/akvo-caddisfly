@@ -121,8 +121,8 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
-    public void setStart(boolean start) {
-        this.start = start;
+    public void start() {
+        this.start = true;
     }
 
     public void setStepsTaken(int stepsTaken) {

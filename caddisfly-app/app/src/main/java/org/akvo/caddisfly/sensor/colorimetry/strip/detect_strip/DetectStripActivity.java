@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +56,7 @@ public class DetectStripActivity extends AppCompatActivity implements DetectStri
             }
         });
 
-        toResultsButton.setBackgroundColor(getResources().getColor(R.color.sky_blue));
+        toResultsButton.setBackgroundColor(ContextCompat.getColor(this, R.color.sky_blue));
         toResultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -140,7 +140,6 @@
     <string name="quality_checks_counter">Conditions: %1$s de %2$s</string>
     <string name="confirm_quality_checks_ok">Très bien!\nAppuyex \'Suivant\'</string>
     <string name="next">Suivant</string>
-    <string name="begin">Démarrez</string>
 
     <!--end Strip Test-->
 </resources>

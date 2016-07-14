@@ -22,9 +22,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     private CameraActivity activity;
     private Camera.Parameters parameters;
 
-    public BaseCameraView(Context context, Camera camera) {
+    public BaseCameraView(Context context) {
         super(context);
-        mCamera = camera;
+        // Create an instance of Camera
+        mCamera = TheCamera.getCameraInstance();
 
         try {
             activity = (CameraActivity) context;
@@ -38,8 +39,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mHolder.addCallback(this);
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -210,6 +209,10 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         } else {
             mCamera.setParameters(parameters);
         }
+    }
+
+    public Camera getCamera() {
+        return mCamera;
     }
 
 //    public void setFocusAreas(List<Camera.Area> areas) {

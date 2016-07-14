@@ -13,7 +13,9 @@
         android:id="@+id/fragment_instruction_detailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12sp" />
+        android:layout_marginBottom="12sp"
+        android:textSize="17sp"
+        tools:text="Test instructions" />
 
     <ImageView
         android:id="@+id/fragment_instruction_detailImageView"

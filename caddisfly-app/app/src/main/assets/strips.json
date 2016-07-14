@@ -254,7 +254,7 @@
       ]
     },
     {
-      "name": "PH 4-9",
+      "name": "pH 4 - 9",
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "calibration":"measured on 23-12-2015 using xrite iPro2",
       "brand": "HACH-27456-50",
@@ -357,7 +357,7 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic Test Strips (0-500 range)",
+      "name": "Dual Range Arsenic (0 - 500)",
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "calibration":"12 Jan 2016",
       "brand": "HACH-28001-50-0-500",
@@ -409,7 +409,7 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic Test Strips (0-4000 range)",
+      "name": "Dual Range Arsenic (0 - 4000)",
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "calibration":"12 Jan 2016",
       "brand": "HACH-28001-50-0-4000",
@@ -457,7 +457,7 @@
       ]
     },
     {
-      "name": "pH MColorpHast range 0 - 14",
+      "name": "pH MColorpHast 0 - 14",
       "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "comment":"patches are read from left to right, where the strip is placed with the patches towards the left",
       "calibration":"21 Jan 2016",

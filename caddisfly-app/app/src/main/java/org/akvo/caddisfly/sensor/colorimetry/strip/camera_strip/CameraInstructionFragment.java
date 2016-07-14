@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -104,12 +103,12 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (CameraViewListener) activity;
+            mListener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement CameraViewListener");
         }
     }
@@ -120,16 +119,16 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
         mListener = null;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
-        ViewGroup.LayoutParams params = parentView.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-        parentView.setLayoutParams(params);
-
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+//        final FrameLayout parentView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
+//        ViewGroup.LayoutParams params = parentView.getLayoutParams();
+//        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//        parentView.setLayoutParams(params);
+//
+//    }
 
 
 }

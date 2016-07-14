@@ -1,9 +1,8 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -12,6 +11,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip.CameraActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.instructions_strip.InstructionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.ui.BaseActivity;
 
 /**
  * An activity representing a single Instruction detail screen. This
@@ -22,23 +22,17 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ColorimetryStripDetailFragment}.
  */
-public class ColorimetryStripDetailActivity extends AppCompatActivity implements ColorimetryStripDetailFragment.Callbacks {
+public class ColorimetryStripDetailActivity extends BaseActivity implements ColorimetryStripDetailFragment.Callbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_striptest_detail);
-
-        // Show the Up button in the action bar.
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); //not working with AppTheme.Orange
-
     }
 
     @Override
     public void onResume() {
         String brandName = getIntent().getStringExtra(Constant.BRAND);
-
-        System.out.println("*** ChooseStripTestDetailActivity onResume called with brandName: " + brandName);
 
         if (brandName == null) {
             Toast.makeText(this.getApplicationContext(), "Cannot proceed without brandName", Toast.LENGTH_SHORT).show();
@@ -56,25 +50,11 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
-        System.out.println("***Expecting a call when FLAG_ACTIVITY_CLEAR_TOP is passed in the intent");
-
-        super.onNewIntent(intent);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, ColorimetryStripActivity.class));
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -85,7 +65,15 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constant.BRAND, brandName);
-        startActivity(intent);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        setResult(Activity.RESULT_OK, data);
+        finish();
     }
 
     @Override
@@ -96,19 +84,4 @@ public class ColorimetryStripDetailActivity extends AppCompatActivity implements
         startActivity(intent);
 
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        System.out.println("***onActivityResult ColorimetryStripDetailActivity resultCode: " + resultCode);
-//        //System.out.println("***onActivityResult ColorimetryStripDetailActivity finish: " + data.getBooleanExtra(SensorConstants.FINISH, false));
-//
-//        if(resultCode == Activity.RESULT_OK)
-//        {
-//            setResult(Activity.RESULT_OK);
-//            finish();
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//    }
 }

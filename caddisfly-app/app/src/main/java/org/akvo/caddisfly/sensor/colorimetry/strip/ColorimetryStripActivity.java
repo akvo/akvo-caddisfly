@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -13,6 +13,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.Colorimetry
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripListFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.ui.BaseActivity;
 
 
 /**
@@ -31,7 +32,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * {@link ColorimetryStripListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class ColorimetryStripActivity extends AppCompatActivity
+public class ColorimetryStripActivity extends BaseActivity
         implements ColorimetryStripListFragment.Callbacks, BaseActivity.ResultListener {
 
     /**
@@ -46,12 +47,10 @@ public class ColorimetryStripActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_striptest_list);
 
+        setTitle(R.string.selectTest);
+
         //set result listener
         BaseActivity.setResultListener(this);
-
-//        final int memClass = ((ActivityManager) this.getSystemService(
-//                Context.ACTIVITY_SERVICE)).getMemoryClass();
-//        System.out.println("***Available memory: " + memClass);
 
         if (savedInstanceState == null) {
             if (chooseStripTestListFragment == null) {
@@ -73,16 +72,9 @@ public class ColorimetryStripActivity extends AppCompatActivity
         }
     }
 
-    public void onNewIntent(Intent intent) {
-        System.out.println("***onNewIntent ColorimetryStripActivity called:");
-
-        setIntent(intent);
-    }
-
     public void onResume() {
         super.onResume();
 
-        System.out.println("***onResume ColorimetryStripActivity intent finish: " + getIntent().getBooleanExtra(SensorConstants.FINISH, false));
         Intent intent = getIntent();
         String cadUuid = null;
         if (intent.hasExtra("caddisflyResourceUuid")) {
@@ -101,9 +93,6 @@ public class ColorimetryStripActivity extends AppCompatActivity
             if (brand != null && brand.length() > 0)
                 onItemSelected(brand);
         }
-
-        // check if the caddisflyResourceUuid is present in the intent,
-        // and if so, fire the corresponding test
     }
 
     /**
@@ -115,8 +104,7 @@ public class ColorimetryStripActivity extends AppCompatActivity
     public void onItemSelected(String id) {
         if (mTwoPane) {
 
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
+            // In two-pane mode, list items should be given the 'activated' state when touched.
             if (chooseStripTestListFragment != null)
                 chooseStripTestListFragment.setActivateOnItemClick(true);
 
@@ -130,22 +118,18 @@ public class ColorimetryStripActivity extends AppCompatActivity
                     .commit();
 
         } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            //System.out.println("***brandName in ChooseStripTestListActivity onItemSelected: " + id);
 
+            // In single-pane mode, simply start the detail activity for the selected item ID.
             Intent detailIntent = new Intent(this, ColorimetryStripDetailActivity.class);
             detailIntent.putExtra(Constant.BRAND, id);
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(detailIntent);
 
+            startActivity(detailIntent);
         }
     }
 
     @Override
     public void onResult(String result, String imagePath) {
-
-        //System.out.println("***onResult ColorimetryStripActivity called");
 
         Intent intent = new Intent(getIntent());
         intent.putExtra("response", result);
@@ -153,5 +137,15 @@ public class ColorimetryStripActivity extends AppCompatActivity
         setResult(Activity.RESULT_OK, intent);
 
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

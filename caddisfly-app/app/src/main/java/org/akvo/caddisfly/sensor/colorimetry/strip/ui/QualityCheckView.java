@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -38,9 +39,9 @@ public class QualityCheckView extends View {
         paint.setAntiAlias(true);
 
         if (!isInEditMode()) {
-            green = context.getResources().getColor(R.color.spring_green);
-            orange = context.getResources().getColor(R.color.orange);
-            red = context.getResources().getColor(R.color.clear_bordeaux);
+            green = ContextCompat.getColor(context, R.color.spring_green);
+            orange = ContextCompat.getColor(context, R.color.orange);
+            red = ContextCompat.getColor(context, R.color.clear_bordeaux);
         }
     }
 

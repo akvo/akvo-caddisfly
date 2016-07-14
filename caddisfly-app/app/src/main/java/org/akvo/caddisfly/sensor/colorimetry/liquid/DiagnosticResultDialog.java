@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -266,7 +267,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                             } else {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
 
-                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
+                                textResult.setTextColor(ContextCompat.getColor(getContext(), R.color.diagnostic));
                                 textResult.setTextSize(14);
                             }
                             break;
@@ -276,7 +277,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                                 textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
-                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
+                                textResult.setTextColor(ContextCompat.getColor(getContext(), R.color.diagnostic));
                                 textResult.setTextSize(14);
                             }
                             break;

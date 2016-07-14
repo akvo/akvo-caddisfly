@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/light"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/contrast"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/tertiary_text_dark" />
 
     </LinearLayout>
 </LinearLayout>

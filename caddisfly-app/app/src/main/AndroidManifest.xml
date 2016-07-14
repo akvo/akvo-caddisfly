@@ -114,6 +114,7 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.UsbConnectionActivity"
@@ -149,20 +150,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".sensor.colorimetry.strip.instructions_strip.InstructionActivity"
-            android:label="@string/title_instruction_list"
-            android:parentActivityName=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity" />
-        </activity>
-        <activity
-            android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity"
-            android:noHistory="true"
-            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
-        </activity>
+            android:label="@string/title_instruction_list" />
+        <activity android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity" />
         <activity
             android:name=".sensor.colorimetry.strip.detect_strip.DetectStripActivity"
             android:label="@string/title_activity_detect_strip"
@@ -188,7 +177,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".sensor.colorimetry.strip.BaseActivity" />
     </application>
 
 </manifest>

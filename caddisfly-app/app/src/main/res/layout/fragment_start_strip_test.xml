@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity">
+
+    <ImageView
+        android:id="@+id/fragment_choose_strip_testImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fragment_choose_strip_testButtonPerform"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/fragment_choose_strip_testButtonPerform"
+        style="@style/Button"
+        android:layout_above="@+id/fragment_choose_strip_testButtonInstruction"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:minWidth="250dp"
+        android:text="@string/prepare_test"
+        android:theme="?primaryButtonStyle" />
+
+    <Button
+        android:id="@+id/fragment_choose_strip_testButtonInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:paddingEnd="16dp"
+        android:paddingStart="22dp"
+        android:text="@string/readInstructions"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

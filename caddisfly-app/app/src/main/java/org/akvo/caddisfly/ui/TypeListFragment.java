@@ -77,7 +77,7 @@ public class TypeListFragment extends ListFragment {
         setListAdapter(testTypesAdapter);
     }
 
-    //todo: check deprecation of onAttach. Currently using Context instead of Activity fails on Samsung device
+    //todo: Using deprecated onAttach as replacement does not work correctly for non support Fragment
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity context) {

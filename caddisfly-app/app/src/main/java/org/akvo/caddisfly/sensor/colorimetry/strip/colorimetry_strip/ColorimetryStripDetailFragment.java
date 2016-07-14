@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.colorimetry_strip;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -48,7 +47,7 @@ public class ColorimetryStripDetailFragment extends Fragment {
 
         //System.out.println("*** ChooseStripTestDetailFragment onCreateView called with Arguments: " + getArguments());
 
-        View rootView = inflater.inflate(R.layout.fragment_choose_strip_test, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_start_strip_test, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.fragment_choose_strip_testImageView);
 
         if (getArguments() != null) {
@@ -95,30 +94,23 @@ public class ColorimetryStripDetailFragment extends Fragment {
                 });
 
                 StripTest stripTest = new StripTest();
-                TextView sectionLabelView = (TextView) rootView.findViewById(R.id.section_label);
-                sectionLabelView.setText(stripTest.getBrand(brandName).getName());
 
-                //TODO not working with AppTheme.Orange
-//                AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
-//                if (appCompatActivity != null) {
-//
-//                    appCompatActivity.getSupportActionBar().setTitle(stripTest.getBrand(getActivity(), brandName).getName());
-//                }
+                getActivity().setTitle(stripTest.getBrand(brandName).getName());
+
             }
         }
         return rootView;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
+        if (!(context instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        mCallbacks = (Callbacks) activity;
+        mCallbacks = (Callbacks) context;
 
     }
 

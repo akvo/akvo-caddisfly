@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:background="@android:color/darker_gray"
-        android:text="@string/instructions" />
+        android:text="@string/instructions"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,8 +29,11 @@
 
     <Button
         android:id="@+id/activity_cameraStartButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button"
         android:layout_alignParentBottom="true"
-        android:text="@string/begin" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/start"
+        android:theme="?primaryButtonStyle" />
+
 </RelativeLayout>

@@ -53,7 +53,7 @@
       ]
     },
     {
-      //Dual Range Arsenic Test Strips (0-500 range)
+      //Dual Range Arsenic (0-500 range)
       "brand": "HACH-28001-50-0-500",
       "instructions": [
         {"text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!", "png": "instruction_collect_sample"},
@@ -64,7 +64,7 @@
       ]
     },
     {
-      //Dual Range Arsenic Test Strips (0-4000 range)
+      //Dual Range Arsenic (0-4000 range)
       "brand": "HACH-28001-50-0-4000",
       "instructions": [
         {"text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!", "png": "instruction_collect_sample"},

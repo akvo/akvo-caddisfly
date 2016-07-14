@@ -2,45 +2,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/overlay"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    android:visibility="invisible"
     tools:context=".sensor.colorimetry.strip.camera_strip.CameraPrepareFragment">
 
-    <include layout="@layout/quality_checks" />
+    <include
+        android:id="@+id/activity_cameraMessagesLayout"
+        layout="@layout/quality_checks" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/activity_cameraPrepareCountQualityView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_cameraMessagesLayout"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/tertiary_text_dark"
+        android:textSize="16sp"
+        tools:text="Quality checks: 0 out of 15" />
+
+    <TextView
+        android:id="@+id/activity_cameraPrepareTextView"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/activity_cameraStartButton"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/activity_cameraPrepareTextView"
-            style="@android:style/TextAppearance.Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:gravity="center_vertical"
-            android:text="@string/prepare_camera_instr"
-            android:textColor="@android:color/darker_gray" />
-
-        <TextView
-            android:id="@+id/activity_cameraPrepareCountQualityView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:gravity="center_vertical" />
-    </LinearLayout>
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/prepare_camera_instr"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/activity_cameraStartButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/activity_vertical_margin" />
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/start"
+        android:theme="?primaryButtonStyle" />
 </RelativeLayout>
 

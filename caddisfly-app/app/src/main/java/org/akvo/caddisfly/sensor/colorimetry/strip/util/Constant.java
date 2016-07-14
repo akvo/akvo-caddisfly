@@ -5,18 +5,18 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public class Constant {
-    public static final String BRAND = "org.akvo.akvoqr.brand";
-    //public static final String MAT = "org.akvo.akvoqr.mat";
-    public static final String DATA = "org.akvo.akvoqr.data";
-    public static final String FORMAT = "org.akvo.akvoqr.format";
-    public static final String WIDTH = "org.akvo.akvoqr.width";
-    public static final String HEIGHT = "org.akvo.akvoqr.height";
-    public static final String TOP_LEFT = "org.akvo.akvoqr.topleft";
-    public static final String TOP_RIGHT = "org.akvo.akvoqr.topright";
-    public static final String BOTTOM_LEFT = "org.akvo.akvoqr.bottomleft";
-    public static final String BOTTOM_RIGHT = "org.akvo.akvoqr.bottomright";
-    public static final String INFO = "org.akvo.akvoqr.finderpatterninfo";
-    public static final String IMAGE_PATCH = "org.akvo.akvoqr.imagepatch";
+    public static final String BRAND = "org.akvo.caddisfly.brand";
+    //public static final String MAT = "org.akvo.caddisfly.mat";
+    public static final String DATA = "org.akvo.caddisfly.data";
+    public static final String FORMAT = "org.akvo.caddisfly.format";
+    public static final String WIDTH = "org.akvo.caddisfly.width";
+    public static final String HEIGHT = "org.akvo.caddisfly.height";
+    public static final String TOP_LEFT = "org.akvo.caddisfly.top_left";
+    public static final String TOP_RIGHT = "org.akvo.caddisfly.top_right";
+    public static final String BOTTOM_LEFT = "org.akvo.caddisfly.bottom_left";
+    public static final String BOTTOM_RIGHT = "org.akvo.caddisfly.bottom_right";
+    public static final String INFO = "org.akvo.caddisfly.finder_pattern_info";
+    public static final String IMAGE_PATCH = "org.akvo.caddisfly.image_patch";
     public static final double MAX_LUM_LOWER = 150;
     public static final double MAX_LUM_UPPER = 254;
     public static final double PERCENT_ILLUMINATION = 1.05;
@@ -32,8 +32,8 @@ public class Constant {
     public static final int PIXEL_MARGIN_STRIP_AREA_WIDTH = 6;
     public static final int PIXEL_MARGIN_STRIP_AREA_HEIGHT = 4;
 
-    public static final String ERROR = "org.akvo.akvoqr.error";
-    public static final String STRIP = "org.akvo.akvoqr.strip";
-    //public static final String RESPONSE = "org.akvo.akvoqr.response";
+    public static final String ERROR = "org.akvo.caddisfly.error";
+    public static final String STRIP = "org.akvo.caddisfly.strip";
+    //public static final String RESPONSE = "org.akvo.caddisfly.response";
     //public static final int FINISH_ACTIVITY = 17;
 }
