@@ -186,7 +186,10 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
-        final String cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
+        String cadUuid = null;
+        if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
+            cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
+        }
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
@@ -202,6 +205,7 @@ public class SensorActivity extends BaseActivity {
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
+        final String finalCadUuid = cadUuid;
         buttonAcceptResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,7 +216,7 @@ public class SensorActivity extends BaseActivity {
                 Intent resultIntent = new Intent(intent);
 
                 // If a UUID exists return result in json format otherwise return plain text result
-                if (cadUuid != null) {
+                if (finalCadUuid != null) {
 
                     ArrayList<String> results = new ArrayList<>();
                     results.add(mEc25Value);

@@ -50,6 +50,8 @@ public class ResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        setTitle(R.string.result);
+
         if (savedInstanceState == null) {
             resultImageUrl = UUID.randomUUID().toString() + ".png";
             Intent intent = getIntent();
@@ -133,7 +135,7 @@ public class ResultActivity extends BaseActivity {
             }
         }
         Button save = (Button) findViewById(R.id.activity_resultButtonSave);
-        Button redo = (Button) findViewById(R.id.activity_resultButtonRedo);
+        Button redo = (Button) findViewById(R.id.button_result_Redo);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +187,15 @@ public class ResultActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {
         private final boolean invalid;
         private final Boolean grouped;
@@ -194,7 +205,7 @@ public class ResultActivity extends BaseActivity {
         private final Mat strip;
         String unit;
         int id;
-        String desc;
+        String patchDescription;
         private Bitmap stripBitmap = null;
         private Mat combined;
         private ColorDetected colorDetected;
@@ -232,7 +243,7 @@ public class ResultActivity extends BaseActivity {
             }
 
             // get the name and unit of the patch
-            desc = patches.get(patchNum).getDesc();
+            patchDescription = patches.get(patchNum).getDesc();
             unit = patches.get(patchNum).getUnit();
             id = patches.get(patchNum).getId();
 
@@ -302,8 +313,8 @@ public class ResultActivity extends BaseActivity {
             // create Mat to hold strip itself
             mat = ResultUtils.createStripMat(mat, borderSize, centerPatch, grouped);
 
-            // Create Mat to hold description of patch
-            Mat descMat = ResultUtils.createDescriptionMat(desc, mat.cols());
+            // Create Mat to hold patchDescription of patch
+            Mat descMat = ResultUtils.createDescriptionMat(patchDescription, mat.cols());
 
             // Create Mat to hold the colour range
             Mat colorRangeMat;
@@ -312,7 +323,6 @@ public class ResultActivity extends BaseActivity {
             } else {
                 colorRangeMat = ResultUtils.createColourRangeMatSingle(patches, patchNum, mat.cols(), xTranslate);
             }
-
 
             // create Mat to hold value measured
             Mat valueMeasuredMat;
@@ -335,12 +345,12 @@ public class ResultActivity extends BaseActivity {
             combined = ResultUtils.concatenate(combined, colorRangeMat); // add color range
             combined = ResultUtils.concatenate(combined, valueMeasuredMat); // add measured value
 
-            //make bitmap to be rendered on screen, which doesn't contain the patch description
+            //make bitmap to be rendered on screen, which doesn't contain the patch patchDescription
             if (!combined.empty()) {
                 stripBitmap = ResultUtils.makeBitmap(combined);
             }
 
-            //add description of patch to combined mat, at the top
+            //add patchDescription of patch to combined mat, at the top
             combined = ResultUtils.concatenate(descMat, combined);
 
             //make bitmap to be send to server
@@ -352,7 +362,7 @@ public class ResultActivity extends BaseActivity {
             if (!combined.empty()) {
                 try {
                     JSONObject object = new JSONObject();
-                    object.put(SensorConstants.NAME, desc);
+                    object.put(SensorConstants.NAME, patchDescription);
                     object.put(SensorConstants.VALUE, ResultUtils.roundSignificant(ppm));
                     object.put(SensorConstants.UNIT, unit);
                     object.put(SensorConstants.ID, id);
@@ -380,10 +390,10 @@ public class ResultActivity extends BaseActivity {
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             final ViewGroup nullParent = null;
-            LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.result_ppm_layout, nullParent, false);
+            LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
 
-            TextView descView = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutDescView);
-            descView.setText(desc);
+            TextView textDescription = (TextView) result_ppm_layout.findViewById(R.id.result_ppm_layoutDescView);
+            textDescription.setText(patchDescription);
 
             ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.result_ppm_layoutImageView);
             CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.result_ppm_layoutCircleView);
@@ -393,10 +403,10 @@ public class ResultActivity extends BaseActivity {
 
                 if (!invalid) {
                     if (colorDetected != null && !grouped) {
-                        circleView.circleView(colorDetected.getColor());
+                        circleView.setColor(colorDetected.getColor());
                     }
 
-                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.text_ppm_result);
+                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.text_result_value);
                     if (ppm > -1) {
                         if (ppm < 1.0) {
                             textView.setText(String.format(Locale.getDefault(), "%.2f %s", ppm, unit));
@@ -406,8 +416,8 @@ public class ResultActivity extends BaseActivity {
                     }
                 }
             } else {
-                descView.append("\n\n" + getResources().getString(R.string.no_data));
-                circleView.circleView(Color.RED);
+                textDescription.append("\n\n" + getResources().getString(R.string.no_data));
+                circleView.setColor(Color.RED);
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.activity_resultLinearLayout);

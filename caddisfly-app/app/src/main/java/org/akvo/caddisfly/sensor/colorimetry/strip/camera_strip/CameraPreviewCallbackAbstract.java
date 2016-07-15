@@ -88,7 +88,7 @@ abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
         int levVal = 0;
 
         try {
-            if (possibleCenters != null) {
+            if (possibleCenters.size() > 0) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -119,13 +119,11 @@ abstract class CameraPreviewCallbackAbstract implements Camera.PreviewCallback {
                 //if no finder patterns are found, remove one from track
                 //when device e.g. is put down, slowly the value becomes zero
                 //'slowly' being about a second
-                if (possibleCenters.size() == 0) {
-                    if (lumTrack.size() > 0) {
-                        lumTrack.removeFirst();
-                    }
-                    if (shadowTrack.size() > 0) {
-                        shadowTrack.removeFirst();
-                    }
+                if (lumTrack.size() > 0) {
+                    lumTrack.removeFirst();
+                }
+                if (shadowTrack.size() > 0) {
+                    shadowTrack.removeFirst();
                 }
             }
 

@@ -83,7 +83,6 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
-        HighLevelsDialogFragment.MessageDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
     private static final int RESULT_RESTART_TEST = 3;
@@ -664,7 +663,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     /**
      * Analyze the result and display the appropriate success/fail message
-     * <p>
+     * <p/>
      * If the result value is too high then display the high contamination level message
      *
      * @param data          image data to be displayed if error in analysis
@@ -714,7 +713,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
             // If this is a test and it was successful then build the result to return
             if (!mIsCalibration && result > -1 || color != Color.TRANSPARENT) {
                 Intent intent = getIntent();
-                String cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
+                String cadUuid = null;
+                if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
+                    cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
+                }
 
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -964,15 +966,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
             }
             finish();
         }
-    }
-
-    @Override
-    public void onFinishDialog() {
-        Intent intent = new Intent(getIntent());
-        intent.putExtra("response", String.valueOf(""));
-        this.setResult(Activity.RESULT_OK, intent);
-        releaseResources();
-        finish();
     }
 
     @Override

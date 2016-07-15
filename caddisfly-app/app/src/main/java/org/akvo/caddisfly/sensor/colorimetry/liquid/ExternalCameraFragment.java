@@ -49,7 +49,6 @@ import java.util.List;
 public final class ExternalCameraFragment extends CameraDialog {
     private static final boolean DEBUG = true;    // TODO set false on release
     private static final String TAG = "ExternalCameraFragment";
-    private static final String ARG_PREVIEW_ONLY = "preview";
     /**
      * preview resolution(width)
      * if your camera does not support specific resolution and mode,
@@ -130,18 +129,8 @@ public final class ExternalCameraFragment extends CameraDialog {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param previewOnly if true will display preview only, otherwise start taking pictures
      * @return A new instance of fragment CameraFragment.
      */
-    @SuppressWarnings("SameParameterValue")
-    public static ExternalCameraFragment newInstance(boolean previewOnly) {
-        ExternalCameraFragment fragment = new ExternalCameraFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_PREVIEW_ONLY, previewOnly);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public static ExternalCameraFragment newInstance() {
         return new ExternalCameraFragment();
     }

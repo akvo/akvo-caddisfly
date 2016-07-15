@@ -76,11 +76,10 @@ public class CameraInstructionFragment extends CameraSharedFragmentAbstract {
                         if (indexImp >= 0) {
                             textView.setTextColor(Color.RED);
                         } else {
-                            textView.setTextColor(Color.GRAY);
+                            textView.setTextColor(Color.DKGRAY);
                         }
                         String text = anInstrArray.replaceAll(">", "");
                         if (!text.isEmpty()) {
-                            textView.setText(" - ");
                             textView.append(text);
                             linearLayout.addView(textView);
                         }

@@ -229,37 +229,6 @@ public final class DeviceFilter {
         return null;
     }
 
-/*	public void write(XmlSerializer serializer) throws IOException {
-        serializer.startTag(null, "com.serenegiant.usb-device");
-		if (mVendorId != -1) {
-			serializer
-					.attribute(null, "vendor-id", Integer.toString(mVendorId));
-		}
-		if (mProductId != -1) {
-			serializer.attribute(null, "product-id",
-					Integer.toString(mProductId));
-		}
-		if (mClass != -1) {
-			serializer.attribute(null, "class", Integer.toString(mClass));
-		}
-		if (mSubclass != -1) {
-			serializer.attribute(null, "subclass", Integer.toString(mSubclass));
-		}
-		if (mProtocol != -1) {
-			serializer.attribute(null, "protocol", Integer.toString(mProtocol));
-		}
-		if (mManufacturerName != null) {
-			serializer.attribute(null, "manufacturer-name", mManufacturerName);
-		}
-		if (mProductName != null) {
-			serializer.attribute(null, "product-name", mProductName);
-		}
-		if (mSerialNumber != null) {
-			serializer.attribute(null, "serial-number", mSerialNumber);
-		}
-		serializer.endTag(null, "com.serenegiant.usb-device");
-	} */
-
     private boolean matches(final int theClass, final int subclass, final int protocol) {
         return ((mClass == -1 || theClass == mClass)
                 && (mSubclass == -1 || subclass == mSubclass) && (mProtocol == -1 || protocol == mProtocol));

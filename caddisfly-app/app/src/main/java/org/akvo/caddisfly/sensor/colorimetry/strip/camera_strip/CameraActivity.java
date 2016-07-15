@@ -1,15 +1,11 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera_strip;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect_strip.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.result_strip.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.FinderPatternIndicatorView;
@@ -49,6 +46,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
+    private SoundPoolPlayer sound;
+
     //    private final Runnable focus = new Runnable() {
 //
 //        boolean focused;
@@ -134,8 +133,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                         wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackSP);
                     }
                 }
-                // System.out.println("***calling startNextPreviewRunnable runnable");
-
             }
         }
     };
@@ -150,9 +147,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                     cameraPreviewCallbackTP = new CameraPreviewCallbackTP(mActivity.get(), wrCamera.get().getParameters());
 
                 wrCamera.get().setOneShotPreviewCallback(cameraPreviewCallbackTP);
-
-                System.out.println("***calling takeNextPictureRunnable runnable");
-
             }
         }
     };
@@ -165,54 +159,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         setContentView(R.layout.activity_camera);
 
-        //LOGGING SCREEN SIZE
-        int screenSize = getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK;
-
-        String toastMsg;
-        switch (screenSize) {
-            case Configuration.SCREENLAYOUT_SIZE_LARGE:
-                toastMsg = "Large screen";
-                break;
-            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                toastMsg = "Normal screen";
-                break;
-            case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                toastMsg = "Small screen";
-                break;
-            default:
-                toastMsg = "Screen size is neither large, normal or small";
-        }
-        System.out.println("***screen size: " + toastMsg);
-        //END LOGGING SCREEN SIZE
-
-        //LOG DENSITY
-        int density = getResources().getDisplayMetrics().densityDpi;
-        String msg;
-        switch (density) {
-            case DisplayMetrics.DENSITY_LOW:
-                msg = "LDPI";
-                break;
-            case DisplayMetrics.DENSITY_MEDIUM:
-                msg = "MDPI";
-                break;
-            case DisplayMetrics.DENSITY_HIGH:
-                msg = "HDPI";
-                break;
-            case DisplayMetrics.DENSITY_XHIGH:
-                msg = "XHDPI";
-                break;
-            default:
-                msg = "Unknown";
-        }
-        System.out.println("***screen density: " + msg);
-        //END LOGGING DENSITY
-
-        //LOG SYSTEM BUILD
-        System.out.println("***System info: VERSION CODENAME = " + Build.VERSION.CODENAME);
-        System.out.println("***System info: VERSION RELEASE = " + Build.VERSION.RELEASE);
-        System.out.println("***System info: VERSION SDK = " + Build.VERSION.SDK_INT);
-        //END LOG SYSTEM BUILD
+        sound = new SoundPoolPlayer(this);
 
         //VIEWS
         progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
@@ -517,15 +464,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     @Override
     public void playSound() {
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.futurebeep2);
-        mp.start();
-
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
+        sound.playShortResource(R.raw.futurebeep2);
     }
 
     @Override

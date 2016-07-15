@@ -267,7 +267,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                             } else {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
 
-                                textResult.setTextColor(ContextCompat.getColor(getContext(), R.color.diagnostic));
+                                textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
                                 textResult.setTextSize(14);
                             }
                             break;
@@ -277,7 +277,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                                 textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
-                                textResult.setTextColor(ContextCompat.getColor(getContext(), R.color.diagnostic));
+                                textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
                                 textResult.setTextSize(14);
                             }
                             break;

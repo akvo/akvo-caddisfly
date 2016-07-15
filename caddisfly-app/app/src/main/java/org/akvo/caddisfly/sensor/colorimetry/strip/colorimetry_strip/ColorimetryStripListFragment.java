@@ -163,6 +163,7 @@ public class ColorimetryStripListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
+        @SuppressWarnings("UnusedParameters")
         void onItemSelected(String id);
     }
 }

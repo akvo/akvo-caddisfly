@@ -198,7 +198,7 @@
     <string name="init_camera">Initialising camera…</string>
     <string name="analysing">Analysing image…</string>
     <string name="prepare_test">Prepare for test</string>
-    <string name="prepare_camera_instr">Do not take a sample yet.\nHold camera above color card and adjust position until checks are OK.</string>
+    <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK.</string>
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>
@@ -208,5 +208,6 @@
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="readInstructions"><![CDATA[Read Instructions >]]></string>
+    <string name="bulletPoint">-</string>
 
 </resources>

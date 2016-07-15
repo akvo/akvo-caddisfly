@@ -10,45 +10,35 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/activity_resultLinearLayoutBottom"
-        android:layout_alignParentTop="true">
+        android:layout_above="@+id/activity_resultButtonSave"
+        android:layout_below="@id/toolbar">
 
         <LinearLayout
             android:id="@+id/activity_resultLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
             android:orientation="vertical" />
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/activity_resultLinearLayoutBottom"
-        style="?android:attr/buttonBarStyle"
+    <Button
+        android:id="@+id/activity_resultButtonSave"
+        style="@style/Button"
+        android:layout_above="@+id/button_result_Redo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:minWidth="250dp"
+        android:text="@string/save"
+        android:theme="?primaryButtonStyle" />
+
+    <Button
+        android:id="@+id/button_result_Redo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/activity_resultButtonSave"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/sky_blue"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/save"
-            android:textColor="@android:color/primary_text_dark" />
-
-        <Button
-            android:id="@+id/activity_resultButtonRedo"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/redo_test" />
-    </LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:text="@string/redo_test"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </RelativeLayout>

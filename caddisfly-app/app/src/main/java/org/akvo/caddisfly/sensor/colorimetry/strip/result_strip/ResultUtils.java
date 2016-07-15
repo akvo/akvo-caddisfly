@@ -221,8 +221,8 @@ class ResultUtils {
         JSONObject nextColourObj;
         boolean ppmIsDrawn = false;
 
-        //grey line with ppm values at left and right
-        Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 2, Core.LINE_AA, 0);
+        //grey line with result values at left and right
+        Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 1, Core.LINE_AA, 0);
 
         //get values for lowest and highest ppm values from striptest range
         double leftValue;
@@ -268,7 +268,7 @@ class ResultUtils {
 
                     Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
                     Imgproc.putText(valueMeasuredMat, roundResult(ppm), new Point(centerCircle.x - textSizePPM.width / 2, 45d),
-                            Core.FONT_HERSHEY_SIMPLEX, 0.35d, labGrey, 1, Core.LINE_AA, false);
+                            Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_AA, false);
 
                     ppmIsDrawn = true;
                 }
@@ -294,7 +294,7 @@ class ResultUtils {
         boolean ppmIsDrawn = false;
 
         //grey line with ppm values at left and right
-        Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 2, Core.LINE_AA, 0);
+        Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 1, Core.LINE_AA, 0);
 
         //get values for lowest and highest ppm values from striptest range
         double leftValue;
@@ -339,7 +339,7 @@ class ResultUtils {
                     Size textSizePPM = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.1f", ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
                     Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.1f", ppm),
                             new Point(centerCircle.x - textSizePPM.width / 2, 15d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
-                            labGrey, 1, Core.LINE_AA, false);
+                            labBlack, 1, Core.LINE_AA, false);
 
                     double offset = circleRadius + 5;
                     for (ColorDetected aColorsDetected : colorsDetected) {

@@ -93,7 +93,7 @@ public class FileStorage {
             success = dir.mkdirs();
         }
 
-        if (success) {
+        if (success && bitmap != null) {
             try {
                 FileOutputStream f = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(f);

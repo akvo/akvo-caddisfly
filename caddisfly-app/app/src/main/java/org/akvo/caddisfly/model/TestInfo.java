@@ -217,6 +217,7 @@ public class TestInfo {
         return isDiagnostic;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setIsDiagnostic(boolean value) {
         isDiagnostic = value;
     }
@@ -230,6 +231,7 @@ public class TestInfo {
         return requiresCalibration;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setRequiresCalibration(boolean value) {
         requiresCalibration = value;
     }
@@ -254,6 +256,7 @@ public class TestInfo {
         return isGroup;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setGroup(boolean group) {
         isGroup = group;
     }

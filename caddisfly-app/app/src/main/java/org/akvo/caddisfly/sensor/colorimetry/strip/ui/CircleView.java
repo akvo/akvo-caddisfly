@@ -30,7 +30,7 @@ public class CircleView extends View {
         paint.setAntiAlias(true);
     }
 
-    public void circleView(int color) {
+    public void setColor(int color) {
         paint.setColor(color);
         invalidate();
     }
