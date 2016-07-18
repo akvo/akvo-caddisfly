@@ -1,11 +1,27 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
+ *
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.BitMatrix;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.Detector;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.FinderPattern;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.MathUtils;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.detector.ResultPoint;
+import org.akvo.caddisfly.util.detector.BitMatrix;
+import org.akvo.caddisfly.util.detector.Detector;
+import org.akvo.caddisfly.util.detector.FinderPattern;
+import org.akvo.caddisfly.util.detector.MathUtils;
+import org.akvo.caddisfly.util.detector.ResultPoint;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -670,7 +686,6 @@ public class CalibrationCard {
      * ||              b|                                       |
      * ||2_____________3|                                       |
      * |________________________________________________________|
-     *
      */
     public static int decodeCalibrationCardCode(List<FinderPattern> patternInfo, BitMatrix image) {
         // patterns are ordered top left, top right, bottom left, bottom right (in portrait mode, with black area to the right)

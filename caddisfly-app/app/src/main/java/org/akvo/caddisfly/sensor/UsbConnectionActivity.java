@@ -28,7 +28,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ApiUtil;
 
 /**
- * A progress dialog to the show that the usb external device is connected
+ * A partial_progress dialog to the show that the usb external device is connected
  */
 public class UsbConnectionActivity extends Activity {
 

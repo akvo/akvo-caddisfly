@@ -26,8 +26,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 24
-        versionName "0.111 Beta"
-        versionCode 111
+        versionName "0.112 Beta"
+        versionCode 112
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -51,6 +51,22 @@ android {
 //        }
 //    }
 
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/main',
+                            'src/main/res/layouts/sensor/liquid',
+                            'src/main/res/layouts/sensor/strip',
+                            'src/main/res/layouts/sensor/ec',
+                            'src/main/res/layouts/diagnostic',
+                            'src/main/res/layouts/general',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+    }
+
     packagingOptions {
         exclude 'LICENSE.txt'
     }
@@ -64,7 +80,6 @@ android {
 unMock {
     keep "android.graphics.Color"
     downloadTo '/Users/n/Projects'
-
 }
 
 dependencies {
@@ -72,8 +87,8 @@ dependencies {
     compile project(':opencv300')
     compile 'org.apache.commons:commons-math3:3.6.1'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.4.1'
-    testCompile 'org.robolectric:robolectric:3.1'
+    testCompile 'org.assertj:assertj-core:3.5.1'
+    testCompile 'org.robolectric:robolectric:3.1.1'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.0.0'

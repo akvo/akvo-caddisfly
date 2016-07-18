@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
+ * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
+ * either version 3 of the License or any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License included below for more details.
+ *
+ * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ */
+
 package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
 import android.content.Context;
@@ -14,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtils;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -230,7 +246,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 if (i > 0) {
                     if (steps.get(i - 1).animationEnded) {
                         try {
-                            message = getContext().getString(R.string.waiting) + " " + PreviewUtils.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
+                            message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
                         } catch (Exception e) {
                             message = e.getMessage();
                         }
@@ -241,7 +257,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 } else {
                     //first one does have a count
                     try {
-                        message = getContext().getString(R.string.waiting) + PreviewUtils.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
+                        message = getContext().getString(R.string.waiting) + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
                     } catch (Exception e) {
                         message = e.getMessage();
                     }
@@ -252,7 +268,7 @@ public class ProgressIndicatorView extends LinearLayout {
             * DEBUGGING TIME
              */
 //            try {
-//                message = message + " " + PreviewUtils.fromSecondsToMMSS(timeLapsed ) + " sec. ";
+//                message = message + " " + PreviewUtil.fromSecondsToMMSS(timeLapsed ) + " sec. ";
 //            } catch (Exception e) {
 //                message = e.getMessage();
 //            }

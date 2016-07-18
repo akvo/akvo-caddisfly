@@ -35,7 +35,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ColorimetryStripActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.util.AlertUtil;

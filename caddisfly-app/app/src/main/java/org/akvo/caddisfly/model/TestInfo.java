@@ -236,6 +236,7 @@ public class TestInfo {
         requiresCalibration = value;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean requiresCameraFlash() {
         return testType == CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
     }

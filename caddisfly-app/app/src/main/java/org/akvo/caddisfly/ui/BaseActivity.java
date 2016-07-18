@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected static ResultListener listener;
     private String mTitle;
 
-    public static void setResultListener(AppCompatActivity activity) {
+    protected static void setResultListener(AppCompatActivity activity) {
         listener = (ResultListener) activity;
     }
 
@@ -52,7 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         updateTheme();
         changeActionBarStyleBasedOnCurrentMode();
-        //ApiUtil.lockScreenOrientation(this);
     }
 
     private void updateTheme() {
@@ -180,7 +179,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public interface ResultListener {
         void onResult(String result, String imagePath);
     }
-
 }
 
 

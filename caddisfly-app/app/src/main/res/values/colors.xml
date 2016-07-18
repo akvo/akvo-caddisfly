@@ -55,8 +55,6 @@
     <color name="diagnostic_status">#e20101</color>
 
     <!-- StripTest -->
-    <color name="medium_blue">#ff468c9f</color>
-    <color name="sky_blue">#ff009ce7</color>
     <color name="spring_green">#ff2cb673</color>
     <color name="clear_bordeaux">#ffBB1A30</color>
 
@@ -64,5 +62,4 @@
     <color name="card_background">#ffffff</color>
     <color name="card_shadow_1">#d4d4d4</color>
     <color name="card_shadow_2">#dddddd</color>
-    <color name="card_detailing">#eee</color>
 </resources>

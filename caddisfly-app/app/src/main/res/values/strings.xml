@@ -86,7 +86,6 @@
 
     <!--Result Screen-->
     <string name="result">Result</string>
-    <string name="highContamination">High Contamination</string>
     <string name="highLevelsFound">High level of contamination</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
@@ -172,9 +171,6 @@
     <string name="striptest_images" translatable="false">images/striptest</string>
     <string name="instruction_images" translatable="false">images/instructions</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="app_name">AkvoQR</string>
-    <string name="cut_out_strip">Cutting out strip…</string>
     <string name="error_calibrating">Calibration failed</string>
     <string name="error_conversion">Could not convert image.</string>
     <string name="error_cut_out_strip">No strip found.</string>
@@ -185,17 +181,9 @@
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch.</string>
-    <string name="please_wait">Please wait…</string>
-    <string name="reading_data">Reading data from storage…</string>
     <string name="redo_test">Redo Test</string>
-    <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_detect_strip">DetectStripActivity</string>
-    <string name="title_activity_result">Results</string>
-    <string name="title_instruction_list">Instructions</string>
-    <string name="to_results">To results</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
-    <string name="init_camera">Initialising camera…</string>
     <string name="analysing">Analysing image…</string>
     <string name="prepare_test">Prepare for test</string>
     <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK.</string>
@@ -208,6 +196,4 @@
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="readInstructions"><![CDATA[Read Instructions >]]></string>
-    <string name="bulletPoint">-</string>
-
 </resources>

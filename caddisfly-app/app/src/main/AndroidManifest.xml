@@ -113,7 +113,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:name=".sensor.colorimetry.strip.ui.ColorimetryStripActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -139,25 +139,19 @@
 
         <!-- StripTest -->
         <activity
-            android:name=".sensor.colorimetry.strip.result_strip.ResultActivity"
+            android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.camera_strip.CameraActivity"
-            android:noHistory="true"
+            android:name=".sensor.colorimetry.strip.instructions.InstructionActivity"
+            android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.strip.camera.CameraActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".sensor.colorimetry.strip.instructions_strip.InstructionActivity"
-            android:label="@string/title_instruction_list" />
-        <activity android:name=".sensor.colorimetry.strip.colorimetry_strip.ColorimetryStripDetailActivity" />
-        <activity
-            android:name=".sensor.colorimetry.strip.detect_strip.DetectStripActivity"
-            android:label="@string/title_activity_detect_strip"
-            android:parentActivityName=".sensor.colorimetry.strip.ColorimetryStripActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".sensor.colorimetry.strip.ColorimetryStripActivity" />
-        </activity>
+            android:name=".sensor.colorimetry.strip.result.ResultActivity"
+            android:screenOrientation="nosensor" />
         <activity android:name=".sensor.colorimetry.strip.util.exception.UncaughtExceptionActivity">
             <intent-filter>
                 <action android:name="org.akvo.SEND_LOG" />

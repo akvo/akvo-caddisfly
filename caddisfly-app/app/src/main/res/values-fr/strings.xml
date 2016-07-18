@@ -62,7 +62,6 @@
     <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
     <!--Result Screen-->
     <string name="result">Résultat</string>
-    <string name="highContamination">Forte contamination</string>
     <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Réessayez avec une dilution par %1$d</string>
     <!--Dilution Selection Dialog-->
     <string name="noDilution">Pas de dilution</string>
@@ -107,9 +106,6 @@
     <!--Strip Test-->
     <string name="strips_instruction_json">fr/strips-instruction.json</string>
 
-    <string name="action_settings">Reglage</string>
-    <string name="app_name">AkvoQR</string>
-    <string name="cut_out_strip">Trouver la bande…</string>
     <string name="error_calibrating">Erreur calibrage</string>
     <string name="error_conversion">Erreur converter couleurs</string>
     <string name="error_cut_out_strip">Pas de bande trouvee.</string>
@@ -120,17 +116,9 @@
     <string name="finished">FIN</string>
     <string name="light">Lumiere</string>
     <string name="no_data">Pas de donnees pour patch no.</string>
-    <string name="please_wait">S.v.p. patienter…</string>
-    <string name="reading_data">Lire donnees…</string>
     <string name="redo_test">De nouveau</string>
-    <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_detect_strip">Recherche</string>
-    <string name="title_activity_result">Resultats</string>
-    <string name="title_instruction_list">Instructions</string>
-    <string name="to_results">Aux resultats</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Ombres</string>
-    <string name="init_camera">Initier camera …</string>
     <string name="analysing">Analyser image …</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instr">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>

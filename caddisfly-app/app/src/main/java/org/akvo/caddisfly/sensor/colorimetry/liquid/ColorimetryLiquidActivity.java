@@ -242,7 +242,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Start the test by displaying the progress bar
+     * Start the test by displaying the partial_progress bar
      */
     private void dismissShakeAndStartTest() {
         mSensorManager.unregisterListener(mShakeDetector);
