@@ -55,8 +55,8 @@
     <color name="diagnostic_status">#e20101</color>
 
     <!-- StripTest -->
-    <color name="spring_green">#ff2cb673</color>
-    <color name="clear_bordeaux">#ffBB1A30</color>
+    <color name="jungle_green">#ff2cb673</color>
+    <color name="cardinal">#ffBB1A30</color>
 
     <!-- card colors -->
     <color name="card_background">#ffffff</color>

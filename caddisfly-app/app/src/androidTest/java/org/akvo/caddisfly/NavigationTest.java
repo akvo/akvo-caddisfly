@@ -175,7 +175,6 @@ public class NavigationTest {
         takeScreenshot();
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-//        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 

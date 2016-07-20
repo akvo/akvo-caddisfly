@@ -318,7 +318,7 @@ public class OpenCVUtil {
 
     public static ColorDetected detectStripColorBrandKnown(Mat lab) {
         // compute mean lab colour. This is the value that will be
-        // used for the ppm computation
+        // used for the result computation
         Scalar mean = Core.mean(lab);
         ColorDetected colorDetected = new ColorDetected();
         colorDetected.setLab(mean);

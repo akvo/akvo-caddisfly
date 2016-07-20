@@ -18,7 +18,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:background="#ddd"
     tools:context=".sensor.colorimetry.strip.result.ResultActivity">
 
     <include layout="@layout/toolbar" />
@@ -26,7 +26,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_save"
+        android:layout_above="@+id/layoutFooter"
         android:layout_below="@id/toolbar">
 
         <LinearLayout
@@ -36,25 +36,38 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <Button
-        android:id="@+id/button_save"
-        style="@style/Button"
-        android:layout_above="@+id/button_redo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:minWidth="250dp"
-        android:text="@string/save"
-        android:theme="?primaryButtonStyle" />
-
-    <Button
-        android:id="@+id/button_redo"
+    <LinearLayout
+        android:id="@+id/layoutFooter"
+        style=" ?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:text="@string/redo_test"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:background="?primaryBackgroundStyle"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_cancel"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:padding="20dp"
+            android:text="@string/cancel"
+            android:textColor="#aaa"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/button_save"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.01"
+            android:padding="20dp"
+            android:text="@string/save"
+            android:textColor="#ccc"
+            android:textSize="17sp"
+            tools:targetApi="lollipop" />
+
+    </LinearLayout>
 </RelativeLayout>

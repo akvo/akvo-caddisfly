@@ -21,8 +21,6 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
@@ -113,7 +111,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.ui.ColorimetryStripActivity"
+            android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -152,7 +150,7 @@
         <activity
             android:name=".sensor.colorimetry.strip.result.ResultActivity"
             android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.colorimetry.strip.util.exception.UncaughtExceptionActivity">
+        <activity android:name=".sensor.colorimetry.strip.ui.UncaughtExceptionActivity">
             <intent-filter>
                 <action android:name="org.akvo.SEND_LOG" />
 

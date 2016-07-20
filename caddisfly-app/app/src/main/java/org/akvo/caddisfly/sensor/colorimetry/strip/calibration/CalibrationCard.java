@@ -14,8 +14,10 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration;
+package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.akvo.caddisfly.util.detector.BitMatrix;
 import org.akvo.caddisfly.util.detector.Detector;
@@ -820,8 +822,4 @@ public class CalibrationCard {
         }
         return oneCount % 2 != 0; // returns true if parity is odd
     }
-
-//    public CalibrationData getCalData() {
-//        return calData;
-//    }
 }

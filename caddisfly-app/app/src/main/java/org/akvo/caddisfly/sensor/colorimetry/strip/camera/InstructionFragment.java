@@ -34,7 +34,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-
 /**
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
@@ -44,7 +43,7 @@ import org.json.JSONException;
  * <p/>
  * This fragment shows instructions for a particular strip test. They are read from strips.json in assets
  */
-public class InstructionFragment extends CameraSharedFragmentAbstract {
+public class InstructionFragment extends CameraSharedFragmentBase {
 
     private CameraViewListener mListener;
 
@@ -89,7 +88,8 @@ public class InstructionFragment extends CameraSharedFragmentAbstract {
 
                     for (String anInstrArray : instrArray) {
                         textView = new TextView(getActivity());
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mediumTextSize));
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                                getResources().getDimension(R.dimen.mediumTextSize));
 
                         int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
                         textView.setPadding(0, 0, 0, padBottom);

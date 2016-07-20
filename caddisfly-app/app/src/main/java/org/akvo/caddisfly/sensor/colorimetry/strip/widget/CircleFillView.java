@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
+package org.akvo.caddisfly.sensor.colorimetry.strip.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,19 +25,19 @@ import android.view.View;
 /**
  * Created by linda on 9/4/15
  */
-public class CircleView extends View {
+public class CircleFillView extends View {
 
     private final Paint paint;
 
-    public CircleView(Context context) {
+    public CircleFillView(Context context) {
         this(context, null);
     }
 
-    public CircleView(Context context, AttributeSet attrs) {
+    public CircleFillView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CircleFillView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         this.paint = new Paint();

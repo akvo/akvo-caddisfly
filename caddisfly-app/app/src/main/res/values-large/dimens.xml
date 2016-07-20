@@ -3,6 +3,6 @@
     <dimen name="activity_horizontal_margin">24dp</dimen>
     <dimen name="activity_vertical_margin">24dp</dimen> -->
     <dimen name="quality_check_view_height">64dp</dimen>
-    <dimen name="ppm_circle_area">96dp</dimen>
+    <dimen name="color_circle_size">96dp</dimen>
     <dimen name="mediumTextSize">24sp</dimen>
 </resources>

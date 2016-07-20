@@ -51,7 +51,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetPpmValue() throws Exception {
+    public void testGetResultValue() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = -1;
@@ -75,7 +75,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetPpmValue2() throws Exception {
+    public void testGetResultValue2() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1000) {
@@ -104,7 +104,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetPpmValue3() throws Exception {
+    public void testGetResultValue3() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1000) {
@@ -133,7 +133,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetPpmValue4() throws Exception {
+    public void testGetResultValue4() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = Color.rgb(250, 171, 130);
@@ -157,7 +157,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetPpmValue5() throws Exception {
+    public void testGetResultValue5() throws Exception {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = Color.rgb(254, 115, 138);

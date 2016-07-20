@@ -27,6 +27,7 @@ import android.view.View;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +49,7 @@ public class InstructionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruction);
 
-        final ViewPageIndicator footerView = (ViewPageIndicator) findViewById(R.id.pager_indicator);
+        final PageIndicatorView footerView = (PageIndicatorView) findViewById(R.id.pager_indicator);
 
         StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.BRAND));
 
@@ -60,7 +61,8 @@ public class InstructionActivity extends BaseActivity {
                 try {
                     fragments.add(InstructionDetailFragment.newInstance(
                             instructions.getJSONObject(i).getString("text"),
-                            instructions.getJSONObject(i).getString("png")));
+                            instructions.getJSONObject(i).has("png") ?
+                                    instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

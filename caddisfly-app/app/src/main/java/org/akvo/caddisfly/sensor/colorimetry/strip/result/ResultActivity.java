@@ -34,10 +34,10 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.CircleView;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.CircleFillView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -150,7 +150,7 @@ public class ResultActivity extends BaseActivity {
             }
         }
         Button save = (Button) findViewById(R.id.button_save);
-        Button redo = (Button) findViewById(R.id.button_redo);
+        Button redo = (Button) findViewById(R.id.button_cancel);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +187,7 @@ public class ResultActivity extends BaseActivity {
                     fileStorage.deleteFromInternalStorage(Constant.STRIP);
                 }
 
-                Intent intentRedo = new Intent(getBaseContext(), ColorimetryStripActivity.class);
+                Intent intentRedo = new Intent(getBaseContext(), TestTypeListActivity.class);
                 intentRedo.putExtra(SensorConstants.FINISH, true);
                 intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -220,7 +220,7 @@ public class ResultActivity extends BaseActivity {
         private Mat combined;
         private ColorDetected colorDetected;
         private ColorDetected[] colorsDetected;
-        private double ppm = -1;
+        private double resultValue = -1;
 
         public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand,
                           List<StripTest.Brand.Patch> patches, int patchNum) {
@@ -282,10 +282,10 @@ public class ResultActivity extends BaseActivity {
                 }
 
                 try {
-                    ppm = ResultUtil.calculatePpmGroup(colorsValueLab, patches);
+                    resultValue = ResultUtil.calculateResultGroup(colorsValueLab, patches);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ppm = Double.NaN;
+                    resultValue = Double.NaN;
                 }
 
                 // calculate size of each color range block
@@ -302,14 +302,14 @@ public class ResultActivity extends BaseActivity {
                 colorDetected = ResultUtil.getPatchColour(mat, centerPatch, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
 
-                //set the colours needed to calculate ppm
+                //set the colours needed to calculate resultValue
                 colours = patches.get(patchNum).getColours();
 
                 try {
-                    ppm = ResultUtil.calculatePpmSingle(colorValueLab, colours);
+                    resultValue = ResultUtil.calculateResultSingle(colorValueLab, colours);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ppm = Double.NaN;
+                    resultValue = Double.NaN;
                 }
 
                 // calculate size of each color range block
@@ -336,9 +336,9 @@ public class ResultActivity extends BaseActivity {
             // create Mat to hold value measured
             Mat valueMeasuredMat;
             if (grouped) {
-                valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(colours, ppm, colorsDetected, mat.cols(), xTranslate);
+                valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(colours, resultValue, colorsDetected, mat.cols(), xTranslate);
             } else {
-                valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(colours, ppm, colorDetected, mat.cols(), xTranslate);
+                valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(colours, resultValue, colorDetected, mat.cols(), xTranslate);
             }
 
             // PUTTING IT ALL TOGETHER
@@ -367,12 +367,12 @@ public class ResultActivity extends BaseActivity {
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
 
-            //put ppm in resultJsonArr
+            //put resultValue in resultJsonArr
             if (!combined.empty()) {
                 try {
                     JSONObject object = new JSONObject();
                     object.put(SensorConstants.NAME, patchDescription);
-                    object.put(SensorConstants.VALUE, ResultUtil.roundSignificant(ppm));
+                    object.put(SensorConstants.VALUE, ResultUtil.roundSignificant(resultValue));
                     object.put(SensorConstants.UNIT, unit);
                     object.put(SensorConstants.ID, id);
                     resultJsonArr.put(object);
@@ -393,44 +393,44 @@ public class ResultActivity extends BaseActivity {
 
         /*
         * Puts the result on screen.
-        * data is taken from the globals stripBitmap, ppm, colorDetected and unit variables
+        * data is taken from the globals stripBitmap, resultValue, colorDetected and unit variables
         */
         protected void onPostExecute(Void result) {
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             final ViewGroup nullParent = null;
-            LinearLayout result_ppm_layout = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
+            LinearLayout itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
 
-            TextView textDescription = (TextView) result_ppm_layout.findViewById(R.id.text_title);
-            textDescription.setText(patchDescription);
+            TextView textTitle = (TextView) itemResult.findViewById(R.id.text_title);
+            textTitle.setText(patchDescription);
 
-            ImageView imageView = (ImageView) result_ppm_layout.findViewById(R.id.image_result);
-            CircleView circleView = (CircleView) result_ppm_layout.findViewById(R.id.circle_color);
+            ImageView imageResult = (ImageView) itemResult.findViewById(R.id.image_result);
+            CircleFillView circleColor = (CircleFillView) itemResult.findViewById(R.id.circle_color);
 
             if (stripBitmap != null) {
-                imageView.setImageBitmap(stripBitmap);
+                imageResult.setImageBitmap(stripBitmap);
 
                 if (!invalid) {
                     if (colorDetected != null && !grouped) {
-                        circleView.setColor(colorDetected.getColor());
+                        circleColor.setColor(colorDetected.getColor());
                     }
 
-                    TextView textView = (TextView) result_ppm_layout.findViewById(R.id.text_result);
-                    if (ppm > -1) {
-                        if (ppm < 1.0) {
-                            textView.setText(String.format(Locale.getDefault(), "%.2f %s", ppm, unit));
+                    TextView textView = (TextView) itemResult.findViewById(R.id.text_result);
+                    if (resultValue > -1) {
+                        if (resultValue < 1.0) {
+                            textView.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
                         } else {
-                            textView.setText(String.format(Locale.getDefault(), "%.1f %s", ppm, unit));
+                            textView.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
                         }
                     }
                 }
             } else {
-                textDescription.append("\n\n" + getResources().getString(R.string.no_data));
-                circleView.setColor(Color.RED);
+                textTitle.append("\n\n" + getResources().getString(R.string.no_data));
+                circleColor.setColor(Color.RED);
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
-            layout.addView(result_ppm_layout);
+            layout.addView(itemResult);
         }
     }
 }

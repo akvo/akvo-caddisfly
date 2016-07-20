@@ -1,43 +1,73 @@
 {
   "strips": [
     {
-      //chlorine and free chlorine
+      "name": "Chlorine and Free Chlorine",
       "brand": "HACH-27450-50",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
         {
           "text": "Dip the strip and move back and forth for 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)",
           "png": "instruction_dip"
         },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //nitrate
+      "name": "Nitrate and Nitrite",
       "brand": "HACH-27454-25",
       "instructions": [
-        {"text": "Dip strip into water for 1 second.", "png": ""},
+        {
+          "text": "Dip strip into water for 1 second.",
+          "png": "instruction_dip"
+        },
         {
           "text": "<!>Do not shake excess water from the test strip.<!>",
           "png": ""
         },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //total iron
+      "name": "Total Iron",
       "brand": "HACH-2745348",
       "instructions": [
         {
           "text": "Fill HALF of the vial with sample water.",
           "png": ""
         },
-        {"text": "Open one foil packet and add powder contents to vial.", "png": ""},
-        {"text": "Cap vial and shake rapidly for 5 seconds. Remove cap.", "png": ""},
-        {"text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.", "png":"" },
-        {"text": "Place strip onto black area.", "png": "instruction_place_strip"},
+        {
+          "text": "Open one foil packet and add powder contents to vial.",
+          "png": ""
+        },
+        {
+          "text": "Cap vial and shake rapidly for 5 seconds. Remove cap.",
+          "png": ""
+        },
+        {
+          "text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
         {
           "text": "Start test immediately.",
           "png": ""
@@ -45,27 +75,51 @@
       ]
     },
     {
-      //pH 4-9
+      "name": "pH 4-9",
       "brand": "HACH-27456-50",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water and remove immediately. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water and remove immediately. Do not shake excess water from strip",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //Phosphate
+      "name": "Phosphate",
       "brand": "HACH-27571-50",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip", "png":"instruction_dip" },
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //Dual Range Arsenic (0-500 range)
+      "name": "Dual Range Arsenic (0-500)",
       "brand": "HACH-28001-50-0-500",
       "instructions": [
         {
@@ -75,13 +129,21 @@
         {
           "text": "Follow the instructions that came with the testing kit for adding reagents"
         },
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Wait 20 minutes. Swirl twice during the reaction period"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //Dual Range Arsenic (0-4000 range)
+      "name": "Dual Range Arsenic (0-4000)",
       "brand": "HACH-28001-50-0-4000",
       "instructions": [
         {
@@ -91,20 +153,42 @@
         {
           "text": "Follow the instructions that came with the testing kit for adding reagents"
         },
-        {"text": "Wait 20 minutes. Swirl twice during the reaction period"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Wait 20 minutes. Swirl twice during the reaction period"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     },
     {
-      //Merkc pH range 0 - 14
+      "name": "pH 0 - 14",
       "brand": "MERCK-1095350001-100-0-14",
       "instructions": [
-        {"text": "Collect water sample", "png": "instruction_collect_sample"},
-        {"text": "Dip a strip in the water for at least 2 seconds and remove."},
-        {"text": "Shake excess water from the strip"},
-        {"text": "Place strip onto black area. ", "png": "instruction_place_strip"},
-        {"text": "Press 'Start' button.", "png": ""}
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip in the water for at least 2 seconds and remove.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Shake excess water from the strip"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
       ]
     }
   ]

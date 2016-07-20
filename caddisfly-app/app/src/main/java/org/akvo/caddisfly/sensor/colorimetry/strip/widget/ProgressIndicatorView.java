@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
+package org.akvo.caddisfly.sensor.colorimetry.strip.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -64,7 +64,6 @@ public class ProgressIndicatorView extends LinearLayout {
     public ProgressIndicatorView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-
 
     public ProgressIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -145,8 +144,6 @@ public class ProgressIndicatorView extends LinearLayout {
 
         this.stepsTaken = stepsTaken;
 
-        //System.out.println("***steps taken: " + stepsTaken);
-
         if (steps != null) {
             for (int i = 0; i < steps.size(); i++) {
                 if (i <= stepsTaken) {
@@ -181,13 +178,8 @@ public class ProgressIndicatorView extends LinearLayout {
                 if (steps.get(i).getTimeLapse() - timeLapsed < 5) {
                     if (getChildCount() > 0 && getChildAt(i) != null) {
                         if (i >= stepsTaken) {
-
-                            // System.out.println("***animation ended: " + i + "  " + steps.get(i).timeLapse);
-
                             if (!steps.get(i).animationEnded) {
-
                                 getChildAt(i).startAnimation(blink);
-
                             }
 
                         } else {
@@ -241,12 +233,12 @@ public class ProgressIndicatorView extends LinearLayout {
 
                 canvas.drawBitmap(background, 0, 0, paint);
 
-                //if the previous step is finished, either picture taken or not, we start the counter
-                //otherwise we do not show any message
+                // If the previous step is finished, either picture taken or not, we start the counter
                 if (i > 0) {
                     if (steps.get(i - 1).animationEnded) {
                         try {
-                            message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
+                            message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(
+                                    Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
                         } catch (Exception e) {
                             message = e.getMessage();
                         }
@@ -264,25 +256,11 @@ public class ProgressIndicatorView extends LinearLayout {
                 }
             }
 
-            /*
-            * DEBUGGING TIME
-             */
-//            try {
-//                message = message + " " + PreviewUtil.fromSecondsToMMSS(timeLapsed ) + " sec. ";
-//            } catch (Exception e) {
-//                message = e.getMessage();
-//            }
-            /*
-            * END DEBUGGING
-             */
-
-            float textHeight = Math.abs(textPaint.ascent());//+ Math.abs(textPaint.descent());
+            float textHeight = Math.abs(textPaint.ascent());
             float yPos = background.getHeight() / 2 + textHeight / 2;
             canvas.drawText(message, background.getWidth() + horMargin, yPos, textPaint);
 
             canvas.translate(0f, background.getHeight());
-
-
         }
 
         canvas.restore();
@@ -298,17 +276,12 @@ public class ProgressIndicatorView extends LinearLayout {
 
         @Override
         public void onAnimationStart(Animation animation) {
-
             running = true;
-
-            //System.out.println("***animation qualityChecksOK listener: " + i + " " + animation.getDuration());
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
             steps.get(i).animationEnded = true;
-            //System.out.println("***animation ended listener: " + i + " " + animation.getDuration());
-
             running = false;
         }
 
@@ -345,7 +318,5 @@ public class ProgressIndicatorView extends LinearLayout {
 
             return 1;
         }
-
-
     }
 }

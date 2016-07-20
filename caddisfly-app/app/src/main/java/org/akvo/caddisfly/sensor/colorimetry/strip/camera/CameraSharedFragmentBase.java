@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -28,18 +29,12 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import java.util.Map;
 
 /**
- * Created by linda on 11/25/15.
- * Contains methods that are shared by child classes
- * So the activity that inflates an instance of this fragment has access to them
- * in a simple way
+ * Created by linda on 11/25/15
  */
 @SuppressWarnings("deprecation")
-public abstract class CameraSharedFragmentAbstract extends Fragment {
+public abstract class CameraSharedFragmentBase extends Fragment {
 
-    //public abstract void setFocusAreas(Camera.Size previewSize);
-
-    public void countQuality(Map<String, Integer> countArray) {
-    }
+    protected TextView countQualityView;
 
     void showBrightness(double value) {
     }
@@ -60,7 +55,6 @@ public abstract class CameraSharedFragmentAbstract extends Fragment {
 
                 //find the overlay that hides part of the preview
                 final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
-                //final Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
 
                 final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
                 final ViewGroup.LayoutParams params = overlay.getLayoutParams();
@@ -84,13 +78,41 @@ public abstract class CameraSharedFragmentAbstract extends Fragment {
 
                         placeholderView.setLayoutParams(paramsP);
                         overlay.setLayoutParams(params);
-
-                        //make view slide up
-                        //placeholderView.startAnimation(slideUp);
-                        //overlay.startAnimation(slideUp);
                     }
                 });
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    *  Display number of successful quality checks
+    */
+    public void displayCountQuality(Map<String, Integer> countMap) {
+
+        try {
+            int count = 0;
+
+            // Each parameter counts for 1/3 towards the final count shown.
+            for (int i : countMap.values()) {
+                count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
+            }
+
+            count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
+            String text = getResources().getString(R.string.quality_checks_counter, count,
+                    Constant.COUNT_QUALITY_CHECK_LIMIT);
+            countQualityView.setText(text);
+
+            // Debugging: Display count per quality parameter
+//                if (AppPreferences.isDiagnosticMode()) {
+//                    String debugText = "";
+//                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+//                        debugText += entry.getKey() + ": " + entry.getValue() + " ";
+//                    }
+//                    countQualityView.setText(debugText);
+//                }
         } catch (Exception e) {
             e.printStackTrace();
         }

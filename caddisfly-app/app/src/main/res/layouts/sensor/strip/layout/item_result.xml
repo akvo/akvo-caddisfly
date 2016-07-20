@@ -18,9 +18,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
     android:background="@drawable/background_white_black_line_bottom"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".sensor.colorimetry.strip.result.ResultActivity">
 
     <TextView
         android:id="@+id/text_title"
@@ -41,10 +41,10 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <org.akvo.caddisfly.sensor.colorimetry.strip.ui.CircleView
+        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.CircleFillView
             android:id="@+id/circle_color"
-            android:layout_width="@dimen/ppm_circle_area"
-            android:layout_height="@dimen/ppm_circle_area" />
+            android:layout_width="@dimen/color_circle_size"
+            android:layout_height="@dimen/color_circle_size" />
 
         <TextView
             android:id="@+id/text_result"

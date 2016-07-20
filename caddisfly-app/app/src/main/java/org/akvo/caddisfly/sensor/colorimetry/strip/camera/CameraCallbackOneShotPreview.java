@@ -29,8 +29,8 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
  * method of a class that holds an instance of the Android Camera.
  */
 @SuppressWarnings("deprecation")
-class CameraCallbackOneShotPreview extends CameraCallbackAbstract {
-    private boolean running;
+class CameraCallbackOneShotPreview extends CameraCallbackBase {
+    private boolean sending;
 
     public CameraCallbackOneShotPreview(Context context, Camera.Parameters parameters) {
         super(context, parameters);
@@ -40,31 +40,28 @@ class CameraCallbackOneShotPreview extends CameraCallbackAbstract {
     public void onPreviewFrame(byte[] data, Camera camera) {
         super.onPreviewFrame(data, camera);
 
-        if (!stop && !running)
+        if (!stopped && !sending) {
             sendData(data);
+        }
     }
 
     protected void sendData(byte[] data) {
-        running = true;
+        sending = true;
         try {
             FinderPatternInfo info = findPossibleCenters(data, previewSize);
 
-            //check if quality of image is ok. if OK, value is 1, if not 0
-            //the qualityChecks() method sends messages back to listener to update UI
+            // Get quality count and update UI via listener
             int[] countQuality = qualityChecks(data, info);
 
             //add countQuality to sum in listener
-            if (listener != null)
+            if (listener != null) {
                 listener.addCountToQualityCheckCount(countQuality);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            running = false;
+            sending = false;
         }
     }
 }
-
-
-
-

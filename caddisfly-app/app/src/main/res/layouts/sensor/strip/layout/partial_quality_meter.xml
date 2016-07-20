@@ -31,7 +31,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckBrightnessView
+        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView
             android:id="@+id/quality_brightness"
             android:layout_width="match_parent"
             android:layout_height="@dimen/quality_check_view_height" />
@@ -51,7 +51,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckShadowsView
+        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView
             android:id="@+id/quality_shadows"
             android:layout_width="match_parent"
             android:layout_height="@dimen/quality_check_view_height"

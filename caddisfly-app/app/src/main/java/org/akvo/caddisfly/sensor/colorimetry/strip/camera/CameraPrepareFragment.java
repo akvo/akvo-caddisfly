@@ -24,13 +24,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckView;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 
 import java.lang.ref.WeakReference;
-import java.util.Map;
-
 
 /**
  * Activities that contain this fragment must implement the
@@ -42,14 +38,13 @@ import java.util.Map;
  * This fragment is used to show the quality checks done in CameraPreviewCallback
  */
 @SuppressWarnings("deprecation")
-public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
+public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
     private CameraViewListener mListener;
     private TextView buttonNext;
     private TextView messageView;
-    private WeakReference<TextView> wrCountQualityView;
-    private WeakReference<QualityCheckView> wrExposureView;
-    private WeakReference<QualityCheckView> wrContrastView;
+    private WeakReference<PercentageMeterView> wrExposureView;
+    private WeakReference<PercentageMeterView> wrContrastView;
 
     public CameraPrepareFragment() {
         // Required empty public constructor
@@ -66,14 +61,13 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
 
-        QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.quality_brightness);
-        QualityCheckView contrastView = (QualityCheckView) rootView.findViewById(R.id.quality_shadows);
+        PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
+        PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
         buttonNext = (TextView) rootView.findViewById(R.id.button_next);
         buttonNext.setVisibility(View.INVISIBLE);
         messageView = (TextView) rootView.findViewById(R.id.text_prepareInfo);
-        TextView countQualityView = (TextView) rootView.findViewById(R.id.text_qualityCount);
+        countQualityView = (TextView) rootView.findViewById(R.id.text_qualityCount);
 
-        wrCountQualityView = new WeakReference<>(countQualityView);
         wrExposureView = new WeakReference<>(exposureView);
         wrContrastView = new WeakReference<>(contrastView);
 
@@ -82,8 +76,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    mListener.switchFlash();
+                    mListener.toggleFlashMode();
                 }
             });
         }
@@ -93,15 +86,17 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
     @Override
     protected void showBrightness(double value) {
 
-        if (wrExposureView != null)
-            wrExposureView.get().setPercentage((float) value);
+        if (wrExposureView != null) {
+            wrExposureView.get().setPercentage((float) (100 - value));
+        }
     }
 
     @Override
     protected void showShadow(double value) {
 
-        if (wrContrastView != null)
+        if (wrContrastView != null) {
             wrContrastView.get().setPercentage((float) value);
+        }
     }
 
     @Override
@@ -157,37 +152,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentAbstract {
         } catch (Exception e) {
             e.printStackTrace();
 
-        }
-    }
-
-    @Override
-    public void countQuality(Map<String, Integer> countMap) {
-        if (wrCountQualityView != null) {
-            try {
-                int count = 0;
-
-                // each parameter counts for 1/3 towards the final count shown.
-                for (int i : countMap.values()) {
-                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-                }
-
-                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
-
-                if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
-                    String text = getResources().getString(R.string.quality_checks_counter, count, Constant.COUNT_QUALITY_CHECK_LIMIT);
-                    wrCountQualityView.get().setText(text);
-
-                    // only for development purposes. It shows the count per quality parameter
-                    if (AppPreferences.isDiagnosticMode()) {
-                        wrCountQualityView.get().append("\n\n");
-                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -30,19 +30,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripTask;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ProgressIndicatorView;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.QualityCheckView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.ProgressIndicatorView;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.json.JSONArray;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Activities that contain this fragment must implement the
@@ -66,12 +63,9 @@ import java.util.Map;
  * <p/>
  * If all pictures are taken it shows an animation of a spinning circle while doing a DetectStripTask
  */
-public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
+public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
-    private WeakReference<TextView> wrTextStartIndicator;
-    private WeakReference<TextView> wrCountQualityView;
     private CameraViewListener mListener;
-    //private Button startButton;
     private List<StripTest.Brand.Patch> patches;
     private ProgressIndicatorView progressIndicatorViewAnim;
     private int timeLapsed = 0;
@@ -99,8 +93,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         }
     };
     //private TextView countQualityView;
-    private QualityCheckView exposureView;
-    private QualityCheckView contrastView;
+    private PercentageMeterView exposureView;
+    private PercentageMeterView contrastView;
     private ImageView finishImage;
     private Animation rotate;
 
@@ -133,16 +127,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_start, container, false);
-        TextView textStartIndicator = (TextView) rootView.findViewById(R.id.text_startIndicator);
 
-        exposureView = (QualityCheckView) rootView.findViewById(R.id.quality_brightness);
-        contrastView = (QualityCheckView) rootView.findViewById(R.id.quality_shadows);
-
-        TextView countQualityView = (TextView) rootView.findViewById(R.id.text_qualityCount);
+        exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
+        contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
+        countQualityView = (TextView) rootView.findViewById(R.id.text_startIndicator);
         finishImage = (ImageView) rootView.findViewById(R.id.image_finishIndicator);
-
-        wrTextStartIndicator = new WeakReference<>(textStartIndicator);
-        wrCountQualityView = new WeakReference<>(countQualityView);
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -191,12 +180,12 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
         //use brightness view as a button to switch on and off the flash
         //TODO: remove in release version?
-        QualityCheckView exposureView = (QualityCheckView) rootView.findViewById(R.id.quality_brightness);
+        PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         if (exposureView != null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.switchFlash();
+                    mListener.toggleFlashMode();
                 }
             });
         }
@@ -257,15 +246,17 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     @Override
     protected void showBrightness(double value) {
 
-        if (exposureView != null)
-            exposureView.setPercentage((float) value);
+        if (exposureView != null) {
+            exposureView.setPercentage((float) (100 - value));
+        }
     }
 
     @Override
     protected void showShadow(double value) {
 
-        if (contrastView != null)
+        if (contrastView != null) {
             contrastView.setPercentage((float) value);
+        }
     }
 
     /*
@@ -331,10 +322,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
     @Override
     public void showStartButton() {
 
-        if (wrTextStartIndicator == null)
-            return;
-
-        wrTextStartIndicator.get().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
+        countQualityView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
         if (progressIndicatorViewAnim != null) {
             progressIndicatorViewAnim.start();
@@ -370,7 +358,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         if (imageCount >= patches.size())
             return;
 
-        //what happens in the for-loop:
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.
         //reading may be done after that time, but not before.
@@ -415,7 +402,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
 
         //add one to imageCount
         imageCount++;
-
     }
 
     public void showSpinner() {
@@ -487,39 +473,5 @@ public class CameraStartTestFragment extends CameraSharedFragmentAbstract {
         detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         return detectStripIntent;
-    }
-
-    /*
-    *  Show the number of successful quality checks as text on the start button
-     */
-    @Override
-    public void countQuality(Map<String, Integer> countMap) {
-
-        if (wrTextStartIndicator != null) {
-            try {
-
-                int count = 0;
-
-                for (int i : countMap.values()) {
-                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-                }
-
-                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
-                if (!wrCountQualityView.get().getText().toString().contains("15 out of")) {
-
-                    String text = getResources().getString(R.string.quality_checks_counter, String.valueOf(count), Constant.COUNT_QUALITY_CHECK_LIMIT);
-                    wrTextStartIndicator.get().setText(text);
-
-                    if (AppPreferences.isDiagnosticMode()) {
-                        wrCountQualityView.get().setText("");
-                        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                            wrCountQualityView.get().append(entry.getKey() + ": " + entry.getValue() + " ");
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

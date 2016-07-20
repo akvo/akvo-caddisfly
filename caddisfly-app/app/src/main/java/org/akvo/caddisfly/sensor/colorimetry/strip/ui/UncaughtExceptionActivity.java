@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.util.exception;
+package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

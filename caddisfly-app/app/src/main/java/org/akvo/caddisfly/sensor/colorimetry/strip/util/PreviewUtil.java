@@ -16,8 +16,8 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationData;
+import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

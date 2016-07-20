@@ -18,12 +18,12 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.result;
 
 import android.graphics.Bitmap;
 
+import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,7 +163,7 @@ class ResultUtil {
                 Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
                 Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
-                //draw a rectangle filled with color for ppm value
+                //draw a rectangle filled with color for result value
                 Point topLeft = new Point(xTranslate * d, yColorRect);
                 Point bottomRight = new Point(topLeft.x + xTranslate - xMargin, yColorRect + xTranslate);
                 Imgproc.rectangle(colorRangeMat, topLeft, bottomRight, scalarLab, -1);
@@ -206,7 +206,7 @@ class ResultUtil {
                     Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
                     Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
-                    //draw a rectangle filled with color for ppm value
+                    //draw a rectangle filled with color for result value
                     Point topLeft = new Point(xTranslate * d, yColorRect + offset);
                     Point bottomRight = new Point(topLeft.x + xTranslate - xMargin, yColorRect + xTranslate + offset);
                     Imgproc.rectangle(colorRangeMat, topLeft, bottomRight, scalarLab, -1);
@@ -229,18 +229,18 @@ class ResultUtil {
     /*
        * VALUE MEASURED
        * Create Mat to hold a line between min and max values, on it a circle filled with
-       * the color detected below which the ppm value measured
+       * the color detected below which the result value measured
        */
-    public static Mat createValueMeasuredMatSingle(JSONArray colours, double ppm, ColorDetected colorDetected, int width, double xTranslate) {
+    public static Mat createValueMeasuredMatSingle(JSONArray colours, double resultValue, ColorDetected colorDetected, int width, double xTranslate) {
         Mat valueMeasuredMat = new Mat(50, width, CvType.CV_8UC3, labWhite);
         JSONObject colourObj;
         JSONObject nextColourObj;
-        boolean ppmIsDrawn = false;
+        boolean resultIsDrawn = false;
 
         //grey line with result values at left and right
         Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 1, Core.LINE_AA, 0);
 
-        //get values for lowest and highest ppm values from striptest range
+        //get values for lowest and highest result values from striptest range
         double leftValue;
         try {
             leftValue = colours.getJSONObject(0).getDouble("value");
@@ -257,7 +257,7 @@ class ResultUtil {
                     Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
 
-            // we need to iterate over the ppm values to determine where the circle should be placed
+            // we need to iterate over the result values to determine where the circle should be placed
             for (int d = 0; d < colours.length(); d++) {
                 colourObj = colours.getJSONObject(d);
                 if (d < colours.length() - 1) {
@@ -267,12 +267,13 @@ class ResultUtil {
                 double value = colourObj.getDouble("value");
                 double nextValue = nextColourObj.getDouble("value");
 
-                if (ppm <= nextValue && !ppmIsDrawn) {
+                if (resultValue <= nextValue && !resultIsDrawn) {
 
-                    double restPPM = ppm - (value); //calculate the amount above the lowest value
-                    double transX = xTranslate * (restPPM / (nextValue - value)); //calculate number of pixels needed to translate in x direction
+                    //calculate the amount above the lowest value
+                    //calculate number of pixels needed to translate in x direction
+                    double transX = xTranslate * ((resultValue - value) / (nextValue - value));
 
-                    Scalar ppmColor = colorDetected.getLab();
+                    Scalar resultColor = colorDetected.getLab();
                     //calculate where the center of the circle should be
                     double left = xTranslate * d;
                     double right = left + xTranslate - xMargin;
@@ -280,13 +281,13 @@ class ResultUtil {
                             new Point(left + (right - left) / 2 + transX, 25d);
 
                     //get text size of value test
-                    Size textSizePPM = Imgproc.getTextSize(roundResult(ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+                    Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
 
-                    Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
-                    Imgproc.putText(valueMeasuredMat, roundResult(ppm), new Point(centerCircle.x - textSizePPM.width / 2, 45d),
+                    Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, resultColor, -1, Imgproc.LINE_AA, 0);
+                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(centerCircle.x - textSize.width / 2, 45d),
                             Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_AA, false);
 
-                    ppmIsDrawn = true;
+                    resultIsDrawn = true;
                 }
             }
         } catch (JSONException e) {
@@ -299,20 +300,20 @@ class ResultUtil {
     /*
        * VALUE MEASURED
        * Create Mat to hold a line between min and max values, on it a circle filled with
-       * the color detected below which the ppm value measured
+       * the color detected below which the result value measured
        */
-    public static Mat createValueMeasuredMatGroup(JSONArray colours, double ppm, ColorDetected[] colorsDetected, int width, double xTranslate) {
+    public static Mat createValueMeasuredMatGroup(JSONArray colours, double result, ColorDetected[] colorsDetected, int width, double xTranslate) {
         int size = 50 + colorsDetected.length * (2 * circleRadius + 5);
         Mat valueMeasuredMat = new Mat(size, width, CvType.CV_8UC3, labWhite);
 
         JSONObject colourObj;
         JSONObject nextColourObj;
-        boolean ppmIsDrawn = false;
+        boolean resultIsDrawn = false;
 
-        //grey line with ppm values at left and right
+        //grey line with result values at left and right
         Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 1, Core.LINE_AA, 0);
 
-        //get values for lowest and highest ppm values from striptest range
+        //get values for lowest and highest result values from striptest range
         double leftValue;
         try {
             leftValue = colours.getJSONObject(0).getDouble("value");
@@ -329,7 +330,7 @@ class ResultUtil {
                     Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
 
-            // we need to iterate over the ppm values to determine where the circle should be placed
+            // we need to iterate over the result values to determine where the circle should be placed
             for (int d = 0; d < colours.length(); d++) {
                 colourObj = colours.getJSONObject(d);
                 if (d < colours.length() - 1) {
@@ -339,11 +340,11 @@ class ResultUtil {
                 double value = colourObj.getDouble("value");
                 double nextValue = nextColourObj.getDouble("value");
 
-                if (ppm < nextValue && !ppmIsDrawn) {
+                if (result < nextValue && !resultIsDrawn) {
 
-                    double restPPM = ppm - (value); //calculate the amount above the lowest value
-                    double transX = xTranslate * (restPPM / (nextValue - value)); //calculate number of pixels needed to translate in x direction
-
+                    //calculate the amount above the lowest value
+                    //calculate number of pixels needed to translate in x direction
+                    double transX = xTranslate * ((result - value) / (nextValue - value));
 
                     //calculate where the center of the circle should be
                     double left = xTranslate * d;
@@ -352,19 +353,19 @@ class ResultUtil {
                             new Point(left + (right - left) / 2 + transX, 25d);
 
                     //get text size of value test
-                    Size textSizePPM = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.1f", ppm), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
-                    Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.1f", ppm),
-                            new Point(centerCircle.x - textSizePPM.width / 2, 15d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
+                    Size textSize = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.1f", result), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+                    Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.1f", result),
+                            new Point(centerCircle.x - textSize.width / 2, 15d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
                             labBlack, 1, Core.LINE_AA, false);
 
                     double offset = circleRadius + 5;
                     for (ColorDetected aColorsDetected : colorsDetected) {
-                        Scalar ppmColor = aColorsDetected.getLab();
-                        Imgproc.circle(valueMeasuredMat, new Point(centerCircle.x, centerCircle.y + offset), circleRadius, ppmColor, -1, Imgproc.LINE_AA, 0);
+                        Scalar resultColor = aColorsDetected.getLab();
+                        Imgproc.circle(valueMeasuredMat, new Point(centerCircle.x, centerCircle.y + offset), circleRadius, resultColor, -1, Imgproc.LINE_AA, 0);
                         offset += 2 * circleRadius + 5;
                     }
 
-                    ppmIsDrawn = true;
+                    resultIsDrawn = true;
                 }
             }
         } catch (JSONException e) {
@@ -410,17 +411,17 @@ class ResultUtil {
     /*
    * Restricts number of significant digits depending on size of number
     */
-    public static double roundSignificant(double ppm) {
-        if (ppm < 1.0) {
-            return Math.round(ppm * 100) / 100.0;
+    public static double roundSignificant(double value) {
+        if (value < 1.0) {
+            return Math.round(value * 100) / 100.0;
         } else {
-            return Math.round(ppm * 10) / 10.0;
+            return Math.round(value * 10) / 10.0;
         }
     }
 
     private static double[][] createInterpolTable(JSONArray colours) {
         JSONArray patchColorValues;
-        double ppmPatchValueStart, ppmPatchValueEnd;
+        double resultPatchValueStart, resultPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
         double LInter, aInter, bInter, vInter;
@@ -430,11 +431,11 @@ class ResultUtil {
         for (int i = 0; i < colours.length() - 1; i++) {
             try {
                 patchColorValues = colours.getJSONObject(i).getJSONArray("lab");
-                ppmPatchValueStart = colours.getJSONObject(i).getDouble("value");
+                resultPatchValueStart = colours.getJSONObject(i).getDouble("value");
                 pointStart = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
                 patchColorValues = colours.getJSONObject(i + 1).getJSONArray("lab");
-                ppmPatchValueEnd = colours.getJSONObject(i + 1).getDouble("value");
+                resultPatchValueEnd = colours.getJSONObject(i + 1).getDouble("value");
                 pointEnd = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
                 double LStart = pointStart[0];
@@ -444,7 +445,7 @@ class ResultUtil {
                 double dL = (pointEnd[0] - pointStart[0]) / INTERPOLATION_NUMBER;
                 double da = (pointEnd[1] - pointStart[1]) / INTERPOLATION_NUMBER;
                 double db = (pointEnd[2] - pointStart[2]) / INTERPOLATION_NUMBER;
-                double dV = (ppmPatchValueEnd - ppmPatchValueStart) / INTERPOLATION_NUMBER;
+                double dV = (resultPatchValueEnd - resultPatchValueStart) / INTERPOLATION_NUMBER;
 
                 // create 10 interpolation points, including the start point,
                 // but excluding the end point
@@ -453,7 +454,7 @@ class ResultUtil {
                     LInter = LStart + ii * dL;
                     aInter = aStart + ii * da;
                     bInter = bStart + ii * db;
-                    vInter = ppmPatchValueStart + ii * dV;
+                    vInter = resultPatchValueStart + ii * dV;
 
                     interpolTable[count][0] = LInter;
                     interpolTable[count][1] = aInter;
@@ -475,7 +476,7 @@ class ResultUtil {
         return interpolTable;
     }
 
-    public static double calculatePpmSingle(double[] colorValues, JSONArray colours) throws Exception {
+    public static double calculateResultSingle(double[] colorValues, JSONArray colours) throws Exception {
         double[][] interpolTable = createInterpolTable(colours);
 
         // determine closest value
@@ -504,7 +505,7 @@ class ResultUtil {
         return interpolTable[minPos][3];
     }
 
-    public static double calculatePpmGroup(double[][] colorsValueLab, List<StripTest.Brand.Patch> patches) throws Exception {
+    public static double calculateResultGroup(double[][] colorsValueLab, List<StripTest.Brand.Patch> patches) throws Exception {
         double[][][] interpolTables = new double[patches.size()][][];
 
         // create all interpol tables

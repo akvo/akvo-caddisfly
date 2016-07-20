@@ -14,42 +14,44 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
+package org.akvo.caddisfly.sensor.colorimetry.strip.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+
+import org.akvo.caddisfly.R;
 
 /**
  * Created by linda on 9/21/15
  */
-public class ViewPageIndicator extends View {
+public class PageIndicatorView extends View {
 
     private static final float DISTANCE = 24;
-    private static final int BULLET_RADIUS = 6;
+    private static final int BULLET_RADIUS = 5;
 
     private final Paint fillPaint;
     private final Paint strokePaint;
     private int pageCount;
     private int activePage;
 
-    public ViewPageIndicator(Context context) {
+    public PageIndicatorView(Context context) {
         this(context, null);
     }
 
-    public ViewPageIndicator(Context context, AttributeSet attrs) {
+    public PageIndicatorView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ViewPageIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PageIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setColor(Color.DKGRAY);
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.orange));
         fillPaint.setAntiAlias(true);
 
         strokePaint = new Paint(fillPaint);
@@ -79,11 +81,11 @@ public class ViewPageIndicator extends View {
 
         for (int i = 0; i < pageCount; i++) {
             if (activePage == i)
-                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS, canvas.getHeight() / 2,
-                        BULLET_RADIUS, fillPaint);
+                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
+                        BULLET_RADIUS + 6, fillPaint);
             else
-                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS, canvas.getHeight() / 2,
-                        BULLET_RADIUS - strokePaint.getStrokeWidth(), strokePaint);
+                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
+                        BULLET_RADIUS, fillPaint);
         }
     }
 }

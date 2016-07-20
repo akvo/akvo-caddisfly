@@ -288,6 +288,4 @@ public class StripTest {
             return 1;
         }
     }
-
-
 }

@@ -1,88 +1,194 @@
 {
   "strips": [
     {
-      //chlorine and free chlorine
+      "name": "Chlorine and Free Chlorine",
       "brand": "HACH-27450-50",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
-        {"text": "Déplacez la bande d'avant en arrière pendant 30 secondes dans de l'eau. Ensuite, séchez l'excès d'eau. (placer sur une serviette)", "png":"instruction_dip" },
-        {"text": "Placez la bande sur la zone noire", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Déplacez la bande d'avant en arrière pendant 30 secondes dans de l'eau. Ensuite, séchez l'excès d'eau. (placer sur une serviette)",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //nitrate
+      "name": "Nitrate and Nitrite",
       "brand": "HACH-27454-25",
       "instructions": [
-        {"text": "Plongez la bande dans l'eau pendant 1 seconde.", "png": ""},
-        {"text": "<!>Ne pas secouer l'excès d'eau de la bande test.<!", "png":"" },
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Plongez la bande dans l'eau pendant 1 seconde.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "<!>Ne pas secouer l'excès d'eau de la bande test.<!",
+          "png": ""
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //total iron
+      "name": "Total Iron",
       "brand": "HACH-2745348",
       "instructions": [
-        {"text": "Remplissez le flacon échantillon à moitié avec de l'eau de l'échantillon.", "png": ""},
-        {"text": "Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.", "png": ""},
-        {"text": "Rebouchez le flacon et agitez rapidement pendant 5 secondes. Enlever le bouchon.", "png": ""},
-        {"text": "Trempez une bande de test dans le flacon échantillon et remuez le rapidement d'avant en arrière sous l'eau pendant 15 secondes. Retirez la bande et secouez l'excès d'eau.", "png":"" },
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Après ceci: <!>Appuyez sur 'Démarrez' immédiatement<!", "png": ""}
+        {
+          "text": "Remplissez le flacon échantillon à moitié avec de l'eau de l'échantillon.",
+          "png": ""
+        },
+        {
+          "text": "Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.",
+          "png": ""
+        },
+        {
+          "text": "Rebouchez le flacon et agitez rapidement pendant 5 secondes. Enlever le bouchon.",
+          "png": ""
+        },
+        {
+          "text": "Trempez une bande de test dans le flacon échantillon et remuez le rapidement d'avant en arrière sous l'eau pendant 15 secondes. Retirez la bande et secouez l'excès d'eau.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Après ceci: <!>Appuyez sur 'Démarrez' immédiatement<!",
+          "png": ""
+        }
       ]
     },
     {
-      //pH 4-9
+      "name": "pH 4-9",
       "brand": "HACH-27456-50",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
-        {"text": "Plongez la bande dans l'eau et retirez immédiatement. Ne sécher pas l'excès d'eau de la bande", "png":"instruction_dip" },
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau et retirez immédiatement. Ne sécher pas l'excès d'eau de la bande",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //Phosphate
+      "name": "Phosphate",
       "brand": "HACH-27571-50",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
-        {"text": "Plongez la bande dans l'eau pendant 5 secondes et retirez la. Ne sécher pas l'excès d'eau de la bande", "png":"instruction_dip" },
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau pendant 5 secondes et retirez la. Ne sécher pas l'excès d'eau de la bande",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //Dual Range Arsenic (0-500 range)
+      "name": "Dual Range Arsenic (0-500)",
       "brand": "HACH-28001-50-0-500",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"},
-        {"text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"},
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"
+        },
+        {
+          "text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //Dual Range Arsenic (0-4000 range)
+      "name": "Dual Range Arsenic (0-4000)",
       "brand": "HACH-28001-50-0-4000",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!", "png": "instruction_collect_sample"},
-        {"text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"},
-        {"text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"},
-        {"text": "Placez la bande sur la zone noire. ", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"
+        },
+        {
+          "text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"
+        },
+        {
+          "text": "Placez la bande sur la zone noire. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     },
     {
-      //Merkc pH range 0 - 14
+      "name": "pH 0 - 14",
       "brand": "MERCK-1095350001-100-0-14",
       "instructions": [
-        {"text": "Collectez un échantillon d'eau", "png": "instruction_collect_sample"},
-        {"text": "Plongez la bande dans l'eau pendant 2 secondes et retirez la."},
-        {"text": "Séchez l'excès d'eau."},
-        {"text": "Placez la bande sur la zone noire.", "png": "instruction_place_strip"},
-        {"text": "Appuyez sur 'Démarrez'", "png": ""}
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau pendant 2 secondes et retirez la.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Séchez l'excès d'eau."
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
       ]
     }
   ]

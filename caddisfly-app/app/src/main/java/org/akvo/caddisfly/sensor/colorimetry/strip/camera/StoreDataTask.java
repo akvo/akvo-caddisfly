@@ -62,7 +62,6 @@ class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean written) {
-
         listener.dataSent();
     }
 }

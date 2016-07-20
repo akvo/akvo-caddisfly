@@ -181,7 +181,7 @@
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch.</string>
-    <string name="redo_test">Redo Test</string>
+    <string name="redo">Redo</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
     <string name="analysing">Analysing image…</string>

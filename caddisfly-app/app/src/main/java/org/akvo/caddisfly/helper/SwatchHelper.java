@@ -96,7 +96,7 @@ public final class SwatchHelper {
      *
      * @param colorToFind The colorToFind to compare
      * @param swatches    The range of colors from which to return the nearest colorToFind
-     * @return A parts per million (ppm) value (colorToFind index multiplied by a step unit)
+     * @return details of the matching color with its corresponding value
      */
     private static ColorCompareInfo getNearestColorFromSwatches(
             int colorToFind, ArrayList<Swatch> swatches) {

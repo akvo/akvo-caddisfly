@@ -37,7 +37,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
@@ -114,7 +114,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
                     caddisflyApp.initializeCurrentTest();
 
-                    final Intent intent = new Intent(context, ColorimetryStripActivity.class);
+                    final Intent intent = new Intent(context, TestTypeListActivity.class);
                     startActivity(intent);
                     return true;
                 }

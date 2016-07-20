@@ -16,11 +16,16 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -31,7 +36,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import java.util.Collections;
 import java.util.List;
 
-public class ColorimetryStripActivity extends BaseActivity implements BaseActivity.ResultListener {
+public class TestTypeListActivity extends BaseActivity implements BaseActivity.ResultListener {
 
     private StripAdapter adapter;
     private StripTest stripTest;
@@ -115,5 +120,82 @@ public class ColorimetryStripActivity extends BaseActivity implements BaseActivi
         }
 
         finish();
+    }
+
+    static class StripAdapter extends ArrayAdapter<String> {
+
+        private final List<String> brandNames;
+        private final int resource;
+        private final Context context;
+        private final StripTest stripTest;
+
+        @SuppressWarnings("SameParameterValue")
+        public StripAdapter(Context context, int resource, List<String> brandNames) {
+            super(context, resource);
+
+            this.context = context;
+            this.resource = resource;
+            this.brandNames = brandNames;
+            this.stripTest = new StripTest();
+        }
+
+        @Override
+        public int getCount() {
+            return brandNames.size();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View view = convertView;
+            ViewHolder holder;
+
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(resource, parent, false);
+                holder = new ViewHolder(view);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+
+            if (brandNames != null) {
+                if (stripTest != null) {
+                    StripTest.Brand brand = stripTest.getBrand(brandNames.get(position));
+
+                    if (brand != null) {
+
+                        List<StripTest.Brand.Patch> patches = brand.getPatches();
+
+                        if (patches != null && patches.size() > 0) {
+                            String subtext = "";
+                            for (int i = 0; i < patches.size(); i++) {
+                                subtext += patches.get(i).getDesc() + ", ";
+                            }
+                            int indexLastSep = subtext.lastIndexOf(",");
+                            subtext = subtext.substring(0, indexLastSep);
+                            holder.textView.setText(brand.getName());
+
+                            holder.subtextView.setText(subtext);
+                        }
+                    }
+                } else holder.textView.setText(brandNames.get(position));
+            }
+            return view;
+
+        }
+
+        private static class ViewHolder {
+
+            private final TextView textView;
+            private final TextView subtextView;
+
+            public ViewHolder(View v) {
+
+                textView = (TextView) v.findViewById(R.id.text_title);
+                subtextView = (TextView) v.findViewById(R.id.text_subtitle);
+
+            }
+        }
     }
 }

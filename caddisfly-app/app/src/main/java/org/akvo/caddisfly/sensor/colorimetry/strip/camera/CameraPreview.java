@@ -18,7 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.os.Build;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -32,13 +31,13 @@ import java.util.List;
  * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
-public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private final Camera mCamera;
     private CameraActivity activity;
     private Camera.Parameters parameters;
 
-    public BaseCameraView(Context context) {
+    public CameraPreview(Context context) {
         super(context);
         // Create an instance of Camera
         mCamera = TheCamera.getCameraInstance();
@@ -48,25 +47,19 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         } catch (ClassCastException e) {
             throw new ClassCastException("must have CameraActivity as Context.");
         }
-        // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.
-        /* A basic Camera preview class */
+        // SurfaceHolder callback to track when underlying surface is created and destroyed.
         SurfaceHolder mHolder = getHolder();
         mHolder.addCallback(this);
-        // deprecated setting, but required on Android versions prior to 3.0
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
             mCamera.setPreviewDisplay(holder);
-
         } catch (Exception e) {
             Log.d("", "Error setting camera preview: " + e.getMessage());
         }
     }
-
 
     public void surfaceDestroyed(SurfaceHolder holder) {
 
@@ -111,7 +104,6 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
         for (Camera.Size size : sizes) {
-            System.out.println("***supported preview sizes w, h: " + size.width + ", " + size.height);
             if (size.width > 1300)
                 continue;
             if (size.width > maxWidth) {
@@ -124,18 +116,13 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mCamera.setDisplayOrientation(90);
 
         //preview size
-        // System.out.println("***best preview size w, h: " + bestSize.width + ", " + bestSize.height);
         assert bestSize != null;
         parameters.setPreviewSize(bestSize.width, bestSize.height);
-
-        //parameters.setPreviewFormat(ImageFormat.NV21);
 
         boolean canAutoFocus = false;
         boolean disableContinuousFocus = true;
         List<String> modes = mCamera.getParameters().getSupportedFocusModes();
         for (String s : modes) {
-
-            System.out.println("***supported focus modes: " + s);
 
             if (s.equals(Camera.Parameters.FOCUS_MODE_AUTO)) {
                 canAutoFocus = true;
@@ -178,7 +165,7 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     }
 
-    public void switchFlashMode() {
+    public void toggleFlashMode() {
         if (mCamera == null)
             return;
         parameters = mCamera.getParameters();
@@ -191,38 +178,29 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     //exposure compensation
-    public void adjustExposure(int direction) throws RuntimeException {
+    public void adjustExposure(int delta) throws RuntimeException {
         if (mCamera == null)
             return;
 
-        //parameters = mCamera.getParameters();
         mCamera.cancelAutoFocus();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (!parameters.getAutoExposureLock()) {
-                parameters.setAutoExposureLock(true);
-                mCamera.setParameters(parameters);
-                System.out.println("*** locking auto-exposure. ");
-            }
-        }
-        int compPlus = Math.min(parameters.getMaxExposureCompensation(), Math.round(parameters.getExposureCompensation() + 1));
-        int compMinus = Math.max(parameters.getMinExposureCompensation(), Math.round(parameters.getExposureCompensation() - 1));
 
-        if (direction > 0) {
-            parameters.setExposureCompensation(compPlus);
-        } else if (direction < 0) {
-            parameters.setExposureCompensation(compMinus);
-        } else if (direction == 0) {
+        if (!parameters.getAutoExposureLock()) {
+            parameters.setAutoExposureLock(true);
+            mCamera.setParameters(parameters);
+        }
+
+        if (delta > 0) {
+            parameters.setExposureCompensation(Math.min(parameters.getMaxExposureCompensation(),
+                    Math.round(parameters.getExposureCompensation() + 1)));
+        } else if (delta < 0) {
+            parameters.setExposureCompensation(Math.max(parameters.getMinExposureCompensation(),
+                    Math.round(parameters.getExposureCompensation() - 1)));
+        } else if (delta == 0) {
             parameters.setExposureCompensation(0);
         }
 
-        //System.out.println("***Exposure compensation index: " + parameters.getExposureCompensation());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (parameters.getAutoExposureLock()) {
-                parameters.setAutoExposureLock(false);
-                mCamera.setParameters(parameters);
-                System.out.println("***unlocking auto-exposure. ");
-            }
-        } else {
+        if (parameters.getAutoExposureLock()) {
+            parameters.setAutoExposureLock(false);
             mCamera.setParameters(parameters);
         }
     }
@@ -230,6 +208,4 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
     public Camera getCamera() {
         return mCamera;
     }
-
 }
-

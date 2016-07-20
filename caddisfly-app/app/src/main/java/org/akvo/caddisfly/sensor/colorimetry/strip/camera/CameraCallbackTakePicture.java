@@ -54,7 +54,7 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
  * with the startNextPreview() method.
  */
 @SuppressWarnings("deprecation")
-class CameraCallbackTakePicture extends CameraCallbackAbstract {
+class CameraCallbackTakePicture extends CameraCallbackBase {
     private boolean running;
 
     public CameraCallbackTakePicture(Context context, Camera.Parameters parameters) {
@@ -65,8 +65,9 @@ class CameraCallbackTakePicture extends CameraCallbackAbstract {
     public void onPreviewFrame(byte[] data, Camera camera) {
         super.onPreviewFrame(data, camera);
 
-        if (!stop && !running)
+        if (!stopped && !running) {
             sendData(data);
+        }
     }
 
     protected void sendData(byte[] data) {
@@ -78,11 +79,9 @@ class CameraCallbackTakePicture extends CameraCallbackAbstract {
             //the qualityChecks() method sends messages back to listener to update UI
             int[] countQuality = qualityChecks(data, info);
 
-            //add countQuality to sum in listener
-            //if countQuality sums up to the limit set in Constant,
-            //listener.qualityChecksOK will return true;
-            if (listener != null)
+            if (listener != null) {
                 listener.addCountToQualityCheckCount(countQuality);
+            }
 
             //sumQuality should amount to 3, if all checks are OK: [1,1,1]
             int sumQuality = 0;
@@ -96,11 +95,9 @@ class CameraCallbackTakePicture extends CameraCallbackAbstract {
                 if (info != null && sumQuality == 3 && listener.qualityChecksOK()) {
                     long timePictureTaken = System.currentTimeMillis();
 
-                    //freeze the screen and play a sound
                     //camera.stopPreview();
                     listener.playSound();
 
-                    //System.out.println("***!!!CameraPreviewCallback takePicture true: " + countInstance);
                     listener.sendData(data, timePictureTaken, info);
 
                     listener.startNextPreview();
@@ -116,7 +113,3 @@ class CameraCallbackTakePicture extends CameraCallbackAbstract {
         }
     }
 }
-
-
-
-

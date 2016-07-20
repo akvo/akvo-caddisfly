@@ -23,13 +23,13 @@ import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationData;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationResultData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.android.Utils;
@@ -368,6 +368,4 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         return CalibrationCard.calibrateImage(mat, data);
     }
 }
-
-
 

@@ -32,10 +32,10 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.result.ResultActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.FinderPatternIndicatorView;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.LevelView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.LevelView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -62,11 +62,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private SoundPoolPlayer sound;
     private WeakReference<Camera> wrCamera;
     private FrameLayout previewLayout;
-    private BaseCameraView baseCameraView;
+    private CameraPreview cameraPreview;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private LevelView levelView;
     private String brandName;
-    private CameraSharedFragmentAbstract currentFragment;
+    private CameraSharedFragmentBase currentFragment;
     //OpenCV Manager
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -74,7 +74,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
                     Log.i("", "OpenCV loaded successfully");
-
                     init();
                 }
                 break;
@@ -101,17 +100,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         public void run() {
             if (wrCamera != null) {
                 if (cameraCallbackOneShotPreview == null)
-                    cameraCallbackOneShotPreview = new CameraCallbackOneShotPreview(mActivity.get(), wrCamera.get().getParameters());
+                    cameraCallbackOneShotPreview = new CameraCallbackOneShotPreview(mActivity.get(),
+                            wrCamera.get().getParameters());
 
-                if (currentFragment != null) {
-                    if (currentFragment instanceof CameraPrepareFragment) {
-
-                        wrCamera.get().setOneShotPreviewCallback(cameraCallbackOneShotPreview);
-                    }
-                    if (currentFragment instanceof CameraStartTestFragment) {
-
-                        wrCamera.get().setOneShotPreviewCallback(cameraCallbackOneShotPreview);
-                    }
+                if (currentFragment != null && (currentFragment instanceof CameraPrepareFragment ||
+                        currentFragment instanceof CameraStartTestFragment)) {
+                    wrCamera.get().setOneShotPreviewCallback(cameraCallbackOneShotPreview);
                 }
             }
         }
@@ -124,7 +118,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             if (wrCamera != null) {
 
                 if (cameraCallbackTakePicture == null)
-                    cameraCallbackTakePicture = new CameraCallbackTakePicture(mActivity.get(), wrCamera.get().getParameters());
+                    cameraCallbackTakePicture = new CameraCallbackTakePicture(mActivity.get(),
+                            wrCamera.get().getParameters());
 
                 wrCamera.get().setOneShotPreviewCallback(cameraCallbackTakePicture);
             }
@@ -135,14 +130,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_camera);
 
         sound = new SoundPoolPlayer(this);
 
-        //VIEWS
-        //progressLayout = (LinearLayout) findViewById(R.id.activity_cameraInitCameraProgressBar);
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.finder_indicator);
         levelView = (LevelView) findViewById(R.id.level_cameraLevel);
@@ -150,7 +144,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         showFinderPatternRunnable = new ShowFinderPatternRunnable();
         showLevelRunnable = new ShowLevelRunnable();
 
-        //INIT COUNT QUALITY MAP
+        //Initialize count quality map
         qualityCountMap.put("B", 0);
         qualityCountMap.put("S", 0);
         qualityCountMap.put("L", 0);
@@ -159,14 +153,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         cameraScheduledExecutorService = new CameraScheduledExecutorService();
 
-    }
-
-    private void init() {
-        baseCameraView = new BaseCameraView(this);
-        mCamera = baseCameraView.getCamera();
+        cameraPreview = new CameraPreview(this);
+        mCamera = cameraPreview.getCamera();
 
         if (mCamera == null) {
-            Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera",
+                    Toast.LENGTH_SHORT).show();
             finish();
         } else {
             try {
@@ -175,21 +167,24 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 // Create our Preview view and set it as the content of our activity.
                 previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
                 previewLayout.removeAllViews();
-                previewLayout.addView(baseCameraView);
+                previewLayout.addView(cameraPreview);
 
-                currentFragment = CameraPrepareFragment.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(
-                        R.id.layout_cameraPlaceholder, currentFragment
-                ).commit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            //schedule focus at fixed intervals
-//            if (cameraScheduledExecutorService!=null)
-//                cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(focus, 1000, 5000);
-
         }
+    }
+
+    private void init() {
+        try {
+            currentFragment = CameraPrepareFragment.newInstance();
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.layout_cameraPlaceholder, currentFragment
+            ).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void onPause() {
@@ -213,9 +208,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             wrCamera = null;
         }
 
-        if (baseCameraView != null && previewLayout != null) {
-            previewLayout.removeView(baseCameraView);
-            baseCameraView = null;
+        if (cameraPreview != null && previewLayout != null) {
+            previewLayout.removeView(cameraPreview);
+            cameraPreview = null;
         }
         super.onPause();
     }
@@ -236,11 +231,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         super.onResume();
     }
 
-    //store previewLayout info in global properties for later use
-    //called at end of baseCameraView surfaceChanged()
+    // Store previewLayout info in global properties for later use
     public void setPreviewProperties() {
-        if (mCamera != null && baseCameraView != null) {
-
+        if (mCamera != null && cameraPreview != null) {
             previewFormat = mCamera.getParameters().getPreviewFormat();
             previewWidth = mCamera.getParameters().getPreviewSize().width;
             previewHeight = mCamera.getParameters().getPreviewSize().height;
@@ -248,11 +241,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void switchFlash() {
-        baseCameraView.switchFlashMode();
+    public void toggleFlashMode() {
+        if (cameraPreview != null) {
+            cameraPreview.toggleFlashMode();
+        }
     }
 
-    //prevents or enables the CameraPreviewCallback to execute ...
     @Override
     public void stopCallback() {
         if (cameraCallbackOneShotPreview != null)
@@ -274,7 +268,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void startNextPreview() {
 
         if (cameraScheduledExecutorService != null) {
-            cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(startNextPreviewRunnable, 0, CAMERA_PREVIEW_DELAY);
+            cameraScheduledExecutorService.scheduleRunnableWithFixedDelay(
+                    startNextPreviewRunnable, 0, CAMERA_PREVIEW_DELAY);
         }
     }
 
@@ -294,25 +289,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         }
 
         int ci = 0;
-
         for (Map.Entry<String, Integer> entry : qualityCountMap.entrySet()) {
             entry.setValue(entry.getValue() + countArray[ci]);
             ci++;
         }
 
         if (currentFragment != null) {
-            currentFragment.countQuality(qualityCountMap);
-        }
+            currentFragment.displayCountQuality(qualityCountMap);
 
-        // only show the start button if at least Constant.COUNT_QUALITY_CHECK_LIMIT positive tests have been done for all parameters
-        boolean show = true;
-        for (int i : qualityCountMap.values()) {
-            if (i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
-                show = false;
-            }
-        }
-        if (show) {
-            if (currentFragment != null) {
+            // Show start button only if enough quality checks are positive
+            if (qualityChecksOK()) {
                 currentFragment.showStartButton();
             }
         }
@@ -335,16 +321,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     @Override
     public boolean qualityChecksOK() {
-
-        boolean OK = true;
-
         for (int i : qualityCountMap.values()) {
             if (i < Constant.COUNT_QUALITY_CHECK_LIMIT / qualityCountMap.size()) {
-                OK = false;
+                return false;
             }
         }
-
-        return OK;
+        return true;
     }
 
     @Override
@@ -376,10 +358,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void adjustExposureCompensation(int direction) {
-        if (baseCameraView != null) {
-
-            baseCameraView.adjustExposure(direction);
+    public void adjustExposureCompensation(int delta) {
+        if (cameraPreview != null) {
+            cameraPreview.adjustExposure(delta);
         }
     }
 
@@ -498,8 +479,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     }
 
-    //END DETECT STRIP LISTENER INTERFACE METHODS
-
     @Override
     public void showResults() {
         Intent resultIntent = new Intent(this, ResultActivity.class);
@@ -536,7 +515,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         public void run() {
 
             wrFinderPatternIndicatorView.get().setColor(color);
-            wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width, size == null ? 0 : size.height);
+            wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width,
+                    size == null ? 0 : size.height);
         }
 
         public void setColor(int color) {

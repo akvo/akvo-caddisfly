@@ -19,7 +19,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="2dp">
+    android:paddingBottom="2dp"
+    tools:context=".sensor.colorimetry.strip.ui.TestTypeListActivity">
 
     <TextView
         android:id="@+id/text_title"

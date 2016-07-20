@@ -116,7 +116,7 @@
     <string name="finished">FIN</string>
     <string name="light">Lumiere</string>
     <string name="no_data">Pas de donnees pour patch no.</string>
-    <string name="redo_test">De nouveau</string>
+    <string name="redo">De nouveau</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Ombres</string>
     <string name="analysing">Analyser image …</string>

@@ -17,14 +17,15 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.Camera;
+import android.support.v4.content.ContextCompat;
 
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationCard;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.calibration.CalibrationData;
 import org.akvo.caddisfly.util.detector.BinaryBitmap;
 import org.akvo.caddisfly.util.detector.BitMatrix;
 import org.akvo.caddisfly.util.detector.FinderPattern;
@@ -46,33 +47,32 @@ import java.util.List;
  * Created by linda on 12/17/15
  */
 @SuppressWarnings("deprecation")
-abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
-    private final LinkedList<Double> lumTrack = new LinkedList<>();
+abstract class CameraCallbackBase implements Camera.PreviewCallback {
+    private final LinkedList<Double> luminanceTrack = new LinkedList<>();
     private final LinkedList<Double> shadowTrack = new LinkedList<>();
     private final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
-    private final List<double[]> lumList = new ArrayList<>();
+    private final List<double[]> luminanceList = new ArrayList<>();
     private final Mat src_gray = new Mat();
     CameraViewListener listener;
     Camera.Size previewSize;
-    boolean stop;
+    boolean stopped;
     //private int count;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
     private CalibrationData calibrationData;
-    private float EV;
     private Mat bgr = null;
     private Mat convert_mYuv = null;
     private FinderPatternInfo info = null;
     private BitMatrix bitMatrix = null;
 
-    CameraCallbackAbstract(Context context, Camera.Parameters parameters) {
+    CameraCallbackBase(Context context, Camera.Parameters parameters) {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(" must implement camera view Listener");
         }
 
-        finderPatternColor = Color.parseColor("#f02cb673"); //same as res/values/colors/spring_green
+        finderPatternColor = ContextCompat.getColor(context, R.color.jungle_green);
 
         possibleCenters = new ArrayList<>();
 
@@ -80,24 +80,17 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
     }
 
     public void stop() {
-        this.stop = true;
+        this.stopped = true;
     }
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-
-        if (camera == null)
-            return;
-
-        //get EV to use in order to avoid over exposure while trying to optimise brightness
-        float step = camera.getParameters().getExposureCompensationStep();
-        EV = step * camera.getParameters().getExposureCompensation();
     }
 
     protected abstract void sendData(byte[] data);
 
     int[] qualityChecks(byte[] data, FinderPatternInfo info) {
-        lumList.clear();
+        luminanceList.clear();
         float[] tilts = null;
         int lumVal = 0;
         int shadVal = 0;
@@ -128,15 +121,15 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
 
                     Imgproc.cvtColor(bgr.submat(roi), src_gray, Imgproc.COLOR_BGR2GRAY);
 
-                    //brightness: add lum. values to list
-                    addLumToList(src_gray, lumList);
+                    //brightness: add luminance values to list
+                    addLuminanceToList(src_gray, luminanceList);
                 }
             } else {
                 //if no finder patterns are found, remove one from track
                 //when device e.g. is put down, slowly the value becomes zero
                 //'slowly' being about a second
-                if (lumTrack.size() > 0) {
-                    lumTrack.removeFirst();
+                if (luminanceTrack.size() > 0) {
+                    luminanceTrack.removeFirst();
                 }
                 if (shadowTrack.size() > 0) {
                     shadowTrack.removeFirst();
@@ -145,11 +138,11 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
 
             // number of finder patterns can be anything here.
             if (info != null) {
-                //DETECT BRIGHTNESS
-                double maxLuminance = luminosityCheck(lumList);
+                // Detect brightness
+                double maxLuminance = luminosityCheck(luminanceList);
                 lumVal = maxLuminance > Constant.MAX_LUM_LOWER && maxLuminance <= Constant.MAX_LUM_UPPER ? 1 : 0;
 
-                // DETECT SHADOWS
+                // Detect shadows
                 if (bgr != null && possibleCenters.size() == 4) {
                     double shadowPercentage = detectShadows(info, bgr);
                     shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
@@ -163,22 +156,21 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
                 }
             }
 
-            //UPDATE VALUES IN ARRAY
             qualityChecksArray[0] = lumVal;
             qualityChecksArray[1] = shadVal;
             qualityChecksArray[2] = levVal;
 
-            //SHOW VALUES ON SCREEN
+            //Display the values
             if (listener != null) {
-                //brightness: show the values on device
-                if (lumTrack.size() < 1) {
+                // Show brightness values
+                if (luminanceTrack.size() < 1) {
                     //-1 means 'no data'
                     listener.showBrightness(-1);
                 } else {
-                    listener.showBrightness(lumTrack.getLast());
+                    listener.showBrightness(luminanceTrack.getLast());
                 }
 
-                //shadows: show the values on device
+                // Show shadow values
                 if (shadowTrack.size() < 1) {
                     //101 means 'no data'
                     listener.showShadow(101);
@@ -186,13 +178,11 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
                     listener.showShadow(shadowTrack.getLast());
                 }
 
-                //level: show on device
+                // Show tilt
                 listener.showLevel(tilts);
             }
         } catch (Exception e) {
-            // throw new RuntimeException(e);
             e.printStackTrace();
-
         } finally {
             if (bgr != null) {
                 bgr.release();
@@ -243,56 +233,50 @@ abstract class CameraCallbackAbstract implements Camera.PreviewCallback {
         return shadowPercentage;
     }
 
-    private void addLumToList(Mat src_gray, List<double[]> lumList) {
+    private void addLuminanceToList(Mat src_gray, List<double[]> luminanceList) {
         double[] lumMinMax;
 
         lumMinMax = PreviewUtil.getDiffLuminosity(src_gray);
         if (lumMinMax.length == 2) {
-            lumList.add(lumMinMax);
+            luminanceList.add(lumMinMax);
         }
     }
 
     private double luminosityCheck(List<double[]> lumList) {
-        double maxLuminance = -1; //highest value of 'white'
+        double maxLuminance = -1; // highest value of 'white'
 
         for (int i = 0; i < lumList.size(); i++) {
-            //store lum max value that corresponds with highest: we use it to check over- and under exposure
+            // Store lum max value that corresponds with highest: we use it to check over and under exposure
             if (lumList.get(i)[1] > maxLuminance) {
                 maxLuminance = lumList.get(i)[1];
             }
         }
-        //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
-        if (lumTrack.size() > 25) {
-            lumTrack.removeFirst();
+
+        // Fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
+        if (luminanceTrack.size() > 25) {
+            luminanceTrack.removeFirst();
         }
 
         if (lumList.size() > 0) {
-            //add highest value of 'white' to track list
-            lumTrack.addLast(100 * maxLuminance / 255);
+            // Add highest value of 'white' to track list
+            luminanceTrack.addLast(100 * maxLuminance / 255);
 
-            //compensate for under-exposure
-            //if max values lower than 150
+            // Compensate for underexposure
             if (maxLuminance < Constant.MAX_LUM_LOWER) {
-                //The maximum is below the minimum value. Increase the exposure value
+                // Increase the exposure value
                 listener.adjustExposureCompensation(1);
                 return maxLuminance;
             }
 
-            //compensate for over-exposure
-            //if max values larger than 254
+            // Compensate for overexposure
             if (maxLuminance > Constant.MAX_LUM_UPPER) {
-                // the maximum is larger than the maximum value. We are likely overexposed
-                // adjust exposure downwards.
+                // We are likely overexposed, so adjust exposure downwards.
                 listener.adjustExposureCompensation(-1);
             } else {
-                //we want to get it as bright as possible but without risking overexposure
+                // We want to get it as bright as possible but without risking overexposure
                 if (maxLuminance * Constant.PERCENT_ILLUMINATION < Constant.MAX_LUM_UPPER) {
                     // try to increase the exposure one more time
                     listener.adjustExposureCompensation(1);
-                } else {
-                    //optimum situation reached
-                    System.out.println("*** optimum exposure reached.  EV = " +
-                            EV);
                 }
             }
         }
