@@ -65,14 +65,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/buttonStart"
+            style="@style/Button"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="-8dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:src="@drawable/place_device" />
+            android:layout_marginBottom="20dp"
+            android:text="@string/start"
+            android:theme="?primaryButtonStyle" />
 
     </LinearLayout>
 

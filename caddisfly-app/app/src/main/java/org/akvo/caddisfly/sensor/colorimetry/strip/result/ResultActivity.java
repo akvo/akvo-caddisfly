@@ -96,7 +96,7 @@ public class ResultActivity extends BaseActivity {
             // cycle over the patches and interpret them
             if (imagePatchArray != null) {
                 // if this strip is of type 'GROUP', take the first image and use that for all the patches
-                if (brand.getGroupingType() == StripTest.groupType.GROUP) {
+                if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
                     // handle grouping case
 
                     // get the first patch image

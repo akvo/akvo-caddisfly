@@ -24,38 +24,38 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 
 /**
  * Created by linda on 6/26/15.
- * <p/>
+ * <p>
  * This class is meant to be called in the setOnShotCameraPreviewCallback(Camera.PreviewCallback)
  * method of a class that holds an instance of the Android Camera.
- * <p/>
+ * <p>
  * In the AsyncTask called 'SendDataTask', executed in every onPreviewFrame(),
  * this happens:
  * - find the FinderPatterns on the card
  * - do quality checks regarding luminosity, shadows and perspective
  * - communicate the result of finder patterns to the listener (==CameraActivity)
  * - communicate the result of quality checks to the listener
- * <p/>
+ * <p>
  * Depending on the instance of the Fragment that is inflated by CameraActivity at this instance,
  * the global boolean 'takePicture' is set.
  * Fragment instance of CameraPrepareFragment -> false
  * Fragment instance of CameraStartTestFragment -> true
- * <p/>
+ * <p>
  * If conditions under which to take a picture (==store Preview data in internal storage) fail,
  * communicate to the listener that it calls this class again,
  * - if we are in the 'takePicture' Fragment, call it like that
  * - if we are in the 'prepare' Fragment, call it like that
- * <p/>
+ * <p>
  * The conditions under which to take a picture are:
  * - 'takePicture' must be true
  * - FinderPatternInfo object must not be null
  * - listener.countQualityOK must be true
- * <p/>
+ * <p>
  * if takePicture is false, we tell the listener to call this callback again
  * with the startNextPreview() method.
  */
 @SuppressWarnings("deprecation")
 class CameraCallbackTakePicture extends CameraCallbackBase {
-    private boolean running;
+    private boolean sending;
 
     public CameraCallbackTakePicture(Context context, Camera.Parameters parameters) {
         super(context, parameters);
@@ -65,18 +65,17 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
     public void onPreviewFrame(byte[] data, Camera camera) {
         super.onPreviewFrame(data, camera);
 
-        if (!stopped && !running) {
+        if (!stopped && !sending) {
             sendData(data);
         }
     }
 
     protected void sendData(byte[] data) {
-        running = true;
+        sending = true;
         try {
             FinderPatternInfo info = findPossibleCenters(data, previewSize);
 
-            //check if quality of image is ok. if OK, value is 1, if not 0
-            //the qualityChecks() method sends messages back to listener to update UI
+            // Get quality count and update UI via listener
             int[] countQuality = qualityChecks(data, info);
 
             if (listener != null) {
@@ -93,12 +92,10 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
 
             if (listener != null) {
                 if (info != null && sumQuality == 3 && listener.qualityChecksOK()) {
-                    long timePictureTaken = System.currentTimeMillis();
 
-                    //camera.stopPreview();
                     listener.playSound();
 
-                    listener.sendData(data, timePictureTaken, info);
+                    listener.sendData(data, System.currentTimeMillis(), info);
 
                     listener.startNextPreview();
                 } else {
@@ -109,7 +106,7 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
             e.printStackTrace();
             listener.takeNextPicture(500);
         } finally {
-            running = false;
+            sending = false;
         }
     }
 }

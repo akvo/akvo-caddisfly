@@ -62,12 +62,16 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
             sampleIntervalPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 360) {
-                        newValue = 360;
-                    }
+                    try {
+                        if (Integer.parseInt(String.valueOf(newValue)) > 360) {
+                            newValue = 360;
+                        }
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                        newValue = 1;
+                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                            newValue = 1;
+                        }
+                    } catch (Exception e) {
+                        newValue = 2;
                     }
 
                     sampleIntervalPreference.setText(String.valueOf(newValue));
@@ -85,14 +89,17 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
             samplesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 50) {
-                        newValue = 50;
-                    }
+                    try {
+                        if (Integer.parseInt(String.valueOf(newValue)) > 50) {
+                            newValue = 50;
+                        }
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                            newValue = 1;
+                        }
+                    } catch (Exception e) {
                         newValue = 1;
                     }
-
                     samplesPreference.setText(String.valueOf(newValue));
                     samplesPreference.setSummary(String.valueOf(newValue));
                     return false;

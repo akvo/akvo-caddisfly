@@ -85,7 +85,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             if (progressIndicatorViewAnim != null && handler != null) {
 
-                timeLapsed = (int) Math.floor((System.currentTimeMillis() - initTimeMillis) / 1000);
+                timeLapsed = (int) (Math.floor((System.currentTimeMillis() - initTimeMillis) / 1000d));
                 progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
                 handler.postDelayed(this, 1000);
 

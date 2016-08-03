@@ -107,7 +107,7 @@ public class StripTest {
 
     }
 
-    public enum groupType {GROUP, INDIVIDUAL}
+    public enum GroupType {GROUP, INDIVIDUAL}
 
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
@@ -115,7 +115,7 @@ public class StripTest {
         private String uuid;
         private double stripLength;
         private double stripHeight;
-        private groupType groupingType;
+        private GroupType groupingType;
         private JSONArray instructions;
 
         public Brand(String brand) {
@@ -139,7 +139,7 @@ public class StripTest {
                                     this.uuid = strip.getString("uuid");
                                     this.stripLength = strip.getDouble("length");
                                     this.stripHeight = strip.getDouble("height");
-                                    this.groupingType = strip.getString("groupingType").equals(groupType.GROUP.toString()) ? groupType.GROUP : groupType.INDIVIDUAL;
+                                    this.groupingType = strip.getString("groupingType").equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
                                     this.name = strip.getString("name");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
@@ -199,7 +199,7 @@ public class StripTest {
 //            return stripHeight;
 //        }
 
-        public groupType getGroupingType() {
+        public GroupType getGroupingType() {
             return groupingType;
         }
 

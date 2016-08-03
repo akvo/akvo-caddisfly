@@ -21,14 +21,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -70,9 +68,6 @@ public class TimeLapseActivity extends BaseActivity {
     private TextView textSampleCount;
     private TextView textCountdown;
     private Calendar futureDate;
-    private ShakeDetector mShakeDetector;
-    private SensorManager mSensorManager;
-    private boolean mWaitingForStillness = false;
     private Runnable runnable;
     private Handler handler;
     private String mTestCode;
@@ -82,15 +77,16 @@ public class TimeLapseActivity extends BaseActivity {
 
             sound.playShortResource(R.raw.beep);
 
-            File folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
-                    intent.getStringExtra(Intent.EXTRA_TEXT));
-
+            File folder;
             mTestCode = getIntent().getDataString();
             switch (mTestCode) {
                 case "fluor":
                     folder = FileHelper.getFilesDir(FileHelper.FileType.FLUORIDE_IMAGE,
-                            intent.getStringExtra(Intent.EXTRA_TEXT));
+                            intent.getStringExtra("savePath"));
                     break;
+                default:
+                    folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
+                            intent.getStringExtra("savePath"));
             }
 
             int delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
@@ -99,13 +95,17 @@ public class TimeLapseActivity extends BaseActivity {
             int numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                     mTestCode + "_NumberOfSamples", "1"));
 
-            if (folder.listFiles().length >= numberOfSamples) {
-                TurbidityConfig.stopRepeatingAlarm(context, mTestCode);
-                finish();
-            } else {
-                textSampleCount.setText(String.format(Locale.getDefault(), "%s: %d", "Samples done", folder.listFiles().length));
-                futureDate = Calendar.getInstance();
-                futureDate.add(Calendar.MINUTE, delayMinute);
+            File[] files = folder.listFiles();
+            if (files != null) {
+                if (files.length >= numberOfSamples) {
+                    TurbidityConfig.stopRepeatingAlarm(context, mTestCode);
+                    finish();
+                } else {
+                    textSampleCount.setText(String.format(Locale.getDefault(), "%s: %d",
+                            "Samples done", files.length));
+                    futureDate = Calendar.getInstance();
+                    futureDate.add(Calendar.MINUTE, delayMinute);
+                }
             }
         }
     };
@@ -158,6 +158,8 @@ public class TimeLapseActivity extends BaseActivity {
         final TextView textTitle = (TextView) findViewById(R.id.textTitle);
         switch (mTestCode) {
             case "fluor":
+                CaddisflyApp.getApp().loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
+
                 fragment = new LiquidTimeLapsePreferenceFragment();
                 bundle.putString("textCode", mTestCode);
                 fragment.setArguments(bundle);
@@ -165,12 +167,16 @@ public class TimeLapseActivity extends BaseActivity {
                 textTitle.setText(R.string.fluoride);
                 break;
             case "colif":
+                CaddisflyApp.getApp().loadTestConfigurationByUuid("df3d1009-2112-4d95-a6f9-fdc4b5633ec9");
+
                 fragment = new TimeLapsePreferenceFragment();
                 bundle.putString("textCode", mTestCode);
                 fragment.setArguments(bundle);
 
                 textTitle.setText(R.string.coliforms);
                 break;
+            default:
+                finish();
         }
 
         getFragmentManager().beginTransaction()
@@ -182,56 +188,6 @@ public class TimeLapseActivity extends BaseActivity {
 
         if (TurbidityConfig.isAlarmRunning(this, mTestCode)) {
             Log.e("TimeLapse", "Already Running Alarm");
-        } else {
-
-            mWaitingForStillness = true;
-            final Context context = this;
-
-            //Set up the shake detector
-            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            Sensor mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-            mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
-                @Override
-                public void onShake() {
-
-                }
-            }, new ShakeDetector.OnNoShakeListener() {
-                @Override
-                public void onNoShake() {
-                    if (mWaitingForStillness) {
-                        mWaitingForStillness = false;
-                        mSensorManager.unregisterListener(mShakeDetector);
-
-                        layoutWait.setVisibility(View.GONE);
-                        layoutDetails.setVisibility(View.VISIBLE);
-
-                        Calendar startDate = Calendar.getInstance();
-                        PreferencesUtil.setString(context, R.string.turbiditySavePathKey,
-                                new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
-                        TurbidityConfig.setRepeatingAlarm(context, 10000, mTestCode);
-
-                        String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
-                        ((TextView) findViewById(R.id.textSubtitle))
-                                .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
-
-                        futureDate = Calendar.getInstance();
-                        futureDate.add(Calendar.SECOND, 10);
-
-                        TextView textInterval = (TextView) findViewById(R.id.textInterval);
-                        int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                                mTestCode + "_IntervalMinutes", "1"));
-
-                        textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
-
-                        startCountdownTimer();
-                    }
-                }
-            });
-            mShakeDetector.minShakeAcceleration = 5;
-            mShakeDetector.maxShakeDuration = 2000;
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                    SensorManager.SENSOR_DELAY_UI);
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -239,6 +195,37 @@ public class TimeLapseActivity extends BaseActivity {
 
         textSampleCount = (TextView) findViewById(R.id.textSampleCount);
 
+        final Context context = this;
+
+        Button buttonStart = (Button) findViewById(R.id.buttonStart);
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                layoutWait.setVisibility(View.GONE);
+                layoutDetails.setVisibility(View.VISIBLE);
+
+                Calendar startDate = Calendar.getInstance();
+                PreferencesUtil.setString(context, R.string.turbiditySavePathKey,
+                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
+                TurbidityConfig.setRepeatingAlarm(context, 25000, mTestCode);
+
+                String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
+                ((TextView) findViewById(R.id.textSubtitle))
+                        .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
+
+                futureDate = Calendar.getInstance();
+                futureDate.add(Calendar.SECOND, 25);
+
+                TextView textInterval = (TextView) findViewById(R.id.textInterval);
+                int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                        mTestCode + "_IntervalMinutes", "1"));
+
+                textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
+
+                startCountdownTimer();
+            }
+        });
         textCountdown = (TextView) findViewById(R.id.textCountdown);
     }
 
@@ -256,27 +243,12 @@ public class TimeLapseActivity extends BaseActivity {
     }
 
     @Override
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-
-        Toast.makeText(this, "Test stopped", Toast.LENGTH_LONG).show();
-
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(mShakeDetector);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
 
+        handler.removeCallbacks(runnable);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(mShakeDetector);
-        }
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
@@ -292,11 +264,10 @@ public class TimeLapseActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(mShakeDetector);
-        }
 
-        Toast.makeText(this, "Test stopped", Toast.LENGTH_LONG).show();
+        handler.removeCallbacks(runnable);
+
+        Toast.makeText(this, "Test cancelled", Toast.LENGTH_LONG).show();
 
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);

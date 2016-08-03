@@ -53,9 +53,9 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     private final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
     private final List<double[]> luminanceList = new ArrayList<>();
     private final Mat src_gray = new Mat();
+    protected boolean stopped;
     CameraViewListener listener;
     Camera.Size previewSize;
-    boolean stopped;
     //private int count;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
@@ -69,7 +69,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(" must implement camera view Listener");
+            throw new ClassCastException("Must implement camera view Listener");
         }
 
         finderPatternColor = ContextCompat.getColor(context, R.color.jungle_green);
@@ -80,7 +80,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     }
 
     public void stop() {
-        this.stopped = true;
+        stopped = true;
     }
 
     @Override
@@ -314,7 +314,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     }
                 }
 
-                if (possibleCenters != null && previewSize != null) {
+                if (previewSize != null) {
                     if (listener != null) {
                         listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
                     }

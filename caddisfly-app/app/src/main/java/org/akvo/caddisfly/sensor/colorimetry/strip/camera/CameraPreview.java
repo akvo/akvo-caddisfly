@@ -191,10 +191,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if (delta > 0) {
             parameters.setExposureCompensation(Math.min(parameters.getMaxExposureCompensation(),
-                    Math.round(parameters.getExposureCompensation() + 1)));
+                    Math.round(parameters.getExposureCompensation() + 1f)));
         } else if (delta < 0) {
             parameters.setExposureCompensation(Math.max(parameters.getMinExposureCompensation(),
-                    Math.round(parameters.getExposureCompensation() - 1)));
+                    Math.round(parameters.getExposureCompensation() - 1f)));
         } else if (delta == 0) {
             parameters.setExposureCompensation(0);
         }

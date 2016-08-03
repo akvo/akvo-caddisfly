@@ -76,12 +76,12 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     protected void onPreExecute() {
         if (listener == null) {
             cancel(true);
-        }
-
-        try {
-            listener.showSpinner();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            try {
+                listener.showSpinner();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -72,14 +72,18 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
-                        newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
-                    }
+                    try {
+                        if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
+                            newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+                        }
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                            newValue = 1;
+                        }
+
+                    } catch (Exception e) {
                         newValue = 1;
                     }
-
                     sampleTimesPreference.setText(String.valueOf(newValue));
                     sampleTimesPreference.setSummary(String.valueOf(newValue));
                     return false;
@@ -158,14 +162,18 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 399) {
-                        newValue = 399;
-                    }
+                    try {
+                        if (Integer.parseInt(String.valueOf(newValue)) > 399) {
+                            newValue = 399;
+                        }
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                        newValue = 1;
-                    }
+                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                            newValue = 1;
+                        }
 
+                    } catch (Exception e) {
+                        newValue = 30;
+                    }
                     distancePreference.setText(String.valueOf(newValue));
                     distancePreference.setSummary(String.valueOf(newValue));
                     return false;

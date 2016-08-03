@@ -53,7 +53,6 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
             // Get quality count and update UI via listener
             int[] countQuality = qualityChecks(data, info);
 
-            //add countQuality to sum in listener
             if (listener != null) {
                 listener.addCountToQualityCheckCount(countQuality);
             }

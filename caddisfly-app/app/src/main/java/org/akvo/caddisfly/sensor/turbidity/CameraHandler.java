@@ -295,7 +295,7 @@ class CameraHandler implements Camera.PictureCallback {
         }
 
         Intent intent = new Intent("custom-event-name");
-        intent.putExtra(Intent.EXTRA_TEXT, mSavePath);
+        intent.putExtra("savePath", mSavePath);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 

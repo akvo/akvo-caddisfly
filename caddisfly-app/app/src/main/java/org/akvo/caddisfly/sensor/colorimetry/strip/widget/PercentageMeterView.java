@@ -56,7 +56,7 @@ public class PercentageMeterView extends View {
 
         //if (!isInEditMode()) {
         green = ContextCompat.getColor(context, R.color.jungle_green);
-            orange = ContextCompat.getColor(context, R.color.orange);
+        orange = ContextCompat.getColor(context, R.color.orange);
         red = ContextCompat.getColor(context, R.color.cardinal);
         //}
     }
