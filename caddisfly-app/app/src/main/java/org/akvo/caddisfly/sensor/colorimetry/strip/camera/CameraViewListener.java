@@ -60,4 +60,10 @@ interface CameraViewListener {
     void setQualityCheckCountZero();
 
     void toggleFlashMode();
+
+    boolean isTorchModeOn();
+
+    void stopPreview();
+
+    void startPreview();
 }

@@ -106,6 +106,12 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
             return;
 
         if (buttonNext.getVisibility() == View.INVISIBLE) {
+
+            if (mListener.isTorchModeOn()) {
+                mListener.toggleFlashMode();
+            }
+            mListener.stopPreview();
+
             buttonNext.setVisibility(View.VISIBLE);
             buttonNext.setText(R.string.next);
             buttonNext.setOnClickListener(new View.OnClickListener() {

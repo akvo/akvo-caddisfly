@@ -57,6 +57,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
+    boolean torchModeOn = false;
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
     private SoundPoolPlayer sound;
@@ -184,7 +185,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void onPause() {
@@ -244,7 +244,18 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void toggleFlashMode() {
         if (cameraPreview != null) {
             cameraPreview.toggleFlashMode();
+            torchModeOn = true;
         }
+    }
+
+    @Override
+    public void stopPreview() {
+        mCamera.stopPreview();
+    }
+
+    @Override
+    public void startPreview() {
+        mCamera.startPreview();
     }
 
     @Override
@@ -355,6 +366,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void showLevel(final float[] tilts) {
         showLevelRunnable.setAngles(tilts);
         handler.post(showLevelRunnable);
+    }
+
+    @Override
+    public boolean isTorchModeOn() {
+        return torchModeOn;
     }
 
     @Override

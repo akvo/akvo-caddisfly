@@ -208,6 +208,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             mListener.setQualityCheckCountZero();
 
         rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
+
+        mListener.startPreview();
+        if (mListener.isTorchModeOn()) {
+            mListener.toggleFlashMode();
+        }
     }
 
     @Override
