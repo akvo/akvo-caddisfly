@@ -56,6 +56,7 @@ public class ResultActivity extends BaseActivity {
 
     private final JSONObject resultJsonObj = new JSONObject();
     private final JSONArray resultJsonArr = new JSONArray();
+    Button buttonSave;
     private Mat resultImage = null;
     private FileStorage fileStorage;
     private String resultImageUrl;
@@ -149,16 +150,16 @@ public class ResultActivity extends BaseActivity {
                 layout.addView(textView);
             }
         }
-        Button save = (Button) findViewById(R.id.button_save);
-        Button redo = (Button) findViewById(R.id.button_cancel);
+        buttonSave = (Button) findViewById(R.id.button_save);
 
-        save.setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String path = "";
                 try {
                     // store image on sd card
-                    path = FileStorage.writeBitmapToExternalStorage(ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
+                    path = FileStorage.writeBitmapToExternalStorage(
+                            ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
 
                     resultJsonObj.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
                     resultJsonObj.put(SensorConstants.NAME, brand.getName());
@@ -178,7 +179,7 @@ public class ResultActivity extends BaseActivity {
             }
         });
 
-        redo.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fileStorage != null) {
@@ -207,7 +208,6 @@ public class ResultActivity extends BaseActivity {
     }
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {
-        private final boolean invalid;
         private final Boolean grouped;
         private final StripTest.Brand brand;
         private final List<StripTest.Brand.Patch> patches;
@@ -216,6 +216,7 @@ public class ResultActivity extends BaseActivity {
         String unit;
         int id;
         String patchDescription;
+        private boolean invalid;
         private Bitmap stripBitmap = null;
         private Mat combined;
         private ColorDetected colorDetected;
@@ -336,9 +337,11 @@ public class ResultActivity extends BaseActivity {
             // create Mat to hold value measured
             Mat valueMeasuredMat;
             if (grouped) {
-                valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(colours, resultValue, colorsDetected, mat.cols(), xTranslate);
+                valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(
+                        colours, resultValue, colorsDetected, mat.cols(), xTranslate);
             } else {
-                valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(colours, resultValue, colorDetected, mat.cols(), xTranslate);
+                valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(
+                        colours, resultValue, colorDetected, mat.cols(), xTranslate);
             }
 
             // PUTTING IT ALL TOGETHER
@@ -422,11 +425,18 @@ public class ResultActivity extends BaseActivity {
                         } else {
                             textView.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
                         }
+                    } else {
+                        invalid = true;
                     }
                 }
             } else {
                 textTitle.append("\n\n" + getResources().getString(R.string.no_data));
                 circleColor.setColor(Color.RED);
+                invalid = true;
+            }
+
+            if (invalid) {
+                buttonSave.setVisibility(View.GONE);
             }
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
