@@ -34,11 +34,11 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 /**
@@ -103,7 +103,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                         caddisflyApp.setDefaultTest();
                     }
 
-                    final Intent intent = new Intent(context, ColorimetryLiquidActivity.class);
+                    final Intent intent = new Intent(context, TypeListActivity.class);
+                    intent.putExtra("runTest", true);
                     startActivity(intent);
                     return true;
                 }

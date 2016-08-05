@@ -26,6 +26,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
@@ -52,7 +53,13 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 //Only start the colorimetry calibration if the device has a camera flash
                 if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
                         R.string.ok, null)) {
-                    final Intent intent = new Intent(this, CalibrateListActivity.class);
+
+                    final Intent intent;
+                    if (getIntent().getBooleanExtra("runTest", false)) {
+                        intent = new Intent(this, ColorimetryLiquidActivity.class);
+                    } else {
+                        intent = new Intent(this, CalibrateListActivity.class);
+                    }
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }

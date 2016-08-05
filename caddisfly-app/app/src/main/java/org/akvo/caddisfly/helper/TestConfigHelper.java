@@ -25,6 +25,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
@@ -97,7 +98,7 @@ public final class TestConfigHelper {
         ArrayList<TestInfo> tests = new ArrayList<>();
 
         // Load the pre-configured tests from the app
-        loadTests(tests, FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config), false, -1);
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), false, -1);
 
         // Load any custom tests from the custom test config file
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
@@ -107,8 +108,9 @@ public final class TestConfigHelper {
 
         // Load any experimental tests if app is in diagnostic mode
         if (AppPreferences.isDiagnosticMode()) {
-            loadTests(tests, FileUtil.readRawTextFile(CaddisflyApp.getApp(),
-                    R.raw.experimental_tests_config), true, R.string.experimental);
+            loadTests(tests,
+                    AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json"),
+                    true, R.string.experimental);
         }
 
         return tests;
@@ -202,6 +204,9 @@ public final class TestConfigHelper {
                     String dilutions = "0";
                     if (item.has("dilutions")) {
                         dilutions = item.getString("dilutions");
+                        if (dilutions.isEmpty()) {
+                            dilutions = "0";
+                        }
                     }
                     String[] dilutionsArray = dilutions.split(",");
 
@@ -228,7 +233,7 @@ public final class TestConfigHelper {
                     //Create TestInfo object
                     tests.add(new TestInfo(
                             namesHashTable,
-                            item.has("code") ? item.getString("code").toUpperCase() : "",
+                            item.has("code") ? item.getString("code").toUpperCase() : uuids.get(0),
                             item.has("unit") ? item.getString("unit") : "",
                             type,
                             //if calibrate not specified then default to false otherwise use specified value

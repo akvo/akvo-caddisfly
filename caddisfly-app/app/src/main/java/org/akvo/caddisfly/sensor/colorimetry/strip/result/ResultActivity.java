@@ -365,7 +365,7 @@ public class ResultActivity extends BaseActivity {
             //add patchDescription of patch to combined mat, at the top
             combined = ResultUtil.concatenate(descMat, combined);
 
-            //make bitmap to be send to server
+            //make bitmap to be sent to server
             if (!combined.empty()) {
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
