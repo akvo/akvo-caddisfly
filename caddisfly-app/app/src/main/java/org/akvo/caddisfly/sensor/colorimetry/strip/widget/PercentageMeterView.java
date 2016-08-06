@@ -31,9 +31,9 @@ import org.akvo.caddisfly.R;
  */
 public class PercentageMeterView extends View {
 
-    final int NUMBER_OF_BARS = 6;
+    private static final int NUMBER_OF_BARS = 6;
     private final Paint paint;
-    float percentage = Float.NaN;
+    private float percentage = Float.NaN;
     private int green = 0;
     private int orange = 0;
     private int red = 0;

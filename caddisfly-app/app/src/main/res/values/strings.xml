@@ -181,7 +181,6 @@
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch.</string>
-    <string name="redo">Redo</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
     <string name="analysing">Analysing image…</string>
@@ -195,5 +194,4 @@
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
-    <string name="readInstructions"><![CDATA[Read Instructions >]]></string>
 </resources>

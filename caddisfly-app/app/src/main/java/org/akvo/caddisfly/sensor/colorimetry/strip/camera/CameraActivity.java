@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,7 +56,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
-    boolean torchModeOn = false;
+    private boolean torchModeOn = false;
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
     private SoundPoolPlayer sound;
@@ -488,11 +487,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             }
         };
         handler.post(runnable);
-    }
-
-    @Override
-    public void showImage(Bitmap bitmap) {
-
     }
 
     @Override

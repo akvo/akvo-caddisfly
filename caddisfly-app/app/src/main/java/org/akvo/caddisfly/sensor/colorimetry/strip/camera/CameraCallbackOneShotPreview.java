@@ -45,7 +45,7 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
         }
     }
 
-    protected void sendData(byte[] data) {
+    private void sendData(byte[] data) {
         sending = true;
         try {
             FinderPatternInfo info = findPossibleCenters(data, previewSize);

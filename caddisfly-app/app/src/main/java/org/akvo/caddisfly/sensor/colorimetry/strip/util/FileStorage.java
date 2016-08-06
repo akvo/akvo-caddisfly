@@ -157,7 +157,7 @@ public class FileStorage {
 //        System.out.println("\n\nFile written to " + file);
 //    }
 
-    public boolean writeByteArray(byte[] data, String name) {
+    public void writeByteArray(byte[] data, String name) {
         String fileName = name + ".txt";
 
         FileOutputStream outputStream;
@@ -173,9 +173,7 @@ public class FileStorage {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     public byte[] readByteArray(String name) throws IOException {

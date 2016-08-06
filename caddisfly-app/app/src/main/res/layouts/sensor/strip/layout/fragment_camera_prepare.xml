@@ -31,10 +31,10 @@
         android:layout_below="@+id/layout_qualityMeter"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_horizontal"
-        android:text="Quality checks: 0 out of 15"
         android:textColor="@android:color/tertiary_text_dark"
         android:textSize="16sp"
-        tools:ignore="UnknownIdInLayout" />
+        tools:ignore="UnknownIdInLayout"
+        tools:text="Quality checks: 0 out of 15" />
 
     <TextView
         android:id="@+id/text_prepareInfo"

@@ -48,6 +48,4 @@
         <item>Flow</item>
     </string-array>
 
-    <string name="tests_json">tests_config.json</string>
-
 </resources>

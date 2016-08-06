@@ -56,7 +56,7 @@ public class ResultActivity extends BaseActivity {
 
     private final JSONObject resultJsonObj = new JSONObject();
     private final JSONArray resultJsonArr = new JSONArray();
-    Button buttonSave;
+    private Button buttonSave;
     private Mat resultImage = null;
     private FileStorage fileStorage;
     private String resultImageUrl;

@@ -53,7 +53,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     private final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
     private final List<double[]> luminanceList = new ArrayList<>();
     private final Mat src_gray = new Mat();
-    protected boolean stopped;
+    boolean stopped;
     CameraViewListener listener;
     Camera.Size previewSize;
     //private int count;
@@ -86,8 +86,6 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
     }
-
-    protected abstract void sendData(byte[] data);
 
     int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();

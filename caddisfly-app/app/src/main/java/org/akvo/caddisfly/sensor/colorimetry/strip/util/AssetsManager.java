@@ -76,6 +76,7 @@ public class AssetsManager {
             InputStream is = manager.open(fileName);
             int size = is.available();
             byte[] buffer = new byte[size];
+            //noinspection ResultOfMethodCallIgnored
             is.read(buffer);
             is.close();
             json = new String(buffer, "UTF-8");

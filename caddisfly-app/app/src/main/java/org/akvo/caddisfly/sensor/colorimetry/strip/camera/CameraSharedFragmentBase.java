@@ -34,7 +34,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public abstract class CameraSharedFragmentBase extends Fragment {
 
-    protected TextView countQualityView;
+    TextView countQualityView;
 
     void showBrightness(double value) {
     }

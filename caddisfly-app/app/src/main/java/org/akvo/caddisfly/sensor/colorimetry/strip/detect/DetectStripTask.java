@@ -177,7 +177,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 System.out.println("***could not write image");
                             }
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                            listener.showImage(bitmap);
                         }
 
                         //calibrate
@@ -208,7 +207,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                             Utils.matToBitmap(rgb, bitmap);
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
-                            listener.showImage(bitmap);
                         }
 
                         // cut out black area that contains the strip
