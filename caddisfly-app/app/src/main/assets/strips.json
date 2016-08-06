@@ -1,10 +1,10 @@
 {
-  "comment":"This file contains the metadata on the strip tests. Please *DONT* change the uuid values, as they are shared with the FLOW backend.",
+  "comment": "This file contains the metadata on the strip tests. Please *DO NOT* change the uuid values, as they are shared with the Flow backend.",
   "strips":[
     {
       "name": "Chlorine and Free Chlorine",
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
-      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "calibration": "measured on 23-12-2015 using X-Rite iPro2",
       "brand": "HACH-27450-50",
       "numPatch": 2,
       "groupingType":"INDIVIDUAL",
@@ -98,7 +98,7 @@
     {
       "name": "Nitrate and Nitrite",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
-      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "calibration": "measured on 23-12-2015 using X-Rite iPro2",
       "brand": "HACH-27454-25",
       "numPatch": 2,
       "groupingType":"INDIVIDUAL",
@@ -197,7 +197,7 @@
     {
       "name": "Total Iron",
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
-      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "calibration": "measured on 23-12-2015 using X-Rite iPro2",
       "brand": "HACH-2745348",
       "numPatch": 1,
       "groupingType":"INDIVIDUAL",
@@ -256,7 +256,7 @@
     {
       "name": "pH 4 - 9",
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
-      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "calibration": "measured on 23-12-2015 using X-Rite iPro2",
       "brand": "HACH-27456-50",
       "numPatch": 1,
       "groupingType":"INDIVIDUAL",
@@ -310,7 +310,7 @@
     {
       "name": "Phosphorus",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
-      "calibration":"measured on 23-12-2015 using xrite iPro2",
+      "calibration": "measured on 23-12-2015 using X-Rite iPro2",
       "brand": "HACH-27571-50",
       "numPatch": 1,
       "groupingType":"INDIVIDUAL",

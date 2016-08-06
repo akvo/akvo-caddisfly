@@ -24,11 +24,12 @@
     android:textIsSelectable="true"
     tools:context=".sensor.colorimetry.strip.instructions.InstructionDetailFragment">
 
-    <TextView
-        android:id="@+id/text_instruction"
+    <LinearLayout
+        android:id="@+id/layout_instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12sp"
+        android:orientation="vertical"
         android:textSize="17sp"
         tools:text="Collect water sample. Fill the vial with the sample" />
 

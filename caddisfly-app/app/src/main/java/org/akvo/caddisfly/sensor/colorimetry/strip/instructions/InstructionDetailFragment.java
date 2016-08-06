@@ -16,13 +16,16 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -59,14 +62,33 @@ public class InstructionDetailFragment extends Fragment {
         Drawable instructionDrawable = AssetsManager.getImage(getActivity(),
                 getArguments().getString(ARG_ITEM_IMAGE));
         if (instructionDrawable != null) {
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.image_illustration);
-            imageView.setImageDrawable(instructionDrawable);
+            ((ImageView) rootView.findViewById(R.id.image_illustration)).
+                    setImageDrawable(instructionDrawable);
         }
 
         String instructionText = getArguments().getString(ARG_ITEM_TEXT);
         if (instructionText != null) {
-            TextView textView = ((TextView) rootView.findViewById(R.id.text_instruction));
-            textView.setText(instructionText);
+
+            LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_instructions);
+            for (String instruction : instructionText.split("<!")) {
+                TextView textView = new TextView(getActivity());
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.mediumTextSize));
+
+                textView.setPadding(0, 0, 0,
+                        (int) getResources().getDimension(R.dimen.activity_vertical_margin));
+
+                if (instruction.contains(">")) {
+                    textView.setTextColor(Color.RED);
+                } else {
+                    textView.setTextColor(Color.DKGRAY);
+                }
+                String text = instruction.replaceAll(">", "");
+                if (!text.isEmpty()) {
+                    textView.append(text);
+                    linearLayout.addView(textView);
+                }
+            }
         }
 
         return rootView;

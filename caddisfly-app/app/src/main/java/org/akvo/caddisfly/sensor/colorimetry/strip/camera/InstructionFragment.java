@@ -78,29 +78,23 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
             StripTest stripTest = new StripTest();
             JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
-            TextView textView;
             try {
                 for (int i = 0; i < instructions.length(); i++) {
 
-                    String instr = instructions.getJSONObject(i).getString("text");
-
-                    String[] instrArray = instr.split("<!");
-
-                    for (String anInstrArray : instrArray) {
-                        textView = new TextView(getActivity());
+                    for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
+                        TextView textView = new TextView(getActivity());
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                                 getResources().getDimension(R.dimen.mediumTextSize));
 
-                        int padBottom = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
-                        textView.setPadding(0, 0, 0, padBottom);
+                        textView.setPadding(0, 0, 0,
+                                (int) getResources().getDimension(R.dimen.activity_vertical_margin));
 
-                        int indexImp = anInstrArray.indexOf(">");
-                        if (indexImp >= 0) {
+                        if (instruction.contains(">")) {
                             textView.setTextColor(Color.RED);
                         } else {
                             textView.setTextColor(Color.DKGRAY);
                         }
-                        String text = anInstrArray.replaceAll(">", "");
+                        String text = instruction.replaceAll(">", "");
                         if (!text.isEmpty()) {
                             textView.append(text);
                             linearLayout.addView(textView);

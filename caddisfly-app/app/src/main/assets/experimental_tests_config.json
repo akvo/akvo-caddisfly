@@ -394,7 +394,7 @@
     {
       "name": [
         {
-          "en": "pH Microphast"
+          "en": "pH M colorpHast"
         }
       ],
       "subtype": "color",
@@ -408,7 +408,7 @@
       "monthsValid": "12",
       "results": [
         {
-          "description": "pH Microphast",
+          "description": "pH M colorpHast",
           "id": 1,
           "unit": ""
         }
