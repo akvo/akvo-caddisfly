@@ -105,6 +105,7 @@ public class CaddisflyApp extends Application {
     public static boolean hasFeatureCameraFlash(Context context, @StringRes int errorTitle,
                                                 @StringRes int buttonText,
                                                 DialogInterface.OnClickListener onClickListener) {
+
         if (PreferencesUtil.containsKey(context, R.string.hasCameraFlashKey)) {
             hasCameraFlash = PreferencesUtil.getBoolean(context, R.string.hasCameraFlashKey, false);
         } else {

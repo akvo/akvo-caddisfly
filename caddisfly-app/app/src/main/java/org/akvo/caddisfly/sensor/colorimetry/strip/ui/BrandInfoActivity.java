@@ -16,9 +16,16 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +42,7 @@ import java.io.InputStream;
 
 public class BrandInfoActivity extends BaseActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private String mBrandCode;
 
     @Override
@@ -66,15 +74,26 @@ public class BrandInfoActivity extends BaseActivity {
             }
         }
 
+        final Activity activity = this;
+
         // To start Camera
         Button buttonPrepareTest = (Button) findViewById(R.id.button_prepare);
         buttonPrepareTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), CameraActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(Constant.BRAND, mBrandCode);
-                startActivityForResult(intent, 100);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                    if (ContextCompat.checkSelfPermission(getBaseContext(),
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(activity,
+                                new String[]{Manifest.permission.CAMERA},
+                                MY_PERMISSIONS_REQUEST_CAMERA);
+                    } else {
+                        startCalibration();
+                    }
+                }
+
             }
         });
 
@@ -89,6 +108,30 @@ public class BrandInfoActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startCalibration();
+                } else {
+
+                }
+            }
+        }
+    }
+
+    private void startCalibration() {
+        Intent intent = new Intent(getBaseContext(), CameraActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constant.BRAND, mBrandCode);
+        startActivityForResult(intent, 100);
+    }
+
 
     @Override
     public void onResume() {

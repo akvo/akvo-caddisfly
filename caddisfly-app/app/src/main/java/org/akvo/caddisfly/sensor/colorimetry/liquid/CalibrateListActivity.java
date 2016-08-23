@@ -242,7 +242,11 @@ public class CalibrateListActivity extends BaseActivity
 
         if (!ApiUtil.isCameraInUse(this, null)) {
             final Intent intent = new Intent(getIntent());
-            intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+            if (AppPreferences.useExternalCamera()) {
+                intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+            } else {
+                intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+            }
             intent.putExtra("isCalibration", true);
             intent.putExtra("swatchValue", swatch.getValue());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -1,20 +1,27 @@
-/*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
- *
- * This file is part of Akvo Caddisfly
- *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
- *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
- *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
- */
-
 package org.akvo.caddisfly.usb;
+/*
+ * UVCCamera
+ * library and sample to access to UVC web camera on non-rooted Android device
+ *
+ * Copyright (c) 2014-2015 saki t_saki@serenegiant.com
+ *
+ * File name: USBMonitor.java
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ * All files in the folder are under this Apache License, Version 2.0.
+ * Files in the jni/libjpeg, jni/libusb, jin/libuvc, jni/rapidjson folder may have a different license, see the respective files.
+*/
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -39,20 +46,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class USBMonitor {
 
+    public static final String ACTION_USB_DEVICE_ATTACHED = "android.hardware.usb.action.USB_DEVICE_ATTACHED";
     private static final boolean DEBUG = false;    // TODO set false on production
     private static final String TAG = "USBMonitor";
-
-    private static final String ACTION_USB_PERMISSION_BASE = "org.akvo.caddisfly.USB_PERMISSION.";
+    private static final String ACTION_USB_PERMISSION_BASE = "com.serenegiant.USB_PERMISSION.";
     private final String ACTION_USB_PERMISSION = ACTION_USB_PERMISSION_BASE + hashCode();
-
-    private final ConcurrentHashMap<UsbDevice, UsbControlBlock> mCtrlBlocks = new ConcurrentHashMap<>();
-
+    private final ConcurrentHashMap<UsbDevice, UsbControlBlock> mCtrlBlocks = new ConcurrentHashMap<UsbDevice, UsbControlBlock>();
     private final WeakReference<Context> mWeakContext;
     private final UsbManager mUsbManager;
     private final OnDeviceConnectListener mOnDeviceConnectListener;
     private final Handler mHandler = new Handler();
     private PendingIntent mPermissionIntent = null;
-    private DeviceFilter mDeviceFilter;
+    private List<DeviceFilter> mDeviceFilters = new ArrayList<DeviceFilter>();
     private volatile int mDeviceCounts = 0;
     /**
      * BroadcastReceiver for USB permission
@@ -79,13 +84,13 @@ public final class USBMonitor {
             } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
                 final UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                 if (device != null) {
-                    UsbControlBlock ctrlBlock;
+                    UsbControlBlock ctrlBlock = null;
                     ctrlBlock = mCtrlBlocks.remove(device);
                     if (ctrlBlock != null) {
                         ctrlBlock.close();
                     }
                     mDeviceCounts = 0;
-                    processDetach(device);
+                    processDettach(device);
                 }
             }
         }
@@ -109,7 +114,7 @@ public final class USBMonitor {
         if (DEBUG) Log.v(TAG, "USBMonitor:Constructor");
 /*		if (listener == null)
             throw new IllegalArgumentException("OnDeviceConnectListener should not null."); */
-        mWeakContext = new WeakReference<>(context);
+        mWeakContext = new WeakReference<Context>(context);
         mUsbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
         mOnDeviceConnectListener = listener;
         if (DEBUG) Log.v(TAG, "USBMonitor:mUsbManager=" + mUsbManager);
@@ -119,16 +124,18 @@ public final class USBMonitor {
         if (DEBUG) Log.i(TAG, "destroy:");
         unregister();
         final Set<UsbDevice> keys = mCtrlBlocks.keySet();
-        UsbControlBlock ctrlBlock;
-        try {
-            for (final UsbDevice key : keys) {
-                ctrlBlock = mCtrlBlocks.remove(key);
-                ctrlBlock.close();
+        if (keys != null) {
+            UsbControlBlock ctrlBlock;
+            try {
+                for (final UsbDevice key : keys) {
+                    ctrlBlock = mCtrlBlocks.remove(key);
+                    ctrlBlock.close();
+                }
+            } catch (final Exception e) {
+                Log.e(TAG, "destroy:", e);
             }
-        } catch (final Exception e) {
-            Log.e(TAG, "destroy:", e);
+            mCtrlBlocks.clear();
         }
-        mCtrlBlocks.clear();
     }
 
     /**
@@ -165,46 +172,77 @@ public final class USBMonitor {
         mHandler.removeCallbacks(mDeviceCheckRunnable);
     }
 
-//    public synchronized boolean isRegistered() {
-//        return mPermissionIntent != null;
-//    }
+    public synchronized boolean isRegistered() {
+        return mPermissionIntent != null;
+    }
 
-//    /**
-//     * set device filter
-//     *
-//     * @param filter
-//     */
-//    public void setDeviceFilter(final DeviceFilter filter) {
-//        mDeviceFilter = filter;
-//    }
+    /**
+     * set device filter
+     *
+     * @param filter
+     */
+    public void setDeviceFilter(final DeviceFilter filter) {
+        mDeviceFilters.clear();
+        mDeviceFilters.add(filter);
+    }
+
+    /**
+     * set device filters
+     *
+     * @param filters
+     */
+    public void setDeviceFilter(final List<DeviceFilter> filters) {
+        mDeviceFilters.clear();
+        mDeviceFilters.addAll(filters);
+    }
 
     /**
      * return the number of connected USB devices that matched device filter
-     *
      * @return
      */
-    private int getDeviceCount() {
+    public int getDeviceCount() {
         return getDeviceList().size();
     }
 
     /**
      * return device list, return empty list if no device matched
-     *
      * @return
      */
-    private List<UsbDevice> getDeviceList() {
-        return getDeviceList(mDeviceFilter);
+    public List<UsbDevice> getDeviceList() {
+        return getDeviceList(mDeviceFilters);
     }
 
     /**
      * return device list, return empty list if no device matched
-     *
+     * @param filters
+     * @return
+     */
+    public List<UsbDevice> getDeviceList(final List<DeviceFilter> filters) {
+        final HashMap<String, UsbDevice> deviceList = mUsbManager.getDeviceList();
+        final List<UsbDevice> result = new ArrayList<UsbDevice>();
+        if (deviceList != null) {
+            for (final DeviceFilter filter : filters) {
+                final Iterator<UsbDevice> iterator = deviceList.values().iterator();
+                UsbDevice device;
+                while (iterator.hasNext()) {
+                    device = iterator.next();
+                    if ((filter == null) || (filter.matches(device))) {
+                        result.add(device);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * return device list, return empty list if no device matched
      * @param filter
      * @return
      */
     public List<UsbDevice> getDeviceList(final DeviceFilter filter) {
         final HashMap<String, UsbDevice> deviceList = mUsbManager.getDeviceList();
-        final List<UsbDevice> result = new ArrayList<>();
+        final List<UsbDevice> result = new ArrayList<UsbDevice>();
         if (deviceList != null) {
             final Iterator<UsbDevice> iterator = deviceList.values().iterator();
             UsbDevice device;
@@ -218,58 +256,57 @@ public final class USBMonitor {
         return result;
     }
 
-//    /**
-//     * get USB device list
-//     *
-//     * @return
-//     */
-//    public Iterator<UsbDevice> getDevices() {
-//        Iterator<UsbDevice> iterator = null;
-//        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
-//        if (list != null)
-//            iterator = list.values().iterator();
-//        return iterator;
-//    }
-//
-//    /**
-//     * output device list to LogCat
-//     */
-//    public final void dumpDevices() {
-//        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
-//        if (list != null) {
-//            final Set<String> keys = list.keySet();
-//            if (keys.size() > 0) {
-//                final StringBuilder sb = new StringBuilder();
-//                for (final String key : keys) {
-//                    final UsbDevice device = list.get(key);
-//                    final int num_interface = device != null ? device.getInterfaceCount() : 0;
-//                    sb.setLength(0);
-//                    for (int i = 0; i < num_interface; i++) {
-//                        sb.append(String.format("interface%d:%s", i, device.getInterface(i).toString()));
-//                    }
-//                    Log.i(TAG, "key=" + key + ":" + device + ":" + sb.toString());
-//                }
-//            } else {
-//                Log.i(TAG, "no device");
-//            }
-//        } else {
-//            Log.i(TAG, "no device");
-//        }
-//    }
-//
-//    /**
-//     * return whether the specific Usb device has permission
-//     *
-//     * @param device
-//     * @return
-//     */
-//    public boolean hasPermission(final UsbDevice device) {
-//        return mUsbManager.hasPermission(device);
-//    }
+    /**
+     * get USB device list
+     *
+     * @return
+     */
+    public Iterator<UsbDevice> getDevices() {
+        Iterator<UsbDevice> iterator = null;
+        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
+        if (list != null)
+            iterator = list.values().iterator();
+        return iterator;
+    }
+
+    /**
+     * output device list to LogCat
+     */
+    public final void dumpDevices() {
+        final HashMap<String, UsbDevice> list = mUsbManager.getDeviceList();
+        if (list != null) {
+            final Set<String> keys = list.keySet();
+            if (keys != null && keys.size() > 0) {
+                final StringBuilder sb = new StringBuilder();
+                for (final String key : keys) {
+                    final UsbDevice device = list.get(key);
+                    final int num_interface = device != null ? device.getInterfaceCount() : 0;
+                    sb.setLength(0);
+                    for (int i = 0; i < num_interface; i++) {
+                        sb.append(String.format("interface%d:%s", i, device.getInterface(i).toString()));
+                    }
+                    Log.i(TAG, "key=" + key + ":" + device + ":" + sb.toString());
+                }
+            } else {
+                Log.i(TAG, "no device");
+            }
+        } else {
+            Log.i(TAG, "no device");
+        }
+    }
+
+    /**
+     * return whether the specific Usb device has permission
+     *
+     * @param device
+     * @return
+     */
+    public boolean hasPermission(final UsbDevice device) {
+        return device != null && mUsbManager.hasPermission(device);
+    }
 
     /**
      * request permission to access to USB device
-     *
      * @param device
      */
     public synchronized void requestPermission(final UsbDevice device) {
@@ -282,14 +319,14 @@ public final class USBMonitor {
                     mUsbManager.requestPermission(device, mPermissionIntent);
                 }
             } else {
-                processCancel(null);
+                processCancel(device);
             }
         } else {
             processCancel(device);
         }
     }
 
-    private void processConnect(final UsbDevice device) {
+    private final void processConnect(final UsbDevice device) {
         if (DEBUG) Log.v(TAG, "processConnect:");
         mHandler.post(new Runnable() {
             @Override
@@ -305,13 +342,14 @@ public final class USBMonitor {
                     createNew = false;
                 }
                 if (mOnDeviceConnectListener != null) {
-                    mOnDeviceConnectListener.onConnect(device, ctrlBlock, createNew);
+                    final UsbControlBlock ctrlB = ctrlBlock;
+                    mOnDeviceConnectListener.onConnect(device, ctrlB, createNew);
                 }
             }
         });
     }
 
-    private void processCancel(final UsbDevice device) {
+    private final void processCancel(final UsbDevice device) {
         if (DEBUG) Log.v(TAG, "processCancel:");
         if (mOnDeviceConnectListener != null) {
             mHandler.post(new Runnable() {
@@ -323,7 +361,7 @@ public final class USBMonitor {
         }
     }
 
-    private void processAttach(final UsbDevice device) {
+    private final void processAttach(final UsbDevice device) {
         if (DEBUG) Log.v(TAG, "processAttach:");
         if (mOnDeviceConnectListener != null) {
             mHandler.post(new Runnable() {
@@ -335,8 +373,8 @@ public final class USBMonitor {
         }
     }
 
-    private void processDetach(final UsbDevice device) {
-        if (DEBUG) Log.v(TAG, "processDetach:");
+    private final void processDettach(final UsbDevice device) {
+        if (DEBUG) Log.v(TAG, "processDettach:");
         if (mOnDeviceConnectListener != null) {
             mHandler.post(new Runnable() {
                 @Override
@@ -350,35 +388,28 @@ public final class USBMonitor {
     public interface OnDeviceConnectListener {
         /**
          * called when device attached
-         *
          * @param device
          */
         void onAttach(UsbDevice device);
 
         /**
-         * called when device detach(after onDisconnect)
-         *
+         * called when device dettach(after onDisconnect)
          * @param device
          */
         void onDetach(UsbDevice device);
 
         /**
-         * called after device is opened
-         *
+         * called after device opend
          * @param device
-         * @param ctrlBlock
          * @param createNew
          */
         void onConnect(UsbDevice device, UsbControlBlock ctrlBlock, boolean createNew);
-
         /**
          * called when USB device removed or its power off (this callback is called after device closing)
-         *
          * @param device
          * @param ctrlBlock
          */
         void onDisconnect(UsbDevice device, UsbControlBlock ctrlBlock);
-
         /**
          * called when canceled or could not get permission from user
          */
@@ -388,20 +419,29 @@ public final class USBMonitor {
     public static final class UsbControlBlock {
         private final WeakReference<USBMonitor> mWeakMonitor;
         private final WeakReference<UsbDevice> mWeakDevice;
-        private final SparseArray<UsbInterface> mInterfaces = new SparseArray<>();
-        UsbDeviceConnection mConnection;
+        private final SparseArray<UsbInterface> mInterfaces = new SparseArray<UsbInterface>();
+        protected UsbDeviceConnection mConnection;
 
         /**
          * this class needs permission to access USB device before constructing
-         *
          * @param monitor
          * @param device
          */
         public UsbControlBlock(final USBMonitor monitor, final UsbDevice device) {
             if (DEBUG) Log.i(TAG, "UsbControlBlock:constructor");
-            mWeakMonitor = new WeakReference<>(monitor);
-            mWeakDevice = new WeakReference<>(device);
+            mWeakMonitor = new WeakReference<USBMonitor>(monitor);
+            mWeakDevice = new WeakReference<UsbDevice>(device);
             mConnection = monitor.mUsbManager.openDevice(device);
+            final String name = device.getDeviceName();
+            if (mConnection != null) {
+                if (DEBUG) {
+                    final int desc = mConnection.getFileDescriptor();
+                    final byte[] rawDesc = mConnection.getRawDescriptors();
+                    Log.i(TAG, "UsbControlBlock:name=" + name + ", desc=" + desc + ", rawDesc=" + rawDesc);
+                }
+            } else {
+                Log.e(TAG, "could not connect to device " + name);
+            }
         }
 
         public UsbDevice getDevice() {
@@ -413,19 +453,19 @@ public final class USBMonitor {
             return device != null ? device.getDeviceName() : "";
         }
 
-//        public UsbDeviceConnection getUsbDeviceConnection() {
-//            return mConnection;
-//        }
+        public UsbDeviceConnection getUsbDeviceConnection() {
+            return mConnection;
+        }
 
         public synchronized int getFileDescriptor() {
             return mConnection != null ? mConnection.getFileDescriptor() : -1;
         }
 
-//        public byte[] getRawDescriptors() {
-//            return mConnection != null ? mConnection.getRawDescriptors() : null;
-//        }
+        public byte[] getRawDescriptors() {
+            return mConnection != null ? mConnection.getRawDescriptors() : null;
+        }
 
-        public int getVendorId() {
+        public int getVenderId() {
             final UsbDevice device = mWeakDevice.get();
             return device != null ? device.getVendorId() : 0;
         }
@@ -435,42 +475,42 @@ public final class USBMonitor {
             return device != null ? device.getProductId() : 0;
         }
 
-//        public synchronized String getSerial() {
-//            return mConnection != null ? mConnection.getSerial() : null;
-//        }
+        public synchronized String getSerial() {
+            return mConnection != null ? mConnection.getSerial() : null;
+        }
 
         /**
          * open specific interface
-         *
          * @param interfaceIndex
-         * @return UsbInterface
+         * @return
          */
         public synchronized UsbInterface open(final int interfaceIndex) {
             if (DEBUG) Log.i(TAG, "UsbControlBlock#open:" + interfaceIndex);
             final UsbDevice device = mWeakDevice.get();
-            UsbInterface usbInterface;
-            usbInterface = mInterfaces.get(interfaceIndex);
-            if (usbInterface == null) {
-                usbInterface = device.getInterface(interfaceIndex);
-                synchronized (mInterfaces) {
-                    mInterfaces.append(interfaceIndex, usbInterface);
+            UsbInterface intf = null;
+            intf = mInterfaces.get(interfaceIndex);
+            if (intf == null) {
+                intf = device.getInterface(interfaceIndex);
+                if (intf != null) {
+                    synchronized (mInterfaces) {
+                        mInterfaces.append(interfaceIndex, intf);
+                    }
                 }
             }
-            return usbInterface;
+            return intf;
         }
 
         /**
          * close specified interface. USB device itself still keep open.
-         *
          * @param interfaceIndex
          */
         public void close(final int interfaceIndex) {
-            UsbInterface usbInterface;
+            UsbInterface intf = null;
             synchronized (mInterfaces) {
-                usbInterface = mInterfaces.get(interfaceIndex);
-                if (usbInterface != null) {
+                intf = mInterfaces.get(interfaceIndex);
+                if (intf != null) {
                     mInterfaces.delete(interfaceIndex);
-                    mConnection.releaseInterface(usbInterface);
+                    mConnection.releaseInterface(intf);
                 }
             }
         }
@@ -484,11 +524,11 @@ public final class USBMonitor {
             if (mConnection != null) {
                 final int n = mInterfaces.size();
                 int key;
-                UsbInterface usbInterface;
+                UsbInterface intf;
                 for (int i = 0; i < n; i++) {
                     key = mInterfaces.keyAt(i);
-                    usbInterface = mInterfaces.get(key);
-                    mConnection.releaseInterface(usbInterface);
+                    intf = mInterfaces.get(key);
+                    mConnection.releaseInterface(intf);
                 }
                 mConnection.close();
                 mConnection = null;

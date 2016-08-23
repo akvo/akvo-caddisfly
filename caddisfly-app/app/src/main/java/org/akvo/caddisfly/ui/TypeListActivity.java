@@ -16,21 +16,30 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
+
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +59,23 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
-                //Only start the colorimetry calibration if the device has a camera flash
-                if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
-                        R.string.ok, null)) {
 
-                    final Intent intent;
-                    if (getIntent().getBooleanExtra("runTest", false)) {
-                        intent = new Intent(this, ColorimetryLiquidActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                    if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.CAMERA},
+                                MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
-                        intent = new Intent(this, CalibrateListActivity.class);
+                        startCalibration();
                     }
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+                } else {
+                    startCalibration();
                 }
+
                 break;
             case SENSOR:
                 //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
@@ -82,6 +95,43 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                     alertFeatureNotSupported();
                 }
                 break;
+        }
+    }
+
+    private void startCalibration() {
+        //Only start the colorimetry calibration if the device has a camera flash
+        if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
+                R.string.ok, null)) {
+
+            final Intent intent;
+            if (getIntent().getBooleanExtra("runTest", false)) {
+                if (AppPreferences.useExternalCamera()) {
+                    intent = new Intent(this, ColorimetryLiquidExternalActivity.class);
+                } else {
+                    intent = new Intent(this, ColorimetryLiquidActivity.class);
+                }
+            } else {
+                intent = new Intent(this, CalibrateListActivity.class);
+            }
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startCalibration();
+                } else {
+
+                }
+            }
         }
     }
 

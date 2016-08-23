@@ -38,5 +38,10 @@
     <string name="fluor_NumberOfSamplesKey" translateable="false">fluor_NumberOfSamples</string>
     <string name="colif_IntervalMinutesKey" translateable="false">colif_IntervalMinutes</string>
     <string name="colif_NumberOfSamplesKey" translateable="false">colif_NumberOfSamples</string>
+    <string name="ledBrightnessKey">ledBrightness</string>
+    <string name="ledRgbKey">ledRgb</string>
+    <string name="externalCameraMultiDeviceModeKey">externalCameraMultiDeviceMode</string>
+    <string name="turbidityLedRgbKey">turbidityLedRgb</string>
+    <string name="useExternalCameraKey" translateable="false">useExternalCamera</string>
 
 </resources>

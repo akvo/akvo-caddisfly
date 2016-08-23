@@ -18,7 +18,6 @@ package org.akvo.caddisfly.util;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.RawRes;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 
@@ -28,8 +27,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -162,32 +159,5 @@ public final class FileUtil {
         }
 
         return null;
-    }
-
-    /**
-     * Read a text file from the raw resources folder
-     *
-     * @param context    the context
-     * @param resourceId the resource Id
-     * @return the read text
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static String readRawTextFile(Context context, @RawRes int resourceId) {
-        InputStream inputStream = context.getResources().openRawResource(resourceId);
-
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String line;
-        StringBuilder text = new StringBuilder();
-
-        try {
-            while ((line = bufferedReader.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-        } catch (IOException e) {
-            return null;
-        }
-        return text.toString();
     }
 }

@@ -23,6 +23,9 @@
     private *;
 }
 
+-keep class org.akvo.caddisfly.usb.IButtonCallback
+-keep class org.akvo.caddisfly.usb.IFrameCallback
+-keep class org.akvo.caddisfly.usb.IStatusCallback
 -keep class org.akvo.caddisfly.usb.USBMonitor$UsbControlBlock
 
 -dontwarn org.apache.commons.math3.**

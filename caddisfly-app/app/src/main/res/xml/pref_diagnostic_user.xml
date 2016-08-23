@@ -22,6 +22,12 @@
             android:key="@string/noBackdropDetectionKey"
             android:title="@string/noBackdropDetection" />
         <CheckBoxPreference
+            android:key="@string/useExternalCameraKey"
+            android:title="Use External Camera" />
+        <CheckBoxPreference
+            android:key="@string/externalCameraMultiDeviceModeKey"
+            android:title="External camera multi-device mode" />
+        <CheckBoxPreference
             android:key="@string/saveImagesKey"
             android:title="@string/saveImages" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>

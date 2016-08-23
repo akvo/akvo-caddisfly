@@ -16,24 +16,29 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
@@ -48,6 +53,7 @@ import java.util.Date;
 public class ExternalActionActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private Boolean mIsExternalAppCall = false;
     //the language requested by the external app
@@ -97,17 +103,15 @@ public class ExternalActionActivity extends BaseActivity {
                     Configuration config = getResources().getConfiguration();
                     ((TextView) findViewById(R.id.textTitle)).setText(
                             CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
-                    if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
-                            CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                                    R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
-                                        }
-                                    }
-                            )) {
-                        startTest(null);
+
+                    if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.CAMERA},
+                                MY_PERMISSIONS_REQUEST_CAMERA);
+                    } else {
+                        initializeTest();
                     }
                 }
             }
@@ -129,22 +133,57 @@ public class ExternalActionActivity extends BaseActivity {
                     Configuration config = getResources().getConfiguration();
                     ((TextView) findViewById(R.id.textTitle)).setText(
                             CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
-                    if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
-                            CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                                    R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
-                                        }
-                                    }
-                            )) {
-                        startTest(caddisflyResourceUuid);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
+                                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    MY_PERMISSIONS_REQUEST_CAMERA);
+                        } else {
+                            initializeTest();
+                        }
+                    } else {
+                        initializeTest();
                     }
                 }
             }
         }
 
+    }
+
+    private void initializeTest() {
+
+        if (AppPreferences.useExternalCamera() ||
+                !CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
+                CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                        R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        }
+                )) {
+            startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initializeTest();
+                } else {
+                    finish();
+                }
+            }
+        }
     }
 
     private void alertCalibrationExpired() {
@@ -225,8 +264,10 @@ public class ExternalActionActivity extends BaseActivity {
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (ApiUtil.isCameraInUse(this, this)) {
-                    return;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    if (ApiUtil.isCameraInUse(this, this)) {
+                        return;
+                    }
                 }
 
                 if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
@@ -247,8 +288,7 @@ public class ExternalActionActivity extends BaseActivity {
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                    //intent.setClass(context, AlignmentActivity.class);
+                    intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
                 }
 
                 intent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);

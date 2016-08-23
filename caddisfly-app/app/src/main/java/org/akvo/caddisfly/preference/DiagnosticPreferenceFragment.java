@@ -16,17 +16,22 @@
 
 package org.akvo.caddisfly.preference;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +51,7 @@ import org.akvo.caddisfly.util.ListViewUtil;
  */
 public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private ListView list;
     private DiagnosticPreviewFragment diagnosticPreviewFragment;
 
@@ -131,11 +137,19 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     if (getFragmentManager().findFragmentByTag("diagnosticPreviewFragment") == null) {
-                        if (isCameraAvailable()) {
-                            CaddisflyApp.getApp().initializeCurrentTest();
-                            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
-                            diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(getActivity(),
+                                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.CAMERA},
+                                        MY_PERMISSIONS_REQUEST_CAMERA);
+                            } else {
+                                startPreview();
+                            }
+                        } else {
+                            startPreview();
                         }
                     }
                     return true;
@@ -183,6 +197,29 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         }
 
         return rootView;
+    }
+
+    private void startPreview() {
+        if (isCameraAvailable()) {
+            CaddisflyApp.getApp().initializeCurrentTest();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+            diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startPreview();
+                }
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")

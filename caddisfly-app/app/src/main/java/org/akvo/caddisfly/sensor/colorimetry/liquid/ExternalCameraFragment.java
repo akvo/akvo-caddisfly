@@ -32,6 +32,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -39,6 +40,8 @@ import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
+import org.akvo.caddisfly.usb.USBMonitor.OnDeviceConnectListener;
+import org.akvo.caddisfly.usb.USBMonitor.UsbControlBlock;
 import org.akvo.caddisfly.usb.UVCCamera;
 import org.akvo.caddisfly.widget.CameraViewInterface;
 
@@ -49,6 +52,8 @@ import java.util.List;
 public final class ExternalCameraFragment extends CameraDialog {
     private static final boolean DEBUG = true;    // TODO set false on release
     private static final String TAG = "ExternalCameraFragment";
+    //private static final String ARG_PREVIEW_ONLY = "preview";
+
     /**
      * preview resolution(width)
      * if your camera does not support specific resolution and mode,
@@ -65,13 +70,10 @@ public final class ExternalCameraFragment extends CameraDialog {
      * preview mode
      * if your camera does not support specific resolution and mode,
      * {@link UVCCamera#setPreviewSize(int, int, int)} throw exception
+     * 0:YUYV, other:MJPEG
      */
-    private static final int PREVIEW_MODE = UVCCamera.PIXEL_FORMAT_RAW;
+    private static final int PREVIEW_MODE = 1;
     private final Handler delayHandler = new Handler();
-    private int mNumberOfPhotosToTake;
-    private int mPhotoCurrentCount = 0;
-    private SoundPoolPlayer sound;
-
     /**
      * for accessing USB
      */
@@ -84,27 +86,22 @@ public final class ExternalCameraFragment extends CameraDialog {
      * for camera preview display
      */
     private CameraViewInterface mUVCCameraView;
-    /**
-     * for open&start / stop&close camera preview
-     */
-    private Surface mSurface;
-    private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
+    private final OnDeviceConnectListener mOnDeviceConnectListener = new OnDeviceConnectListener() {
         @Override
         public void onAttach(final UsbDevice device) {
-            //Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
-            if (DEBUG) Log.d(TAG, "onAttach:");
+            Toast.makeText(getActivity(), "USB_DEVICE_ATTACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
-            if (DEBUG) Log.d(TAG, "onConnect:");
+        public void onConnect(final UsbDevice device, final UsbControlBlock ctrlBlock, final boolean createNew) {
+            if (DEBUG) Log.v(TAG, "onConnect:");
             mHandler.openCamera(ctrlBlock);
             startPreview();
         }
 
         @Override
-        public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
-            if (DEBUG) Log.d(TAG, "onDisconnect:");
+        public void onDisconnect(final UsbDevice device, final UsbControlBlock ctrlBlock) {
+            if (DEBUG) Log.v(TAG, "onDisconnect:");
             if (mHandler != null) {
                 mHandler.closeCamera();
             }
@@ -112,28 +109,37 @@ public final class ExternalCameraFragment extends CameraDialog {
 
         @Override
         public void onDetach(final UsbDevice device) {
-            if (DEBUG) Log.d(TAG, "onDetach:");
-            if (mHandler != null) {
-                mHandler.closeCamera();
-            }
-            //Toast.makeText(getActivity(), "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ExternalCameraFragment.this, "USB_DEVICE_DETACHED", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel() {
         }
     };
+    private int mNumberOfPhotosToTake;
+    private int mPhotoCurrentCount = 0;
+    private SoundPoolPlayer sound;
     private long mSamplingDelay;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment CameraFragment.
-     */
     public static ExternalCameraFragment newInstance() {
         return new ExternalCameraFragment();
     }
+
+//    @Override
+//    protected void onCreate(final Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (DEBUG) Log.v(TAG, "onCreate:");
+//        if (USE_SURFACE_ENCODER)
+//            setContentView(R.layout.activity_main2);
+//        else
+//            setContentView(R.layout.activity_main);
+//        final View view = findViewById(R.id.camera_view);
+//        mUVCCameraView = (CameraViewInterface) view;
+//        mUVCCameraView.setAspectRatio(PREVIEW_WIDTH / (float) PREVIEW_HEIGHT);
+//
+//        mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
+//        mHandler = CameraHandler.createHandler(this, mUVCCameraView);
+//    }
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -142,6 +148,7 @@ public final class ExternalCameraFragment extends CameraDialog {
 //            mPreviewOnly = getArguments().getBoolean(ARG_PREVIEW_ONLY);
 //        }
         sound = new SoundPoolPlayer(getActivity());
+
     }
 
     @Override
@@ -191,6 +198,21 @@ public final class ExternalCameraFragment extends CameraDialog {
         super.onCancel(dialog);
     }
 
+    private UsbDevice getCameraDevice(List<UsbDevice> usbDeviceList) {
+
+        for (int i = 0; i < usbDeviceList.size(); i++) {
+            if (usbDeviceList.get(i).getVendorId() == AppConfig.CAMERA_VENDOR_ID) {
+                return usbDeviceList.get(i);
+            }
+        }
+
+        return null;
+    }
+
+//    private List<UsbDevice> getUsbDevices() {
+//        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
+//        return mUSBMonitor.getDeviceList(filter.get(0));
+//    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -202,8 +224,8 @@ public final class ExternalCameraFragment extends CameraDialog {
                 if (mHandler != null && !mHandler.isCameraOpened()) {
                     final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
                     List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-                    if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
-                        final Object item = usbDeviceList.get(0);
+                    if (getCameraDevice(usbDeviceList) != null) {
+                        final Object item = getCameraDevice(usbDeviceList);
                         mUSBMonitor.requestPermission((UsbDevice) item);
                     }
                 }
@@ -236,6 +258,7 @@ public final class ExternalCameraFragment extends CameraDialog {
     public void onDestroy() {
         if (DEBUG) Log.v(TAG, "onDestroy:");
         if (mHandler != null) {
+//	        mHandler.release();
             mHandler = null;
         }
         if (mUSBMonitor != null) {
@@ -248,12 +271,7 @@ public final class ExternalCameraFragment extends CameraDialog {
 
     private void startPreview() {
         final SurfaceTexture st = mUVCCameraView.getSurfaceTexture();
-        if (mSurface != null) {
-            mSurface.release();
-        }
-
-        mSurface = new Surface(st);
-        mHandler.startPreview(mSurface);
+        mHandler.startPreview(new Surface(st));
     }
 
     private void takePicture() {
@@ -278,9 +296,11 @@ public final class ExternalCameraFragment extends CameraDialog {
 
     @Override
     public void takePictureSingle() {
-        mNumberOfPhotosToTake = 1;
-        mPhotoCurrentCount = 0;
-        takePicture();
+        if (mHandler.isCameraOpened()) {
+            mNumberOfPhotosToTake = 1;
+            mPhotoCurrentCount = 0;
+            takePicture();
+        }
     }
 
     @Override
@@ -331,7 +351,7 @@ public final class ExternalCameraFragment extends CameraDialog {
             return thread != null && thread.isCameraOpened();
         }
 
-        public void openCamera(final USBMonitor.UsbControlBlock ctrlBlock) {
+        public void openCamera(final UsbControlBlock ctrlBlock) {
             sendMessage(obtainMessage(MSG_OPEN, ctrlBlock));
         }
 
@@ -370,7 +390,7 @@ public final class ExternalCameraFragment extends CameraDialog {
             if (thread == null) return;
             switch (msg.what) {
                 case MSG_OPEN:
-                    thread.handleOpen((USBMonitor.UsbControlBlock) msg.obj);
+                    thread.handleOpen((UsbControlBlock) msg.obj);
                     break;
                 case MSG_CLOSE:
                     thread.handleClose();
@@ -405,7 +425,6 @@ public final class ExternalCameraFragment extends CameraDialog {
              * for accessing UVC camera
              */
             private UVCCamera mUVCCamera;
-            //private boolean mCancelled = false;
 
             private CameraThread(final ExternalCameraFragment parent, final CameraViewInterface cameraView) {
                 super("CameraThread");
@@ -435,11 +454,12 @@ public final class ExternalCameraFragment extends CameraDialog {
                 return mUVCCamera != null;
             }
 
-            public void handleOpen(final USBMonitor.UsbControlBlock ctrlBlock) {
+            public void handleOpen(final UsbControlBlock ctrlBlock) {
                 if (DEBUG) Log.v(TAG_THREAD, "handleOpen:");
                 handleClose();
                 mUVCCamera = new UVCCamera();
                 mUVCCamera.open(ctrlBlock);
+                if (DEBUG) Log.i(TAG, "supportedSize:" + mUVCCamera.getSupportedSize());
             }
 
             public void handleClose() {
@@ -448,14 +468,6 @@ public final class ExternalCameraFragment extends CameraDialog {
                     mUVCCamera.stopPreview();
                     mUVCCamera.destroy();
                     mUVCCamera = null;
-
-//                    if(mWeakParent.get().getParentFragment()!= null &&
-//                            mWeakParent.get().getParentFragment() instanceof Cancelled){
-//                        ((Cancelled) mWeakParent.get().getParentFragment()).dialogCancelled();
-//                    }
-//                    if (mWeakParent.get().getActivity() != null && mWeakParent.get().getActivity() instanceof Cancelled) {
-//                        ((Cancelled) mWeakParent.get().getActivity()).dialogCancelled();
-//                    }
                 }
             }
 
@@ -488,7 +500,6 @@ public final class ExternalCameraFragment extends CameraDialog {
                     mSync.notifyAll();
                 }
             }
-
 
             public void handleCaptureStill() {
                 if (DEBUG) Log.v(TAG_THREAD, "handleCaptureStill:");

@@ -1,20 +1,30 @@
-/*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
- *
- * This file is part of Akvo Caddisfly
- *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
- *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
- *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
- */
-
 package org.akvo.caddisfly.usb;
+/*
+ * UVCCamera
+ * library and sample to access to UVC web camera on non-rooted Android device
+ *
+ * Fixed the issue when reading filter definition from xml file
+ * that undefined null filter(that match all device) is generated.
+ * Copyright (C) 2014-2015 saki (t_saki@serenegiant.com)
+ *
+ * This class originally came from
+ * com.android.server.usb.UsbSettingsManager.DeviceFilter
+ * in UsbSettingsManager.java in Android SDK
+ *
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
@@ -36,60 +46,58 @@ public final class DeviceFilter {
     private static final String TAG = "DeviceFilter";
 
     // USB Vendor ID (or -1 for unspecified)
-    private final int mVendorId;
+    public final int mVendorId;
     // USB Product ID (or -1 for unspecified)
-    private final int mProductId;
+    public final int mProductId;
     // USB device or interface class (or -1 for unspecified)
-    private final int mClass;
+    public final int mClass;
     // USB device subclass (or -1 for unspecified)
-    private final int mSubclass;
+    public final int mSubclass;
     // USB device protocol (or -1 for unspecified)
-    private final int mProtocol;
+    public final int mProtocol;
     // USB device manufacturer name string (or null for unspecified)
-    private final String mManufacturerName;
+    public final String mManufacturerName;
     // USB device product name string (or null for unspecified)
-    private final String mProductName;
+    public final String mProductName;
     // USB device serial number string (or null for unspecified)
-    private final String mSerialNumber;
+    public final String mSerialNumber;
 
-    private DeviceFilter(final int vid, final int pid, final int theClass, final int subclass,
-                         final int protocol, final String manufacturer, final String product, final String serial) {
+    public DeviceFilter(final int vid, final int pid, final int clasz, final int subclass,
+                        final int protocol, final String manufacturer, final String product, final String serialnum) {
         mVendorId = vid;
         mProductId = pid;
-        mClass = theClass;
+        mClass = clasz;
         mSubclass = subclass;
         mProtocol = protocol;
         mManufacturerName = manufacturer;
         mProductName = product;
-        mSerialNumber = serial;
+        mSerialNumber = serialnum;
 /*		Log.i(TAG, String.format("vendorId=0x%04x,productId=0x%04x,class=0x%02x,subclass=0x%02x,protocol=0x%02x",
             mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
     }
 
-//    public DeviceFilter(final UsbDevice device) {
-//        mVendorId = device.getVendorId();
-//        mProductId = device.getProductId();
-//        mClass = device.getDeviceClass();
-//        mSubclass = device.getDeviceSubclass();
-//        mProtocol = device.getDeviceProtocol();
-//        mManufacturerName = null;    // device.getManufacturerName();
-//        mProductName = null;        // device.getProductName();
-//        mSerialNumber = null;        // device.getSerialNumber();
-///*		Log.i(TAG, String.format("vendorId=0x%04x,productId=0x%04x,class=0x%02x,subclass=0x%02x,protocol=0x%02x",
-//			mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
-//    }
+    public DeviceFilter(final UsbDevice device) {
+        mVendorId = device.getVendorId();
+        mProductId = device.getProductId();
+        mClass = device.getDeviceClass();
+        mSubclass = device.getDeviceSubclass();
+        mProtocol = device.getDeviceProtocol();
+        mManufacturerName = null;    // device.getManufacturerName();
+        mProductName = null;        // device.getProductName();
+        mSerialNumber = null;        // device.getSerialNumber();
+/*		Log.i(TAG, String.format("vendorId=0x%04x,productId=0x%04x,class=0x%02x,subclass=0x%02x,protocol=0x%02x",
+            mVendorId, mProductId, mClass, mSubclass, mProtocol)); */
+    }
 
     /**
      * 指定したxmlリソースからDeviceFilterリストを生成する
-     *
-     * @param context           the current context
-     * @param deviceFilterXmlId the device filter id
-     * @return list of device filters
+     * @param context
+     * @param deviceFilterXmlId
+     * @return
      */
-    @SuppressWarnings("SameParameterValue")
     public static List<DeviceFilter> getDeviceFilters(final Context context, final int deviceFilterXmlId) {
         final XmlPullParser parser = context.getResources().getXml(deviceFilterXmlId);
-        final List<DeviceFilter> deviceFilters = new ArrayList<>();
+        final List<DeviceFilter> deviceFilters = new ArrayList<DeviceFilter>();
         try {
             int eventType = parser.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -113,15 +121,13 @@ public final class DeviceFilter {
     /**
      * read as integer values with default value from xml(w/o exception throws)
      * resource integer id is also resolved into integer
-     *
-     * @param parser       The xml parser
-     * @param namespace    The xml namespace
-     * @param name         The attribute name
-     * @param defaultValue The default value
-     * @return The result
+     * @param parser
+     * @param namespace
+     * @param name
+     * @param defaultValue
+     * @return
      */
-    @SuppressWarnings("SameParameterValue")
-    private static int getAttributeInteger(final Context context, final XmlPullParser parser, final String namespace, final String name, final int defaultValue) {
+    private static final int getAttributeInteger(final Context context, final XmlPullParser parser, final String namespace, final String name, final int defaultValue) {
         int result = defaultValue;
         try {
             String v = parser.getAttributeValue(namespace, name);
@@ -141,7 +147,11 @@ public final class DeviceFilter {
                 }
                 result = Integer.parseInt(v, radix);
             }
-        } catch (final NotFoundException | NumberFormatException | NullPointerException e) {
+        } catch (final NotFoundException e) {
+            result = defaultValue;
+        } catch (final NumberFormatException e) {
+            result = defaultValue;
+        } catch (final NullPointerException e) {
             result = defaultValue;
         }
         return result;
@@ -150,16 +160,14 @@ public final class DeviceFilter {
     /**
      * read as String attribute with default value from xml(w/o exception throws)
      * resource string id is also resolved into string
-     *
-     * @param parser       The xml parser
-     * @param namespace    The xml namespace
-     * @param name         The attribute name
-     * @param defaultValue The default value
-     * @return The result
+     * @param parser
+     * @param namespace
+     * @param name
+     * @param defaultValue
+     * @return
      */
-    @SuppressWarnings("SameParameterValue")
-    private static String getAttributeString(final Context context, final XmlPullParser parser, final String namespace, final String name, final String defaultValue) {
-        String result;
+    private static final String getAttributeString(final Context context, final XmlPullParser parser, final String namespace, final String name, final String defaultValue) {
+        String result = defaultValue;
         try {
             result = parser.getAttributeValue(namespace, name);
             if (result == null)
@@ -170,13 +178,17 @@ public final class DeviceFilter {
                 if (resId > 0)
                     result = context.getResources().getString(resId);
             }
-        } catch (final NotFoundException | NumberFormatException | NullPointerException e) {
+        } catch (final NotFoundException e) {
+            result = defaultValue;
+        } catch (final NumberFormatException e) {
+            result = defaultValue;
+        } catch (final NullPointerException e) {
             result = defaultValue;
         }
         return result;
     }
 
-    private static DeviceFilter read(final Context context, final XmlPullParser parser)
+    public static DeviceFilter read(final Context context, final XmlPullParser parser)
             throws XmlPullParserException, IOException {
         int vendorId = -1;
         int productId = -1;
@@ -229,8 +241,39 @@ public final class DeviceFilter {
         return null;
     }
 
-    private boolean matches(final int theClass, final int subclass, final int protocol) {
-        return ((mClass == -1 || theClass == mClass)
+/*	public void write(XmlSerializer serializer) throws IOException {
+        serializer.startTag(null, "usb-device");
+		if (mVendorId != -1) {
+			serializer
+					.attribute(null, "vendor-id", Integer.toString(mVendorId));
+		}
+		if (mProductId != -1) {
+			serializer.attribute(null, "product-id",
+					Integer.toString(mProductId));
+		}
+		if (mClass != -1) {
+			serializer.attribute(null, "class", Integer.toString(mClass));
+		}
+		if (mSubclass != -1) {
+			serializer.attribute(null, "subclass", Integer.toString(mSubclass));
+		}
+		if (mProtocol != -1) {
+			serializer.attribute(null, "protocol", Integer.toString(mProtocol));
+		}
+		if (mManufacturerName != null) {
+			serializer.attribute(null, "manufacturer-name", mManufacturerName);
+		}
+		if (mProductName != null) {
+			serializer.attribute(null, "product-name", mProductName);
+		}
+		if (mSerialNumber != null) {
+			serializer.attribute(null, "serial-number", mSerialNumber);
+		}
+		serializer.endTag(null, "usb-device");
+	} */
+
+    private boolean matches(final int clasz, final int subclass, final int protocol) {
+        return ((mClass == -1 || clasz == mClass)
                 && (mSubclass == -1 || subclass == mSubclass) && (mProtocol == -1 || protocol == mProtocol));
     }
 
@@ -263,39 +306,39 @@ public final class DeviceFilter {
         // if device doesn't match, check the interfaces
         final int count = device.getInterfaceCount();
         for (int i = 0; i < count; i++) {
-            final UsbInterface usbInterface = device.getInterface(i);
-            if (matches(usbInterface.getInterfaceClass(), usbInterface.getInterfaceSubclass(),
-                    usbInterface.getInterfaceProtocol()))
+            final UsbInterface intf = device.getInterface(i);
+            if (matches(intf.getInterfaceClass(), intf.getInterfaceSubclass(),
+                    intf.getInterfaceProtocol()))
                 return true;
         }
 
         return false;
     }
 
-//    public boolean matches(final DeviceFilter f) {
-//        if (mVendorId != -1 && f.mVendorId != mVendorId)
-//            return false;
-//        if (mProductId != -1 && f.mProductId != mProductId)
-//            return false;
-//        if (f.mManufacturerName != null && mManufacturerName == null)
-//            return false;
-//        if (f.mProductName != null && mProductName == null)
-//            return false;
-//        if (f.mSerialNumber != null && mSerialNumber == null)
-//            return false;
-//        if (mManufacturerName != null && f.mManufacturerName != null
-//                && !mManufacturerName.equals(f.mManufacturerName))
-//            return false;
-//        if (mProductName != null && f.mProductName != null
-//                && !mProductName.equals(f.mProductName))
-//            return false;
-//        if (mSerialNumber != null && f.mSerialNumber != null
-//                && !mSerialNumber.equals(f.mSerialNumber))
-//            return false;
-//
-//        // check device class/subclass/protocol
-//        return matches(f.mClass, f.mSubclass, f.mProtocol);
-//    }
+    public boolean matches(final DeviceFilter f) {
+        if (mVendorId != -1 && f.mVendorId != mVendorId)
+            return false;
+        if (mProductId != -1 && f.mProductId != mProductId)
+            return false;
+        if (f.mManufacturerName != null && mManufacturerName == null)
+            return false;
+        if (f.mProductName != null && mProductName == null)
+            return false;
+        if (f.mSerialNumber != null && mSerialNumber == null)
+            return false;
+        if (mManufacturerName != null && f.mManufacturerName != null
+                && !mManufacturerName.equals(f.mManufacturerName))
+            return false;
+        if (mProductName != null && f.mProductName != null
+                && !mProductName.equals(f.mProductName))
+            return false;
+        if (mSerialNumber != null && f.mSerialNumber != null
+                && !mSerialNumber.equals(f.mSerialNumber))
+            return false;
+
+        // check device class/subclass/protocol
+        return matches(f.mClass, f.mSubclass, f.mProtocol);
+    }
 
     @Override
     public boolean equals(final Object obj) {
@@ -321,14 +364,12 @@ public final class DeviceFilter {
                     || (filter.mSerialNumber == null && mSerialNumber != null)) {
                 return (false);
             }
-            //noinspection RedundantIfStatement
-            if ((filter.mManufacturerName != null && !mManufacturerName
-                    .equals(filter.mManufacturerName)) || (filter.mProductName != null && !mProductName
-                    .equals(filter.mProductName)) || (filter.mSerialNumber != null && !mSerialNumber
-                    .equals(filter.mSerialNumber))) {
-                return (false);
-            }
-            return (true);
+            return !((filter.mManufacturerName != null && mManufacturerName != null && !mManufacturerName
+                    .equals(filter.mManufacturerName))
+                    || (filter.mProductName != null && mProductName != null && !mProductName
+                    .equals(filter.mProductName))
+                    || (filter.mSerialNumber != null && mSerialNumber != null && !mSerialNumber
+                    .equals(filter.mSerialNumber)));
         }
         if (obj instanceof UsbDevice) {
             final UsbDevice device = (UsbDevice) obj;
