@@ -20,16 +20,21 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.camera.CameraActivity;
@@ -37,6 +42,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.instructions.InstructionActiv
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.ApiUtil;
 
 import java.io.InputStream;
 
@@ -44,11 +50,14 @@ public class BrandInfoActivity extends BaseActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private String mBrandCode;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brand_info);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         mBrandCode = getIntent().getStringExtra(Constant.BRAND);
 
@@ -90,8 +99,10 @@ public class BrandInfoActivity extends BaseActivity {
                                 new String[]{Manifest.permission.CAMERA},
                                 MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
-                        startCalibration();
+                        startCamera();
                     }
+                } else {
+                    startCamera();
                 }
 
             }
@@ -112,20 +123,41 @@ public class BrandInfoActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+
+        final Activity activity = this;
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startCalibration();
+                    startCamera();
                 } else {
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
+                                    Snackbar.LENGTH_INDEFINITE)
+                            .setAction("SETTINGS", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ApiUtil.startInstalledAppDetailsActivity(activity);
+                                }
+                            });
 
+                    TypedValue typedValue = new TypedValue();
+                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                    snackbar.setActionTextColor(typedValue.data);
+                    View snackView = snackbar.getView();
+                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setHeight(200);
+                    textView.setLineSpacing(1.2f, 1.2f);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
             }
         }
     }
 
-    private void startCalibration() {
+    private void startCamera() {
         Intent intent = new Intent(getBaseContext(), CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constant.BRAND, mBrandCode);

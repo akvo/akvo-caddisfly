@@ -31,6 +31,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
@@ -134,18 +135,30 @@ public class ExternalActionActivity extends BaseActivity {
                     ((TextView) findViewById(R.id.textTitle)).setText(
                             CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
-                                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
+                        if (!AppPreferences.useExternalCamera()) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
+                                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                            ActivityCompat.requestPermissions(this,
-                                    new String[]{Manifest.permission.CAMERA},
-                                    MY_PERMISSIONS_REQUEST_CAMERA);
+                                    ActivityCompat.requestPermissions(this,
+                                            new String[]{Manifest.permission.CAMERA},
+                                            MY_PERMISSIONS_REQUEST_CAMERA);
+                                } else {
+                                    // Permission granted
+                                    initializeTest();
+                                }
+                            } else {
+                                // SDK older than Marshmallow
+                                initializeTest();
+                            }
                         } else {
-                            initializeTest();
+                            // Using external camera. Camera permission not required
+                            startTest(caddisflyResourceUuid);
                         }
                     } else {
-                        initializeTest();
+                        // Test does not require camera
+                        startTest(caddisflyResourceUuid);
                     }
                 }
             }
@@ -155,17 +168,15 @@ public class ExternalActionActivity extends BaseActivity {
 
     private void initializeTest() {
 
-        if (AppPreferences.useExternalCamera() ||
-                !CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
-                CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                        R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        }
-                )) {
+        if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }
+        )) {
             startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
         }
     }
@@ -180,7 +191,8 @@ public class ExternalActionActivity extends BaseActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initializeTest();
                 } else {
-                    finish();
+                    Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show();
+                    ApiUtil.startInstalledAppDetailsActivity(this);
                 }
             }
         }

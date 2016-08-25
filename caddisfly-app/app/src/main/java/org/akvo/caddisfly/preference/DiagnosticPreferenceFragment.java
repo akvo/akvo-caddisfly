@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,12 +31,14 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -44,6 +47,7 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 /**
@@ -54,6 +58,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private ListView list;
     private DiagnosticPreviewFragment diagnosticPreviewFragment;
+    private View coordinatorLayout;
 
     public DiagnosticPreferenceFragment() {
         // Required empty public constructor
@@ -142,8 +147,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                             if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(getActivity(),
                                     Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.CAMERA},
+                                requestPermissions(new String[]{Manifest.permission.CAMERA},
                                         MY_PERMISSIONS_REQUEST_CAMERA);
                             } else {
                                 startPreview();
@@ -196,6 +200,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             });
         }
 
+        coordinatorLayout = rootView;
         return rootView;
     }
 
@@ -211,12 +216,34 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startPreview();
+                } else {
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
+                                    Snackbar.LENGTH_INDEFINITE)
+                            .setAction("SETTINGS", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ApiUtil.startInstalledAppDetailsActivity(getActivity());
+                                }
+                            });
+
+                    TypedValue typedValue = new TypedValue();
+                    getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                    snackbar.setActionTextColor(typedValue.data);
+                    View snackView = snackbar.getView();
+                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setHeight(200);
+                    textView.setLineSpacing(1.2f, 1.2f);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
             }
         }

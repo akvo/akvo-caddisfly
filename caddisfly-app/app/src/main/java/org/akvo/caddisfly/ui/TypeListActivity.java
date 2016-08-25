@@ -17,15 +17,21 @@
 package org.akvo.caddisfly.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -36,15 +42,20 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private View coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_list);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
     }
 
     @Override
@@ -122,6 +133,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+
+        final Activity activity = this;
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
@@ -129,11 +142,31 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startCalibration();
                 } else {
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
+                                    Snackbar.LENGTH_INDEFINITE)
+                            .setAction("SETTINGS", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ApiUtil.startInstalledAppDetailsActivity(activity);
+                                }
+                            });
 
+                    TypedValue typedValue = new TypedValue();
+                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                    snackbar.setActionTextColor(typedValue.data);
+                    View snackView = snackbar.getView();
+                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setHeight(200);
+                    textView.setLineSpacing(1.2f, 1.2f);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
             }
         }
     }
+
 
     @Override
     public void onBackPressed() {
