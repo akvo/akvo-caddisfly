@@ -57,7 +57,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private ListView list;
-    private DiagnosticPreviewFragment diagnosticPreviewFragment;
     private View coordinatorLayout;
 
     public DiagnosticPreferenceFragment() {
@@ -208,7 +207,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (isCameraAvailable()) {
             CaddisflyApp.getApp().initializeCurrentTest();
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
-            diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
+            DiagnosticPreviewFragment diagnosticPreviewFragment = DiagnosticPreviewFragment.newInstance();
             diagnosticPreviewFragment.show(ft, "diagnosticPreviewFragment");
         }
     }
@@ -226,7 +225,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
-                                    Snackbar.LENGTH_INDEFINITE)
+                                    Snackbar.LENGTH_LONG)
                             .setAction("SETTINGS", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

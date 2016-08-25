@@ -58,6 +58,18 @@
             tools:text="23.00" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="Color (Lab): 0.67, -4.05, 1.77" />
+
     <ImageView
         android:id="@+id/image_result"
         android:layout_width="match_parent"

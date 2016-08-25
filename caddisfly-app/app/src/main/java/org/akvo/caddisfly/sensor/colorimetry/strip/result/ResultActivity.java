@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
@@ -416,6 +417,14 @@ public class ResultActivity extends BaseActivity {
                 if (!invalid) {
                     if (colorDetected != null && !grouped) {
                         circleColor.setColor(colorDetected.getColor());
+                    }
+
+                    if (AppPreferences.isDiagnosticMode()) {
+                        TextView textColor = (TextView) itemResult.findViewById(R.id.text_color);
+                        double[] colorValues = colorDetected.getLab().val;
+                        double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
+                        textColor.setText(String.format(Locale.US, "%.2f, %.2f, %.2f", labPoint[0], labPoint[1], labPoint[2]));
+                        textColor.setVisibility(View.VISIBLE);
                     }
 
                     TextView textView = (TextView) itemResult.findViewById(R.id.text_result);

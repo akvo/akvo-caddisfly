@@ -20,14 +20,14 @@ apply plugin: 'com.github.ben-manes.versions'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24.0.1'
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 24
-        versionName "0.120 Beta"
-        versionCode 120
+        versionName "0.122 Beta"
+        versionCode 122
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

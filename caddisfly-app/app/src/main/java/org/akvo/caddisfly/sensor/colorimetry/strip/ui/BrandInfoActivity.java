@@ -134,7 +134,7 @@ public class BrandInfoActivity extends BaseActivity {
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
-                                    Snackbar.LENGTH_INDEFINITE)
+                                    Snackbar.LENGTH_LONG)
                             .setAction("SETTINGS", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

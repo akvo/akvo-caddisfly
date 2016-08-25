@@ -240,7 +240,7 @@ public class CalibrateListActivity extends BaseActivity
         mPosition = id;
         Swatch swatch = currentTestInfo.getSwatch(mPosition);
 
-        if (!ApiUtil.isCameraInUse(this, null)) {
+        if (AppPreferences.useExternalCamera() || !ApiUtil.isCameraInUse(this, null)) {
             final Intent intent = new Intent(getIntent());
             if (AppPreferences.useExternalCamera()) {
                 intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);

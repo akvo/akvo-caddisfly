@@ -111,8 +111,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     private void startCalibration() {
         //Only start the colorimetry calibration if the device has a camera flash
-        if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate,
-                R.string.ok, null)) {
+        if (AppPreferences.useExternalCamera() ||
+                CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate, R.string.ok, null)) {
 
             final Intent intent;
             if (getIntent().getBooleanExtra("runTest", false)) {
@@ -127,7 +127,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
-
     }
 
     @Override
@@ -144,7 +143,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
-                                    Snackbar.LENGTH_INDEFINITE)
+                                    Snackbar.LENGTH_LONG)
                             .setAction("SETTINGS", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
