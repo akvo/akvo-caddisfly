@@ -27,6 +27,7 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -197,7 +198,6 @@ public class MainActivityTest {
                 "      \"uuid\": [\n" +
                 "        \"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\"\n" +
                 "      ],\n" +
-                "      \"code\": \"fluor\",\n" +
                 "      \"unit\": \"ppm\",\n" +
                 "      \"calibrate\": \"true\",\n" +
                 "      \"ranges\": \"0,0.5,1,1.5,2\",\n" +
@@ -290,7 +290,7 @@ public class MainActivityTest {
                 "}\n";
         TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
         assert testInfo != null;
-        assertEquals("FLUOR", testInfo.getCode());
+        assertEquals(SensorConstants.FLUORIDE_ID, testInfo.getCode());
     }
 
     @Test

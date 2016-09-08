@@ -38,6 +38,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
@@ -93,9 +94,27 @@ public class ExternalActionActivity extends BaseActivity {
                 CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 
                 //Extract the 5 letter code in the question and load the test config
-                CaddisflyApp.getApp().loadTestConfiguration(
-                        questionTitle.substring(Math.max(0, questionTitle.length() - 5))
-                );
+                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5));
+
+                //todo: remove when obsolete
+                switch (code) {
+                    case "fluor":
+                        caddisflyResourceUuid = SensorConstants.FLUORIDE_ID;
+                        break;
+
+                    case "chlor":
+                        caddisflyResourceUuid = SensorConstants.FREE_CHLORINE_ID;
+                        break;
+
+                    case "econd":
+                        caddisflyResourceUuid = SensorConstants.ELECTRICAL_CONDUCTIVITY_ID;
+                        break;
+
+                    default:
+                        caddisflyResourceUuid = "";
+                }
+
+                CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
                     ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));

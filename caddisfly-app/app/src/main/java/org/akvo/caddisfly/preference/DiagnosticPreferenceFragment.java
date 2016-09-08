@@ -45,7 +45,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ListViewUtil;
@@ -155,18 +154,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                             startPreview();
                         }
                     }
-                    return true;
-                }
-            });
-        }
-
-        Preference sensorPreference = findPreference("ecSensor");
-        if (sensorPreference != null) {
-            sensorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    CaddisflyApp.getApp().loadTestConfiguration("ECOND");
-                    final Intent intent = new Intent(getActivity(), SensorActivity.class);
-                    startActivity(intent);
                     return true;
                 }
             });

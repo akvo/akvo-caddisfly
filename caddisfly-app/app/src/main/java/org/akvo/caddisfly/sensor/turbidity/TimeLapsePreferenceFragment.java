@@ -28,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +52,6 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
-
-        //String testCode = getArguments().getString("testCode");
 
         final EditTextPreference sampleIntervalPreference =
                 (EditTextPreference) findPreference(getString(R.string.colif_IntervalMinutesKey));
@@ -105,6 +105,27 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment {
                     return false;
                 }
             });
+        }
+
+        final EditTextPreference rgbPreference =
+                (EditTextPreference) findPreference(getString(R.string.turbidityLedRgbKey));
+        if (rgbPreference != null) {
+            rgbPreference.setSummary(rgbPreference.getText());
+
+            rgbPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    PreferencesUtil.setString(getActivity(),
+                            CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                            R.string.ledRgbKey, String.valueOf(newValue));
+
+                    rgbPreference.setText(String.valueOf(newValue));
+                    rgbPreference.setSummary(String.valueOf(newValue));
+                    return false;
+                }
+            });
+
         }
 
         return rootView;

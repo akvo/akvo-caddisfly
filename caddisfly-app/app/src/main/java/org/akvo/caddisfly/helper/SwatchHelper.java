@@ -191,6 +191,11 @@ public final class SwatchHelper {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isSwatchListValid(ArrayList<Swatch> swatches) {
         boolean result = true;
+
+        if (swatches.size() < 1) {
+            return false;
+        }
+
         Swatch previousSwatch = swatches.get(0);
         for (Swatch swatch1 : swatches) {
             if (swatch1.getColor() == Color.TRANSPARENT || swatch1.getColor() == Color.BLACK) {
@@ -411,7 +416,8 @@ public final class SwatchHelper {
     }
 
     public static String generateCalibrationFile(Context context, String testCode, String batchCode,
-                                                 long calibrationDate, long expiryDate) {
+                                                 long calibrationDate, long expiryDate, String ledRgb,
+                                                 boolean backdropDetect) {
 
         final StringBuilder calibrationDetails = new StringBuilder();
 
@@ -430,6 +436,12 @@ public final class SwatchHelper {
         calibrationDetails.append("\n");
         calibrationDetails.append("Calibrated: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
+        calibrationDetails.append("\n");
+        calibrationDetails.append("LED RGB: ");
+        calibrationDetails.append(ledRgb);
+        calibrationDetails.append("\n");
+        calibrationDetails.append("DetectBackdrop: ");
+        calibrationDetails.append(String.valueOf(backdropDetect));
         calibrationDetails.append("\n");
         calibrationDetails.append("ReagentExpiry: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(expiryDate));
@@ -462,6 +474,8 @@ public final class SwatchHelper {
 
         if (calibrationDetails != null) {
 
+            PreferencesUtil.setBoolean(context, R.string.noBackdropDetectionKey, false);
+
             for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
                 String line = calibrationDetails.get(i);
                 if (!line.contains("=")) {
@@ -492,6 +506,18 @@ public final class SwatchHelper {
                         PreferencesUtil.setString(context, testCode,
                                 R.string.batchNumberKey, batch);
                     }
+
+                    if (line.contains("LED RGB:")) {
+                        String rgb = line.substring(line.indexOf(":") + 1).trim();
+                        PreferencesUtil.setString(context, testCode,
+                                R.string.ledRgbKey, rgb);
+                    }
+
+                    if (line.contains("DetectBackdrop:")) {
+                        Boolean detect = !Boolean.valueOf(line.substring(line.indexOf(":") + 1).trim());
+                        PreferencesUtil.setBoolean(context, R.string.noBackdropDetectionKey, detect);
+                    }
+
                     calibrationDetails.remove(i);
                 }
             }

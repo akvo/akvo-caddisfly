@@ -52,25 +52,6 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Returns a TestInfo instance filled with test config for the given test code
-     *
-     * @param testCode the test code
-     * @return the TestInfo instance
-     */
-    @Deprecated
-    public static TestInfo loadTestConfigurationByCode(String testCode) {
-
-        ArrayList<TestInfo> tests = loadConfigurationsForAllTests();
-
-        for (TestInfo test : tests) {
-            if (test.getCode().equalsIgnoreCase(testCode)) {
-                return test;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns a TestInfo instance filled with test config for the given uuid
      *
      * @param uuid the test uuid
@@ -224,22 +205,32 @@ public final class TestConfigHelper {
                         monthsValid = item.getInt("monthsValid");
                     }
 
+
                     String[] defaultColorsArray = new String[0];
                     if (item.has("defaultColors")) {
                         String defaultColors = item.getString("defaultColors");
                         defaultColorsArray = defaultColors.split(",");
                     }
 
-                    //Create TestInfo object
-                    tests.add(new TestInfo(
+                    TestInfo testInfo = new TestInfo(
                             namesHashTable,
-                            item.has("code") ? item.getString("code").toUpperCase() : uuids.get(0),
                             item.has("unit") ? item.getString("unit") : "",
                             type,
                             //if calibrate not specified then default to false otherwise use specified value
                             item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"),
                             rangesArray, defaultColorsArray,
-                            dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray));
+                            dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray);
+
+
+                    boolean useGrayScale = false;
+                    if (item.has("grayScale")) {
+                        useGrayScale = item.getBoolean("grayScale");
+                    }
+
+                    testInfo.setUseGrayScale(useGrayScale);
+
+                    //Create TestInfo object
+                    tests.add(testInfo);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

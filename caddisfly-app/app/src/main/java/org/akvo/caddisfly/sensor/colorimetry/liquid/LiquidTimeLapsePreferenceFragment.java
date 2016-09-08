@@ -28,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +52,6 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
-
-        //String testCode = getArguments().getString("testCode");
 
         final EditTextPreference sampleIntervalPreference =
                 (EditTextPreference) findPreference(getString(R.string.fluor_IntervalMinutesKey));
@@ -108,6 +108,16 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
                     return false;
                 }
             });
+        }
+
+        final Preference rgbPreference =
+                findPreference(getString(R.string.ledRgbKey));
+        if (rgbPreference != null) {
+            String rgb = PreferencesUtil.getString(getActivity(),
+                    CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                    R.string.ledRgbKey, "15,15,15");
+
+            rgbPreference.setSummary(rgb);
         }
 
         return rootView;

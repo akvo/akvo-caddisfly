@@ -55,13 +55,11 @@ class CameraHandler implements Camera.PictureCallback {
 
     private final PowerManager.WakeLock wakeLock;
     private final Context mContext;
-    private final String mTestCode;
     private Camera mCamera;
     private String mSavePath;
 
-    public CameraHandler(Context context, String testCode) {
+    public CameraHandler(Context context) {
         mContext = context;
-        mTestCode = testCode;
 
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "CameraSensorWakeLock");
@@ -177,8 +175,8 @@ class CameraHandler implements Camera.PictureCallback {
         }
 
         if (mSupportedFlashModes != null) {
-            if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_ON))) {
-                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+            if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
             }
         }
 
@@ -227,61 +225,56 @@ class CameraHandler implements Camera.PictureCallback {
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(new Date());
 
-        String fileName = "";
-        File folder = null;
+        String fileName;
+        File folder;
 
-        switch (mTestCode) {
-            case "fluor":
+        Bitmap bitmap = ImageUtil.getBitmap(data);
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-                Bitmap bitmap = ImageUtil.getBitmap(data);
+        if (testInfo.isUseGrayScale()) {
 
-                Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+            bitmap = ImageUtil.rotateImage(bitmap, 90);
+            bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
 
-                //Extract the color from the photo which will be used for comparison
-                ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
-                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+            Bitmap croppedGrayBitmap = getGrayscale(bitmap);
+            int[] brightnessValues = getContrast(croppedGrayBitmap);
 
-                CaddisflyApp.getApp().setDefaultTest();
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-                ResultDetail resultDetail = SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
-                        testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
-                fileName = date + "_" + resultDetail.getResult() + "_" + batteryPercent;
-
-                folder = FileHelper.getFilesDir(FileHelper.FileType.FLUORIDE_IMAGE, mSavePath);
-
-                break;
-
-            case "colif":
-
-                bitmap = ImageUtil.getBitmap(data);
-                bitmap = ImageUtil.rotateImage(bitmap, 90);
-                bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
-
-                Bitmap croppedGrayBitmap = getGrayscale(bitmap);
-                int[] brightnessValues = getContrast(croppedGrayBitmap);
-
-                int blackIndex = 0;
-                for (int i = 0; i < brightnessValues.length; i++) {
-                    if (brightnessValues[blackIndex] > brightnessValues[i]) {
-                        blackIndex = i;
-                    }
+            int blackIndex = 0;
+            for (int i = 0; i < brightnessValues.length; i++) {
+                if (brightnessValues[blackIndex] > brightnessValues[i]) {
+                    blackIndex = i;
                 }
+            }
 
-                int whiteIndex = 0;
-                for (int i = 0; i < brightnessValues.length; i++) {
-                    if (brightnessValues[whiteIndex] < brightnessValues[i]) {
-                        whiteIndex = i;
-                    }
+            int whiteIndex = 0;
+            for (int i = 0; i < brightnessValues.length; i++) {
+                if (brightnessValues[whiteIndex] < brightnessValues[i]) {
+                    whiteIndex = i;
                 }
+            }
 
-                fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
+            fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
 
-                folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE, mSavePath);
+            folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
 
-                break;
+        } else {
+
+            bitmap = ImageUtil.rotateImage(bitmap, 90);
+
+            Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+            //Extract the color from the photo which will be used for comparison
+            ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
+                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+            CaddisflyApp.getApp().setDefaultTest();
+            ResultDetail resultDetail = SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
+                    testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
+            fileName = date + "_" + resultDetail.getResult() + "_" + batteryPercent;
+
+            folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
         }
-
 
         File photo = new File(folder, fileName + ".jpg");
 

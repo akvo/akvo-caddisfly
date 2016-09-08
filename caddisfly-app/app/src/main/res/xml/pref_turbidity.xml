@@ -30,5 +30,11 @@
             android:maxLength="2"
             android:numeric="integer"
             android:title="Number of samples" />
+        <EditTextPreference
+            android:digits="1234567890.,"
+            android:inputType="numberDecimal"
+            android:key="@string/turbidityLedRgbKey"
+            android:maxLength="11"
+            android:title="LED RGB" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

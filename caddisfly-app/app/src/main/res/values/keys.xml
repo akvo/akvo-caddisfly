@@ -34,10 +34,11 @@
     <string name="totalSuccessfulTestsKey" translateable="false">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey" translateable="false">totalFailedTests</string>
     <string name="turbiditySavePathKey" translateable="false">turbiditySavePath</string>
-    <string name="fluor_IntervalMinutesKey" translateable="false">fluor_IntervalMinutes</string> 
-    <string name="fluor_NumberOfSamplesKey" translateable="false">fluor_NumberOfSamples</string>
-    <string name="colif_IntervalMinutesKey" translateable="false">colif_IntervalMinutes</string>
-    <string name="colif_NumberOfSamplesKey" translateable="false">colif_NumberOfSamples</string>
+    <string name="fluor_IntervalMinutesKey" translateable="false">f0f3c1dd-89af-49f1-83e7-bcc31c3006cf_IntervalMinutes</string>
+     
+    <string name="fluor_NumberOfSamplesKey" translateable="false">f0f3c1dd-89af-49f1-83e7-bcc31c3006cf_NumberOfSamples</string>
+    <string name="colif_IntervalMinutesKey" translateable="false">df3d1009-2112-4d95-a6f9-fdc4b5633ec9_IntervalMinutes</string>
+    <string name="colif_NumberOfSamplesKey" translateable="false">df3d1009-2112-4d95-a6f9-fdc4b5633ec9_NumberOfSamples</string>
     <string name="ledBrightnessKey">ledBrightness</string>
     <string name="ledRgbKey">ledRgb</string>
     <string name="externalCameraMultiDeviceModeKey">externalCameraMultiDeviceMode</string>

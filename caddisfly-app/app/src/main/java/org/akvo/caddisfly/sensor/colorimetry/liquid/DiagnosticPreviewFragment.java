@@ -111,8 +111,8 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
                 Bitmap croppedBitmap;
-                //todo: fix this hardcoding
-                if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+
+                if (testInfo.isUseGrayScale()) {
                     croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                             ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 

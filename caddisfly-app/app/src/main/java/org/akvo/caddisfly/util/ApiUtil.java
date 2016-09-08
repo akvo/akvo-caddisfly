@@ -126,7 +126,10 @@ public final class ApiUtil {
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String number = null;
         if (telephonyManager != null) {
-            number = telephonyManager.getDeviceId();
+            try {
+                number = telephonyManager.getDeviceId();
+            } catch (Exception ignored) {
+            }
         }
         if (number == null) {
             number = "No equipment Id";

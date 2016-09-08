@@ -71,12 +71,6 @@ public class FileHelper {
             case IMAGE:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
                 break;
-            case FLUORIDE_IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + FLUORIDE_IMAGE;
-                break;
-            case TURBIDITY_IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + TURBIDITY_IMAGE;
-                break;
         }
         File dir = new File(path);
         if (!subPath.isEmpty()) {
@@ -93,7 +87,7 @@ public class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, CONFIG, DOWNLOAD, IMAGE, FLUORIDE_IMAGE, TURBIDITY_IMAGE
+        CALIBRATION, CONFIG, DOWNLOAD, IMAGE
     }
 
 }

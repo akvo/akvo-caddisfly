@@ -118,7 +118,7 @@
             android:textColor="#5b5b5b"
             android:textSize="18dp"
             tools:ignore="HardcodedText,SpUsage"
-            tools:text="Sampled every 2 minutes" />
+            tools:text="Every 2 minutes" />
 
     </LinearLayout>
 

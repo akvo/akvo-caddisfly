@@ -100,7 +100,7 @@ public class AnalysisTest {
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
 
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
+        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
 
         resetLanguage();

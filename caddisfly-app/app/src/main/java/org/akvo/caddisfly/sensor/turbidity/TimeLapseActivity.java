@@ -36,6 +36,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -70,39 +72,36 @@ public class TimeLapseActivity extends BaseActivity {
     private Calendar futureDate;
     private Runnable runnable;
     private Handler handler;
-    private String mTestCode;
+    private String mUuid;
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             sound.playShortResource(R.raw.beep);
 
-            File folder;
-            mTestCode = getIntent().getDataString();
-            switch (mTestCode) {
-                case "fluor":
-                    folder = FileHelper.getFilesDir(FileHelper.FileType.FLUORIDE_IMAGE,
-                            intent.getStringExtra("savePath"));
-                    break;
-                default:
-                    folder = FileHelper.getFilesDir(FileHelper.FileType.TURBIDITY_IMAGE,
-                            intent.getStringExtra("savePath"));
-            }
+            mUuid = getIntent().getDataString();
 
-            int delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    mTestCode + "_IntervalMinutes", "1"));
+            int delayMinute;
+            int numberOfSamples;
 
-            int numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    mTestCode + "_NumberOfSamples", "1"));
+            File folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE,
+                    intent.getStringExtra("savePath"));
+
+            delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                    mUuid + "_IntervalMinutes", "1"));
+
+            numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                    mUuid + "_NumberOfSamples", "1"));
+
 
             File[] files = folder.listFiles();
             if (files != null) {
                 if (files.length >= numberOfSamples) {
-                    TurbidityConfig.stopRepeatingAlarm(context, mTestCode);
+                    TurbidityConfig.stopRepeatingAlarm(context, mUuid);
                     finish();
                 } else {
-                    textSampleCount.setText(String.format(Locale.getDefault(), "%s: %d",
-                            "Samples done", files.length));
+                    textSampleCount.setText(String.format(Locale.getDefault(), "%s: %d of %d",
+                            "Samples done", files.length, numberOfSamples));
                     futureDate = Calendar.getInstance();
                     futureDate.add(Calendar.MINUTE, delayMinute);
                 }
@@ -110,27 +109,34 @@ public class TimeLapseActivity extends BaseActivity {
         }
     };
 
+    private boolean showTimer = true;
+
     private void startCountdownTimer() {
+        showTimer = true;
         handler = new Handler();
+        handler.removeCallbacks(runnable);
         runnable = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 1000);
-                try {
-                    Calendar currentDate = Calendar.getInstance();
-                    if (!currentDate.after(futureDate)) {
-                        long diff = futureDate.getTimeInMillis() - currentDate.getTimeInMillis();
-                        long days = diff / (24 * 60 * 60 * 1000);
-                        diff -= days * (24 * 60 * 60 * 1000);
-                        long hours = diff / (60 * 60 * 1000);
-                        diff -= hours * (60 * 60 * 1000);
-                        long minutes = diff / (60 * 1000);
-                        diff -= minutes * (60 * 1000);
-                        long seconds = diff / 1000;
-                        textCountdown.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
+                if (showTimer) {
+                    handler.postDelayed(this, 1000);
+                    try {
+                        Calendar currentDate = Calendar.getInstance();
+                        if (futureDate != null && !currentDate.after(futureDate)) {
+                            long diff = futureDate.getTimeInMillis() - currentDate.getTimeInMillis();
+                            long days = diff / (24 * 60 * 60 * 1000);
+                            diff -= days * (24 * 60 * 60 * 1000);
+                            long hours = diff / (60 * 60 * 1000);
+                            diff -= hours * (60 * 60 * 1000);
+                            long minutes = diff / (60 * 1000);
+                            diff -= minutes * (60 * 1000);
+                            long seconds = diff / 1000;
+                            textCountdown.setText(String.format(Locale.getDefault(),
+                                    "%02d:%02d:%02d", hours, minutes, seconds));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         };
@@ -142,7 +148,7 @@ public class TimeLapseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_lapse);
 
-        mTestCode = getIntent().getDataString();
+        mUuid = getIntent().getDataString();
 
         setTitle("Analyzing");
 
@@ -151,33 +157,29 @@ public class TimeLapseActivity extends BaseActivity {
         final LinearLayout layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
         final LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
 
-        Fragment fragment = null;
+        Fragment fragment;
         Bundle bundle = new Bundle();
 
 
         final TextView textTitle = (TextView) findViewById(R.id.textTitle);
-        switch (mTestCode) {
-            case "fluor":
-                CaddisflyApp.getApp().loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
 
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+        final TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        switch (testInfo.getCode()) {
+            case SensorConstants.FLUORIDE_ID:
                 fragment = new LiquidTimeLapsePreferenceFragment();
-                bundle.putString("textCode", mTestCode);
-                fragment.setArguments(bundle);
-
-                textTitle.setText(R.string.fluoride);
                 break;
-            case "colif":
-                CaddisflyApp.getApp().loadTestConfigurationByUuid("df3d1009-2112-4d95-a6f9-fdc4b5633ec9");
 
-                fragment = new TimeLapsePreferenceFragment();
-                bundle.putString("textCode", mTestCode);
-                fragment.setArguments(bundle);
-
-                textTitle.setText(R.string.coliforms);
-                break;
             default:
-                finish();
+                fragment = new TimeLapsePreferenceFragment();
+                break;
         }
+
+        bundle.putString("uuid", mUuid);
+        fragment.setArguments(bundle);
+
+        textTitle.setText(testInfo.getName());
 
         getFragmentManager().beginTransaction()
                 .add(R.id.layoutContent4, fragment)
@@ -186,7 +188,7 @@ public class TimeLapseActivity extends BaseActivity {
         layoutWait.setVisibility(View.VISIBLE);
         layoutDetails.setVisibility(View.GONE);
 
-        if (TurbidityConfig.isAlarmRunning(this, mTestCode)) {
+        if (TurbidityConfig.isAlarmRunning(this, mUuid)) {
             Log.e("TimeLapse", "Already Running Alarm");
         }
 
@@ -207,8 +209,10 @@ public class TimeLapseActivity extends BaseActivity {
 
                 Calendar startDate = Calendar.getInstance();
                 PreferencesUtil.setString(context, R.string.turbiditySavePathKey,
-                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
-                TurbidityConfig.setRepeatingAlarm(context, 25000, mTestCode);
+                        testInfo.getName() + File.separator +
+                                new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
+
+                TurbidityConfig.setRepeatingAlarm(context, 25000, mUuid);
 
                 String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
                 ((TextView) findViewById(R.id.textSubtitle))
@@ -219,7 +223,7 @@ public class TimeLapseActivity extends BaseActivity {
 
                 TextView textInterval = (TextView) findViewById(R.id.textInterval);
                 int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                        mTestCode + "_IntervalMinutes", "1"));
+                        mUuid + "_IntervalMinutes", "1"));
 
                 textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
 
@@ -232,6 +236,7 @@ public class TimeLapseActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        showTimer = false;
         handler.removeCallbacks(runnable);
     }
 
@@ -245,10 +250,10 @@ public class TimeLapseActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        showTimer = false;
         handler.removeCallbacks(runnable);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
+        TurbidityConfig.stopRepeatingAlarm(this, mUuid);
         overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
@@ -264,13 +269,13 @@ public class TimeLapseActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-
+        showTimer = false;
         handler.removeCallbacks(runnable);
 
         Toast.makeText(this, "Test cancelled", Toast.LENGTH_LONG).show();
 
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        TurbidityConfig.stopRepeatingAlarm(this, mTestCode);
+        TurbidityConfig.stopRepeatingAlarm(this, mUuid);
     }
 }

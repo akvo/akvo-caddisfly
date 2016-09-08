@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.FileUtil;
 import org.hamcrest.Matchers;
 
@@ -191,7 +192,7 @@ class TestHelper {
     }
 
     public static void saveCalibration(String name) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, "FLUOR");
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
 
         FileUtil.saveToFile(path, name, calibrationHashMap.get(name));
     }
@@ -211,7 +212,7 @@ class TestHelper {
             }
         }
 
-        mDevice.findObject(By.text("caddisfly test")).click();
+        mDevice.findObject(By.text("Caddisfly Tests")).click();
     }
 
     public static void enterDiagnosticMode() {

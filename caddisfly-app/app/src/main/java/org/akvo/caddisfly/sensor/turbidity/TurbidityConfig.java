@@ -31,11 +31,11 @@ class TurbidityConfig {
     public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
     private static final int INTENT_REQUEST_CODE = 1000;
 
-    public static void setRepeatingAlarm(Context context, int initialDelay, String testCode) {
+    public static void setRepeatingAlarm(Context context, int initialDelay, String uuid) {
 
         int mDelayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                testCode + "_IntervalMinutes", "1"));
-        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, testCode);
+                uuid + "_IntervalMinutes", "1"));
+        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, uuid);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         long delay = 6 + (mDelayMinute * 60000);
@@ -52,22 +52,22 @@ class TurbidityConfig {
         }
     }
 
-    private static PendingIntent getPendingIntent(Context context, int flag, String testCode) {
+    private static PendingIntent getPendingIntent(Context context, int flag, String uuid) {
         Intent intent = new Intent(context, TurbidityStartReceiver.class);
         intent.setAction(TurbidityConfig.ACTION_ALARM_RECEIVER);
         String savePath = PreferencesUtil.getString(context, R.string.turbiditySavePathKey, "");
         intent.putExtra("savePath", savePath);
-        intent.putExtra("testCode", testCode);
+        intent.putExtra("uuid", uuid);
 
         return PendingIntent.getBroadcast(context, TurbidityConfig.INTENT_REQUEST_CODE, intent, flag);
     }
 
-    public static boolean isAlarmRunning(Context context, String testCode) {
-        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, testCode) != null;
+    public static boolean isAlarmRunning(Context context, String uuid) {
+        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid) != null;
     }
 
-    public static void stopRepeatingAlarm(Context context, String testCode) {
-        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, testCode);
+    public static void stopRepeatingAlarm(Context context, String uuid) {
+        PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid);
         if (pendingIntent != null) {
             pendingIntent.cancel();
         }

@@ -71,11 +71,17 @@ public class SensorActivity extends BaseActivity {
     private String mReceivedData = "";
     private UsbService usbService;
     private MyHandler mHandler;
+    private ImageView imageUsbConnection;
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
+            if (usbService.isUsbConnected()) {
+                textSubtitle.setText(R.string.sensorConnected);
+                imageUsbConnection.animate().alpha(0f).setDuration(500);
+                progressWait.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -83,7 +89,6 @@ public class SensorActivity extends BaseActivity {
             usbService = null;
         }
     };
-    private ImageView imageUsbConnection;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -201,6 +206,8 @@ public class SensorActivity extends BaseActivity {
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);
 
+        textSubtitle.setText(R.string.deviceConnectSensor);
+
         mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
@@ -272,7 +279,7 @@ public class SensorActivity extends BaseActivity {
         mReadData.setLength(0);
         progressWait.setVisibility(View.GONE);
         layoutResult.animate().alpha(0f).setDuration(500);
-        imageUsbConnection.animate().alpha(0.9f).setDuration(1000);
+        imageUsbConnection.animate().alpha(0.9f).setDuration(1500);
         buttonAcceptResult.setVisibility(View.GONE);
         textSubtitle.setText(R.string.deviceConnectSensor);
 
@@ -393,7 +400,6 @@ public class SensorActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     /*

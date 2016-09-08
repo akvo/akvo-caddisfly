@@ -196,10 +196,10 @@ public class CaddisflyApp extends Application {
      * Initialize the current test by loading the configuration and calibration information
      */
     public void initializeCurrentTest() {
-        if (mCurrentTestInfo == null || mCurrentTestInfo.getCode().isEmpty()) {
+        if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfiguration(mCurrentTestInfo.getCode());
+            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid().get(0));
         }
     }
 
@@ -214,31 +214,6 @@ public class CaddisflyApp extends Application {
             mCurrentTestInfo = tests.get(0);
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
                 loadCalibratedSwatches(mCurrentTestInfo);
-            }
-        }
-    }
-
-    /**
-     * Load the test configuration for the given test code
-     *
-     * @param testCode the test code
-     * @deprecated use #loadTestConfigurationByUuid(String uuid) instead
-     */
-    @Deprecated
-    public void loadTestConfiguration(String testCode) {
-
-        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(testCode.toUpperCase());
-
-        if (mCurrentTestInfo != null) {
-            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(mCurrentTestInfo);
-
-                if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
-                    try {
-                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
-                    } catch (Exception ignored) {
-                    }
-                }
             }
         }
     }

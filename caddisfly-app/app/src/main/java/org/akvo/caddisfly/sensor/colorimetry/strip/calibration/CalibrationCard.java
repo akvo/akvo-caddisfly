@@ -332,7 +332,7 @@ public class CalibrationCard {
             BdiSq[i] = Bd * iSq;
         }
 
-        // TODO we can also improve the performance of the i,ii term, if we want, but it won't make much difference.
+        // We can also improve the performance of the i,ii term, if we want, but it won't make much difference.
         for (int i = 0; i < imgRows; i++) { // y
             imgLab.get(i, 0, temp);
             ii3 = 0;

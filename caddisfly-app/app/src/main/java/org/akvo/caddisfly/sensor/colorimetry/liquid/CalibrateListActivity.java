@@ -311,7 +311,9 @@ public class CalibrateListActivity extends BaseActivity
                 testCode,
                 PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""),
                 PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey),
-                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey));
+                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey),
+                PreferencesUtil.getString(this, testCode, R.string.ledRgbKey, "255 255 255"),
+                !PreferencesUtil.getBoolean(this, R.string.noBackdropDetectionKey, false));
 
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
 

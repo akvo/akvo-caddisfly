@@ -76,10 +76,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutTitleBar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="152dp"
         android:indeterminate="true"
         android:indeterminateTint="?progressTint"
         android:indeterminateTintMode="src_in"
+        android:visibility="gone"
         tools:ignore="UnusedAttribute" />
 
     <LinearLayout

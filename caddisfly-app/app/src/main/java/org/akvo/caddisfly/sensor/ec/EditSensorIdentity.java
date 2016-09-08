@@ -40,7 +40,6 @@ public class EditSensorIdentity extends DialogFragment {
      *
      * @return A new instance of fragment EditSensorIdentity.
      */
-    // TODO: Rename and change types and number of parameters
     public static EditSensorIdentity newInstance() {
         EditSensorIdentity fragment = new EditSensorIdentity();
         Bundle args = new Bundle();
@@ -154,7 +153,6 @@ public class EditSensorIdentity extends DialogFragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(String value);
     }
 

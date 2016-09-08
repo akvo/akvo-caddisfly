@@ -286,7 +286,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         }
         //else {
         //System.out.println("***listener is null");
-        //TODO what now?
         //}
     }
 

@@ -39,7 +39,6 @@ import java.util.Locale;
  */
 public class TestInfo {
     private final Hashtable names;
-    private final String code;
     private final ArrayList<String> uuid;
     private final String unit;
     private final ArrayList<Swatch> swatches;
@@ -57,14 +56,14 @@ public class TestInfo {
     private String batchNumber;
     private long calibrationDate;
     private long expiryDate;
+    private boolean useGrayScale;
 
-    public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
+    public TestInfo(Hashtable names, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
                     String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids,
                     JSONArray resultsArray) {
         this.names = names;
         this.testType = testType;
-        this.code = code;
         this.unit = unit;
         this.uuid = uuids;
         swatches = new ArrayList<>();
@@ -132,7 +131,6 @@ public class TestInfo {
     public TestInfo() {
         names = null;
         testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
-        this.code = "";
         this.uuid = new ArrayList<>();
         this.unit = "";
         swatches = new ArrayList<>();
@@ -171,7 +169,7 @@ public class TestInfo {
     }
 
     public String getCode() {
-        return code;
+        return uuid.size() > 0 ? uuid.get(0) : "";
     }
 
     public ArrayList<String> getUuid() {
@@ -301,6 +299,14 @@ public class TestInfo {
     public String getExpiryDateString() {
         return new SimpleDateFormat(SensorConstants.DATE_FORMAT, Locale.US)
                 .format(Calendar.getInstance().getTime());
+    }
+
+    public boolean isUseGrayScale() {
+        return useGrayScale;
+    }
+
+    public void setUseGrayScale(boolean useGrayScale) {
+        this.useGrayScale = useGrayScale;
     }
 
     public class SubTest {

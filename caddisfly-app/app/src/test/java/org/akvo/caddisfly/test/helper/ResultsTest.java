@@ -3,6 +3,7 @@ package org.akvo.caddisfly.test.helper;
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ public class ResultsTest {
     @Test
     public void testColorimetryResult() throws Exception {
 
-        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
+        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid(SensorConstants.FLUORIDE_ID);
         assert testInfo != null;
 
         ArrayList<String> results = new ArrayList<>();

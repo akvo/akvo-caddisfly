@@ -32,6 +32,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -77,11 +79,10 @@ public class MainActivity extends BaseActivity {
 
                 boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
-                    CaddisflyApp.getApp().loadTestConfiguration("ECOND");
+                    CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.ELECTRICAL_CONDUCTIVITY_ID);
                     final Intent intent = new Intent(getBaseContext(), SensorActivity.class);
                     intent.putExtra("internal", true);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 } else {
                     alertFeatureNotSupported();
                 }
@@ -92,6 +93,16 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startSurvey();
+            }
+        });
+
+        findViewById(R.id.buttonStripTest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+                caddisflyApp.initializeCurrentTest();
+                final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -181,7 +192,6 @@ public class MainActivity extends BaseActivity {
             }, 4000);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 

@@ -77,7 +77,7 @@ public class TypeListFragment extends ListFragment {
         setListAdapter(testTypesAdapter);
     }
 
-    //todo: Using deprecated onAttach as replacement does not work correctly for non support Fragment
+    //todo: Using deprecated onAttach because the replacement does not work correctly for non support Fragment
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity context) {

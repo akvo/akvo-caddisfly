@@ -352,7 +352,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
 
-        if (testInfo.getCode().isEmpty()) {
+        if (testInfo.getUuid().get(0).isEmpty()) {
             alertCouldNotLoadConfig();
         } else if (!mTestCompleted) {
             InitializeTest();
@@ -486,8 +486,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
                         Bitmap croppedBitmap;
-                        //todo: fix this hardcoding
-                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+
+                        if (testInfo.isUseGrayScale()) {
                             croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 
@@ -600,8 +600,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
                         Bitmap croppedBitmap;
-                        //todo: fix this hardcoding
-                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
+
+                        if (testInfo.isUseGrayScale()) {
                             croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 

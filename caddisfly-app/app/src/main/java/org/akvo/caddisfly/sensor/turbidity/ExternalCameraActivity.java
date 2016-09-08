@@ -14,13 +14,10 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
+package org.akvo.caddisfly.sensor.turbidity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,7 +27,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
@@ -39,6 +38,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
@@ -51,9 +51,9 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
@@ -63,21 +63,22 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ExternalCameraFragment;
 import org.akvo.caddisfly.sensor.ec.UsbService;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
-import org.json.JSONObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,14 +86,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 
 @SuppressWarnings("deprecation")
-public class ColorimetryLiquidExternalActivity extends BaseActivity
-        implements ResultDialogFragment.ResultDialogListener,
-        DiagnosticResultDialog.DiagnosticResultDialogListener,
-        CameraDialog.Cancelled {
-    private static final int RESULT_RESTART_TEST = 3;
+public class ExternalCameraActivity extends BaseActivity {
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -109,34 +105,11 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         }
     };
     private final Handler handler = new Handler();
-    private final String DEBUG_TAG = "EXT CAMERA";
-    private boolean mDebug;
+    boolean mDebug;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-//            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
-//            {
-//                if (mDebug) {
-//                    Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-//                }
-//            } else
-//            if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
-//            {
-//                if (mDebug) {
-//                    Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
-//                }
-//            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
-//            {
-//                if (mDebug) {
-//                    Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
-//                }
-//            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
-//            {
-//                if (mDebug) {
-//                    Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
-//                }
-//            } else
             if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB NOT SUPPORTED
             {
                 if (mDebug) {
@@ -145,22 +118,17 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             }
         }
     };
-    private int timeout = 0;
-    private long testStartTime = 0;
+    int timeout = 0;
+    long testStartTime = 0;
     private boolean mIsCalibration;
     private double mSwatchValue;
-    private int mDilutionLevel = 0;
-    private DiagnosticResultDialog mResultFragment;
     private TextView textDilution;
     private SoundPoolPlayer sound;
     private CameraDialog mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
     private ArrayList<Result> mResults;
-    private boolean mTestCompleted;
-    private boolean mHighLevelsFound;
-    //reference to last dialog opened so it can be dismissed on activity getting destroyed
-    private AlertDialog alertDialogToBeDestroyed;
+    //pointer to last dialog opened so it can be dismissed on activity getting destroyed
     private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
     private String mReceivedData = "";
@@ -179,6 +147,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         }
     };
     private Handler initializeHandler;
+    private String DEBUG_TAG = "EXT CAMERA";
     private ArrayList<String> requestQueue;
     private int mCommandIndex = 0;
     private boolean requestsDone;
@@ -202,6 +171,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             }
         }
     };
+    private String mSavePath;
     private final Runnable initializeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -255,6 +225,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
         }
 
+        //LocalBroadcastManager.getInstance(context).unregisterReceiver(context.mReceiver);
+        //if (value.trim().toUpperCase().contains("CAMERA ON")) {
         if (requestsDone && mCommandIndex < 99) {
             Toast.makeText(this, "Initializing", Toast.LENGTH_LONG).show();
             if (AppPreferences.getExternalCameraMultiDeviceMode()) {
@@ -270,6 +242,11 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
         Log.w(DEBUG_TAG, command);
 
+//        UsbDevice device;
+//        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+//        manager.openDevice()
+
+        //Log.d(DEBUG_TAG, "Request Result");
         if (usbService != null && usbService.isUsbConnected()) {
             if (mDebug) {
                 Toast.makeText(this, command.trim(), Toast.LENGTH_SHORT).show();
@@ -316,6 +293,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
         requestQueue.add("STATUS\r\n");
 
+        //String uuid = getIntent().getStringExtra("uuid");
+
         String rgb = PreferencesUtil.getString(this,
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.ledRgbKey, "255,255,255");
@@ -343,6 +322,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         super.onResume();
 
         acquireWakeLock();
+        //Intent intent = new Intent("custom-event-name");
+        //LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(intent);
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -362,6 +343,9 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 }
             }
         }, 1000);
+
+//        IntentFilter intentFilter = new IntentFilter("my-event");
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
@@ -381,11 +365,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (AppPreferences.useExternalCamera()) {
-            setContentView(R.layout.activity_external_colorimetry_liquid);
-        } else {
-            setContentView(R.layout.activity_colorimetry_liquid);
-        }
+        setContentView(R.layout.activity_external_colorimetry_liquid);
 
         setTitle("Analysis");
 
@@ -399,30 +379,19 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         Intent intent = getIntent();
         mIsCalibration = intent.getBooleanExtra("isCalibration", false);
         mSwatchValue = intent.getDoubleExtra("swatchValue", 0);
+        mSavePath = intent.getStringExtra("savePath");
+        String uuid = intent.getStringExtra("uuid");
+
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
         sound = new SoundPoolPlayer(this);
 
         textDilution = (TextView) findViewById(R.id.textDilution);
         TextView textSubtitle = (TextView) findViewById(R.id.textSubtitle);
 
-
         textSubtitle.setText("");
     }
 
-    private void InitializeTest() {
-
-        mTestCompleted = false;
-        mHighLevelsFound = false;
-
-        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
-        if (mUSBMonitor != null) {
-            List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-
-            if (usbDeviceList.size() > 0 && getCameraDevice(usbDeviceList) != null) {
-                startExternalTest();
-            }
-        }
-    }
 
     /**
      * Acquire a wake lock to prevent the screen from turning off during the analysis process
@@ -439,61 +408,12 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         }
     }
 
-    /**
-     * Show an error message dialog
-     *
-     * @param message the message to be displayed
-     * @param bitmap  any bitmap image to displayed along with error message
-     */
-    private void showError(String message, final Bitmap bitmap) {
-
-        releaseResources();
-
-        sound.playShortResource(R.raw.err);
-
-        alertDialogToBeDestroyed = AlertUtil.showError(this, R.string.error, message, bitmap, R.string.retry,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        InitializeTest();
-                    }
-                },
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        releaseResources();
-                        setResult(Activity.RESULT_CANCELED);
-                        finish();
-                    }
-                }, null
-        );
-    }
-
-    /**
-     * In diagnostic mode show the diagnostic results dialog
-     *
-     * @param testFailed    if test has failed then dialog knows to show the retry button
-     * @param result        the result shown to the user
-     * @param color         the color that was used to get above result
-     * @param isCalibration is it in calibration mode, then show only colors, no results
-     */
-    private void showDiagnosticResultDialog(boolean testFailed, String result, int color, boolean isCalibration) {
-        mResultFragment = DiagnosticResultDialog.newInstance(mResults, testFailed, result, color, isCalibration);
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        mResultFragment.setCancelable(false);
-        mResultFragment.show(ft, "gridDialog");
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
         mIsCalibration = getIntent().getBooleanExtra("isCalibration", false);
         mSwatchValue = getIntent().getDoubleExtra("swatchValue", 0);
-        mDilutionLevel = getIntent().getIntExtra("dilution", 0);
+        int mDilutionLevel = getIntent().getIntExtra("dilution", 0);
 
         switch (mDilutionLevel) {
             case 0:
@@ -506,6 +426,9 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 textDilution.setText(String.format(getString(R.string.timesDilution), 5));
                 break;
         }
+
+        String uuid = getIntent().getStringExtra("uuid");
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         if (!mIsCalibration) {
@@ -525,18 +448,16 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             );
         }
 
-        acquireWakeLock();
-
         Configuration conf = getResources().getConfiguration();
 
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
 
-        if (testInfo.getUuid().isEmpty()) {
+        if (testInfo.getCode().isEmpty()) {
             alertCouldNotLoadConfig();
-        } else if (!mTestCompleted) {
-            InitializeTest();
         }
+
+        acquireWakeLock();
     }
 
     /**
@@ -624,6 +545,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
 
         mIsFirstResult = true;
+
         mResults = new ArrayList<>();
         (new AsyncTask<Void, Void, Void>() {
 
@@ -638,11 +560,15 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
                 mCameraFragment = ExternalCameraFragment.newInstance();
                 mCameraFragment.setCancelable(true);
-
+                //if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
 
                 mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
                     @Override
                     public void onPictureTaken(final byte[] bytes, boolean completed) {
+                        //Bitmap bitmap = ImageUtil.getBitmap(bytes);
+                        //Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                        //getAnalyzedResult(croppedBitmap);
+                        //bitmap.recycle();
 
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
@@ -652,24 +578,23 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                             case Surface.ROTATION_0:
                                 rotation = 90;
                                 break;
+                            case Surface.ROTATION_90:
+                                rotation = 0;
+                                break;
                             case Surface.ROTATION_180:
                                 rotation = 270;
                                 break;
                             case Surface.ROTATION_270:
                                 rotation = 180;
                                 break;
-                            case Surface.ROTATION_90:
-                                rotation = 0;
-                                break;
                         }
 
                         bitmap = ImageUtil.rotateImage(bitmap, rotation);
-
                         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
                         Bitmap croppedBitmap;
-
-                        if (testInfo.isUseGrayScale()) {
+                        //todo: fix this hardcoding
+                        if (testInfo.getCode().equalsIgnoreCase("turbi")) {
                             croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 
@@ -683,11 +608,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                         if (!mIsFirstResult) {
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
-                            } else {
-                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
-                                mCameraFragment.stopCamera();
-                                mCameraFragment.dismiss();
-                                return;
                             }
                         }
                         mIsFirstResult = false;
@@ -697,16 +617,12 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                             mCameraFragment.dismiss();
                             releaseResources();
 
-                            AnalyzeFinalResult(bytes, croppedBitmap);
+                            AnalyzeFinalResult(bytes);
 
-                        } else {
-                            sound.playShortResource(R.raw.beep);
                         }
 
                     }
                 });
-
-                acquireWakeLock();
 
                 delayRunnable = new Runnable() {
                     @Override
@@ -723,7 +639,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            finish();
                         }
                     }
                 };
@@ -738,214 +653,22 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
      * <p/>
      * If the result value is too high then display the high contamination level message
      *
-     * @param data          image data to be displayed if error in analysis
-     * @param croppedBitmap cropped image used for analysis
+     * @param data image data to be displayed if error in analysis
      */
-    private void AnalyzeFinalResult(byte[] data, Bitmap croppedBitmap) {
+    private void AnalyzeFinalResult(byte[] data) {
 
         releaseResources();
+        String uuid = getIntent().getStringExtra("uuid");
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
-        boolean isCalibration = getIntent().getBooleanExtra("isCalibration", false);
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        String message = "";
-
-        if (mResults.size() == 0) {
-            // Analysis failed. Display error
-            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
-        } else {
-
-            mTestCompleted = true;
-
-            // Get the result
-            double result = SwatchHelper.getAverageResult(mResults);
-
-            // Check if contamination level is too high
-            if (result >= CaddisflyApp.getApp().getCurrentTestInfo().getDilutionRequiredLevel() &&
-                    CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
-                mHighLevelsFound = true;
+        saveImage(data, testInfo);
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                finish();
             }
-
-            // Calculate final result based on dilution
-            switch (mDilutionLevel) {
-                case 1:
-                    result = result * 2;
-                    break;
-                case 2:
-                    result = result * 5;
-                    break;
-            }
-
-            // Format the result
-            String resultText = String.format(Locale.getDefault(), "%.2f", result);
-
-            // Add 'greater than' symbol if result could be an unknown high value
-            if (mHighLevelsFound) {
-                resultText = "> " + resultText;
-            }
-
-            // Get the average color across the results
-            int color = SwatchHelper.getAverageColor(mResults);
-
-            Intent intent = getIntent();
-            String cadUuid = null;
-            if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
-                cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
-            }
-
-            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-            Intent resultIntent = new Intent(intent);
-            resultIntent.putExtra(SensorConstants.RESULT, resultText);
-            resultIntent.putExtra(SensorConstants.COLOR, color);
-
-            // If a UUID exists return result in json format otherwise return plain text result
-            if (cadUuid != null) {
-
-                // Save photo taken during the test
-                String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
-
-                ArrayList<String> results = new ArrayList<>();
-                results.add(resultText);
-
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
-
-                resultIntent.putExtra(SensorConstants.IMAGE, path);
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-            } else {
-                // TODO: Remove this when obsolete
-                // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultText);
-            }
-            setResult(Activity.RESULT_OK, resultIntent);
-
-            // Show the result dialog
-            //ShowResult(data, result, resultText, color);
-
-            if (isCalibration && color != Color.TRANSPARENT) {
-                sound.playShortResource(R.raw.done);
-                PreferencesUtil.setInt(this, R.string.totalSuccessfulCalibrationsKey,
-                        PreferencesUtil.getInt(this, R.string.totalSuccessfulCalibrationsKey, 0) + 1);
-
-                if (AppPreferences.isSaveImagesOn()) {
-                    saveImageForDiagnostics(data, resultText);
-                }
-
-                if (AppPreferences.isDiagnosticMode()) {
-                    showDiagnosticResultDialog(false, resultText, color, true);
-                } else {
-                    (new Handler()).postDelayed(new Runnable() {
-                        public void run() {
-                            finish();
-                        }
-                    }, 500);
-                }
-            } else {
-                if (result < 0 || color == Color.TRANSPARENT) {
-                    if (AppPreferences.isSaveImagesOn()) {
-                        saveImageForDiagnostics(data, resultText);
-                    }
-
-                    if (AppPreferences.isDiagnosticMode()) {
-                        sound.playShortResource(R.raw.err);
-
-                        PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
-                                PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
-
-                        showDiagnosticResultDialog(true, "", color, isCalibration);
-                    } else {
-                        if (mIsCalibration) {
-                            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
-                            PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
-                                    PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
-                        } else {
-                            PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
-                                    PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
-
-                            showError(getString(R.string.errorTestFailed), ImageUtil.getBitmap(data));
-                        }
-                    }
-                } else {
-
-                    if (AppPreferences.isSaveImagesOn()) {
-                        saveImageForDiagnostics(data, resultText);
-                    }
-
-                    if (AppPreferences.isDiagnosticMode()) {
-                        sound.playShortResource(R.raw.done);
-                        showDiagnosticResultDialog(false, resultText, color, false);
-
-                        PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
-                                PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
-
-                    } else {
-                        String title = CaddisflyApp.getApp().getCurrentTestInfo().
-                                getName(getResources().getConfiguration().locale.getLanguage());
-
-                        if (mHighLevelsFound && mDilutionLevel < 2) {
-                            sound.playShortResource(R.raw.beep_long);
-                            //todo: remove hard coding of dilution levels
-                            switch (mDilutionLevel) {
-                                case 0:
-                                    message = String.format(getString(R.string.tryWithDilutedSample), 2);
-                                    break;
-                                case 1:
-                                    message = String.format(getString(R.string.tryWithDilutedSample), 5);
-                                    break;
-                            }
-                        } else {
-                            sound.playShortResource(R.raw.done);
-                        }
-
-                        PreferencesUtil.setInt(this, R.string.totalSuccessfulTestsKey,
-                                PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
-
-                        ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title,
-                                resultText, mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                        Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-                        if (fragment != null) {
-                            ft.remove(fragment);
-                        }
-
-                        mResultDialogFragment.setCancelable(false);
-                        mResultDialogFragment.show(ft, "resultDialog");
-                    }
-                }
-            }
-        }
-    }
-
-    private void saveImageForDiagnostics(byte[] data, String result) {
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = registerReceiver(null, intentFilter);
-        int batteryPercent = -1;
-
-        if (batteryStatus != null) {
-            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-            batteryPercent = (int) ((level / (float) scale) * 100);
-        }
-
-        if (mIsCalibration) {
-            result = String.format(Locale.US, "%.2f", mSwatchValue);
-        }
-
-        String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
-        ImageUtil.saveImage(data, CaddisflyApp.getApp().getCurrentTestInfo().getCode(), date + "_"
-                + (mIsCalibration ? "C" : "T") + "_" + result
-                + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
-    }
-
-    @Override
-    public void onSuccessFinishDialog(boolean resultOk) {
-        if (resultOk) {
-            finish();
-        } else {
-            setResult(RESULT_RESTART_TEST);
-            finish();
-        }
+        }, 500);
     }
 
     private void releaseResources() {
@@ -955,16 +678,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
         UsbService.SERVICE_CONNECTED = false;
 
-        if (alertDialogToBeDestroyed != null) {
-            alertDialogToBeDestroyed.dismiss();
-        }
-
-        try {
-            unbindService(usbConnection);
-        } catch (Exception ignored) {
-
-        }
-
         if (usbService != null) {
             if (AppPreferences.getExternalCameraMultiDeviceMode()) {
                 requestResult("SET CAMERA OFF\r\n");
@@ -973,6 +686,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
             try {
                 usbService.stopSelf();
+                unbindService(usbConnection);
                 usbService = null;
             } catch (Exception ignored) {
 
@@ -1009,85 +723,10 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    protected void onUserLeaveHint() {
-//        super.onUserLeaveHint();
-//        releaseResources();
-//        if (alertDialogToBeDestroyed != null) {
-//            alertDialogToBeDestroyed.dismiss();
-//        }
-//        setResult(Activity.RESULT_CANCELED);
-//        finish();
-//    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         releaseResources();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
-    }
-
-    @Override
-    public void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, String result, boolean isCalibration) {
-        mResultFragment.dismiss();
-        if (mHighLevelsFound && !isCalibration) {
-            mCameraFragment.dismiss();
-            sound.playShortResource(R.raw.beep_long);
-            String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
-
-            String message = "";
-            //todo: remove hard coding of dilution levels
-            switch (mDilutionLevel) {
-                case 0:
-                    message = String.format(getString(R.string.tryWithDilutedSample), 2);
-                    break;
-                case 1:
-                    message = String.format(getString(R.string.tryWithDilutedSample), 5);
-                    break;
-            }
-
-            ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
-                    mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
-            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-            if (fragment != null) {
-                ft.remove(fragment);
-            }
-
-            mResultDialogFragment.setCancelable(false);
-            mResultDialogFragment.show(ft, "resultDialog");
-
-        } else if (retry) {
-            mCameraFragment.dismiss();
-            releaseResources();
-            finish();
-            //InitializeTest();
-        } else {
-            releaseResources();
-            if (cancelled) {
-                setResult(Activity.RESULT_CANCELED);
-            }
-
-            if (!AppPreferences.getExternalCameraMultiDeviceMode()) {
-
-                long endTime = System.currentTimeMillis();
-                long elapsedSeconds = endTime - testStartTime;
-
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        getString(R.string.pleaseWait), "Completing...", true, false);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                        finish();
-                    }
-                }, (timeout * 1000) - elapsedSeconds);
-            } else {
-                finish();
-            }
-        }
     }
 
     @Override
@@ -1097,24 +736,151 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         sound.release();
     }
 
-    @Override
-    public void dialogCancelled() {
-        Intent intent = new Intent(getIntent());
-        intent.putExtra("response", String.valueOf(""));
-        setResult(Activity.RESULT_CANCELED, intent);
-        releaseResources();
-        finish();
+
+    @SuppressWarnings("SameParameterValue")
+    private void saveImage(byte[] data, TestInfo testInfo) {
+
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = getApplicationContext().registerReceiver(null, intentFilter);
+        int batteryPercent = -1;
+
+        if (batteryStatus != null) {
+            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            batteryPercent = (int) ((level / (float) scale) * 100);
+        }
+
+        String date = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(new Date());
+
+        String fileName;
+        File folder;
+
+        switch (testInfo.getCode().toLowerCase(Locale.US)) {
+            case SensorConstants.FLUORIDE_ID:
+
+                Bitmap bitmap = ImageUtil.getBitmap(data);
+                bitmap = ImageUtil.rotateImage(bitmap, 90);
+                Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+                //Extract the color from the photo which will be used for comparison
+                ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+                //Log.e("Caddisfly", String.valueOf(photoColor.getColor()));
+
+                CaddisflyApp.getApp().setDefaultTest();
+                ResultDetail resultDetail = SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
+                        testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
+                fileName = date + "_" + resultDetail.getResult() + "_" + batteryPercent;
+
+                folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
+
+                //Log.e("Caddisfly", folder.getAbsolutePath());
+                break;
+
+            default:
+
+                bitmap = ImageUtil.getBitmap(data);
+                bitmap = ImageUtil.rotateImage(bitmap, 90);
+                bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
+
+                Bitmap croppedGrayBitmap = getGrayscale(bitmap);
+                int[] brightnessValues = getContrast(croppedGrayBitmap);
+
+                int blackIndex = 0;
+                for (int i = 0; i < brightnessValues.length; i++) {
+                    if (brightnessValues[blackIndex] > brightnessValues[i]) {
+                        blackIndex = i;
+                    }
+                }
+
+                int whiteIndex = 0;
+                for (int i = 0; i < brightnessValues.length; i++) {
+                    if (brightnessValues[whiteIndex] < brightnessValues[i]) {
+                        whiteIndex = i;
+                    }
+                }
+
+                fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
+
+                folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
+
+                break;
+        }
+
+
+        File photo = new File(folder, fileName + ".jpg");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(photo.getPath());
+
+            fos.write(data);
+            fos.close();
+        } catch (Exception ignored) {
+
+        }
+
+        //Log.e("Caddisfly", mSavePath);
+        Intent intent = new Intent("custom-event-name");
+        intent.putExtra("savePath", mSavePath);
+        intent.putExtra("uuid", testInfo.getUuid().get(0));
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+    }
+
+    private Bitmap getGrayscale(Bitmap src) {
+
+        //Custom color matrix to convert to GrayScale
+        float[] matrix = new float[]{
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0.3f, 0.59f, 0.11f, 0, 0,
+                0, 0, 0, 1, 0,};
+
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(),
+                src.getHeight(),
+                src.getConfig());
+
+        Canvas canvas = new Canvas(dest);
+        Paint paint = new Paint();
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        paint.setColorFilter(filter);
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        return dest;
+    }
+
+    private int[] getContrast(Bitmap image) {
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        int posX1 = width / 4;
+        int posX2 = posX1 * 3;
+
+        int posY1 = height / 4;
+        int posY2 = posY1 * 3;
+
+
+        int pixel1 = ColorUtil.getBrightness(image.getPixel(posX1, posY1));
+        int pixel2 = ColorUtil.getBrightness(image.getPixel(posX2, posY1));
+        int pixel3 = ColorUtil.getBrightness(image.getPixel(posX1, posY2));
+        int pixel4 = ColorUtil.getBrightness(image.getPixel(posX2, posY2));
+
+        return new int[]{pixel1, pixel2, pixel3, pixel4};
 
     }
+
 
     /*
  * This handler will be passed to UsbService.
  * Data received from serial port is displayed through this handler
  */
     private static class MyHandler extends Handler {
-        private final WeakReference<ColorimetryLiquidExternalActivity> mActivity;
+        private final WeakReference<ExternalCameraActivity> mActivity;
 
-        public MyHandler(ColorimetryLiquidExternalActivity activity) {
+        public MyHandler(ExternalCameraActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
@@ -1123,7 +889,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    ColorimetryLiquidExternalActivity colorimetryLiquidActivity = mActivity.get();
+                    ExternalCameraActivity colorimetryLiquidActivity = mActivity.get();
                     if (colorimetryLiquidActivity != null) {
 
                         colorimetryLiquidActivity.mReceivedData += data;
@@ -1131,6 +897,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                             colorimetryLiquidActivity.displayResult(colorimetryLiquidActivity.mReceivedData);
                             colorimetryLiquidActivity.mReceivedData = "";
                         }
+
                     }
                     break;
             }

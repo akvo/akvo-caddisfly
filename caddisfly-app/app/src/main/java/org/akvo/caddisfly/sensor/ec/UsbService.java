@@ -101,8 +101,9 @@ public class UsbService extends Service {
                     arg0.sendBroadcast(intent);
                 }
             } else if (arg1.getAction().equals(ACTION_USB_ATTACHED)) {
-                if (!serialPortConnected)
-                    findSerialPortDevice(); // A USB device has been attached. Try to open it as a Serial port
+                if (!serialPortConnected) {
+                    findSerialPortDevice();
+                }// A USB device has been attached. Try to open it as a Serial port
             } else if (arg1.getAction().equals(ACTION_USB_DETACHED)) {
                 connection = null;
                 // Usb device was disconnected. send an intent to the Main Activity
@@ -174,8 +175,11 @@ public class UsbService extends Service {
                 int devicePID = device.getProductId();
                 if (deviceVID != 0x1d6b && (devicePID != 0x0001 && devicePID != 0x0002 && devicePID != 0x0003)) {
                     // There is a device connected to our Android device. Try to open it as a Serial Port.
-                    requestUserPermission();
-                    keep = false;
+                    try {
+                        requestUserPermission();
+                        keep = false;
+                    } catch (Exception ignored) {
+                    }
                 } else {
                     connection = null;
                     device = null;

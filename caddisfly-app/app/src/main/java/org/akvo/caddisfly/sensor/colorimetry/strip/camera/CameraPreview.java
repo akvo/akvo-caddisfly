@@ -142,7 +142,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         //white balance
         if (parameters.getWhiteBalance() != null) {
-            //TODO check if this optimise the code
+            //Check if this optimise the code
             parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         }
 

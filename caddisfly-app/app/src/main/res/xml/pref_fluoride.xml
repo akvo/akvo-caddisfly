@@ -30,5 +30,9 @@
             android:maxLength="2"
             android:numeric="integer"
             android:title="Number of samples" />
+        <Preference
+            android:enabled="false"
+            android:key="@string/ledRgbKey"
+            android:title="LED RGB" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

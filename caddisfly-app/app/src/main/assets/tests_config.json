@@ -13,7 +13,6 @@
       "uuid": [
         "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
       ],
-      "code": "fluor",
       "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.5,1,1.5,2",
@@ -23,33 +22,6 @@
       "results": [
         {
           "description": "Fluoride",
-          "id": 1,
-          "unit": "ppm"
-        }
-      ]
-    },
-    {
-      "name": [
-        {
-          "en": "Fluoride - High Range"
-        },
-        {
-          "fr": "Fluorure - High Range"
-        }
-      ],
-      "subtype": "color",
-      "uuid": [
-        "7e8c1440-f014-4973-b47c-2b315c143d70"
-      ],
-      "code": "fluhi",
-      "unit": "ppm",
-      "calibrate": "true",
-      "ranges": "0,2,4,6",
-      "dilutions": "0,50,20",
-      "monthsValid": "12",
-      "results": [
-        {
-          "description": "Fluoride - High Range",
           "id": 1,
           "unit": "ppm"
         }
@@ -68,7 +40,6 @@
       "uuid": [
         "c3535e72-ff77-4225-9f4a-41d3288780c6"
       ],
-      "code": "chlor",
       "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.25,0.5,0.75,1.0",
@@ -94,7 +65,6 @@
       "uuid": [
         "f88237b7-be3d-4fac-bbee-ab328eefcd14"
       ],
-      "code": "econd",
       "unit": "μS/cm",
       "calibrate": "true",
       "ranges": "0",

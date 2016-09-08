@@ -139,6 +139,10 @@
         <activity
             android:name=".sensor.turbidity.TimeLapseActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.turbidity.ExternalCameraActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="nosensor" />
 
         <!-- StripTest -->
         <activity

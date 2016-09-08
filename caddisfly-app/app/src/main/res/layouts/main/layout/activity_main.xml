@@ -52,6 +52,22 @@
                 android:theme="?longButtonStyle" />
 
             <Button
+                android:id="@+id/buttonStripTest"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="?listArrowRight"
+                android:gravity="center_vertical|start"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="22dp"
+                android:text="@string/stripTest"
+                android:textAlignment="viewStart"
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle"
+                android:visibility="gone" />
+
+            <Button
                 android:id="@+id/buttonEcSensor"
                 style="@style/Button"
                 android:layout_width="match_parent"

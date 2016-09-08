@@ -31,7 +31,7 @@
             android:key="startTurbidityTest"
             android:title="Coliforms Test">
             <intent
-                android:data="colif"
+                android:data="df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
                 android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
@@ -39,7 +39,7 @@
             android:key="startFluorideTest"
             android:title="Fluoride Test">
             <intent
-                android:data="fluor"
+                android:data="f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
                 android:targetClass="org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>

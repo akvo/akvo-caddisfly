@@ -3,6 +3,32 @@
     {
       "name": [
         {
+          "en": "Fluoride - High Range"
+        },
+        {
+          "fr": "Fluorure - High Range"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "7e8c1440-f014-4973-b47c-2b315c143d70"
+      ],
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,2,4,6",
+      "dilutions": "0,50,20",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Fluoride - High Range",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
           "en": "pH"
         }
       ],
@@ -449,7 +475,6 @@
       "uuid": [
         "b8e39123-1e44-4a23-a17e-972896c7d9f4"
       ],
-      "code": "phyd1",
       "unit": "",
       "calibrate": "true",
       "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
@@ -476,7 +501,6 @@
       "uuid": [
         "ca52b1a5-46b4-499d-97d3-4131e1619d70"
       ],
-      "code": "phyd2",
       "unit": "",
       "calibrate": "true",
       "ranges": "4,5,6,7,8,9,10,11",
@@ -503,11 +527,11 @@
       "uuid": [
         "a81f5663-b512-4dad-a4c3-651caf7f567a"
       ],
-      "code": "turbi",
       "unit": "NTU",
       "calibrate": "true",
       "ranges": "0,5,10,15,20",
       "monthsValid": "6",
+      "grayScale": "true",
       "results": [
         {
           "description": "Turbidity",
@@ -529,7 +553,6 @@
       "uuid": [
         "fd1cd7f4-c866-49f1-a175-9ef32c28eddf"
       ],
-      "code": "arsen",
       "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40",
@@ -555,7 +578,6 @@
       "uuid": [
         "9e1a3d62-f811-446d-8ad7-5a2c3b692084"
       ],
-      "code": "ars2n",
       "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,50,100",
@@ -581,7 +603,6 @@
       "uuid": [
         "0f5c230d-6143-41de-9a71-074fbe01a863"
       ],
-      "code": "ars3n",
       "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40,50,100",
@@ -607,7 +628,6 @@
       "uuid": [
         "eb5030c5-a72f-4d16-af4d-971ea1d8afbd"
       ],
-      "code": "ars4n",
       "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40,50",
@@ -633,7 +653,6 @@
       "uuid": [
         "082ec36a-71af-49d5-add8-5c03fc1c2f0b"
       ],
-      "code": "chrom",
       "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,1,5,10,25,50,75,100",
@@ -659,7 +678,6 @@
       "uuid": [
         "e74ed7c7-6116-4970-b01d-338be374eeca"
       ],
-      "code": "pesti",
       "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.25,0.5,0.75,1",
@@ -685,7 +703,6 @@
       "uuid": [
         "df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
       ],
-      "code": "colif",
       "unit": "ppm",
       "calibrate": "false",
       "results": [
