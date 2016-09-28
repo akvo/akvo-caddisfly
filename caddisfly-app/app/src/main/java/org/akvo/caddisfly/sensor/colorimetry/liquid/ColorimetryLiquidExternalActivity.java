@@ -39,7 +39,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -109,7 +108,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         }
     };
     private final Handler handler = new Handler();
-    private final String DEBUG_TAG = "EXT CAMERA";
     private boolean mDebug;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
@@ -249,8 +247,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
     private void displayResult(final String value) {
 
-        Log.w(DEBUG_TAG, value);
-
         if (mDebug) {
             Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
         }
@@ -267,8 +263,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     }
 
     private void requestResult(String command) {
-
-        Log.w(DEBUG_TAG, command);
 
         if (usbService != null && usbService.isUsbConnected()) {
             if (mDebug) {
@@ -296,7 +290,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
     @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        //Log.d(DEBUG_TAG, "Start Service");
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);
@@ -320,7 +313,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.ledRgbKey, "255,255,255");
 
-        if (rgb.length() > 2) {
+        if (rgb.length() > 0) {
             rgb = rgb.trim().replace("-", ",").replace(" ", ",").replace(".", ",").replace(" ", ",");
 
             requestQueue.add(String.format("SET RGB %s\r\n", rgb));
@@ -935,7 +928,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         ImageUtil.saveImage(data, CaddisflyApp.getApp().getCurrentTestInfo().getCode(), date + "_"
                 + (mIsCalibration ? "C" : "T") + "_" + result
-                + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
+                + "_" + batteryPercent + "_" + ApiUtil.getInstallationId(this));
     }
 
     @Override
@@ -1114,7 +1107,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     private static class MyHandler extends Handler {
         private final WeakReference<ColorimetryLiquidExternalActivity> mActivity;
 
-        public MyHandler(ColorimetryLiquidExternalActivity activity) {
+        MyHandler(ColorimetryLiquidExternalActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 

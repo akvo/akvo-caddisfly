@@ -64,8 +64,7 @@
                 android:text="@string/stripTest"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
-                android:theme="?longButtonStyle"
-                android:visibility="gone" />
+                android:theme="?longButtonStyle" />
 
             <Button
                 android:id="@+id/buttonEcSensor"
@@ -111,14 +110,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2a007a8d"
+            android:textColor="#2a01a2bc"
             android:textSize="46dp"
             tools:ignore="SpUsage" />
 

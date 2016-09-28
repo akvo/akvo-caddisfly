@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +41,15 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
     private final Activity activity;
     private final ArrayList<Swatch> colorArray;
 
-    public DiagnosticSwatchesAdapter(Activity activity, ArrayList<Swatch> colorArray) {
+    DiagnosticSwatchesAdapter(Activity activity, ArrayList<Swatch> colorArray) {
         super(activity, R.layout.row_swatch, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -82,6 +84,8 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
                     String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
                             distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
+        }else {
+            return view;
         }
         return rowView;
     }

@@ -69,7 +69,6 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 

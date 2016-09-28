@@ -62,9 +62,9 @@ class TurbidityConfig {
         return PendingIntent.getBroadcast(context, TurbidityConfig.INTENT_REQUEST_CODE, intent, flag);
     }
 
-    public static boolean isAlarmRunning(Context context, String uuid) {
-        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid) != null;
-    }
+//    public static boolean isAlarmRunning(Context context, String uuid) {
+//        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid) != null;
+//    }
 
     public static void stopRepeatingAlarm(Context context, String uuid) {
         PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid);

@@ -118,7 +118,7 @@ public class StripTest {
         private GroupType groupingType;
         private JSONArray instructions;
 
-        public Brand(String brand) {
+        Brand(String brand) {
 
             System.out.println("***Striptest brand: " + brand);
             try {
@@ -237,8 +237,8 @@ public class StripTest {
             final JSONArray colours;
 
             @SuppressWarnings("SameParameterValue")
-            public Patch(int id, String desc, double width, double height, double position,
-                         double timeLapse, String unit, JSONArray colours) {
+            Patch(int id, String desc, double width, double height, double position,
+                  double timeLapse, String unit, JSONArray colours) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;

@@ -40,6 +40,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
@@ -94,7 +95,7 @@ public class ExternalActionActivity extends BaseActivity {
                 CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 
                 //Extract the 5 letter code in the question and load the test config
-                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5));
+                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
 
                 //todo: remove when obsolete
                 switch (code) {
@@ -109,6 +110,11 @@ public class ExternalActionActivity extends BaseActivity {
                     case "econd":
                         caddisflyResourceUuid = SensorConstants.ELECTRICAL_CONDUCTIVITY_ID;
                         break;
+
+                    case "strip":
+                        final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
+                        startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
+                        return;
 
                     default:
                         caddisflyResourceUuid = "";
@@ -319,7 +325,11 @@ public class ExternalActionActivity extends BaseActivity {
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+                    if (AppPreferences.useExternalCamera()) {
+                        intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+                    }else{
+                        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+                    }
                 }
 
                 intent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);

@@ -19,7 +19,6 @@ package org.akvo.caddisfly.helper;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
@@ -79,7 +78,6 @@ public class ImageHelper {
         /* get the number of circles detected */
         int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
 
-        Log.e("Caddisfly", String.valueOf(numberOfCircles));
         /* draw the circles found on the image */
         if (numberOfCircles > 0) {
 

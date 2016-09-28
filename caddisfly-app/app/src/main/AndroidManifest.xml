@@ -21,7 +21,6 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -117,7 +116,6 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
-            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.UsbConnectionActivity"

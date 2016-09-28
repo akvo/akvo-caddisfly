@@ -53,8 +53,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:contentDescription="@null"
-                android:scaleType="fitXY"
-                android:src="@drawable/logo" />
+                android:scaleType="fitXY" />
 
             <Button
                 android:id="@+id/buttonColorExtract"

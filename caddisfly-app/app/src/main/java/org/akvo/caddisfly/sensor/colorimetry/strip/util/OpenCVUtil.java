@@ -327,7 +327,6 @@ public class OpenCVUtil {
         Mat rgb = new Mat();
         Imgproc.cvtColor(lab, rgb, Imgproc.COLOR_Lab2RGB);
         mean = Core.mean(rgb);
-        colorDetected.setRgb(mean);
 
         int color = Color.rgb((int) Math.round(mean.val[0]), (int) Math.round(mean.val[1]),
                 (int) Math.round(mean.val[2]));

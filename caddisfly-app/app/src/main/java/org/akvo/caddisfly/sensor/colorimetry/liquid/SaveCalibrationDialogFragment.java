@@ -253,7 +253,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     }
                 }
 
-                public void saveDetails(String testCode) {
+                void saveDetails(String testCode) {
                     PreferencesUtil.setLong(context, testCode,
                             R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
 

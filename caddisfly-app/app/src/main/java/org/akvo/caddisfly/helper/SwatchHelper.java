@@ -461,7 +461,7 @@ public final class SwatchHelper {
                 .append(android.os.Build.VERSION.SDK_INT).append(")");
         calibrationDetails.append("\n");
         calibrationDetails.append("DeviceId: ");
-        calibrationDetails.append(ApiUtil.getEquipmentId(context));
+        calibrationDetails.append(ApiUtil.getInstallationId(context));
         return calibrationDetails.toString();
     }
 

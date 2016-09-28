@@ -89,11 +89,11 @@ public class ProgressIndicatorView extends LinearLayout {
         verMargin = getResources().getDimension(R.dimen.activity_vertical_margin);
     }
 
-    public void addStep(int order, int timeLapse) {
+    public void addStep(int timeLapse) {
         if (steps == null)
             steps = new ArrayList<>();
 
-        steps.add(new Step(order, timeLapse));
+        steps.add(new Step(timeLapse));
     }
 
     private void initView() {
@@ -249,7 +249,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 } else {
                     //first one does have a count
                     try {
-                        message = getContext().getString(R.string.waiting) + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
+                        message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
                     } catch (Exception e) {
                         message = e.getMessage();
                     }
@@ -270,7 +270,7 @@ public class ProgressIndicatorView extends LinearLayout {
 
         private final int i;
 
-        public BlinkAnimListener(int i) {
+        BlinkAnimListener(int i) {
             this.i = i;
         }
 
@@ -292,17 +292,15 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     private class Step {
-        final int order;
         final int timeLapse;
         boolean animationEnded = false;
         boolean pictureTaken = false;
 
-        public Step(int order, int timeLapse) {
-            this.order = order;
+        Step(int timeLapse) {
             this.timeLapse = timeLapse;
         }
 
-        public int getTimeLapse() {
+        int getTimeLapse() {
             return timeLapse;
         }
     }

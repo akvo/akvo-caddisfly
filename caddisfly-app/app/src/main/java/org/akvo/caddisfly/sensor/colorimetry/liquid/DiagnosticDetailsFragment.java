@@ -123,7 +123,9 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         // request a window without the title
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         return dialog;
     }
 
@@ -137,7 +139,9 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         int dialogWidth = (int) (0.98 * getResources().getDisplayMetrics().widthPixels);
         int dialogHeight = (int) (0.9 * getResources().getDisplayMetrics().heightPixels);
 
-        getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        }
 
     }
 

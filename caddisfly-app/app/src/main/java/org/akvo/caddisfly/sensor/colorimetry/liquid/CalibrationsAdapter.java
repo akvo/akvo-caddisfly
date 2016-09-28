@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -46,14 +47,15 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
     private final Activity activity;
     private final boolean mDisplayDecimal;
 
-    public CalibrationsAdapter(Activity activity, Swatch[] rangeArray, boolean displayDecimal) {
+    CalibrationsAdapter(Activity activity, Swatch[] rangeArray, boolean displayDecimal) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
         mDisplayDecimal = displayDecimal;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 

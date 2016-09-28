@@ -33,7 +33,8 @@
         android:focusable="false"
         android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/textCalibrationSteps"

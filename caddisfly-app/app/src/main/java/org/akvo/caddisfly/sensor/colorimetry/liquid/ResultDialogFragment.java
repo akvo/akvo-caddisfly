@@ -52,7 +52,9 @@ public class ResultDialogFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         // request a window without the title
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         return dialog;
     }
 

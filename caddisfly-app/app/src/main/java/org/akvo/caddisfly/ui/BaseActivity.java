@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void updateTheme() {
 
-        String theme = PreferencesUtil.getString(this, "theme", "Orange");
+        String theme = PreferencesUtil.getString(this, getString(R.string.selectedThemeKey), "Orange");
 
         switch (theme) {
             case THEME_BLUE:

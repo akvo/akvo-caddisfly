@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -27,13 +28,14 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+
+import java.util.UUID;
 
 /**
  * Utility functions for api related actions
@@ -116,27 +118,30 @@ public final class ApiUtil {
         }
     }
 
+    private static String uniqueID = null;
+    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+
     /**
-     * Gets the device's Equipment Id
+     * Gets an unique id for installation
      *
-     * @return the international mobile equipment id
+     * @return the unique id
      */
-    public static String getEquipmentId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        String number = null;
-        if (telephonyManager != null) {
-            try {
-                number = telephonyManager.getDeviceId();
-            } catch (Exception ignored) {
+    public synchronized static String getInstallationId(Context context) {
+        if (uniqueID == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(
+                    PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
+
+            if (uniqueID == null) {
+                uniqueID = UUID.randomUUID().toString();
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(PREF_UNIQUE_ID, uniqueID);
+                editor.apply();
             }
         }
-        if (number == null) {
-            number = "No equipment Id";
-        }
-        return number;
-    }
 
+        return uniqueID;
+    }
 
     public static boolean isCameraInUse(Context context, final Activity activity) {
         Camera camera = null;

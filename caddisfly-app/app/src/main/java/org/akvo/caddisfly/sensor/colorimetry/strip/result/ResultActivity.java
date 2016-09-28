@@ -224,8 +224,8 @@ public class ResultActivity extends BaseActivity {
         private ColorDetected[] colorsDetected;
         private double resultValue = -1;
 
-        public BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand,
-                          List<StripTest.Brand.Patch> patches, int patchNum) {
+        BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand,
+                   List<StripTest.Brand.Patch> patches, int patchNum) {
             this.invalid = invalid;
             this.grouped = grouped;
             this.strip = strip;

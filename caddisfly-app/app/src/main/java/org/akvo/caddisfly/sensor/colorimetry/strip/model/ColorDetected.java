@@ -24,7 +24,6 @@ import org.opencv.core.Scalar;
 public class ColorDetected {
 
     private int color;
-    private Scalar rgb;
     private Scalar lab;
 
     public ColorDetected() {
@@ -36,14 +35,6 @@ public class ColorDetected {
 
     public void setColor(int color) {
         this.color = color;
-    }
-
-    public Scalar getRgb() {
-        return rgb;
-    }
-
-    public void setRgb(Scalar rgb) {
-        this.rgb = rgb;
     }
 
     public Scalar getLab() {

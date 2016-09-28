@@ -31,8 +31,6 @@ public class FileHelper {
     private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
     private static final String DIR_DOWNLOAD = "Download/Install"; // Calibration files
     private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
-    private static final String FLUORIDE_IMAGE = "Akvo Caddisfly/Fluoride"; // Calibration files
-    private static final String TURBIDITY_IMAGE = "Akvo Caddisfly/Turbidity"; // Calibration files
 
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may

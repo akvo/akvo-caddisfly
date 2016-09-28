@@ -120,7 +120,7 @@ public class InstructionActivity extends BaseActivity {
 
     public class PagerAdapter extends FragmentStatePagerAdapter {
 
-        public PagerAdapter(FragmentManager fm) {
+        PagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

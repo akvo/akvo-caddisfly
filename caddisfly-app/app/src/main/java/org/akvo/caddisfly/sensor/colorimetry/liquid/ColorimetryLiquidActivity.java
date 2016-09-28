@@ -868,7 +868,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         ImageUtil.saveImage(data, CaddisflyApp.getApp().getCurrentTestInfo().getCode(), date + "_"
                 + (mIsCalibration ? "C" : "T") + "_" + result
-                + "_" + batteryPercent + "_" + ApiUtil.getEquipmentId(this));
+                + "_" + batteryPercent + "_" + ApiUtil.getInstallationId(this));
     }
 
     @Override

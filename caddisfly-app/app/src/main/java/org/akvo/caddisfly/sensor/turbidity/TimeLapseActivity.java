@@ -24,7 +24,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -188,9 +187,9 @@ public class TimeLapseActivity extends BaseActivity {
         layoutWait.setVisibility(View.VISIBLE);
         layoutDetails.setVisibility(View.GONE);
 
-        if (TurbidityConfig.isAlarmRunning(this, mUuid)) {
-            Log.e("TimeLapse", "Already Running Alarm");
-        }
+//        if (TurbidityConfig.isAlarmRunning(this, mUuid)) {
+//            Log.e("TimeLapse", "Already Running Alarm");
+//        }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-event-name"));

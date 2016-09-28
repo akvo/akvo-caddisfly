@@ -29,7 +29,6 @@ import android.widget.ListView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 public class OtherPreferenceFragment extends PreferenceFragment {
 
@@ -53,17 +52,6 @@ public class OtherPreferenceFragment extends PreferenceFragment {
         if (aboutPreference != null) {
             aboutPreference.setSummary(String.format("%s %s", getString(R.string.version),
                     CaddisflyApp.getAppVersion()));
-        }
-
-        Preference themePreference = findPreference("theme");
-        if (themePreference != null) {
-            themePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    PreferencesUtil.setBoolean(getActivity(), R.string.themeChangedKey, true);
-                    return true;
-                }
-            });
         }
 
         return rootView;

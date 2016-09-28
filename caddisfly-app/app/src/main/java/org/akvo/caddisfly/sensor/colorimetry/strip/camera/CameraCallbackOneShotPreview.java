@@ -32,7 +32,7 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 class CameraCallbackOneShotPreview extends CameraCallbackBase {
     private boolean sending;
 
-    public CameraCallbackOneShotPreview(Context context, Camera.Parameters parameters) {
+    CameraCallbackOneShotPreview(Context context, Camera.Parameters parameters) {
         super(context, parameters);
     }
 

@@ -76,6 +76,7 @@
     <string name="tryRecalibrating">Try recalibrating</string>
     <string name="reagentExpiry">Reagent expiry</string>
     <string name="reagentBatch">Reagent batch</string>
+    <string name="rgb_example_value">RGB (e.g. 255.255.255)</string>
     <string name="expired">Expired</string>
     <string name="calibrateWithNewReagent">Recalibrate with fresh reagent</string>
 
@@ -189,7 +190,7 @@
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>
-    <string name="quality_checks_counter">Quality checks: %1$s out of %2$s</string>
+    <string name="quality_checks_counter">Quality checks: %1$d of %2$d</string>
     <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>

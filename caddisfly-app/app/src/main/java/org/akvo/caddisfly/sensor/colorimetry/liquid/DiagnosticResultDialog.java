@@ -213,7 +213,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
         final ArrayList<ResultDetail> mResults;
 
-        public ResultsDetailsAdapter(ArrayList<ResultDetail> results) {
+        ResultsDetailsAdapter(ArrayList<ResultDetail> results) {
             mResults = results;
         }
 

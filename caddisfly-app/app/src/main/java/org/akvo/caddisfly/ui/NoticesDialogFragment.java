@@ -64,10 +64,12 @@ public class NoticesDialogFragment extends DialogFragment {
 
     @Override
     public void onResume() {
-        WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        getDialog().getWindow().setAttributes(params);
+        if (getDialog().getWindow() != null) {
+            WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+            getDialog().getWindow().setAttributes(params);
+        }
 
         super.onResume();
     }

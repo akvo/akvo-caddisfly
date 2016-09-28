@@ -57,7 +57,7 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 class CameraCallbackTakePicture extends CameraCallbackBase {
     private boolean sending;
 
-    public CameraCallbackTakePicture(Context context, Camera.Parameters parameters) {
+    CameraCallbackTakePicture(Context context, Camera.Parameters parameters) {
         super(context, parameters);
     }
 

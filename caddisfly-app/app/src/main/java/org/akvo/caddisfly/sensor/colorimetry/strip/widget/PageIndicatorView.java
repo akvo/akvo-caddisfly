@@ -34,7 +34,6 @@ public class PageIndicatorView extends View {
     private static final int BULLET_RADIUS = 5;
 
     private final Paint fillPaint;
-    private final Paint strokePaint;
     private int pageCount;
     private int activePage;
 
@@ -54,9 +53,9 @@ public class PageIndicatorView extends View {
         fillPaint.setColor(ContextCompat.getColor(context, R.color.cyan));
         fillPaint.setAntiAlias(true);
 
-        strokePaint = new Paint(fillPaint);
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(2);
+//        Paint strokePaint = new Paint(fillPaint);
+//        strokePaint.setStyle(Paint.Style.STROKE);
+//        strokePaint.setStrokeWidth(2);
     }
 
     public void setPageCount(int value) {

@@ -53,7 +53,6 @@ import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
-    //private static final String DEBUG_TAG = "SensorActivity";
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private TestInfo mCurrentTestInfo;
@@ -395,11 +394,6 @@ public class SensorActivity extends BaseActivity {
                 imageUsbConnection.animate().alpha(0f).setDuration(500);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     /*

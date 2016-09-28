@@ -66,7 +66,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:labelFor="@+id/editRgb"
-        android:text="RGB (e.g. 255.255.255)"
+        android:text="@string/rgb_example_value"
         android:textColor="#999999"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -82,7 +82,6 @@
         android:maxLength="11"
         android:maxLines="1"
         android:paddingTop="3dp"
-        android:singleLine="true"
         android:textColor="?android:textColor" />
 
     <TextView

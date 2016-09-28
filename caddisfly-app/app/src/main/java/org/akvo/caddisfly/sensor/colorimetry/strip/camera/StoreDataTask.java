@@ -35,8 +35,8 @@ class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     private CameraViewListener listener;
     private Context context;
 
-    public StoreDataTask(Context listener,
-                         int imageCount, byte[] data, FinderPatternInfo info) {
+    StoreDataTask(Context listener,
+                  int imageCount, byte[] data, FinderPatternInfo info) {
 
         try {
             this.listener = (CameraViewListener) listener;

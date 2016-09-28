@@ -18,6 +18,7 @@ package org.akvo.caddisfly.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,10 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
         mTestInfoArray = testInfoArray;
     }
 
+    @NonNull
     @SuppressLint("ViewHolder")
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = mActivity.getLayoutInflater();
 

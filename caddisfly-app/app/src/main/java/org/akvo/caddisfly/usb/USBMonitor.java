@@ -542,12 +542,5 @@ public final class USBMonitor {
                 }
             }
         }
-
-/*		@Override
-        protected void finalize() throws Throwable {
-			close();
-			super.finalize();
-		} */
     }
-
 }

@@ -77,8 +77,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_marginTop="10dp"
+                android:minHeight="80dp"
+                android:minWidth="80dp"
                 android:contentDescription="@null"
-                android:src="@drawable/logo" />
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -123,11 +125,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2a007a8d"

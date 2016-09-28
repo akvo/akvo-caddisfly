@@ -551,7 +551,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 levelView.setAngles(tilts);
         }
 
-        public void setAngles(float[] tilts) {
+        void setAngles(float[] tilts) {
             this.tilts = tilts;
         }
     }

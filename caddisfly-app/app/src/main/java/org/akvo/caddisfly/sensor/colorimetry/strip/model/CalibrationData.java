@@ -63,9 +63,9 @@ public class CalibrationData {
     public class Location {
         public final Double x;
         public final Double y;
-        public final Boolean grayPatch;
+        final Boolean grayPatch;
 
-        public Location(Double x, Double y, Boolean grayPatch) {
+        Location(Double x, Double y, Boolean grayPatch) {
             this.x = x;
             this.y = y;
             this.grayPatch = grayPatch;
@@ -77,7 +77,7 @@ public class CalibrationData {
         public final double CIE_A;
         public final double CIE_B;
 
-        public CalValue(double CIE_L, double CIE_A, double CIE_B) {
+        CalValue(double CIE_L, double CIE_A, double CIE_B) {
             this.CIE_L = CIE_L;
             this.CIE_A = CIE_A;
             this.CIE_B = CIE_B;
@@ -89,7 +89,7 @@ public class CalibrationData {
         public final Double[] p;
         public final Double width;
 
-        public WhiteLine(Double x1, Double y1, Double x2, Double y2, Double width) {
+        WhiteLine(Double x1, Double y1, Double x2, Double y2, Double width) {
             Double[] pArray = new Double[4];
             pArray[0] = x1;
             pArray[1] = y1;

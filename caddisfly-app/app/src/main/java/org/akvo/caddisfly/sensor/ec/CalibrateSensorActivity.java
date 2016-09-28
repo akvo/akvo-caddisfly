@@ -31,7 +31,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,8 +48,6 @@ import java.util.Locale;
 import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity implements EditSensorIdentity.OnFragmentInteractionListener {
-
-    private static final String DEBUG_TAG = "SensorActivity";
 
     private final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
     // Notifications from UsbService will be received here.
@@ -140,7 +137,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     @SuppressWarnings("SameParameterValue")
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        Log.d(DEBUG_TAG, "Start Service");
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);

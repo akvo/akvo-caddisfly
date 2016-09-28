@@ -30,5 +30,13 @@
         <CheckBoxPreference
             android:key="@string/saveImagesKey"
             android:title="@string/saveImages" />
+        <ListPreference
+            android:defaultValue="Orange"
+            android:dialogTitle="Select Theme"
+            android:entries="@array/themes"
+            android:entryValues="@array/theme_codes"
+            android:key="@string/selectedThemeKey"
+            android:summary="%s"
+            android:title="Theme" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

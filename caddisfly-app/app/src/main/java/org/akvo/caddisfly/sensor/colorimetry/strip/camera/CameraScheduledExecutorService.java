@@ -36,7 +36,7 @@ class CameraScheduledExecutorService {
     /*
     * Schedule a runnable with an initial delay in milliseconds
     */
-    public void scheduleRunnable(Runnable runnable, long initialDelay) {
+    void scheduleRunnable(Runnable runnable, long initialDelay) {
         try {
             if (!scheduledExecutorService.isShutdown()) {
 
@@ -48,7 +48,7 @@ class CameraScheduledExecutorService {
         }
     }
 
-    public void cancelTasks(long delay) {
+    void cancelTasks(long delay) {
         scheduledExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +68,7 @@ class CameraScheduledExecutorService {
         * The task is executed the first time after the initialDelay, and then repeats every time the period expires.
     */
     @SuppressWarnings("SameParameterValue")
-    public void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay) {
+    void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay) {
         try {
             if (!scheduledExecutorService.isShutdown()) {
 
@@ -80,7 +80,7 @@ class CameraScheduledExecutorService {
         }
     }
 
-    public void shutdown() {
+    void shutdown() {
         scheduledExecutorService.shutdown();
     }
 }

@@ -19,7 +19,9 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -130,7 +132,7 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         private final StripTest stripTest;
 
         @SuppressWarnings("SameParameterValue")
-        public StripAdapter(Context context, int resource, List<String> brandNames) {
+        StripAdapter(Context context, int resource, List<String> brandNames) {
             super(context, resource);
 
             this.context = context;
@@ -144,8 +146,9 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
             return brandNames.size();
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             View view = convertView;
             ViewHolder holder;
@@ -190,12 +193,23 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
             private final TextView textView;
             private final TextView subtextView;
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
                 subtextView = (TextView) v.findViewById(R.id.text_subtitle);
 
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

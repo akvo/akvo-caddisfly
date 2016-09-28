@@ -16,7 +16,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/other">
-
         <Preference
             android:key="about"
             android:title="@string/about">
@@ -24,15 +23,5 @@
                 android:targetClass="org.akvo.caddisfly.ui.AboutActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
-
-        <ListPreference
-            android:defaultValue="Orange"
-            android:dialogTitle="Select Theme"
-            android:entries="@array/themes"
-            android:entryValues="@array/theme_codes"
-            android:key="theme"
-            android:summary="%s"
-            android:title="Theme" />
-
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

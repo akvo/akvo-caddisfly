@@ -79,7 +79,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         previewSize = parameters.getPreviewSize();
     }
 
-    public void stop() {
+    void stop() {
         stopped = true;
     }
 

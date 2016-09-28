@@ -171,7 +171,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
                         continue;
                     }
                 }
-                progressIndicatorViewAnim.addStep(i, (int) patches.get(i).getTimeLapse());
+                progressIndicatorViewAnim.addStep((int) patches.get(i).getTimeLapse());
             }
         }
 

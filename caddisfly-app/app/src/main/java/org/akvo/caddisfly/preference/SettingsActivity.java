@@ -127,7 +127,7 @@ public class SettingsActivity extends BaseActivity
             finish();
         }
 
-        if ("theme".equals(s)) {
+        if (getApplicationContext().getString(R.string.selectedThemeKey).equals(s)) {
             finish();
         }
 
