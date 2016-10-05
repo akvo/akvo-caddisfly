@@ -185,7 +185,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.toggleFlashMode();
+                    mListener.toggleFlashMode(true);
                 }
             });
         }
@@ -211,7 +211,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         mListener.startPreview();
         if (mListener.isTorchModeOn()) {
-            mListener.toggleFlashMode();
+            mListener.toggleFlashMode(false);
         }
     }
 
@@ -325,7 +325,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
      */
     @Override
-    public void showStartButton() {
+    public void goNext() {
 
         countQualityView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 

@@ -236,10 +236,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void toggleFlashMode() {
+    public void toggleFlashMode(boolean userSelect) {
         if (cameraPreview != null) {
-            cameraPreview.toggleFlashMode();
-            torchModeOn = true;
+            if (userSelect) {
+                torchModeOn = cameraPreview.toggleFlashMode();
+            } else {
+                cameraPreview.toggleFlashMode();
+            }
         }
     }
 
@@ -305,7 +308,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
             // Show start button only if enough quality checks are positive
             if (qualityChecksOK()) {
-                currentFragment.showStartButton();
+                currentFragment.goNext();
             }
         }
     }

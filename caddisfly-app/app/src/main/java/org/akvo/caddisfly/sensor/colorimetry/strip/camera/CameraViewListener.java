@@ -59,7 +59,7 @@ interface CameraViewListener {
 
     void setQualityCheckCountZero();
 
-    void toggleFlashMode();
+    void toggleFlashMode(boolean userSelect);
 
     boolean isTorchModeOn();
 

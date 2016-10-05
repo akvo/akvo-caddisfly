@@ -41,7 +41,7 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_next"
+        android:layout_below="@+id/text_qualityCount"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="4dp"
@@ -49,13 +49,5 @@
         android:textColor="@android:color/secondary_text_light"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/button_next"
-        style="@style/Button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:text="@string/next"
-        android:theme="?primaryButtonStyle" />
 </RelativeLayout>
 

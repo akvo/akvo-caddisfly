@@ -43,7 +43,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     void showShadow(double value) {
     }
 
-    public void showStartButton() {
+    public void goNext() {
     }
 
     @SuppressWarnings("SameParameterValue")

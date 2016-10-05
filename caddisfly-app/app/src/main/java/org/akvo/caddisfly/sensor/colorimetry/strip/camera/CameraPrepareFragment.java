@@ -41,8 +41,6 @@ import java.lang.ref.WeakReference;
 public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
     private CameraViewListener mListener;
-    private TextView buttonNext;
-    private TextView messageView;
     private WeakReference<PercentageMeterView> wrExposureView;
     private WeakReference<PercentageMeterView> wrContrastView;
 
@@ -63,9 +61,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        buttonNext = (TextView) rootView.findViewById(R.id.button_next);
-        buttonNext.setVisibility(View.INVISIBLE);
-        messageView = (TextView) rootView.findViewById(R.id.text_prepareInfo);
         countQualityView = (TextView) rootView.findViewById(R.id.text_qualityCount);
 
         wrExposureView = new WeakReference<>(exposureView);
@@ -76,7 +71,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.toggleFlashMode();
+                    mListener.toggleFlashMode(true);
                 }
             });
         }
@@ -100,32 +95,16 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    public void showStartButton() {
+    public void goNext() {
 
-        if (buttonNext == null)
-            return;
-
-        if (buttonNext.getVisibility() == View.INVISIBLE) {
-
-            if (mListener.isTorchModeOn()) {
-                mListener.toggleFlashMode();
-            }
-            mListener.stopPreview();
-
-            buttonNext.setVisibility(View.VISIBLE);
-            buttonNext.setText(R.string.next);
-            buttonNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null)
-                        mListener.nextFragment();
-                }
-            });
-
-            if (messageView != null) {
-                messageView.setText(R.string.confirm_quality_checks_ok);
-            }
+        if (mListener.isTorchModeOn()) {
+            mListener.toggleFlashMode(false);
         }
+
+        mListener.stopPreview();
+
+        if (mListener != null)
+            mListener.nextFragment();
     }
 
     @Override

@@ -194,7 +194,7 @@
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>
     <string name="quality_checks_counter">Quality checks: %1$d of %2$d</string>
-    <string name="confirm_quality_checks_ok">Excellent! \nPlease go to the next step.</string>
+    <string name="success_quality_checks">SUCCESS, Quality is good</string>
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="prepareForCalibration">Prepare for calibration</string>

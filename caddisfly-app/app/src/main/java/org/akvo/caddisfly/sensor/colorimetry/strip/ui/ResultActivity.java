@@ -294,13 +294,21 @@ public class ResultActivity extends BaseActivity {
                     colorsValueLab[p] = colorValueLab;
                 }
 
-                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2));
-                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150),
+                resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
+                        CvType.CV_8UC3, new Scalar(255, 255, 255));
+
+                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2) + 4);
+                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
 
                 analyzedArea = ResultUtil.getPatch(mat, centerPatch, subMatSize);
                 Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+
+                Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
+                Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
+                resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
+                resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
 
                 try {
                     resultValue = ResultUtil.calculateResultGroup(colorsValueLab, patches);

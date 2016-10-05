@@ -18,11 +18,14 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -64,7 +67,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
-        Button startButton = (Button) rootView.findViewById(R.id.button_start);
+        final Button buttonStart = (Button) rootView.findViewById(R.id.button_start);
+        buttonStart.setEnabled(false);
+        buttonStart.setAlpha(0.1f);
         LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_information);
 
         TextView textTitle = (TextView) rootView.findViewById(R.id.textToolbarTitle);
@@ -78,27 +83,14 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
             StripTest stripTest = new StripTest();
             JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
+
+            ShowInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
+
             try {
                 for (int i = 0; i < instructions.length(); i++) {
 
                     for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
-                        TextView textView = new TextView(getActivity());
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                                getResources().getDimension(R.dimen.mediumTextSize));
-
-                        textView.setPadding(0, 0, 0,
-                                (int) getResources().getDimension(R.dimen.activity_vertical_margin));
-
-                        if (instruction.contains(">")) {
-                            textView.setTextColor(Color.RED);
-                        } else {
-                            textView.setTextColor(Color.DKGRAY);
-                        }
-                        String text = instruction.replaceAll(">", "");
-                        if (!text.isEmpty()) {
-                            textView.append(text);
-                            linearLayout.addView(textView);
-                        }
+                        ShowInstruction(linearLayout, instruction, Typeface.NORMAL);
                     }
 
                 }
@@ -108,13 +100,49 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         }
 
-        startButton.setOnClickListener(new View.OnClickListener() {
+        buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.nextFragment();
             }
         });
+
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                buttonStart.setEnabled(true);
+                AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+                animation.setDuration(800);
+                animation.setFillAfter(true);
+                buttonStart.setAlpha(1f);
+                buttonStart.startAnimation(animation);
+            }
+        }, 4000);
+
+
         return rootView;
+    }
+
+    private void ShowInstruction(LinearLayout linearLayout, String instruction, int style) {
+        TextView textView = new TextView(getActivity());
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.mediumTextSize));
+
+        textView.setPadding(0, 0, 0,
+                (int) getResources().getDimension(R.dimen.activity_vertical_margin));
+
+        if (instruction.contains(">")) {
+            textView.setTextColor(Color.RED);
+        } else {
+            textView.setTextColor(Color.DKGRAY);
+        }
+
+        textView.setTypeface(null, style);
+
+        String text = instruction.replaceAll(">", "");
+        if (!text.isEmpty()) {
+            textView.append(text);
+            linearLayout.addView(textView);
+        }
     }
 
     @Override
