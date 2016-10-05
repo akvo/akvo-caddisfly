@@ -114,6 +114,7 @@ public class StripTest {
         private String name;
         private String uuid;
         private double stripLength;
+        @SuppressWarnings("unused")
         private double stripHeight;
         private GroupType groupingType;
         private JSONArray instructions;
@@ -229,6 +230,7 @@ public class StripTest {
             final int id;
             final String desc;
             final double width; //mm
+            @SuppressWarnings("unused")
             final double height;//mm
             final double position;//x in mm
             final double timeLapse; //seconds between this and previous patch
@@ -273,6 +275,9 @@ public class StripTest {
                 return unit;
             }
 
+            public double getWidth() {
+                return width;
+            }
         }
     }
 

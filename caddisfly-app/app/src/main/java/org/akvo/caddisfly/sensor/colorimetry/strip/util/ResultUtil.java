@@ -14,16 +14,13 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.result;
+package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.graphics.Bitmap;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,12 +42,12 @@ import java.util.Locale;
 /**
  * Created by markwestra on 18/02/16
  */
-class ResultUtil {
+public class ResultUtil {
     private static final int INTERPOLATION_NUMBER = 10;
     private static final Scalar labWhite = new Scalar(255, 128, 128);
     private static final Scalar labGrey = new Scalar(128, 128, 128);
     private static final Scalar labBlack = new Scalar(0, 128, 128);
-    private static final double yColorRect = 20d; //distance from top Mat to top color rectangles
+    private static final double yColorRect = 60d; //distance from top Mat to top color rectangles
     private static final int circleRadius = 10;
     private static final double xMargin = 10d;
 
@@ -98,13 +95,13 @@ class ResultUtil {
             Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bitmap);
 
-            double max = bitmap.getHeight() > bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
-            double min = bitmap.getHeight() < bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
-            double ratio = min / max;
-            int width = (int) Math.max(400, max);
-            int height = (int) Math.round(ratio * width);
+            //double max = bitmap.getHeight() > bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
+            //double min = bitmap.getHeight() < bitmap.getWidth() ? bitmap.getHeight() : bitmap.getWidth();
+            //double ratio = min / max;
+            //int width = (int) Math.max(600, max);
+            //int height = (int) Math.round(ratio * width);
 
-            return Bitmap.createScaledBitmap(bitmap, width, height, false);
+            return Bitmap.createScaledBitmap(bitmap, mat.width(), mat.height(), false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,16 +116,17 @@ class ResultUtil {
 
         //extend the strip with a border, so we can draw a circle around each patch that is
         //wider than the strip itself. That is just because it looks nice.
-
-
-        Core.copyMakeBorder(mat, mat, borderSize, borderSize, borderSize, borderSize, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+        Core.copyMakeBorder(mat, mat, borderSize, borderSize, 10, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
         // Draw a green circle at a particular location patch
         // only draw if this is not a 'grouped' strip
         if (!grouped) {
-            Imgproc.circle(mat, new Point(centerPatch.x + borderSize, mat.height() / 2), (int) Math.ceil(mat.height() * 0.4),
-                    new Scalar(0, 255, 0, 255), 2);
+            Imgproc.circle(mat, new Point(centerPatch.x + 10, mat.height() / 2), (int) Math.ceil((mat.height() - borderSize) * 0.4),
+                    new Scalar(0, 255, 0, 255), 1);
         }
+
+        Imgproc.resize(mat, mat, new Size(mat.width() * 1.5, mat.height() * 1.5));
+
         return mat;
     }
 
@@ -161,7 +159,7 @@ class ResultUtil {
                 double value = colourObj.getDouble("value");
                 JSONArray lab = colourObj.getJSONArray("lab");
                 Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
-                Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+                Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
 
                 //draw a rectangle filled with color for result value
                 Point topLeft = new Point(xTranslate * d, yColorRect);
@@ -170,7 +168,7 @@ class ResultUtil {
 
                 //draw color value above rectangle
                 Point centerText = new Point(topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
-                Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+                Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.6d, labGrey, 2, Core.LINE_AA, false);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -232,7 +230,7 @@ class ResultUtil {
        * the color detected below which the result value measured
        */
     public static Mat createValueMeasuredMatSingle(JSONArray colours, double resultValue, ColorDetected colorDetected, int width, double xTranslate) {
-        Mat valueMeasuredMat = new Mat(50, width, CvType.CV_8UC3, labWhite);
+        Mat valueMeasuredMat = new Mat(70, width, CvType.CV_8UC3, labWhite);
         JSONObject colourObj;
         JSONObject nextColourObj;
         boolean resultIsDrawn = false;
@@ -241,20 +239,20 @@ class ResultUtil {
         Imgproc.line(valueMeasuredMat, new Point(xMargin, 25), new Point(valueMeasuredMat.cols() - 2 * xMargin, 25), labGrey, 1, Core.LINE_AA, 0);
 
         //get values for lowest and highest result values from striptest range
-        double leftValue;
+//        double leftValue;
         try {
-            leftValue = colours.getJSONObject(0).getDouble("value");
+//            leftValue = colours.getJSONObject(0).getDouble("value");
+//
+//            double rightValue = colours.getJSONObject(colours.length() - 1).getDouble("value");
+//            Size textSizeLeftValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", leftValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+//            Size textSizeRightValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
-            double rightValue = colours.getJSONObject(colours.length() - 1).getDouble("value");
-            Size textSizeLeftValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", leftValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
-            Size textSizeRightValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", rightValue), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
-
-            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", leftValue),
-                    new Point((xTranslate - xMargin) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
-                    0.3d, labGrey, 1, Core.LINE_AA, false);
-            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", rightValue),
-                    new Point(valueMeasuredMat.cols() - xMargin - (xTranslate - xMargin) / 2 - textSizeRightValue.width / 2, 15),
-                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+//            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", leftValue),
+//                    new Point((xTranslate - xMargin) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
+//                    0.3d, labGrey, 1, Core.LINE_AA, false);
+//            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", rightValue),
+//                    new Point(valueMeasuredMat.cols() - xMargin - (xTranslate - xMargin) / 2 - textSizeRightValue.width / 2, 15),
+//                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
 
 
             // we need to iterate over the result values to determine where the circle should be placed
@@ -281,11 +279,11 @@ class ResultUtil {
                             new Point(left + (right - left) / 2 + transX, 25d);
 
                     //get text size of value test
-                    Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+                    Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
 
                     Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, resultColor, -1, Imgproc.LINE_AA, 0);
-                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(centerCircle.x - textSize.width / 2, 45d),
-                            Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_AA, false);
+                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(centerCircle.x - textSize.width / 2, 55d),
+                            Core.FONT_HERSHEY_SIMPLEX, 0.6d, labBlack, 2, Core.LINE_AA, false);
 
                     resultIsDrawn = true;
                 }
@@ -391,6 +389,36 @@ class ResultUtil {
         m2.copyTo(roiMat2);
 
         return result;
+    }
+
+    public static Mat concatenateHorizontal(Mat m1, Mat m2) {
+        int width = m1.cols() + m2.cols() + 50;
+        int height = Math.max(m1.rows(), m2.rows());
+
+        Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(255, 255, 255));
+
+        // rect works with x, y, width, height
+        Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());
+        Mat roiMat1 = result.submat(roi1);
+        m1.copyTo(roiMat1);
+
+        Rect roi2 = new Rect(m1.cols() + 50, 0, m2.cols(), m2.rows());
+        Mat roiMat2 = result.submat(roi2);
+        m2.copyTo(roiMat2);
+
+        return result;
+    }
+
+    public static Mat getPatch(Mat mat, Point centerPatch, int subMatSize) {
+
+        //make a subMat around center of the patch
+        int minRow = (int) Math.round(Math.max(centerPatch.y - subMatSize, 0));
+        int maxRow = (int) Math.round(Math.min(centerPatch.y + subMatSize, mat.height()));
+        int minCol = (int) Math.round(Math.max(centerPatch.x - subMatSize, 0));
+        int maxCol = (int) Math.round(Math.min(centerPatch.x + subMatSize, mat.width()));
+
+        //  create subMat
+        return mat.submat(minRow, maxRow, minCol, maxCol);
     }
 
     public static ColorDetected getPatchColour(Mat mat, Point centerPatch, int subMatSize) {

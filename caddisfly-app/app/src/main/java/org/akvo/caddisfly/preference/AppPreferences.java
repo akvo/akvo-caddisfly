@@ -85,8 +85,13 @@ public class AppPreferences {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean useExternalCamera() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useExternalCameraKey, false);
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean useFlashMode() {
+        return isDiagnosticMode() &&
+            PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
     }
 }

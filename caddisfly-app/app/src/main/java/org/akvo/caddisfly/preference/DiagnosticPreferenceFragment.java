@@ -22,7 +22,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.Build;
@@ -32,7 +31,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +47,15 @@ import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ListViewUtil;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private final int PERMISSION_ALL = 1;
+
     private ListView list;
     private View coordinatorLayout;
 
@@ -141,15 +142,13 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 public boolean onPreferenceClick(Preference preference) {
                     if (getFragmentManager().findFragmentByTag("diagnosticPreviewFragment") == null) {
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(getActivity(),
-                                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        if (AppPreferences.useExternalCamera()) {
+                            permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        }
 
-                                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                                        MY_PERMISSIONS_REQUEST_CAMERA);
-                            } else {
-                                startPreview();
-                            }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !ApiUtil.hasPermissions(getActivity(), permissions)) {
+                            requestPermissions(permissions, PERMISSION_ALL);
                         } else {
                             startPreview();
                         }
@@ -204,15 +203,26 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                                            @NonNull int[] grantResults) {
 
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
+            case PERMISSION_ALL: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                boolean granted = false;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PERMISSION_GRANTED) {
+                        granted = false;
+                        break;
+                    } else {
+                        granted = true;
+                    }
+                }
+                if (granted) {
                     startPreview();
                 } else {
+                    String message = getString(R.string.cameraAndStoragePermissions);
+                    if (AppPreferences.useExternalCamera()) {
+                        message = getString(R.string.storagePermission);
+                    }
                     Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
-                                    Snackbar.LENGTH_LONG)
+                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
                             .setAction("SETTINGS", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

@@ -16,14 +16,22 @@
 
 package org.akvo.caddisfly.sensor.turbidity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -36,9 +44,11 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -49,7 +59,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class TimeLapseActivity extends BaseActivity {
+
+    private final int PERMISSION_ALL = 1;
 
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -65,7 +79,10 @@ public class TimeLapseActivity extends BaseActivity {
             }
         }
     };
+    private CoordinatorLayout coordinatorLayout;
     private SoundPoolPlayer sound;
+    private LinearLayout layoutWait;
+    private LinearLayout layoutDetails;
     private TextView textSampleCount;
     private TextView textCountdown;
     private Calendar futureDate;
@@ -153,8 +170,9 @@ public class TimeLapseActivity extends BaseActivity {
 
         sound = new SoundPoolPlayer(this);
 
-        final LinearLayout layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
-        final LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
+        layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
+        layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         Fragment fragment;
         Bundle bundle = new Bundle();
@@ -196,40 +214,105 @@ public class TimeLapseActivity extends BaseActivity {
 
         textSampleCount = (TextView) findViewById(R.id.textSampleCount);
 
-        final Context context = this;
+        final Activity activity = this;
 
         Button buttonStart = (Button) findViewById(R.id.buttonStart);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                layoutWait.setVisibility(View.GONE);
-                layoutDetails.setVisibility(View.VISIBLE);
+                String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                if (AppPreferences.useExternalCamera()) {
+                    permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                }
 
-                Calendar startDate = Calendar.getInstance();
-                PreferencesUtil.setString(context, R.string.turbiditySavePathKey,
-                        testInfo.getName() + File.separator +
-                                new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
-
-                TurbidityConfig.setRepeatingAlarm(context, 25000, mUuid);
-
-                String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
-                ((TextView) findViewById(R.id.textSubtitle))
-                        .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
-
-                futureDate = Calendar.getInstance();
-                futureDate.add(Calendar.SECOND, 25);
-
-                TextView textInterval = (TextView) findViewById(R.id.textInterval);
-                int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                        mUuid + "_IntervalMinutes", "1"));
-
-                textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
-
-                startCountdownTimer();
+                if (!ApiUtil.hasPermissions(activity, permissions)) {
+                    ActivityCompat.requestPermissions(activity, permissions, PERMISSION_ALL);
+                } else {
+                    startTest();
+                }
             }
         });
         textCountdown = (TextView) findViewById(R.id.textCountdown);
+    }
+
+    private void startTest() {
+
+        final TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        layoutWait.setVisibility(View.GONE);
+        layoutDetails.setVisibility(View.VISIBLE);
+
+        Calendar startDate = Calendar.getInstance();
+        PreferencesUtil.setString(this, R.string.turbiditySavePathKey,
+                testInfo.getName() + File.separator +
+                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
+
+        TurbidityConfig.setRepeatingAlarm(this, 25000, mUuid);
+
+        String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
+        ((TextView) findViewById(R.id.textSubtitle))
+                .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
+
+        futureDate = Calendar.getInstance();
+        futureDate.add(Calendar.SECOND, 25);
+
+        TextView textInterval = (TextView) findViewById(R.id.textInterval);
+        int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                mUuid + "_IntervalMinutes", "1"));
+
+        textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
+
+        startCountdownTimer();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+
+        final Activity activity = this;
+        switch (requestCode) {
+            case PERMISSION_ALL: {
+                // If request is cancelled, the result arrays are empty.
+                boolean granted = false;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PERMISSION_GRANTED) {
+                        granted = false;
+                        break;
+                    } else {
+                        granted = true;
+                    }
+                }
+                if (granted) {
+                    startTest();
+                } else {
+                    String message = getString(R.string.cameraAndStoragePermissions);
+                    if (AppPreferences.useExternalCamera()) {
+                        message = getString(R.string.storagePermission);
+                    }
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                            .setAction("SETTINGS", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ApiUtil.startInstalledAppDetailsActivity(activity);
+                                }
+                            });
+
+                    TypedValue typedValue = new TypedValue();
+                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                    snackbar.setActionTextColor(typedValue.data);
+                    View snackView = snackbar.getView();
+                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setHeight(200);
+                    textView.setLineSpacing(1.2f, 1.2f);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
+                }
+            }
+        }
     }
 
     @Override

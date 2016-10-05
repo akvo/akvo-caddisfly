@@ -179,27 +179,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     private Handler initializeHandler;
     private ArrayList<String> requestQueue;
     private int mCommandIndex = 0;
-    private boolean requestsDone;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (!requestsDone) {
-                requestResult(requestQueue.get(mCommandIndex));
-
-                mCommandIndex++;
-
-                handler.postDelayed(this, 2000);
-
-                if (mCommandIndex > requestQueue.size() - 1) {
-                    requestsDone = true;
-                }
-
-                if (!mDebug) {
-                    Toast.makeText(getBaseContext(), "Connecting", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    };
     private final Runnable initializeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -225,6 +204,27 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 Toast.makeText(getBaseContext(), "Camera not found", Toast.LENGTH_SHORT).show();
                 //releaseResources();
                 //finish();
+            }
+        }
+    };
+    private boolean requestsDone;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!requestsDone) {
+                requestResult(requestQueue.get(mCommandIndex));
+
+                mCommandIndex++;
+
+                handler.postDelayed(this, 2000);
+
+                if (mCommandIndex > requestQueue.size() - 1) {
+                    requestsDone = true;
+                }
+
+                if (!mDebug) {
+                    Toast.makeText(getBaseContext(), "Connecting", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -374,11 +374,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (AppPreferences.useExternalCamera()) {
-            setContentView(R.layout.activity_external_colorimetry_liquid);
-        } else {
-            setContentView(R.layout.activity_colorimetry_liquid);
-        }
+        setContentView(R.layout.activity_external_colorimetry_liquid);
 
         setTitle("Analysis");
 

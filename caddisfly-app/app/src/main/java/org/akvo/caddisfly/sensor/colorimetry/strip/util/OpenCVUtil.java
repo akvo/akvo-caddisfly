@@ -332,7 +332,6 @@ public class OpenCVUtil {
                 (int) Math.round(mean.val[2]));
 
         colorDetected.setColor(color);
-//        rgb.release();
         return colorDetected;
     }
 

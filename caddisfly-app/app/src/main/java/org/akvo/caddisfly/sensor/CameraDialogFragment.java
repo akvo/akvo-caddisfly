@@ -36,6 +36,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
@@ -304,8 +305,11 @@ public class CameraDialogFragment extends CameraDialog {
             }
 
             if (mSupportedFlashModes != null) {
-                if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                if (!AppPreferences.useFlashMode() &&
+                        mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                } else if ( mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                 }
             }
 

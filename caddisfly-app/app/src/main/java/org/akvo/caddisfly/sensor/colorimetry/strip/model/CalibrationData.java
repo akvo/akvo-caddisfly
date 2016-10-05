@@ -31,8 +31,11 @@ public class CalibrationData {
     public final double[] stripArea;
     public int hSizePixel;
     public int vSizePixel;
+    @SuppressWarnings("unused")
     public String cardVersion;
+    @SuppressWarnings("unused")
     public String date;
+    @SuppressWarnings("unused")
     public String unit;
     public double patchSize;
     public double hSize;
@@ -63,6 +66,7 @@ public class CalibrationData {
     public class Location {
         public final Double x;
         public final Double y;
+        @SuppressWarnings("unused")
         final Boolean grayPatch;
 
         Location(Double x, Double y, Boolean grayPatch) {

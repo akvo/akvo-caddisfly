@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.result;
+package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +36,9 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.ResultUtil;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.CircleFillView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
@@ -47,11 +48,14 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 
 public class ResultActivity extends BaseActivity {
 
@@ -220,6 +224,7 @@ public class ResultActivity extends BaseActivity {
         private boolean invalid;
         private Bitmap stripBitmap = null;
         private Mat combined;
+        private Mat resultPatchAreas;
         private ColorDetected colorDetected;
         private ColorDetected[] colorsDetected;
         private double resultValue = -1;
@@ -236,9 +241,10 @@ public class ResultActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Mat... params) {
+            Mat analyzedArea;
             Mat mat = params[0];
-            int subMatSize = 7;
-            int borderSize = (int) Math.ceil(mat.height() * 0.5);
+            int subMatSize = (int) patches.get(patchNum).getWidth();
+            int borderSize = 15; //(int) Math.ceil(mat.height() * 0.5);
 
             if (mat.empty() || mat.height() < subMatSize) {
                 return null;
@@ -265,7 +271,12 @@ public class ResultActivity extends BaseActivity {
 
             double xTranslate;
 
+
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            int resultMatWidth = Math.max(420, Math.min(displayMetrics.widthPixels, 600));
+
             // compute location of point to be sampled
+            Mat patchArea;
             if (grouped) {
                 // collect colours
                 double ratioW = strip.width() / brand.getStripLength();
@@ -283,6 +294,14 @@ public class ResultActivity extends BaseActivity {
                     colorsValueLab[p] = colorValueLab;
                 }
 
+                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2));
+                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150),
+                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+
+                analyzedArea = ResultUtil.getPatch(mat, centerPatch, subMatSize);
+                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
+                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+
                 try {
                     resultValue = ResultUtil.calculateResultGroup(colorsValueLab, patches);
                 } catch (Exception e) {
@@ -293,13 +312,29 @@ public class ResultActivity extends BaseActivity {
                 // calculate size of each color range block
                 // divide the original strip width by the number of colours
                 colours = patches.get(0).getColours();
-                xTranslate = (double) mat.cols() / (double) colours.length();
+                xTranslate = (double) resultMatWidth / (double) colours.length();
 
             } else {
                 double ratioW = strip.width() / brand.getStripLength();
                 double x = patches.get(patchNum).getPosition() * ratioW;
                 double y = strip.height() / 2;
                 centerPatch = new Point(x, y);
+
+                resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
+                        CvType.CV_8UC3, new Scalar(255, 255, 255));
+
+                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2) + 4);
+                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
+                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+
+                analyzedArea = ResultUtil.getPatch(mat, centerPatch, subMatSize);
+                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
+                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+
+                Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
+                Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
+                resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
+                resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
 
                 colorDetected = ResultUtil.getPatchColour(mat, centerPatch, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
@@ -316,7 +351,7 @@ public class ResultActivity extends BaseActivity {
 
                 // calculate size of each color range block
                 // divide the original strip width by the number of colours
-                xTranslate = (double) mat.cols() / (double) colours.length();
+                xTranslate = (double) resultMatWidth / (double) colours.length();
             }
 
             ////////////// Create Image ////////////////////
@@ -325,24 +360,24 @@ public class ResultActivity extends BaseActivity {
             mat = ResultUtil.createStripMat(mat, borderSize, centerPatch, grouped);
 
             // Create Mat to hold patchDescription of patch
-            Mat descMat = ResultUtil.createDescriptionMat(patchDescription, mat.cols());
+            Mat descMat = ResultUtil.createDescriptionMat(patchDescription, resultMatWidth);
 
             // Create Mat to hold the colour range
             Mat colorRangeMat;
             if (grouped) {
-                colorRangeMat = ResultUtil.createColourRangeMatGroup(patches, mat.cols(), xTranslate);
+                colorRangeMat = ResultUtil.createColourRangeMatGroup(patches, resultMatWidth, xTranslate);
             } else {
-                colorRangeMat = ResultUtil.createColourRangeMatSingle(patches, patchNum, mat.cols(), xTranslate);
+                colorRangeMat = ResultUtil.createColourRangeMatSingle(patches, patchNum, resultMatWidth, xTranslate);
             }
 
             // create Mat to hold value measured
             Mat valueMeasuredMat;
             if (grouped) {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(
-                        colours, resultValue, colorsDetected, mat.cols(), xTranslate);
+                        colours, resultValue, colorsDetected, resultMatWidth, xTranslate);
             } else {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(
-                        colours, resultValue, colorDetected, mat.cols(), xTranslate);
+                        colours, resultValue, colorDetected, resultMatWidth, xTranslate);
             }
 
             // PUTTING IT ALL TOGETHER
@@ -352,9 +387,10 @@ public class ResultActivity extends BaseActivity {
             Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
             // create empty mat to serve as a template
-            combined = new Mat(0, mat.cols(), CvType.CV_8UC3, new Scalar(255, 255, 255));
+            combined = new Mat(0, resultMatWidth, CvType.CV_8UC3, new Scalar(255, 255, 255));
 
             combined = ResultUtil.concatenate(combined, mat); // add strip
+            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
             combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
 

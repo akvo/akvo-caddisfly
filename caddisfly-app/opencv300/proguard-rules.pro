@@ -15,7 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--optimizationpasses 5
+-dontoptimize
 
 -keep class org.opencv.** { *; }
 -keep class org.opencv.core.** { *; }

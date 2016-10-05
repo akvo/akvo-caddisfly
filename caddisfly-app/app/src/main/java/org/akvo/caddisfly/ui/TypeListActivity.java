@@ -22,12 +22,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,9 +42,12 @@ import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private final int PERMISSION_ALL = 1;
+
     private View coordinatorLayout;
 
     @Override
@@ -55,7 +56,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         setContentView(R.layout.activity_type_list);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-
     }
 
     @Override
@@ -71,18 +71,13 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                if (AppPreferences.useExternalCamera()) {
+                    permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                }
 
-                    if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.CAMERA},
-                                MY_PERMISSIONS_REQUEST_CAMERA);
-                    } else {
-                        startCalibration();
-                    }
-
+                if (!ApiUtil.hasPermissions(this, permissions)) {
+                    ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                 } else {
                     startCalibration();
                 }
@@ -135,15 +130,26 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
         final Activity activity = this;
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
+            case PERMISSION_ALL: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                boolean granted = false;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PERMISSION_GRANTED) {
+                        granted = false;
+                        break;
+                    } else {
+                        granted = true;
+                    }
+                }
+                if (granted) {
                     startCalibration();
                 } else {
+                    String message = getString(R.string.cameraAndStoragePermissions);
+                    if (AppPreferences.useExternalCamera()) {
+                        message = getString(R.string.storagePermission);
+                    }
                     Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, "Akvo Caddisfly requires camera permission to run",
-                                    Snackbar.LENGTH_LONG)
+                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
                             .setAction("SETTINGS", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -162,15 +168,9 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                     textView.setTextColor(Color.WHITE);
                     snackbar.show();
                 }
+
             }
         }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     @Override
@@ -194,5 +194,4 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
         AlertUtil.showMessage(this, R.string.notSupported, message);
     }
-
 }

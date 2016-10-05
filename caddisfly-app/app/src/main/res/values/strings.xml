@@ -57,6 +57,8 @@
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, please restart this device</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
+    <string name="storagePermission">Storage permission is required</string>
+    <string name="cameraAndStoragePermissions">Camera &amp; storage permissions are required</string>
 
     <!--Main Screen-->
     <string name="cannotCalibrate">Cannot calibrate</string>
@@ -147,6 +149,7 @@
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
+    <string name="useFlashMode">Use flash mode</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="deviceConnected">Device connected</string>

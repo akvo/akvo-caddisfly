@@ -155,7 +155,7 @@
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".sensor.colorimetry.strip.result.ResultActivity"
+            android:name=".sensor.colorimetry.strip.ui.ResultActivity"
             android:screenOrientation="nosensor" />
         <activity android:name=".sensor.colorimetry.strip.ui.UncaughtExceptionActivity">
             <intent-filter>

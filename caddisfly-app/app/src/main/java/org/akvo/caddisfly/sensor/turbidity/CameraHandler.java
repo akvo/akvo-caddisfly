@@ -38,6 +38,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -58,7 +59,7 @@ class CameraHandler implements Camera.PictureCallback {
     private Camera mCamera;
     private String mSavePath;
 
-    public CameraHandler(Context context) {
+    CameraHandler(Context context) {
         mContext = context;
 
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -72,7 +73,7 @@ class CameraHandler implements Camera.PictureCallback {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public Boolean takePicture(String savePath) {
+    Boolean takePicture(String savePath) {
 
         mSavePath = savePath;
         try {
@@ -175,8 +176,11 @@ class CameraHandler implements Camera.PictureCallback {
         }
 
         if (mSupportedFlashModes != null) {
-            if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+            if (!AppPreferences.useFlashMode() &&
+                    mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            } else if ( mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
             }
         }
 

@@ -29,7 +29,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,10 +52,13 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class ExternalActionActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private final int PERMISSION_ALL = 1;
+
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private Boolean mIsExternalAppCall = false;
     //the language requested by the external app
@@ -130,12 +132,13 @@ public class ExternalActionActivity extends BaseActivity {
                     ((TextView) findViewById(R.id.textTitle)).setText(
                             CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
 
-                    if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    if (AppPreferences.useExternalCamera()) {
+                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    }
 
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.CAMERA},
-                                MY_PERMISSIONS_REQUEST_CAMERA);
+                    if (!ApiUtil.hasPermissions(this, permissions)) {
+                        ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                     } else {
                         initializeTest();
                     }
@@ -160,35 +163,26 @@ public class ExternalActionActivity extends BaseActivity {
                     ((TextView) findViewById(R.id.textTitle)).setText(
                             CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
 
+                    String[] permissions = {};
                     if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
-                        if (!AppPreferences.useExternalCamera()) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (!AppPreferences.useExternalCamera() && ContextCompat.checkSelfPermission(this,
-                                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-                                    ActivityCompat.requestPermissions(this,
-                                            new String[]{Manifest.permission.CAMERA},
-                                            MY_PERMISSIONS_REQUEST_CAMERA);
-                                } else {
-                                    // Permission granted
-                                    initializeTest();
-                                }
-                            } else {
-                                // SDK older than Marshmallow
-                                initializeTest();
-                            }
+                        if (AppPreferences.useExternalCamera()) {
+                            permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         } else {
-                            // Using external camera. Camera permission not required
-                            startTest(caddisflyResourceUuid);
+                            permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         }
+                    }
+                    if (!ApiUtil.hasPermissions(this, permissions)) {
+                        ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                     } else {
-                        // Test does not require camera
-                        startTest(caddisflyResourceUuid);
+                        if (AppPreferences.useExternalCamera()) {
+                            startTest(caddisflyResourceUuid);
+                        } else {
+                            initializeTest();
+                        }
                     }
                 }
             }
         }
-
     }
 
     private void initializeTest() {
@@ -210,14 +204,28 @@ public class ExternalActionActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
+            case PERMISSION_ALL: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                boolean granted = false;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PERMISSION_GRANTED) {
+                        granted = false;
+                        break;
+                    } else {
+                        granted = true;
+                    }
+                }
+                if (granted) {
                     initializeTest();
                 } else {
-                    Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show();
+                    String message = getString(R.string.cameraAndStoragePermissions);
+                    if (AppPreferences.useExternalCamera()) {
+                        message = getString(R.string.storagePermission);
+                    }
+
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                     ApiUtil.startInstalledAppDetailsActivity(this);
+                    finish();
                 }
             }
         }
@@ -327,7 +335,7 @@ public class ExternalActionActivity extends BaseActivity {
                 } else {
                     if (AppPreferences.useExternalCamera()) {
                         intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
-                    }else{
+                    } else {
                         intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                     }
                 }
@@ -458,7 +466,7 @@ public class ExternalActionActivity extends BaseActivity {
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;
 
-        public WeakRefHandler(Activity ref) {
+        WeakRefHandler(Activity ref) {
             this.ref = new WeakReference<>(ref);
         }
 

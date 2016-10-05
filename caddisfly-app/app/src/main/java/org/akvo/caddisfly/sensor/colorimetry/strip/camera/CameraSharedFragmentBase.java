@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 import java.util.Map;
@@ -105,14 +106,14 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                     Constant.COUNT_QUALITY_CHECK_LIMIT);
             countQualityView.setText(text);
 
-            // Debugging: Display count per quality parameter
-//                if (AppPreferences.isDiagnosticMode()) {
-//                    String debugText = "";
-//                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-//                        debugText += entry.getKey() + ": " + entry.getValue() + " ";
-//                    }
-//                    countQualityView.setText(debugText);
-//                }
+            //Debugging: Display count per quality parameter
+            if (AppPreferences.isDiagnosticMode()) {
+                String debugText = "";
+                for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                    debugText += entry.getKey() + ": " + entry.getValue() + " ";
+                }
+                countQualityView.setText(debugText + " " + text);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

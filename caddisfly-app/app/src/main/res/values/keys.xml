@@ -43,4 +43,5 @@
     <string name="externalCameraMultiDeviceModeKey">externalCameraMultiDeviceMode</string>
     <string name="turbidityLedRgbKey">turbidityLedRgb</string>
     <string name="useExternalCameraKey" translateable="false">useExternalCamera</string>
+    <string name="useFlashModeKey" translatable="false">useFlashMode</string>
 </resources>
