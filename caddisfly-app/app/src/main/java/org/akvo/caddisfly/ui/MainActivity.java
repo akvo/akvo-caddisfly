@@ -30,6 +30,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -38,6 +39,7 @@ import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 public class MainActivity extends BaseActivity {
@@ -101,9 +103,14 @@ public class MainActivity extends BaseActivity {
                 CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
                 caddisflyApp.initializeCurrentTest();
                 final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
+                intent.putExtra("internal", true);
                 startActivity(intent);
             }
         });
+
+        // TODO: remove upgrade code when obsolete
+        upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
+        upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
     }
 
     /**
@@ -114,6 +121,29 @@ public class MainActivity extends BaseActivity {
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notSupported, message);
+    }
+
+    // TODO: remove upgrade code when obsolete
+    private void upgradeFolder(String code, String uuid) {
+
+        final File sourcePath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, code);
+        final File destinationPath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, uuid);
+        if (sourcePath.exists() && sourcePath.isDirectory()) {
+            File[] sourceFiles = sourcePath.listFiles();
+            if (sourceFiles != null) {
+                for (File file : sourceFiles) {
+                    File destinationFile = new File(destinationPath + File.separator + file.getName());
+                    //noinspection ResultOfMethodCallIgnored
+                    file.renameTo(destinationFile);
+                }
+
+                sourceFiles = sourcePath.listFiles();
+                if (sourceFiles.length == 0) {
+                    //noinspection ResultOfMethodCallIgnored
+                    sourcePath.delete();
+                }
+            }
+        }
     }
 
     @Override
@@ -212,7 +242,7 @@ public class MainActivity extends BaseActivity {
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;
 
-        public WeakRefHandler(Activity ref) {
+        WeakRefHandler(Activity ref) {
             this.ref = new WeakReference<>(ref);
         }
 

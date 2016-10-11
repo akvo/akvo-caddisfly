@@ -47,7 +47,7 @@ public class FileStorage {
         this.context = context;
     }
 
-    public static int byteArrayToLeInt(byte[] b) {
+    static int byteArrayToLeInt(byte[] b) {
         final ByteBuffer bb = ByteBuffer.wrap(b);
         bb.order(ByteOrder.LITTLE_ENDIAN);
         return bb.getInt();
@@ -65,24 +65,20 @@ public class FileStorage {
      * http://developer.android.com/guide/topics/data/data-storage.html#filesExternal
      */
 
-    public static boolean checkExternalMedia() {
-        boolean mExternalStorageAvailable;
+    public static boolean isExternalStorageWritable() {
         boolean mExternalStorageWritable;
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // Can read and write the media
-            mExternalStorageAvailable = mExternalStorageWritable = true;
+            mExternalStorageWritable = true;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // Can only read the media
-            mExternalStorageAvailable = true;
             mExternalStorageWritable = false;
         } else {
             // Can't read or write
-            mExternalStorageAvailable = mExternalStorageWritable = false;
+            mExternalStorageWritable = false;
         }
-        System.out.println("\n\nExternal Media: readable="
-                + mExternalStorageAvailable + " writable=" + mExternalStorageWritable);
 
         return mExternalStorageWritable;
     }
@@ -275,8 +271,6 @@ public class FileStorage {
         };
         File[] files = file.listFiles(filter);
 
-        System.out.println("***files that contain string: " + files.length);
-
         return files.length > 0;
 
     }
@@ -291,9 +285,8 @@ public class FileStorage {
         };
         File[] files = file.listFiles(filter);
         for (File f : files) {
-            boolean deleted = f.delete();
-
-            System.out.println("***deleted file : " + f.getName() + ": " + deleted);
+            //noinspection ResultOfMethodCallIgnored
+            f.delete();
         }
     }
 }

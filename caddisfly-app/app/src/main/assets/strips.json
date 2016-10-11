@@ -96,7 +96,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"60-second Nitrate Nitrogen (ppm)",
+          "patchDesc":"Nitrate Nitrogen (ppm), 60 sec",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -134,7 +134,7 @@
           "unit": "ppm"
         },
         {
-          "patchDesc":"30-second Nitrite Nitrogen (ppm)",
+          "patchDesc":"Nitrite Nitrogen (ppm) 30 sec",
           "patchPos": 16.8,
           "patchWidth":6,
           "id":2,
@@ -182,7 +182,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Total iron (ppm, mg/L)",
+          "patchDesc":"Total iron (ppm)",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -282,7 +282,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Phosphate",
+          "patchDesc":"Phosphate (ppm)",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -314,7 +314,103 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic (0 - 500)",
+      "name": "Potassium",
+      "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
+      "calibration": "measured on __-__-2016 using X-Rite iPro2",
+      "brand": "MERCK-117985",
+      "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
+      "illuminant":"D65-2deg",
+      "length": 82.6,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Potassium (ppm)",
+          "patchPos":3.3,
+          "patchWidth":6,
+          "id":1,
+          "colours":[
+            {
+              "value": 0,
+              "lab":[84.37,8.38,71.80]
+            },
+            {
+              "value": 250,
+              "lab":[76.42,22.99,64.42]
+            },
+            {
+              "value": 450,
+              "lab":[66.45,43.10,60.47]
+            },
+            {
+              "value": 700,
+              "lab":[59.96,57.48,48.66]
+            },
+            {
+              "value": 1000,
+              "lab":[55.90,66.17,49.19]
+            },
+            {
+              "value": 1500,
+              "lab":[52.94,72.47,47.83]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Ammonia",
+      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
+      "calibration": "measured on __-__-2016 using X-Rite iPro2",
+      "brand": "HACH-2755325",
+      "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
+      "illuminant":"D65-2deg",
+      "length": 82.6,
+      "height": 5.2,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Ammonia (ppm)",
+          "patchPos":3.3,
+          "patchWidth":6,
+          "id":1,
+          "colours":[
+            {
+              "value": 0,
+              "lab":[85.33,-1.37,67.40]
+            },
+            {
+              "value": 0.25,
+              "lab":[85.38,-15.02,70.58]
+            },
+            {
+              "value": 0.5,
+              "lab":[74.27,-20.22,60.02]
+            },
+            {
+              "value": 1,
+              "lab":[65.75,-28.92,48.58]
+            },
+            {
+              "value": 3,
+              "lab":[52.56,-36.84,42.93]
+            },
+            {
+              "value": 6,
+              "lab":[40.50,-36.91,28.32]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Arsenic (0 - 500) Dual Range",
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "calibration":"29 Sep 2016 using X-Rite iPro2",
       "brand": "HACH-28001-50-0-500",
@@ -366,7 +462,7 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic (0 - 4000)",
+      "name": "Arsenic (0 - 4000) Dual Range",
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "calibration":"12 Jan 2016",
       "brand": "HACH-28001-50-0-4000",

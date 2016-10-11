@@ -57,7 +57,7 @@ class CameraScheduledExecutorService {
                     if (canceled)
                         tasks.remove(s);
 
-                    System.out.println("***task key = " + s + " is canceled: " + canceled);
+                    //System.out.println("***task key = " + s + " is canceled: " + canceled);
                 }
             }
         }, delay, TimeUnit.MILLISECONDS);

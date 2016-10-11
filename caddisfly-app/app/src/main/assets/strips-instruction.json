@@ -13,7 +13,7 @@
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "Place strip onto black area.",
           "png": "instruction_place_strip"
         },
         {
@@ -35,7 +35,7 @@
           "png": ""
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "Place strip onto black area.",
           "png": "instruction_place_strip"
         },
         {
@@ -87,7 +87,7 @@
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "Place strip onto black area.",
           "png": "instruction_place_strip"
         },
         {
@@ -109,13 +109,50 @@
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "Place strip onto black area.",
           "png": "instruction_place_strip"
         },
         {
           "text": "Press 'Start' button.",
           "png": ""
         }
+      ]
+    },
+    {
+      "name": "Potassium",
+      "brand": "MERCK-117985",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Immerse the reaction zone of the test strip in the pretreated sample (15 - 30 °C) for 1 sec",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel."
+        },
+        {
+          "text": "Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min."
+        },
+        {
+          "text": "Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel."
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Ammonia",
+      "brand": "HACH-2755325",
+      "instructions": [
       ]
     },
     {

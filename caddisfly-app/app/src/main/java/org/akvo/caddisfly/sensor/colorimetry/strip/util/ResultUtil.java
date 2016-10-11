@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
@@ -109,7 +110,7 @@ public class ResultUtil {
         return null;
     }
 
-    public static Mat createStripMat(Mat mat, int borderSize, Point centerPatch, boolean grouped) {
+    public static Mat createStripMat(Mat mat, int borderSize, Point centerPatch, boolean grouped, int maxWidth) {
         //done with lab schema, make rgb to show in image view
         // mat holds the strip image
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
@@ -125,16 +126,22 @@ public class ResultUtil {
                     new Scalar(0, 255, 0, 255), 1);
         }
 
-        Imgproc.resize(mat, mat, new Size(mat.width() * 1.5, mat.height() * 1.5));
+        double ratio = (double) (maxWidth - 10) / (double) mat.width();
+
+        Imgproc.resize(mat, mat, new Size(mat.width() * ratio, mat.height() * ratio));
+
+        Log.w("Caddisfly 1", String.valueOf(mat.width()));
+        Log.w("Caddisfly 2", String.valueOf(maxWidth));
+        Log.w("Caddisfly 3", String.valueOf(ratio));
 
         return mat;
     }
 
     public static Mat createDescriptionMat(String desc, int width) {
         int[] baseline = new int[1];
-        Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, baseline);
+        Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.55d, 1, baseline);
         Mat descMat = new Mat((int) Math.ceil(textSizeDesc.height) * 3, width, CvType.CV_8UC3, labWhite);
-        Imgproc.putText(descMat, desc, new Point(2, descMat.height() - textSizeDesc.height), Core.FONT_HERSHEY_SIMPLEX, 0.35d, labBlack, 1, Core.LINE_8, false);
+        Imgproc.putText(descMat, desc, new Point(2, descMat.height() - textSizeDesc.height), Core.FONT_HERSHEY_SIMPLEX, 0.55d, labBlack, 1, Core.LINE_8, false);
 
         return descMat;
     }
@@ -191,7 +198,6 @@ public class ResultUtil {
 
         JSONArray colours;
         int offset = 0;
-        System.out.println("*** number of patches:" + numPatches);
         for (int p = 0; p < numPatches; p++) {
             colours = patches.get(p).getColours();
             for (int d = 0; d < colours.length(); d++) {
@@ -282,7 +288,7 @@ public class ResultUtil {
                     Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
 
                     Imgproc.circle(valueMeasuredMat, centerCircle, circleRadius, resultColor, -1, Imgproc.LINE_AA, 0);
-                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(centerCircle.x - textSize.width / 2, 55d),
+                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(Math.max(0, centerCircle.x - textSize.width / 2), 55d),
                             Core.FONT_HERSHEY_SIMPLEX, 0.6d, labBlack, 2, Core.LINE_AA, false);
 
                     resultIsDrawn = true;
@@ -409,28 +415,41 @@ public class ResultUtil {
         return result;
     }
 
-    public static Mat getPatch(Mat mat, Point centerPatch, int subMatSize) {
+    public static Mat getPatch(Mat mat, Point patchCenter, int subMatSize) {
 
         //make a subMat around center of the patch
-        int minRow = (int) Math.round(Math.max(centerPatch.y - subMatSize, 0));
-        int maxRow = (int) Math.round(Math.min(centerPatch.y + subMatSize, mat.height()));
-        int minCol = (int) Math.round(Math.max(centerPatch.x - subMatSize, 0));
-        int maxCol = (int) Math.round(Math.min(centerPatch.x + subMatSize, mat.width()));
+        int minRow = (int) Math.round(Math.max(patchCenter.y - subMatSize, 0));
+        int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
+        int minCol = (int) Math.round(Math.max(patchCenter.x - subMatSize, 0));
+        int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
 
         //  create subMat
-        return mat.submat(minRow, maxRow, minCol, maxCol);
+        return mat.submat(minRow, maxRow, minCol, maxCol).clone();
     }
 
-    public static ColorDetected getPatchColour(Mat mat, Point centerPatch, int subMatSize) {
+    public static ColorDetected getPatchColour(Mat mat, Point patchCenter, int subMatSize) {
 
         //make a subMat around center of the patch
-        int minRow = (int) Math.round(Math.max(centerPatch.y - subMatSize, 0));
-        int maxRow = (int) Math.round(Math.min(centerPatch.y + subMatSize, mat.height()));
-        int minCol = (int) Math.round(Math.max(centerPatch.x - subMatSize, 0));
-        int maxCol = (int) Math.round(Math.min(centerPatch.x + subMatSize, mat.width()));
+        int minRow = (int) Math.round(Math.max(patchCenter.y - subMatSize, 0));
+        int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
+        int minCol = (int) Math.round(Math.max(patchCenter.x - subMatSize, 0));
+        int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
 
         //  create subMat
         Mat patch = mat.submat(minRow, maxRow, minCol, maxCol);
+
+//        Imgproc.cvtColor(patch, patch, Imgproc.COLOR_Lab2BGR);
+//        Imgproc.cvtColor(patch, patch, Imgproc.COLOR_BGR2RGBA);
+//
+//        for (int i = 0; i < patch.rows(); i++) {
+//            for (int j = 0; j < patch.cols(); j++) {
+//                double[] pixel = patch.get(i, j);
+//                if (pixel[0] == 255 && pixel[1] == 255 && pixel[2] == 255)
+//                {
+//                    pixel[3] = 0;
+//                }
+//            }
+//        }
 
         // compute the mean colour and return it
         return OpenCVUtil.detectStripColorBrandKnown(patch);

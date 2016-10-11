@@ -170,11 +170,8 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                             Utils.matToBitmap(rgb, bitmap);
 
-                            if (FileStorage.checkExternalMedia()) {
+                            if (FileStorage.isExternalStorageWritable()) {
                                 FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
-                                System.out.println("***image written");
-                            } else {
-                                System.out.println("***could not write image");
                             }
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
                         }
@@ -194,7 +191,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                         ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94));
                             }
                         } catch (Exception e) {
-                            System.out.println("cal. failed: " + e.getMessage());
+                            //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
                             listener.showError(3);
                             cal_dest = warp_dst.clone();

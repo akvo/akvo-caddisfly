@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripListener;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
@@ -129,7 +131,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_camera_view);
 
         sound = new SoundPoolPlayer(this);
 
@@ -213,10 +215,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void onResume() {
 
         if (getIntent().getStringExtra(Constant.BRAND) != null) {
-            this.brandName = getIntent().getStringExtra(Constant.BRAND);
+            brandName = getIntent().getStringExtra(Constant.BRAND);
         } else {
             throw new NullPointerException("Cannot proceed without brand.");
         }
+
+        StripTest stripTest = new StripTest();
+        setTitle(stripTest.getBrand(brandName).getName());
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -492,6 +497,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     public void showResults() {
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.BRAND, brandName);
+        resultIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         startActivity(resultIntent);
         finish();
@@ -553,5 +559,15 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         void setAngles(float[] tilts) {
             this.tilts = tilts;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -43,9 +43,78 @@
       "monthsValid": "12",
       "results": [
         {
-          "description": "pH",
+          "description": "pH (Liquid reagent)",
           "id": 1,
           "unit": ""
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Nitrogen (N)"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "0114e2c0-bea4-417a-b7cd-f5d39c5646d2"
+      ],
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,40,80,120,160",
+      "dilutions": "0",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Nitrogen",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Phosphorous (P)"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "899e6c43-fdd1-4d12-829d-7b03c6e559c6"
+      ],
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,25,50,75,100",
+      "dilutions": "0",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Phosphorous",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Potassium (K)"
+        }
+      ],
+      "subtype": "color",
+      "uuid": [
+        "e68df4c6-7d25-4b8a-95fb-88650498179b"
+      ],
+      "unit": "ppm",
+      "calibrate": "true",
+      "ranges": "0,50,100,150,200",
+      "dilutions": "0",
+      "monthsValid": "12",
+      "results": [
+        {
+          "description": "Potassium",
+          "id": 1,
+          "unit": "ppm"
         }
       ]
     },

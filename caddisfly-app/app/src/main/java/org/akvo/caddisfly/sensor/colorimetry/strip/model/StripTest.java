@@ -121,7 +121,6 @@ public class StripTest {
 
         Brand(String brand) {
 
-            System.out.println("***Striptest brand: " + brand);
             try {
                 // read the json file with strip information from assets
                 String json = fromJson();

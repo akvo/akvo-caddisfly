@@ -21,8 +21,6 @@
     android:background="@android:color/background_light"
     tools:context=".sensor.colorimetry.strip.camera.InstructionFragment">
 
-    <include layout="@layout/toolbar" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

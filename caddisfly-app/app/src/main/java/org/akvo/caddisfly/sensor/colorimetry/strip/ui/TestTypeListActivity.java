@@ -83,6 +83,7 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
     private void startDetailActivity(String brandName) {
         Intent detailIntent = new Intent(getBaseContext(), BrandInfoActivity.class);
         detailIntent.putExtra(Constant.BRAND, brandName);
+        detailIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         startActivity(detailIntent);
     }
 

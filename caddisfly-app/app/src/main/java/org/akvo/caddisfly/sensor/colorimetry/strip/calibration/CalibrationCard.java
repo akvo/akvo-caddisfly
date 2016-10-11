@@ -136,7 +136,8 @@ public class CalibrationCard {
                 return calData;
 
             } catch (JSONException e) {
-                System.out.println("*** problem parsing JSON:" + e.toString());
+                e.printStackTrace();
+                //System.out.println("*** problem parsing JSON:" + e.toString());
             }
         }
         return null;
@@ -567,18 +568,18 @@ public class CalibrationCard {
      * @result: calibrated image
      */
     public static CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws Exception {
-        System.out.println("*** qualityChecksOK of calibration");
+        //System.out.println("*** qualityChecksOK of calibration");
 
         if (calData != null) {
             // illumination correction
             if (labImg != null) {
-                System.out.println("*** ILLUMINATION - starting illumination correction");
+                //System.out.println("*** ILLUMINATION - starting illumination correction");
                 labImg = doIlluminationCorrection(labImg, calData);
             }
 
             // 1D and 3D colour balance
             if (labImg != null) {
-                System.out.println("*** ILLUMINATION - starting 1D and 3D balance");
+                //System.out.println("*** ILLUMINATION - starting 1D and 3D balance");
                 labImg = do1D_3DCorrection(labImg, calData);
             }
 
@@ -587,7 +588,7 @@ public class CalibrationCard {
 
             // insert calibration colours in image
             if (labImg != null) {
-                System.out.println("*** ILLUMINATION - adding colours");
+                //System.out.println("*** ILLUMINATION - adding colours");
                 addCalColours(labImg, calData);
             }
 
@@ -708,7 +709,7 @@ public class CalibrationCard {
 
             // check if left and right are ok
             if (lry > 0) {
-                System.out.println("***decodeCalibrationCard lry > 0");
+                //System.out.println("***decodeCalibrationCard lry > 0");
                 return CODE_NOT_FOUND;
             }
 
@@ -729,7 +730,7 @@ public class CalibrationCard {
                     index++;
                 }
             } catch (Exception e) {
-                System.out.println("***decodeCalibrationCard error sample line into new row");
+                //System.out.println("***decodeCalibrationCard error sample line into new row");
                 e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
@@ -758,7 +759,7 @@ public class CalibrationCard {
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    System.out.println("***decodeCalibrationCard lengthPattern < 20");
+                    //System.out.println("***decodeCalibrationCard lengthPattern < 20");
                     return CODE_NOT_FOUND;
                 }
 
@@ -784,7 +785,7 @@ public class CalibrationCard {
 
                 // check parity bit
                 if (parity(bitResult) != bitResult[9]) {
-                    System.out.println("***decodeCalibrationCard parity(bitResult) != bitResult[9]");
+                    //System.out.println("***decodeCalibrationCard parity(bitResult) != bitResult[9]");
                     return CODE_NOT_FOUND;
                 }
 
@@ -800,12 +801,12 @@ public class CalibrationCard {
 
                 return code;
             } catch (Exception e) {
-                System.out.println("***decodeCalibrationCard error ");
+                //System.out.println("***decodeCalibrationCard error ");
                 e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
         } else {
-            System.out.println("***decodeCalibrationCard finder patterns < 4");
+            //System.out.println("***decodeCalibrationCard finder patterns < 4");
             return CODE_NOT_FOUND;
         }
     }

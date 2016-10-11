@@ -26,8 +26,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 135
-        versionName "0.135 Beta"
+        versionCode 137
+        versionName "0.137 Beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -68,6 +68,7 @@ android {
 
     packagingOptions {
         exclude 'LICENSE.txt'
+        return void
     }
 
     lintOptions {
@@ -101,4 +102,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.github.felHR85:UsbSerial:4.5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 }

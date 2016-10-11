@@ -296,7 +296,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         brandName = getArguments().getString(Constant.BRAND);
 
-        System.out.println("***brandName: " + brandName);
+        //System.out.println("***brandName: " + brandName);
 
         StripTest stripTest = new StripTest();
 
@@ -314,9 +314,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
 
-            System.out.println("***posting takeNextPicture: " + i + " timeLapse: " + patches.get(i).getTimeLapse());
+            //System.out.println("***posting takeNextPicture: " + i + " timeLapse: " + patches.get(i).getTimeLapse());
         }
-
     }
 
     /*
@@ -403,7 +402,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         // and imagePatchArray contains a value that corresponds with that.
         new StoreDataTask(getActivity(), imageCount, data, info).execute();
 
-        System.out.println("***imageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
+        //System.out.println("***imageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
 
         //add one to imageCount
         imageCount++;

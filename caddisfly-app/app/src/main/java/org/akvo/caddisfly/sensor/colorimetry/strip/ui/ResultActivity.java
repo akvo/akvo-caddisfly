@@ -44,6 +44,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -155,8 +156,8 @@ public class ResultActivity extends BaseActivity {
                 layout.addView(textView);
             }
         }
-        buttonSave = (Button) findViewById(R.id.button_save);
 
+        buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +185,8 @@ public class ResultActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+        Button buttonCancel = (Button) findViewById(R.id.button_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fileStorage != null) {
@@ -201,6 +203,10 @@ public class ResultActivity extends BaseActivity {
                 finish();
             }
         });
+
+        boolean isInternal = getIntent().getBooleanExtra("internal", false);
+        buttonSave.setVisibility(isInternal ? View.GONE : View.VISIBLE);
+        buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -267,10 +273,9 @@ public class ResultActivity extends BaseActivity {
             // depending on the boolean grouped, we either handle all patches at once, or we handle only a single one
 
             JSONArray colours;
-            Point centerPatch = null;
+            Point patchCenter = null;
 
             double xTranslate;
-
 
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             int resultMatWidth = Math.max(420, Math.min(displayMetrics.widthPixels, 600));
@@ -285,9 +290,9 @@ public class ResultActivity extends BaseActivity {
                 for (int p = 0; p < patches.size(); p++) {
                     double x = patches.get(p).getPosition() * ratioW;
                     double y = strip.height() / 2;
-                    centerPatch = new Point(x, y);
+                    patchCenter = new Point(x, y);
 
-                    colorDetected = ResultUtil.getPatchColour(mat, centerPatch, subMatSize);
+                    colorDetected = ResultUtil.getPatchColour(mat, patchCenter, subMatSize);
                     double[] colorValueLab = colorDetected.getLab().val;
 
                     colorsDetected[p] = colorDetected;
@@ -297,11 +302,11 @@ public class ResultActivity extends BaseActivity {
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
                         CvType.CV_8UC3, new Scalar(255, 255, 255));
 
-                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2) + 4);
+                patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
                 Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
 
-                analyzedArea = ResultUtil.getPatch(mat, centerPatch, subMatSize);
+                analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
                 Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
 
@@ -326,25 +331,37 @@ public class ResultActivity extends BaseActivity {
                 double ratioW = strip.width() / brand.getStripLength();
                 double x = patches.get(patchNum).getPosition() * ratioW;
                 double y = strip.height() / 2;
-                centerPatch = new Point(x, y);
+                patchCenter = new Point(x, y);
 
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
                         CvType.CV_8UC3, new Scalar(255, 255, 255));
 
-                patchArea = ResultUtil.getPatch(mat, centerPatch, (strip.height() / 2) + 4);
+                patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
+                Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
+
+//                int minRow = (int) Math.round(patchCenter.y - subMatSize - 1);
+//                int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
+//                int minCol = (int) Math.round(patchCenter.x - subMatSize - 1);
+//                int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
+//
+//                Imgproc.rectangle(patchArea,
+//                        new Point(minCol, minRow),
+//                        new Point(maxCol, maxRow),
+//                        new Scalar(0, 255, 0, 255), 1);
+
                 Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
 
-                analyzedArea = ResultUtil.getPatch(mat, centerPatch, subMatSize);
+                analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
                 Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
 
                 Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
-                Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
+
                 resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
                 resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
 
-                colorDetected = ResultUtil.getPatchColour(mat, centerPatch, subMatSize);
+                colorDetected = ResultUtil.getPatchColour(mat, patchCenter, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
 
                 //set the colours needed to calculate resultValue
@@ -365,7 +382,7 @@ public class ResultActivity extends BaseActivity {
             ////////////// Create Image ////////////////////
 
             // create Mat to hold strip itself
-            mat = ResultUtil.createStripMat(mat, borderSize, centerPatch, grouped);
+            mat = ResultUtil.createStripMat(mat, borderSize, patchCenter, grouped, resultMatWidth);
 
             // Create Mat to hold patchDescription of patch
             Mat descMat = ResultUtil.createDescriptionMat(patchDescription, resultMatWidth);
@@ -401,6 +418,9 @@ public class ResultActivity extends BaseActivity {
             combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
             combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
+
+            Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
+                    Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
 
             //make bitmap to be rendered on screen, which doesn't contain the patch patchDescription
             if (!combined.empty()) {

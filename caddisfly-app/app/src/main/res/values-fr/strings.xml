@@ -125,7 +125,6 @@
     <string name="ready_for_picture">Prêt pour prendre photo</string>
     <string name="waiting">Attendez</string>
     <string name="quality_checks_counter">Conditions: %1$d de %2$d</string>
-    <string name="confirm_quality_checks_ok">Très bien!\nAppuyex \'Suivant\'</string>
     <string name="next">Suivant</string>
 
     <!--end Strip Test-->

@@ -40,6 +40,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
+import org.json.JSONArray;
 
 import java.io.InputStream;
 
@@ -57,33 +58,8 @@ public class BrandInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brand_info);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        mBrandCode = getIntent().getStringExtra(Constant.BRAND);
-
-        if (mBrandCode != null) {
-            StripTest stripTest = new StripTest();
-
-            // Display the brand in title
-            setTitle(stripTest.getBrand(mBrandCode).getName());
-
-            // Display the brand photo
-            ImageView imageView = (ImageView) findViewById(R.id.fragment_choose_strip_testImageView);
-            try {
-                String path = getResources().getString(R.string.striptest_images);
-                InputStream ims = getAssets().open(path + "/" + mBrandCode + ".png");
-
-                Drawable drawable = Drawable.createFromStream(ims, null);
-
-                ims.close();
-
-                imageView.setImageDrawable(drawable);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
         final Activity activity = this;
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         // To start Camera
         Button buttonPrepareTest = (Button) findViewById(R.id.button_prepare);
@@ -108,6 +84,35 @@ public class BrandInfoActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        mBrandCode = getIntent().getStringExtra(Constant.BRAND);
+
+        if (mBrandCode != null) {
+            StripTest stripTest = new StripTest();
+
+            // Display the brand in title
+            setTitle(stripTest.getBrand(mBrandCode).getName());
+
+            // Display the brand photo
+            ImageView imageView = (ImageView) findViewById(R.id.fragment_choose_strip_testImageView);
+            try {
+                String path = getResources().getString(R.string.striptest_images);
+                InputStream ims = getAssets().open(path + "/" + mBrandCode + ".png");
+
+                Drawable drawable = Drawable.createFromStream(ims, null);
+
+                ims.close();
+
+                imageView.setImageDrawable(drawable);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            JSONArray instructions = stripTest.getBrand(mBrandCode).getInstructions();
+            if (instructions.length() == 0){
+                buttonInstruction.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     @Override
@@ -159,6 +164,7 @@ public class BrandInfoActivity extends BaseActivity {
         Intent intent = new Intent(getBaseContext(), CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constant.BRAND, mBrandCode);
+        intent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         startActivityForResult(intent, 100);
     }
 
