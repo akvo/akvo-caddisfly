@@ -70,7 +70,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private ProgressIndicatorView progressIndicatorViewAnim;
     private int timeLapsed = 0;
     private Handler handler;
-    private String brandName;
+    private String uuid;
     private int patchesCovered = -1;
     private int stepsCovered = 0;
     private int imageCount = 0;
@@ -103,11 +103,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         // Required empty public constructor
     }
 
-    public static CameraStartTestFragment newInstance(String brandName) {
+    public static CameraStartTestFragment newInstance(String uuid) {
 
         CameraStartTestFragment fragment = new CameraStartTestFragment();
         Bundle args = new Bundle();
-        args.putString(Constant.BRAND, brandName);
+        args.putString(Constant.UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -154,11 +154,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         if (getArguments() != null) {
 
-            brandName = getArguments().getString(Constant.BRAND);
+            uuid = getArguments().getString(Constant.UUID);
 
             StripTest stripTest = new StripTest();
             //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(brandName).getPatchesOrderedByTimeLapse();
+            patches = stripTest.getBrand(uuid).getPatchesOrderedByTimeLapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.progress_indicator);
 
@@ -294,13 +294,13 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //mListener.startNextPreview(0);
 
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
-        brandName = getArguments().getString(Constant.BRAND);
+        uuid = getArguments().getString(Constant.UUID);
 
-        //System.out.println("***brandName: " + brandName);
+        //System.out.println("***uuid: " + uuid);
 
         StripTest stripTest = new StripTest();
 
-        patches = stripTest.getBrand(brandName).getPatchesOrderedByTimeLapse();
+        patches = stripTest.getBrand(uuid).getPatchesOrderedByTimeLapse();
 
         for (int i = 0; i < patches.size(); i++) {
 
@@ -469,7 +469,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private Intent createDetectStripIntent(int format, int width, int height) {
         Intent detectStripIntent = new Intent();
         //put Extras into intent
-        detectStripIntent.putExtra(Constant.BRAND, brandName);
+        detectStripIntent.putExtra(Constant.UUID, uuid);
         detectStripIntent.putExtra(Constant.FORMAT, format);
         detectStripIntent.putExtra(Constant.WIDTH, width);
         detectStripIntent.putExtra(Constant.HEIGHT, height);

@@ -34,15 +34,18 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.json.JSONException;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class TestTypeListActivity extends BaseActivity implements BaseActivity.ResultListener {
 
     private StripAdapter adapter;
     private StripTest stripTest;
-    private List<String> brandNames;
+    private List<StripTest.Brand> brands;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +62,35 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         if (stripTest == null)
             stripTest = new StripTest();
 
-        brandNames = stripTest.getBrandsAsList();
+        brands = stripTest.getBrandsAsList();
 
-        if (brandNames != null) {
+        if (brands != null) {
             //order alpha-numeric on brand
-            Collections.sort(brandNames);
+            Collections.sort(brands, new Comparator<StripTest.Brand>() {
+                @Override
+                public int compare(final StripTest.Brand object1, final StripTest.Brand object2) {
+                    return object1.getName().compareTo(object2.getName());
+                }
+            });
 
             if (adapter == null) {
                 adapter = new StripAdapter(this,
-                        R.layout.item_test_type, brandNames);
+                        R.layout.item_test_type, brands);
             }
             listTypes.setAdapter(adapter);
 
             listTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    startDetailActivity(brandNames.get(i));
+                    startDetailActivity(brands.get(i).getUuid());
                 }
             });
         }
     }
 
-    private void startDetailActivity(String brandName) {
+    private void startDetailActivity(String uuid) {
         Intent detailIntent = new Intent(getBaseContext(), BrandInfoActivity.class);
-        detailIntent.putExtra(Constant.BRAND, brandName);
+        detailIntent.putExtra(Constant.UUID, uuid);
         detailIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         startActivity(detailIntent);
     }
@@ -100,13 +108,7 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         } else if (cadUuid != null && cadUuid.length() > 0) {
             // when we get back here, we want to go straight back to the FLOW app
             intent.putExtra(SensorConstants.FINISH, true);
-
-            // find brand which goes with this test uuid
-            // and if found, go there immediately.
-            StripTest stripTest = new StripTest();
-            String brand = stripTest.matchUuidToBrand(cadUuid);
-            if (brand != null && brand.length() > 0)
-                startDetailActivity(brand);
+            startDetailActivity(cadUuid);
         }
     }
 
@@ -125,26 +127,37 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         finish();
     }
 
-    static class StripAdapter extends ArrayAdapter<String> {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
-        private final List<String> brandNames;
+        return super.onOptionsItemSelected(item);
+    }
+
+    static class StripAdapter extends ArrayAdapter<StripTest.Brand> {
+
+        private final List<StripTest.Brand> brandList;
         private final int resource;
         private final Context context;
         private final StripTest stripTest;
 
         @SuppressWarnings("SameParameterValue")
-        StripAdapter(Context context, int resource, List<String> brandNames) {
+        StripAdapter(Context context, int resource, List<StripTest.Brand> brandNames) {
             super(context, resource);
 
             this.context = context;
             this.resource = resource;
-            this.brandNames = brandNames;
+            this.brandList = brandNames;
             this.stripTest = new StripTest();
         }
 
         @Override
         public int getCount() {
-            return brandNames.size();
+            return brandList.size();
         }
 
         @NonNull
@@ -163,28 +176,47 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
                 holder = (ViewHolder) view.getTag();
             }
 
-            if (brandNames != null) {
-                if (stripTest != null) {
-                    StripTest.Brand brand = stripTest.getBrand(brandNames.get(position));
+            StripTest.Brand brand = brandList.get(position);
 
-                    if (brand != null) {
+            if (stripTest != null) {
 
-                        List<StripTest.Brand.Patch> patches = brand.getPatches();
+                if (brand != null) {
 
-                        if (patches != null && patches.size() > 0) {
-                            String subtext = "";
-                            for (int i = 0; i < patches.size(); i++) {
-                                subtext += patches.get(i).getDesc() + ", ";
+                    List<StripTest.Brand.Patch> patches = brand.getPatches();
+
+                    if (patches != null && patches.size() > 0) {
+//                            String subtext = "";
+//                            for (int i = 0; i < patches.size(); i++) {
+//                                subtext += patches.get(i).getDesc() + ", ";
+//                            }
+//                        int indexLastSep = subtext.lastIndexOf(",");
+//                            subtext = subtext.substring(0, indexLastSep);
+
+                        String ranges = "";
+                        for (StripTest.Brand.Patch patch : patches) {
+                            try {
+                                int valueCount = patch.getColours().length();
+                                if (!ranges.isEmpty()) {
+                                    ranges += ", ";
+                                }
+                                ranges += String.format(Locale.US, "%.0f - %.0f",
+                                        patch.getColours().getJSONObject(0).getDouble("value"),
+                                        patch.getColours().getJSONObject(valueCount - 1).getDouble("value"));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            int indexLastSep = subtext.lastIndexOf(",");
-                            subtext = subtext.substring(0, indexLastSep);
-                            holder.textView.setText(brand.getName());
-
-                            holder.subtextView.setText(subtext);
+                            if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
+                                break;
+                            }
                         }
+
+
+                        holder.textView.setText(brand.getName());
+                        holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges);
                     }
-                } else holder.textView.setText(brandNames.get(position));
-            }
+                }
+            } else holder.textView.setText(brand.getName());
             return view;
 
         }
@@ -192,25 +224,13 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         private static class ViewHolder {
 
             private final TextView textView;
-            private final TextView subtextView;
+            private final TextView textSubtitle;
 
             ViewHolder(View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
-                subtextView = (TextView) v.findViewById(R.id.text_subtitle);
-
+                textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

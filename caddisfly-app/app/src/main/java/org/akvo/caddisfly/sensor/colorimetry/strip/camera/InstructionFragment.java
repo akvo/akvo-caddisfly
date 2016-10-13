@@ -54,10 +54,10 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         // Required empty public constructor
     }
 
-    public static InstructionFragment newInstance(String brandName) {
+    public static InstructionFragment newInstance(String uuid) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
-        args.putString(Constant.BRAND, brandName);
+        args.putString(Constant.UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,10 +79,10 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         if (getArguments() != null) {
 
-            String brandName = getArguments().getString(Constant.BRAND);
+            String uuid = getArguments().getString(Constant.UUID);
 
             StripTest stripTest = new StripTest();
-            JSONArray instructions = stripTest.getBrand(brandName).getInstructions();
+            JSONArray instructions = stripTest.getBrand(uuid).getInstructions();
 
             ShowInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
 
@@ -135,6 +135,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         } else {
             textView.setTextColor(Color.DKGRAY);
         }
+
+        textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
+                getResources().getDisplayMetrics()), 1.0f);
 
         textView.setTypeface(null, style);
 

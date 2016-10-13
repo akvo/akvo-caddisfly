@@ -33,7 +33,7 @@
         android:paddingStart="5sp"
         android:paddingTop="10sp"
         android:textSize="18sp"
-        tools:text="Chlorine &amp; Free Chlorine" />
+        tools:text="Total Chlorine &amp; Free Chlorine 1 - 10" />
 
     <TextView
         android:id="@+id/text_subtitle"
@@ -46,5 +46,5 @@
         android:paddingStart="5sp"
         android:textColor="#5c5c5c"
         android:textSize="14sp"
-        tools:text="Total Chlorine, Free Chlorine (ppm)" />
+        tools:text="BRAND 23426435" />
 </LinearLayout>

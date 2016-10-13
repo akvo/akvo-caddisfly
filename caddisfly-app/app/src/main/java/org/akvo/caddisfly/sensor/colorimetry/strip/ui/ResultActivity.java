@@ -79,13 +79,13 @@ public class ResultActivity extends BaseActivity {
             resultImageUrl = UUID.randomUUID().toString() + ".png";
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
-            String brandName = intent.getStringExtra(Constant.BRAND);
+            String uuid = intent.getStringExtra(Constant.UUID);
 
             Mat strip;
             StripTest stripTest = new StripTest();
 
             // get information on the strip test from JSON
-            brand = stripTest.getBrand(brandName);
+            brand = stripTest.getBrand(uuid);
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
             // get the JSON describing the images of the patches that were stored before

@@ -78,13 +78,15 @@ public class PageIndicatorView extends View {
     @Override
     public void onDraw(Canvas canvas) {
 
-        for (int i = 0; i < pageCount; i++) {
-            if (activePage == i)
-                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
-                        BULLET_RADIUS + 6, fillPaint);
-            else
-                canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
-                        BULLET_RADIUS, fillPaint);
+        if (pageCount > 1) {
+            for (int i = 0; i < pageCount; i++) {
+                if (activePage == i)
+                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
+                            BULLET_RADIUS + 6, fillPaint);
+                else
+                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2,
+                            BULLET_RADIUS, fillPaint);
+            }
         }
     }
 }

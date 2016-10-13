@@ -37,8 +37,8 @@ public class StripTest {
 
     }
 
-    public List<String> getBrandsAsList() {
-        List<String> brandNames = new ArrayList<>();
+    public List<Brand> getBrandsAsList() {
+        List<Brand> brandNames = new ArrayList<>();
 
         String json = fromJson();
         try {
@@ -49,10 +49,8 @@ public class StripTest {
                 JSONObject strip;
                 if (stripsJson != null) {
                     for (int i = 0; i < stripsJson.length(); i++) {
-
                         strip = stripsJson.getJSONObject(i);
-                        brandNames.add(strip.getString("brand"));
-
+                        brandNames.add(getBrand(strip.getString("uuid")));
                     }
                 }
             }
@@ -90,8 +88,8 @@ public class StripTest {
         return result;
     }
 
-    public Brand getBrand(String brand) {
-        return new Brand(brand);
+    public Brand getBrand(String uuid) {
+        return new Brand(uuid);
     }
 
     private String fromJson() {
@@ -104,7 +102,6 @@ public class StripTest {
     private String instructionsFromJson() {
         String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_instruction_json);
         return AssetsManager.getInstance().loadJSONFromAsset(filename);
-
     }
 
     public enum GroupType {GROUP, INDIVIDUAL}
@@ -112,6 +109,9 @@ public class StripTest {
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
         private String name;
+        private String brandDescription;
+        private String image;
+
         private String uuid;
         private double stripLength;
         @SuppressWarnings("unused")
@@ -119,8 +119,9 @@ public class StripTest {
         private GroupType groupingType;
         private JSONArray instructions;
 
-        Brand(String brand) {
+        Brand(String uuid) {
 
+            this.uuid = uuid;
             try {
                 // read the json file with strip information from assets
                 String json = fromJson();
@@ -134,13 +135,15 @@ public class StripTest {
                         for (int i = 0; i < stripsJson.length(); i++) {
                             strip = stripsJson.getJSONObject(i);
 
-                            if (strip.getString("brand").equalsIgnoreCase(brand)) {
+                            if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
                                 try {
-                                    this.uuid = strip.getString("uuid");
-                                    this.stripLength = strip.getDouble("length");
-                                    this.stripHeight = strip.getDouble("height");
-                                    this.groupingType = strip.getString("groupingType").equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
-                                    this.name = strip.getString("name");
+                                    stripLength = strip.getDouble("length");
+                                    stripHeight = strip.getDouble("height");
+                                    groupingType = strip.getString("groupingType")
+                                            .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
+                                    name = strip.getString("name");
+                                    brandDescription = strip.getString("brand");
+                                    image = strip.has("image") ? strip.getString("image") : brandDescription;
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArr.length(); ii++) {
@@ -173,16 +176,10 @@ public class StripTest {
                 JSONObject strip;
 
                 if (stripsJson != null) {
-
                     for (int i = 0; i < stripsJson.length(); i++) {
-
                         strip = stripsJson.getJSONObject(i);
-
-                        //System.out.println("***Striptest brand = " + i + " = " + strip.getString("brand"));
-
-                        if (strip.getString("brand").equalsIgnoreCase(brand)) {
+                        if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
                             this.instructions = strip.getJSONArray("instructions");
-
                         }
                     }
                 }
@@ -211,6 +208,10 @@ public class StripTest {
             return name;
         }
 
+        public String getBrandDescription() {
+            return brandDescription;
+        }
+
         public String getUuid() {
             return uuid;
         }
@@ -223,6 +224,10 @@ public class StripTest {
         public List<Patch> getPatchesOrderedByTimeLapse() {
             Collections.sort(patches, new PatchComparator());
             return patches;
+        }
+
+        public String getImage() {
+            return image;
         }
 
         public class Patch {

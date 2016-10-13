@@ -50,7 +50,7 @@ public class BrandInfoActivity extends BaseActivity {
 
     private final int PERMISSION_ALL = 1;
     private final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private String mBrandCode;
+    private String mUuid;
     private CoordinatorLayout coordinatorLayout;
 
     @Override
@@ -80,24 +80,24 @@ public class BrandInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), InstructionActivity.class);
-                intent.putExtra(Constant.BRAND, mBrandCode);
+                intent.putExtra(Constant.UUID, mUuid);
                 startActivity(intent);
             }
         });
 
-        mBrandCode = getIntent().getStringExtra(Constant.BRAND);
+        mUuid = getIntent().getStringExtra(Constant.UUID);
 
-        if (mBrandCode != null) {
+        if (mUuid != null) {
             StripTest stripTest = new StripTest();
 
             // Display the brand in title
-            setTitle(stripTest.getBrand(mBrandCode).getName());
+            setTitle(stripTest.getBrand(mUuid).getName());
 
             // Display the brand photo
             ImageView imageView = (ImageView) findViewById(R.id.fragment_choose_strip_testImageView);
             try {
                 String path = getResources().getString(R.string.striptest_images);
-                InputStream ims = getAssets().open(path + "/" + mBrandCode + ".png");
+                InputStream ims = getAssets().open(path + "/" + stripTest.getBrand(mUuid).getImage() + ".png");
 
                 Drawable drawable = Drawable.createFromStream(ims, null);
 
@@ -108,7 +108,7 @@ public class BrandInfoActivity extends BaseActivity {
                 ex.printStackTrace();
             }
 
-            JSONArray instructions = stripTest.getBrand(mBrandCode).getInstructions();
+            JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
             if (instructions.length() == 0){
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
@@ -163,7 +163,7 @@ public class BrandInfoActivity extends BaseActivity {
     private void startCamera() {
         Intent intent = new Intent(getBaseContext(), CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constant.BRAND, mBrandCode);
+        intent.putExtra(Constant.UUID, mUuid);
         intent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         startActivityForResult(intent, 100);
     }
@@ -174,7 +174,7 @@ public class BrandInfoActivity extends BaseActivity {
         super.onResume();
 
         StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(mBrandCode).getName());
+        setTitle(stripTest.getBrand(mUuid).getName());
     }
 
     @Override

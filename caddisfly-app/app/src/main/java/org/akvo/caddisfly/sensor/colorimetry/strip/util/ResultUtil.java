@@ -218,7 +218,8 @@ public class ResultUtil {
                     //draw color value above rectangle
                     if (p == 0) {
                         Point centerText = new Point(topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
-                        Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
+                        Imgproc.putText(colorRangeMat, roundAxis(value), centerText,
+                                Core.FONT_HERSHEY_SIMPLEX, 0.3d, labGrey, 1, Core.LINE_AA, false);
                     }
 
                 } catch (JSONException e) {

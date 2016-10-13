@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
@@ -51,7 +52,7 @@ public class InstructionActivity extends BaseActivity {
 
         final PageIndicatorView footerView = (PageIndicatorView) findViewById(R.id.pager_indicator);
 
-        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.BRAND));
+        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.UUID));
 
         setTitle(brand.getName());
 
@@ -93,19 +94,28 @@ public class InstructionActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.image_pageLeft).setOnClickListener(new View.OnClickListener() {
+        ImageView image_pageLeft = (ImageView) findViewById(R.id.image_pageLeft);
+        ImageView image_pageRight = (ImageView) findViewById(R.id.image_pageRight);
+
+        image_pageLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
             }
         });
 
-        findViewById(R.id.image_pageRight).setOnClickListener(new View.OnClickListener() {
+        image_pageRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
             }
         });
+
+        if (pagerAdapter.getCount() < 2) {
+            image_pageLeft.setVisibility(View.GONE);
+            image_pageRight.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

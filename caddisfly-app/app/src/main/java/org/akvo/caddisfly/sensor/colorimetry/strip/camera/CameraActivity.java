@@ -66,7 +66,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private CameraPreview cameraPreview;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private LevelView levelView;
-    private String brandName;
+    private String uuid;
     private CameraSharedFragmentBase currentFragment;
     //OpenCV Manager
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -214,14 +214,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     public void onResume() {
 
-        if (getIntent().getStringExtra(Constant.BRAND) != null) {
-            brandName = getIntent().getStringExtra(Constant.BRAND);
+        if (getIntent().getStringExtra(Constant.UUID) != null) {
+            uuid = getIntent().getStringExtra(Constant.UUID);
         } else {
             throw new NullPointerException("Cannot proceed without brand.");
         }
 
         StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(brandName).getName());
+        setTitle(stripTest.getBrand(uuid).getName());
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -323,9 +323,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         if (currentFragment instanceof CameraPrepareFragment) {
             // Display instructions
-            currentFragment = InstructionFragment.newInstance(brandName);
+            currentFragment = InstructionFragment.newInstance(uuid);
         } else if (currentFragment instanceof InstructionFragment) {
-            currentFragment = CameraStartTestFragment.newInstance(brandName);
+            currentFragment = CameraStartTestFragment.newInstance(uuid);
         }
 
         getSupportFragmentManager().beginTransaction()
@@ -496,7 +496,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void showResults() {
         Intent resultIntent = new Intent(this, ResultActivity.class);
-        resultIntent.putExtra(Constant.BRAND, brandName);
+        resultIntent.putExtra(Constant.UUID, uuid);
         resultIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         startActivity(resultIntent);

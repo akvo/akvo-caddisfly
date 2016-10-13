@@ -1,8 +1,8 @@
 {
   "strips": [
     {
-      "name": "Chlorine and Free Chlorine",
-      "brand": "HACH-27450-50",
+      "name": "Total Chlorine & Free Chlorine",
+      "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau",
@@ -23,8 +23,8 @@
       ]
     },
     {
-      "name": "Nitrate and Nitrite",
-      "brand": "HACH-27454-25",
+      "name": "Nitrate - N & Nitrite - N",
+      "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "instructions": [
         {
           "text": "Plongez la bande dans l'eau pendant 1 seconde.",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Total Iron",
-      "brand": "HACH-2745348",
+      "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "instructions": [
         {
           "text": "Remplissez le flacon échantillon à moitié avec de l'eau de l'échantillon.",
@@ -75,8 +75,8 @@
       ]
     },
     {
-      "name": "pH 4-9",
-      "brand": "HACH-27456-50",
+      "name": "pH",
+      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau",
@@ -97,8 +97,8 @@
       ]
     },
     {
-      "name": "Phosphate",
-      "brand": "HACH-27571-50",
+      "name": "Phosphorus",
+      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau",
@@ -119,8 +119,20 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic (0-500)",
-      "brand": "HACH-28001-50-0-500",
+      "name": "Potassium",
+      "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
+      "instructions": [
+      ]
+    },
+    {
+      "name": "Ammonia",
+      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
+      "instructions": [
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range",
+      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!",
@@ -143,8 +155,8 @@
       ]
     },
     {
-      "name": "Dual Range Arsenic (0-4000)",
-      "brand": "HACH-28001-50-0-4000",
+      "name": "Arsenic Dual Range",
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!",
@@ -167,8 +179,8 @@
       ]
     },
     {
-      "name": "pH 0 - 14",
-      "brand": "MERCK-1095350001-100-0-14",
+      "name": "pH colorpHast",
+      "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "instructions": [
         {
           "text": "Collectez un échantillon d'eau",

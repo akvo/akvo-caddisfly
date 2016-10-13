@@ -34,7 +34,7 @@ public class Constant {
     public static final int PIXEL_MARGIN_STRIP_AREA_WIDTH = 6;
     public static final int PIXEL_MARGIN_STRIP_AREA_HEIGHT = 4;
 
-    public static final String BRAND = "org.akvo.caddisfly.brand";
+    public static final String UUID = "org.akvo.caddisfly.uuid";
     public static final String DATA = "org.akvo.caddisfly.data";
     public static final String FORMAT = "org.akvo.caddisfly.format";
     public static final String WIDTH = "org.akvo.caddisfly.width";

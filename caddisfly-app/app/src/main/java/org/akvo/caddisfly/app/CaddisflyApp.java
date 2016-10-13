@@ -147,27 +147,8 @@ public class CaddisflyApp extends Application {
     public static String getAppVersion() {
         try {
             Context context = getApp();
-            String version = context.getPackageManager()
+            return context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0).versionName;
-            String[] words = version.split("\\s");
-            String versionString = "";
-            for (String word : words) {
-                try {
-                    Double versionNumber = Double.parseDouble(word);
-                    versionString += String.format(Locale.US, "%.3f", versionNumber);
-                } catch (NumberFormatException e) {
-                    int id = context.getResources()
-                            .getIdentifier(word.toLowerCase(), "string", context.getPackageName());
-                    if (id > 0) {
-                        versionString += context.getString(id);
-                    } else {
-                        versionString += word;
-                    }
-                }
-                versionString += " ";
-            }
-            return versionString.trim();
-
         } catch (PackageManager.NameNotFoundException e) {
             return "";
         }

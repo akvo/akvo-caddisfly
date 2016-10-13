@@ -78,6 +78,9 @@ public class InstructionDetailFragment extends Fragment {
                 textView.setPadding(0, 0, 0,
                         (int) getResources().getDimension(R.dimen.activity_vertical_margin));
 
+                textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
+                        getResources().getDisplayMetrics()), 1.0f);
+
                 if (instruction.contains(">")) {
                     textView.setTextColor(Color.RED);
                 } else {
