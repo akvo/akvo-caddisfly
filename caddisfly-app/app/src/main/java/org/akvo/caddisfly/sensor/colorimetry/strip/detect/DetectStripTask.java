@@ -132,7 +132,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         // Set imageCount to current number
                         imageCount = imageNo;
 
-                        listener.showMessage(0);
+                        listener.showMessage();
 
                         byte[] data = fileStorage.readByteArray(Constant.DATA + imageNo);
                         if (data == null)
@@ -179,17 +179,17 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         //calibrate
                         Mat cal_dest;
                         try {
-                            listener.showMessage(1);
+                            listener.showMessage();
                             CalibrationResultData calResult = getCalibratedImage(warp_dst);
                             cal_dest = calResult.calibratedImage;
                             Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
                                     ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94) +
                                     ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
-                            if (DEVELOP_MODE) {
-                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
-                                        ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94));
-                            }
+//                            if (DEVELOP_MODE) {
+//                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
+//                                        ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94));
+//                            }
                         } catch (Exception e) {
                             //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
@@ -212,7 +212,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             stripArea = cal_dest.submat(roiStripArea);
 
                         if (stripArea != null) {
-                            listener.showMessage(2);
+                            listener.showMessage();
                             Mat strip = null;
                             try {
                                 StripTest.Brand brand = stripTest.getBrand(uuid);
@@ -269,7 +269,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                 listener.showError(5);
             }
         }
-        listener.showMessage(3);
+        listener.showMessage();
         return null;
     }
 

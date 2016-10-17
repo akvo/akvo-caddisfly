@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.ApiUtil;
 
 /**
  * A partial_progress dialog to the show that the usb external device is connected
@@ -36,8 +35,6 @@ public class UsbConnectionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usb_connection);
-
-        ApiUtil.lockScreenOrientation(this);
     }
 
     @Override

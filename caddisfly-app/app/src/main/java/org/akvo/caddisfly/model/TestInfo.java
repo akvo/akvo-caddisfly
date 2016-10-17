@@ -57,6 +57,7 @@ public class TestInfo {
     private long calibrationDate;
     private long expiryDate;
     private boolean useGrayScale;
+    private String shortCode;
 
     public TestInfo(Hashtable names, String unit, CaddisflyApp.TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
@@ -307,6 +308,14 @@ public class TestInfo {
 
     public void setUseGrayScale(boolean useGrayScale) {
         this.useGrayScale = useGrayScale;
+    }
+
+    public String getShortCode() {
+        return shortCode;
+    }
+
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public class SubTest {

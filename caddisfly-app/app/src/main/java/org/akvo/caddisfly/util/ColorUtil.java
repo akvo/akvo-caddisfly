@@ -22,11 +22,9 @@ import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.LabColor;
-import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.XyzColor;
-import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -40,7 +38,6 @@ public final class ColorUtil {
     /**
      * The maximum color distance before the color is considered out of range
      */
-    public static final int MAX_COLOR_DISTANCE_RGB = 30;
     private static final double Xn = 0.950470;
     private static final double Yn = 1.0;
     private static final double Zn = 1.088830;
@@ -77,16 +74,18 @@ public final class ColorUtil {
         }
     }
 
-    public static double getMaxDistance() {
+    public static double getMaxDistance(double defaultValue) {
         switch (DEFAULT_COLOR_MODEL) {
             case RGB:
-                //todo: remove this diagnostic code
-                return AppPreferences.getColorDistanceTolerance();
-            //return MAX_COLOR_DISTANCE_RGB;
+                if (defaultValue > 0) {
+                    return defaultValue;
+                } else {
+                    return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                }
             case LAB:
                 return MAX_COLOR_DISTANCE_LAB;
             default:
-                return MAX_COLOR_DISTANCE_RGB;
+                return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
         }
     }
 
@@ -175,22 +174,6 @@ public final class ColorUtil {
     }
 
     /**
-     * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
-     *
-     * @param swatches the range of colors
-     * @return True if calibration is complete
-     */
-    public static boolean isCalibrationComplete(ArrayList<Swatch> swatches) {
-        for (Swatch swatch : swatches) {
-            if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
-                //Calibration is incomplete
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Computes the Euclidean distance between the two colors
      *
      * @param color1 the first color
@@ -257,45 +240,6 @@ public final class ColorUtil {
     }
 
     /**
-     * Auto generate the color swatches for the given test type
-     *
-     * @param swatches The test object
-     * @return The list of generated color swatches
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static ArrayList<Swatch> generateGradient(
-            ArrayList<Swatch> swatches, ColorModel colorModel, double increment) {
-
-        ArrayList<Swatch> list = new ArrayList<>();
-
-        for (int i = 0; i < swatches.size() - 1; i++) {
-
-            int startColor = swatches.get(i).getColor();
-            int endColor = swatches.get(i + 1).getColor();
-            double startValue = swatches.get(i).getValue();
-            int steps = (int) ((swatches.get(i + 1).getValue() - startValue) / increment);
-
-            for (int j = 0; j < steps; j++) {
-                int color = 0;
-                switch (colorModel) {
-                    case RGB:
-                        color = ColorUtil.getGradientColor(startColor, endColor, steps, j);
-                        break;
-                    case LAB:
-                        color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(colorToLab(startColor),
-                                colorToLab(endColor), steps, j));
-                }
-
-                list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
-            }
-        }
-        list.add(new Swatch(swatches.get(swatches.size() - 1).getValue(),
-                swatches.get(swatches.size() - 1).getColor(), Color.TRANSPARENT));
-
-        return list;
-    }
-
-    /**
      * Get the color that lies in between two colors
      *
      * @param startColor The first color
@@ -304,7 +248,7 @@ public final class ColorUtil {
      * @param i          The index at which the color is to be calculated
      * @return The newly generated color
      */
-    private static int getGradientColor(int startColor, int endColor, int n, int i) {
+    public static int getGradientColor(int startColor, int endColor, int n, int i) {
         return Color.rgb(interpolate(Color.red(startColor), Color.red(endColor), n, i),
                 interpolate(Color.green(startColor), Color.green(endColor), n, i),
                 interpolate(Color.blue(startColor), Color.blue(endColor), n, i));
@@ -355,7 +299,7 @@ public final class ColorUtil {
     }
 
     //http://stackoverflow.com/questions/27090107/color-gradient-algorithm-in-lab-color-space
-    private static LabColor getGradientLabColor(LabColor c1, LabColor c2, int n, int index) {
+    public static LabColor getGradientLabColor(LabColor c1, LabColor c2, int n, int index) {
         double alpha = (double) index / (n - 1);  // 0.0 <= alpha <= 1.0
         double L = (1 - alpha) * c1.L + alpha * c2.L;
         double a = (1 - alpha) * c1.a + alpha * c2.a;
@@ -369,7 +313,7 @@ public final class ColorUtil {
      * @param color the LAB color
      * @return int color value
      */
-    private static int labToColor(LabColor color) {
+    public static int labToColor(LabColor color) {
         double a, b, g, l, r, x, y, z;
         l = color.L;
         a = color.a;

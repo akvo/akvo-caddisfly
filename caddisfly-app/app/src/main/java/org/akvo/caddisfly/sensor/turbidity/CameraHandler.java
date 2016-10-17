@@ -69,7 +69,6 @@ class CameraHandler implements Camera.PictureCallback {
                 PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.ON_AFTER_RELEASE, "WakeLock");
         wakeLock.acquire();
-
     }
 
     @SuppressWarnings("UnusedReturnValue")
@@ -179,7 +178,7 @@ class CameraHandler implements Camera.PictureCallback {
             if (!AppPreferences.useFlashMode() &&
                     mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            } else if ( mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+            } else if (mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
             }
         }
@@ -261,8 +260,7 @@ class CameraHandler implements Camera.PictureCallback {
 
             folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
 
-        } else {
-
+        } else if (testInfo.getShortCode().equals("fluor")) {
             bitmap = ImageUtil.rotateImage(bitmap, 90);
 
             Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
@@ -273,10 +271,15 @@ class CameraHandler implements Camera.PictureCallback {
                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
             CaddisflyApp.getApp().setDefaultTest();
+
             ResultDetail resultDetail = SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
                     testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
             fileName = date + "_" + resultDetail.getResult() + "_" + batteryPercent;
 
+            folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
+
+        } else {
+            fileName = date + "_" + batteryPercent;
             folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
         }
 

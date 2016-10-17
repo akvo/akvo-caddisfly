@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
@@ -107,7 +108,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     private void startCalibration() {
         //Only start the colorimetry calibration if the device has a camera flash
         if (AppPreferences.useExternalCamera() ||
-                CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotCalibrate, R.string.ok, null)) {
+                CameraHelper.hasFeatureCameraFlash(this, R.string.cannotCalibrate, R.string.ok, null)) {
 
             final Intent intent;
             if (getIntent().getBooleanExtra("runTest", false)) {

@@ -21,9 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
@@ -31,11 +29,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.view.Surface;
-import android.view.WindowManager;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
 
 import java.util.UUID;
 
@@ -87,39 +82,6 @@ public final class ApiUtil {
         return hasFlash;
     }
 
-    /**
-     * Lock the screen orientation based on the natural position of the device
-     *
-     * @param activity the activity
-     */
-    public static void lockScreenOrientation(Activity activity) {
-        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-        int rotation = windowManager.getDefaultDisplay().getRotation();
-
-        Point point = new Point();
-        windowManager.getDefaultDisplay().getSize(point);
-        boolean isTablet = activity.getResources().getBoolean(R.bool.isTablet);
-
-        // Search for the natural position of the device
-        if (isTablet) {
-            // Natural position is Landscape
-            switch (rotation) {
-                case Surface.ROTATION_0:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    break;
-                case Surface.ROTATION_90:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
-                    break;
-                case Surface.ROTATION_180:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-                    break;
-                case Surface.ROTATION_270:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    break;
-            }
-        }
-    }
-
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
 
@@ -148,7 +110,7 @@ public final class ApiUtil {
     public static boolean isCameraInUse(Context context, final Activity activity) {
         Camera camera = null;
         try {
-            camera = CaddisflyApp.getCamera(context, new DialogInterface.OnClickListener() {
+            camera = CameraHelper.getCamera(context, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();

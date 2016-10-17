@@ -35,6 +35,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -187,7 +188,7 @@ public class ExternalActionActivity extends BaseActivity {
 
     private void initializeTest() {
 
-        if (CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+        if (CameraHelper.hasFeatureCameraFlash(this, R.string.cannotStartTest,
                 R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override

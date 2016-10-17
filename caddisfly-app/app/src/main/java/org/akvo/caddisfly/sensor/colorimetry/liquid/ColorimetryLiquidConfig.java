@@ -35,4 +35,6 @@ public class ColorimetryLiquidConfig {
      */
     public static final int MAX_VALID_CALIBRATION_TOLERANCE = 250;
 
+    public static final int MAX_COLOR_DISTANCE_RGB = 40;
+
 }

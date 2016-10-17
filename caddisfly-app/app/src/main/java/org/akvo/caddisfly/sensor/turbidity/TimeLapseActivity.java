@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -81,7 +82,7 @@ public class TimeLapseActivity extends BaseActivity {
     };
     private CoordinatorLayout coordinatorLayout;
     private SoundPoolPlayer sound;
-    private LinearLayout layoutWait;
+    private View layoutWait;
     private LinearLayout layoutDetails;
     private TextView textSampleCount;
     private TextView textCountdown;
@@ -97,17 +98,21 @@ public class TimeLapseActivity extends BaseActivity {
 
             mUuid = getIntent().getDataString();
 
+
             int delayMinute;
             int numberOfSamples;
 
             File folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE,
                     intent.getStringExtra("savePath"));
 
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+            final TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
             delayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    mUuid + "_IntervalMinutes", "1"));
+                    testInfo.getShortCode() + "_IntervalMinutes", "1"));
 
             numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    mUuid + "_NumberOfSamples", "1"));
+                    testInfo.getShortCode() + "_NumberOfSamples", "1"));
 
 
             File[] files = folder.listFiles();
@@ -166,11 +171,9 @@ public class TimeLapseActivity extends BaseActivity {
 
         mUuid = getIntent().getDataString();
 
-        setTitle("Analyzing");
-
         sound = new SoundPoolPlayer(this);
 
-        layoutWait = (LinearLayout) findViewById(R.id.layoutWait);
+        layoutWait = findViewById(R.id.layoutWait);
         layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -187,7 +190,6 @@ public class TimeLapseActivity extends BaseActivity {
             case SensorConstants.FLUORIDE_ID:
                 fragment = new LiquidTimeLapsePreferenceFragment();
                 break;
-
             default:
                 fragment = new TimeLapsePreferenceFragment();
                 break;
@@ -197,10 +199,14 @@ public class TimeLapseActivity extends BaseActivity {
         fragment.setArguments(bundle);
 
         textTitle.setText(testInfo.getName());
+        setTitle(testInfo.getName());
 
         getFragmentManager().beginTransaction()
                 .add(R.id.layoutContent4, fragment)
                 .commit();
+
+        LinearLayout layoutTitleBar = (LinearLayout) findViewById(R.id.layoutTitleBar);
+        layoutTitleBar.setVisibility(View.GONE);
 
         layoutWait.setVisibility(View.VISIBLE);
         layoutDetails.setVisibility(View.GONE);
@@ -244,11 +250,23 @@ public class TimeLapseActivity extends BaseActivity {
         layoutDetails.setVisibility(View.VISIBLE);
 
         Calendar startDate = Calendar.getInstance();
-        PreferencesUtil.setString(this, R.string.turbiditySavePathKey,
-                testInfo.getName() + File.separator +
-                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()));
 
-        TurbidityConfig.setRepeatingAlarm(this, 25000, mUuid);
+        String details = "";
+        String testId = "";
+        if (testInfo.getShortCode().equals("colif")) {
+            details = "_" + Build.MODEL + "-" + PreferencesUtil.getString(this, getString(R.string.colif_PhoneIdKey), "") + "_" +
+                    PreferencesUtil.getString(this, getString(R.string.colif_chamberVersionKey), "") + "_" +
+                    PreferencesUtil.getString(this, getString(R.string.colif_brothMediumKey), "") + "_" +
+                    PreferencesUtil.getString(this, getString(R.string.colif_testDescriptionKey), "");
+
+            testId = PreferencesUtil.getString(this, getString(R.string.colif_TestIdKey), "") + "_";
+        }
+
+        PreferencesUtil.setString(this, R.string.turbiditySavePathKey,
+                testInfo.getName() + File.separator + testId +
+                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()) + details);
+
+        TurbidityConfig.setRepeatingAlarm(this, 25000, testInfo.getCode());
 
         String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
         ((TextView) findViewById(R.id.textSubtitle))
@@ -259,7 +277,7 @@ public class TimeLapseActivity extends BaseActivity {
 
         TextView textInterval = (TextView) findViewById(R.id.textInterval);
         int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                mUuid + "_IntervalMinutes", "1"));
+                testInfo.getShortCode() + "_IntervalMinutes", "1"));
 
         textInterval.setText(String.format(Locale.getDefault(), "Every %d minutes", interval));
 

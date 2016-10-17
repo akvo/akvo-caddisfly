@@ -57,35 +57,39 @@
 
         </LinearLayout>
 
-        <LinearLayout
+
+        <RelativeLayout
             android:id="@+id/layoutWait"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="match_parent">
 
             <FrameLayout
                 android:id="@+id/layoutContent4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_above="@+id/buttonStart"
+                android:layout_below="@id/toolbar"
+                android:layout_alignParentTop="true"/>
 
             <Button
                 android:id="@+id/buttonStart"
                 style="@style/Button"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/start"
                 android:theme="?primaryButtonStyle" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/layoutDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textCountdown"
@@ -126,6 +130,5 @@
                 tools:text="Every 2 minutes" />
 
         </LinearLayout>
-
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

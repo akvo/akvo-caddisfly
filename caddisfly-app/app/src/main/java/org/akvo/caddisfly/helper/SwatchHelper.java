@@ -72,7 +72,7 @@ public final class SwatchHelper {
 
         ColorCompareInfo colorCompareInfo;
 
-        ArrayList<Swatch> gradientSwatches = ColorUtil.generateGradient(swatches, colorModel, 0.01);
+        ArrayList<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel, 0.01);
 
         //Find the color within the generated gradient that matches the photoColor
         colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
@@ -102,7 +102,7 @@ public final class SwatchHelper {
             int colorToFind, ArrayList<Swatch> swatches) {
 
         double distance;
-        distance = ColorUtil.getMaxDistance();
+        distance = ColorUtil.getMaxDistance(AppPreferences.getColorDistanceTolerance());
 
         double resultValue = -1;
         int matchedColor = -1;
@@ -561,6 +561,61 @@ public final class SwatchHelper {
         }
 
         CaddisflyApp.getApp().loadCalibratedSwatches(currentTestInfo);
+    }
+
+    /**
+     * Auto generate the color swatches for the given test type
+     *
+     * @param swatches The test object
+     * @return The list of generated color swatches
+     */
+    @SuppressWarnings("SameParameterValue")
+    public static ArrayList<Swatch> generateGradient(
+            ArrayList<Swatch> swatches, ColorUtil.ColorModel colorModel, double increment) {
+
+        ArrayList<Swatch> list = new ArrayList<>();
+
+        for (int i = 0; i < swatches.size() - 1; i++) {
+
+            int startColor = swatches.get(i).getColor();
+            int endColor = swatches.get(i + 1).getColor();
+            double startValue = swatches.get(i).getValue();
+            int steps = (int) ((swatches.get(i + 1).getValue() - startValue) / increment);
+
+            for (int j = 0; j < steps; j++) {
+                int color = 0;
+                switch (colorModel) {
+                    case RGB:
+                        color = ColorUtil.getGradientColor(startColor, endColor, steps, j);
+                        break;
+                    case LAB:
+                        color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(ColorUtil.colorToLab(startColor),
+                                ColorUtil.colorToLab(endColor), steps, j));
+                }
+
+                list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
+            }
+        }
+        list.add(new Swatch(swatches.get(swatches.size() - 1).getValue(),
+                swatches.get(swatches.size() - 1).getColor(), Color.TRANSPARENT));
+
+        return list;
+    }
+
+    /**
+     * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
+     *
+     * @param swatches the range of colors
+     * @return True if calibration is complete
+     */
+    public static boolean isCalibrationComplete(ArrayList<Swatch> swatches) {
+        for (Swatch swatch : swatches) {
+            if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
+                //Calibration is incomplete
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

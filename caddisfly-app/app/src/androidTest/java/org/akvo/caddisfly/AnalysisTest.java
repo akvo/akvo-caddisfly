@@ -362,12 +362,6 @@ public class AnalysisTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        clickListViewItem(mActivityRule.getActivity().getString(R.string.noBackdropDetection));
-
-        goToMainScreen();
-
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
@@ -377,6 +371,12 @@ public class AnalysisTest {
         sleep(1000);
 
         onData(hasToString(startsWith("TestValid"))).perform(click());
+
+        goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        clickListViewItem(mActivityRule.getActivity().getString(R.string.noBackdropDetection));
 
         leaveDiagnosticMode();
 

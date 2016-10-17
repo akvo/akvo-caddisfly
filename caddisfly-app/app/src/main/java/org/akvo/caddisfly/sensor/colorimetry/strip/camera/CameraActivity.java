@@ -423,33 +423,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void showMessage(final int what) {
-
-//        //For debugging
-//        final String[] messages = new String[]
-//                {
-//                        getString(R.string.reading_data), //0
-//                        getString(R.string.calibrating), //1
-//                        getString(R.string.cut_out_strip), //2
-//                        "\n\n" + getString(R.string.finished) //3
-//
-//                };
-//        finish.append(messages[what] + "\n");
-
-        final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (finish != null) {
-                    finish.setText(R.string.analysing);
-                }
-            }
-        };
-        handler.post(runnable);
-    }
-
-    @Override
-    public void showMessage(final String message) {
+    public void showMessage() {
         final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
         Runnable runnable = new Runnable() {
             @Override

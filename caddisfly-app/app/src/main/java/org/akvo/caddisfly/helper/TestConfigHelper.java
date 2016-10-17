@@ -221,6 +221,9 @@ public final class TestConfigHelper {
                             rangesArray, defaultColorsArray,
                             dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray);
 
+                    if (item.has("shortCode")) {
+                        testInfo.setShortCode(item.getString("shortCode"));
+                    }
 
                     boolean useGrayScale = false;
                     if (item.has("grayScale")) {

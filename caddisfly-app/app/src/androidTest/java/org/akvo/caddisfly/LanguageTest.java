@@ -49,6 +49,7 @@ import static org.hamcrest.object.HasToString.hasToString;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LanguageTest {
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -70,7 +71,6 @@ public class LanguageTest {
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "ppm",
                 CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
-
     }
 
     @Test
@@ -141,5 +141,4 @@ public class LanguageTest {
         onView(withText(currentHashMap.get("language"))).perform(click());
         onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
     }
-
 }

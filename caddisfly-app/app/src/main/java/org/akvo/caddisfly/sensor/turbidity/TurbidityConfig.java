@@ -34,7 +34,7 @@ class TurbidityConfig {
     public static void setRepeatingAlarm(Context context, int initialDelay, String uuid) {
 
         int mDelayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                uuid + "_IntervalMinutes", "1"));
+                CaddisflyApp.getApp().getCurrentTestInfo().getShortCode() + "_IntervalMinutes", "1"));
         PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, uuid);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

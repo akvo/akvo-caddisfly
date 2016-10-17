@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -52,7 +53,7 @@ public class DiagnosticSwatchFragment extends ListFragment {
 
         if (testInfo.getSwatches().size() > 0) {
 
-            ArrayList<Swatch> swatchList = ColorUtil.generateGradient(testInfo.getSwatches(),
+            ArrayList<Swatch> swatchList = SwatchHelper.generateGradient(testInfo.getSwatches(),
                     ColorUtil.DEFAULT_COLOR_MODEL, 0.05);
 
             DiagnosticSwatchesAdapter diagnosticSwatchesAdapter = new DiagnosticSwatchesAdapter(getActivity(), swatchList);

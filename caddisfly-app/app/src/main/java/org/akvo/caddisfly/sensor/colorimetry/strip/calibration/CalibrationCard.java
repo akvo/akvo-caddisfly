@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 
+import android.util.SparseIntArray;
+
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
@@ -46,35 +48,38 @@ import java.util.Map;
 public class CalibrationCard {
     public static final int CODE_NOT_FOUND = -1;
     private static final double ONE_OVER_NINE = 1.0 / 9;
-    private static final Map<Integer, Integer> versionNumberMap = new HashMap<>();
+    private static final SparseIntArray versionNumberMap = new SparseIntArray();
 
     //put version number in HashMap: number, frequency
     public static void addVersionNumber(Integer number) {
-        int existingFrequency = versionNumberMap.get(number) == null ? 0 : versionNumberMap.get(number);
+        int existingFrequency = versionNumberMap.get(number);
         versionNumberMap.put(number, existingFrequency + 1);
     }
 
     public static int getMostFrequentVersionNumber() {
         int mostFreq = 0;
         List<Integer> versionNumbers = new ArrayList<>();
+
         //what is the most frequent value
-        for (Integer freq : versionNumberMap.values()) {
+        for(int i = 0; i < versionNumberMap.size(); i++) {
+            int key = versionNumberMap.keyAt(i);
+            int freq = versionNumberMap.get(key);
             if (freq > mostFreq) {
                 mostFreq = freq;
             }
         }
 
         //collect the keys that have mostFreq as value
-        for (Map.Entry<Integer, Integer> entry : versionNumberMap.entrySet()) {
-//            System.out.println("***saved version number: " + entry.getKey());
-
-            if (entry.getValue().equals(mostFreq))
-                versionNumbers.add(entry.getKey());
+        for(int i = 0; i < versionNumberMap.size(); i++) {
+            int key = versionNumberMap.keyAt(i);
+            int value = versionNumberMap.get(key);
+            if (value == mostFreq) {
+                versionNumbers.add(key);
+            }
         }
 
         //return the first match (hopefully there will be one and only one match)
         if (versionNumbers.size() > 0) {
-
             return versionNumbers.get(0);
         }
 

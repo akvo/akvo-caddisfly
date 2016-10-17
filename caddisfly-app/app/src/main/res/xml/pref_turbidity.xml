@@ -15,26 +15,51 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:key="preferenceCategoryDiagnostics">
-        <EditTextPreference
-            android:defaultValue="5"
-            android:dialogMessage="Interval in minutes (max 360)"
-            android:key="@string/colif_IntervalMinutesKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Sampling interval" />
-        <EditTextPreference
-            android:defaultValue="12"
-            android:dialogMessage="Number of samples (max 50)"
-            android:key="@string/colif_NumberOfSamplesKey"
-            android:maxLength="2"
-            android:numeric="integer"
-            android:title="Number of samples" />
-        <EditTextPreference
-            android:digits="1234567890.,"
-            android:inputType="numberDecimal"
-            android:key="@string/turbidityLedRgbKey"
-            android:maxLength="11"
-            android:title="LED RGB" />
-    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
+    <EditTextPreference
+        android:dialogMessage="An Unique number to identify this test"
+        android:key="@string/colif_TestIdKey"
+        android:maxLength="6"
+        android:numeric="integer"
+        android:title="Test Id" />
+    <EditTextPreference
+        android:dialogMessage="An Unique number to identify this phone"
+        android:key="@string/colif_PhoneIdKey"
+        android:maxLength="6"
+        android:numeric="integer"
+        android:title="Phone Id" />
+    <EditTextPreference
+        android:inputType="text"
+        android:key="@string/colif_chamberVersionKey"
+        android:maxLength="25"
+        android:title="Test chamber version" />
+    <EditTextPreference
+        android:inputType="text"
+        android:key="@string/colif_brothMediumKey"
+        android:maxLength="25"
+        android:title="Broth medium" />
+    <EditTextPreference
+        android:inputType="text"
+        android:key="@string/colif_testDescriptionKey"
+        android:maxLength="25"
+        android:title="Test description" />
+    <EditTextPreference
+        android:defaultValue="5"
+        android:dialogMessage="Interval in minutes (max 360)"
+        android:key="@string/colif_IntervalMinutesKey"
+        android:maxLength="3"
+        android:numeric="integer"
+        android:title="Sampling interval" />
+    <EditTextPreference
+        android:defaultValue="12"
+        android:dialogMessage="Number of samples (max 50)"
+        android:key="@string/colif_NumberOfSamplesKey"
+        android:maxLength="2"
+        android:numeric="integer"
+        android:title="Number of samples" />
+    <EditTextPreference
+        android:digits="1234567890.,"
+        android:inputType="numberDecimal"
+        android:key="@string/turbidityLedRgbKey"
+        android:maxLength="11"
+        android:title="LED RGB" />
 </PreferenceScreen>

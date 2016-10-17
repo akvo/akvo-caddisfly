@@ -13,6 +13,7 @@
       "uuid": [
         "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
       ],
+      "shortCode":"fluor",
       "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.5,1,1.5,2",

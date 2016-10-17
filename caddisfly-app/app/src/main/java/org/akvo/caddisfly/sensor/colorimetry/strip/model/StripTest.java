@@ -60,34 +60,6 @@ public class StripTest {
         return brandNames;
     }
 
-    /*
-    * Matches a test UUID to a brand name
-    * if not found, returns null
-     */
-    public String matchUuidToBrand(String uuid) {
-        String json = fromJson();
-        String result = null;
-        try {
-            JSONObject object = new JSONObject(json);
-
-            if (!object.isNull("strips")) {
-                JSONArray stripsJson = object.getJSONArray("strips");
-                JSONObject strip;
-                if (stripsJson != null) {
-                    for (int i = 0; i < stripsJson.length(); i++) {
-                        strip = stripsJson.getJSONObject(i);
-                        if (strip.getString("uuid").equals(uuid)) {
-                            result = strip.getString("brand");
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return result;
-        }
-        return result;
-    }
-
     public Brand getBrand(String uuid) {
         return new Brand(uuid);
     }
@@ -112,7 +84,7 @@ public class StripTest {
         private String brandDescription;
         private String image;
 
-        private String uuid;
+        private final String uuid;
         private double stripLength;
         @SuppressWarnings("unused")
         private double stripHeight;
@@ -151,7 +123,7 @@ public class StripTest {
                                         JSONObject patchObj = patchesArr.getJSONObject(ii);
 
                                         String patchDesc = patchObj.getString("patchDesc");
-                                        int patchPos = patchObj.getInt("patchPos");
+                                        double patchPos = patchObj.getDouble("patchPos");
                                         int id = patchObj.getInt("id");
                                         int patchWidth = patchObj.getInt("patchWidth");
                                         double timeLapse = patchObj.getDouble("timeLapse");

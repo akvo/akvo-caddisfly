@@ -19,7 +19,6 @@ package org.akvo.caddisfly.preference;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,6 +39,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
@@ -105,15 +105,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (startTestPreference != null) {
             startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    Context context = getActivity();
-                    CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-                    caddisflyApp.initializeCurrentTest();
-                    if (caddisflyApp.getCurrentTestInfo() == null ||
-                            caddisflyApp.getCurrentTestInfo().getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
-                        caddisflyApp.setDefaultTest();
-                    }
-
-                    final Intent intent = new Intent(context, TypeListActivity.class);
+                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
                     intent.putExtra("runTest", true);
                     startActivity(intent);
                     return true;
@@ -125,11 +117,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (startStripTestPreference != null) {
             startStripTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    Context context = getActivity();
-                    CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-                    caddisflyApp.initializeCurrentTest();
-
-                    final Intent intent = new Intent(context, TestTypeListActivity.class);
+                    final Intent intent = new Intent(getActivity(), TestTypeListActivity.class);
+                    intent.putExtra("internal", true);
                     startActivity(intent);
                     return true;
                 }
@@ -249,7 +238,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private boolean isCameraAvailable() {
         Camera camera = null;
         try {
-            camera = CaddisflyApp.getCamera(getActivity(), new DialogInterface.OnClickListener() {
+            camera = CameraHelper.getCamera(getActivity(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();

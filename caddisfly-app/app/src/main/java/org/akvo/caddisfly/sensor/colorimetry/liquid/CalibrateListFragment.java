@@ -30,7 +30,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Date;
@@ -83,7 +82,7 @@ public class CalibrateListFragment extends ListFragment {
             textCalibrationError.setText(String.format("%s. %s", getString(R.string.expired),
                     getString(R.string.calibrateWithNewReagent)));
             textCalibrationError.setVisibility(View.VISIBLE);
-        } else if (ColorUtil.isCalibrationComplete(currentTestInfo.getSwatches()) &&
+        } else if (SwatchHelper.isCalibrationComplete(currentTestInfo.getSwatches()) &&
                 //Display error if calibration is completed but invalid
                 !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
             textCalibrationError.setText(String.format("%s. %s",
