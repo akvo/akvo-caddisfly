@@ -207,6 +207,15 @@
       ]
     },
     {
+      "name": "Arsenic",
+      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
+      "instructions": [
+        {
+          "text": "Conduct the text as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+        }
+      ]
+    },
+    {
       "name": "pH colorpHast",
       "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "instructions": [
