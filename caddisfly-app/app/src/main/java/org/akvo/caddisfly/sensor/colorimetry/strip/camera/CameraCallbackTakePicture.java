@@ -104,6 +104,7 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            listener.showError(e.getMessage());
             listener.takeNextPicture(500);
         } finally {
             sending = false;

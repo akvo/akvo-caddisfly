@@ -27,10 +27,10 @@ public class FileHelper {
      * The user created configuration file name
      */
     // Folders
-    private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
-    private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
-    private static final String DIR_DOWNLOAD = "Download/Install"; // Calibration files
-    private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
+    public static final String ROOT_DIRECTORY = File.separator + "Akvo Caddisfly";
+    private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
+    private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "config"; // Calibration files
+    private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
 
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may
@@ -55,20 +55,19 @@ public class FileHelper {
      * @return File representing the root directory for the given FileType.
      */
     public static File getFilesDir(FileType type, String subPath) {
-        String path = null;
+        String path;
         switch (type) {
             case CALIBRATION:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CALIBRATION;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CALIBRATION;
                 break;
             case CONFIG:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CONFIG;
-                break;
-            case DOWNLOAD:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true) + File.separator + DIR_DOWNLOAD;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CONFIG;
                 break;
             case IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_IMAGE;
                 break;
+            default:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true);
         }
         File dir = new File(path);
         if (!subPath.isEmpty()) {
@@ -85,7 +84,7 @@ public class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, CONFIG, DOWNLOAD, IMAGE
+        CALIBRATION, CONFIG, IMAGE
     }
 
 }

@@ -314,15 +314,14 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mDilutionLevel = getIntent().getIntExtra("dilution", 0);
 
         switch (mDilutionLevel) {
-            case 0:
-                textDilution.setText(R.string.noDilution);
-                break;
             case 1:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 2));
                 break;
             case 2:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 5));
                 break;
+            default:
+                textDilution.setText(R.string.noDilution);
         }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -465,7 +464,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                         Display display = getWindowManager().getDefaultDisplay();
-                        int rotation = 0;
+                        int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
                                 rotation = 90;
@@ -477,6 +476,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                 rotation = 180;
                                 break;
                             case Surface.ROTATION_90:
+                            default:
                                 rotation = 0;
                                 break;
                         }
@@ -579,19 +579,20 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                         Display display = getWindowManager().getDefaultDisplay();
-                        int rotation = 0;
+                        int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
                                 rotation = 90;
-                                break;
-                            case Surface.ROTATION_90:
-                                rotation = 0;
                                 break;
                             case Surface.ROTATION_180:
                                 rotation = 270;
                                 break;
                             case Surface.ROTATION_270:
                                 rotation = 180;
+                                break;
+                            case Surface.ROTATION_90:
+                            default:
+                                rotation = 0;
                                 break;
                         }
 
@@ -686,9 +687,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
             // Get the average color across the results
             int color = SwatchHelper.getAverageColor(mResults);
 
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
             // Check if contamination level is too high
-            if (result >= CaddisflyApp.getApp().getCurrentTestInfo().getDilutionRequiredLevel() &&
-                    CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
+            if (result >= testInfo.getDilutionRequiredLevel() && testInfo.getCanUseDilution()) {
                 mHighLevelsFound = true;
             }
 
@@ -717,8 +719,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
                     cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
                 }
-
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
                 Intent resultIntent = new Intent(intent);
                 resultIntent.putExtra(SensorConstants.RESULT, resultText);

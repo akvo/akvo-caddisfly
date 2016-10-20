@@ -58,7 +58,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class ExternalActionActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
-    private final int PERMISSION_ALL = 1;
+    private static final int PERMISSION_ALL = 1;
 
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private Boolean mIsExternalAppCall = false;
@@ -204,32 +204,31 @@ public class ExternalActionActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_ALL: {
-                // If request is cancelled, the result arrays are empty.
-                boolean granted = false;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PERMISSION_GRANTED) {
-                        granted = false;
-                        break;
-                    } else {
-                        granted = true;
-                    }
-                }
-                if (granted) {
-                    initializeTest();
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
                 } else {
-                    String message = getString(R.string.cameraAndStoragePermissions);
-                    if (AppPreferences.useExternalCamera()) {
-                        message = getString(R.string.storagePermission);
-                    }
-
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                    ApiUtil.startInstalledAppDetailsActivity(this);
-                    finish();
+                    granted = true;
                 }
             }
+            if (granted) {
+                initializeTest();
+            } else {
+                String message = getString(R.string.cameraAndStoragePermissions);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                ApiUtil.startInstalledAppDetailsActivity(this);
+                finish();
+            }
         }
+
     }
 
     private void alertCalibrationExpired() {

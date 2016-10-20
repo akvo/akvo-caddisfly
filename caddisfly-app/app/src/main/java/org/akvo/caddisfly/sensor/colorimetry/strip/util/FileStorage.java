@@ -20,6 +20,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import org.akvo.caddisfly.helper.FileHelper;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -40,7 +42,6 @@ import java.nio.ByteOrder;
 @SuppressWarnings("HardCodedStringLiteral")
 public class FileStorage {
 
-    private static final String ROOT_DIRECTORY = "/Akvo Caddisfly";
     private final Context context;
 
     public FileStorage(Context context) {
@@ -64,23 +65,9 @@ public class FileStorage {
      * Method to check whether external media available and writable. This is adapted from
      * http://developer.android.com/guide/topics/data/data-storage.html#filesExternal
      */
-
     public static boolean isExternalStorageWritable() {
-        boolean mExternalStorageWritable;
         String state = Environment.getExternalStorageState();
-
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            // Can read and write the media
-            mExternalStorageWritable = true;
-        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            // Can only read the media
-            mExternalStorageWritable = false;
-        } else {
-            // Can't read or write
-            mExternalStorageWritable = false;
-        }
-
-        return mExternalStorageWritable;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /**
@@ -96,7 +83,7 @@ public class FileStorage {
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
         File root = android.os.Environment.getExternalStorageDirectory();
-        File dir = new File(root.getAbsolutePath() + ROOT_DIRECTORY + dirPath);
+        File dir = new File(root.getAbsolutePath() + FileHelper.ROOT_DIRECTORY + dirPath);
         File file = new File(dir, fileName);
 
         // check if directory exists and if not, create it
@@ -126,32 +113,6 @@ public class FileStorage {
         // on failure, return empty string
         return "";
     }
-
-//    public static void writeLogToSDFile(String filename, String data, boolean append) {
-//
-//        // Find the root of the external storage.
-//        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
-//
-//        File root = android.os.Environment.getExternalStorageDirectory();
-//        System.out.println("\nExternal file system root: " + root);
-//
-//        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
-//
-//        File dir = new File(root.getAbsolutePath() + "/download/striptest");
-//        dir.mkdirs();
-//        File file = new File(dir, filename);
-//
-//        try {
-//            FileWriter writer = new FileWriter(file, append);
-//            writer.write(data);
-//
-//            writer.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("\n\nFile written to " + file);
-//    }
 
     public void writeByteArray(byte[] data, String name) {
         String fileName = name + ".txt";
@@ -198,41 +159,24 @@ public class FileStorage {
     public void writeToInternalStorage(String name, String json) {
         String fileName = name + ".txt";
 
-        FileOutputStream outputStream;
-
+        FileOutputStream outputStream = null;
         try {
             outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             for (byte s : json.getBytes()) {
                 outputStream.write(s);
             }
-            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-
-//    public void writeBitmapToInternalStorage(String name, Bitmap bitmap) {
-//        try {
-//
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-//
-//            writeByteArray(byteArrayOutputStream.toByteArray(), name);
-//
-//            byteArrayOutputStream.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public String bitmapToBase64String(Bitmap bitmap) throws UnsupportedEncodingException {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-//
-//        byte[] img = byteArrayOutputStream.toByteArray();
-//        return Base64.encodeToString(img, Base64.DEFAULT);
-//    }
 
     public String readFromInternalStorage(String fileName) {
 
@@ -258,21 +202,6 @@ public class FileStorage {
         }
 
         return null;
-    }
-
-    public boolean checkIfFilenameContainsString(final String contains) {
-
-        File file = context.getFilesDir();
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return filename.contains(contains);
-            }
-        };
-        File[] files = file.listFiles(filter);
-
-        return files.length > 0;
-
     }
 
     public void deleteFromInternalStorage(final String contains) {

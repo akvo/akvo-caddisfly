@@ -33,6 +33,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Set of utility functions to manipulate images
@@ -102,7 +103,7 @@ public class ImageUtil {
 
         paint.setColor(Color.YELLOW);
         paint.setStrokeWidth(2);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, 20, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2f, bitmap.getHeight() / 2f, 20, paint);
 
         return croppedBitmap;
     }
@@ -165,13 +166,20 @@ public class ImageUtil {
 
         File photo = new File(path, fileName + ".jpg");
 
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream(photo.getPath());
-
+            fos = new FileOutputStream(photo.getPath());
             fos.write(data);
-            fos.close();
         } catch (Exception ignored) {
 
+        } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
         }
     }
 

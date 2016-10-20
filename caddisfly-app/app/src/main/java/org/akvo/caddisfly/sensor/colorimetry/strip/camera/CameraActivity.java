@@ -68,6 +68,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private LevelView levelView;
     private String uuid;
     private CameraSharedFragmentBase currentFragment;
+
     //OpenCV Manager
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -436,32 +437,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void showError(final int what) {
-
-        final String[] messages = new String[]
-                {
-                        getString(R.string.error_conversion), //0
-                        getString(R.string.error_no_finder_pattern_info), //1
-                        getString(R.string.error_warp), //2
-                        getString(R.string.error_detection), //3
-                        getString(R.string.error_calibrating), //4
-                        getString(R.string.error_cut_out_strip), //5
-                        getString(R.string.error_unknown) //6
-                };
-
-        final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
+    public void showError(final String message) {
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (finish != null) {
-                    try {
-                        int mesNo = what < messages.length ? what : messages.length - 1;
-                        finish.setText(messages[mesNo]);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                currentFragment.showMessage(message);
             }
         };
         handler.post(runnable);
@@ -477,6 +458,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         finish();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private static class MyHandler extends Handler {
     }
 
@@ -488,6 +479,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             fileStorage.deleteFromInternalStorage(Constant.INFO);
             fileStorage.deleteFromInternalStorage(Constant.DATA);
             fileStorage.deleteFromInternalStorage(Constant.STRIP);
+            fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
 
             return null;
         }
@@ -533,15 +525,5 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         void setAngles(float[] tilts) {
             this.tilts = tilts;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

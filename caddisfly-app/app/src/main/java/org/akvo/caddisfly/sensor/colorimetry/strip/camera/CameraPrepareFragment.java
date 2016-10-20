@@ -61,7 +61,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        countQualityView = (TextView) rootView.findViewById(R.id.text_qualityCount);
+        countQualityView = (TextView) rootView.findViewById(R.id.textMessage);
 
         wrExposureView = new WeakReference<>(exposureView);
         wrContrastView = new WeakReference<>(contrastView);
@@ -97,14 +97,15 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     @Override
     public void goNext() {
 
-        if (mListener.isTorchModeOn()) {
-            mListener.toggleFlashMode(false);
-        }
+        if (mListener != null) {
+            if (mListener.isTorchModeOn()) {
+                mListener.toggleFlashMode(false);
+            }
 
-        mListener.stopPreview();
+            mListener.stopPreview();
 
-        if (mListener != null)
             mListener.nextFragment();
+        }
     }
 
     @Override
@@ -112,6 +113,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         super.onAttach(activity);
         try {
             mListener = (CameraViewListener) activity;
+            mListener.setQualityCheckCountZero();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement CameraViewListener");

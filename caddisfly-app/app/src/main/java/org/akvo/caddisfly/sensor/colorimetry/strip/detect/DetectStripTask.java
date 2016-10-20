@@ -23,6 +23,7 @@ import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
@@ -142,7 +143,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         try {
                             labImg = makeLab(data);
                         } catch (Exception e) {
-                            listener.showError(0);
+                            listener.showError(context.getString(R.string.error_conversion));
                             continue;
                         }
 
@@ -150,7 +151,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         try {
                             warp(labImg, imageNo);
                         } catch (Exception e) {
-                            listener.showError(1);
+                            listener.showError(context.getString(R.string.error_no_finder_pattern_info));
                             continue;
                         }
 
@@ -159,7 +160,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             if (context != null)
                                 divideIntoCalibrationAndStripArea();
                         } catch (Exception e) {
-                            listener.showError(1);
+                            listener.showError(e.getMessage());
                             continue;
                         }
 
@@ -193,7 +194,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         } catch (Exception e) {
                             //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
-                            listener.showError(3);
+                            listener.showError(context.getString(R.string.error_detection));
                             cal_dest = warp_dst.clone();
                         }
 
@@ -225,7 +226,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             if (strip != null) {
                                 labStrip = strip.clone();
                             } else {
-                                listener.showError(4);
+                                listener.showError(context.getString(R.string.error_calibrating));
                                 labStrip = stripArea.clone();
 
                                 error = Constant.ERROR;
@@ -266,7 +267,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                 }
             } catch (Exception e) {
 
-                listener.showError(5);
+                if (context != null) {
+                    listener.showError(context.getString(R.string.error_cut_out_strip));
+                }
             }
         }
         listener.showMessage();
@@ -327,7 +330,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         warp_dst = OpenCVUtil.perspectiveTransform(topLeft, topRight, bottomLeft, bottomRight, labImg);
     }
 
-    private void divideIntoCalibrationAndStripArea() {
+    private void divideIntoCalibrationAndStripArea() throws Exception {
         CalibrationData data = CalibrationCard.readCalibrationFile();
 
         if (warp_dst != null && data != null) {
@@ -354,9 +357,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     }
 
     private CalibrationResultData getCalibratedImage(Mat mat) throws Exception {
-        if (CalibrationCard.getMostFrequentVersionNumber() == CalibrationCard.CODE_NOT_FOUND) {
-            throw new Exception("no version number set.");
-        }
         CalibrationData data = CalibrationCard.readCalibrationFile();
         return CalibrationCard.calibrateImage(mat, data);
     }

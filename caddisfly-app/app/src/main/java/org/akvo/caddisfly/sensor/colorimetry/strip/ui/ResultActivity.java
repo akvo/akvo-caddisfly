@@ -52,6 +52,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -112,7 +113,8 @@ public class ResultActivity extends BaseActivity {
                         // get strip image into Mat object
                         array = imagePatchArray.getJSONArray(0);
                         int imageNo = array.getInt(0);
-                        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
+
+                        boolean isInvalidStrip = (new File(Constant.STRIP + imageNo + Constant.ERROR)).exists();
                         strip = ResultUtil.getMatFromFile(fileStorage, imageNo);
                         if (strip != null) {
                             // create empty mat to serve as a template
@@ -131,7 +133,7 @@ public class ResultActivity extends BaseActivity {
 
                             // get the image number from the json array
                             int imageNo = array.getInt(0);
-                            boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
+                            boolean isInvalidStrip = (new File(Constant.STRIP + imageNo + Constant.ERROR)).exists();
 
                             // read strip from file
                             strip = ResultUtil.getMatFromFile(fileStorage, imageNo);
@@ -193,6 +195,7 @@ public class ResultActivity extends BaseActivity {
                     fileStorage.deleteFromInternalStorage(Constant.INFO);
                     fileStorage.deleteFromInternalStorage(Constant.DATA);
                     fileStorage.deleteFromInternalStorage(Constant.STRIP);
+                    fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
                 }
 
                 Intent intentRedo = new Intent(getBaseContext(), TestTypeListActivity.class);
@@ -289,7 +292,7 @@ public class ResultActivity extends BaseActivity {
                 double[][] colorsValueLab = new double[patches.size()][3];
                 for (int p = 0; p < patches.size(); p++) {
                     double x = patches.get(p).getPosition() * ratioW;
-                    double y = strip.height() / 2;
+                    double y = strip.height() / 2d;
                     patchCenter = new Point(x, y);
 
                     colorDetected = ResultUtil.getPatchColour(mat, patchCenter, subMatSize);
@@ -330,7 +333,7 @@ public class ResultActivity extends BaseActivity {
             } else {
                 double ratioW = strip.width() / brand.getStripLength();
                 double x = patches.get(patchNum).getPosition() * ratioW;
-                double y = strip.height() / 2;
+                double y = strip.height() / 2d;
                 patchCenter = new Point(x, y);
 
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),

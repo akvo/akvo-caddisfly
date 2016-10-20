@@ -77,6 +77,8 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         possibleCenters = new ArrayList<>();
 
         previewSize = parameters.getPreviewSize();
+
+        CalibrationCard.initialize();
     }
 
     void stop() {
@@ -90,9 +92,9 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();
         float[] tilts = null;
-        int lumVal = 0;
-        int shadVal = 0;
-        int levVal = 0;
+        int luminance = 0;
+        int shadow = 0;
+        int titleLevel = 0;
 
         try {
             if (possibleCenters.size() > 0) {
@@ -138,25 +140,25 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             if (info != null) {
                 // Detect brightness
                 double maxLuminance = luminosityCheck(luminanceList);
-                lumVal = maxLuminance > Constant.MAX_LUM_LOWER && maxLuminance <= Constant.MAX_LUM_UPPER ? 1 : 0;
+                luminance = maxLuminance > Constant.MAX_LUM_LOWER && maxLuminance <= Constant.MAX_LUM_UPPER ? 1 : 0;
 
                 // Detect shadows
                 if (bgr != null && possibleCenters.size() == 4) {
                     double shadowPercentage = detectShadows(info, bgr);
-                    shadVal = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
+                    shadow = shadowPercentage < Constant.MAX_SHADOW_PERCENTAGE ? 1 : 0;
                 }
 
                 // Get Tilt
                 if (possibleCenters.size() == 4) {
                     tilts = PreviewUtil.getTilt(info);
                     // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
-                    levVal = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                    titleLevel = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
                 }
             }
 
-            qualityChecksArray[0] = lumVal;
-            qualityChecksArray[1] = shadVal;
-            qualityChecksArray[2] = levVal;
+            qualityChecksArray[0] = luminance;
+            qualityChecksArray[1] = shadow;
+            qualityChecksArray[2] = titleLevel;
 
             //Display the values
             if (listener != null) {
@@ -281,7 +283,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return maxLuminance;
     }
 
-    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) {
+    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws Exception {
         // crop preview image to only contain the known region for the finder pattern
         // this leads to an image in portrait view
         PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
@@ -298,7 +300,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             e.printStackTrace();
         }
 
-        if (bitMatrix != null) {
+        if (bitMatrix != null && previewSize != null) {
             FinderPatternFinder finderPatternFinder = new FinderPatternFinder(bitMatrix);
 
             try {
@@ -312,27 +314,21 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     }
                 }
 
-                if (previewSize != null) {
-                    if (listener != null) {
-                        listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
-                    }
-                    //get the version number from the barcode printed on the card
-                    try {
-                        if (possibleCenters.size() == 4) {
-                            int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
-                            if (versionNumber != CalibrationCard.CODE_NOT_FOUND) {
-                                CalibrationCard.addVersionNumber(versionNumber);
-                                calibrationData = CalibrationCard.readCalibrationFile();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
             } catch (Exception ignored) {
-                // this only means not all patterns (=4) are detected.
+                // patterns where not detected.
+            }
+
+            //get the version number from the barcode printed on the card
+            if (possibleCenters != null && possibleCenters.size() == 4) {
+                if (listener != null) {
+                    listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
+                }
+                int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
+                CalibrationCard.addVersionNumber(versionNumber);
+                calibrationData = CalibrationCard.readCalibrationFile();
             }
         }
+
         return info;
     }
 }

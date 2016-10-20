@@ -62,7 +62,7 @@ public class LevelView extends View {
             float degrees = getDegrees(tilts);
             if (degrees != 0) {
                 canvas.save();
-                canvas.rotate(degrees, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                canvas.rotate(degrees, canvas.getWidth() / 2f, canvas.getHeight() / 2f);
                 canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
                 canvas.restore();
             }

@@ -176,20 +176,18 @@
     <string name="instruction_images" translatable="false">images/instructions</string>
 
     <string name="error_calibrating">Calibration failed</string>
-    <string name="error_conversion">Could not convert image.</string>
-    <string name="error_cut_out_strip">No strip found.</string>
-    <string name="error_detection">Error in detection.</string>
-    <string name="error_no_finder_pattern_info">No info about finder patterns.</string>
-    <string name="error_unknown">Unknown error occurred. Sorry.</string>
-    <string name="error_warp">Warp failed.</string>
+    <string name="error_conversion">Could not convert image</string>
+    <string name="error_cut_out_strip">No strip found</string>
+    <string name="error_detection">Error in detection</string>
+    <string name="error_no_finder_pattern_info">No info about finder patterns</string>
     <string name="finished">FINISH</string>
     <string name="light">Brightness</string>
-    <string name="no_data">No data for patch.</string>
+    <string name="no_data">No data for patch</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
     <string name="analysing">Analysing image…</string>
     <string name="prepare_test">Prepare for test</string>
-    <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK.</string>
+    <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK</string>
     <string name="picture_taken">Picture taken</string>
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>

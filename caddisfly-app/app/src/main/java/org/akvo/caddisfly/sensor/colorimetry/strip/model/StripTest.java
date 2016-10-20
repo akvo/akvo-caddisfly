@@ -115,7 +115,7 @@ public class StripTest {
                                             .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
                                     name = strip.getString("name");
                                     brandDescription = strip.getString("brand");
-                                    image = strip.has("image") ? strip.getString("image") : brandDescription;
+                                    image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ","-");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArr.length(); ii++) {

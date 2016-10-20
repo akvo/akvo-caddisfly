@@ -39,56 +39,47 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Mat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 // Performs the calibration of the image
 public class CalibrationCard {
-    public static final int CODE_NOT_FOUND = -1;
+    private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
     private static final SparseIntArray versionNumberMap = new SparseIntArray();
 
-    //put version number in HashMap: number, frequency
+    public static void initialize() {
+        versionNumberMap.clear();
+    }
+
+    //put version number in array: number, frequency
     public static void addVersionNumber(Integer number) {
         int existingFrequency = versionNumberMap.get(number);
         versionNumberMap.put(number, existingFrequency + 1);
     }
 
-    public static int getMostFrequentVersionNumber() {
-        int mostFreq = 0;
-        List<Integer> versionNumbers = new ArrayList<>();
+    private static int getMostFrequentVersionNumber() {
+        int mostFrequent = 0;
+        int value = -1;
 
         //what is the most frequent value
-        for(int i = 0; i < versionNumberMap.size(); i++) {
+        for (int i = 0; i < versionNumberMap.size(); i++) {
             int key = versionNumberMap.keyAt(i);
-            int freq = versionNumberMap.get(key);
-            if (freq > mostFreq) {
-                mostFreq = freq;
+            int frequency = versionNumberMap.get(key);
+            if (frequency > mostFrequent) {
+                mostFrequent = frequency;
+                value = key;
             }
         }
 
-        //collect the keys that have mostFreq as value
-        for(int i = 0; i < versionNumberMap.size(); i++) {
-            int key = versionNumberMap.keyAt(i);
-            int value = versionNumberMap.get(key);
-            if (value == mostFreq) {
-                versionNumbers.add(key);
-            }
-        }
-
-        //return the first match (hopefully there will be one and only one match)
-        if (versionNumbers.size() > 0) {
-            return versionNumbers.get(0);
-        }
-
-        return CODE_NOT_FOUND;
+        return value;
     }
 
-    public static CalibrationData readCalibrationFile() {
+    public static CalibrationData readCalibrationFile() throws Exception {
 
-        String calFileName = "calibration" + getMostFrequentVersionNumber() + ".json";
+        int version = getMostFrequentVersionNumber();
+        String calFileName = "calibration" + version + ".json";
         String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
         if (json != null) {
@@ -142,7 +133,12 @@ public class CalibrationCard {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                //System.out.println("*** problem parsing JSON:" + e.toString());
+            }
+        } else {
+            // Wait for a few version readings before declaring error
+            if (versionNumberMap.get(version) > 3) {
+                initialize();
+                throw new Exception("Unknown version of color card");
             }
         }
         return null;
@@ -828,4 +824,5 @@ public class CalibrationCard {
         }
         return oneCount % 2 != 0; // returns true if parity is odd
     }
+
 }

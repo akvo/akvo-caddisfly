@@ -25,7 +25,7 @@
     <include layout="@layout/partial_quality_meter" />
 
     <TextView
-        android:id="@+id/text_qualityCount"
+        android:id="@+id/textMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_qualityMeter"
@@ -41,7 +41,7 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_qualityCount"
+        android:layout_below="@+id/textMessage"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="4dp"

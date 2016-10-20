@@ -58,6 +58,6 @@ public class CircleFillView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getWidth() / 3, paint);
+        canvas.drawCircle(canvas.getWidth() / 2f, canvas.getHeight() / 2f, canvas.getWidth() / 3f, paint);
     }
 }

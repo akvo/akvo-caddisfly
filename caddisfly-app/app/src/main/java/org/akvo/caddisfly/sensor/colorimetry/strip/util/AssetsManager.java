@@ -69,20 +69,29 @@ public class AssetsManager {
 
     public String loadJSONFromAsset(String fileName) {
         String json;
+        InputStream is = null;
         try {
             if (manager == null)
                 return null;
 
-            InputStream is = manager.open(fileName);
+            is = manager.open(fileName);
             int size = is.available();
             byte[] buffer = new byte[size];
             //noinspection ResultOfMethodCallIgnored
             is.read(buffer);
-            is.close();
+
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
+        }finally{
+            if(is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return json;
     }

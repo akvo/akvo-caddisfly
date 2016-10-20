@@ -39,46 +39,10 @@ import java.util.List;
 @SuppressWarnings("HardCodedStringLiteral")
 public class OpenCVUtil {
 
-//    public static Mat rotateImage(Mat src, RotatedRect rotatedRect, Size brandSize) throws Exception {
-//        Mat rot_mat;
-//        Mat cropped = new Mat();
-//
-//        /// Set the dst image the same type and size as src
-//        // Mat warp_rotate_dst = Mat.zeros(src.rows(), src.cols(), src.type());
-//        Mat warp_rotate_dst = new Mat(src.rows(), src.cols(), src.type());
-//        double angle = rotatedRect.angle;
-//        Size rect_size = rotatedRect.size;
-//        // thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskEwing/
-//        // we need to swap height and width if angle is lower than 45 degrees
-//        if (angle < -45) {
-//            angle += 90;
-//            rect_size.set(new double[]{rect_size.height, rect_size.width});
-//        }
-//        // get the rotation matrix
-//        rot_mat = Imgproc.getRotationMatrix2D(rotatedRect.center, angle, 1.0);
-//
-//        // perform the affine transformation
-//        Imgproc.warpAffine(src, warp_rotate_dst, rot_mat, src.size(), Imgproc.INTER_CUBIC);
-//
-//        // crop the resulting image
-//        if (!warp_rotate_dst.empty()) {
-//            Point centerBrand = new Point(
-//                    rotatedRect.center.x + (rotatedRect.size.width - brandSize.width) / 2,
-//                    rotatedRect.center.y - (rotatedRect.size.height - brandSize.height) / 4);
-//
-//            System.out.println("***centerBrand x,y: " + centerBrand.x + ", " + centerBrand.y
-//                    + " diff width: " + (rotatedRect.size.width - brandSize.width) / 2
-//                    + " diff height: " + (rotatedRect.size.height - brandSize.height) / 4);
-//
-//            Imgproc.getRectSubPix(warp_rotate_dst, brandSize, centerBrand, cropped);
-//        }
-//        return cropped;
-//    }
-
     /*
      * Computes transform matrix from one set of 4 source points to another set of 4 destination points
      * The points are ordered clockwise
-      */
+     */
     private static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst) {
 
         //source quad
@@ -195,7 +159,7 @@ public class OpenCVUtil {
         double rotAngleDeg = Math.atan(slope) * 180 / Math.PI;
 
         //determine a point on the line, in the middle of strip, in the horizontal middle of the whole image
-        int midPointX = Math.round(binary.cols() / 2);
+        int midPointX = binary.cols() / 2;
         int midPointY = (int) Math.round(midPointX * slope + offset);
 
         // rotate around the midpoint, to straighten the binary strip
@@ -265,7 +229,7 @@ public class OpenCVUtil {
         }
 
         // threshold is that half of the rows in a column should be white
-        int threshold = Math.round(binaryStrip.rows() / 2);
+        int threshold = binaryStrip.rows() / 2;
 
         // moving from the right, determine the first point that crosses the threshold
         boolean found = false;
@@ -277,17 +241,6 @@ public class OpenCVUtil {
                 posRight--;
             }
         }
-
-        // moving from the left, determine the first point that crosses the threshold
-//        found = false;
-//        int posLeft = 0;
-//        while(!found && posLeft < binaryStrip.cols() - 1){
-//            if (colCount[posLeft] > threshold){
-//                found = true;
-//            } else {
-//                posLeft++;
-//            }
-//        }
 
         // use known length of strip to determine left side
         int length = (int) Math.round(brand.getStripLength() * ratioW);
@@ -316,7 +269,7 @@ public class OpenCVUtil {
         return resultStrip;
     }
 
-    public static ColorDetected detectStripColorBrandKnown(Mat lab) {
+    static ColorDetected detectStripPatchColor(Mat lab) {
         // compute mean lab colour. This is the value that will be
         // used for the result computation
         Scalar mean = Core.mean(lab);
@@ -334,44 +287,4 @@ public class OpenCVUtil {
         colorDetected.setColor(color);
         return colorDetected;
     }
-
-//    public static int getMinX(List<Point> list) {
-//        int min = Integer.MAX_VALUE;
-//        for (Point p : list) {
-//            if (p.x < min)
-//                min = (int) Math.round(p.x);
-//        }
-//
-//        return min;
-//    }
-//
-//    public static int getMaxX(List<Point> list) {
-//        int max = Integer.MIN_VALUE;
-//        for (Point p : list) {
-//            if (p.x > max)
-//                max = (int) Math.round(p.x);
-//        }
-//
-//        return max;
-//    }
-//
-//    public static int getMinY(List<Point> list) {
-//        int min = Integer.MAX_VALUE;
-//        for (Point p : list) {
-//            if (p.y < min)
-//                min = (int) Math.round(p.y);
-//        }
-//
-//        return min;
-//    }
-//
-//    public static int getMaxY(List<Point> list) {
-//        int max = Integer.MIN_VALUE;
-//        for (Point p : list) {
-//            if (p.y > max)
-//                max = (int) Math.round(p.y);
-//        }
-//
-//        return max;
-//    }
 }

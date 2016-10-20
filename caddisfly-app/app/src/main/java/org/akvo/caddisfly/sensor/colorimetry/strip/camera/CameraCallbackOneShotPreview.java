@@ -58,7 +58,7 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            listener.showError(e.getMessage());
         } finally {
             sending = false;
         }

@@ -359,7 +359,7 @@ public class SensorActivity extends BaseActivity {
                 if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
                     textSubtitle.setText(R.string.sensorConnected);
                     textResult.setText(mTemperature);
-                    if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                    if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
                         textUnit.setText(mCurrentTestInfo.getUnit());
                     }
                     buttonAcceptResult.setVisibility(View.VISIBLE);
@@ -403,25 +403,22 @@ public class SensorActivity extends BaseActivity {
     private static class MyHandler extends Handler {
         private final WeakReference<SensorActivity> mActivity;
 
-        public MyHandler(SensorActivity activity) {
+        MyHandler(SensorActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    SensorActivity sensorActivity = mActivity.get();
-                    if (sensorActivity != null) {
-
-                        sensorActivity.mReceivedData += data;
-                        if (sensorActivity.mReceivedData.contains("\r\n")) {
-                            sensorActivity.displayResult(sensorActivity.mReceivedData);
-                            sensorActivity.mReceivedData = "";
-                        }
+            if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
+                String data = (String) msg.obj;
+                SensorActivity sensorActivity = mActivity.get();
+                if (sensorActivity != null) {
+                    sensorActivity.mReceivedData += data;
+                    if (sensorActivity.mReceivedData.contains("\r\n")) {
+                        sensorActivity.displayResult(sensorActivity.mReceivedData);
+                        sensorActivity.mReceivedData = "";
                     }
-                    break;
+                }
             }
         }
     }

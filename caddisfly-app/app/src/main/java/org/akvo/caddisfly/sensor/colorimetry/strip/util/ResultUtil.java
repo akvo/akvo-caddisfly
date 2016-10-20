@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
@@ -35,6 +34,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -54,14 +54,20 @@ public class ResultUtil {
 
     public static Mat getMatFromFile(FileStorage fileStorage, int imageNo) {
         //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
-        boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
+        //boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
 
-        String error = isInvalidStrip ? Constant.ERROR : "";
+        //String error = isInvalidStrip ? Constant.ERROR : "";
+
+        String fileName = Constant.STRIP + imageNo;
+        File file = new File(fileName + Constant.ERROR);
+        if (file.exists()){
+            fileName += Constant.ERROR;
+        }
 
         // read the Mat object from internal storage
         byte[] data;
         try {
-            data = fileStorage.readByteArray(Constant.STRIP + imageNo + error);
+            data = fileStorage.readByteArray(fileName);
 
             if (data != null) {
                 // determine cols and rows dimensions
@@ -122,17 +128,13 @@ public class ResultUtil {
         // Draw a green circle at a particular location patch
         // only draw if this is not a 'grouped' strip
         if (!grouped) {
-            Imgproc.circle(mat, new Point(centerPatch.x + 10, mat.height() / 2), (int) Math.ceil((mat.height() - borderSize) * 0.4),
-                    new Scalar(0, 255, 0, 255), 1);
+            Imgproc.circle(mat, new Point(centerPatch.x + 10, mat.height() / 2d),
+                    (int) Math.ceil((mat.height() - borderSize) * 0.4), new Scalar(0, 255, 0, 255), 1);
         }
 
         double ratio = (double) (maxWidth - 10) / (double) mat.width();
 
         Imgproc.resize(mat, mat, new Size(mat.width() * ratio, mat.height() * ratio));
-
-        Log.w("Caddisfly 1", String.valueOf(mat.width()));
-        Log.w("Caddisfly 2", String.valueOf(maxWidth));
-        Log.w("Caddisfly 3", String.valueOf(ratio));
 
         return mat;
     }
@@ -155,9 +157,9 @@ public class ResultUtil {
         // horizontal size of mat: width
         // vertical size of mat: size of colour block - xMargin + top distance
         Mat colorRangeMat = new Mat((int) Math.ceil(xTranslate - xMargin + yColorRect), width, CvType.CV_8UC3, labWhite);
-        JSONArray colours;
-        colours = patches.get(patchNum).getColours();
+        JSONArray colours = patches.get(patchNum).getColours();
 
+        double previousPos = 0;
         for (int d = 0; d < colours.length(); d++) {
             try {
 
@@ -173,9 +175,13 @@ public class ResultUtil {
                 Point bottomRight = new Point(topLeft.x + xTranslate - xMargin, yColorRect + xTranslate);
                 Imgproc.rectangle(colorRangeMat, topLeft, bottomRight, scalarLab, -1);
 
-                //draw color value above rectangle
-                Point centerText = new Point(topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2, yColorRect - textSizeValue.height);
-                Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.6d, labGrey, 2, Core.LINE_AA, false);
+                double x = topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2;
+                //draw color value above rectangle. Skip if it too close to the previous label
+                if (x > previousPos + 40 || d == 0) {
+                    previousPos = x;
+                    Point centerText = new Point(x, yColorRect - textSizeValue.height);
+                    Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.6d, labGrey, 2, Core.LINE_AA, false);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -439,21 +445,8 @@ public class ResultUtil {
         //  create subMat
         Mat patch = mat.submat(minRow, maxRow, minCol, maxCol);
 
-//        Imgproc.cvtColor(patch, patch, Imgproc.COLOR_Lab2BGR);
-//        Imgproc.cvtColor(patch, patch, Imgproc.COLOR_BGR2RGBA);
-//
-//        for (int i = 0; i < patch.rows(); i++) {
-//            for (int j = 0; j < patch.cols(); j++) {
-//                double[] pixel = patch.get(i, j);
-//                if (pixel[0] == 255 && pixel[1] == 255 && pixel[2] == 255)
-//                {
-//                    pixel[3] = 0;
-//                }
-//            }
-//        }
-
         // compute the mean colour and return it
-        return OpenCVUtil.detectStripColorBrandKnown(patch);
+        return OpenCVUtil.detectStripPatchColor(patch);
     }
 
     /*

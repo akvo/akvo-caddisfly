@@ -42,6 +42,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.json.JSONArray;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -95,21 +96,28 @@ public class BrandInfoActivity extends BaseActivity {
 
             // Display the brand photo
             ImageView imageView = (ImageView) findViewById(R.id.fragment_choose_strip_testImageView);
+            InputStream ims = null;
             try {
                 String path = getResources().getString(R.string.striptest_images);
-                InputStream ims = getAssets().open(path + "/" + stripTest.getBrand(mUuid).getImage() + ".png");
+                ims = getAssets().open(path + "/" + stripTest.getBrand(mUuid).getImage() + ".png");
 
                 Drawable drawable = Drawable.createFromStream(ims, null);
-
-                ims.close();
-
                 imageView.setImageDrawable(drawable);
             } catch (Exception ex) {
                 ex.printStackTrace();
+            } finally {
+                if (ims != null) {
+                    try {
+                        ims.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
-            if (instructions.length() == 0){
+            if (instructions.length() == 0) {
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
         }
@@ -120,44 +128,43 @@ public class BrandInfoActivity extends BaseActivity {
                                            @NonNull int[] grantResults) {
 
         final Activity activity = this;
-        switch (requestCode) {
-            case PERMISSION_ALL: {
-                // If request is cancelled, the result arrays are empty.
-                boolean granted = false;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PERMISSION_GRANTED) {
-                        granted = false;
-                        break;
-                    } else {
-                        granted = true;
-                    }
-                }
-                if (granted) {
-                    startCamera();
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
                 } else {
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, getString(R.string.cameraAndStoragePermissions),
-                                    Snackbar.LENGTH_LONG)
-                            .setAction("SETTINGS", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    ApiUtil.startInstalledAppDetailsActivity(activity);
-                                }
-                            });
-
-                    TypedValue typedValue = new TypedValue();
-                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-                    snackbar.setActionTextColor(typedValue.data);
-                    View snackView = snackbar.getView();
-                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setHeight(200);
-                    textView.setLineSpacing(1.2f, 1.2f);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    granted = true;
                 }
             }
+            if (granted) {
+                startCamera();
+            } else {
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, getString(R.string.cameraAndStoragePermissions),
+                                Snackbar.LENGTH_LONG)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ApiUtil.startInstalledAppDetailsActivity(activity);
+                            }
+                        });
+
+                TypedValue typedValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                snackbar.setActionTextColor(typedValue.data);
+                View snackView = snackbar.getView();
+                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setHeight(200);
+                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+            }
         }
+
     }
 
     private void startCamera() {

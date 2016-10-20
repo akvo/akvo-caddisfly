@@ -66,7 +66,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                         params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
                         paramsP.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
                         break;
-                    case 1: //enlarge
+                    default: //enlarge
                         params.height = ViewGroup.LayoutParams.MATCH_PARENT;
                         paramsP.height = ViewGroup.LayoutParams.MATCH_PARENT;
                         break;
@@ -116,6 +116,12 @@ public abstract class CameraSharedFragmentBase extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void showMessage(String message) {
+        if (countQualityView != null) {
+            countQualityView.setText(message);
         }
     }
 }

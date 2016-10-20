@@ -421,7 +421,7 @@ public class CameraDialogFragment extends CameraDialog {
             int w = getWidth();
             int h = getHeight();
 
-            canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
+            canvas.drawCircle(w / 2f, h / 2f, 40, circleStroke);
 
             super.onDraw(canvas);
         }

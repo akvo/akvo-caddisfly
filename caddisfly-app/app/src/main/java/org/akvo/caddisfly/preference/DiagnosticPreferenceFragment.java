@@ -54,7 +54,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  */
 public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
-    private final int PERMISSION_ALL = 1;
+    private static final int PERMISSION_ALL = 1;
 
     private ListView list;
     private View coordinatorLayout;
@@ -191,45 +191,43 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
 
-        switch (requestCode) {
-            case PERMISSION_ALL: {
-                // If request is cancelled, the result arrays are empty.
-                boolean granted = false;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PERMISSION_GRANTED) {
-                        granted = false;
-                        break;
-                    } else {
-                        granted = true;
-                    }
-                }
-                if (granted) {
-                    startPreview();
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
                 } else {
-                    String message = getString(R.string.cameraAndStoragePermissions);
-                    if (AppPreferences.useExternalCamera()) {
-                        message = getString(R.string.storagePermission);
-                    }
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                            .setAction("SETTINGS", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    ApiUtil.startInstalledAppDetailsActivity(getActivity());
-                                }
-                            });
-
-                    TypedValue typedValue = new TypedValue();
-                    getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-                    snackbar.setActionTextColor(typedValue.data);
-                    View snackView = snackbar.getView();
-                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setHeight(200);
-                    textView.setLineSpacing(1.2f, 1.2f);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    granted = true;
                 }
+            }
+            if (granted) {
+                startPreview();
+            } else {
+                String message = getString(R.string.cameraAndStoragePermissions);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ApiUtil.startInstalledAppDetailsActivity(getActivity());
+                            }
+                        });
+
+                TypedValue typedValue = new TypedValue();
+                getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                snackbar.setActionTextColor(typedValue.data);
+                View snackView = snackbar.getView();
+                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setHeight(200);
+                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
     }

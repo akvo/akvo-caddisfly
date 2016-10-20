@@ -66,4 +66,6 @@ interface CameraViewListener {
     void stopPreview();
 
     void startPreview();
+
+    void showError(String message);
 }

@@ -25,7 +25,7 @@ public interface DetectStripListener {
 
     void showMessage();
 
-    void showError(int what);
+    void showError(String message);
 
     void showResults();
 

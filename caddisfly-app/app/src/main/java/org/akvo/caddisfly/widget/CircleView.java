@@ -50,7 +50,7 @@ public class CircleView extends View {
         int w = getWidth();
         int h = getHeight();
 
-        canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
+        canvas.drawCircle(w / 2f, h / 2f, 40, circlePaint);
         super.onDraw(canvas);
     }
 }

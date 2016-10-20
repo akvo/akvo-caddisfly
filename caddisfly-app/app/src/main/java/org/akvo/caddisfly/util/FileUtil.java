@@ -112,9 +112,10 @@ public final class FileUtil {
     public static String loadTextFromFile(File file) {
 
         StringBuilder text = new StringBuilder();
+        BufferedReader br = null;
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            br = new BufferedReader(new FileReader(file));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -124,6 +125,14 @@ public final class FileUtil {
             return text.toString();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally{
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return "";

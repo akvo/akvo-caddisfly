@@ -64,7 +64,7 @@ public class PercentageMeterView extends View {
     @Override
     public void onDraw(Canvas canvas) {
 
-        if (percentage == Float.NaN) {
+        if (Float.isNaN(percentage)) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class PercentageMeterView extends View {
         canvas.save();
 
         // Set each dot's diameter to half the canvas height
-        canvas.translate(canvas.getWidth() / 2 - ((canvas.getHeight() * 0.5f + 0.2f) * 2.5f), 0);
+        canvas.translate(canvas.getWidth() / 2f - ((canvas.getHeight() * 0.5f + 0.2f) * 2.5f), 0);
 
         for (double i = 0; i < NUMBER_OF_BARS; i++) {
 

@@ -204,14 +204,15 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         }
 
         //reset quality checks count to zero
-        if (mListener != null)
+        if (mListener != null) {
             mListener.setQualityCheckCountZero();
 
-        rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
+            rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
 
-        mListener.startPreview();
-        if (mListener.isTorchModeOn()) {
-            mListener.toggleFlashMode(false);
+            mListener.startPreview();
+            if (mListener.isTorchModeOn()) {
+                mListener.toggleFlashMode(false);
+            }
         }
     }
 
@@ -296,8 +297,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         uuid = getArguments().getString(Constant.UUID);
 
-        //System.out.println("***uuid: " + uuid);
-
         StripTest stripTest = new StripTest();
 
         patches = stripTest.getBrand(uuid).getPatchesOrderedByTimeLapse();
@@ -313,8 +312,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             //tell CameraActivity when it is time to take the next picture
             //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
-
-            //System.out.println("***posting takeNextPicture: " + i + " timeLapse: " + patches.get(i).getTimeLapse());
         }
     }
 

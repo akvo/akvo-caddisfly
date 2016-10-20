@@ -257,7 +257,7 @@ public class ProgressIndicatorView extends LinearLayout {
             }
 
             float textHeight = Math.abs(textPaint.ascent());
-            float yPos = background.getHeight() / 2 + textHeight / 2;
+            float yPos = background.getHeight() / 2f + textHeight / 2f;
             canvas.drawText(message, background.getWidth() + horMargin, yPos, textPaint);
 
             canvas.translate(0f, background.getHeight());

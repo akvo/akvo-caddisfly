@@ -46,7 +46,7 @@ public class StripTestNavigation {
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
-                        1),
+                        2),
                         isDisplayed()));
         linearLayout.perform(click());
 
