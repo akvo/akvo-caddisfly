@@ -31,6 +31,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
@@ -220,32 +221,4 @@ public class CaddisflyApp extends Application {
             }
         }
     }
-
-    /**
-     * The different types of testing methods
-     */
-    public enum TestType {
-        /**
-         * Liquid reagent is mixed with sample and color is analysed from the resulting
-         * color change in the solution
-         */
-        COLORIMETRIC_LIQUID,
-
-        /**
-         * Strip paper is dipped into the sample and color is analysed from the resulting
-         * color change on the strip paper
-         */
-        COLORIMETRIC_STRIP,
-
-        /**
-         * External sensors connected to the phone/device
-         */
-        SENSOR,
-
-        /**
-         * Measure of turbidity in the liquid
-         */
-        TURBIDITY_COLIFORMS
-    }
-
 }

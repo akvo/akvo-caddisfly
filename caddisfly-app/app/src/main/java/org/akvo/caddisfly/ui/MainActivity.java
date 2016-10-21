@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity {
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+        String message = String.format("%s%n%n%s", getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notSupported, message);
@@ -138,7 +138,7 @@ public class MainActivity extends BaseActivity {
                 }
 
                 sourceFiles = sourcePath.listFiles();
-                if (sourceFiles.length == 0) {
+                if (sourceFiles != null && sourceFiles.length == 0) {
                     //noinspection ResultOfMethodCallIgnored
                     sourcePath.delete();
                 }
@@ -225,7 +225,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void alertDependantAppNotFound() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
+        String message = String.format("%s%n%n%s", getString(R.string.errorAkvoFlowRequired),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notFound, message);
@@ -249,7 +249,9 @@ public class MainActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             Activity f = ref.get();
-            f.recreate();
+            if (f != null) {
+                f.recreate();
+            }
         }
     }
 

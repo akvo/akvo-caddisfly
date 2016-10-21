@@ -23,6 +23,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
@@ -109,23 +110,23 @@ public final class TestConfigHelper {
                     JSONObject item = array.getJSONObject(i);
 
                     //Get the test type
-                    CaddisflyApp.TestType type;
+                    TestType type;
                     if (item.has("subtype")) {
                         switch (item.getString("subtype")) {
                             case "color":
                             case "colour":
-                                type = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+                                type = TestType.COLORIMETRIC_LIQUID;
                                 break;
                             case "strip":
                             case "striptest":
-                                type = CaddisflyApp.TestType.COLORIMETRIC_STRIP;
+                                type = TestType.COLORIMETRIC_STRIP;
                                 break;
                             case "sensor":
-                                type = CaddisflyApp.TestType.SENSOR;
+                                type = TestType.SENSOR;
                                 break;
                             case "coliform":
                             case "coliforms":
-                                type = CaddisflyApp.TestType.TURBIDITY_COLIFORMS;
+                                type = TestType.TURBIDITY_COLIFORMS;
                                 break;
                             default:
                                 //Invalid test type skip it

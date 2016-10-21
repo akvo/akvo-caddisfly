@@ -48,7 +48,7 @@
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.Orange.Main">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

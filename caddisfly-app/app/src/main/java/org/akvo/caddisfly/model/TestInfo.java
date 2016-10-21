@@ -19,7 +19,6 @@ package org.akvo.caddisfly.model;
 import android.graphics.Color;
 import android.support.annotation.StringRes;
 
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +41,7 @@ public class TestInfo {
     private final ArrayList<String> uuid;
     private final String unit;
     private final ArrayList<Swatch> swatches;
-    private final CaddisflyApp.TestType testType;
+    private final TestType testType;
     private final ArrayList<Integer> dilutions;
     private final List<SubTest> subTests = new ArrayList<>();
     private boolean requiresCalibration;
@@ -59,7 +58,7 @@ public class TestInfo {
     private boolean useGrayScale;
     private String shortCode;
 
-    public TestInfo(Hashtable names, String unit, CaddisflyApp.TestType testType,
+    public TestInfo(Hashtable names, String unit, TestType testType,
                     boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
                     String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids,
                     JSONArray resultsArray) {
@@ -131,7 +130,7 @@ public class TestInfo {
 
     public TestInfo() {
         names = null;
-        testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+        testType = TestType.COLORIMETRIC_LIQUID;
         this.uuid = new ArrayList<>();
         this.unit = "";
         swatches = new ArrayList<>();
@@ -165,7 +164,7 @@ public class TestInfo {
         return "";
     }
 
-    public CaddisflyApp.TestType getType() {
+    public TestType getType() {
         return testType;
     }
 
@@ -237,7 +236,7 @@ public class TestInfo {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean requiresCameraFlash() {
-        return testType == CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+        return testType == TestType.COLORIMETRIC_LIQUID;
     }
 
     public int getMonthsValid() {
@@ -323,7 +322,7 @@ public class TestInfo {
         final String desc;
         final String unit;
 
-        public SubTest(int id, String desc, String unit) {
+        SubTest(int id, String desc, String unit) {
             this.id = id;
             this.desc = desc;
             this.unit = unit;

@@ -34,6 +34,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.Locale;
@@ -80,7 +81,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         textDimension.setText(mDimension);
 
         if (currentTestInfo == null || currentTestInfo.getCode().isEmpty() ||
-                currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
+                currentTestInfo.getType() != TestType.COLORIMETRIC_LIQUID) {
             CaddisflyApp.getApp().setDefaultTest();
         }
 

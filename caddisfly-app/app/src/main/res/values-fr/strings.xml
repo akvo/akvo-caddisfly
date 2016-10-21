@@ -105,14 +105,11 @@
 
     <!--Strip Test-->
     <string name="strips_instruction_json">fr/strips-instruction.json</string>
-
     <string name="error_calibrating">Erreur calibrage</string>
     <string name="error_conversion">Erreur converter couleurs</string>
     <string name="error_cut_out_strip">Pas de bande trouvee.</string>
     <string name="error_detection">Erreur detection.</string>
     <string name="error_no_finder_pattern_info">Pas de motifs</string>
-    <string name="error_unknown">Erreur inconnu</string>
-    <string name="error_warp">Erreur transformer perspective.</string>
     <string name="finished">FIN</string>
     <string name="light">Lumiere</string>
     <string name="no_data">Pas de donnees pour patch no.</string>
