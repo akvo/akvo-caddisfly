@@ -285,7 +285,7 @@ public final class ColorUtil {
      */
     public static Integer getColorFromRgb(String rgb) {
         String[] rgbArray = rgb.split("\\s+");
-        return Color.rgb(Integer.valueOf(rgbArray[0]), Integer.valueOf(rgbArray[1]), Integer.valueOf(rgbArray[2]));
+        return Color.rgb(Integer.parseInt(rgbArray[0]), Integer.parseInt(rgbArray[1]), Integer.parseInt(rgbArray[2]));
     }
 
     /**

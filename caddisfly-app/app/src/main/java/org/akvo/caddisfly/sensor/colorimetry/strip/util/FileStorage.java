@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by linda on 9/13/15
@@ -162,7 +163,7 @@ public class FileStorage {
         FileOutputStream outputStream = null;
         try {
             outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            for (byte s : json.getBytes()) {
+            for (byte s : json.getBytes(StandardCharsets.UTF_8)) {
                 outputStream.write(s);
             }
         } catch (Exception e) {
@@ -184,14 +185,17 @@ public class FileStorage {
 
         try {
 
-            String json = "";
             FileInputStream fis = new FileInputStream(file);
             DataInputStream in = new DataInputStream(fis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-            while ((strLine = br.readLine()) != null) {
-                json = json + strLine;
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String line;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
             }
+            String json = stringBuilder.toString();
+
             br.close();
             in.close();
             fis.close();
@@ -204,7 +208,7 @@ public class FileStorage {
         return null;
     }
 
-    public void deleteFromInternalStorage(final String contains) {
+    public void deleteFromInternalStorage(final String contains) throws IOException {
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
@@ -213,9 +217,13 @@ public class FileStorage {
             }
         };
         File[] files = file.listFiles(filter);
-        for (File f : files) {
-            //noinspection ResultOfMethodCallIgnored
-            f.delete();
+        if (files != null) {
+            for (File f : files) {
+                //noinspection ResultOfMethodCallIgnored
+                if(!f.delete()){
+                    throw new IOException("Error while deleting files");
+                }
+            }
         }
     }
 }

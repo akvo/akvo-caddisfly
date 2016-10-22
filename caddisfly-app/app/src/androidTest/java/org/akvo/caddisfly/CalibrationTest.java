@@ -231,7 +231,7 @@ public class CalibrationTest {
         sleep(2000);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            String message = String.format("%s\r\n\r\n%s",
+            String message = String.format("%s%n%n%s",
                     mActivityRule.getActivity().getString(R.string.errorCalibrationExpired),
                     mActivityRule.getActivity().getString(R.string.orderFreshBatch));
             onView(withText(message)).check(matches(isDisplayed()));
@@ -291,7 +291,7 @@ public class CalibrationTest {
 
         String message = mActivityRule.getActivity().getString(R.string.errorCalibrationIncomplete,
                 currentHashMap.get("chlorine"));
-        message = String.format("%s\r\n\r\n%s", message,
+        message = String.format("%s%n%n%s", message,
                 mActivityRule.getActivity().getString(R.string.doYouWantToCalibrate));
 
         onView(withText(message)).check(matches(isDisplayed()));

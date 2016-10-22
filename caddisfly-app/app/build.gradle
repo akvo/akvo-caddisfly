@@ -16,7 +16,6 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'com.github.ben-manes.versions'
 
 android {
     compileSdkVersion 25

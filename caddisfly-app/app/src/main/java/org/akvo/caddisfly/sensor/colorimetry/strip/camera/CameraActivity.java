@@ -43,6 +43,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,13 +102,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         @Override
         public void run() {
             if (wrCamera != null) {
-                if (cameraCallbackOneShotPreview == null)
-                    cameraCallbackOneShotPreview = new CameraCallbackOneShotPreview(mActivity.get(),
-                            wrCamera.get().getParameters());
+                Camera camera = wrCamera.get();
+                if (camera != null) {
+                    if (cameraCallbackOneShotPreview == null)
+                        cameraCallbackOneShotPreview = new CameraCallbackOneShotPreview(mActivity.get(),
+                                camera.getParameters());
 
-                if (currentFragment != null && (currentFragment instanceof CameraPrepareFragment ||
-                        currentFragment instanceof CameraStartTestFragment)) {
-                    wrCamera.get().setOneShotPreviewCallback(cameraCallbackOneShotPreview);
+                    if (currentFragment != null && (currentFragment instanceof CameraPrepareFragment ||
+                            currentFragment instanceof CameraStartTestFragment)) {
+                        camera.setOneShotPreviewCallback(cameraCallbackOneShotPreview);
+                    }
                 }
             }
         }
@@ -119,11 +123,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         public void run() {
             if (wrCamera != null) {
 
-                if (cameraCallbackTakePicture == null)
-                    cameraCallbackTakePicture = new CameraCallbackTakePicture(mActivity.get(),
-                            wrCamera.get().getParameters());
+                Camera camera = wrCamera.get();
+                if (camera != null) {
+                    if (cameraCallbackTakePicture == null)
+                        cameraCallbackTakePicture = new CameraCallbackTakePicture(mActivity.get(),
+                                camera.getParameters());
 
-                wrCamera.get().setOneShotPreviewCallback(cameraCallbackTakePicture);
+                    camera.setOneShotPreviewCallback(cameraCallbackTakePicture);
+                }
             }
         }
     };
@@ -476,10 +483,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         protected Void doInBackground(Void... params) {
             final FileStorage fileStorage = new FileStorage(CameraActivity.this);
 
-            fileStorage.deleteFromInternalStorage(Constant.INFO);
-            fileStorage.deleteFromInternalStorage(Constant.DATA);
-            fileStorage.deleteFromInternalStorage(Constant.STRIP);
-            fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
+            try {
+                fileStorage.deleteFromInternalStorage(Constant.INFO);
+                fileStorage.deleteFromInternalStorage(Constant.DATA);
+                fileStorage.deleteFromInternalStorage(Constant.STRIP);
+                fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
+            } catch (IOException e) {
+                showError(e.getMessage());
+            }
 
             return null;
         }
@@ -495,9 +506,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         @Override
         public void run() {
 
-            wrFinderPatternIndicatorView.get().setColor(color);
-            wrFinderPatternIndicatorView.get().showPatterns(patterns, size == null ? 0 : size.width,
-                    size == null ? 0 : size.height);
+            FinderPatternIndicatorView finderPatternIndicatorView = wrFinderPatternIndicatorView.get();
+            if (finderPatternIndicatorView != null) {
+                finderPatternIndicatorView.setColor(color);
+                finderPatternIndicatorView.showPatterns(patterns, size == null ? 0 : size.width,
+                        size == null ? 0 : size.height);
+            }
         }
 
         public void setColor(int color) {

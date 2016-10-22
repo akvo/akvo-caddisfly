@@ -24,6 +24,7 @@ import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -70,7 +71,7 @@ public class LanguageTest {
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
+                TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
     }
 
     @Test

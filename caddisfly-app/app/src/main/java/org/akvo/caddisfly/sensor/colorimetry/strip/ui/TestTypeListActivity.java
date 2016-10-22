@@ -30,7 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -41,7 +40,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class TestTypeListActivity extends BaseActivity implements BaseActivity.ResultListener {
+public class TestTypeListActivity extends BaseActivity {
 
     private StripAdapter adapter;
     private StripTest stripTest;
@@ -53,9 +52,6 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         setContentView(R.layout.activity_test_type_list);
 
         setTitle(R.string.selectTest);
-
-        //set result listener
-        BaseActivity.setResultListener(this);
 
         ListView listTypes = (ListView) findViewById(R.id.list_types);
 
@@ -92,39 +88,27 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
         Intent detailIntent = new Intent(getBaseContext(), BrandInfoActivity.class);
         detailIntent.putExtra(Constant.UUID, uuid);
         detailIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
-        startActivity(detailIntent);
-    }
-
-    public void onResume() {
-        super.onResume();
-
-        Intent intent = getIntent();
-        String cadUuid = null;
-        if (intent.hasExtra("caddisflyResourceUuid")) {
-            cadUuid = intent.getStringExtra("caddisflyResourceUuid");
-        }
-        if (intent.getBooleanExtra(SensorConstants.FINISH, false)) {
-            finish();
-        } else if (cadUuid != null && cadUuid.length() > 0) {
-            // when we get back here, we want to go straight back to the FLOW app
-            intent.putExtra(SensorConstants.FINISH, true);
-            startDetailActivity(cadUuid);
-        }
+        startActivityForResult(detailIntent, 100);
     }
 
     @Override
-    public void onResult(String result, String imagePath) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        Intent intent = new Intent(getIntent());
-        if (result.isEmpty()) {
-            setResult(RESULT_CANCELED, intent);
-        } else {
-            intent.putExtra("response", result);
-            intent.putExtra("image", imagePath);
-            setResult(RESULT_OK, intent);
+        if (requestCode == 100) {
+            Intent intent = new Intent(getIntent());
+            setResult(resultCode, intent);
+
+            if (resultCode == RESULT_OK) {
+                intent.putExtra("response", data.getStringExtra("response"));
+                intent.putExtra("image", data.getStringExtra("image"));
+            }
+
+            // If an external activity is expecting the result then finish
+            if (!getIntent().getBooleanExtra("internal", false)) {
+                finish();
+            }
         }
-
-        finish();
     }
 
     @Override
@@ -185,23 +169,16 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
                     List<StripTest.Brand.Patch> patches = brand.getPatches();
 
                     if (patches != null && patches.size() > 0) {
-//                            String subtext = "";
-//                            for (int i = 0; i < patches.size(); i++) {
-//                                subtext += patches.get(i).getDesc() + ", ";
-//                            }
-//                        int indexLastSep = subtext.lastIndexOf(",");
-//                            subtext = subtext.substring(0, indexLastSep);
-
-                        String ranges = "";
+                        StringBuilder ranges = new StringBuilder();
                         for (StripTest.Brand.Patch patch : patches) {
                             try {
                                 int valueCount = patch.getColours().length();
-                                if (!ranges.isEmpty()) {
-                                    ranges += ", ";
+                                if (ranges.length() > 0) {
+                                    ranges.append(", ");
                                 }
-                                ranges += String.format(Locale.US, "%.0f - %.0f",
+                                ranges.append(String.format(Locale.US, "%.0f - %.0f",
                                         patch.getColours().getJSONObject(0).getDouble("value"),
-                                        patch.getColours().getJSONObject(valueCount - 1).getDouble("value"));
+                                        patch.getColours().getJSONObject(valueCount - 1).getDouble("value")));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -211,9 +188,8 @@ public class TestTypeListActivity extends BaseActivity implements BaseActivity.R
                             }
                         }
 
-
                         holder.textView.setText(brand.getName());
-                        holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges);
+                        holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
                     }
                 }
             } else holder.textView.setText(brand.getName());

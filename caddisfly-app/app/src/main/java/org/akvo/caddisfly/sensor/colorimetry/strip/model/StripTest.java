@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,8 +87,7 @@ public class StripTest {
 
         private final String uuid;
         private double stripLength;
-        @SuppressWarnings("unused")
-        private double stripHeight;
+        //private double stripHeight;
         private GroupType groupingType;
         private JSONArray instructions;
 
@@ -110,7 +110,7 @@ public class StripTest {
                             if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
                                 try {
                                     stripLength = strip.getDouble("length");
-                                    stripHeight = strip.getDouble("height");
+                                    //stripHeight = strip.getDouble("height");
                                     groupingType = strip.getString("groupingType")
                                             .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
                                     name = strip.getString("name");
@@ -257,16 +257,11 @@ public class StripTest {
         }
     }
 
-    private class PatchComparator implements Comparator<Brand.Patch> {
+    private static class PatchComparator implements Comparator<Brand.Patch>, Serializable {
 
         @Override
         public int compare(Brand.Patch lhs, Brand.Patch rhs) {
-            if (lhs.timeLapse < rhs.timeLapse)
-                return -1;
-            if (lhs.timeLapse == rhs.timeLapse)
-                return 0;
-
-            return 1;
+            return Double.compare(lhs.timeLapse, rhs.timeLapse);
         }
     }
 }

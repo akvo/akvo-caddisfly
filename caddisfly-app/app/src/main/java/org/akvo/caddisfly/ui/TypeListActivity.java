@@ -47,7 +47,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class TypeListActivity extends BaseActivity implements TypeListFragment.OnFragmentInteractionListener {
 
-    private final int PERMISSION_ALL = 1;
+    private static final int PERMISSION_ALL = 1;
 
     private View coordinatorLayout;
 
@@ -102,6 +102,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                     alertFeatureNotSupported();
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -130,46 +132,43 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                                            @NonNull int[] grantResults) {
 
         final Activity activity = this;
-        switch (requestCode) {
-            case PERMISSION_ALL: {
-                // If request is cancelled, the result arrays are empty.
-                boolean granted = false;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PERMISSION_GRANTED) {
-                        granted = false;
-                        break;
-                    } else {
-                        granted = true;
-                    }
-                }
-                if (granted) {
-                    startCalibration();
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
                 } else {
-                    String message = getString(R.string.cameraAndStoragePermissions);
-                    if (AppPreferences.useExternalCamera()) {
-                        message = getString(R.string.storagePermission);
-                    }
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                            .setAction("SETTINGS", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    ApiUtil.startInstalledAppDetailsActivity(activity);
-                                }
-                            });
-
-                    TypedValue typedValue = new TypedValue();
-                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-                    snackbar.setActionTextColor(typedValue.data);
-                    View snackView = snackbar.getView();
-                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setHeight(200);
-                    textView.setLineSpacing(1.2f, 1.2f);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    granted = true;
                 }
+            }
+            if (granted) {
+                startCalibration();
+            } else {
+                String message = getString(R.string.cameraAndStoragePermissions);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ApiUtil.startInstalledAppDetailsActivity(activity);
+                            }
+                        });
 
+                TypedValue typedValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                snackbar.setActionTextColor(typedValue.data);
+                View snackView = snackbar.getView();
+                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setHeight(200);
+                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
     }
@@ -189,7 +188,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s",
+        String message = String.format("%s%n%n%s",
                 getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 

@@ -43,7 +43,9 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -233,7 +235,7 @@ public class ExternalActionActivity extends BaseActivity {
 
     private void alertCalibrationExpired() {
 
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorCalibrationExpired),
+        String message = String.format("%s%n%n%s", getString(R.string.errorCalibrationExpired),
                 getString(R.string.orderFreshBatch));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest,
@@ -263,7 +265,7 @@ public class ExternalActionActivity extends BaseActivity {
         String message = getString(R.string.errorCalibrationIncomplete,
                 CaddisflyApp.getApp().getCurrentTestInfo().getName(
                         getResources().getConfiguration().locale.getLanguage()));
-        message = String.format("%s\r\n\r\n%s", message,
+        message = String.format("%s%n%n%s", message,
                 getString(R.string.doYouWantToCalibrate));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message, R.string.calibrate,
@@ -346,8 +348,8 @@ public class ExternalActionActivity extends BaseActivity {
                 break;
             case COLORIMETRIC_STRIP:
 
-                final Intent colorimetricStripIntent = new Intent(context, TestTypeListActivity.class);
-                colorimetricStripIntent.putExtra("caddisflyResourceUuid", caddisflyResourceUuid);
+                final Intent colorimetricStripIntent = new Intent(context, BrandInfoActivity.class);
+                colorimetricStripIntent.putExtra(Constant.UUID, caddisflyResourceUuid);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;
@@ -376,7 +378,7 @@ public class ExternalActionActivity extends BaseActivity {
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+        String message = String.format("%s%n%n%s", getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.notSupported, message,
@@ -421,7 +423,7 @@ public class ExternalActionActivity extends BaseActivity {
     private void alertTestTypeNotSupported() {
 
         String message = getString(R.string.errorTestNotAvailable);
-        message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
+        message = String.format("%s%n%n%s", message, getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message,
                 R.string.ok,
@@ -473,7 +475,9 @@ public class ExternalActionActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             Activity f = ref.get();
-            f.recreate();
+            if (f != null) {
+                f.recreate();
+            }
         }
     }
 }

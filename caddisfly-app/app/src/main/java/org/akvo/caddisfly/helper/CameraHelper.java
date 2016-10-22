@@ -28,7 +28,7 @@ public class CameraHelper {
 
         Camera camera = ApiUtil.getCameraInstance();
         if (hasFeatureBackCamera(context, onClickListener) && camera == null) {
-            String message = String.format("%s\r\n\r\n%s",
+            String message = String.format("%s%n%n%s",
                     context.getString(R.string.cannotUseCamera),
                     context.getString(R.string.tryRestarting));
 

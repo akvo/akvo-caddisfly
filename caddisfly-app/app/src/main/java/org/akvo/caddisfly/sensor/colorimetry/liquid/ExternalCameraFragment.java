@@ -412,11 +412,12 @@ public final class ExternalCameraFragment extends CameraDialog {
             public CameraHandler getHandler() {
                 if (DEBUG) Log.v(TAG_THREAD, "getHandler:");
                 synchronized (mSync) {
-                    if (mHandler == null)
+                    while (mHandler == null) {
                         try {
                             mSync.wait();
                         } catch (final InterruptedException ignored) {
                         }
+                    }
                 }
                 return mHandler;
             }
@@ -471,19 +472,21 @@ public final class ExternalCameraFragment extends CameraDialog {
             void handleCaptureStill() {
                 final ExternalCameraFragment parent = mWeakParent.get();
                 if (parent == null) return;
-                //parent.sound.playShortResource(R.raw.beep);
-                final Bitmap bitmap = mWeakCameraView.get().captureStillImage();
 
-                parent.mPhotoCurrentCount++;
+                CameraViewInterface cameraViewInterface = mWeakCameraView.get();
+                if (cameraViewInterface != null) {
+                    final Bitmap bitmap = cameraViewInterface.captureStillImage();
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
+                    parent.mPhotoCurrentCount++;
 
-                for (PictureTaken pictureTakenObserver : parent.pictureTakenObservers) {
-                    pictureTakenObserver.onPictureTaken(byteArray, parent.hasTestCompleted());
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+
+                    for (PictureTaken pictureTakenObserver : parent.pictureTakenObservers) {
+                        pictureTakenObserver.onPictureTaken(byteArray, parent.hasTestCompleted());
+                    }
                 }
-
                 //if (!mCancelled) {
                 if (!parent.hasTestCompleted()) {
                     //parent.pictureCallback.onPictureTaken(bitmap);

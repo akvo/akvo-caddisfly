@@ -82,7 +82,10 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     protected void showBrightness(double value) {
 
         if (wrExposureView != null) {
-            wrExposureView.get().setPercentage((float) (100 - value));
+            PercentageMeterView meterView = wrExposureView.get();
+            if (meterView!= null) {
+                meterView.setPercentage((float) (100 - value));
+            }
         }
     }
 
@@ -90,7 +93,10 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     protected void showShadow(double value) {
 
         if (wrContrastView != null) {
-            wrContrastView.get().setPercentage((float) value);
+            PercentageMeterView meterView = wrContrastView.get();
+            if (meterView != null) {
+                meterView.setPercentage((float) value);
+            }
         }
     }
 

@@ -110,7 +110,7 @@ public class PreviewUtil {
         if (seconds > 3600)
             throw new Exception("more than an hour");
 
-        int m = (int) Math.floor(seconds / 60);
+        int m = seconds / 60;
         int s = seconds - (m * 60);
 
         String mm = m > 0 ? String.format(Locale.US, "%2d", m) + ":" : "";

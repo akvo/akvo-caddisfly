@@ -53,6 +53,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -179,9 +180,9 @@ public class ResultActivity extends BaseActivity {
                     e.printStackTrace();
                 }
 
-                listener.onResult(resultJsonObj.toString(), path);
-
                 Intent intent = new Intent(getIntent());
+                intent.putExtra("response", resultJsonObj.toString());
+                intent.putExtra("image", path);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -192,17 +193,18 @@ public class ResultActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (fileStorage != null) {
-                    fileStorage.deleteFromInternalStorage(Constant.INFO);
-                    fileStorage.deleteFromInternalStorage(Constant.DATA);
-                    fileStorage.deleteFromInternalStorage(Constant.STRIP);
-                    fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
+                    try {
+                        fileStorage.deleteFromInternalStorage(Constant.INFO);
+                        fileStorage.deleteFromInternalStorage(Constant.DATA);
+                        fileStorage.deleteFromInternalStorage(Constant.STRIP);
+                        fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
-                Intent intentRedo = new Intent(getBaseContext(), TestTypeListActivity.class);
-                intentRedo.putExtra(SensorConstants.FINISH, true);
-                intentRedo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                startActivity(intentRedo);
+                Intent intent = new Intent(getIntent());
+                setResult(RESULT_CANCELED, intent);
                 finish();
             }
         });

@@ -47,6 +47,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
@@ -167,7 +168,7 @@ public class SensorActivity extends BaseActivity {
         String data = "r\r\n";
         if (usbService != null && usbService.isUsbConnected()) {
             // if UsbService was correctly bound, Send data
-            usbService.write(data.getBytes());
+            usbService.write(data.getBytes(StandardCharsets.UTF_8));
         } else {
             displayNotConnectedView();
         }

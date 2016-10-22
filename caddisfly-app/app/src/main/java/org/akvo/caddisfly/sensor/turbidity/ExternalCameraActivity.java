@@ -75,6 +75,7 @@ import org.opencv.android.OpenCVLoader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,9 +121,6 @@ public class ExternalCameraActivity extends BaseActivity {
     private CameraDialog mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
-    //private ArrayList<Result> mResults;
-    //pointer to last dialog opened so it can be dismissed on activity getting destroyed
-    //private boolean mIsFirstResult;
     private USBMonitor mUSBMonitor;
     private String mReceivedData = "";
     private UsbService usbService;
@@ -170,25 +168,10 @@ public class ExternalCameraActivity extends BaseActivity {
 
             List<UsbDevice> usbDeviceList = getUsbDevices();
 
-//            for (int i = 0; i < 30; i++) {
-//                if (getCameraDevice(usbDeviceList) == null) {
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    usbDeviceList = getUsbDevices();
-//                } else {
-//                    break;
-//                }
-//            }
-
             if (getCameraDevice(usbDeviceList) != null) {
                 startExternalTest();
             } else {
                 Toast.makeText(getBaseContext(), "Camera not found", Toast.LENGTH_SHORT).show();
-                //releaseResources();
-                //finish();
             }
         }
     };
@@ -215,8 +198,6 @@ public class ExternalCameraActivity extends BaseActivity {
             Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
         }
 
-        //LocalBroadcastManager.getInstance(context).unregisterReceiver(context.mReceiver);
-        //if (value.trim().toUpperCase().contains("CAMERA ON")) {
         if (requestsDone && mCommandIndex < 99) {
             Toast.makeText(this, "Initializing", Toast.LENGTH_LONG).show();
             if (AppPreferences.getExternalCameraMultiDeviceMode()) {
@@ -236,7 +217,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
             try {
                 // if UsbService was correctly bound, Send data
-                usbService.write(command.getBytes());
+                usbService.write(command.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -274,8 +255,6 @@ public class ExternalCameraActivity extends BaseActivity {
 
         requestQueue.add("STATUS\r\n");
 
-        //String uuid = getIntent().getStringExtra("uuid");
-
         String rgb = PreferencesUtil.getString(this,
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.ledRgbKey, "255,255,255");
@@ -283,7 +262,7 @@ public class ExternalCameraActivity extends BaseActivity {
         if (rgb.length() > 0) {
             rgb = rgb.trim().replace("-", ",").replace(" ", ",").replace(".", ",").replace(" ", ",");
 
-            requestQueue.add(String.format("SET RGB %s\r\n", rgb));
+            requestQueue.add(String.format("SET RGB %s", rgb) + "\r\n");
         }
 
         if (AppPreferences.getExternalCameraMultiDeviceMode()) {
@@ -303,8 +282,6 @@ public class ExternalCameraActivity extends BaseActivity {
         super.onResume();
 
         acquireWakeLock();
-        //Intent intent = new Intent("custom-event-name");
-        //LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(intent);
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -324,9 +301,6 @@ public class ExternalCameraActivity extends BaseActivity {
                 }
             }
         }, 1000);
-
-//        IntentFilter intentFilter = new IntentFilter("my-event");
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
@@ -373,7 +347,6 @@ public class ExternalCameraActivity extends BaseActivity {
         textSubtitle.setText("");
     }
 
-
     /**
      * Acquire a wake lock to prevent the screen from turning off during the analysis process
      */
@@ -397,14 +370,14 @@ public class ExternalCameraActivity extends BaseActivity {
         int mDilutionLevel = getIntent().getIntExtra("dilution", 0);
 
         switch (mDilutionLevel) {
-            case 0:
-                textDilution.setText(R.string.noDilution);
-                break;
             case 1:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 2));
                 break;
             case 2:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 5));
+                break;
+            default:
+                textDilution.setText(R.string.noDilution);
                 break;
         }
 
@@ -445,7 +418,7 @@ public class ExternalCameraActivity extends BaseActivity {
      * Display error message for configuration not loading correctly
      */
     private void alertCouldNotLoadConfig() {
-        String message = String.format("%s\r\n\r\n%s",
+        String message = String.format("%s%n%n%s",
                 getString(R.string.errorLoadingConfiguration),
                 getString(R.string.pleaseContactSupport));
         AlertUtil.showError(this, R.string.error, message, null, R.string.ok,
@@ -457,77 +430,9 @@ public class ExternalCameraActivity extends BaseActivity {
                 }, null, null);
     }
 
-//    /**
-//     * Get the test result by analyzing the bitmap
-//     *
-//     * @param bitmap the bitmap of the photo taken during analysis
-//     */
-    //private void getAnalyzedResult(Bitmap bitmap) {
-
-        //Extract the color from the photo which will be used for comparison
-        //ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
-
-        //Quality too low reject this result
-//        if (photoColor.getQuality() < 20) {
-//            return;
-//        }
-
-        //TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-       //ArrayList<ResultDetail> results = new ArrayList<>();
-
-        //In diagnostic mode show results based on other color models / number of calibration steps
-//        if (AppPreferences.isDiagnosticMode()) {
-//            ArrayList<Swatch> swatches = new ArrayList<>();
-//
-//            //1 step analysis
-//            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-//            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-//            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.LAB));
-//            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.RGB));
-//
-//            swatches.clear();
-//
-//            //add only the first and last swatch for a 2 step analysis
-//            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-//            swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
-//            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-//            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.LAB));
-//            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.RGB));
-//
-//            swatches.clear();
-//
-//            //add the middle swatch for a 3 step analysis
-//            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-//            swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
-//            swatches.add(1, (Swatch) testInfo.getSwatch(testInfo.getSwatches().size() / 2).clone());
-//            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-//            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.LAB));
-//            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
-//
-//            //use all the swatches for an all steps analysis
-//            results.add(SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
-//                    CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.RGB));
-//
-//            results.add(SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
-//                    CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.ColorModel.LAB));
-//        }
-//
-//        results.add(0, SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
-//                CaddisflyApp.getApp().getCurrentTestInfo().getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL));
-
-        //Result result = new Result(bitmap, results);
-
-        //mResults.add(result);
-   // }
-
     private void startExternalTest() {
 
         findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
-
-        //mIsFirstResult = true;
-
-        //mResults = new ArrayList<>();
         (new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -541,67 +446,16 @@ public class ExternalCameraActivity extends BaseActivity {
 
                 mCameraFragment = ExternalCameraFragment.newInstance();
                 mCameraFragment.setCancelable(true);
-                //if (!((ExternalCameraFragment) mCameraFragment).hasTestCompleted()) {
 
                 mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
                     @Override
                     public void onPictureTaken(final byte[] bytes, boolean completed) {
-                        //Bitmap bitmap = ImageUtil.getBitmap(bytes);
-                        //Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
-                        //getAnalyzedResult(croppedBitmap);
-                        //bitmap.recycle();
-
-//                        Bitmap bitmap = ImageUtil.getBitmap(bytes);
-//
-//                        Display display = getWindowManager().getDefaultDisplay();
-//                        int rotation = 0;
-//                        switch (display.getRotation()) {
-//                            case Surface.ROTATION_0:
-//                                rotation = 90;
-//                                break;
-//                            case Surface.ROTATION_90:
-//                                rotation = 0;
-//                                break;
-//                            case Surface.ROTATION_180:
-//                                rotation = 270;
-//                                break;
-//                            case Surface.ROTATION_270:
-//                                rotation = 180;
-//                                break;
-//                        }
-
-//                        bitmap = ImageUtil.rotateImage(bitmap, rotation);
-//                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-//                        Bitmap croppedBitmap;
-//
-//                        if (testInfo.isUseGrayScale()) {
-//                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-//                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
-//
-//                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
-//                        } else {
-//                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-//                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-//                        }
-
-                        //Ignore the first result as camera may not have focused correctly
-//                        if (!mIsFirstResult) {
-//                            if (croppedBitmap != null) {
-//                                getAnalyzedResult(croppedBitmap);
-//                            }
-//                        }
-                        //mIsFirstResult = false;
-
                         if (completed) {
 
                             mCameraFragment.dismiss();
                             releaseResources();
-
                             AnalyzeFinalResult(bytes);
-
                         }
-
                     }
                 });
 
@@ -849,11 +703,10 @@ public class ExternalCameraActivity extends BaseActivity {
 
     }
 
-
-    /*
- * This handler will be passed to UsbService.
- * Data received from serial port is displayed through this handler
- */
+    /**
+     * This handler will be passed to UsbService.
+     * Data received from serial port is displayed through this handler
+     */
     private static class MyHandler extends Handler {
         private final WeakReference<ExternalCameraActivity> mActivity;
 
@@ -863,20 +716,18 @@ public class ExternalCameraActivity extends BaseActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    ExternalCameraActivity colorimetryLiquidActivity = mActivity.get();
-                    if (colorimetryLiquidActivity != null) {
+            if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
+                String data = (String) msg.obj;
+                ExternalCameraActivity colorimetryLiquidActivity = mActivity.get();
+                if (colorimetryLiquidActivity != null) {
 
-                        colorimetryLiquidActivity.mReceivedData += data;
-                        if (colorimetryLiquidActivity.mReceivedData.contains("\r\n")) {
-                            colorimetryLiquidActivity.displayResult(colorimetryLiquidActivity.mReceivedData);
-                            colorimetryLiquidActivity.mReceivedData = "";
-                        }
-
+                    colorimetryLiquidActivity.mReceivedData += data;
+                    if (colorimetryLiquidActivity.mReceivedData.contains("\r\n")) {
+                        colorimetryLiquidActivity.displayResult(colorimetryLiquidActivity.mReceivedData);
+                        colorimetryLiquidActivity.mReceivedData = "";
                     }
-                    break;
+
+                }
             }
         }
     }

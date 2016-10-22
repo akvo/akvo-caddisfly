@@ -40,18 +40,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final static String THEME_BLUE_ORANGE = "BlueOrange";
     private final static String THEME_ORANGE_BLUE = "OrangeBlue";
     private final static String THEME_FLOW = "Flow";
-    protected static ResultListener listener;
     private String mTitle;
-
-    protected static void setResultListener(AppCompatActivity activity) {
-        listener = (ResultListener) activity;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateTheme();
         changeActionBarStyleBasedOnCurrentMode();
+        //listener = (ResultListener) this;
     }
 
     private void updateTheme() {
@@ -174,10 +170,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getWindow().setStatusBarColor(color);
             }
         }
-    }
-
-    public interface ResultListener {
-        void onResult(String result, String imagePath);
     }
 }
 

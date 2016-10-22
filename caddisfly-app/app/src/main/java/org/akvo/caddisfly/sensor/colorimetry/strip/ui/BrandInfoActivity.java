@@ -164,17 +164,36 @@ public class BrandInfoActivity extends BaseActivity {
                 snackbar.show();
             }
         }
-
     }
 
     private void startCamera() {
+        Boolean isInternal = getIntent().getBooleanExtra("internal", false);
         Intent intent = new Intent(getBaseContext(), CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constant.UUID, mUuid);
-        intent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
+        intent.putExtra("internal", isInternal);
         startActivityForResult(intent, 100);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100) {
+            Intent intent = new Intent(getIntent());
+            setResult(resultCode, intent);
+
+            if (resultCode == RESULT_OK) {
+                intent.putExtra("response", data.getStringExtra("response"));
+                intent.putExtra("image", data.getStringExtra("image"));
+            }
+
+            // If an external activity is expecting the result then finish
+            if (!getIntent().getBooleanExtra("internal", false)) {
+                finish();
+            }
+        }
+    }
 
     @Override
     public void onResume() {
@@ -192,12 +211,5 @@ public class BrandInfoActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        setResult(resultCode, data);
-        finish();
     }
 }

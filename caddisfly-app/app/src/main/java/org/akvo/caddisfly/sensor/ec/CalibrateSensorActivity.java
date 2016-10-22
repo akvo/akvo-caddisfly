@@ -44,6 +44,7 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Set;
 
@@ -270,7 +271,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private void requestResult() {
         String data = "GET ID\r\n";
         if (usbService != null && usbService.isUsbConnected()) {
-            usbService.write(data.getBytes());
+            usbService.write(data.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -311,7 +312,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
                 String requestCommand = "SET POINT" + calibrationIndex + " " + calibrationPoints[index] + "\r\n";
 
-                usbService.write(requestCommand.getBytes());
+                usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
@@ -371,7 +372,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     public void onFragmentInteraction(String value) {
         String requestCommand = "SET ID " + value + "\r\n";
 
-        usbService.write(requestCommand.getBytes());
+        usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 
         final ProgressDialog progressDialog = ProgressDialog.show(mContext,
                 getString(R.string.pleaseWait), getString(R.string.saving), true, false);
@@ -380,7 +381,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             @Override
             public void run() {
                 String getIdRequest = "GET ID" + "\r\n";
-                usbService.write(getIdRequest.getBytes());
+                usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
 
                 progressDialog.dismiss();
 
@@ -401,14 +402,16 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private static class WeakRefHandler extends Handler {
         private final WeakReference<CalibrateSensorActivity> ref;
 
-        public WeakRefHandler(CalibrateSensorActivity ref) {
+        WeakRefHandler(CalibrateSensorActivity ref) {
             this.ref = new WeakReference<>(ref);
         }
 
         @Override
         public void handleMessage(Message msg) {
             CalibrateSensorActivity f = ref.get();
-            f.progressDialog.incrementProgressBy(1);
+            if (f != null) {
+                f.progressDialog.incrementProgressBy(1);
+            }
         }
     }
 
@@ -419,26 +422,24 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private static class UsbDataHandler extends Handler {
         private final WeakReference<CalibrateSensorActivity> mActivity;
 
-        public UsbDataHandler(CalibrateSensorActivity activity) {
+        UsbDataHandler(CalibrateSensorActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    CalibrateSensorActivity sensorActivity = mActivity.get();
-                    if (sensorActivity != null) {
-                        sensorActivity.mReceivedData += data;
-                        if (sensorActivity.mReceivedData.contains("\r\n")) {
-                            if (!sensorActivity.mReceivedData.contains("OK")) {
-                                sensorActivity.displayId(sensorActivity.mReceivedData);
-                            }
-                            sensorActivity.mReceivedData = "";
+            if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
+                String data = (String) msg.obj;
+                CalibrateSensorActivity sensorActivity = mActivity.get();
+                if (sensorActivity != null) {
+                    sensorActivity.mReceivedData += data;
+                    if (sensorActivity.mReceivedData.contains("\r\n")) {
+                        if (!sensorActivity.mReceivedData.contains("OK")) {
+                            sensorActivity.displayId(sensorActivity.mReceivedData);
                         }
+                        sensorActivity.mReceivedData = "";
                     }
-                    break;
+                }
             }
         }
     }

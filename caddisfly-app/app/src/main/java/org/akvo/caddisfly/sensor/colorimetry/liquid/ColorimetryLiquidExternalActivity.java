@@ -78,6 +78,7 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -271,7 +272,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
             try {
                 // if UsbService was correctly bound, Send data
-                usbService.write(command.getBytes());
+                usbService.write(command.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -316,7 +317,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         if (rgb.length() > 0) {
             rgb = rgb.trim().replace("-", ",").replace(" ", ",").replace(".", ",").replace(" ", ",");
 
-            requestQueue.add(String.format("SET RGB %s\r\n", rgb));
+            requestQueue.add(String.format("SET RGB %s", rgb) + "\r\n");
         }
 
         if (AppPreferences.getExternalCameraMultiDeviceMode()) {
@@ -485,14 +486,14 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         mDilutionLevel = getIntent().getIntExtra("dilution", 0);
 
         switch (mDilutionLevel) {
-            case 0:
-                textDilution.setText(R.string.noDilution);
-                break;
             case 1:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 2));
                 break;
             case 2:
                 textDilution.setText(String.format(getString(R.string.timesDilution), 5));
+                break;
+            default:
+                textDilution.setText(R.string.noDilution);
                 break;
         }
 
@@ -532,7 +533,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
      * Display error message for configuration not loading correctly
      */
     private void alertCouldNotLoadConfig() {
-        String message = String.format("%s\r\n\r\n%s",
+        String message = String.format("%s%n%n%s",
                 getString(R.string.errorLoadingConfiguration),
                 getString(R.string.pleaseContactSupport));
         AlertUtil.showError(this, R.string.error, message, null, R.string.ok,
@@ -636,7 +637,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                         Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                         Display display = getWindowManager().getDefaultDisplay();
-                        int rotation = 0;
+                        int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
                                 rotation = 90;
@@ -648,6 +649,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                                 rotation = 180;
                                 break;
                             case Surface.ROTATION_90:
+                            default:
                                 rotation = 0;
                                 break;
                         }
@@ -761,6 +763,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                     break;
                 case 2:
                     result = result * 5;
+                    break;
+                default:
                     break;
             }
 
@@ -881,6 +885,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                                 case 1:
                                     message = String.format(getString(R.string.tryWithDilutedSample), 5);
                                     break;
+                                default:
+                                    message = "";
                             }
                         } else {
                             sound.playShortResource(R.raw.done);
@@ -1024,7 +1030,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             sound.playShortResource(R.raw.beep_long);
             String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
 
-            String message = "";
+            String message;
             //todo: remove hard coding of dilution levels
             switch (mDilutionLevel) {
                 case 0:
@@ -1033,6 +1039,8 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 case 1:
                     message = String.format(getString(R.string.tryWithDilutedSample), 5);
                     break;
+                default:
+                    message = "";
             }
 
             ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,
@@ -1109,19 +1117,17 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    ColorimetryLiquidExternalActivity colorimetryLiquidActivity = mActivity.get();
-                    if (colorimetryLiquidActivity != null) {
+            if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
+                String data = (String) msg.obj;
+                ColorimetryLiquidExternalActivity colorimetryLiquidActivity = mActivity.get();
+                if (colorimetryLiquidActivity != null) {
 
-                        colorimetryLiquidActivity.mReceivedData += data;
-                        if (colorimetryLiquidActivity.mReceivedData.contains("\r\n")) {
-                            colorimetryLiquidActivity.displayResult(colorimetryLiquidActivity.mReceivedData);
-                            colorimetryLiquidActivity.mReceivedData = "";
-                        }
+                    colorimetryLiquidActivity.mReceivedData += data;
+                    if (colorimetryLiquidActivity.mReceivedData.contains("\r\n")) {
+                        colorimetryLiquidActivity.displayResult(colorimetryLiquidActivity.mReceivedData);
+                        colorimetryLiquidActivity.mReceivedData = "";
                     }
-                    break;
+                }
             }
         }
     }

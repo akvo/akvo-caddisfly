@@ -40,6 +40,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public class CameraDialogFragment extends CameraDialog {
         if (mCamera != null && mCameraPreview != null) {
             mCameraPreview.setCamera(mCamera);
         } else {
-            String message = String.format("%s\r\n\r\n%s",
+            String message = String.format("%s%n%n%s",
                     getString(R.string.cannotUseCamera),
                     getString(R.string.tryRestarting));
 
@@ -308,7 +309,7 @@ public class CameraDialogFragment extends CameraDialog {
                 if (!AppPreferences.useFlashMode() &&
                         mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                } else if ( mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+                } else if (mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                 }
             }
@@ -369,17 +370,17 @@ public class CameraDialogFragment extends CameraDialog {
 
             // set preview size and make any resize, rotate or reformatting changes here
             // start preview with new settings
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            mCamera.setParameters(parameters);
+            mCamera.setDisplayOrientation(90);
             try {
-                Camera.Parameters parameters = mCamera.getParameters();
-                parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-                mCamera.setParameters(parameters);
-                mCamera.setDisplayOrientation(90);
                 mCamera.setPreviewDisplay(mHolder);
-                mCamera.startPreview();
-
-            } catch (Exception ignored) {
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            mCamera.startPreview();
+
         }
 
         private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {

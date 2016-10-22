@@ -362,7 +362,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
      * Display error message for configuration not loading correctly
      */
     private void alertCouldNotLoadConfig() {
-        String message = String.format("%s\r\n\r\n%s",
+        String message = String.format("%s%n%n%s",
                 getString(R.string.errorLoadingConfiguration),
                 getString(R.string.pleaseContactSupport));
         AlertUtil.showError(this, R.string.error, message, null, R.string.ok,
@@ -702,6 +702,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 case 2:
                     result = result * 5;
                     break;
+                default:
+                    break;
             }
 
             // Format the result
@@ -826,6 +828,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             case 1:
                                 message = String.format(getString(R.string.tryWithDilutedSample), 5);
                                 break;
+                            default:
+                                message = "";
                         }
                     } else {
                         sound.playShortResource(R.raw.done);
@@ -933,7 +937,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             sound.playShortResource(R.raw.beep_long);
             String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
 
-            String message = "";
+            String message;
             //todo: remove hard coding of dilution levels
             switch (mDilutionLevel) {
                 case 0:
@@ -942,6 +946,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 case 1:
                     message = String.format(getString(R.string.tryWithDilutedSample), 5);
                     break;
+                default:
+                    message = "";
             }
 
             ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,

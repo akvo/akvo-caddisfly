@@ -95,14 +95,15 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
                     case Surface.ROTATION_0:
                         rotation = 90;
                         break;
-                    case Surface.ROTATION_90:
-                        rotation = 0;
-                        break;
                     case Surface.ROTATION_180:
                         rotation = 270;
                         break;
                     case Surface.ROTATION_270:
                         rotation = 180;
+                        break;
+                    case Surface.ROTATION_90:
+                    default:
+                        rotation = 0;
                         break;
                 }
 
