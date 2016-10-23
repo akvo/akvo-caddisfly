@@ -44,9 +44,9 @@ public class ShakeDetector implements SensorEventListener {
     // OnShakeListener that will be notified when the no shake is detected
     private final OnNoShakeListener mNoShakeListener;
     // Minimum acceleration needed to count as a shake movement
-    public double minShakeAcceleration = 5;
+    private double minShakeAcceleration = 5;
     // Maximum time (in milliseconds) for the whole shake to occur
-    public int maxShakeDuration = 2000;
+    private int maxShakeDuration = 2000;
     // Start time for the shake detection
     private long startTime = 0;
 
@@ -74,12 +74,12 @@ public class ShakeDetector implements SensorEventListener {
         float[] g;
         g = event.values.clone();
 
-        float norm_Of_g = (float) Math.sqrt(g[0] * g[0] + g[1] * g[1] + g[2] * g[2]);
+        float normal = (float) Math.sqrt(g[0] * g[0] + g[1] * g[1] + g[2] * g[2]);
 
         // Normalize the accelerometer vector
-        g[0] = g[0] / norm_Of_g;
-        g[1] = g[1] / norm_Of_g;
-        g[2] = g[2] / norm_Of_g;
+        g[0] = g[0] / normal;
+        g[1] = g[1] / normal;
+        g[2] = g[2] / normal;
 
         int inclination = (int) Math.round(Math.toDegrees(Math.acos(g[2])));
 
@@ -182,6 +182,14 @@ public class ShakeDetector implements SensorEventListener {
     private void resetShakeDetection() {
         startTime = 0;
         moveCount = 0;
+    }
+
+    public void setMinShakeAcceleration(int minShakeAcceleration) {
+        this.minShakeAcceleration = minShakeAcceleration;
+    }
+
+    public void setMaxShakeDuration(int maxShakeDuration) {
+        this.maxShakeDuration = maxShakeDuration;
     }
 
     /**

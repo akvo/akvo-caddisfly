@@ -65,9 +65,9 @@ class CameraHandler implements Camera.PictureCallback {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "CameraSensorWakeLock");
 
-        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |
-                PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                PowerManager.ON_AFTER_RELEASE, "WakeLock");
+        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                | PowerManager.ON_AFTER_RELEASE, "WakeLock");
         wakeLock.acquire();
     }
 
@@ -175,8 +175,8 @@ class CameraHandler implements Camera.PictureCallback {
         }
 
         if (mSupportedFlashModes != null) {
-            if (!AppPreferences.useFlashMode() &&
-                    mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
+            if (!AppPreferences.useFlashMode()
+                    && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
             } else if (mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
@@ -306,7 +306,7 @@ class CameraHandler implements Camera.PictureCallback {
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
-                0, 0, 0, 1, 0,};
+                0, 0, 0, 1, 0};
 
         Bitmap dest = Bitmap.createBitmap(
                 src.getWidth(),

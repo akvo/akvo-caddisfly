@@ -48,13 +48,13 @@ public class FinderPatternIndicatorView extends SurfaceView {
     public FinderPatternIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        this.paint = new Paint();
+        paint = new Paint();
         paint.setColor(Color.RED);
     }
 
-    public void showPatterns(List<FinderPattern> patterns, int width, int height) {
+    public void showPatterns(List<FinderPattern> patternList, int width, int height) {
 
-        this.patterns = patterns;
+        patterns = patternList;
         this.width = width;
         this.height = height;
 

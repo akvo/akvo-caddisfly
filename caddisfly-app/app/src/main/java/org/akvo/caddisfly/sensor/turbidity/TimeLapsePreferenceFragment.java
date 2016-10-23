@@ -45,16 +45,21 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
 
-        String keys[] = {getString(R.string.colif_TestIdKey),
+        String[] keys = {getString(R.string.colif_TestIdKey),
                 getString(R.string.colif_PhoneIdKey),
                 getString(R.string.colif_chamberVersionKey),
                 getString(R.string.colif_brothMediumKey),
+                getString(R.string.colif_volumeKey),
                 getString(R.string.turbidityLedRgbKey),
                 getString(R.string.colif_testDescriptionKey)};
 
+        String format = "%s";
         if (Arrays.asList(keys).contains(key)) {
             Preference connectionPref = findPreference(key);
-            connectionPref.setSummary(sharedPreferences.getString(key, ""));
+            if (key.equals(getString(R.string.colif_volumeKey))) {
+                format = "%s ml";
+            }
+            connectionPref.setSummary(String.format(format, sharedPreferences.getString(key, "")));
         }
     }
 
@@ -63,7 +68,7 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_turbidity);
 
-                final EditTextPreference sampleIntervalPreference =
+        final EditTextPreference sampleIntervalPreference =
                 (EditTextPreference) findPreference(getString(R.string.colif_IntervalMinutesKey));
         if (sampleIntervalPreference != null) {
 
@@ -145,6 +150,12 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
                 (EditTextPreference) findPreference(getString(R.string.colif_brothMediumKey));
         if (brothPreference != null) {
             brothPreference.setSummary(brothPreference.getText());
+        }
+
+        final EditTextPreference volumePreference =
+                (EditTextPreference) findPreference(getString(R.string.colif_volumeKey));
+        if (volumePreference != null) {
+            volumePreference.setSummary(String.format("%s ml", volumePreference.getText()));
         }
 
         final EditTextPreference testDescription =

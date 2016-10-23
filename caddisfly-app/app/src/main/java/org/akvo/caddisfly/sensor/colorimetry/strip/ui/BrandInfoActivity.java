@@ -49,8 +49,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class BrandInfoActivity extends BaseActivity {
 
-    private final int PERMISSION_ALL = 1;
-    private final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int PERMISSION_ALL = 1;
+    private static final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private String mUuid;
     private CoordinatorLayout coordinatorLayout;
 
@@ -124,7 +124,7 @@ public class BrandInfoActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
         final Activity activity = this;

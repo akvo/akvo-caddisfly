@@ -33,7 +33,10 @@ import org.akvo.caddisfly.R;
 /**
  * Utility functions to show alert messages
  */
-public class AlertUtil {
+public final class AlertUtil {
+
+    private AlertUtil() {
+    }
 
     public static void showMessage(Context context, @StringRes int title, @StringRes int message) {
         showAlert(context, title, message, null, null, null);

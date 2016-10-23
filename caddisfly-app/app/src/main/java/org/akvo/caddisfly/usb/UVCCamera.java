@@ -469,6 +469,7 @@ public class UVCCamera {
     /**
      * connect to a UVC camera
      * USB permission is necessary before this method is called
+     *
      * @param ctrlBlock
      */
     public void open(final UsbControlBlock ctrlBlock) {
@@ -486,6 +487,7 @@ public class UVCCamera {
 
     /**
      * set status callback
+     *
      * @param callback
      */
     public void setStatusCallback(final IStatusCallback callback) {
@@ -549,8 +551,9 @@ public class UVCCamera {
 
     /**
      * Set preview size and preview mode
+     *
      * @param width
-     @param height
+     * @param height
      */
     public void setPreviewSize(final int width, final int height) {
         setPreviewSize(width, height, DEFAULT_PREVIEW_MIN_FPS, DEFAULT_PREVIEW_MAX_FPS, mCurrentPreviewMode, 0);
@@ -558,9 +561,10 @@ public class UVCCamera {
 
     /**
      * Set preview size and preview mode
+     *
      * @param width
-     @param height
-     @param mode 0:yuyv, other:MJPEG
+     * @param height
+     * @param mode   0:yuyv, other:MJPEG
      */
     public void setPreviewSize(final int width, final int height, final int mode) {
         setPreviewSize(width, height, DEFAULT_PREVIEW_MIN_FPS, DEFAULT_PREVIEW_MAX_FPS, mode, 0);
@@ -629,6 +633,7 @@ public class UVCCamera {
 
     /**
      * set preview surface with Surface
+     *
      * @param surface
      */
     public void setPreviewDisplay(final Surface surface) {
@@ -1198,6 +1203,7 @@ public class UVCCamera {
 
     /**
      * start movie capturing(this should call while previewing)
+     *
      * @param surface
      */
     public void startCapture(final Surface surface) {

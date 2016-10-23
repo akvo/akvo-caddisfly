@@ -38,7 +38,7 @@ import java.io.IOException;
 /**
  * Set of utility functions to manipulate images
  */
-public class ImageUtil {
+public final class ImageUtil {
 
     private ImageUtil() {
     }
@@ -116,7 +116,7 @@ public class ImageUtil {
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
-                0, 0, 0, 1, 0,};
+                0, 0, 0, 1, 0};
 
         Bitmap dest = Bitmap.createBitmap(
                 src.getWidth(),
@@ -173,13 +173,13 @@ public class ImageUtil {
         } catch (Exception ignored) {
 
         } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
         }
     }
 

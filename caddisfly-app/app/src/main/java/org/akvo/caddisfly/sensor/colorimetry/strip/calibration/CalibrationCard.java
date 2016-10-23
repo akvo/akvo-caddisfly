@@ -44,10 +44,13 @@ import java.util.List;
 import java.util.Map;
 
 // Performs the calibration of the image
-public class CalibrationCard {
+public final class CalibrationCard {
     private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
     private static final SparseIntArray versionNumberMap = new SparseIntArray();
+
+    private CalibrationCard() {
+    }
 
     public static void initialize() {
         versionNumberMap.clear();

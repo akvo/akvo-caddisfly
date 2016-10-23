@@ -21,7 +21,7 @@ import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.File;
 
-public class FileHelper {
+public final class FileHelper {
 
     /**
      * The user created configuration file name
@@ -31,6 +31,9 @@ public class FileHelper {
     private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
     private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "config"; // Calibration files
     private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
+
+    private FileHelper() {
+    }
 
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may

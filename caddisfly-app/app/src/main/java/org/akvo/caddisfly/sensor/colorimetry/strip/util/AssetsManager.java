@@ -31,7 +31,7 @@ import java.util.Locale;
 /**
  * Created by linda on 8/19/15
  */
-public class AssetsManager {
+public final class AssetsManager {
 
     private static AssetsManager assetsManager;
     private final AssetManager manager;
@@ -41,8 +41,9 @@ public class AssetsManager {
     }
 
     public static AssetsManager getInstance() {
-        if (assetsManager == null)
+        if (assetsManager == null) {
             assetsManager = new AssetsManager();
+        }
 
         return assetsManager;
     }
@@ -71,8 +72,9 @@ public class AssetsManager {
         String json;
         InputStream is = null;
         try {
-            if (manager == null)
+            if (manager == null) {
                 return null;
+            }
 
             is = manager.open(fileName);
             int size = is.available();
@@ -84,8 +86,8 @@ public class AssetsManager {
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
-        }finally{
-            if(is != null) {
+        } finally {
+            if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {

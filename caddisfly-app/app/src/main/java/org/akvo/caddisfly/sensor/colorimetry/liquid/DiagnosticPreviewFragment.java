@@ -90,7 +90,7 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
                 Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                 Display display = getActivity().getWindowManager().getDefaultDisplay();
-                int rotation = 0;
+                int rotation;
                 switch (display.getRotation()) {
                     case Surface.ROTATION_0:
                         rotation = 90;
@@ -175,8 +175,8 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
             }
         });
 
-        mShakeDetector.minShakeAcceleration = 5;
-        mShakeDetector.maxShakeDuration = 2000;
+        mShakeDetector.setMinShakeAcceleration(5);
+        mShakeDetector.setMaxShakeDuration(2000);
 
         mSensorManager.registerListener(mShakeDetector, accelerometer,
                 SensorManager.SENSOR_DELAY_UI);

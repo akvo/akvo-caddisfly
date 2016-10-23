@@ -62,8 +62,8 @@ public class InstructionActivity extends BaseActivity {
                 try {
                     fragments.add(InstructionDetailFragment.newInstance(
                             instructions.getJSONObject(i).getString("text"),
-                            instructions.getJSONObject(i).has("png") ?
-                                    instructions.getJSONObject(i).getString("png") : ""));
+                            instructions.getJSONObject(i).has("png")
+                                    ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -94,17 +94,17 @@ public class InstructionActivity extends BaseActivity {
             }
         });
 
-        ImageView image_pageLeft = (ImageView) findViewById(R.id.image_pageLeft);
-        ImageView image_pageRight = (ImageView) findViewById(R.id.image_pageRight);
+        ImageView imagePageLeft = (ImageView) findViewById(R.id.image_pageLeft);
+        ImageView imagePageRight = (ImageView) findViewById(R.id.image_pageRight);
 
-        image_pageLeft.setOnClickListener(new View.OnClickListener() {
+        imagePageLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
             }
         });
 
-        image_pageRight.setOnClickListener(new View.OnClickListener() {
+        imagePageRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
@@ -112,8 +112,8 @@ public class InstructionActivity extends BaseActivity {
         });
 
         if (pagerAdapter.getCount() < 2) {
-            image_pageLeft.setVisibility(View.GONE);
-            image_pageRight.setVisibility(View.GONE);
+            imagePageLeft.setVisibility(View.GONE);
+            imagePageRight.setVisibility(View.GONE);
         }
 
     }

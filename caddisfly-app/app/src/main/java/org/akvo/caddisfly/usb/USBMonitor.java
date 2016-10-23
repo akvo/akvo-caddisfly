@@ -198,6 +198,7 @@ public final class USBMonitor {
 
     /**
      * return the number of connected USB devices that matched device filter
+     *
      * @return
      */
     public int getDeviceCount() {
@@ -206,6 +207,7 @@ public final class USBMonitor {
 
     /**
      * return device list, return empty list if no device matched
+     *
      * @return
      */
     public List<UsbDevice> getDeviceList() {
@@ -214,6 +216,7 @@ public final class USBMonitor {
 
     /**
      * return device list, return empty list if no device matched
+     *
      * @param filters
      * @return
      */
@@ -237,6 +240,7 @@ public final class USBMonitor {
 
     /**
      * return device list, return empty list if no device matched
+     *
      * @param filter
      * @return
      */
@@ -307,6 +311,7 @@ public final class USBMonitor {
 
     /**
      * request permission to access to USB device
+     *
      * @param device
      */
     public synchronized void requestPermission(final UsbDevice device) {
@@ -388,28 +393,34 @@ public final class USBMonitor {
     public interface OnDeviceConnectListener {
         /**
          * called when device attached
+         *
          * @param device
          */
         void onAttach(UsbDevice device);
 
         /**
          * called when device dettach(after onDisconnect)
+         *
          * @param device
          */
         void onDetach(UsbDevice device);
 
         /**
          * called after device opend
+         *
          * @param device
          * @param createNew
          */
         void onConnect(UsbDevice device, UsbControlBlock ctrlBlock, boolean createNew);
+
         /**
          * called when USB device removed or its power off (this callback is called after device closing)
+         *
          * @param device
          * @param ctrlBlock
          */
         void onDisconnect(UsbDevice device, UsbControlBlock ctrlBlock);
+
         /**
          * called when canceled or could not get permission from user
          */
@@ -424,6 +435,7 @@ public final class USBMonitor {
 
         /**
          * this class needs permission to access USB device before constructing
+         *
          * @param monitor
          * @param device
          */
@@ -481,6 +493,7 @@ public final class USBMonitor {
 
         /**
          * open specific interface
+         *
          * @param interfaceIndex
          * @return
          */
@@ -502,6 +515,7 @@ public final class USBMonitor {
 
         /**
          * close specified interface. USB device itself still keep open.
+         *
          * @param interfaceIndex
          */
         public void close(final int interfaceIndex) {

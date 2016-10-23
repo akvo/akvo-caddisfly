@@ -35,7 +35,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public abstract class CameraSharedFragmentBase extends Fragment {
 
-    TextView countQualityView;
+    private TextView countQualityView;
 
     void showBrightness(double value) {
     }
@@ -93,26 +93,27 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     public void displayCountQuality(Map<String, Integer> countMap) {
 
         try {
-            int count = 0;
+            if (countQualityView != null) {
+                int count = 0;
 
-            // Each parameter counts for 1/3 towards the final count shown.
-            for (int i : countMap.values()) {
-                count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-            }
-
-            count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
-
-            String text = getResources().getString(R.string.quality_checks_counter, count,
-                    Constant.COUNT_QUALITY_CHECK_LIMIT);
-            countQualityView.setText(text);
-
-            //Debugging: Display count per quality parameter
-            if (AppPreferences.isDiagnosticMode()) {
-                String debugText = "";
-                for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                    debugText += entry.getKey() + ": " + entry.getValue() + " ";
+                // Each parameter counts for 1/3 towards the final count shown.
+                for (int i : countMap.values()) {
+                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
                 }
-                countQualityView.setText(debugText + " " + text);
+
+                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+                String text = getResources().getString(R.string.quality_checks_counter, count,
+                        Constant.COUNT_QUALITY_CHECK_LIMIT);
+                countQualityView.setText(text);
+
+                //Debugging: Display count per quality parameter
+                if (AppPreferences.isDiagnosticMode()) {
+                    StringBuilder debugText = new StringBuilder();
+                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+                        debugText.append(entry.getKey()).append(": ").append(entry.getValue()).append(" ");
+                    }
+                    countQualityView.setText(debugText.toString() + " " + text);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,5 +124,13 @@ public abstract class CameraSharedFragmentBase extends Fragment {
         if (countQualityView != null) {
             countQualityView.setText(message);
         }
+    }
+
+    TextView getCountQualityView() {
+        return countQualityView;
+    }
+
+    void setCountQualityView(TextView countQualityView) {
+        this.countQualityView = countQualityView;
     }
 }

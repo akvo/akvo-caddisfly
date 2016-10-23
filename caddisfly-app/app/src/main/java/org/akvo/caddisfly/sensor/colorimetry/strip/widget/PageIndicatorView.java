@@ -80,12 +80,13 @@ public class PageIndicatorView extends View {
 
         if (pageCount > 1) {
             for (int i = 0; i < pageCount; i++) {
-                if (activePage == i)
+                if (activePage == i) {
                     canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2f,
                             BULLET_RADIUS + 6, fillPaint);
-                else
+                } else {
                     canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2f,
                             BULLET_RADIUS, fillPaint);
+                }
             }
         }
     }

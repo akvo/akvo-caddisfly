@@ -42,8 +42,8 @@ import java.util.List;
  */
 public class ProgressIndicatorView extends LinearLayout {
 
-    private final Bitmap checked;
-    private final Bitmap unchecked_light;
+    private final Bitmap checkedBox;
+    private final Bitmap uncheckedBox;
     private final Bitmap background;
     private final Context context;
     private final Paint paint;
@@ -69,8 +69,8 @@ public class ProgressIndicatorView extends LinearLayout {
         super(context, attrs, defStyleAttr);
 
         setWillNotDraw(false); //needed for invalidate() to work
-        checked = BitmapFactory.decodeResource(context.getResources(), R.drawable.checked_box);
-        unchecked_light = BitmapFactory.decodeResource(context.getResources(), R.drawable.unchecked_box_light);
+        checkedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.checked_box);
+        uncheckedBox = BitmapFactory.decodeResource(context.getResources(), R.drawable.unchecked_box_light);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.unchecked_box_green);
 
         this.context = context;
@@ -90,8 +90,9 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     public void addStep(int timeLapse) {
-        if (steps == null)
+        if (steps == null) {
             steps = new ArrayList<>();
+        }
 
         steps.add(new Step(timeLapse));
     }
@@ -99,8 +100,9 @@ public class ProgressIndicatorView extends LinearLayout {
     private void initView() {
 
         if (!set) {
-            if (steps == null)
+            if (steps == null) {
                 return;
+            }
 
             //sort on timeLapse, shortest first
             Collections.sort(steps, new StepComparator());
@@ -108,7 +110,7 @@ public class ProgressIndicatorView extends LinearLayout {
             int layoutH = 0;
             for (int i = 0; i < steps.size(); i++) {
                 ImageView img = new ImageView(context);
-                img.setImageBitmap(unchecked_light);
+                img.setImageBitmap(uncheckedBox);
                 img.setScaleType(ImageView.ScaleType.FIT_START);
 
                 if (i == 0) {
@@ -116,12 +118,12 @@ public class ProgressIndicatorView extends LinearLayout {
                 } else {
                     verMargin = getResources().getDimension(R.dimen.activity_vertical_margin);
                 }
-                img.setMinimumHeight(unchecked_light.getHeight() + Math.round(verMargin));
+                img.setMinimumHeight(uncheckedBox.getHeight() + Math.round(verMargin));
                 img.setPadding(0, Math.round(verMargin), 0, 0);
 
                 addView(img);
 
-                layoutH += unchecked_light.getHeight() + Math.round(verMargin);
+                layoutH += uncheckedBox.getHeight() + Math.round(verMargin);
 
             }
 
@@ -147,7 +149,7 @@ public class ProgressIndicatorView extends LinearLayout {
         if (steps != null) {
             for (int i = 0; i < steps.size(); i++) {
                 if (i <= stepsTaken) {
-                    ((ImageView) getChildAt(i)).setImageBitmap(checked);
+                    ((ImageView) getChildAt(i)).setImageBitmap(checkedBox);
                     steps.get(i).pictureTaken = true;
                 }
             }
@@ -160,8 +162,9 @@ public class ProgressIndicatorView extends LinearLayout {
 
         invalidate();
 
-        if (!running && start)
+        if (!running && start) {
             startAnim();
+        }
     }
 
     private void startAnim() {
@@ -205,11 +208,13 @@ public class ProgressIndicatorView extends LinearLayout {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (steps == null)
+        if (steps == null) {
             return;
+        }
 
-        if (!start)
+        if (!start) {
             return;
+        }
 
         paint.setAlpha(255);
 
@@ -223,7 +228,7 @@ public class ProgressIndicatorView extends LinearLayout {
             String message;
             if (steps.get(i).pictureTaken) {
                 message = getContext().getString(R.string.picture_taken);
-                canvas.drawBitmap(checked, 0, 0, paint);
+                canvas.drawBitmap(checkedBox, 0, 0, paint);
 
             } else if (steps.get(i).animationEnded) {
                 message = getContext().getString(R.string.ready_for_picture) + " " + String.valueOf(i + 1);
@@ -309,10 +314,12 @@ public class ProgressIndicatorView extends LinearLayout {
 
         @Override
         public int compare(Step lhs, Step rhs) {
-            if (lhs.timeLapse < rhs.timeLapse)
+            if (lhs.timeLapse < rhs.timeLapse) {
                 return -1;
-            if (lhs.timeLapse == rhs.timeLapse)
+            }
+            if (lhs.timeLapse == rhs.timeLapse) {
                 return 0;
+            }
 
             return 1;
         }

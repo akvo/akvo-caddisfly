@@ -71,7 +71,7 @@ public class CalibrateListActivity extends BaseActivity
         implements CalibrateListFragment.Callbacks,
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
-    private final int REQUEST_CALIBRATE = 100;
+    private static final int REQUEST_CALIBRATE = 100;
     private FloatingActionButton fabEditCalibration;
     private TextView textSubtitle;
     private TextView textSubtitle1;
@@ -283,6 +283,8 @@ public class CalibrateListActivity extends BaseActivity
                             .findFragmentById(R.id.fragmentCalibrateList)).setAdapter();
                 }
 
+                break;
+            default:
                 break;
         }
     }

@@ -331,8 +331,8 @@ public final class TestConfigHelper {
         details.put("model", Build.MODEL);
         details.put("product", Build.PRODUCT);
         details.put("manufacturer", Build.MANUFACTURER);
-        details.put("os", "Android - " + Build.VERSION.RELEASE + " (" +
-                Build.VERSION.SDK_INT + ")");
+        details.put("os", "Android - " + Build.VERSION.RELEASE + " ("
+                + Build.VERSION.SDK_INT + ")");
         details.put("country", Locale.getDefault().getCountry());
         details.put("language", Locale.getDefault().getLanguage());
         return details;
@@ -352,5 +352,4 @@ public final class TestConfigHelper {
         details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
     }
-
 }

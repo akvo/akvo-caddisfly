@@ -40,7 +40,7 @@ import java.util.Locale;
 
 public class CaddisflyApp extends Application {
 
-    private static CaddisflyApp app;// Singleton
+    private static CaddisflyApp app; // Singleton
     private TestInfo mCurrentTestInfo = new TestInfo();
 
     /**

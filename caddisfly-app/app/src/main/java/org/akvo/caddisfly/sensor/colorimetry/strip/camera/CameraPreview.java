@@ -104,8 +104,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
         for (Camera.Size size : sizes) {
-            if (size.width > 1300)
+            if (size.width > 1300) {
                 continue;
+            }
             if (size.width > maxWidth) {
                 bestSize = size;
                 maxWidth = size.width;
@@ -166,12 +167,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public boolean toggleFlashMode() {
-        if (mCamera == null)
+        if (mCamera == null) {
             return false;
+        }
         parameters = mCamera.getParameters();
 
-        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF) ?
-                Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)
+                ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
         parameters.setFlashMode(flashMode);
 
         mCamera.setParameters(parameters);
@@ -181,8 +183,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     //exposure compensation
     public void adjustExposure(int delta) throws RuntimeException {
-        if (mCamera == null)
+        if (mCamera == null) {
             return;
+        }
 
         mCamera.cancelAutoFocus();
 

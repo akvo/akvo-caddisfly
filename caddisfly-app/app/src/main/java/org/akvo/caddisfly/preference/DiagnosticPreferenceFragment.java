@@ -188,7 +188,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
         if (requestCode == PERMISSION_ALL) {
@@ -266,5 +266,4 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         ListViewUtil.setListViewHeightBasedOnChildren(list, 0);
     }
-
 }

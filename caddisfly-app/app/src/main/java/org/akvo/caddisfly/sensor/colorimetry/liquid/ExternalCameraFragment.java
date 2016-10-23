@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -50,8 +49,6 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 public final class ExternalCameraFragment extends CameraDialog {
-    private static final boolean DEBUG = false;    // TODO set false on release
-    private static final String TAG = "ExternalCameraFragment";
 
     /**
      * preview resolution(width)
@@ -215,27 +212,23 @@ public final class ExternalCameraFragment extends CameraDialog {
     @Override
     public void onResume() {
         super.onResume();
-        if (DEBUG) Log.v(TAG, "onResume:");
         mUSBMonitor.register();
-        if (mUVCCameraView != null)
-            mUVCCameraView.onResume();
     }
 
     @Override
     public void onPause() {
-        if (DEBUG) Log.v(TAG, "onPause:");
         mHandler.closeCamera();
-        if (mUVCCameraView != null)
+        if (mUVCCameraView != null) {
             mUVCCameraView.onPause();
+        }
         mUSBMonitor.unregister();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        if (DEBUG) Log.v(TAG, "onDestroy:");
         if (mHandler != null) {
-//	        mHandler.release();
+//            mHandler.release();
             mHandler = null;
         }
         if (mUSBMonitor != null) {
@@ -338,13 +331,16 @@ public final class ExternalCameraFragment extends CameraDialog {
         }
 
         void startPreview(final Surface surface) {
-            if (surface != null)
+            if (surface != null) {
                 sendMessage(obtainMessage(MSG_PREVIEW_START, surface));
+            }
         }
 
         void stopPreview() {
             final CameraThread thread = mWeakThread.get();
-            if (thread == null) return;
+            if (thread == null) {
+                return;
+            }
             synchronized (thread.mSync) {
                 sendEmptyMessage(MSG_PREVIEW_STOP);
                 // wait for actually preview stopped to avoid releasing Surface/SurfaceTexture
@@ -364,7 +360,9 @@ public final class ExternalCameraFragment extends CameraDialog {
         @Override
         public void handleMessage(final Message msg) {
             final CameraThread thread = mWeakThread.get();
-            if (thread == null) return;
+            if (thread == null) {
+                return;
+            }
             switch (msg.what) {
                 case MSG_OPEN:
                     thread.handleOpen((UsbControlBlock) msg.obj);
@@ -390,7 +388,6 @@ public final class ExternalCameraFragment extends CameraDialog {
         }
 
         private static final class CameraThread extends Thread {
-            private static final String TAG_THREAD = "CameraThread";
             private final Object mSync = new Object();
             private final WeakReference<ExternalCameraFragment> mWeakParent;
             private final WeakReference<CameraViewInterface> mWeakCameraView;
@@ -410,7 +407,6 @@ public final class ExternalCameraFragment extends CameraDialog {
             }
 
             public CameraHandler getHandler() {
-                if (DEBUG) Log.v(TAG_THREAD, "getHandler:");
                 synchronized (mSync) {
                     while (mHandler == null) {
                         try {
@@ -430,7 +426,6 @@ public final class ExternalCameraFragment extends CameraDialog {
                 handleClose();
                 mUVCCamera = new UVCCamera();
                 mUVCCamera.open(ctrlBlock);
-                if (DEBUG) Log.d(TAG, "supportedSize:" + mUVCCamera.getSupportedSize());
             }
 
             void handleClose() {
@@ -442,7 +437,9 @@ public final class ExternalCameraFragment extends CameraDialog {
             }
 
             void handleStartPreview(final Surface surface) {
-                if (mUVCCamera == null) return;
+                if (mUVCCamera == null) {
+                    return;
+                }
                 try {
                     mUVCCamera.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT, PREVIEW_MODE);
                 } catch (final IllegalArgumentException e) {
@@ -454,7 +451,7 @@ public final class ExternalCameraFragment extends CameraDialog {
                     }
                 }
                 if (mUVCCamera != null) {
-//					mUVCCamera.setFrameCallback(mIFrameCallback, UVCCamera.PIXEL_FORMAT_YUV);
+//                    mUVCCamera.setFrameCallback(mIFrameCallback, UVCCamera.PIXEL_FORMAT_YUV);
                     mUVCCamera.setPreviewDisplay(surface);
                     mUVCCamera.startPreview();
                 }
@@ -471,7 +468,9 @@ public final class ExternalCameraFragment extends CameraDialog {
 
             void handleCaptureStill() {
                 final ExternalCameraFragment parent = mWeakParent.get();
-                if (parent == null) return;
+                if (parent == null) {
+                    return;
+                }
 
                 CameraViewInterface cameraViewInterface = mWeakCameraView.get();
                 if (cameraViewInterface != null) {

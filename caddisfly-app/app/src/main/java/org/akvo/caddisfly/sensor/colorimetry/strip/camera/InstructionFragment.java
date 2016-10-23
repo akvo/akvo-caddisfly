@@ -84,13 +84,13 @@ public class InstructionFragment extends CameraSharedFragmentBase {
             StripTest stripTest = new StripTest();
             JSONArray instructions = stripTest.getBrand(uuid).getInstructions();
 
-            ShowInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
+            showInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
 
             try {
                 for (int i = 0; i < instructions.length(); i++) {
 
                     for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
-                        ShowInstruction(linearLayout, instruction, Typeface.NORMAL);
+                        showInstruction(linearLayout, instruction, Typeface.NORMAL);
                     }
 
                 }
@@ -122,7 +122,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         return rootView;
     }
 
-    private void ShowInstruction(LinearLayout linearLayout, String instruction, int style) {
+    private void showInstruction(LinearLayout linearLayout, String instruction, int style) {
         TextView textView = new TextView(getActivity());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.mediumTextSize));

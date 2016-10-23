@@ -26,8 +26,10 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class ImageHelper {
+public final class ImageHelper {
 
+    private ImageHelper() {
+    }
 
     // http://stackoverflow.com/questions/28401343/detect-circle-in-image-using-opencv-in-android
     public static Point getCenter(@NonNull Bitmap bitmap) {

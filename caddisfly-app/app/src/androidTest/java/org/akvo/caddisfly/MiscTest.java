@@ -18,6 +18,7 @@ package org.akvo.caddisfly;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
@@ -58,7 +59,9 @@ import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.getActivityInstance;
+import static org.akvo.caddisfly.TestUtil.sleep;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -216,6 +219,57 @@ public class MiscTest {
         onView(withId(android.R.id.button1)).perform(click());
 
         goToMainScreen();
+
+    }
+
+    @Test
+    public void testRestartAppDuringAnalysis() {
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(2025, 8, 25));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        //onView(withId(R.id.buttonStart)).perform(click());
+
+        mDevice.pressHome();
+
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        sleep(2000);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.waitForWindowUpdate("", 1000);
+
+        //clickListViewItem("Automated Tests");
+
+        clickListViewItem("test caddisfly");
 
     }
 }

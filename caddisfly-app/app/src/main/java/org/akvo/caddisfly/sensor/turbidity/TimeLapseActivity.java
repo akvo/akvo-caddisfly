@@ -64,19 +64,17 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class TimeLapseActivity extends BaseActivity {
 
-    private final int PERMISSION_ALL = 1;
+    private static final int PERMISSION_ALL = 1;
 
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                }
-                break;
-                default: {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
                     super.onManagerConnected(status);
-                }
-                break;
+                    break;
             }
         }
     };
@@ -254,17 +252,18 @@ public class TimeLapseActivity extends BaseActivity {
         String details = "";
         String testId = "";
         if (testInfo.getShortCode().equals("colif")) {
-            details = "_" + Build.MODEL + "-" + PreferencesUtil.getString(this, getString(R.string.colif_PhoneIdKey), "") + "_" +
-                    PreferencesUtil.getString(this, getString(R.string.colif_chamberVersionKey), "") + "_" +
-                    PreferencesUtil.getString(this, getString(R.string.colif_brothMediumKey), "") + "_" +
-                    PreferencesUtil.getString(this, getString(R.string.colif_testDescriptionKey), "");
+            details = "_" + Build.MODEL.replace("_", "-") + "-" + PreferencesUtil.getString(this, getString(R.string.colif_PhoneIdKey), "") + "_"
+                    + PreferencesUtil.getString(this, getString(R.string.colif_chamberVersionKey), "") + "_"
+                    + PreferencesUtil.getString(this, getString(R.string.colif_brothMediumKey), "") + "_"
+                    + PreferencesUtil.getString(this, getString(R.string.colif_volumeKey), "") + "ml_"
+                    + PreferencesUtil.getString(this, getString(R.string.colif_testDescriptionKey), "");
 
             testId = PreferencesUtil.getString(this, getString(R.string.colif_TestIdKey), "") + "_";
         }
 
         PreferencesUtil.setString(this, R.string.turbiditySavePathKey,
-                testInfo.getName() + File.separator + testId +
-                        new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()) + details);
+                testInfo.getName() + File.separator + testId
+                        + new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()) + details);
 
         TurbidityConfig.setRepeatingAlarm(this, 25000, testInfo.getCode());
 
@@ -286,49 +285,47 @@ public class TimeLapseActivity extends BaseActivity {
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
         final Activity activity = this;
-        switch (requestCode) {
-            case PERMISSION_ALL: {
-                // If request is cancelled, the result arrays are empty.
-                boolean granted = false;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PERMISSION_GRANTED) {
-                        granted = false;
-                        break;
-                    } else {
-                        granted = true;
-                    }
-                }
-                if (granted) {
-                    startTest();
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
                 } else {
-                    String message = getString(R.string.cameraAndStoragePermissions);
-                    if (AppPreferences.useExternalCamera()) {
-                        message = getString(R.string.storagePermission);
-                    }
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                            .setAction("SETTINGS", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    ApiUtil.startInstalledAppDetailsActivity(activity);
-                                }
-                            });
-
-                    TypedValue typedValue = new TypedValue();
-                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-                    snackbar.setActionTextColor(typedValue.data);
-                    View snackView = snackbar.getView();
-                    TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setHeight(200);
-                    textView.setLineSpacing(1.2f, 1.2f);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    granted = true;
                 }
+            }
+            if (granted) {
+                startTest();
+            } else {
+                String message = getString(R.string.cameraAndStoragePermissions);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ApiUtil.startInstalledAppDetailsActivity(activity);
+                            }
+                        });
+
+                TypedValue typedValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                snackbar.setActionTextColor(typedValue.data);
+                View snackView = snackbar.getView();
+                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setHeight(200);
+                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
     }

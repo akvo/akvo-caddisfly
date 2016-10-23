@@ -40,15 +40,17 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
     public void onPreviewFrame(byte[] data, Camera camera) {
         super.onPreviewFrame(data, camera);
 
-        if (!stopped && !sending) {
+        if (isRunning() && !sending) {
             sendData(data);
         }
     }
 
     private void sendData(byte[] data) {
         sending = true;
+
+        CameraViewListener listener = getListener();
         try {
-            FinderPatternInfo info = findPossibleCenters(data, previewSize);
+            FinderPatternInfo info = findPossibleCenters(data, getPreviewSize());
 
             // Get quality count and update UI via listener
             int[] countQuality = qualityChecks(data, info);
@@ -63,4 +65,5 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
             sending = false;
         }
     }
+
 }

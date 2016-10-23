@@ -46,7 +46,7 @@ public class CalibrateListFragment extends ListFragment {
      * A dummy implementation of the interface that does nothing.
      * Used only when this fragment is not attached to an activity.
      */
-    private static final Callbacks sDummyCallbacks = new Callbacks() {
+    private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
         @Override
         public void onItemSelected(int id) {
         }
@@ -55,7 +55,7 @@ public class CalibrateListFragment extends ListFragment {
     /**
      * The fragment's current callback object, which is notified of list item clicks
      */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callbacks mCallbacks = DUMMY_CALLBACKS;
     private TextView textCalibrationError;
     private long mLastClickTime;
 
@@ -82,9 +82,9 @@ public class CalibrateListFragment extends ListFragment {
             textCalibrationError.setText(String.format("%s. %s", getString(R.string.expired),
                     getString(R.string.calibrateWithNewReagent)));
             textCalibrationError.setVisibility(View.VISIBLE);
-        } else if (SwatchHelper.isCalibrationComplete(currentTestInfo.getSwatches()) &&
-                //Display error if calibration is completed but invalid
-                !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
+        } else if (SwatchHelper.isCalibrationComplete(currentTestInfo.getSwatches())
+                && !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
+            //Display error if calibration is completed but invalid
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));
             textCalibrationError.setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class CalibrateListFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
 
-        mCallbacks = sDummyCallbacks;
+        mCallbacks = DUMMY_CALLBACKS;
     }
 
     @Override

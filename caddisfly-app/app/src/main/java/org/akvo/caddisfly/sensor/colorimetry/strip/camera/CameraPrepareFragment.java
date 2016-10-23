@@ -61,7 +61,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        countQualityView = (TextView) rootView.findViewById(R.id.textMessage);
+        setCountQualityView((TextView) rootView.findViewById(R.id.textMessage));
 
         wrExposureView = new WeakReference<>(exposureView);
         wrContrastView = new WeakReference<>(contrastView);
@@ -83,7 +83,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         if (wrExposureView != null) {
             PercentageMeterView meterView = wrExposureView.get();
-            if (meterView!= null) {
+            if (meterView != null) {
                 meterView.setPercentage((float) (100 - value));
             }
         }

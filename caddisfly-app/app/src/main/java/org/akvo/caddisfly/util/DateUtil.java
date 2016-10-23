@@ -42,8 +42,8 @@ public final class DateUtil {
             return 0;
         }
 
-        return (int) ((calendar2.getTimeInMillis() -
-                calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
+        return (int) ((calendar2.getTimeInMillis()
+                - calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
 
     /**
@@ -58,8 +58,8 @@ public final class DateUtil {
             return 0;
         }
 
-        return (int) ((calendar2.getTimeInMillis() -
-                calendar1.getTimeInMillis()) / (1000 * 60 * 60));
+        return (int) ((calendar2.getTimeInMillis()
+                - calendar1.getTimeInMillis()) / (1000 * 60 * 60));
     }
 
 

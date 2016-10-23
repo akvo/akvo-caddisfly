@@ -50,19 +50,19 @@ import java.util.List;
 abstract class CameraCallbackBase implements Camera.PreviewCallback {
     private final LinkedList<Double> luminanceTrack = new LinkedList<>();
     private final LinkedList<Double> shadowTrack = new LinkedList<>();
-    private final int[] qualityChecksArray = new int[]{0, 0, 0};//array containing brightness, shadow, level check values
+    private final int[] qualityChecksArray = new int[]{0, 0, 0}; //array containing brightness, shadow, level check values
     private final List<double[]> luminanceList = new ArrayList<>();
-    private final Mat src_gray = new Mat();
-    boolean stopped;
-    CameraViewListener listener;
-    Camera.Size previewSize;
+    private final Mat grayMat = new Mat();
+    private boolean stopped;
+    private CameraViewListener listener;
+    private Camera.Size previewSize;
     //private int count;
     private List<FinderPattern> possibleCenters;
     private int finderPatternColor;
     private CalibrationData calibrationData;
     private Mat bgr = null;
-    private Mat convert_mYuv = null;
-    private FinderPatternInfo info = null;
+    private Mat previewMat = null;
+    private FinderPatternInfo patternInfo = null;
     private BitMatrix bitMatrix = null;
 
     CameraCallbackBase(Context context, Camera.Parameters parameters) {
@@ -101,9 +101,9 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
-                convert_mYuv = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
-                convert_mYuv.put(0, 0, data);
-                Imgproc.cvtColor(convert_mYuv, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
+                previewMat = new Mat(previewSize.height + previewSize.height / 2, previewSize.width, CvType.CV_8UC1);
+                previewMat.put(0, 0, data);
+                Imgproc.cvtColor(previewMat, bgr, Imgproc.COLOR_YUV2BGR_NV21, bgr.channels());
 
                 for (int i = 0; i < possibleCenters.size(); i++) {
                     double esModSize = possibleCenters.get(i).getEstimatedModuleSize();
@@ -119,10 +119,10 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     // make grayscale subMat of finder pattern
                     org.opencv.core.Rect roi = new org.opencv.core.Rect(topLeft, bottomRight);
 
-                    Imgproc.cvtColor(bgr.submat(roi), src_gray, Imgproc.COLOR_BGR2GRAY);
+                    Imgproc.cvtColor(bgr.submat(roi), grayMat, Imgproc.COLOR_BGR2GRAY);
 
                     //brightness: add luminance values to list
-                    addLuminanceToList(src_gray, luminanceList);
+                    addLuminanceToList(grayMat, luminanceList);
                 }
             } else {
                 //if no finder patterns are found, remove one from track
@@ -189,19 +189,21 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 bgr = null;
             }
 
-            if (src_gray != null)
-                src_gray.release();
+            if (grayMat != null) {
+                grayMat.release();
+            }
 
-            if (convert_mYuv != null)
-                convert_mYuv.release();
+            if (previewMat != null) {
+                previewMat.release();
+            }
         }
         return qualityChecksArray;
     }
 
-    private double detectShadows(FinderPatternInfo info, Mat bgr) {
+    private double detectShadows(FinderPatternInfo info, Mat mat) {
         double shadowPercentage = 101;
 
-        if (bgr == null) {
+        if (mat == null) {
             return shadowPercentage;
         }
 
@@ -215,30 +217,31 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
             double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
             double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-            bgr = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, bgr).clone();
+            mat = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, mat).clone();
 
             try {
                 if (calibrationData != null) {
-                    shadowPercentage = PreviewUtil.getShadowPercentage(bgr, calibrationData);
+                    shadowPercentage = PreviewUtil.getShadowPercentage(mat, calibrationData);
                     shadowTrack.add(shadowPercentage);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (bgr != null)
-                    bgr.release();
+                if (mat != null) {
+                    mat.release();
+                }
             }
         }
 
         return shadowPercentage;
     }
 
-    private void addLuminanceToList(Mat src_gray, List<double[]> luminanceList) {
+    private void addLuminanceToList(Mat mat, List<double[]> list) {
         double[] lumMinMax;
 
-        lumMinMax = PreviewUtil.getDiffLuminosity(src_gray);
+        lumMinMax = PreviewUtil.getDiffLuminosity(mat);
         if (lumMinMax.length == 2) {
-            luminanceList.add(lumMinMax);
+            list.add(lumMinMax);
         }
     }
 
@@ -304,7 +307,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             FinderPatternFinder finderPatternFinder = new FinderPatternFinder(bitMatrix);
 
             try {
-                info = finderPatternFinder.find(null);
+                patternInfo = finderPatternFinder.find(null);
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
                 //detect centers that are to small in order to get rid of noise
@@ -329,6 +332,19 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             }
         }
 
-        return info;
+        return patternInfo;
     }
+
+    boolean isRunning() {
+        return !stopped;
+    }
+
+    Camera.Size getPreviewSize() {
+        return previewSize;
+    }
+
+    CameraViewListener getListener() {
+        return listener;
+    }
+
 }

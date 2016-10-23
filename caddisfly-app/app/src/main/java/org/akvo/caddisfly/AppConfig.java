@@ -19,13 +19,12 @@ package org.akvo.caddisfly;
 /**
  * Global Configuration settings for the app
  */
-public class AppConfig {
+public final class AppConfig {
 
     /**
      * To launch Flow app
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
-
     /**
      * The intent action string used to connect to external app
      *
@@ -33,25 +32,24 @@ public class AppConfig {
      */
     @Deprecated
     public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
-
     /**
      * The intent action string used by the caddisfly question type
      */
     public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
-
     /**
      * Vendor Id for Sensor devices
      */
     public static final int ARDUINO_VENDOR_ID = 9025;
-
     /**
      * Vendor Id for Sensor devices
      */
     public static final int CAMERA_VENDOR_ID = 1443;
-
     /**
      * The sound volume for the beeps and other sound effects
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+
+    private AppConfig() {
+    }
 
 }

@@ -44,6 +44,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.usb.UsbService;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -93,19 +94,15 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
-            {
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
-            {
+            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) {
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
-            {
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) {
                 Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
-            {
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) {
                 Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             }

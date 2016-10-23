@@ -1,20 +1,4 @@
-/*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
- *
- * This file is part of Akvo Caddisfly
- *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
- *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
- *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
- */
-
-package org.akvo.caddisfly.sensor.ec;
+package org.akvo.caddisfly.usb;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -38,12 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UsbService extends Service {
+
     public static final String ACTION_USB_NOT_SUPPORTED = "com.felhr.usbservice.USB_NOT_SUPPORTED";
     public static final String ACTION_NO_USB = "com.felhr.usbservice.NO_USB";
     public static final String ACTION_USB_PERMISSION_GRANTED = "com.felhr.usbservice.USB_PERMISSION_GRANTED";
     public static final String ACTION_USB_PERMISSION_NOT_GRANTED = "com.felhr.usbservice.USB_PERMISSION_NOT_GRANTED";
     public static final String ACTION_USB_DISCONNECTED = "com.felhr.usbservice.USB_DISCONNECTED";
     public static final int MESSAGE_FROM_SERIAL_PORT = 0;
+    public static final int CTS_CHANGE = 1;
+    public static final int DSR_CHANGE = 2;
     private static final String ACTION_USB_READY = "com.felhr.connectivityservices.USB_READY";
     private static final String ACTION_USB_ATTACHED = "android.hardware.usb.action.USB_DEVICE_ATTACHED";
     private static final String ACTION_USB_DETACHED = "android.hardware.usb.action.USB_DEVICE_DETACHED";
@@ -74,6 +61,26 @@ public class UsbService extends Service {
             }
         }
     };
+    /*
+     * State changes in the CTS line will be received here
+     */
+    private final UsbSerialInterface.UsbCTSCallback ctsCallback = new UsbSerialInterface.UsbCTSCallback() {
+        @Override
+        public void onCTSChanged(boolean state) {
+            if (mHandler != null)
+                mHandler.obtainMessage(CTS_CHANGE).sendToTarget();
+        }
+    };
+    /*
+     * State changes in the DSR line will be received here
+     */
+    private final UsbSerialInterface.UsbDSRCallback dsrCallback = new UsbSerialInterface.UsbDSRCallback() {
+        @Override
+        public void onDSRChanged(boolean state) {
+            if (mHandler != null)
+                mHandler.obtainMessage(DSR_CHANGE).sendToTarget();
+        }
+    };
     private UsbManager usbManager;
     private UsbDevice device;
     private UsbDeviceConnection connection;
@@ -93,26 +100,23 @@ public class UsbService extends Service {
                     Intent intent = new Intent(ACTION_USB_PERMISSION_GRANTED);
                     arg0.sendBroadcast(intent);
                     connection = usbManager.openDevice(device);
-                    serialPortConnected = true;
-                    new ConnectionThread().run();
+                    new ConnectionThread().start();
                 } else // User not accepted our USB connection. Send an Intent to the Main Activity
                 {
                     Intent intent = new Intent(ACTION_USB_PERMISSION_NOT_GRANTED);
                     arg0.sendBroadcast(intent);
                 }
             } else if (arg1.getAction().equals(ACTION_USB_ATTACHED)) {
-                if (!serialPortConnected) {
-                    findSerialPortDevice();
-                }// A USB device has been attached. Try to open it as a Serial port
+                if (!serialPortConnected)
+                    findSerialPortDevice(); // A USB device has been attached. Try to open it as a Serial port
             } else if (arg1.getAction().equals(ACTION_USB_DETACHED)) {
-                connection = null;
                 // Usb device was disconnected. send an intent to the Main Activity
                 Intent intent = new Intent(ACTION_USB_DISCONNECTED);
                 arg0.sendBroadcast(intent);
-                serialPortConnected = false;
-                if (serialPort != null) {
+                if (serialPortConnected) {
                     serialPort.close();
                 }
+                serialPortConnected = false;
             }
         }
     };
@@ -148,7 +152,6 @@ public class UsbService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(usbReceiver);
         UsbService.SERVICE_CONNECTED = false;
     }
 
@@ -173,13 +176,11 @@ public class UsbService extends Service {
                 device = entry.getValue();
                 int deviceVID = device.getVendorId();
                 int devicePID = device.getProductId();
+
                 if (deviceVID != 0x1d6b && (devicePID != 0x0001 && devicePID != 0x0002 && devicePID != 0x0003)) {
                     // There is a device connected to our Android device. Try to open it as a Serial Port.
-                    try {
-                        requestUserPermission();
-                        keep = false;
-                    } catch (Exception ignored) {
-                    }
+                    requestUserPermission();
+                    keep = false;
                 } else {
                     connection = null;
                     device = null;
@@ -236,19 +237,32 @@ public class UsbService extends Service {
             serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
             if (serialPort != null) {
                 if (serialPort.open()) {
+                    serialPortConnected = true;
                     serialPort.setBaudRate(BAUD_RATE);
                     serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                     serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                     serialPort.setParity(UsbSerialInterface.PARITY_NONE);
+                    /**
+                     * Current flow control Options:
+                     * UsbSerialInterface.FLOW_CONTROL_OFF
+                     * UsbSerialInterface.FLOW_CONTROL_RTS_CTS only for CP2102 and FT232
+                     * UsbSerialInterface.FLOW_CONTROL_DSR_DTR only for CP2102 and FT232
+                     */
                     serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
                     serialPort.read(mCallback);
+                    serialPort.getCTS(ctsCallback);
+                    serialPort.getDSR(dsrCallback);
+
+                    //
+                    // Some Arduinos would need some sleep because firmware wait some time to know whether a new sketch is going
+                    // to be uploaded or not
+                    //Thread.sleep(2000); // sleep some. YMMV with different chips.
 
                     // Everything went as expected. Send an intent to MainActivity
                     Intent intent = new Intent(ACTION_USB_READY);
                     context.sendBroadcast(intent);
                 } else {
-                    // Serial port could not be opened, maybe an I/O error or
-                    // if CDC driver was chosen, it does not really fit
+                    // Serial port could not be opened, maybe an I/O error or if CDC driver was chosen, it does not really fit
                     // Send an Intent to Main Activity
                     if (serialPort instanceof CDCSerialDevice) {
                         Intent intent = new Intent(ACTION_CDC_DRIVER_NOT_WORKING);
@@ -265,5 +279,4 @@ public class UsbService extends Service {
             }
         }
     }
-
 }

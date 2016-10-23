@@ -36,13 +36,11 @@ public class SettingsActivity extends BaseActivity
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                }
-                break;
-                default: {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
                     super.onManagerConnected(status);
-                }
-                break;
+                    break;
             }
         }
     };
@@ -157,5 +155,4 @@ public class SettingsActivity extends BaseActivity
             }
         });
     }
-
 }

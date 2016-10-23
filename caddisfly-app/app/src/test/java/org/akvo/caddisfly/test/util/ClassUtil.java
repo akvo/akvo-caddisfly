@@ -34,10 +34,10 @@ final class ClassUtil {
      * https://github.com/trajano/maven-jee6/tree/master/maven-jee6-test
      *
      * @param clazz utility class to verify.
-     * @throws NoSuchMethodException if method does not exist
+     * @throws NoSuchMethodException     if method does not exist
      * @throws InvocationTargetException a checked exception
-     * @throws InstantiationException if unable to instantiate
-     * @throws IllegalAccessException if unable to access
+     * @throws InstantiationException    if unable to instantiate
+     * @throws IllegalAccessException    if unable to access
      */
     public static void assertUtilityClassWellDefined(final Class<?> clazz)
             throws NoSuchMethodException, InvocationTargetException,
@@ -47,8 +47,8 @@ final class ClassUtil {
         Assert.assertEquals("There must be only one constructor", 1,
                 clazz.getDeclaredConstructors().length);
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
-        if (constructor.isAccessible() ||
-                !Modifier.isPrivate(constructor.getModifiers())) {
+        if (constructor.isAccessible()
+                || !Modifier.isPrivate(constructor.getModifiers())) {
             Assert.fail("constructor is not private");
         }
         constructor.setAccessible(true);

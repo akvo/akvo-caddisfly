@@ -37,7 +37,10 @@ import java.util.List;
  * Created by linda on 7/23/15
  */
 @SuppressWarnings("HardCodedStringLiteral")
-public class OpenCVUtil {
+public final class OpenCVUtil {
+
+    private OpenCVUtil() {
+    }
 
     /*
      * Computes transform matrix from one set of 4 source points to another set of 4 destination points
@@ -89,14 +92,14 @@ public class OpenCVUtil {
         double[] blDest = new double[]{0, verSize - 1};
         double[] tlDest = new double[]{0, 0};
 
-        Mat warp_mat = transformMatrix(topLeft, topRight, bottomRight, bottomLeft, trDest, brDest, blDest, tlDest);
+        Mat transformMatrix = transformMatrix(topLeft, topRight, bottomRight, bottomLeft, trDest, brDest, blDest, tlDest);
 
         //make a destination mat for a warp
-        Mat warp_dst = Mat.zeros(verSize, horSize, bgr.type());
+        Mat warpMat = Mat.zeros(verSize, horSize, bgr.type());
 
         //do the warp
-        Imgproc.warpPerspective(bgr, warp_dst, warp_mat, warp_dst.size());
-        return warp_dst;
+        Imgproc.warpPerspective(bgr, warpMat, transformMatrix, warpMat.size());
+        return warpMat;
     }
 
     // detect strip by multi-step method

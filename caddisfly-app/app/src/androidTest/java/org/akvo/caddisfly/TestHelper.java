@@ -53,24 +53,27 @@ import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
 import static org.akvo.caddisfly.TestUtil.sleep;
 
-class TestHelper {
+final class TestHelper {
 
-    private static final HashMap<String, String> stringHashMapEN = new HashMap<>();
-    private static final HashMap<String, String> stringHashMapFR = new HashMap<>();
-    private static final HashMap<String, String> calibrationHashMap = new HashMap<>();
-    private static final boolean mTakeScreenshots = false;
+    private static final HashMap<String, String> STRING_HASH_MAP_EN = new HashMap<>();
+    private static final HashMap<String, String> STRING_HASH_MAP_FR = new HashMap<>();
+    private static final HashMap<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
+    private static final boolean TAKE_SCREENSHOTS = false;
     public static HashMap<String, String> currentHashMap;
     public static UiDevice mDevice;
     public static String mCurrentLanguage = "en";
     private static int mCounter;
 
+    private TestHelper() {
+    }
+
     private static void addString(String key, String englishText, String frenchText) {
-        stringHashMapEN.put(key, englishText);
-        stringHashMapFR.put(key, frenchText);
+        STRING_HASH_MAP_EN.put(key, englishText);
+        STRING_HASH_MAP_FR.put(key, frenchText);
     }
 
     private static void addCalibration(String key, String colors) {
-        calibrationHashMap.put(key, colors);
+        CALIBRATION_HASH_MAP.put(key, colors);
     }
 
     @SuppressWarnings("deprecation")
@@ -79,9 +82,9 @@ class TestHelper {
 
         String testLanguage = "fr";
 
-        stringHashMapEN.clear();
-        stringHashMapFR.clear();
-        calibrationHashMap.clear();
+        STRING_HASH_MAP_EN.clear();
+        STRING_HASH_MAP_FR.clear();
+        CALIBRATION_HASH_MAP.clear();
 
         Resources currentResources = activity.getResources();
         AssetManager assets = currentResources.getAssets();
@@ -143,17 +146,17 @@ class TestHelper {
                 + "2.0=224  0  0\n");
 
         if (languageCode.equals("en")) {
-            currentHashMap = stringHashMapEN;
+            currentHashMap = STRING_HASH_MAP_EN;
         } else {
-            currentHashMap = stringHashMapFR;
+            currentHashMap = STRING_HASH_MAP_FR;
         }
     }
 
     public static void takeScreenshot() {
-        if (mTakeScreenshots) {
+        if (TAKE_SCREENSHOTS) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                File path = new File(Environment.getExternalStorageDirectory().getPath() +
-                        "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
+                File path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
                 mDevice.takeScreenshot(path, 0.5f, 60);
             }
         }
@@ -194,7 +197,7 @@ class TestHelper {
     public static void saveCalibration(String name) {
         File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
 
-        FileUtil.saveToFile(path, name, calibrationHashMap.get(name));
+        FileUtil.saveToFile(path, name, CALIBRATION_HASH_MAP.get(name));
     }
 
     public static void gotoSurveyForm() {

@@ -212,21 +212,21 @@ public class CameraDialogFragment extends CameraDialog {
 
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
+        static final double ASPECT_TOLERANCE = 0.1;
         private final SurfaceHolder mHolder;
         private Paint circleStroke;
         private List<Camera.Size> mSupportedPreviewSizes;
         private Camera mCamera;
-
         @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
         private Camera.Size mPreviewSize;
 
-        public CameraPreview(Context context) {
+        CameraPreview(Context context) {
             super(context);
             mHolder = getHolder();
         }
 
-        public CameraPreview(Context context, Camera camera) {
+        CameraPreview(Context context, Camera camera) {
             super(context);
             //setCamera(camera);
             mCamera = camera;
@@ -306,8 +306,8 @@ public class CameraDialogFragment extends CameraDialog {
             }
 
             if (mSupportedFlashModes != null) {
-                if (!AppPreferences.useFlashMode() &&
-                        mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
+                if (!AppPreferences.useFlashMode()
+                        && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 } else if (mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
@@ -346,7 +346,6 @@ public class CameraDialogFragment extends CameraDialog {
             // empty. surfaceChanged will take care of stuff
         }
 
-
         public void surfaceDestroyed(SurfaceHolder holder) {
             if (mCamera != null) {
                 mCamera.stopPreview();
@@ -380,23 +379,23 @@ public class CameraDialogFragment extends CameraDialog {
                 e.printStackTrace();
             }
             mCamera.startPreview();
-
         }
 
         private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
-            final double ASPECT_TOLERANCE = 0.1;
             double targetRatio = (double) h / w;
 
-            if (sizes == null)
+            if (sizes == null) {
                 return null;
+            }
 
             Camera.Size optimalSize = null;
             double minDiff = Double.MAX_VALUE;
 
             for (Camera.Size size : sizes) {
                 double ratio = (double) size.height / size.width;
-                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) {
                     continue;
+                }
 
                 if (Math.abs(size.height - h) < minDiff) {
                     optimalSize = size;
@@ -437,10 +436,11 @@ public class CameraDialogFragment extends CameraDialog {
             }
 
             float ratio;
-            if (mPreviewSize.height >= mPreviewSize.width)
+            if (mPreviewSize.height >= mPreviewSize.width) {
                 ratio = (float) mPreviewSize.height / (float) mPreviewSize.width;
-            else
+            } else {
                 ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
+            }
 
             setMeasuredDimension(width, (int) (width * ratio));
         }

@@ -57,7 +57,9 @@ public final class SwatchHelper {
 
     private static double[] convertDoubles(List<Double> doubles) {
         double[] ret = new double[doubles.size()];
-        for (int i = 0; i < ret.length; i++) ret[i] = doubles.get(i);
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = doubles.get(i);
+        }
         return ret;
     }
 
@@ -240,8 +242,35 @@ public final class SwatchHelper {
             previousSwatch = swatch1;
         }
 
+        if (result) {
+            result = validateHueTrend(swatches);
+        }
+
         return result;
-        //return !(calculateSlope(swatches) < 20 || calculateSlope(swatches) > 40);
+    }
+
+    private static boolean validateHueTrend(ArrayList<Swatch> swatches) {
+
+        float[] colorHSV = new float[3];
+        float previousHue = 0f;
+
+        boolean crossed = false;
+        for (int i = 0; i < swatches.size(); i++) {
+            //noinspection ResourceType
+            Color.colorToHSV(swatches.get(i).getColor(), colorHSV);
+            if (!crossed && previousHue > colorHSV[0]) {
+                if (previousHue > 300 && colorHSV[0] < 50) {
+                    previousHue = colorHSV[0];
+                    crossed = true;
+                }
+            }
+            if (previousHue > colorHSV[0]) {
+                return false;
+            }
+            previousHue = colorHSV[0];
+        }
+
+        return true;
     }
 
     public static int getCalibratedSwatchCount(ArrayList<Swatch> swatches) {
@@ -365,7 +394,9 @@ public final class SwatchHelper {
     //Ref: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
     @SuppressWarnings("SameParameterValue")
     private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
 
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
@@ -635,5 +666,4 @@ public final class SwatchHelper {
             return 0.0;
         }
     }
-
 }

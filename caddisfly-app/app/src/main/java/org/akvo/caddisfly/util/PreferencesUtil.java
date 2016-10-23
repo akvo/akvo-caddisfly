@@ -25,7 +25,7 @@ import android.support.annotation.StringRes;
 /**
  * Various utility functions to get/set values from/to SharedPreferences
  */
-public class PreferencesUtil {
+public final class PreferencesUtil {
 
     private PreferencesUtil() {
     }

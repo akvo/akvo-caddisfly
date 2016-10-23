@@ -24,7 +24,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 /**
  * Static functions to get or set values of various preferences
  */
-public class AppPreferences {
+public final class AppPreferences {
+
+    private AppPreferences() {
+    }
 
     public static boolean isDiagnosticMode() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
@@ -60,13 +63,13 @@ public class AppPreferences {
     }
 
     public static boolean isSoundOff() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
     }
 
     public static boolean getShowDebugMessages() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
 
     //Diagnostic in user mode
@@ -90,7 +93,7 @@ public class AppPreferences {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean useFlashMode() {
-        return isDiagnosticMode() &&
-            PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
     }
 }

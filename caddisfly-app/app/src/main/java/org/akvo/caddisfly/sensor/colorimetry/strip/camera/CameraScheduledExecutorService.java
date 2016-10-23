@@ -54,8 +54,9 @@ class CameraScheduledExecutorService {
             public void run() {
                 for (String s : tasks.keySet()) {
                     boolean canceled = tasks.get(s).cancel(true);
-                    if (canceled)
+                    if (canceled) {
                         tasks.remove(s);
+                    }
 
                     //System.out.println("***task key = " + s + " is canceled: " + canceled);
                 }

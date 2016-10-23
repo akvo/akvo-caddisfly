@@ -41,6 +41,7 @@ import android.widget.ViewAnimator;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
 
 import java.lang.ref.WeakReference;
@@ -59,20 +60,16 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 //            {
 //                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
 //            } else
-
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) // USB PERMISSION NOT GRANTED
-            {
-                Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-            }
 //            else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) // NO USB CONNECTED
 //            {
 //                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
 //            }
-            else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) // USB DISCONNECTED
-            {
+
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) {
+                Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) {
                 Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) // USB NOT SUPPORTED
-            {
+            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) {
                 Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
             }
         }
@@ -241,7 +238,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             @Override
             public void onClick(View view) {
                 if (usbService.isUsbConnected()) {
-                    CalibratePoint(calibrationPoints, calibrationIndex);
+                    calibratePoint(calibrationPoints, calibrationIndex);
                     calibrationIndex++;
                 } else {
                     AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
@@ -256,26 +253,26 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         editSensorIdentity.show(ft, "editSensorIdentity");
     }
 
-    private void displayInformation(int calibrationIndex) {
+    private void displayInformation(int index) {
 
         textHeading.setText(String.format(Locale.US,
                 getString(R.string.calibratePoint),
-                calibrationPoints[calibrationIndex]));
-        textSubtitle.setText(String.format(Locale.US, "Step %d of 6", calibrationIndex + 1));
+                calibrationPoints[index]));
+        textSubtitle.setText(String.format(Locale.US, "Step %d of 6", index + 1));
         textInformation.setText(String.format(Locale.US,
                 getString(R.string.getEcSolutionReady),
-                calibrationPoints[calibrationIndex]));
+                calibrationPoints[index]));
 
     }
 
     private void requestResult() {
         String data = "GET ID\r\n";
-        if (usbService != null && usbService.isUsbConnected()) {
+        if (usbService != null) {
             usbService.write(data.getBytes(StandardCharsets.UTF_8));
         }
     }
 
-    private void CalibratePoint(final int[] calibrationPoints, final int index) {
+    private void calibratePoint(final int[] calibrations, final int index) {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(R.string.pleaseWait);
@@ -310,7 +307,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             @Override
             public void run() {
 
-                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrationPoints[index] + "\r\n";
+                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrations[index] + "\r\n";
 
                 usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 

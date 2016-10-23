@@ -220,7 +220,7 @@ public class FileStorage {
         if (files != null) {
             for (File f : files) {
                 //noinspection ResultOfMethodCallIgnored
-                if(!f.delete()){
+                if (!f.delete()) {
                     throw new IOException("Error while deleting files");
                 }
             }

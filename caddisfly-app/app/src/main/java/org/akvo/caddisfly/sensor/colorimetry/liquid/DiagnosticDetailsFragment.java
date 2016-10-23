@@ -80,8 +80,8 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
-        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty() ||
-                currentTestInfo.getType() != TestType.COLORIMETRIC_LIQUID) {
+        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty()
+                || currentTestInfo.getType() != TestType.COLORIMETRIC_LIQUID) {
             CaddisflyApp.getApp().setDefaultTest();
         }
 
@@ -134,8 +134,9 @@ public class DiagnosticDetailsFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        if (getDialog() == null)
+        if (getDialog() == null) {
             return;
+        }
 
         int dialogWidth = (int) (0.98 * getResources().getDisplayMetrics().widthPixels);
         int dialogHeight = (int) (0.9 * getResources().getDisplayMetrics().heightPixels);

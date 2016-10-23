@@ -70,22 +70,22 @@ public class LevelView extends View {
         super.onDraw(canvas);
     }
 
-    public void setAngles(float[] tilts) {
-        this.tilts = tilts;
+    public void setAngles(float[] tiltValues) {
+        this.tilts = tiltValues;
         invalidate();
     }
 
-    private float getDegrees(float[] tilts) {
+    private float getDegrees(float[] tiltValues) {
         float degrees = 0f;
 
         // if the horizontal tilt is too large, indicate it
-        if (Math.abs(tilts[0] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tilts[0] - 1 < 0 ? -90 : 90;
+        if (Math.abs(tiltValues[0] - 1) > Constant.MAX_TILT_DIFF) {
+            degrees = tiltValues[0] - 1 < 0 ? -90 : 90;
         }
 
         // if the vertical tilt is too large, indicate it
-        if (Math.abs(tilts[1] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tilts[1] - 1 < 0 ? 180 : 1;
+        if (Math.abs(tiltValues[1] - 1) > Constant.MAX_TILT_DIFF) {
+            degrees = tiltValues[1] - 1 < 0 ? 180 : 1;
         }
         return degrees;
     }

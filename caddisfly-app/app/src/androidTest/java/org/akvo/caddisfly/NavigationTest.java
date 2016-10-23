@@ -315,12 +315,12 @@ public class NavigationTest {
         mDevice.pressBack();
 
         //Caffeine
-        clickExternalSourceButton(3);
+        //clickExternalSourceButton(3);
 
         //Test type not available
-        takeScreenshot();
+        //takeScreenshot();
 
-        mDevice.pressBack();
+        //mDevice.pressBack();
         //onView(withId(android.R.id.button1)).perform(click());
 
     }

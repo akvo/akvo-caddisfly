@@ -229,9 +229,9 @@ public class ResultActivity extends BaseActivity {
         private final List<StripTest.Brand.Patch> patches;
         private final int patchNum;
         private final Mat strip;
-        String unit;
-        int id;
-        String patchDescription;
+        private String unit;
+        private int id;
+        private String patchDescription;
         private boolean invalid;
         private Bitmap stripBitmap = null;
         private Mat combined;

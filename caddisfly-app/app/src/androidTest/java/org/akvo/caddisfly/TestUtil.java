@@ -40,7 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 /**
  * Utility functions for automated testing
  */
-class TestUtil {
+final class TestUtil {
 
     private TestUtil() {
     }

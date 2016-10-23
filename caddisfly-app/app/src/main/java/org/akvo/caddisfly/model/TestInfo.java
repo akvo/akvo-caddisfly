@@ -318,9 +318,9 @@ public class TestInfo {
     }
 
     public class SubTest {
-        final int id;
-        final String desc;
-        final String unit;
+        private final int id;
+        private final String desc;
+        private final String unit;
 
         SubTest(int id, String desc, String unit) {
             this.id = id;

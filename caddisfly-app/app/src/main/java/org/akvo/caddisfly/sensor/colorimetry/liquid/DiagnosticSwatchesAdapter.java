@@ -84,7 +84,7 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
                     String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
                             distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
-        }else {
+        } else {
             return view;
         }
         return rowView;

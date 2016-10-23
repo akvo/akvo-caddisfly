@@ -85,7 +85,7 @@
     <string name="colif_PhoneIdKey">colif_PhoneId</string>
     <string name="colif_chamberVersionKey">colif_chamberVersion</string>
     <string name="colif_brothMediumKey">colif_brothMedium</string>
+    <string name="colif_volumeKey">colif_volume</string>
     <string name="colif_testDescriptionKey">colif_testDescription</string>
-
 
 </resources>

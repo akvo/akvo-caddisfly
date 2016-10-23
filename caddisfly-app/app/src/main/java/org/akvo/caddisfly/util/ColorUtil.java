@@ -167,9 +167,9 @@ public final class ColorUtil {
         int g = Color.green(color);
         int b = Color.blue(color);
 
-        return (int) Math.sqrt(r * r * .241 +
-                        g * g * .691 +
-                        b * b * .068
+        return (int) Math.sqrt(r * r * .241
+                + g * g * .691
+                + b * b * .068
         );
     }
 
@@ -399,17 +399,27 @@ public final class ColorUtil {
 
         // ensure hue is between 0 and 2pi
         double hp1 = Math.atan2(b1, ap1);
-        if (hp1 < 0) hp1 += 2 * pi;
+        if (hp1 < 0) {
+            hp1 += 2 * pi;
+        }
         double hp2 = Math.atan2(b2, ap2);
-        if (hp2 < 0) hp2 += 2 * pi;
+        if (hp2 < 0) {
+            hp2 += 2 * pi;
+        }
 
         double dL = L2 - L1,
                 dC = Cp2 - Cp1,
                 dhp = hp2 - hp1;
 
-        if (dhp > +pi) dhp -= 2 * pi;
-        if (dhp < -pi) dhp += 2 * pi;
-        if (Cpp == 0) dhp = 0;
+        if (dhp > +pi) {
+            dhp -= 2 * pi;
+        }
+        if (dhp < -pi) {
+            dhp += 2 * pi;
+        }
+        if (Cpp == 0) {
+            dhp = 0;
+        }
 
         // Note that the defining equations actually need
         // signed Hue and chroma differences which is different

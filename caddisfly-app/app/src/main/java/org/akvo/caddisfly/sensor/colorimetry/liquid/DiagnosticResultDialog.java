@@ -235,7 +235,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             @SuppressLint("ViewHolder")
             View rowView = inflater.inflate(R.layout.row_result, parent, false);
 
-            int calibrationSteps = 2;
+            int calibrationSteps;
             switch (position) {
                 case 0:
                     calibrationSteps = 1;
@@ -246,7 +246,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 case 2:
                     calibrationSteps = 3;
                     break;
-                case 3:
+                default:
                     calibrationSteps = 5;
                     break;
             }

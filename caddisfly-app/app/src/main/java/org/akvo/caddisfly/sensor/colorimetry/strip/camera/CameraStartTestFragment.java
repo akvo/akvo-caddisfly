@@ -130,8 +130,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        countQualityView = (TextView) rootView.findViewById(R.id.text_startIndicator);
         finishImage = (ImageView) rootView.findViewById(R.id.image_finishIndicator);
+        setCountQualityView((TextView) rootView.findViewById(R.id.text_startIndicator));
+
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -180,7 +181,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         //use brightness view as a button to switch on and off the flash
         //TODO: remove in release version?
-        PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         if (exposureView != null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -323,7 +323,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     @Override
     public void goNext() {
 
-        countQualityView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
+        getCountQualityView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
 
         if (progressIndicatorViewAnim != null) {
             progressIndicatorViewAnim.start();
@@ -356,8 +356,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     public void sendData(final byte[] data, long timeMillis,
                          final FinderPatternInfo info) {
         //check if image count is lower than patches size. if not, abort
-        if (imageCount >= patches.size())
+        if (imageCount >= patches.size()) {
             return;
+        }
 
         //check if picture is taken on time for the patch.
         //assumed is that some tests require time for a color to develop.

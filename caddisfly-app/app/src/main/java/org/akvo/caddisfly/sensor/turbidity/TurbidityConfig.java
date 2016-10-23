@@ -27,11 +27,14 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-class TurbidityConfig {
-    public static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
+final class TurbidityConfig {
+    static final String ACTION_ALARM_RECEIVER = "ACTION_ALARM_RECEIVER";
     private static final int INTENT_REQUEST_CODE = 1000;
 
-    public static void setRepeatingAlarm(Context context, int initialDelay, String uuid) {
+    private TurbidityConfig() {
+    }
+
+    static void setRepeatingAlarm(Context context, int initialDelay, String uuid) {
 
         int mDelayMinute = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                 CaddisflyApp.getApp().getCurrentTestInfo().getShortCode() + "_IntervalMinutes", "1"));
@@ -66,7 +69,7 @@ class TurbidityConfig {
 //        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid) != null;
 //    }
 
-    public static void stopRepeatingAlarm(Context context, String uuid) {
+    static void stopRepeatingAlarm(Context context, String uuid) {
         PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_NO_CREATE, uuid);
         if (pendingIntent != null) {
             pendingIntent.cancel();

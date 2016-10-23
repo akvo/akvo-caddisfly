@@ -22,7 +22,10 @@ import android.hardware.Camera;
  * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
-class TheCamera {
+final class TheCamera {
+
+    private TheCamera() {
+    }
 
     /**
      * A safe way to get an instance of the Camera object.

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.TextureView;
 
 /**
@@ -31,8 +30,6 @@ import android.view.TextureView;
 public class UVCCameraTextureView extends TextureView
         implements TextureView.SurfaceTextureListener, CameraViewInterface {
 
-    private static final boolean DEBUG = false;    // TODO set false on release
-    private static final String TAG = "UVCCameraTextureView";
     private final Object mCaptureSync = new Object();
     private double mRequestedAspect = -1.0;
     private boolean mHasSurface;
@@ -53,13 +50,7 @@ public class UVCCameraTextureView extends TextureView
     }
 
     @Override
-    public void onResume() {
-        if (DEBUG) Log.v(TAG, "onResume:");
-    }
-
-    @Override
     public void onPause() {
-        if (DEBUG) Log.v(TAG, "onPause:");
         if (mTempBitmap != null) {
             mTempBitmap.recycle();
             mTempBitmap = null;
@@ -112,20 +103,17 @@ public class UVCCameraTextureView extends TextureView
 
     @Override
     public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
-        if (DEBUG) Log.v(TAG, "onSurfaceTextureAvailable:" + surface);
-//		mRenderHandler = RenderHandler.createHandler(surface);
+//        mRenderHandler = RenderHandler.createHandler(surface);
         mHasSurface = true;
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
-        if (DEBUG) Log.v(TAG, "onSurfaceTextureSizeChanged:" + surface);
         mTempBitmap = null;
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
-        if (DEBUG) Log.v(TAG, "onSurfaceTextureDestroyed:" + surface);
         mHasSurface = false;
         return true;
     }
@@ -135,10 +123,11 @@ public class UVCCameraTextureView extends TextureView
         synchronized (mCaptureSync) {
             if (mRequestCaptureStillImage) {
                 mRequestCaptureStillImage = false;
-                if (mTempBitmap == null)
+                if (mTempBitmap == null) {
                     mTempBitmap = getBitmap();
-                else
+                } else {
                     getBitmap(mTempBitmap);
+                }
                 mCaptureSync.notifyAll();
             }
         }

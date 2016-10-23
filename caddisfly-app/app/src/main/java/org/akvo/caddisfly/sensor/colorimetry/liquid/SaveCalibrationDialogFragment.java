@@ -268,8 +268,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
                 private boolean formEntryValid() {
 
-                    if (!isEditing && AppPreferences.isDiagnosticMode() &&
-                            editName.getText().toString().trim().isEmpty()) {
+                    if (!isEditing && AppPreferences.isDiagnosticMode()
+                            && editName.getText().toString().trim().isEmpty()) {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;
                     }

@@ -91,13 +91,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                }
-                break;
-                default: {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
                     super.onManagerConnected(status);
-                }
-                break;
+                    break;
             }
         }
     };
@@ -189,8 +187,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 }
             }
         });
-        mShakeDetector.minShakeAcceleration = 5;
-        mShakeDetector.maxShakeDuration = 2000;
+        mShakeDetector.setMinShakeAcceleration(5);
+        mShakeDetector.setMaxShakeDuration(2000);
 
         mUSBMonitor = new USBMonitor(this, null);
 
@@ -200,7 +198,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     }
 
-    private void InitializeTest() {
+    private void initializeTest() {
 
         mSensorManager.unregisterListener(mShakeDetector);
 
@@ -272,7 +270,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        InitializeTest();
+                        initializeTest();
                     }
                 },
                 new DialogInterface.OnClickListener() {
@@ -336,13 +334,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
             // disable the key guard when device wakes up and shake alert is displayed
             getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             );
         }
 
@@ -354,7 +352,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (testInfo.getUuid().get(0).isEmpty()) {
             alertCouldNotLoadConfig();
         } else if (!mTestCompleted) {
-            InitializeTest();
+            initializeTest();
         }
     }
 
@@ -511,7 +509,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         mIsFirstResult = false;
 
                         if (completed) {
-                            AnalyzeFinalResult(bytes, croppedBitmap);
+                            analyzeFinalResult(bytes, croppedBitmap);
                             mCameraFragment.dismiss();
                         } else {
                             sound.playShortResource(R.raw.beep);
@@ -555,8 +553,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mIsFirstResult = true;
 
         sound.playShortResource(R.raw.beep);
-        mShakeDetector.minShakeAcceleration = 1;
-        mShakeDetector.maxShakeDuration = 3000;
+        mShakeDetector.setMinShakeAcceleration(1);
+        mShakeDetector.setMaxShakeDuration(3000);
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                 SensorManager.SENSOR_DELAY_UI);
 
@@ -626,7 +624,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         mIsFirstResult = false;
 
                         if (completed) {
-                            AnalyzeFinalResult(bytes, croppedBitmap);
+                            analyzeFinalResult(bytes, croppedBitmap);
                             mCameraFragment.dismiss();
                         } else {
                             sound.playShortResource(R.raw.beep);
@@ -670,7 +668,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
      * @param data          image data to be displayed if error in analysis
      * @param croppedBitmap cropped image used for analysis
      */
-    private void AnalyzeFinalResult(byte[] data, Bitmap croppedBitmap) {
+    private void analyzeFinalResult(byte[] data, Bitmap croppedBitmap) {
 
         releaseResources();
 
@@ -748,11 +746,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 setResult(Activity.RESULT_OK, resultIntent);
             }
             // Show the result dialog
-            ShowResult(data, result, resultText, color);
+            showResult(data, result, resultText, color);
         }
     }
 
-    private void ShowResult(byte[] data, double result, String resultText, int color) {
+    private void showResult(byte[] data, double result, String resultText, int color) {
 
         // If calibrating then finish if successful
         if (mIsCalibration && color != Color.TRANSPARENT) {
@@ -964,7 +962,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         } else if (retry) {
             mCameraFragment.dismiss();
-            InitializeTest();
+            initializeTest();
         } else {
             releaseResources();
             if (cancelled) {

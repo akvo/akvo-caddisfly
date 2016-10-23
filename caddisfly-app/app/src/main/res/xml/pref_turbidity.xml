@@ -31,12 +31,18 @@
         android:inputType="text"
         android:key="@string/colif_chamberVersionKey"
         android:maxLength="25"
-        android:title="Test chamber version" />
+        android:title="Test chamber" />
     <EditTextPreference
         android:inputType="text"
         android:key="@string/colif_brothMediumKey"
         android:maxLength="25"
         android:title="Broth medium" />
+    <EditTextPreference
+        android:dialogMessage="Volume (ml)"
+        android:inputType="number"
+        android:key="@string/colif_volumeKey"
+        android:maxLength="10"
+        android:title="Volume" />
     <EditTextPreference
         android:inputType="text"
         android:key="@string/colif_testDescriptionKey"

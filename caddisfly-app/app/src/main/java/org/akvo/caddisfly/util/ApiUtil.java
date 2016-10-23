@@ -40,6 +40,9 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public final class ApiUtil {
 
+    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    private static String uniqueID = null;
+
     private ApiUtil() {
     }
 
@@ -82,15 +85,12 @@ public final class ApiUtil {
         return hasFlash;
     }
 
-    private static String uniqueID = null;
-    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
-
     /**
      * Gets an unique id for installation
      *
      * @return the unique id
      */
-    public synchronized static String getInstallationId(Context context) {
+    public static synchronized String getInstallationId(Context context) {
         if (uniqueID == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(
                     PREF_UNIQUE_ID, Context.MODE_PRIVATE);

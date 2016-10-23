@@ -11,9 +11,12 @@ import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-public class CameraHelper {
+public final class CameraHelper {
 
     private static boolean hasCameraFlash;
+
+    private CameraHelper() {
+    }
 
     /**
      * Check if the camera is available

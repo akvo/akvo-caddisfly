@@ -60,10 +60,10 @@ import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ExternalCameraFragment;
-import org.akvo.caddisfly.sensor.ec.UsbService;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
+import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -90,13 +90,11 @@ public class ExternalCameraActivity extends BaseActivity {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                }
-                break;
-                default: {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
                     super.onManagerConnected(status);
-                }
-                break;
+                    break;
             }
         }
     };
@@ -106,8 +104,7 @@ public class ExternalCameraActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB NOT SUPPORTED
-            {
+            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) {
                 if (mDebug) {
                     Toast.makeText(arg0, "USB device connected", Toast.LENGTH_SHORT).show();
                 }
@@ -210,7 +207,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
     private void requestResult(String command) {
 
-        if (usbService != null && usbService.isUsbConnected()) {
+        if (usbService != null) {
             if (mDebug) {
                 Toast.makeText(this, command.trim(), Toast.LENGTH_SHORT).show();
             }
@@ -288,13 +285,13 @@ public class ExternalCameraActivity extends BaseActivity {
         setFilters();  // Start listening notifications from UsbService
 
         // Start UsbService(if it was not started before) and Bind it
-        if (usbService == null || !usbService.isUsbConnected()) {
+        if (usbService == null) {
             startService(UsbService.class, usbConnection, null);
         }
 
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
-                if (usbService == null || !usbService.isUsbConnected()) {
+                if (usbService == null) {
                     Toast.makeText(getBaseContext(), "Caddisfly sensor not found", Toast.LENGTH_LONG).show();
                     releaseResources();
                     finish();
@@ -392,13 +389,13 @@ public class ExternalCameraActivity extends BaseActivity {
 
             // disable the key guard when device wakes up and shake alert is displayed
             getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             );
         }
 
@@ -454,7 +451,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
                             mCameraFragment.dismiss();
                             releaseResources();
-                            AnalyzeFinalResult(bytes);
+                            analyzeFinalResult(bytes);
                         }
                     }
                 });
@@ -490,7 +487,7 @@ public class ExternalCameraActivity extends BaseActivity {
      *
      * @param data image data to be displayed if error in analysis
      */
-    private void AnalyzeFinalResult(byte[] data) {
+    private void analyzeFinalResult(byte[] data) {
 
         releaseResources();
         String uuid = getIntent().getStringExtra("uuid");
@@ -666,7 +663,7 @@ public class ExternalCameraActivity extends BaseActivity {
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
                 0.3f, 0.59f, 0.11f, 0, 0,
-                0, 0, 0, 1, 0,};
+                0, 0, 0, 1, 0};
 
         Bitmap dest = Bitmap.createBitmap(
                 src.getWidth(),

@@ -91,6 +91,7 @@ public final class DeviceFilter {
 
     /**
      * 指定したxmlリソースからDeviceFilterリストを生成する
+     *
      * @param context
      * @param deviceFilterXmlId
      * @return
@@ -121,6 +122,7 @@ public final class DeviceFilter {
     /**
      * read as integer values with default value from xml(w/o exception throws)
      * resource integer id is also resolved into integer
+     *
      * @param parser
      * @param namespace
      * @param name
@@ -160,6 +162,7 @@ public final class DeviceFilter {
     /**
      * read as String attribute with default value from xml(w/o exception throws)
      * resource string id is also resolved into string
+     *
      * @param parser
      * @param namespace
      * @param name
@@ -283,7 +286,7 @@ public final class DeviceFilter {
         if (mProductId != -1 && device.getProductId() != mProductId)
             return false;
 /*		if (mManufacturerName != null && device.getManufacturerName() == null)
-			return false;
+            return false;
 		if (mProductName != null && device.getProductName() == null)
 			return false;
 		if (mSerialNumber != null && device.getSerialNumber() == null)

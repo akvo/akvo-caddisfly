@@ -109,8 +109,8 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     private void startCalibration() {
         //Only start the colorimetry calibration if the device has a camera flash
-        if (AppPreferences.useExternalCamera() ||
-                CameraHelper.hasFeatureCameraFlash(this, R.string.cannotCalibrate, R.string.ok, null)) {
+        if (AppPreferences.useExternalCamera()
+                || CameraHelper.hasFeatureCameraFlash(this, R.string.cannotCalibrate, R.string.ok, null)) {
 
             final Intent intent;
             if (getIntent().getBooleanExtra("runTest", false)) {
@@ -128,7 +128,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
         final Activity activity = this;

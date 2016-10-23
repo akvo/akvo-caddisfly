@@ -75,7 +75,6 @@ public class SelectDilutionActivity extends BaseActivity {
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         Configuration conf = getResources().getConfiguration();
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
-
     }
 
     private void startTest(int dilution) {

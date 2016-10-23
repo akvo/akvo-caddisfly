@@ -21,7 +21,6 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -75,16 +74,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("", "OpenCV loaded successfully");
+                case LoaderCallbackInterface.SUCCESS:
                     init();
-                }
-                break;
-                default: {
+                    break;
+                default:
                     super.onManagerConnected(status);
-                }
-
-                break;
+                    break;
             }
         }
     };
@@ -104,12 +99,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             if (wrCamera != null) {
                 Camera camera = wrCamera.get();
                 if (camera != null) {
-                    if (cameraCallbackOneShotPreview == null)
+                    if (cameraCallbackOneShotPreview == null) {
                         cameraCallbackOneShotPreview = new CameraCallbackOneShotPreview(mActivity.get(),
                                 camera.getParameters());
+                    }
 
-                    if (currentFragment != null && (currentFragment instanceof CameraPrepareFragment ||
-                            currentFragment instanceof CameraStartTestFragment)) {
+                    if (currentFragment != null && (currentFragment instanceof CameraPrepareFragment
+                            || currentFragment instanceof CameraStartTestFragment)) {
                         camera.setOneShotPreviewCallback(cameraCallbackOneShotPreview);
                     }
                 }
@@ -125,9 +121,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
                 Camera camera = wrCamera.get();
                 if (camera != null) {
-                    if (cameraCallbackTakePicture == null)
+                    if (cameraCallbackTakePicture == null) {
                         cameraCallbackTakePicture = new CameraCallbackTakePicture(mActivity.get(),
                                 camera.getParameters());
+                    }
 
                     camera.setOneShotPreviewCallback(cameraCallbackTakePicture);
                 }
@@ -271,10 +268,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     @Override
     public void stopCallback() {
-        if (cameraCallbackOneShotPreview != null)
+        if (cameraCallbackOneShotPreview != null) {
             cameraCallbackOneShotPreview.stop();
-        if (cameraCallbackTakePicture != null)
+        }
+        if (cameraCallbackTakePicture != null) {
             cameraCallbackTakePicture.stop();
+        }
     }
 
     @Override
@@ -362,15 +361,17 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void showBrightness(final double value) {
 
-        if (currentFragment != null)
+        if (currentFragment != null) {
             currentFragment.showBrightness(value);
+        }
     }
 
     @Override
     public void showShadow(final double value) {
 
-        if (currentFragment != null)
+        if (currentFragment != null) {
             currentFragment.showShadow(value);
+        }
     }
 
     @Override
@@ -436,8 +437,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (finish != null)
+                if (finish != null) {
                     finish.setText(R.string.analysing);
+                }
             }
         };
         handler.post(runnable);
@@ -506,10 +508,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         @Override
         public void run() {
 
-            FinderPatternIndicatorView finderPatternIndicatorView = wrFinderPatternIndicatorView.get();
-            if (finderPatternIndicatorView != null) {
-                finderPatternIndicatorView.setColor(color);
-                finderPatternIndicatorView.showPatterns(patterns, size == null ? 0 : size.width,
+            FinderPatternIndicatorView indicatorView = wrFinderPatternIndicatorView.get();
+            if (indicatorView != null) {
+                indicatorView.setColor(color);
+                indicatorView.showPatterns(patterns, size == null ? 0 : size.width,
                         size == null ? 0 : size.height);
             }
         }
@@ -532,12 +534,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
         @Override
         public void run() {
-            if (levelView != null)
+            if (levelView != null) {
                 levelView.setAngles(tilts);
+            }
         }
 
-        void setAngles(float[] tilts) {
-            this.tilts = tilts;
+        void setAngles(float[] tiltValues) {
+            this.tilts = tiltValues;
         }
     }
 }

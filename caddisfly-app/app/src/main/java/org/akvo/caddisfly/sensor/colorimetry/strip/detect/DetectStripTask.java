@@ -50,14 +50,14 @@ import java.util.UUID;
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
-    private final static boolean DEVELOP_MODE = false;
+    private static final boolean DEVELOP_MODE = false;
     private int format;
     private int width;
     private int height;
     private double ratioW = 1;
     private double ratioH = 1;
     private org.opencv.core.Rect roiStripArea = null;
-    private Mat warp_dst;
+    private Mat warpMat;
     private DetectStripListener listener;
     private Context context;
     private FileStorage fileStorage;
@@ -90,8 +90,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     protected Void doInBackground(Intent... params) {
         Intent intent = params[0];
 
-        if (intent == null)
+        if (intent == null) {
             return null;
+        }
 
         String uuid = intent.getStringExtra(Constant.UUID);
 
@@ -136,8 +137,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         listener.showMessage();
 
                         byte[] data = fileStorage.readByteArray(Constant.DATA + imageNo);
-                        if (data == null)
+                        if (data == null) {
                             throw new IOException();
+                        }
 
                         //make a L,A,B Mat object from data
                         try {
@@ -157,8 +159,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                         //divide into calibration and strip areas
                         try {
-                            if (context != null)
+                            if (context != null) {
                                 divideIntoCalibrationAndStripArea();
+                            }
                         } catch (Exception e) {
                             listener.showError(e.getMessage());
                             continue;
@@ -167,7 +170,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         // save warped image to external storage
                         if (DEVELOP_MODE) {
                             Mat rgb = new Mat();
-                            Imgproc.cvtColor(warp_dst, rgb, Imgproc.COLOR_Lab2RGB);
+                            Imgproc.cvtColor(warpMat, rgb, Imgproc.COLOR_Lab2RGB);
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                             Utils.matToBitmap(rgb, bitmap);
 
@@ -178,14 +181,14 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
 
                         //calibrate
-                        Mat cal_dest;
+                        Mat calibrationMat;
                         try {
                             listener.showMessage();
-                            CalibrationResultData calResult = getCalibratedImage(warp_dst);
-                            cal_dest = calResult.calibratedImage;
-                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
-                                    ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94) +
-                                    ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
+                            CalibrationResultData calResult = getCalibratedImage(warpMat);
+                            calibrationMat = calResult.calibratedImage;
+                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
+                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
+                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
 //                            if (DEVELOP_MODE) {
 //                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
@@ -195,13 +198,13 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
                             listener.showError(context.getString(R.string.error_detection));
-                            cal_dest = warp_dst.clone();
+                            calibrationMat = warpMat.clone();
                         }
 
                         //show calibrated image
                         if (DEVELOP_MODE) {
                             Mat rgb = new Mat();
-                            Imgproc.cvtColor(cal_dest, rgb, Imgproc.COLOR_Lab2RGB);
+                            Imgproc.cvtColor(calibrationMat, rgb, Imgproc.COLOR_Lab2RGB);
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                             Utils.matToBitmap(rgb, bitmap);
                             Bitmap.createScaledBitmap(bitmap, 800, 480, false);
@@ -209,8 +212,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                         // cut out black area that contains the strip
                         Mat stripArea = null;
-                        if (roiStripArea != null)
-                            stripArea = cal_dest.submat(roiStripArea);
+                        if (roiStripArea != null) {
+                            stripArea = calibrationMat.submat(roiStripArea);
+                        }
 
                         if (stripArea != null) {
                             listener.showMessage();
@@ -296,9 +300,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
             //convert preview data to Mat object in CIELab format
             Mat rgb = new Mat(height, width, CvType.CV_8UC3);
             Mat labImg = new Mat(height, width, CvType.CV_8UC3);
-            Mat convert_mYuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-            convert_mYuv.put(0, 0, data);
-            Imgproc.cvtColor(convert_mYuv, rgb, Imgproc.COLOR_YUV2RGB_NV21, rgb.channels());
+            Mat previewMat = new Mat(height + height / 2, width, CvType.CV_8UC1);
+            previewMat.put(0, 0, data);
+            Imgproc.cvtColor(previewMat, rgb, Imgproc.COLOR_YUV2RGB_NV21, rgb.channels());
             Imgproc.cvtColor(rgb, labImg, Imgproc.COLOR_RGB2Lab, rgb.channels());
 
             return labImg;
@@ -327,20 +331,20 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         double[] bottomLeft = new double[]{bl.getDouble(0), bl.getDouble(1)};
         double[] bottomRight = new double[]{br.getDouble(0), br.getDouble(1)};
 
-        warp_dst = OpenCVUtil.perspectiveTransform(topLeft, topRight, bottomLeft, bottomRight, labImg);
+        warpMat = OpenCVUtil.perspectiveTransform(topLeft, topRight, bottomLeft, bottomRight, labImg);
     }
 
     private void divideIntoCalibrationAndStripArea() throws Exception {
         CalibrationData data = CalibrationCard.readCalibrationFile();
 
-        if (warp_dst != null && data != null) {
+        if (warpMat != null && data != null) {
             double hSize = data.hSize;
             double vSize = data.vSize;
             double[] area = data.stripArea;
 
             if (area.length == 4) {
-                ratioW = warp_dst.width() / hSize;
-                ratioH = warp_dst.height() / vSize;
+                ratioW = warpMat.width() / hSize;
+                ratioH = warpMat.height() / vSize;
                 Point stripTopLeft = new Point(area[0] * ratioW + Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
                         area[1] * ratioH + Constant.PIXEL_MARGIN_STRIP_AREA_HEIGHT);
                 Point stripBottomRight = new Point(area[2] * ratioW - Constant.PIXEL_MARGIN_STRIP_AREA_WIDTH,
@@ -351,7 +355,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                 //cal area rect
 //                org.opencv.core.Rect roiCalArea = new org.opencv.core.Rect(new Point(0, 0),
-//                        new Point(warp_dst.width(), area[1] * ratioH));
+//                        new Point(warpMat.width(), area[1] * ratioH));
             }
         }
     }
@@ -361,4 +365,3 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         return CalibrationCard.calibrateImage(mat, data);
     }
 }
-

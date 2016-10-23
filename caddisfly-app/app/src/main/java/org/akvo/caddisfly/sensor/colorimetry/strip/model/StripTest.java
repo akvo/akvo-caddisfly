@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
+import android.support.annotation.StringRes;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
@@ -41,10 +43,8 @@ public class StripTest {
     public List<Brand> getBrandsAsList() {
         List<Brand> brandNames = new ArrayList<>();
 
-        String json = fromJson();
         try {
-            JSONObject object = new JSONObject(json);
-
+            JSONObject object = getJsonFromAssets(R.string.strips_json);
             if (!object.isNull("strips")) {
                 JSONArray stripsJson = object.getJSONArray("strips");
                 JSONObject strip;
@@ -65,27 +65,30 @@ public class StripTest {
         return new Brand(uuid);
     }
 
-    private String fromJson() {
-        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_json);
-
-        return AssetsManager.getInstance().loadJSONFromAsset(filename);
-
+    private JSONObject getJsonFromAssets(@StringRes int id) throws JSONException {
+        String filename = CaddisflyApp.getApp().getApplicationContext().getString(id);
+        String jsonString = AssetsManager.getInstance().loadJSONFromAsset(filename);
+        return new JSONObject(jsonString);
     }
 
-    private String instructionsFromJson() {
-        String filename = CaddisflyApp.getApp().getApplicationContext().getString(R.string.strips_instruction_json);
-        return AssetsManager.getInstance().loadJSONFromAsset(filename);
+    public enum GroupType {
+        GROUP, INDIVIDUAL
     }
 
-    public enum GroupType {GROUP, INDIVIDUAL}
+    private static class PatchComparator implements Comparator<Brand.Patch>, Serializable {
+
+        @Override
+        public int compare(Brand.Patch lhs, Brand.Patch rhs) {
+            return Double.compare(lhs.timeLapse, rhs.timeLapse);
+        }
+    }
 
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
+        private final String uuid;
         private String name;
         private String brandDescription;
         private String image;
-
-        private final String uuid;
         private double stripLength;
         //private double stripHeight;
         private GroupType groupingType;
@@ -96,8 +99,7 @@ public class StripTest {
             this.uuid = uuid;
             try {
                 // read the json file with strip information from assets
-                String json = fromJson();
-                JSONObject object = new JSONObject(json);
+                JSONObject object = getJsonFromAssets(R.string.strips_json);
 
                 if (!object.isNull("strips")) {
                     JSONArray stripsJson = object.getJSONArray("strips");
@@ -115,7 +117,7 @@ public class StripTest {
                                             .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
                                     name = strip.getString("name");
                                     brandDescription = strip.getString("brand");
-                                    image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ","-");
+                                    image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ", "-");
 
                                     JSONArray patchesArr = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArr.length(); ii++) {
@@ -142,8 +144,7 @@ public class StripTest {
                 }
 
                 //add instructions
-                String instructions = instructionsFromJson();
-                JSONObject instructionObj = new JSONObject(instructions);
+                JSONObject instructionObj = getJsonFromAssets(R.string.strips_instruction_json);
                 JSONArray stripsJson = instructionObj.getJSONArray("strips");
                 JSONObject strip;
 
@@ -203,16 +204,16 @@ public class StripTest {
         }
 
         public class Patch {
-            final int id;
-            final String desc;
-            final double width; //mm
+            private final int id;
+            private final String desc;
+            private final double width; //mm
             @SuppressWarnings("unused")
-            final double height;//mm
-            final double position;//x in mm
-            final double timeLapse; //seconds between this and previous patch
-            final String unit;
+            private final double height; //mm
+            private final double position; //x in mm
+            private final double timeLapse; //seconds between this and previous patch
+            private final String unit;
 
-            final JSONArray colours;
+            private final JSONArray colours;
 
             @SuppressWarnings("SameParameterValue")
             Patch(int id, String desc, double width, double height, double position,
@@ -254,14 +255,6 @@ public class StripTest {
             public double getWidth() {
                 return width;
             }
-        }
-    }
-
-    private static class PatchComparator implements Comparator<Brand.Patch>, Serializable {
-
-        @Override
-        public int compare(Brand.Patch lhs, Brand.Patch rhs) {
-            return Double.compare(lhs.timeLapse, rhs.timeLapse);
         }
     }
 }

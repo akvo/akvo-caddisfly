@@ -55,8 +55,9 @@ public class TestTypeListActivity extends BaseActivity {
 
         ListView listTypes = (ListView) findViewById(R.id.list_types);
 
-        if (stripTest == null)
+        if (stripTest == null) {
             stripTest = new StripTest();
+        }
 
         brands = stripTest.getBrandsAsList();
 
@@ -192,7 +193,9 @@ public class TestTypeListActivity extends BaseActivity {
                         holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
                     }
                 }
-            } else holder.textView.setText(brand.getName());
+            } else {
+                holder.textView.setText(brand.getName());
+            }
             return view;
 
         }

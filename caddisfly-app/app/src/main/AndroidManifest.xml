@@ -166,7 +166,7 @@
         </activity>
         <!-- end StripTest -->
         <service
-            android:name=".sensor.ec.UsbService"
+            android:name=".usb.UsbService"
             android:enabled="true" />
 
         <receiver

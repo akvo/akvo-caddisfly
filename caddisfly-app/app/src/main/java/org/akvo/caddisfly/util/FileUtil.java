@@ -67,8 +67,9 @@ public final class FileUtil {
                 } else {
                     return path.getAbsolutePath();
                 }
-            } else
+            } else {
                 return CaddisflyApp.getApp().getFilesDir().getAbsolutePath();
+            }
         }
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
@@ -125,7 +126,7 @@ public final class FileUtil {
             return text.toString();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
+        } finally {
             if (br != null) {
                 try {
                     br.close();

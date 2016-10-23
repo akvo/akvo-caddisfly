@@ -45,7 +45,6 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -122,24 +121,23 @@ public class CalibrationTest {
 
         sleep(2000);
 
-        // TODO: Out of sequence check to be implemented
-//        onData(hasToString(startsWith("OutOfSequence"))).perform(click());
-//
-//        sleep(2000);
-//
-//        onView(withText(String.format("%s. %s", mActivityRule.getActivity().getString(R.string.calibrationIsInvalid),
-//                mActivityRule.getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.menuLoad)).perform(click());
-//
-//        sleep(2000);
+        onData(hasToString(startsWith("OutOfSequence"))).perform(click());
+
+        sleep(2000);
+
+        onView(withText(String.format("%s. %s", mActivityRule.getActivity().getString(R.string.calibrationIsInvalid),
+                mActivityRule.getActivity().getString(R.string.tryRecalibrating)))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.menuLoad)).perform(click());
+
+        sleep(2000);
 
         onData(hasToString(startsWith("TestValid"))).perform(click());
 
         sleep(2000);
 
         onView(withText(String.format("%s. %s", mActivityRule.getActivity().getString(R.string.calibrationIsInvalid),
-                mActivityRule.getActivity().getString(R.string.tryRecalibrating)))).check(doesNotExist());
+                mActivityRule.getActivity().getString(R.string.tryRecalibrating)))).check(matches(not(isDisplayed())));
 
         sleep(2000);
 
