@@ -82,7 +82,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         //append the unit
         Spannable wordTwo = new SpannableString(CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
 
-        wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
+        wordTwo.setSpan(new ForegroundColorSpan(Color.GRAY), 0, wordTwo.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
@@ -91,7 +91,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
         if (color == Color.TRANSPARENT || color == Color.BLACK) {
             //not calibrated so just show a '?' instead of color
-            textSwatch.setBackgroundColor(Color.argb(0, 10, 10, 10));
+            textSwatch.setBackgroundColor(Color.TRANSPARENT);
             textSwatch.setText("?");
         } else {
             //show the calibrated color

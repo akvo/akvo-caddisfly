@@ -254,7 +254,9 @@ public class ProgressIndicatorView extends LinearLayout {
                 } else {
                     //first one does have a count
                     try {
-                        message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
+                        message = getContext().getString(R.string.waiting) + " "
+                                + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse()
+                                - timeLapsed)) + " sec. ";
                     } catch (Exception e) {
                         message = e.getMessage();
                     }

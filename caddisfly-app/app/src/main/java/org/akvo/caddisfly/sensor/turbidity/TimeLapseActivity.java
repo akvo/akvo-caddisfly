@@ -65,6 +65,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class TimeLapseActivity extends BaseActivity {
 
     private static final int PERMISSION_ALL = 1;
+    private static final int INITIAL_DELAY = 25000;
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
 
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -265,14 +267,14 @@ public class TimeLapseActivity extends BaseActivity {
                 testInfo.getName() + File.separator + testId
                         + new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(startDate.getTime()) + details);
 
-        TurbidityConfig.setRepeatingAlarm(this, 25000, testInfo.getCode());
+        TurbidityConfig.setRepeatingAlarm(this, INITIAL_DELAY, testInfo.getCode());
 
         String date = new SimpleDateFormat("dd MMM yyy HH:mm", Locale.US).format(startDate.getTime());
         ((TextView) findViewById(R.id.textSubtitle))
                 .setText(String.format(Locale.getDefault(), "%s %s", "Started", date));
 
         futureDate = Calendar.getInstance();
-        futureDate.add(Calendar.SECOND, 25);
+        futureDate.add(Calendar.MILLISECOND, INITIAL_DELAY);
 
         TextView textInterval = (TextView) findViewById(R.id.textInterval);
         int interval = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
@@ -322,8 +324,8 @@ public class TimeLapseActivity extends BaseActivity {
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
                 TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setHeight(200);
-                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+                textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
                 snackbar.show();
             }

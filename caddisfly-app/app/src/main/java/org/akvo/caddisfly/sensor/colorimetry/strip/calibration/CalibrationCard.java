@@ -48,6 +48,7 @@ public final class CalibrationCard {
     private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
     private static final SparseIntArray versionNumberMap = new SparseIntArray();
+    private static boolean errorFound;
 
     private CalibrationCard() {
     }
@@ -132,6 +133,7 @@ public final class CalibrationCard {
                 calData.stripArea[2] = stripArea.getDouble(2);
                 calData.stripArea[3] = stripArea.getDouble(3);
 
+                errorFound = false;
                 return calData;
 
             } catch (JSONException e) {
@@ -141,6 +143,7 @@ public final class CalibrationCard {
             // Wait for a few version readings before declaring error
             if (versionNumberMap.get(version) > 3) {
                 initialize();
+                errorFound = true;
                 throw new Exception("Unknown version of color card");
             }
         }
@@ -828,4 +831,7 @@ public final class CalibrationCard {
         return oneCount % 2 != 0; // returns true if parity is odd
     }
 
+    public static boolean hasError() {
+        return errorFound;
+    }
 }

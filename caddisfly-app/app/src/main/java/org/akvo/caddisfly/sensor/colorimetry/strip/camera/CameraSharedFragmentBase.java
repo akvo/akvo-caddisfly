@@ -114,15 +114,19 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                     }
                     countQualityView.setText(debugText.toString() + " " + text);
                 }
+
+                countQualityView.setTextColor(getResources().getColor(R.color.text_primary));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void showMessage(String message) {
+    public void showError(String message) {
         if (countQualityView != null) {
             countQualityView.setText(message);
+            countQualityView.setTextColor(getResources().getColor(R.color.error));
         }
     }
 

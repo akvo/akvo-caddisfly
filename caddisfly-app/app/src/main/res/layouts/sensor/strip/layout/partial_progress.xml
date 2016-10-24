@@ -33,7 +33,6 @@
         android:drawableStart="@drawable/unchecked_box"
         android:gravity="start|center_vertical"
         android:text="@string/start"
-        android:textAllCaps="true"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/mediumTextSize" />
 

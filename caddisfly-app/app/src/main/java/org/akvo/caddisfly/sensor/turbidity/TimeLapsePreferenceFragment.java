@@ -36,6 +36,7 @@ import java.util.Arrays;
 public class TimeLapsePreferenceFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final int MAX_SAMPLE_NUMBER = 50;
     private ListView list;
 
     public TimeLapsePreferenceFragment() {
@@ -105,8 +106,8 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > 50) {
-                            newValue = 50;
+                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_SAMPLE_NUMBER) {
+                            newValue = MAX_SAMPLE_NUMBER;
                         }
 
                         if (Integer.parseInt(String.valueOf(newValue)) < 1) {
@@ -155,7 +156,9 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
         final EditTextPreference volumePreference =
                 (EditTextPreference) findPreference(getString(R.string.colif_volumeKey));
         if (volumePreference != null) {
-            volumePreference.setSummary(String.format("%s ml", volumePreference.getText()));
+            if (volumePreference.getText() != null) {
+                volumePreference.setSummary(String.format("%s ml", volumePreference.getText()));
+            }
         }
 
         final EditTextPreference testDescription =

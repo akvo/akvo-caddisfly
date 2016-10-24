@@ -34,7 +34,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +43,7 @@ import java.util.Locale;
  * Created by markwestra on 18/02/16
  */
 public final class ResultUtil {
+    private static final int MAX_RGB_INT_VALUE = 255;
     private static final int INTERPOLATION_NUMBER = 10;
     private static final Scalar LAB_WHITE = new Scalar(255, 128, 128);
     private static final Scalar LAB_GREY = new Scalar(128, 128, 128);
@@ -57,13 +57,9 @@ public final class ResultUtil {
 
     public static Mat getMatFromFile(FileStorage fileStorage, int imageNo) {
         //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
-        //boolean isInvalidStrip = fileStorage.checkIfFilenameContainsString(Constant.STRIP + imageNo + Constant.ERROR);
-
-        //String error = isInvalidStrip ? Constant.ERROR : "";
 
         String fileName = Constant.STRIP + imageNo;
-        File file = new File(fileName + Constant.ERROR);
-        if (file.exists()) {
+        if (fileStorage.fileExists(fileName + Constant.ERROR)) {
             fileName += Constant.ERROR;
         }
 
@@ -126,7 +122,8 @@ public final class ResultUtil {
 
         //extend the strip with a border, so we can draw a circle around each patch that is
         //wider than the strip itself. That is just because it looks nice.
-        Core.copyMakeBorder(mat, mat, borderSize, borderSize, 10, 0, Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+        Core.copyMakeBorder(mat, mat, borderSize, borderSize, 10, 0, Core.BORDER_CONSTANT,
+                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
         // Draw a green circle at a particular location patch
         // only draw if this is not a 'grouped' strip
@@ -170,7 +167,7 @@ public final class ResultUtil {
 
                 double value = colourObj.getDouble("value");
                 JSONArray lab = colourObj.getJSONArray("lab");
-                Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
+                Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
                 Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
 
                 //draw a rectangle filled with color for result value
@@ -216,7 +213,7 @@ public final class ResultUtil {
 
                     double value = colourObj.getDouble("value");
                     JSONArray lab = colourObj.getJSONArray("lab");
-                    Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * 255, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
+                    Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
                     Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
 
                     //draw a rectangle filled with color for result value
@@ -397,7 +394,7 @@ public final class ResultUtil {
         int width = Math.max(m1.cols(), m2.cols());
         int height = m1.rows() + m2.rows();
 
-        Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(255, 255, 255));
+        Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
         // rect works with x, y, width, height
         Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());
@@ -415,7 +412,8 @@ public final class ResultUtil {
         int width = m1.cols() + m2.cols() + 50;
         int height = Math.max(m1.rows(), m2.rows());
 
-        Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(255, 255, 255));
+        Mat result = new Mat(height, width, CvType.CV_8UC3,
+                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
         // rect works with x, y, width, height
         Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());

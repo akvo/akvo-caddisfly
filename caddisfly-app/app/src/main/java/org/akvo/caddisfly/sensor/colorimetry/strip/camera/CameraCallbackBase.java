@@ -48,6 +48,9 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 abstract class CameraCallbackBase implements Camera.PreviewCallback {
+    private static final int NO_SHADOW_DATA = 101;
+    private static final int MAX_LIST_COUNT = 25;
+    private static final int MAX_RGB_INT_VALUE = 255;
     private final LinkedList<Double> luminanceTrack = new LinkedList<>();
     private final LinkedList<Double> shadowTrack = new LinkedList<>();
     private final int[] qualityChecksArray = new int[]{0, 0, 0}; //array containing brightness, shadow, level check values
@@ -172,8 +175,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
                 // Show shadow values
                 if (shadowTrack.size() < 1) {
-                    //101 means 'no data'
-                    listener.showShadow(101);
+                    listener.showShadow(NO_SHADOW_DATA);
                 } else {
                     listener.showShadow(shadowTrack.getLast());
                 }
@@ -201,14 +203,14 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     }
 
     private double detectShadows(FinderPatternInfo info, Mat mat) {
-        double shadowPercentage = 101;
+        double shadowPercentage = NO_SHADOW_DATA;
 
         if (mat == null) {
             return shadowPercentage;
         }
 
         //fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
-        if (shadowTrack.size() > 25) {
+        if (shadowTrack.size() > MAX_LIST_COUNT) {
             shadowTrack.removeFirst();
         }
 
@@ -256,13 +258,13 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         }
 
         // Fill the linked list up to 25 items; meant to stabilise the view, keep it from flickering.
-        if (luminanceTrack.size() > 25) {
+        if (luminanceTrack.size() > MAX_LIST_COUNT) {
             luminanceTrack.removeFirst();
         }
 
         if (lumList.size() > 0) {
             // Add highest value of 'white' to track list
-            luminanceTrack.addLast(100 * maxLuminance / 255);
+            luminanceTrack.addLast(100 * maxLuminance / MAX_RGB_INT_VALUE);
 
             // Compensate for underexposure
             if (maxLuminance < Constant.MAX_LUM_LOWER) {

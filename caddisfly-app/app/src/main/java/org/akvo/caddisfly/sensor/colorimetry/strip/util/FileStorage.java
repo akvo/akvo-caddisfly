@@ -226,4 +226,8 @@ public class FileStorage {
             }
         }
     }
+
+    public boolean fileExists(String fileName) {
+        return new File(context.getFilesDir() + File.separator + fileName + ".txt").exists();
+    }
 }

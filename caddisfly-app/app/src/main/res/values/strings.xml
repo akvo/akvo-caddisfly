@@ -180,7 +180,7 @@
     <string name="error_cut_out_strip">No strip found</string>
     <string name="error_detection">Error in detection</string>
     <string name="error_no_finder_pattern_info">No info about finder patterns</string>
-    <string name="finished">FINISH</string>
+    <string name="finished">Finish</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch</string>
     <string name="instructions">Instructions</string>

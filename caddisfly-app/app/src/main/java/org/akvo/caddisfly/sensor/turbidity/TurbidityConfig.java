@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.text.format.DateUtils;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -41,7 +42,7 @@ final class TurbidityConfig {
         PendingIntent pendingIntent = getPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT, uuid);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        long delay = 6 + (mDelayMinute * 60000);
+        long delay = (mDelayMinute * DateUtils.MINUTE_IN_MILLIS);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (initialDelay > 0) {

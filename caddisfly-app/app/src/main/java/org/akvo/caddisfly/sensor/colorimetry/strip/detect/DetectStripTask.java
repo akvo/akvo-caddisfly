@@ -282,15 +282,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-
-        //System.out.println("***onPostExecute DetectStripTask");
-
         if (listener != null) {
             listener.showResults();
         }
-        //else {
-        //System.out.println("***listener is null");
-        //}
     }
 
     // Creates a lab image out of the original YUV preview data

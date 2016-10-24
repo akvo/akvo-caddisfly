@@ -114,20 +114,20 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case UsbService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
-                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
+                case UsbService.ACTION_USB_PERMISSION_GRANTED:
+                    //Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
                     break;
-                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
-                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED:
+                    //Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                     break;
-                case UsbService.ACTION_NO_USB: // NO USB CONNECTED
-                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
+                case UsbService.ACTION_NO_USB:
+                    //Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
                     break;
-                case UsbService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
-                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
+                case UsbService.ACTION_USB_DISCONNECTED:
+                    //Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
                     break;
-                case UsbService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
-                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
+                case UsbService.ACTION_USB_NOT_SUPPORTED:
+                    //Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -171,27 +171,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     private Handler initializeHandler;
     private ArrayList<String> requestQueue;
     private int mCommandIndex = 0;
-    private boolean requestsDone;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (!requestsDone) {
-                requestResult(requestQueue.get(mCommandIndex));
-
-                mCommandIndex++;
-
-                handler.postDelayed(this, 2000);
-
-                if (mCommandIndex > requestQueue.size() - 1) {
-                    requestsDone = true;
-                }
-
-                if (!mDebug) {
-                    Toast.makeText(getBaseContext(), "Connecting", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    };
     private final Runnable initializeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -217,6 +196,27 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                 Toast.makeText(getBaseContext(), "Camera not found", Toast.LENGTH_SHORT).show();
                 //releaseResources();
                 //finish();
+            }
+        }
+    };
+    private boolean requestsDone;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!requestsDone) {
+                requestResult(requestQueue.get(mCommandIndex));
+
+                mCommandIndex++;
+
+                handler.postDelayed(this, 2000);
+
+                if (mCommandIndex > requestQueue.size() - 1) {
+                    requestsDone = true;
+                }
+
+                if (!mDebug) {
+                    Toast.makeText(getBaseContext(), "Connecting", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };

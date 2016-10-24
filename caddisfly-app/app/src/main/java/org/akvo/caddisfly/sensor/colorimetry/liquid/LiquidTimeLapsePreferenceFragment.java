@@ -37,6 +37,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
  */
 public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
 
+    private static final int MAX_SAMPLE_NUMBER = 50;
     private ListView list;
 
     public LiquidTimeLapsePreferenceFragment() {
@@ -92,8 +93,8 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > 50) {
-                            newValue = 50;
+                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_SAMPLE_NUMBER) {
+                            newValue = MAX_SAMPLE_NUMBER;
                         }
 
                         if (Integer.parseInt(String.valueOf(newValue)) < 1) {

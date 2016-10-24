@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
@@ -309,18 +310,20 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             throw new NullPointerException("quality checks array is NULL");
         }
 
-        int ci = 0;
-        for (Map.Entry<String, Integer> entry : qualityCountMap.entrySet()) {
-            entry.setValue(entry.getValue() + countArray[ci]);
-            ci++;
-        }
+        if (!CalibrationCard.hasError()) {
+            int ci = 0;
+            for (Map.Entry<String, Integer> entry : qualityCountMap.entrySet()) {
+                entry.setValue(entry.getValue() + countArray[ci]);
+                ci++;
+            }
 
-        if (currentFragment != null) {
-            currentFragment.displayCountQuality(qualityCountMap);
+            if (currentFragment != null) {
+                currentFragment.displayCountQuality(qualityCountMap);
 
-            // Show start button only if enough quality checks are positive
-            if (qualityChecksOK()) {
-                currentFragment.goNext();
+                // Show start button only if enough quality checks are positive
+                if (qualityChecksOK()) {
+                    currentFragment.goNext();
+                }
             }
         }
     }
@@ -451,7 +454,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                currentFragment.showMessage(message);
+                currentFragment.showError(message);
             }
         };
         handler.post(runnable);

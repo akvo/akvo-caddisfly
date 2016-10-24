@@ -30,4 +30,6 @@
     <dimen name="color_circle_size">48dp</dimen>
     <dimen name="mediumTextSize">16sp</dimen>
 
+    <dimen name="snackBarHeight">100dp</dimen>
+
 </resources>

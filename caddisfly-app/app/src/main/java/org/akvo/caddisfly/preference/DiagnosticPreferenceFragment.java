@@ -55,6 +55,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     private static final int PERMISSION_ALL = 1;
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
 
     private ListView list;
     private View coordinatorLayout;
@@ -224,8 +225,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
                 TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setHeight(200);
-                textView.setLineSpacing(1.2f, 1.2f);
+                textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+                textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
                 snackbar.show();
             }

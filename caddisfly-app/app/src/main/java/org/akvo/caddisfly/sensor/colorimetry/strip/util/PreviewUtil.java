@@ -28,10 +28,16 @@ import java.util.Locale;
 /**
  * Created by linda on 10/3/15
  */
-public class PreviewUtil {
-    public static double[] getDiffLuminosity(Mat src_gray) {
+public final class PreviewUtil {
+
+    private static final int HOUR_IN_SECONDS = 3600;
+
+    private PreviewUtil() {
+    }
+
+    public static double[] getDiffLuminosity(Mat mat) {
         //find min and max luminosity
-        Core.MinMaxLocResult result = Core.minMaxLoc(src_gray);
+        Core.MinMaxLocResult result = Core.minMaxLoc(mat);
         return new double[]{result.minVal, result.maxVal};
     }
 
@@ -107,7 +113,7 @@ public class PreviewUtil {
     }
 
     public static String fromSecondsToMMSS(int seconds) throws Exception {
-        if (seconds > 3600)
+        if (seconds > HOUR_IN_SECONDS)
             throw new Exception("more than an hour");
 
         int m = seconds / 60;

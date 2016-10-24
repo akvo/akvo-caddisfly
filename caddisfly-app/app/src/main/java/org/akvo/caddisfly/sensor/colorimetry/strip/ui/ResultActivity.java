@@ -52,7 +52,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +61,7 @@ import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 
 public class ResultActivity extends BaseActivity {
 
+    private static final int MAX_RGB_INT_VALUE = 255;
     private final JSONObject resultJsonObj = new JSONObject();
     private final JSONArray resultJsonArr = new JSONArray();
     private Button buttonSave;
@@ -115,11 +115,12 @@ public class ResultActivity extends BaseActivity {
                         array = imagePatchArray.getJSONArray(0);
                         int imageNo = array.getInt(0);
 
-                        boolean isInvalidStrip = (new File(Constant.STRIP + imageNo + Constant.ERROR)).exists();
+                        boolean isInvalidStrip = fileStorage.fileExists(Constant.STRIP + imageNo + Constant.ERROR);
                         strip = ResultUtil.getMatFromFile(fileStorage, imageNo);
                         if (strip != null) {
                             // create empty mat to serve as a template
-                            resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3, new Scalar(255, 255, 255));
+                            resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
+                                    new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
                             new BitmapTask(isInvalidStrip, strip, true, brand, patches, 0).execute(strip);
                         }
                     } catch (JSONException e) {
@@ -134,7 +135,7 @@ public class ResultActivity extends BaseActivity {
 
                             // get the image number from the json array
                             int imageNo = array.getInt(0);
-                            boolean isInvalidStrip = (new File(Constant.STRIP + imageNo + Constant.ERROR)).exists();
+                            boolean isInvalidStrip = fileStorage.fileExists(Constant.STRIP + imageNo + Constant.ERROR);
 
                             // read strip from file
                             strip = ResultUtil.getMatFromFile(fileStorage, imageNo);
@@ -142,7 +143,8 @@ public class ResultActivity extends BaseActivity {
                             if (strip != null) {
                                 if (i == 0) {
                                     // create empty mat to serve as a template
-                                    resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3, new Scalar(255, 255, 255));
+                                    resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
+                                            new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
                                 }
                                 new BitmapTask(isInvalidStrip, strip, false, brand, patches, i).execute(strip);
                             }
@@ -261,6 +263,10 @@ public class ResultActivity extends BaseActivity {
                 return null;
             }
 
+            // get the name and unit of the patch
+            patchDescription = patches.get(patchNum).getDesc();
+            unit = patches.get(patchNum).getUnit();
+
             if (invalid) {
                 if (!mat.empty()) {
                     //done with lab schema, make rgb to show in image view
@@ -270,9 +276,6 @@ public class ResultActivity extends BaseActivity {
                 return null;
             }
 
-            // get the name and unit of the patch
-            patchDescription = patches.get(patchNum).getDesc();
-            unit = patches.get(patchNum).getUnit();
             id = patches.get(patchNum).getId();
 
             // depending on the boolean grouped, we either handle all patches at once, or we handle only a single one
@@ -305,7 +308,7 @@ public class ResultActivity extends BaseActivity {
                 }
 
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
-                        CvType.CV_8UC3, new Scalar(255, 255, 255));
+                        CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
                 Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
@@ -339,20 +342,10 @@ public class ResultActivity extends BaseActivity {
                 patchCenter = new Point(x, y);
 
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
-                        CvType.CV_8UC3, new Scalar(255, 255, 255));
+                        CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
                 Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
-
-//                int minRow = (int) Math.round(patchCenter.y - subMatSize - 1);
-//                int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
-//                int minCol = (int) Math.round(patchCenter.x - subMatSize - 1);
-//                int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
-//
-//                Imgproc.rectangle(patchArea,
-//                        new Point(minCol, minRow),
-//                        new Point(maxCol, maxRow),
-//                        new Scalar(0, 255, 0, 255), 1);
 
                 Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
                         Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
@@ -417,7 +410,8 @@ public class ResultActivity extends BaseActivity {
             Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
             // create empty mat to serve as a template
-            combined = new Mat(0, resultMatWidth, CvType.CV_8UC3, new Scalar(255, 255, 255));
+            combined = new Mat(0, resultMatWidth, CvType.CV_8UC3,
+                    new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             combined = ResultUtil.concatenate(combined, mat); // add strip
             combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
@@ -425,7 +419,7 @@ public class ResultActivity extends BaseActivity {
             combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
 
             Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
-                    Core.BORDER_CONSTANT, new Scalar(255, 255, 255, 255));
+                    Core.BORDER_CONSTANT, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             //make bitmap to be rendered on screen, which doesn't contain the patch patchDescription
             if (!combined.empty()) {
@@ -482,6 +476,7 @@ public class ResultActivity extends BaseActivity {
 
             if (stripBitmap != null) {
                 imageResult.setImageBitmap(stripBitmap);
+                TextView textResult = (TextView) itemResult.findViewById(R.id.text_result);
 
                 if (!invalid) {
                     if (colorDetected != null && !grouped) {
@@ -496,16 +491,18 @@ public class ResultActivity extends BaseActivity {
                         textColor.setVisibility(View.VISIBLE);
                     }
 
-                    TextView textView = (TextView) itemResult.findViewById(R.id.text_result);
                     if (resultValue > -1) {
                         if (resultValue < 1.0) {
-                            textView.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
+                            textResult.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
                         } else {
-                            textView.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
+                            textResult.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
                         }
                     } else {
                         invalid = true;
                     }
+                } else {
+                    textResult.setVisibility(View.GONE);
+                    circleColor.setVisibility(View.GONE);
                 }
             } else {
                 textTitle.append("\n\n" + getResources().getString(R.string.no_data));

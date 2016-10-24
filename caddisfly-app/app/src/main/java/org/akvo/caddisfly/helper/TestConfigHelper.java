@@ -48,6 +48,8 @@ public final class TestConfigHelper {
 
     // Files
     private static final String CONFIG_FILE = "tests.json";
+    private static final int DEFAULT_MONTHS_VALID = 6;
+    private static final int BIT_MASK = 0x00FFFFFF;
 
     private TestConfigHelper() {
     }
@@ -201,7 +203,7 @@ public final class TestConfigHelper {
                     String[] rangesArray = ranges.split(",");
 
                     //Load the ranges
-                    int monthsValid = 6;
+                    int monthsValid = DEFAULT_MONTHS_VALID;
                     if (item.has("monthsValid")) {
                         monthsValid = item.getInt("monthsValid");
                     }
@@ -284,7 +286,7 @@ public final class TestConfigHelper {
                 }
 
                 if (color > -1) {
-                    subTestJson.put("resultColor", Integer.toHexString(color & 0x00FFFFFF));
+                    subTestJson.put("resultColor", Integer.toHexString(color & BIT_MASK));
 
                     // Add calibration details to result
                     subTestJson.put("calibratedDate", testInfo.getCalibrationDateString());
@@ -293,7 +295,7 @@ public final class TestConfigHelper {
 
                     JSONArray calibrationSwatches = new JSONArray();
                     for (Swatch swatch : testInfo.getSwatches()) {
-                        calibrationSwatches.put(Integer.toHexString(swatch.getColor() & 0x00FFFFFF));
+                        calibrationSwatches.put(Integer.toHexString(swatch.getColor() & BIT_MASK));
                     }
                     subTestJson.put("calibration", calibrationSwatches);
                 }
