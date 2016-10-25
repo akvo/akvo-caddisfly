@@ -103,10 +103,14 @@ public final class PreviewUtil {
 
         // compute distances
         // in info, we have topLeft, topRight, bottomLeft, bottomRight
-        float hDistanceTop = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
-        float hDistanceBottom = distance(info.getBottomRight().getX(), info.getBottomRight().getY(), info.getTopRight().getX(), info.getTopRight().getY());
-        float vDistanceLeft = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(), info.getBottomRight().getX(), info.getBottomRight().getY());
-        float vDistanceRight = distance(info.getTopRight().getX(), info.getTopRight().getY(), info.getTopLeft().getX(), info.getTopLeft().getY());
+        float hDistanceTop = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(),
+                info.getTopLeft().getX(), info.getTopLeft().getY());
+        float hDistanceBottom = distance(info.getBottomRight().getX(), info.getBottomRight().getY(),
+                info.getTopRight().getX(), info.getTopRight().getY());
+        float vDistanceLeft = distance(info.getBottomLeft().getX(), info.getBottomLeft().getY(),
+                info.getBottomRight().getX(), info.getBottomRight().getY());
+        float vDistanceRight = distance(info.getTopRight().getX(), info.getTopRight().getY(),
+                info.getTopLeft().getX(), info.getTopLeft().getY());
 
         // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
         return new float[]{hDistanceTop / hDistanceBottom, vDistanceLeft / vDistanceRight};

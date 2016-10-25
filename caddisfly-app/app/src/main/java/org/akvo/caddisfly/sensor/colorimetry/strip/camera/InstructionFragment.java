@@ -48,6 +48,8 @@ import org.json.JSONException;
  */
 public class InstructionFragment extends CameraSharedFragmentBase {
 
+    private static final int BUTTON_ENABLE_DELAY = 4000;
+    private static final int ANIMATION_DURATION_MILLIS = 800;
     private CameraViewListener mListener;
 
     public InstructionFragment() {
@@ -69,7 +71,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         final Button buttonStart = (Button) rootView.findViewById(R.id.button_start);
         buttonStart.setEnabled(false);
-        buttonStart.setAlpha(0.1f);
+        buttonStart.setAlpha(0);
         LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_information);
 
         TextView textTitle = (TextView) rootView.findViewById(R.id.textToolbarTitle);
@@ -86,16 +88,16 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
             showInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
 
-            try {
-                for (int i = 0; i < instructions.length(); i++) {
-
-                    for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
-                        showInstruction(linearLayout, instruction, Typeface.NORMAL);
+            if (instructions != null) {
+                try {
+                    for (int i = 0; i < instructions.length(); i++) {
+                        for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
+                            showInstruction(linearLayout, instruction, Typeface.NORMAL);
+                        }
                     }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
 
         }
@@ -110,13 +112,13 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 buttonStart.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
-                animation.setDuration(800);
+                AlphaAnimation animation = new AlphaAnimation(0f, 1.0f);
+                animation.setDuration(ANIMATION_DURATION_MILLIS);
                 animation.setFillAfter(true);
                 buttonStart.setAlpha(1f);
                 buttonStart.startAnimation(animation);
             }
-        }, 4000);
+        }, BUTTON_ENABLE_DELAY);
 
 
         return rootView;

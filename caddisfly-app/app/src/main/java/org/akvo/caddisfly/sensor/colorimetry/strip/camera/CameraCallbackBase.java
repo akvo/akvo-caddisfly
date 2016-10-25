@@ -95,7 +95,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();
         float[] tilts = null;
-        int luminance = 0;
+        int luminance;
         int shadow = 0;
         int titleLevel = 0;
 
@@ -157,31 +157,31 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
                     titleLevel = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
                 }
-            }
 
-            qualityChecksArray[0] = luminance;
-            qualityChecksArray[1] = shadow;
-            qualityChecksArray[2] = titleLevel;
+                qualityChecksArray[0] = luminance;
+                qualityChecksArray[1] = shadow;
+                qualityChecksArray[2] = titleLevel;
 
-            //Display the values
-            if (listener != null) {
-                // Show brightness values
-                if (luminanceTrack.size() < 1) {
-                    //-1 means 'no data'
-                    listener.showBrightness(-1);
-                } else {
-                    listener.showBrightness(luminanceTrack.getLast());
+                //Display the values
+                if (listener != null) {
+                    // Show brightness values
+                    if (luminanceTrack.size() < 1) {
+                        //-1 means 'no data'
+                        listener.showBrightness(-1);
+                    } else {
+                        listener.showBrightness(luminanceTrack.getLast());
+                    }
+
+                    // Show shadow values
+                    if (shadowTrack.size() < 1) {
+                        listener.showShadow(NO_SHADOW_DATA);
+                    } else {
+                        listener.showShadow(shadowTrack.getLast());
+                    }
+
+                    // Show tilt
+                    listener.showLevel(tilts);
                 }
-
-                // Show shadow values
-                if (shadowTrack.size() < 1) {
-                    listener.showShadow(NO_SHADOW_DATA);
-                } else {
-                    listener.showShadow(shadowTrack.getLast());
-                }
-
-                // Show tilt
-                listener.showLevel(tilts);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -321,6 +321,8 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
             } catch (Exception ignored) {
                 // patterns where not detected.
+                possibleCenters = null;
+                patternInfo = null;
             }
 
             //get the version number from the barcode printed on the card
@@ -331,6 +333,8 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
                 CalibrationCard.addVersionNumber(versionNumber);
                 calibrationData = CalibrationCard.readCalibrationFile();
+            } else {
+                listener.showFinderPatterns(null, null, 1);
             }
         }
 

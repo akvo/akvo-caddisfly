@@ -46,7 +46,9 @@ public final class OpenCVUtil {
      * Computes transform matrix from one set of 4 source points to another set of 4 destination points
      * The points are ordered clockwise
      */
-    private static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src, double[] p4Src, double[] p1Dst, double[] p2Dst, double[] p3Dst, double[] p4Dst) {
+    private static Mat transformMatrix(double[] p1Src, double[] p2Src, double[] p3Src,
+                                       double[] p4Src, double[] p1Dst, double[] p2Dst,
+                                       double[] p3Dst, double[] p4Dst) {
 
         //source quad
         Point[] srcQuad = new Point[4];

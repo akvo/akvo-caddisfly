@@ -72,6 +72,7 @@ public class CalibrateListActivity extends BaseActivity
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
     private static final int REQUEST_CALIBRATE = 100;
+    private static final int FREEZE_BUTTON_DELAY_MILLIS = 500;
     private FloatingActionButton fabEditCalibration;
     private TextView textSubtitle;
     private TextView textSubtitle1;
@@ -228,7 +229,7 @@ public class CalibrateListActivity extends BaseActivity
             public void run() {
                 fabEditCalibration.setEnabled(true);
             }
-        }, 500);
+        }, FREEZE_BUTTON_DELAY_MILLIS);
 
         //Show edit calibration details dialog if required
         Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);

@@ -278,11 +278,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void takeNextPicture(long timeMillis) {
+    public void takeNextPicture(long delay) {
 
         if (cameraScheduledExecutorService != null) {
-            cameraScheduledExecutorService.cancelTasks(timeMillis);
-            cameraScheduledExecutorService.scheduleRunnable(takeNextPictureRunnable, timeMillis);
+            cameraScheduledExecutorService.cancelTasks(delay);
+            cameraScheduledExecutorService.scheduleRunnable(takeNextPictureRunnable, delay);
         }
     }
 

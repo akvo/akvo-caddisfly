@@ -49,7 +49,7 @@ interface CameraViewListener {
 
     void startNextPreview();
 
-    void takeNextPicture(long timeMillis);
+    void takeNextPicture(long delay);
 
     void stopCallback();
 

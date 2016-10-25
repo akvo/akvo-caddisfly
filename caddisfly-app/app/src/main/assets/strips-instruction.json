@@ -97,7 +97,7 @@
       ]
     },
     {
-      "name": "Phosphorus",
+      "name": "Phosphate",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "instructions": [
         {
@@ -106,6 +106,28 @@
         },
         {
           "text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Phosphate",
+      "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water for 1 second and remove.",
           "png": "instruction_dip"
         },
         {

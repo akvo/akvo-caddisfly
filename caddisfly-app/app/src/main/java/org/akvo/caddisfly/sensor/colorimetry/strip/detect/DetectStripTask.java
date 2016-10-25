@@ -236,8 +236,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 error = Constant.ERROR;
 
                                 //draw a red cross over the image
-                                // red in Lab schema
-                                Scalar red = new Scalar(135, 208, 195);
+                                Scalar red = new Scalar(135, 208, 195); // Lab color
                                 Imgproc.line(labStrip, new Point(0, 0), new Point(labStrip.cols(),
                                         labStrip.rows()), red, 2);
                                 Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),

@@ -52,11 +52,14 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
         try {
             FinderPatternInfo info = findPossibleCenters(data, getPreviewSize());
 
-            // Get quality count and update UI via listener
-            int[] countQuality = qualityChecks(data, info);
+            if (info != null) {
 
-            if (listener != null) {
-                listener.addCountToQualityCheckCount(countQuality);
+                // Get quality count and update UI via listener
+                int[] countQuality = qualityChecks(data, info);
+
+                if (listener != null) {
+                    listener.addCountToQualityCheckCount(countQuality);
+                }
             }
 
         } catch (Exception e) {

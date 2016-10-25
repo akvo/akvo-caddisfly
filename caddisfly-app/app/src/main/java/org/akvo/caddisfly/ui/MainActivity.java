@@ -44,6 +44,7 @@ import java.lang.ref.WeakReference;
 
 public class MainActivity extends BaseActivity {
 
+    private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private boolean mShouldClose = false;
 
@@ -218,7 +219,7 @@ public class MainActivity extends BaseActivity {
                         finish();
                     }
                 }
-            }, 4000);
+            }, AUTO_FINISH_DELAY_MILLIS);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }

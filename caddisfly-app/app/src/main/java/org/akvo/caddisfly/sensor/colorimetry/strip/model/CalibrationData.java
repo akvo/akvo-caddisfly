@@ -63,7 +63,7 @@ public class CalibrationData {
         this.whiteLines.add(line);
     }
 
-    public class Location {
+    public static class Location {
         public final Double x;
         public final Double y;
         @SuppressWarnings("unused")
@@ -76,7 +76,7 @@ public class CalibrationData {
         }
     }
 
-    public class CalValue {
+    public static class CalValue {
         public final double CIE_L;
         public final double CIE_A;
         public final double CIE_B;
@@ -89,7 +89,7 @@ public class CalibrationData {
         }
     }
 
-    public class WhiteLine {
+    public static class WhiteLine {
         public final Double[] p;
         public final Double width;
 

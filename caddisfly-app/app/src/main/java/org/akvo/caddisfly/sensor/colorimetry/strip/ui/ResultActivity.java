@@ -82,6 +82,7 @@ public class ResultActivity extends BaseActivity {
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
             String uuid = intent.getStringExtra(Constant.UUID);
+            //String uuid = "ce84aa91-28b9-4a8a-b57a-da7b0382570b";
 
             Mat strip;
             StripTest stripTest = new StripTest();
@@ -226,6 +227,10 @@ public class ResultActivity extends BaseActivity {
     }
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {
+        private static final int MIN_DISPLAY_WIDTH = 420;
+        private static final int MAX_DISPLAY_WIDTH = 600;
+        private static final int MAT_SIZE_MULTIPLIER = 50;
+        private static final int MAX_MAT_SIZE = 150;
         private final Boolean grouped;
         private final StripTest.Brand brand;
         private final List<StripTest.Brand.Patch> patches;
@@ -257,8 +262,6 @@ public class ResultActivity extends BaseActivity {
             Mat analyzedArea;
             Mat mat = params[0];
             int subMatSize = (int) patches.get(patchNum).getWidth();
-            int borderSize = 15; //(int) Math.ceil(mat.height() * 0.5);
-
             if (mat.empty() || mat.height() < subMatSize) {
                 return null;
             }
@@ -286,7 +289,7 @@ public class ResultActivity extends BaseActivity {
             double xTranslate;
 
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            int resultMatWidth = Math.max(420, Math.min(displayMetrics.widthPixels, 600));
+            int resultMatWidth = Math.max(MIN_DISPLAY_WIDTH, Math.min(displayMetrics.widthPixels, MAX_DISPLAY_WIDTH));
 
             // compute location of point to be sampled
             Mat patchArea;
@@ -307,16 +310,16 @@ public class ResultActivity extends BaseActivity {
                     colorsValueLab[p] = colorValueLab;
                 }
 
-                resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
+                resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
                         CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
-                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
-                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
+                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
-                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
-                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
+                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
                 Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
@@ -341,18 +344,18 @@ public class ResultActivity extends BaseActivity {
                 double y = strip.height() / 2d;
                 patchCenter = new Point(x, y);
 
-                resultPatchAreas = new Mat(0, Math.min(subMatSize * 50, 150),
+                resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
                         CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
                 Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
 
-                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * 50, 150) + 50,
-                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
+                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
-                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * 50, 150),
-                        Math.min(subMatSize * 50, 150)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
+                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
 
@@ -380,7 +383,7 @@ public class ResultActivity extends BaseActivity {
             ////////////// Create Image ////////////////////
 
             // create Mat to hold strip itself
-            mat = ResultUtil.createStripMat(mat, borderSize, patchCenter, grouped, resultMatWidth);
+            mat = ResultUtil.createStripMat(mat, patchCenter, grouped, resultMatWidth);
 
             // Create Mat to hold patchDescription of patch
             Mat descMat = ResultUtil.createDescriptionMat(patchDescription, resultMatWidth);

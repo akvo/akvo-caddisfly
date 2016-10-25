@@ -118,7 +118,7 @@ public class BrandInfoActivity extends BaseActivity {
             }
 
             JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
-            if (instructions.length() == 0) {
+            if (instructions == null || instructions.length() == 0) {
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
         }

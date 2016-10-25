@@ -55,6 +55,7 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
  */
 @SuppressWarnings("deprecation")
 class CameraCallbackTakePicture extends CameraCallbackBase {
+    private static final int TAKE_PICTURE_DELAY_MILLIS = 500;
     private boolean sending;
 
     CameraCallbackTakePicture(Context context, Camera.Parameters parameters) {
@@ -80,7 +81,7 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
             // Get quality count and update UI via listener
             int[] countQuality = qualityChecks(data, info);
 
-            if (listener != null) {
+            if (info != null && listener != null) {
                 listener.addCountToQualityCheckCount(countQuality);
             }
 
@@ -101,13 +102,13 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
 
                     listener.startNextPreview();
                 } else {
-                    listener.takeNextPicture(500);
+                    listener.takeNextPicture(TAKE_PICTURE_DELAY_MILLIS);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             listener.showError(e.getMessage());
-            listener.takeNextPicture(500);
+            listener.takeNextPicture(TAKE_PICTURE_DELAY_MILLIS);
         } finally {
             sending = false;
         }

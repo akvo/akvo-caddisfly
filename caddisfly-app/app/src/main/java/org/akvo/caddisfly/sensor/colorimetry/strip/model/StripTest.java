@@ -25,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +36,6 @@ import java.util.List;
 public class StripTest {
 
     public StripTest() {
-
     }
 
     public List<Brand> getBrandsAsList() {
@@ -73,14 +71,6 @@ public class StripTest {
 
     public enum GroupType {
         GROUP, INDIVIDUAL
-    }
-
-    private static class PatchComparator implements Comparator<Brand.Patch>, Serializable {
-
-        @Override
-        public int compare(Brand.Patch lhs, Brand.Patch rhs) {
-            return Double.compare(lhs.timeLapse, rhs.timeLapse);
-        }
     }
 
     public class Brand {
@@ -119,10 +109,10 @@ public class StripTest {
                                     brandDescription = strip.getString("brand");
                                     image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ", "-");
 
-                                    JSONArray patchesArr = strip.getJSONArray("patches");
-                                    for (int ii = 0; ii < patchesArr.length(); ii++) {
+                                    JSONArray patchesArray = strip.getJSONArray("patches");
+                                    for (int ii = 0; ii < patchesArray.length(); ii++) {
 
-                                        JSONObject patchObj = patchesArr.getJSONObject(ii);
+                                        JSONObject patchObj = patchesArray.getJSONObject(ii);
 
                                         String patchDesc = patchObj.getString("patchDesc");
                                         double patchPos = patchObj.getDouble("patchPos");
@@ -195,7 +185,12 @@ public class StripTest {
 
 
         public List<Patch> getPatchesOrderedByTimeLapse() {
-            Collections.sort(patches, new PatchComparator());
+            Collections.sort(patches, new Comparator<Patch>() {
+                @Override
+                public int compare(final Patch lhs, final Patch rhs) {
+                    return Double.compare(lhs.timeLapse, rhs.timeLapse);
+                }
+            });
             return patches;
         }
 

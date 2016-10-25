@@ -66,7 +66,7 @@ public class TestTypeListActivity extends BaseActivity {
             Collections.sort(brands, new Comparator<StripTest.Brand>() {
                 @Override
                 public int compare(final StripTest.Brand object1, final StripTest.Brand object2) {
-                    return object1.getName().compareTo(object2.getName());
+                    return object1.getName().compareToIgnoreCase(object2.getName());
                 }
             });
 

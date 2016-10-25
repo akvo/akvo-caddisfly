@@ -28,7 +28,7 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 public class AboutActivity extends BaseActivity {
 
-    static final int CHANGE_MODE_MIN_CLICKS = 10;
+    private static final int CHANGE_MODE_MIN_CLICKS = 10;
     private int clickCount = 0;
 
     @Override
