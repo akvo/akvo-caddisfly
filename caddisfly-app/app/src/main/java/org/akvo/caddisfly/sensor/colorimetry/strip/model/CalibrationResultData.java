@@ -23,9 +23,9 @@ import org.opencv.core.Mat;
  */
 public class CalibrationResultData {
     public final Mat calibratedImage;
-    public final double meanE94;
-    public final double maxE94;
-    public final double totalE94;
+    private final double meanE94;
+    private final double maxE94;
+    private final double totalE94;
 
     public CalibrationResultData(Mat img, double meanE94, double maxE94, double totalE94) {
         this.calibratedImage = img;

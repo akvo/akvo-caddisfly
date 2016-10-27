@@ -16,11 +16,15 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 
+import android.os.Build;
 import android.util.SparseIntArray;
 
+import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.BitMatrix;
 import org.akvo.caddisfly.util.detector.Detector;
 import org.akvo.caddisfly.util.detector.FinderPattern;
@@ -39,8 +43,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Mat;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 // Performs the calibration of the image
@@ -535,7 +545,6 @@ public final class CalibrationCard {
 
     private static void addPatch(Mat imgMat, Double x, Double y, CalibrationData calData, String label) {
 
-        //Map<String, CalibrationData.CalValue> calValueMap = calData.calValues;
         CalibrationData.CalValue calValue = calData.calValues.get(label);
         calData.hSizePixel = imgMat.cols();
         double hPixels = calData.hSizePixel / calData.hSize; // pixel per mm
@@ -575,18 +584,15 @@ public final class CalibrationCard {
      * @result: calibrated image
      */
     public static CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws Exception {
-        //System.out.println("*** qualityChecksOK of calibration");
 
         if (calData != null) {
             // illumination correction
             if (labImg != null) {
-                //System.out.println("*** ILLUMINATION - starting illumination correction");
                 labImg = doIlluminationCorrection(labImg, calData);
             }
 
             // 1D and 3D colour balance
             if (labImg != null) {
-                //System.out.println("*** ILLUMINATION - starting 1D and 3D balance");
                 labImg = do1D_3DCorrection(labImg, calData);
             }
 
@@ -595,7 +601,6 @@ public final class CalibrationCard {
 
             // insert calibration colours in image
             if (labImg != null) {
-                //System.out.println("*** ILLUMINATION - adding colours");
                 addCalColours(labImg, calData);
             }
 
@@ -656,10 +661,24 @@ public final class CalibrationCard {
             int num = 0;
             double totE94 = 0;
             double maxE94 = 0;
-            for (String label : calData.calValues.keySet()) {
+            StringBuilder calibrationColors = new StringBuilder();
+
+            List<String> sortedKeys = new ArrayList<>(calData.calValues.keySet());
+            if (AppPreferences.isDiagnosticMode()) {
+                Collections.sort(sortedKeys);
+            }
+
+            for (String label : sortedKeys) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
                 float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch colour
+
+                if (AppPreferences.isDiagnosticMode()) {
+                    calibrationColors.append(String.format(Locale.US,
+                            "{\"l\":\"%s\",\"CAL_L\":\"%.2f\",\"CAL_A\":\"%.2f\",\"CAL_B\":\"%.2f\",\"CIE_L\":\"%.2f\",\"CIE_A\":\"%.2f\",\"CIE_B\":\"%.2f\"},%n",
+                            label, cal.CIE_L / 2.55, cal.CIE_A - 128, cal.CIE_B - 128, LAB_color[0] / 2.55, LAB_color[1] - 128, LAB_color[2] - 128));
+                }
+
                 // as both measured and calibration values are in openCV range, we need to normalise the values
                 double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.CIE_L, cal.CIE_A, cal.CIE_B, true);
                 totE94 += E94Dist;
@@ -668,6 +687,16 @@ public final class CalibrationCard {
                 }
                 num++;
             }
+
+            if (AppPreferences.isDiagnosticMode()) {
+                calibrationColors.deleteCharAt(calibrationColors.length() - 2);
+                File path = FileHelper.getFilesDir(FileHelper.FileType.CARD, "");
+                FileUtil.saveToFile(path, new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.US).format(Calendar.getInstance().getTimeInMillis())
+                                + "_" + Build.MODEL.replace("_", "-") + "_CC"
+                                + String.valueOf(getMostFrequentVersionNumber()) + ".json",
+                        "{\"calData\": {\"calValues\": [" + calibrationColors.toString() + "]}}");
+            }
+
             return new double[]{totE94 / num, maxE94, totE94};
         } catch (Exception e) {
             e.printStackTrace();

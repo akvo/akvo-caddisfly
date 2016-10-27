@@ -31,6 +31,7 @@ public final class FileHelper {
     private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
     private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "config"; // Calibration files
     private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
+    private static final String DIR_CARD = ROOT_DIRECTORY + File.separator + "color-card"; // Calibration files
 
     private FileHelper() {
     }
@@ -69,6 +70,9 @@ public final class FileHelper {
             case IMAGE:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_IMAGE;
                 break;
+            case CARD:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CARD;
+                break;
             default:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true);
         }
@@ -87,7 +91,7 @@ public final class FileHelper {
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, CONFIG, IMAGE
+        CALIBRATION, CONFIG, IMAGE, CARD
     }
 
 }

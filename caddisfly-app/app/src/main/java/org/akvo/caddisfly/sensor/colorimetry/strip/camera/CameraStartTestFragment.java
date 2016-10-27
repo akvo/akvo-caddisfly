@@ -180,15 +180,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         handler = new Handler(Looper.getMainLooper());
 
         //use brightness view as a button to switch on and off the flash
-        //TODO: remove in release version?
-        if (exposureView != null) {
-            exposureView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.toggleFlashMode(true);
-                }
-            });
-        }
+//        if (exposureView != null) {
+//            exposureView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mListener.toggleFlashMode(true);
+//                }
+//            });
+//        }
 
         return rootView;
     }

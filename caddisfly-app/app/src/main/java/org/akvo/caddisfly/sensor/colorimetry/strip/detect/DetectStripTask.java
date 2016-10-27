@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
@@ -41,7 +40,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -186,9 +184,9 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             listener.showMessage();
                             CalibrationResultData calResult = getCalibratedImage(warpMat);
                             calibrationMat = calResult.calibratedImage;
-                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
-                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
-                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
+//                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
+//                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
+//                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
 //                            if (DEVELOP_MODE) {
 //                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +

@@ -85,7 +85,6 @@ public class CalibrationData {
             this.CIE_L = CIE_L;
             this.CIE_A = CIE_A;
             this.CIE_B = CIE_B;
-
         }
     }
 

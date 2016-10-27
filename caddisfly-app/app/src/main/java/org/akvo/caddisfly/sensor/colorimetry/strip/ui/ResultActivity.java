@@ -82,7 +82,6 @@ public class ResultActivity extends BaseActivity {
             Intent intent = getIntent();
             fileStorage = new FileStorage(this);
             String uuid = intent.getStringExtra(Constant.UUID);
-            //String uuid = "ce84aa91-28b9-4a8a-b57a-da7b0382570b";
 
             Mat strip;
             StripTest stripTest = new StripTest();
