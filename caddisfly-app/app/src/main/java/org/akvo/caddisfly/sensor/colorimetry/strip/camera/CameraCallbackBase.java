@@ -94,7 +94,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
     int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();
-        float[] tilts = null;
+        float[] tilts;
         int luminance;
         int shadow = 0;
         int titleLevel = 0;
@@ -156,6 +156,8 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     tilts = PreviewUtil.getTilt(info);
                     // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
                     titleLevel = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                } else {
+                    tilts = null;
                 }
 
                 qualityChecksArray[0] = luminance;

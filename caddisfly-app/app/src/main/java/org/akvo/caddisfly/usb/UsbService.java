@@ -218,7 +218,7 @@ public class UsbService extends Service {
     }
 
     public boolean isUsbConnected() {
-        return connection != null;
+        return serialPortConnected;
     }
 
     public class UsbBinder extends Binder {

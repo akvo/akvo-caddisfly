@@ -103,9 +103,9 @@ public final class CalibrationCard {
                 JSONObject obj = new JSONObject(json);
 
                 // general data
-                calData.date = obj.getString("date");
-                calData.cardVersion = obj.getString("cardVersion");
-                calData.unit = obj.getString("unit");
+//                calData.date = obj.getString("date");
+//                calData.cardVersion = obj.getString("cardVersion");
+//                calData.unit = obj.getString("unit");
 
                 // sizes
                 JSONObject calDataJSON = obj.getJSONObject("calData");
@@ -204,13 +204,13 @@ public final class CalibrationCard {
         double vPixels = calData.vSizePixel / calData.vSize; // pixel per mm in the vertical direction
 
         for (CalibrationData.WhiteLine line : lines) {
-            double xStart = line.p[0];
-            double yStart = line.p[1];
-            double xEnd = line.p[2];
-            double yEnd = line.p[3];
+            double xStart = line.getPosition()[0];
+            double yStart = line.getPosition()[1];
+            double xEnd = line.getPosition()[2];
+            double yEnd = line.getPosition()[3];
             double xDiff = (xEnd - xStart) * ONE_OVER_NINE;
             double yDiff = (yEnd - yStart) * ONE_OVER_NINE;
-            int dp = (int) Math.round(line.width * hPixels * 0.5);
+            int dp = (int) Math.round(line.getWidth() * hPixels * 0.5);
             if (dp == 0) {
                 dp = 1; // minimum of one pixel
             }
@@ -301,9 +301,12 @@ public final class CalibrationCard {
         float Bf = (float) solutionB.getEntry(5);
 
         // compute mean (the luminosity value of the plane in the middle of the image)
-        float L_mean = (float) (0.5 * La * pWidth + 0.5 * Lc * pHeight + Lb * pWidth * pWidth / 3.0 + Ld * pHeight * pHeight / 3.0 + Le * 0.25 * pHeight * pWidth + Lf);
-        float A_mean = (float) (0.5 * Aa * pWidth + 0.5 * Ac * pHeight + Ab * pWidth * pWidth / 3.0 + Ad * pHeight * pHeight / 3.0 + Ae * 0.25 * pHeight * pWidth + Af);
-        float B_mean = (float) (0.5 * Ba * pWidth + 0.5 * Bc * pHeight + Bb * pWidth * pWidth / 3.0 + Bd * pHeight * pHeight / 3.0 + Be * 0.25 * pHeight * pWidth + Bf);
+        float L_mean = (float) (0.5 * La * pWidth + 0.5 * Lc * pHeight + Lb * pWidth * pWidth / 3.0
+                + Ld * pHeight * pHeight / 3.0 + Le * 0.25 * pHeight * pWidth + Lf);
+        float A_mean = (float) (0.5 * Aa * pWidth + 0.5 * Ac * pHeight + Ab * pWidth * pWidth / 3.0
+                + Ad * pHeight * pHeight / 3.0 + Ae * 0.25 * pHeight * pWidth + Af);
+        float B_mean = (float) (0.5 * Ba * pWidth + 0.5 * Bc * pHeight + Bb * pWidth * pWidth / 3.0
+                + Bd * pHeight * pHeight / 3.0 + Be * 0.25 * pHeight * pWidth + Bf);
 
         // Correct image
         // we do this per row. We tried to do it in one block, but there is no speed difference.
@@ -426,9 +429,9 @@ public final class CalibrationCard {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
                 float[] LAB_color = measurePatch(imgMat, loc.x, loc.y, calData); // measure patch colour
-                obsL.add(LAB_color[0], cal.CIE_L);
-                obsA.add(LAB_color[1], cal.CIE_A);
-                obsB.add(LAB_color[2], cal.CIE_B);
+                obsL.add(LAB_color[0], cal.getL());
+                obsA.add(LAB_color[1], cal.getA());
+                obsB.add(LAB_color[2], cal.getB());
                 calResultIllumination.put(label, new double[]{LAB_color[0], LAB_color[1], LAB_color[2]});
             }
         } catch (Exception e) {
@@ -481,9 +484,9 @@ public final class CalibrationCard {
                 coefficient.setEntry(index, 1, cal1dResult[1]);
                 coefficient.setEntry(index, 2, cal1dResult[2]);
 
-                cal.setEntry(index, 0, calv.CIE_L);
-                cal.setEntry(index, 1, calv.CIE_A);
-                cal.setEntry(index, 2, calv.CIE_B);
+                cal.setEntry(index, 0, calv.getL());
+                cal.setEntry(index, 1, calv.getA());
+                cal.setEntry(index, 2, calv.getB());
                 index++;
             }
 
@@ -557,9 +560,9 @@ public final class CalibrationCard {
         for (int i = -dp; i <= dp; i++) {
             for (int ii = -dp; ii <= dp; ii++) {
                 byte[] col = new byte[3];
-                col[0] = (byte) Math.round(calValue.CIE_L);
-                col[1] = (byte) Math.round(calValue.CIE_A);
-                col[2] = (byte) Math.round(calValue.CIE_B);
+                col[0] = (byte) Math.round(calValue.getL());
+                col[1] = (byte) Math.round(calValue.getA());
+                col[2] = (byte) Math.round(calValue.getB());
                 imgMat.put(yp + i, xp + ii, col);
             }
         }
@@ -676,11 +679,11 @@ public final class CalibrationCard {
                 if (AppPreferences.isDiagnosticMode()) {
                     calibrationColors.append(String.format(Locale.US,
                             "{\"l\":\"%s\",\"CAL_L\":\"%.2f\",\"CAL_A\":\"%.2f\",\"CAL_B\":\"%.2f\",\"CIE_L\":\"%.2f\",\"CIE_A\":\"%.2f\",\"CIE_B\":\"%.2f\"},%n",
-                            label, cal.CIE_L / 2.55, cal.CIE_A - 128, cal.CIE_B - 128, LAB_color[0] / 2.55, LAB_color[1] - 128, LAB_color[2] - 128));
+                            label, cal.getL() / 2.55, cal.getA() - 128, cal.getB() - 128, LAB_color[0] / 2.55, LAB_color[1] - 128, LAB_color[2] - 128));
                 }
 
                 // as both measured and calibration values are in openCV range, we need to normalise the values
-                double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.CIE_L, cal.CIE_A, cal.CIE_B, true);
+                double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
                 totE94 += E94Dist;
                 if (E94Dist > maxE94) {
                     maxE94 = E94Dist;
@@ -837,12 +840,10 @@ public final class CalibrationCard {
 
                 return code;
             } catch (Exception e) {
-                //System.out.println("***decodeCalibrationCard error ");
                 e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
         } else {
-            //System.out.println("***decodeCalibrationCard finder patterns < 4");
             return CODE_NOT_FOUND;
         }
     }

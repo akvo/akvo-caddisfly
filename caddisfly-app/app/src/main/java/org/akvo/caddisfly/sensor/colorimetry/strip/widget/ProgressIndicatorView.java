@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,6 +43,8 @@ import java.util.List;
  */
 public class ProgressIndicatorView extends LinearLayout {
 
+    private static final int FULLY_OPAQUE = 255;
+    private static final int MAX_ANIMATION_DURATION = 5000;
     private final Bitmap checkedBox;
     private final Bitmap uncheckedBox;
     private final Bitmap background;
@@ -175,7 +178,7 @@ public class ProgressIndicatorView extends LinearLayout {
             for (int i = 0; i < steps.size(); i++) {
 
                 Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
-                blink.setDuration(Math.min(5000, steps.get(i).timeLapse * 1000));
+                blink.setDuration(Math.min(MAX_ANIMATION_DURATION, steps.get(i).timeLapse * 1000));
                 blink.setAnimationListener(new BlinkAnimListener(i));
 
                 if (steps.get(i).getTimeLapse() - timeLapsed < 5) {
@@ -216,7 +219,7 @@ public class ProgressIndicatorView extends LinearLayout {
             return;
         }
 
-        paint.setAlpha(255);
+        paint.setAlpha(FULLY_OPAQUE);
 
         canvas.save();
         for (int i = 0; i < steps.size(); i++) {
@@ -298,10 +301,10 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
-    private class Step {
-        final int timeLapse;
-        boolean animationEnded = false;
-        boolean pictureTaken = false;
+    private static class Step {
+        private final int timeLapse;
+        private boolean animationEnded = false;
+        private boolean pictureTaken = false;
 
         Step(int timeLapse) {
             this.timeLapse = timeLapse;
@@ -312,7 +315,7 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
-    private class StepComparator implements Comparator<Step> {
+    private static class StepComparator implements Comparator<Step>, Serializable {
 
         @Override
         public int compare(Step lhs, Step rhs) {

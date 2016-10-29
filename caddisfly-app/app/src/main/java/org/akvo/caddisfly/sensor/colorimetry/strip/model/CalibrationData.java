@@ -31,12 +31,6 @@ public class CalibrationData {
     public final double[] stripArea;
     public int hSizePixel;
     public int vSizePixel;
-    @SuppressWarnings("unused")
-    public String cardVersion;
-    @SuppressWarnings("unused")
-    public String date;
-    @SuppressWarnings("unused")
-    public String unit;
     public double patchSize;
     public double hSize;
     public double vSize;
@@ -53,8 +47,8 @@ public class CalibrationData {
         this.locations.put(label, loc);
     }
 
-    public void addCal(String label, double CIE_L, double CIE_A, double CIE_B) {
-        CalValue calVal = new CalValue(CIE_L, CIE_A, CIE_B);
+    public void addCal(String label, double l, double a, double b) {
+        CalValue calVal = new CalValue(l, a, b);
         this.calValues.put(label, calVal);
     }
 
@@ -67,7 +61,7 @@ public class CalibrationData {
         public final Double x;
         public final Double y;
         @SuppressWarnings("unused")
-        final Boolean grayPatch;
+        private final Boolean grayPatch;
 
         Location(Double x, Double y, Boolean grayPatch) {
             this.x = x;
@@ -77,20 +71,32 @@ public class CalibrationData {
     }
 
     public static class CalValue {
-        public final double CIE_L;
-        public final double CIE_A;
-        public final double CIE_B;
+        private final double l;
+        private final double a;
+        private final double b;
 
-        CalValue(double CIE_L, double CIE_A, double CIE_B) {
-            this.CIE_L = CIE_L;
-            this.CIE_A = CIE_A;
-            this.CIE_B = CIE_B;
+        CalValue(double l, double a, double b) {
+            this.l = l;
+            this.a = a;
+            this.b = b;
+        }
+
+        public double getL() {
+            return l;
+        }
+
+        public double getA() {
+            return a;
+        }
+
+        public double getB() {
+            return b;
         }
     }
 
     public static class WhiteLine {
-        public final Double[] p;
-        public final Double width;
+        private final Double[] p;
+        private final Double width;
 
         WhiteLine(Double x1, Double y1, Double x2, Double y2, Double width) {
             Double[] pArray = new Double[4];
@@ -100,6 +106,14 @@ public class CalibrationData {
             pArray[3] = y2;
             this.p = pArray;
             this.width = width;
+        }
+
+        public Double[] getPosition() {
+            return p.clone();
+        }
+
+        public Double getWidth() {
+            return width;
         }
     }
 }

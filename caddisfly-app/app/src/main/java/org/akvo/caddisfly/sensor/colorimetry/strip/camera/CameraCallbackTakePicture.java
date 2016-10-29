@@ -76,24 +76,26 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
 
         CameraViewListener listener = getListener();
         try {
-            FinderPatternInfo info = findPossibleCenters(data, getPreviewSize());
-
-            // Get quality count and update UI via listener
-            int[] countQuality = qualityChecks(data, info);
-
-            if (info != null && listener != null) {
-                listener.addCountToQualityCheckCount(countQuality);
-            }
-
-            //sumQuality should amount to 3, if all checks are OK: [1,1,1]
-            int sumQuality = 0;
-            if (countQuality != null) {
-                for (int i : countQuality) {
-                    sumQuality += i;
-                }
-            }
-
             if (listener != null) {
+                FinderPatternInfo info = findPossibleCenters(data, getPreviewSize());
+
+                // Get quality count and update UI via listener
+                int[] countQuality = qualityChecks(data, info);
+
+                if (info != null) {
+                    listener.addCountToQualityCheckCount(countQuality);
+                } else {
+                    listener.showLevel(null);
+                }
+
+                //sumQuality should amount to 3, if all checks are OK: [1,1,1]
+                int sumQuality = 0;
+                if (countQuality != null) {
+                    for (int i : countQuality) {
+                        sumQuality += i;
+                    }
+                }
+
                 if (info != null && sumQuality == 3 && listener.qualityChecksOK()) {
 
                     listener.playSound();

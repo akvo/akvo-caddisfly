@@ -49,7 +49,8 @@ import org.json.JSONException;
 public class InstructionFragment extends CameraSharedFragmentBase {
 
     private static final int BUTTON_ENABLE_DELAY = 4000;
-    private static final int ANIMATION_DURATION_MILLIS = 800;
+    private static final int ANIMATION_DURATION_MILLIS = 1000;
+    private static final float BUTTON_START_ALPHA = 0.3f;
     private CameraViewListener mListener;
 
     public InstructionFragment() {
@@ -71,7 +72,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         final Button buttonStart = (Button) rootView.findViewById(R.id.button_start);
         buttonStart.setEnabled(false);
-        buttonStart.setAlpha(0);
+        buttonStart.setAlpha(BUTTON_START_ALPHA);
         LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_information);
 
         TextView textTitle = (TextView) rootView.findViewById(R.id.textToolbarTitle);
@@ -112,7 +113,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 buttonStart.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(0f, 1.0f);
+                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1.0f);
                 animation.setDuration(ANIMATION_DURATION_MILLIS);
                 animation.setFillAfter(true);
                 buttonStart.setAlpha(1f);

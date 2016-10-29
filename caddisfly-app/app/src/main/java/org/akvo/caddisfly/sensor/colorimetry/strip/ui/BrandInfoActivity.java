@@ -104,6 +104,8 @@ public class BrandInfoActivity extends BaseActivity {
 
                 Drawable drawable = Drawable.createFromStream(ims, null);
                 imageView.setImageDrawable(drawable);
+                imageView.setScaleType(stripTest.getBrand(mUuid).getImageScale().equals("centerCrop")
+                        ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
@@ -189,10 +191,7 @@ public class BrandInfoActivity extends BaseActivity {
                 intent.putExtra("image", data.getStringExtra("image"));
             }
 
-            // If an external activity is expecting the result then finish
-            if (!getIntent().getBooleanExtra("internal", false)) {
-                finish();
-            }
+            finish();
         }
     }
 

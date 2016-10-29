@@ -60,6 +60,8 @@ class CameraCallbackOneShotPreview extends CameraCallbackBase {
                 if (listener != null) {
                     listener.addCountToQualityCheckCount(countQuality);
                 }
+            } else {
+                listener.showLevel(null);
             }
 
         } catch (Exception e) {

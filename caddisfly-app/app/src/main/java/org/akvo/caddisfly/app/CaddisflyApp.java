@@ -108,7 +108,7 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        tests = TestConfigHelper.loadConfigurationsForAllTests();
+        tests = TestConfigHelper.loadTestsList();
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
@@ -124,7 +124,7 @@ public class CaddisflyApp extends Application {
      */
     public void loadTestConfigurationByUuid(String uuid) {
 
-        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByUuid(uuid);
+        mCurrentTestInfo = TestConfigHelper.loadTestByUuid(uuid);
 
         if (mCurrentTestInfo != null) {
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {

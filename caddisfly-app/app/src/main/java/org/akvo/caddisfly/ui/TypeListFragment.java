@@ -53,7 +53,7 @@ public class TypeListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTests = TestConfigHelper.loadConfigurationsForAllTests();
+        mTests = TestConfigHelper.loadTestsList();
 
         //Only items that require calibration to be displayed in the list
         for (int i = mTests.size() - 1; i >= 0; i--) {

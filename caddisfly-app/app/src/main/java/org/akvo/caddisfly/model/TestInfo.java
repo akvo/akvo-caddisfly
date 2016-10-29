@@ -37,13 +37,14 @@ import java.util.Locale;
  * Model to hold test configuration information
  */
 public class TestInfo {
+    private static final double RESULT_ERROR_MARGIN = 0.2;
     private final Hashtable names;
     private final ArrayList<String> uuid;
-    private final String unit;
     private final ArrayList<Swatch> swatches;
     private final TestType testType;
     private final ArrayList<Integer> dilutions;
     private final List<SubTest> subTests = new ArrayList<>();
+    private String unit;
     private boolean requiresCalibration;
     private boolean allInteger = true;
     private boolean isDiagnostic;
@@ -58,19 +59,14 @@ public class TestInfo {
     private boolean useGrayScale;
     private String shortCode;
 
-    public TestInfo(Hashtable names, String unit, TestType testType,
-                    boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
-                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid, ArrayList<String> uuids,
-                    JSONArray resultsArray) {
-        this.names = names;
+    public TestInfo(Hashtable names, TestType testType, String[] swatchArray,
+                    String[] defaultColorsArray, String[] dilutionsArray,
+                    ArrayList<String> uuids, JSONArray resultsArray) {
+        this.names = names == null ? null : (Hashtable) names.clone();
         this.testType = testType;
-        this.unit = unit;
         this.uuid = uuids;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
-        this.requiresCalibration = requiresCalibration;
-        this.isDiagnostic = isDiagnostic;
-        this.monthsValid = monthsValid;
 
         for (int i = 0; i < swatchArray.length; i++) {
 
@@ -126,6 +122,9 @@ public class TestInfo {
             }
         }
 
+        if (subTests.size() > 0) {
+            this.unit = subTests.get(0).getUnit();
+        }
     }
 
     public TestInfo() {
@@ -191,7 +190,7 @@ public class TestInfo {
 
     public double getDilutionRequiredLevel() {
         Swatch swatch = swatches.get(swatches.size() - 1);
-        return swatch.getValue() - 0.2;
+        return swatch.getValue() - RESULT_ERROR_MARGIN;
     }
 
     public void addSwatch(Swatch value) {
@@ -317,7 +316,11 @@ public class TestInfo {
         this.shortCode = shortCode;
     }
 
-    public class SubTest {
+    public void setMonthsValid(int monthsValid) {
+        this.monthsValid = monthsValid;
+    }
+
+    public static class SubTest {
         private final int id;
         private final String desc;
         private final String unit;

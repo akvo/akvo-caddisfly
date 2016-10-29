@@ -196,12 +196,6 @@ public class CalibrateListActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
-    }
-
     /**
      * Callback method from {@link CalibrateListFragment.Callbacks}
      * indicating that the item with the given ID was selected.

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -32,7 +31,9 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
  * Created by linda on 10/27/15
  */
 public class LevelView extends View {
-    private final Paint redPaint;
+    private static final int DEGREES_90 = 90;
+    private static final int DEGREES_180 = 180;
+    private final Paint drawPaint;
     private final Bitmap arrowBitmap;
     private float[] tilts;
 
@@ -47,10 +48,8 @@ public class LevelView extends View {
     public LevelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        redPaint = new Paint();
-        redPaint.setColor(Color.RED);
-        redPaint.setStyle(Paint.Style.STROKE);
-        redPaint.setStrokeWidth(3);
+        drawPaint = new Paint();
+        drawPaint.setAntiAlias(false);
 
         arrowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.level);
     }
@@ -63,7 +62,7 @@ public class LevelView extends View {
             if (degrees != 0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2f, canvas.getHeight() / 2f);
-                canvas.drawBitmap(arrowBitmap, 0, 0, redPaint);
+                canvas.drawBitmap(arrowBitmap, 0, 0, drawPaint);
                 canvas.restore();
             }
         }
@@ -71,7 +70,7 @@ public class LevelView extends View {
     }
 
     public void setAngles(float[] tiltValues) {
-        this.tilts = tiltValues;
+        this.tilts = tiltValues == null ? null : tiltValues.clone();
         invalidate();
     }
 
@@ -80,12 +79,12 @@ public class LevelView extends View {
 
         // if the horizontal tilt is too large, indicate it
         if (Math.abs(tiltValues[0] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tiltValues[0] - 1 < 0 ? -90 : 90;
+            degrees = tiltValues[0] - 1 < 0 ? -DEGREES_90 : DEGREES_90;
         }
 
         // if the vertical tilt is too large, indicate it
         if (Math.abs(tiltValues[1] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tiltValues[1] - 1 < 0 ? 180 : 1;
+            degrees = tiltValues[1] - 1 < 0 ? DEGREES_180 : 1;
         }
         return degrees;
     }

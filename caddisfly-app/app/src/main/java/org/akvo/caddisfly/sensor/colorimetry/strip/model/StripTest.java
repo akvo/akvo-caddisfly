@@ -79,6 +79,7 @@ public class StripTest {
         private String name;
         private String brandDescription;
         private String image;
+        private String imageScale;
         private double stripLength;
         //private double stripHeight;
         private GroupType groupingType;
@@ -108,6 +109,7 @@ public class StripTest {
                                     name = strip.getString("name");
                                     brandDescription = strip.getString("brand");
                                     image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ", "-");
+                                    imageScale = strip.has("imageScale") ? strip.getString("imageScale") : "";
 
                                     JSONArray patchesArray = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArray.length(); ii++) {
@@ -196,6 +198,10 @@ public class StripTest {
 
         public String getImage() {
             return image;
+        }
+
+        public String getImageScale() {
+            return imageScale;
         }
 
         public class Patch {

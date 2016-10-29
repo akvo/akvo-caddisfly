@@ -23,6 +23,7 @@ import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
@@ -40,6 +41,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -48,7 +50,10 @@ import java.util.UUID;
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
+    private static final int BITMAP_SCALED_WIDTH = 800;
+    private static final int BITMAP_SCALED_HEIGHT = 480;
     private static final boolean DEVELOP_MODE = false;
+    private static final Scalar RED_LAB_COLOR = new Scalar(135, 208, 195);
     private int format;
     private int width;
     private int height;
@@ -175,7 +180,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             if (FileStorage.isExternalStorageWritable()) {
                                 FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
                             }
-                            Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                            Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
                         }
 
                         //calibrate
@@ -188,10 +193,11 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
 //                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
-//                            if (DEVELOP_MODE) {
-//                                listener.showMessage("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94) +
-//                                        ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94));
-//                            }
+                            if (AppPreferences.isDiagnosticMode()) {
+                                listener.showError("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
+                                        + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
+                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
+                            }
                         } catch (Exception e) {
                             //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
@@ -205,7 +211,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             Imgproc.cvtColor(calibrationMat, rgb, Imgproc.COLOR_Lab2RGB);
                             Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
                             Utils.matToBitmap(rgb, bitmap);
-                            Bitmap.createScaledBitmap(bitmap, 800, 480, false);
+                            Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
                         }
 
                         // cut out black area that contains the strip
@@ -234,7 +240,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 error = Constant.ERROR;
 
                                 //draw a red cross over the image
-                                Scalar red = new Scalar(135, 208, 195); // Lab color
+                                Scalar red = RED_LAB_COLOR; // Lab color
                                 Imgproc.line(labStrip, new Point(0, 0), new Point(labStrip.cols(),
                                         labStrip.rows()), red, 2);
                                 Imgproc.line(labStrip, new Point(0, labStrip.rows()), new Point(labStrip.cols(),

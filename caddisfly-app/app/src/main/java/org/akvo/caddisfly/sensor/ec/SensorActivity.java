@@ -55,6 +55,10 @@ import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
+    private static final int REQUEST_DELAY_MILLIS = 2000;
+    private static final int ANIMATION_DURATION = 500;
+    private static final int ANIMATION_DURATION_LONG = 1500;
+    private static final int FINISH_DELAY_MILLIS = 3000;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private TestInfo mCurrentTestInfo;
@@ -80,7 +84,7 @@ public class SensorActivity extends BaseActivity {
             usbService.setHandler(mHandler);
             if (usbService.isUsbConnected()) {
                 textSubtitle.setText(R.string.sensorConnected);
-                imageUsbConnection.animate().alpha(0f).setDuration(500);
+                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
                 progressWait.setVisibility(View.VISIBLE);
             }
         }
@@ -113,7 +117,7 @@ public class SensorActivity extends BaseActivity {
         @Override
         public void run() {
             requestResult();
-            handler.postDelayed(this, 2000);
+            handler.postDelayed(this, REQUEST_DELAY_MILLIS);
         }
     };
 
@@ -275,8 +279,8 @@ public class SensorActivity extends BaseActivity {
     private void displayNotConnectedView() {
         mReadData.setLength(0);
         progressWait.setVisibility(View.GONE);
-        layoutResult.animate().alpha(0f).setDuration(500);
-        imageUsbConnection.animate().alpha(0.9f).setDuration(1500);
+        layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+        imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
         buttonAcceptResult.setVisibility(View.GONE);
         textSubtitle.setText(R.string.deviceConnectSensor);
 
@@ -285,7 +289,7 @@ public class SensorActivity extends BaseActivity {
                 public void run() {
                     finish();
                 }
-            }, 3000);
+            }, FINISH_DELAY_MILLIS);
         }
     }
 
@@ -388,8 +392,8 @@ public class SensorActivity extends BaseActivity {
                     buttonAcceptResult.setVisibility(View.GONE);
                 }
 
-                layoutResult.animate().alpha(1f).setDuration(500);
-                imageUsbConnection.animate().alpha(0f).setDuration(500);
+                layoutResult.animate().alpha(1f).setDuration(ANIMATION_DURATION);
+                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
             }
         }
     }

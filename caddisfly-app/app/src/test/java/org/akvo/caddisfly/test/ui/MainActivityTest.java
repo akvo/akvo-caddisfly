@@ -198,7 +198,6 @@ public class MainActivityTest {
                 "      \"uuid\": [\n" +
                 "        \"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\"\n" +
                 "      ],\n" +
-                "      \"unit\": \"ppm\",\n" +
                 "      \"calibrate\": \"true\",\n" +
                 "      \"ranges\": \"0,0.5,1,1.5,2\",\n" +
                 "      \"defaultColors\": \"FD13AB,FE217C,F53A48,E75D28,D36B0B\",\n" +
@@ -226,7 +225,6 @@ public class MainActivityTest {
                 "        \"f88237b7-be3d-4fac-bbee-ab328eefcd14\"\n" +
                 "      ],\n" +
                 "      \"code\": \"econd\",\n" +
-                "      \"unit\": \"μS/cm\",\n" +
                 "      \"calibrate\": \"true\",\n" +
                 "      \"ranges\": \"0\",\n" +
                 "      \"results\": [\n" +
@@ -256,7 +254,6 @@ public class MainActivityTest {
                 "        \"d40d013a-10b1-44c4-bcea-02f8f7024105\"\n" +
                 "      ],\n" +
                 "      \"code\": \"tempe\",\n" +
-                "      \"unit\": \"°Celsius\",\n" +
                 "      \"calibrate\": \"false\",\n" +
                 "      \"ranges\": \"0\",\n" +
                 "      \"results\": [\n" +
@@ -288,7 +285,7 @@ public class MainActivityTest {
                 "    }\n" +
                 "  ]\n" +
                 "}\n";
-        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
+        TestInfo testInfo = TestConfigHelper.loadTestByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
         assert testInfo != null;
         assertEquals(SensorConstants.FLUORIDE_ID, testInfo.getCode());
     }
@@ -340,7 +337,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123), Color.TRANSPARENT));
 
         assertEquals(22.2095458984375, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
     }
 
     @Test
@@ -366,7 +363,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86), Color.TRANSPARENT));
 
         assertEquals(29.022808837890626, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
     }
 
     @Test

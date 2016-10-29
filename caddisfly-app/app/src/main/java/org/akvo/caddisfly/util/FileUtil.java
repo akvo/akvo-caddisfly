@@ -22,11 +22,15 @@ import android.os.Environment;
 import org.akvo.caddisfly.app.CaddisflyApp;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -43,10 +47,10 @@ public final class FileUtil {
      * @param path     the path to the file
      * @param fileName the name of the file to delete
      */
-    public static void deleteFile(File path, String fileName) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static boolean deleteFile(File path, String fileName) {
         File file = new File(path, fileName);
-        //noinspection ResultOfMethodCallIgnored
-        file.delete();
+        return file.delete();
     }
 
     /**
@@ -75,32 +79,21 @@ public final class FileUtil {
     }
 
     public static void saveToFile(File folder, String name, String data) {
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
 
         File file = new File(folder, name);
 
+        PrintWriter pw = null;
         try {
-            if (!file.exists()) {
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            FileWriter filewriter = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(filewriter);
-
-            out.write(data);
-
-            out.close();
-            filewriter.close();
+            Writer w = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            pw = new PrintWriter(w);
+            pw.write(data);
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
         }
     }
 
@@ -112,26 +105,38 @@ public final class FileUtil {
      */
     public static String loadTextFromFile(File file) {
 
-        StringBuilder text = new StringBuilder();
-        BufferedReader br = null;
+        if (file.exists()) {
 
-        try {
-            br = new BufferedReader(new FileReader(file));
-            String line;
+            InputStreamReader isr = null;
+            FileInputStream fis = null;
+            try {
 
-            while ((line = br.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-            return text.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                int i;
+                while ((i = isr.read()) != -1) {
+                    stringBuilder.append((char) i);
+                }
+                return stringBuilder.toString();
+
+            } catch (IOException ignored) {
+            } finally {
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -148,24 +153,51 @@ public final class FileUtil {
      */
     public static ArrayList<String> loadFromFile(File path, String fileName) {
 
-        try {
-            ArrayList<String> arrayList = new ArrayList<>();
-            if (path.exists()) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        if (path.exists()) {
 
-                File file = new File(path, fileName);
+            File file = new File(path, fileName);
 
-                FileReader filereader = new FileReader(file);
+            BufferedReader bufferedReader = null;
+            InputStreamReader isr = null;
+            FileInputStream fis = null;
+            try {
 
-                BufferedReader in = new BufferedReader(filereader);
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+                bufferedReader = new BufferedReader(isr);
+
                 String line;
-                while ((line = in.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null) {
                     arrayList.add(line);
                 }
-                in.close();
-                filereader.close();
+
+                return arrayList;
+
+            } catch (IOException ignored) {
+            } finally {
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            return arrayList;
-        } catch (Exception ignored) {
         }
 
         return null;

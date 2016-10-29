@@ -60,13 +60,44 @@ public final class TestConfigHelper {
      * @param uuid the test uuid
      * @return the TestInfo instance
      */
-    public static TestInfo loadTestConfigurationByUuid(String uuid) {
+    public static TestInfo loadTestByUuid(String uuid) {
 
-        ArrayList<TestInfo> tests = loadConfigurationsForAllTests();
+        if (!uuid.isEmpty()) {
 
-        for (TestInfo test : tests) {
-            if (test.getUuid().contains(uuid)) {
-                return test;
+            for (int i = 0; i < 3; i++) {
+
+                String jsonText;
+                switch (i) {
+                    case 1:
+                        // Load any custom tests from the custom test config file
+                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
+                        jsonText = FileUtil.loadTextFromFile(file);
+                        break;
+                    case 2:
+                        // Load any experimental tests if app is in diagnostic mode
+                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json");
+                        break;
+                    default:
+                        // Load the pre-configured tests from the app
+                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+                }
+                try {
+                    JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
+                    for (int j = 0; j < array.length(); j++) {
+                        JSONObject item = array.getJSONObject(j);
+
+                        JSONArray uuidArray = item.getJSONArray("uuid");
+                        for (int k = 0; k < uuidArray.length(); k++) {
+                            if (uuid.equalsIgnoreCase(uuidArray.getString(k))) {
+                                return loadTest(item);
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
         return null;
@@ -77,7 +108,7 @@ public final class TestConfigHelper {
      *
      * @return ArrayList of TestInfo instances filled with config
      */
-    public static ArrayList<TestInfo> loadConfigurationsForAllTests() {
+    public static ArrayList<TestInfo> loadTestsList() {
 
         ArrayList<TestInfo> tests = new ArrayList<>();
 
@@ -92,15 +123,15 @@ public final class TestConfigHelper {
 
         // Load any experimental tests if app is in diagnostic mode
         if (AppPreferences.isDiagnosticMode()) {
-            loadTests(tests,
-                    AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json"),
+            loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json"),
                     true, R.string.experimental);
         }
 
         return tests;
     }
 
-    private static void loadTests(ArrayList<TestInfo> tests, String jsonText, boolean isDiagnostic, @StringRes int groupName) {
+    private static void loadTests(ArrayList<TestInfo> tests, String jsonText,
+                                  boolean isDiagnostic, @StringRes int groupName) {
 
         int groupIndex = tests.size();
 
@@ -110,34 +141,6 @@ public final class TestConfigHelper {
             for (int i = 0; i < array.length(); i++) {
                 try {
                     JSONObject item = array.getJSONObject(i);
-
-                    //Get the test type
-                    TestType type;
-                    if (item.has("subtype")) {
-                        switch (item.getString("subtype")) {
-                            case "color":
-                            case "colour":
-                                type = TestType.COLORIMETRIC_LIQUID;
-                                break;
-                            case "strip":
-                            case "striptest":
-                                type = TestType.COLORIMETRIC_STRIP;
-                                break;
-                            case "sensor":
-                                type = TestType.SENSOR;
-                                break;
-                            case "coliform":
-                            case "coliforms":
-                                type = TestType.TURBIDITY_COLIFORMS;
-                                break;
-                            default:
-                                //Invalid test type skip it
-                                continue;
-                        }
-                    } else {
-                        //Invalid test type skip it
-                        continue;
-                    }
 
                     // get uuids
                     JSONArray uuidArray = item.getJSONArray("uuid");
@@ -162,78 +165,10 @@ public final class TestConfigHelper {
                         continue;
                     }
 
-                    //Get the name for this test
-                    JSONArray nameArray = item.getJSONArray("name");
-
-                    Hashtable<String, String> namesHashTable =
-                            new Hashtable<>(nameArray.length(), nameArray.length());
-
-                    //Load test names in different languages
-                    for (int j = 0; j < nameArray.length(); j++) {
-                        if (!nameArray.isNull(j)) {
-                            Iterator iterator = nameArray.getJSONObject(j).keys();
-                            String key = (String) iterator.next();
-                            String name = nameArray.getJSONObject(j).getString(key);
-                            namesHashTable.put(key, name);
-                        }
+                    TestInfo testInfo = loadTest(item);
+                    if (testInfo != null) {
+                        testInfo.setIsDiagnostic(isDiagnostic);
                     }
-
-                    //Load results
-                    JSONArray resultsArray = null;
-                    if (item.has("results")) {
-                        resultsArray = item.getJSONArray("results");
-                    }
-
-                    //Load the dilution percentages
-                    String dilutions = "0";
-                    if (item.has("dilutions")) {
-                        dilutions = item.getString("dilutions");
-                        if (dilutions.isEmpty()) {
-                            dilutions = "0";
-                        }
-                    }
-                    String[] dilutionsArray = dilutions.split(",");
-
-                    //Load the ranges
-                    String ranges = "0";
-                    if (item.has("ranges")) {
-                        ranges = item.getString("ranges");
-                    }
-
-                    String[] rangesArray = ranges.split(",");
-
-                    //Load the ranges
-                    int monthsValid = DEFAULT_MONTHS_VALID;
-                    if (item.has("monthsValid")) {
-                        monthsValid = item.getInt("monthsValid");
-                    }
-
-
-                    String[] defaultColorsArray = new String[0];
-                    if (item.has("defaultColors")) {
-                        String defaultColors = item.getString("defaultColors");
-                        defaultColorsArray = defaultColors.split(",");
-                    }
-
-                    TestInfo testInfo = new TestInfo(
-                            namesHashTable,
-                            item.has("unit") ? item.getString("unit") : "",
-                            type,
-                            //if calibrate not specified then default to false otherwise use specified value
-                            item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"),
-                            rangesArray, defaultColorsArray,
-                            dilutionsArray, isDiagnostic, monthsValid, uuids, resultsArray);
-
-                    if (item.has("shortCode")) {
-                        testInfo.setShortCode(item.getString("shortCode"));
-                    }
-
-                    boolean useGrayScale = false;
-                    if (item.has("grayScale")) {
-                        useGrayScale = item.getBoolean("grayScale");
-                    }
-
-                    testInfo.setUseGrayScale(useGrayScale);
 
                     //Create TestInfo object
                     tests.add(testInfo);
@@ -259,6 +194,112 @@ public final class TestConfigHelper {
             e.printStackTrace();
         }
 
+    }
+
+    private static TestInfo loadTest(JSONObject item) {
+
+        TestInfo testInfo = null;
+        try {
+            //Get the test type
+            TestType type;
+            if (item.has("subtype")) {
+                switch (item.getString("subtype")) {
+                    case "color":
+                    case "colour":
+                        type = TestType.COLORIMETRIC_LIQUID;
+                        break;
+                    case "strip":
+                    case "striptest":
+                        type = TestType.COLORIMETRIC_STRIP;
+                        break;
+                    case "sensor":
+                        type = TestType.SENSOR;
+                        break;
+                    case "coliform":
+                    case "coliforms":
+                        type = TestType.TURBIDITY_COLIFORMS;
+                        break;
+                    default:
+                        return null;
+                }
+            } else {
+                return null;
+            }
+
+            //Get the name for this test
+            JSONArray nameArray = item.getJSONArray("name");
+
+            Hashtable<String, String> namesHashTable =
+                    new Hashtable<>(nameArray.length(), nameArray.length());
+
+            //Load test names in different languages
+            for (int j = 0; j < nameArray.length(); j++) {
+                if (!nameArray.isNull(j)) {
+                    Iterator iterator = nameArray.getJSONObject(j).keys();
+                    String key = (String) iterator.next();
+                    String name = nameArray.getJSONObject(j).getString(key);
+                    namesHashTable.put(key, name);
+                }
+            }
+
+            //Load results
+            JSONArray resultsArray = null;
+            if (item.has("results")) {
+                resultsArray = item.getJSONArray("results");
+            }
+
+            //Load the dilution percentages
+            String dilutions = "0";
+            if (item.has("dilutions")) {
+                dilutions = item.getString("dilutions");
+                if (dilutions.isEmpty()) {
+                    dilutions = "0";
+                }
+            }
+            String[] dilutionsArray = dilutions.split(",");
+
+            //Load the ranges
+            String ranges = "0";
+            if (item.has("ranges")) {
+                ranges = item.getString("ranges");
+            }
+
+            String[] rangesArray = ranges.split(",");
+
+            String[] defaultColorsArray = new String[0];
+            if (item.has("defaultColors")) {
+                String defaultColors = item.getString("defaultColors");
+                defaultColorsArray = defaultColors.split(",");
+            }
+
+            // get uuids
+            JSONArray uuidArray = item.getJSONArray("uuid");
+            ArrayList<String> uuids = new ArrayList<>();
+            for (int ii = 0; ii < uuidArray.length(); ii++) {
+                String newUuid = uuidArray.getString(ii);
+                if (!uuids.contains(newUuid)) {
+                    uuids.add(newUuid);
+                }
+            }
+
+            testInfo = new TestInfo(namesHashTable, type, rangesArray,
+                    defaultColorsArray, dilutionsArray, uuids, resultsArray);
+
+            testInfo.setShortCode(item.has("shortCode") ? item.getString("shortCode") : "");
+
+            testInfo.setUseGrayScale(item.has("grayScale") && item.getBoolean("grayScale"));
+
+            testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);
+
+
+            //if calibrate not specified then default to false otherwise use specified value
+            testInfo.setRequiresCalibration(item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return testInfo;
     }
 
     public static JSONObject getJsonResult(TestInfo testInfo, ArrayList<String> results, int color,

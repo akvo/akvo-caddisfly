@@ -22,7 +22,7 @@ public class ResultsTest {
     @Test
     public void testColorimetryResult() throws Exception {
 
-        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid(SensorConstants.FLUORIDE_ID);
+        TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.FLUORIDE_ID);
         assert testInfo != null;
 
         ArrayList<String> results = new ArrayList<>();
@@ -42,7 +42,7 @@ public class ResultsTest {
     @Test
     public void testEcSensorResult() throws Exception {
 
-        TestInfo testInfo = TestConfigHelper.loadTestConfigurationByUuid("f88237b7-be3d-4fac-bbee-ab328eefcd14");
+        TestInfo testInfo = TestConfigHelper.loadTestByUuid("f88237b7-be3d-4fac-bbee-ab328eefcd14");
         assert testInfo != null;
 
         ArrayList<String> results = new ArrayList<>();

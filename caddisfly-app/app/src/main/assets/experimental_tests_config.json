@@ -13,7 +13,6 @@
       "uuid": [
         "7e8c1440-f014-4973-b47c-2b315c143d70"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,2,4,6",
       "dilutions": "0,50,20",
@@ -36,7 +35,6 @@
       "uuid": [
         "a6140c13-a9d8-4b78-978e-aa30ea44f376"
       ],
-      "unit": "",
       "calibrate": "true",
       "ranges": "4,5,6,7,8,9",
       "dilutions": "0",
@@ -59,7 +57,6 @@
       "uuid": [
         "0114e2c0-bea4-417a-b7cd-f5d39c5646d2"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,40,80,120,160",
       "dilutions": "0",
@@ -82,7 +79,6 @@
       "uuid": [
         "899e6c43-fdd1-4d12-829d-7b03c6e559c6"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,25,50,75,100",
       "dilutions": "0",
@@ -105,7 +101,6 @@
       "uuid": [
         "e68df4c6-7d25-4b8a-95fb-88650498179b"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,50,100,150,200",
       "dilutions": "0",
@@ -128,7 +123,6 @@
       "uuid": [
         "ac525b7e-294c-4b92-a402-964d003f4de5"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.15,0.30,0.60,1.00,2.00,5.00",
       "dilutions": "0,50,20",
@@ -151,7 +145,6 @@
       "uuid": [
         "4afa4837-6ece-4c97-8940-3f7f9a13c5cc"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,1,2,5,10,20,50",
       "dilutions": "0,50,20",
@@ -174,7 +167,6 @@
       "uuid": [
         "9628e367-9130-4b32-8870-3de302639caa"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.15,0.30,1.0,1.5,3.0",
       "dilutions": "0,50,20",
@@ -197,7 +189,6 @@
       "uuid": [
         "b82554e4-dce4-430d-a67a-e63aed9359b9"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.5,1.0,2.0,4.0,10.0",
       "dilutions": "0,50,20",
@@ -220,7 +211,6 @@
       "uuid": [
         "b1cecb6e-3453-4ed3-b018-727bdadf1246"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.5,1.0,2.0,4.0,10.0",
       "dilutions": "0,50,20",
@@ -243,7 +233,6 @@
       "uuid": [
         "2fbdd928-f203-4099-809f-486f225368a8"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,5,15,30,50",
       "dilutions": "0,50,20",
@@ -266,7 +255,6 @@
       "uuid": [
         "ea91d7c8-293c-4da4-be7e-2d353041d8d5"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,30,50,70,300,500",
       "dilutions": "0,50,20",
@@ -289,7 +277,6 @@
       "uuid": [
         "1f22e0a8-5afb-41fe-8866-5af38078bba7"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,35,75,175,1500,4000",
       "dilutions": "0,50,20",
@@ -312,7 +299,6 @@
       "uuid": [
         "581f8a6d-7a31-4d6a-a92a-5bb26c7627c1"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,1,2,3,4,5",
       "dilutions": "0,50,20",
@@ -335,7 +321,6 @@
       "uuid": [
         "4239f5c5-0595-48cf-a320-268a705cb604"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,5,10,15,20,25,30,35,40,45,50",
       "dilutions": "0,50,20",
@@ -358,7 +343,6 @@
       "uuid": [
         "6db65958-11a2-4eab-bdd0-a2b28e54f46f"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.5,1,1.5,2,2.5,3.0",
       "dilutions": "0,50,20",
@@ -381,7 +365,6 @@
       "uuid": [
         "bab210e9-7306-4625-985e-9a8ae10078d5"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,2,4,6,8,10",
       "dilutions": "0,50,20",
@@ -404,7 +387,6 @@
       "uuid": [
         "a3adf0e9-6fa5-4f51-85b4-15d83fd03c15"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,2,4,6,8,10",
       "dilutions": "0,50,20",
@@ -427,7 +409,6 @@
       "uuid": [
         "03af9273-0389-43bb-ae4b-72180606ceb3"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,10,20,30,40,50",
       "dilutions": "0,50,20",
@@ -450,7 +431,6 @@
       "uuid": [
         "ca74d113-5e30-4b1d-80d6-ea84b1482252"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,50,100,150,200,250,300,350,400,450,500",
       "dilutions": "0,50,20",
@@ -473,7 +453,6 @@
       "uuid": [
         "ae0a6458-0fee-4b95-8a29-cb7567821d4a"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,500,1000,1500,2000,2500,3000,3500,4000",
       "dilutions": "0,50,20",
@@ -496,7 +475,6 @@
       "uuid": [
         "ef54ff55-6a60-44fe-8891-209dbf3249ad"
       ],
-      "unit": "",
       "calibrate": "true",
       "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
       "dilutions": "",
@@ -519,7 +497,6 @@
       "uuid": [
         "9ba632b6-7cf0-45f4-8f5e-56e7dbc098c0"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,25,50,120,250,425",
       "monthsValid": "24",
@@ -544,10 +521,8 @@
       "uuid": [
         "b8e39123-1e44-4a23-a17e-972896c7d9f4"
       ],
-      "unit": "",
       "calibrate": "true",
       "ranges": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14",
-      "diagnostic": "true",
       "monthsValid": "6",
       "results": [
         {
@@ -570,10 +545,8 @@
       "uuid": [
         "ca52b1a5-46b4-499d-97d3-4131e1619d70"
       ],
-      "unit": "",
       "calibrate": "true",
       "ranges": "4,5,6,7,8,9,10,11",
-      "diagnostic": "true",
       "monthsValid": "6",
       "results": [
         {
@@ -596,7 +569,6 @@
       "uuid": [
         "a81f5663-b512-4dad-a4c3-651caf7f567a"
       ],
-      "unit": "NTU",
       "calibrate": "true",
       "ranges": "0,5,10,15,20",
       "monthsValid": "6",
@@ -622,7 +594,6 @@
       "uuid": [
         "fd1cd7f4-c866-49f1-a175-9ef32c28eddf"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40",
       "monthsValid": "6",
@@ -647,7 +618,6 @@
       "uuid": [
         "9e1a3d62-f811-446d-8ad7-5a2c3b692084"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,50,100",
       "monthsValid": "6",
@@ -672,7 +642,6 @@
       "uuid": [
         "0f5c230d-6143-41de-9a71-074fbe01a863"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40,50,100",
       "monthsValid": "6",
@@ -697,7 +666,6 @@
       "uuid": [
         "eb5030c5-a72f-4d16-af4d-971ea1d8afbd"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,10,20,30,40,50",
       "monthsValid": "6",
@@ -722,7 +690,6 @@
       "uuid": [
         "082ec36a-71af-49d5-add8-5c03fc1c2f0b"
       ],
-      "unit": "ppb",
       "calibrate": "true",
       "ranges": "0,1,5,10,25,50,75,100",
       "monthsValid": "6",
@@ -747,7 +714,6 @@
       "uuid": [
         "e74ed7c7-6116-4970-b01d-338be374eeca"
       ],
-      "unit": "ppm",
       "calibrate": "true",
       "ranges": "0,0.25,0.5,0.75,1",
       "monthsValid": "6",
@@ -773,7 +739,6 @@
         "df3d1009-2112-4d95-a6f9-fdc4b5633ec9"
       ],
       "shortCode":"colif",
-      "unit": "ppm",
       "calibrate": "false",
       "results": [
         {

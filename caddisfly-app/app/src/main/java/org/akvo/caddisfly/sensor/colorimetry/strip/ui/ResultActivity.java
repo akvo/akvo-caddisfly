@@ -62,6 +62,7 @@ import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 public class ResultActivity extends BaseActivity {
 
     private static final int MAX_RGB_INT_VALUE = 255;
+    private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
     private final JSONObject resultJsonObj = new JSONObject();
     private final JSONArray resultJsonArr = new JSONArray();
     private Button buttonSave;
@@ -457,6 +458,15 @@ public class ResultActivity extends BaseActivity {
             }
             // End making mats to put into image to be send back as an String to server
 
+            combined.release();
+            mat.release();
+            valueMeasuredMat.release();
+            colorRangeMat.release();
+            analyzedArea.release();
+            patchArea.release();
+            resultPatchAreas.release();
+            descMat.release();
+
             return null;
         }
 
@@ -488,7 +498,7 @@ public class ResultActivity extends BaseActivity {
                     if (AppPreferences.isDiagnosticMode()) {
                         TextView textColor = (TextView) itemResult.findViewById(R.id.text_color);
                         double[] colorValues = colorDetected.getLab().val;
-                        double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
+                        double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR, colorValues[1] - 128, colorValues[2] - 128};
                         textColor.setText(String.format(Locale.US, "%.2f, %.2f, %.2f", labPoint[0], labPoint[1], labPoint[2]));
                         textColor.setVisibility(View.VISIBLE);
                     }

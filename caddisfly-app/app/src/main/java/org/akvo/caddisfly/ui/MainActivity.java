@@ -101,8 +101,6 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.buttonStripTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
-                caddisflyApp.initializeCurrentTest();
                 final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
                 intent.putExtra("internal", true);
                 startActivity(intent);

@@ -96,7 +96,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
                                     startActivity(intent);
-                                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                                 }
                             }, null);
                 } else {
@@ -124,7 +123,6 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 intent = new Intent(this, CalibrateListActivity.class);
             }
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 

@@ -69,8 +69,8 @@ public class SurveyTest {
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
 
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "ppm",
-                TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12, null, null));
+        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
+                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null));
 
         resetLanguage();
     }

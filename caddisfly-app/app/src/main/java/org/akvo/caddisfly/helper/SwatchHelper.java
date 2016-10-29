@@ -254,6 +254,8 @@ public final class SwatchHelper {
         float[] colorHSV = new float[3];
         float previousHue = 0f;
 
+        boolean decreasingTrend = false;
+
         boolean crossed = false;
         for (int i = 0; i < swatches.size(); i++) {
             //noinspection ResourceType
@@ -264,8 +266,23 @@ public final class SwatchHelper {
                     crossed = true;
                 }
             }
+
+            // Determine if the sequence of colors are increasing or decreasing
             if (previousHue > colorHSV[0]) {
-                return false;
+                if (i == 1) {
+                    decreasingTrend = !decreasingTrend;
+                }
+            }
+
+            // Check if sequence of colors are in correct order
+            if (decreasingTrend) {
+                if (previousHue < colorHSV[0]) {
+                    return false;
+                }
+            } else {
+                if (previousHue > colorHSV[0]) {
+                    return false;
+                }
             }
             previousHue = colorHSV[0];
         }
