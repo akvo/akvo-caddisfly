@@ -67,14 +67,14 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         wrContrastView = new WeakReference<>(contrastView);
 
         //use brightness view as a button to switch on and off the flash
-        if (exposureView != null) {
-            exposureView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.toggleFlashMode(true);
-                }
-            });
-        }
+//        if (exposureView != null) {
+//            exposureView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mListener.toggleFlashMode(true);
+//                }
+//            });
+//        }
         return rootView;
     }
 
@@ -104,9 +104,9 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     public void goNext() {
 
         if (mListener != null) {
-            if (mListener.isTorchModeOn()) {
-                mListener.toggleFlashMode(false);
-            }
+//            if (mListener.isTorchModeOn()) {
+//                mListener.toggleFlashMode(false);
+//            }
 
             mListener.stopPreview();
 

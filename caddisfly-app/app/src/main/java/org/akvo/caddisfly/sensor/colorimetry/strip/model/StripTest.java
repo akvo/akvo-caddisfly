@@ -16,10 +16,10 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
+import android.content.Context;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,18 +38,18 @@ public class StripTest {
     public StripTest() {
     }
 
-    public List<Brand> getBrandsAsList() {
+    public List<Brand> getBrandsAsList(Context context) {
         List<Brand> brandNames = new ArrayList<>();
 
         try {
-            JSONObject object = getJsonFromAssets(R.string.strips_json);
+            JSONObject object = getJsonFromAssets(context, R.string.strips_json);
             if (!object.isNull("strips")) {
                 JSONArray stripsJson = object.getJSONArray("strips");
                 JSONObject strip;
                 if (stripsJson != null) {
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
-                        brandNames.add(getBrand(strip.getString("uuid")));
+                        brandNames.add(getBrand(context, strip.getString("uuid")));
                     }
                 }
             }
@@ -59,12 +59,12 @@ public class StripTest {
         return brandNames;
     }
 
-    public Brand getBrand(String uuid) {
-        return new Brand(uuid);
+    public Brand getBrand(Context context, String uuid) {
+        return new Brand(context, uuid);
     }
 
-    private JSONObject getJsonFromAssets(@StringRes int id) throws JSONException {
-        String filename = CaddisflyApp.getApp().getApplicationContext().getString(id);
+    private JSONObject getJsonFromAssets(Context context, @StringRes int id) throws JSONException {
+        String filename = context.getString(id);
         String jsonString = AssetsManager.getInstance().loadJSONFromAsset(filename);
         return new JSONObject(jsonString);
     }
@@ -85,12 +85,12 @@ public class StripTest {
         private GroupType groupingType;
         private JSONArray instructions;
 
-        Brand(String uuid) {
+        Brand(Context context, String uuid) {
 
             this.uuid = uuid;
             try {
                 // read the json file with strip information from assets
-                JSONObject object = getJsonFromAssets(R.string.strips_json);
+                JSONObject object = getJsonFromAssets(context, R.string.strips_json);
 
                 if (!object.isNull("strips")) {
                     JSONArray stripsJson = object.getJSONArray("strips");
@@ -130,13 +130,14 @@ public class StripTest {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                break;
                             }
                         }
                     }
                 }
 
                 //add instructions
-                JSONObject instructionObj = getJsonFromAssets(R.string.strips_instruction_json);
+                JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
                 JSONArray stripsJson = instructionObj.getJSONArray("strips");
                 JSONObject strip;
 
@@ -145,6 +146,7 @@ public class StripTest {
                         strip = stripsJson.getJSONObject(i);
                         if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
                             this.instructions = strip.getJSONArray("instructions");
+                            break;
                         }
                     }
                 }

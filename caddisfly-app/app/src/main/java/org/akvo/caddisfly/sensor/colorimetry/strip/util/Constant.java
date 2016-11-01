@@ -21,7 +21,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public final class Constant {
-    public static final double MAX_LUM_LOWER = 150;
+    public static final double MAX_LUM_LOWER = 200;
     public static final double MAX_LUM_UPPER = 254;
     public static final double MAX_SHADOW_PERCENTAGE = 10;
     public static final double PERCENT_ILLUMINATION = 1.05;

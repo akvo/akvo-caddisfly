@@ -59,9 +59,9 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ExternalActionActivity extends BaseActivity {
 
+    private static final int CODE_LENGTH = 7;
     private static final int REQUEST_TEST = 1;
     private static final int PERMISSION_ALL = 1;
-
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private Boolean mIsExternalAppCall = false;
     //the language requested by the external app
@@ -88,9 +88,10 @@ public class ExternalActionActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String type = intent.getType();
-        String caddisflyResourceUuid;
+        String caddisflyResourceUuid = intent.getStringExtra("caddisflyResourceUuid");
 
         if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
+            //todo: remove when obsolete
             if ("text/plain".equals(type)) { //NON-NLS
                 mIsExternalAppCall = true;
                 String questionTitle = intent.getStringExtra("questionTitle");
@@ -102,7 +103,6 @@ public class ExternalActionActivity extends BaseActivity {
                 //Extract the 5 letter code in the question and load the test config
                 String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
 
-                //todo: remove when obsolete
                 switch (code) {
                     case "fluor":
                         caddisflyResourceUuid = SensorConstants.FLUORIDE_ID;
@@ -143,14 +143,13 @@ public class ExternalActionActivity extends BaseActivity {
                     if (!ApiUtil.hasPermissions(this, permissions)) {
                         ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                     } else {
-                        initializeTest();
+                        startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
                     }
                 }
             }
         } else if (AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction()) && type != null) {
             if ("text/plain".equals(type)) { //NON-NLS
                 mIsExternalAppCall = true;
-                caddisflyResourceUuid = intent.getStringExtra("caddisflyResourceUuid");
 
                 mExternalAppLanguageCode = intent.getStringExtra("language");
 
@@ -177,29 +176,10 @@ public class ExternalActionActivity extends BaseActivity {
                     if (!ApiUtil.hasPermissions(this, permissions)) {
                         ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                     } else {
-                        if (AppPreferences.useExternalCamera()) {
-                            startTest(caddisflyResourceUuid);
-                        } else {
-                            initializeTest();
-                        }
+                        startTest(caddisflyResourceUuid);
                     }
                 }
             }
-        }
-    }
-
-    private void initializeTest() {
-
-        if (CameraHelper.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }
-        )) {
-            startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
         }
     }
 
@@ -218,7 +198,7 @@ public class ExternalActionActivity extends BaseActivity {
                 }
             }
             if (granted) {
-                initializeTest();
+                startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
             } else {
                 String message = getString(R.string.cameraAndStoragePermissions);
                 if (AppPreferences.useExternalCamera()) {
@@ -308,8 +288,22 @@ public class ExternalActionActivity extends BaseActivity {
     private void startTest(String caddisflyResourceUuid) {
         Context context = this;
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case COLORIMETRIC_LIQUID:
+
+                if (!AppPreferences.useExternalCamera()) {
+                    if (!CameraHelper.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                            R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }
+                    )) {
+                        return;
+                    }
+                }
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     if (ApiUtil.isCameraInUse(this, this)) {
@@ -443,6 +437,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     @NonNull
+    @Deprecated
     private String getTestName(String title) {
         //ensure we have short name to display as title
         String itemName;
@@ -450,16 +445,11 @@ public class ExternalActionActivity extends BaseActivity {
             if (title.length() > 30) {
                 title = title.substring(0, 30);
             }
-            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
+            itemName = title.substring(0, Math.max(0, title.length() - CODE_LENGTH)).trim();
         } else {
             itemName = getString(R.string.error);
         }
         return itemName;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     /**

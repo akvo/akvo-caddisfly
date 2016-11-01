@@ -93,18 +93,18 @@ public class BrandInfoActivity extends BaseActivity {
             StripTest stripTest = new StripTest();
 
             // Display the brand in title
-            setTitle(stripTest.getBrand(mUuid).getName());
+            setTitle(stripTest.getBrand(this, mUuid).getName());
 
             // Display the brand photo
             ImageView imageView = (ImageView) findViewById(R.id.fragment_choose_strip_testImageView);
             InputStream ims = null;
             try {
                 String path = getResources().getString(R.string.striptest_images);
-                ims = getAssets().open(path + "/" + stripTest.getBrand(mUuid).getImage() + ".png");
+                ims = getAssets().open(path + "/" + stripTest.getBrand(this, mUuid).getImage() + ".png");
 
                 Drawable drawable = Drawable.createFromStream(ims, null);
                 imageView.setImageDrawable(drawable);
-                imageView.setScaleType(stripTest.getBrand(mUuid).getImageScale().equals("centerCrop")
+                imageView.setScaleType(stripTest.getBrand(this, mUuid).getImageScale().equals("centerCrop")
                         ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -119,7 +119,7 @@ public class BrandInfoActivity extends BaseActivity {
 
             }
 
-            JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
+            JSONArray instructions = stripTest.getBrand(this, mUuid).getInstructions();
             if (instructions == null || instructions.length() == 0) {
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
@@ -200,7 +200,7 @@ public class BrandInfoActivity extends BaseActivity {
         super.onResume();
 
         StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(mUuid).getName());
+        setTitle(stripTest.getBrand(this, mUuid).getName());
     }
 
     @Override

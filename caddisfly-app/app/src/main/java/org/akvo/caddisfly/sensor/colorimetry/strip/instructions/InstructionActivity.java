@@ -52,7 +52,7 @@ public class InstructionActivity extends BaseActivity {
 
         final PageIndicatorView footerView = (PageIndicatorView) findViewById(R.id.pager_indicator);
 
-        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.UUID));
+        StripTest.Brand brand = (new StripTest()).getBrand(this, getIntent().getStringExtra(Constant.UUID));
 
         setTitle(brand.getName());
 

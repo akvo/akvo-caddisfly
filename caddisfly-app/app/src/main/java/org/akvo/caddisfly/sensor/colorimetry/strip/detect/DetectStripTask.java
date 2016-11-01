@@ -18,12 +18,10 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.detect;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
@@ -33,7 +31,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -41,8 +38,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Created by linda on 11/18/15.
@@ -50,8 +45,8 @@ import java.util.UUID;
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
-    private static final int BITMAP_SCALED_WIDTH = 800;
-    private static final int BITMAP_SCALED_HEIGHT = 480;
+    //    private static final int BITMAP_SCALED_WIDTH = 800;
+//    private static final int BITMAP_SCALED_HEIGHT = 480;
     private static final boolean DEVELOP_MODE = false;
     private static final Scalar RED_LAB_COLOR = new Scalar(135, 208, 195);
     private int format;
@@ -100,7 +95,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         String uuid = intent.getStringExtra(Constant.UUID);
 
         StripTest stripTest = new StripTest();
-        int numPatches = stripTest.getBrand(uuid).getPatches().size();
+        int numPatches = stripTest.getBrand(context, uuid).getPatches().size();
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
         width = intent.getIntExtra(Constant.WIDTH, 0);
@@ -118,7 +113,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         try {
             String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
             imagePatchArray = new JSONArray(json);
-            //System.out.println("***imagePatchArray: " + imagePatchArray.toString(1));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,18 +164,18 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             continue;
                         }
 
-                        // save warped image to external storage
-                        if (DEVELOP_MODE) {
-                            Mat rgb = new Mat();
-                            Imgproc.cvtColor(warpMat, rgb, Imgproc.COLOR_Lab2RGB);
-                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-                            Utils.matToBitmap(rgb, bitmap);
-
-                            if (FileStorage.isExternalStorageWritable()) {
-                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
-                            }
-                            Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
-                        }
+                        //save warped image to external storage
+//                        if (DEVELOP_MODE) {
+//                            Mat rgb = new Mat();
+//                            Imgproc.cvtColor(warpMat, rgb, Imgproc.COLOR_Lab2RGB);
+//                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+//                            Utils.matToBitmap(rgb, bitmap);
+//
+//                            if (FileStorage.isExternalStorageWritable()) {
+//                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
+//                            }
+//                            //Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
+//                        }
 
                         //calibrate
                         Mat calibrationMat;
@@ -193,26 +187,28 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
 //                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 
-                            if (AppPreferences.isDiagnosticMode()) {
-                                listener.showError("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
-                                        + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
-                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
-                            }
+//                            if (AppPreferences.isDiagnosticMode()) {
+//                                listener.showError("E94 mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
+//                                        + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
+//                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
+//                            }
                         } catch (Exception e) {
-                            //System.out.println("cal. failed: " + e.getMessage());
                             e.printStackTrace();
                             listener.showError(context.getString(R.string.error_detection));
                             calibrationMat = warpMat.clone();
                         }
 
                         //show calibrated image
-                        if (DEVELOP_MODE) {
-                            Mat rgb = new Mat();
-                            Imgproc.cvtColor(calibrationMat, rgb, Imgproc.COLOR_Lab2RGB);
-                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-                            Utils.matToBitmap(rgb, bitmap);
-                            Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
-                        }
+//                        if (DEVELOP_MODE) {
+//                            Mat rgb = new Mat();
+//                            Imgproc.cvtColor(calibrationMat, rgb, Imgproc.COLOR_Lab2RGB);
+//                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+//                            Utils.matToBitmap(rgb, bitmap);
+//                            if (FileStorage.isExternalStorageWritable()) {
+//                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + "_cal.png");
+//                            }
+//                            //Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
+//                        }
 
                         // cut out black area that contains the strip
                         Mat stripArea = null;
@@ -224,7 +220,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             listener.showMessage();
                             Mat strip = null;
                             try {
-                                StripTest.Brand brand = stripTest.getBrand(uuid);
+                                StripTest.Brand brand = stripTest.getBrand(context, uuid);
                                 strip = OpenCVUtil.detectStrip(stripArea, brand, ratioW, ratioH);
                             } catch (Exception e) {
                                 e.printStackTrace();

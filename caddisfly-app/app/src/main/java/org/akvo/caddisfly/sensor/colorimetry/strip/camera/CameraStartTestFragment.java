@@ -159,7 +159,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             StripTest stripTest = new StripTest();
             //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(uuid).getPatchesOrderedByTimeLapse();
+            patches = stripTest.getBrand(getContext(), uuid).getPatchesOrderedByTimeLapse();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.progress_indicator);
 
@@ -209,9 +209,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
 
             mListener.startPreview();
-            if (mListener.isTorchModeOn()) {
-                mListener.toggleFlashMode(false);
-            }
+//            if (mListener.isTorchModeOn()) {
+//                mListener.toggleFlashMode(false);
+//            }
         }
     }
 
@@ -298,7 +298,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         StripTest stripTest = new StripTest();
 
-        patches = stripTest.getBrand(uuid).getPatchesOrderedByTimeLapse();
+        patches = stripTest.getBrand(getContext(), uuid).getPatchesOrderedByTimeLapse();
 
         for (int i = 0; i < patches.size(); i++) {
 

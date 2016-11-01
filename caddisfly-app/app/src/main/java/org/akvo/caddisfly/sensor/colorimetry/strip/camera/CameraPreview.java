@@ -166,20 +166,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
-    public boolean toggleFlashMode() {
-        if (mCamera == null) {
-            return false;
-        }
-        parameters = mCamera.getParameters();
-
-        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)
-                ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
-        parameters.setFlashMode(flashMode);
-
-        mCamera.setParameters(parameters);
-
-        return flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH);
-    }
+//    public boolean toggleFlashMode() {
+//        if (mCamera == null) {
+//            return false;
+//        }
+//        parameters = mCamera.getParameters();
+//
+//        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)
+//                ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+//        parameters.setFlashMode(flashMode);
+//
+//        mCamera.setParameters(parameters);
+//
+//        return flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH);
+//    }
 
     //exposure compensation
     public void adjustExposure(int delta) throws RuntimeException {

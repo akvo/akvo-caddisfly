@@ -27,6 +27,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
@@ -38,6 +39,10 @@ import java.util.List;
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public final class OpenCVUtil {
+
+    private static final int MAX_RGB_INT_VALUE = 255;
+    private static final double LOWER_PERCENTAGE_BOUND = 0.9;
+    private static final double UPPER_PERCENTAGE_BOUND = 1.1;
 
     private OpenCVUtil() {
     }
@@ -119,7 +124,7 @@ public final class OpenCVUtil {
         Mat binary = new Mat();
 
         // determine min and max NOT USED
-        Imgproc.threshold(channels.get(0), binary, 128, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(channels.get(0), binary, 128, MAX_RGB_INT_VALUE, Imgproc.THRESH_BINARY);
 
         // compute first approximation of line through length of the strip
         final WeightedObservedPoints points = new WeightedObservedPoints();
@@ -151,7 +156,8 @@ public final class OpenCVUtil {
         for (int i = 0; i < pointsList.size(); i++) {
             estimate = coefficient[1] * pointsList.get(i).getX() + coefficient[0];
             actual = pointsList.get(i).getY();
-            if (actual > 0.9 * estimate && actual < 1.1 * estimate) { //if the point differs less than +/- 10 %, keep the point
+            if (actual > LOWER_PERCENTAGE_BOUND * estimate && actual < UPPER_PERCENTAGE_BOUND * estimate) {
+                //if the point differs less than +/- 10%, keep the point
                 corrPoints.add(pointsList.get(i).getX(), pointsList.get(i).getY());
             }
         }
@@ -222,39 +228,21 @@ public final class OpenCVUtil {
         // method: first rising edge
 
         double[] colCount = new double[binaryStrip.cols()];
-        int colTot;
+        int colTotal;
         for (int i = 0; i < binaryStrip.cols(); i++) { // iterate over cols
-            colTot = 0;
+            colTotal = 0;
             for (int j = 0; j < binaryStrip.rows(); j++) { // iterate over rows
                 if (binaryStrip.get(j, i)[0] > 128) {
-                    colTot++;
+                    colTotal++;
                 }
             }
-            colCount[i] = colTot;
+
+            //Log.d("Caddisfly", String.valueOf(colTotal));
+            colCount[i] = colTotal;
         }
 
-        // threshold is that half of the rows in a column should be white
-        int threshold = binaryStrip.rows() / 2;
+        stripAreaRect = getStripRectangle(binaryStrip, colCount, brand.getStripLength(), ratioW);
 
-        // moving from the right, determine the first point that crosses the threshold
-        boolean found = false;
-        int posRight = binaryStrip.cols() - 1;
-        while (!found && posRight > 0) {
-            if (colCount[posRight] > threshold) {
-                found = true;
-            } else {
-                posRight--;
-            }
-        }
-
-        // use known length of strip to determine left side
-        int length = (int) Math.round(brand.getStripLength() * ratioW);
-        int posLeft = posRight - length;
-
-        // cut out final strip
-        stripTopLeft = new Point(posLeft, 0);
-        stripBottomRight = new Point(posRight, binaryStrip.rows());
-        stripAreaRect = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
         Mat resultStrip = colourStrip.submat(stripAreaRect).clone();
 
         // release Mat objects
@@ -266,12 +254,56 @@ public final class OpenCVUtil {
         binaryStrip.release();
         colourStrip.release();
 
+        return resultStrip;
+    }
+
+    private static Rect getStripRectangle(Mat binaryStrip, double[] colCount, double stripLength, double ratioW) {
+        // threshold is that half of the rows in a column should be white
+        int threshold = binaryStrip.rows() / 2;
+
+        boolean found = false;
+
+        // moving from the left, determine the first point that crosses the threshold
+        double posLeft = 0;
+        while (!found && posLeft < binaryStrip.cols()) {
+            if (colCount[(int) posLeft] > threshold) {
+                found = true;
+            } else {
+                posLeft++;
+            }
+        }
+        //use known length of strip to determine right side
+        double posRight = posLeft + (stripLength * ratioW);
+
+        found = false;
+        // moving from the right, determine the first point that crosses the threshold
+        int posRightTemp = binaryStrip.cols() - 1;
+        while (!found && posRightTemp > 0) {
+            if (colCount[posRightTemp] > threshold) {
+                found = true;
+            } else {
+                posRightTemp--;
+            }
+        }
+
+        // if there is a big difference in the right position determined by the two above methods
+        // then ignore the first method above and determine the left position by second method only
+        if (Math.abs(posRightTemp - posRight) > 5) {
+            // use known length of strip to determine left side
+            posLeft = posRightTemp - (stripLength * ratioW);
+            posRight = posRightTemp;
+        }
+
+        // cut out final strip
+        Point stripTopLeft = new Point(posLeft, 0);
+        Point stripBottomRight = new Point(posRight, binaryStrip.rows());
+        Rect stripAreaRect = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
         // sanity check: the strip should be at least larger than half of the black area
-        if (Math.abs(posRight - posLeft) < binaryStrip.cols() * 0.5) {
+        if (Math.abs(posRight - posLeft) < binaryStrip.cols() / 2f) {
             return null;
         }
 
-        return resultStrip;
+        return stripAreaRect;
     }
 
     static ColorDetected detectStripPatchColor(Mat lab) {

@@ -88,7 +88,7 @@ public class ResultActivity extends BaseActivity {
             StripTest stripTest = new StripTest();
 
             // get information on the strip test from JSON
-            brand = stripTest.getBrand(uuid);
+            brand = stripTest.getBrand(this, uuid);
             List<StripTest.Brand.Patch> patches = brand.getPatches();
 
             // get the JSON describing the images of the patches that were stored before
@@ -350,8 +350,9 @@ public class ResultActivity extends BaseActivity {
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
                 Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
 
-                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
-                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(patchArea, patchArea,
+                        new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
+                                Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
                 Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
@@ -417,7 +418,6 @@ public class ResultActivity extends BaseActivity {
                     new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             combined = ResultUtil.concatenate(combined, mat); // add strip
-            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
             combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
 
@@ -431,6 +431,7 @@ public class ResultActivity extends BaseActivity {
 
             //add patchDescription of patch to combined mat, at the top
             combined = ResultUtil.concatenate(descMat, combined);
+            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
 
             //make bitmap to be sent to server
             if (!combined.empty()) {

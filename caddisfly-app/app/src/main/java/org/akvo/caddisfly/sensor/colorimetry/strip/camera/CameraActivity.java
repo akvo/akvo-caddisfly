@@ -58,7 +58,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
-    private boolean torchModeOn = false;
+    //private boolean torchModeOn = false;
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
     private SoundPoolPlayer sound;
@@ -227,7 +227,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         }
 
         StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(uuid).getName());
+        setTitle(stripTest.getBrand(this, uuid).getName());
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -246,16 +246,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         }
     }
 
-    @Override
-    public void toggleFlashMode(boolean userSelect) {
-        if (cameraPreview != null) {
-            if (userSelect) {
-                torchModeOn = cameraPreview.toggleFlashMode();
-            } else {
-                cameraPreview.toggleFlashMode();
-            }
-        }
-    }
+//    @Override
+//    public void toggleFlashMode(boolean userSelect) {
+//        if (cameraPreview != null) {
+//            if (userSelect) {
+//                torchModeOn = cameraPreview.toggleFlashMode();
+//            } else {
+//                cameraPreview.toggleFlashMode();
+//            }
+//        }
+//    }
 
     @Override
     public void stopPreview() {
@@ -383,10 +383,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         handler.post(showLevelRunnable);
     }
 
-    @Override
-    public boolean isTorchModeOn() {
-        return torchModeOn;
-    }
+//    @Override
+//    public boolean isTorchModeOn() {
+//        return torchModeOn;
+//    }
 
     @Override
     public void adjustExposureCompensation(int delta) {

@@ -43,17 +43,28 @@ import java.util.Locale;
  * Created by markwestra on 18/02/16
  */
 public final class ResultUtil {
+    private static final int MIN_COLOR_LABEL_WIDTH = 40;
+    private static final int GUTTER_SPACE_WIDTH = 50;
+    private static final int MEASURE_LINE_HEIGHT_EXTRA = 50;
+    private static final double TITLE_FONT_SIZE = 0.8d;
+    private static final double NORMAL_FONT_SCALE = 0.6d;
     private static final int MAX_RGB_INT_VALUE = 255;
+    private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
     private static final int INTERPOLATION_NUMBER = 10;
     private static final Scalar LAB_WHITE = new Scalar(255, 128, 128);
     private static final Scalar LAB_GREY = new Scalar(128, 128, 128);
-    private static final Scalar LAB_BLACK = new Scalar(0, 128, 128);
+//    private static final Scalar LAB_BLACK = new Scalar(0, 128, 128);
     private static final double Y_COLOR_RECT = 60d; //distance from top Mat to top color rectangles
     private static final int CIRCLE_RADIUS = 10;
     private static final double X_MARGIN = 10d;
     private static final double MIN_STRIP_WIDTH = 200d;
     private static final double MAX_STRIP_HEIGHT = 80d;
     private static final int BORDER_SIZE = 10;
+    private static final int LEFT_MARGIN_EXTRA = 4;
+    private static final int MEASURE_LINE_HEIGHT = 70;
+    private static final double MEASURE_LINE_TOP_MARGIN = 25d;
+    private static final double MEASURE_LINE_VALUE_Y_POS = 55d;
+    private static final double GROUP_MEASURE_LINE_VALUE_Y_POS = 25d;
 
     private ResultUtil() {
     }
@@ -135,14 +146,14 @@ public final class ResultUtil {
 
         //extend the strip with a border, so we can draw a circle around each patch that is
         //wider than the strip itself. That is just because it looks nice.
-        Core.copyMakeBorder(mat, mat, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, rightBorder, Core.BORDER_CONSTANT,
+        Core.copyMakeBorder(mat, mat, BORDER_SIZE, BORDER_SIZE, LEFT_MARGIN_EXTRA, rightBorder, Core.BORDER_CONSTANT,
                 new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
         // Draw a green circle at a particular location patch
         // only draw if this is not a 'grouped' strip
         if (!grouped) {
-            Imgproc.circle(mat, new Point(centerPatch.x + 10, mat.height() / 2d),
-                    (int) Math.ceil((mat.height() - BORDER_SIZE) * 0.4), new Scalar(0, 255, 0, 255), 1);
+            Imgproc.circle(mat, new Point(centerPatch.x + LEFT_MARGIN_EXTRA, mat.height() / 2d),
+                    (mat.height() - BORDER_SIZE) / 2, new Scalar(0, MAX_RGB_INT_VALUE, 0, MAX_RGB_INT_VALUE), 2);
         }
 
         Imgproc.resize(mat, mat, new Size(mat.width() * ratio, mat.height() * ratio));
@@ -152,10 +163,10 @@ public final class ResultUtil {
 
     public static Mat createDescriptionMat(String desc, int width) {
         int[] baseline = new int[1];
-        Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, 0.55d, 1, baseline);
+        Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, TITLE_FONT_SIZE, 1, baseline);
         Mat descMat = new Mat((int) Math.ceil(textSizeDesc.height) * 3, width, CvType.CV_8UC3, LAB_WHITE);
         Imgproc.putText(descMat, desc, new Point(2, descMat.height() - textSizeDesc.height),
-                Core.FONT_HERSHEY_SIMPLEX, 0.55d, LAB_BLACK, 1, Core.LINE_8, false);
+                Core.FONT_HERSHEY_SIMPLEX, TITLE_FONT_SIZE, LAB_GREY, 2, Core.LINE_AA, false);
 
         return descMat;
     }
@@ -180,7 +191,7 @@ public final class ResultUtil {
                 double value = colourObj.getDouble("value");
                 JSONArray lab = colourObj.getJSONArray("lab");
                 Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
-                Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
+                Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 2, null);
 
                 //draw a rectangle filled with color for result value
                 Point topLeft = new Point(xTranslate * d, Y_COLOR_RECT);
@@ -189,10 +200,11 @@ public final class ResultUtil {
 
                 double x = topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2;
                 //draw color value above rectangle. Skip if it too close to the previous label
-                if (x > previousPos + 40 || d == 0) {
+                if (x > previousPos + MIN_COLOR_LABEL_WIDTH || d == 0) {
                     previousPos = x;
                     Point centerText = new Point(x, Y_COLOR_RECT - textSizeValue.height);
-                    Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX, 0.6d, LAB_GREY, 2, Core.LINE_AA, false);
+                    Imgproc.putText(colorRangeMat, roundAxis(value), centerText, Core.FONT_HERSHEY_SIMPLEX,
+                            NORMAL_FONT_SCALE, LAB_GREY, 2, Core.LINE_AA, false);
                 }
 
             } catch (JSONException e) {
@@ -227,7 +239,7 @@ public final class ResultUtil {
                     double value = colourObj.getDouble("value");
                     JSONArray lab = colourObj.getJSONArray("lab");
                     Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE, lab.getDouble(1) + 128, lab.getDouble(2) + 128);
-                    Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+                    Size textSizeValue = Imgproc.getTextSize(roundAxis(value), Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 1, null);
 
                     //draw a rectangle filled with color for result value
                     Point topLeft = new Point(xTranslate * d, Y_COLOR_RECT + offset);
@@ -239,7 +251,7 @@ public final class ResultUtil {
                         Point centerText = new Point(topLeft.x + (bottomRight.x - topLeft.x) / 2 - textSizeValue.width / 2,
                                 Y_COLOR_RECT - textSizeValue.height);
                         Imgproc.putText(colorRangeMat, roundAxis(value), centerText,
-                                Core.FONT_HERSHEY_SIMPLEX, 0.3d, LAB_GREY, 1, Core.LINE_AA, false);
+                                Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, LAB_GREY, 2, Core.LINE_AA, false);
                     }
 
                 } catch (JSONException e) {
@@ -257,13 +269,14 @@ public final class ResultUtil {
        * the color detected below which the result value measured
        */
     public static Mat createValueMeasuredMatSingle(JSONArray colours, double resultValue, ColorDetected colorDetected, int width, double xTranslate) {
-        Mat valueMeasuredMat = new Mat(70, width, CvType.CV_8UC3, LAB_WHITE);
+        Mat valueMeasuredMat = new Mat(MEASURE_LINE_HEIGHT, width, CvType.CV_8UC3, LAB_WHITE);
         JSONObject colourObj;
         JSONObject nextColourObj;
         boolean resultIsDrawn = false;
 
-        //grey line with result values at left and right
-        Imgproc.line(valueMeasuredMat, new Point(X_MARGIN, 25), new Point(valueMeasuredMat.cols() - 2 * X_MARGIN, 25), LAB_GREY, 1, Core.LINE_AA, 0);
+//        //grey line with result values at left and right
+//        Imgproc.line(valueMeasuredMat, new Point(X_MARGIN, MEASURE_LINE_TOP_MARGIN),
+//                new Point(valueMeasuredMat.cols() - 2 * X_MARGIN, MEASURE_LINE_TOP_MARGIN), LAB_GREY, 1, Core.LINE_AA, 0);
 
         try {
             // we need to iterate over the result values to determine where the circle should be placed
@@ -288,15 +301,16 @@ public final class ResultUtil {
                     //calculate where the center of the circle should be
                     double left = xTranslate * d;
                     double right = left + xTranslate - X_MARGIN;
-                    Point centerCircle = (transX) + xTranslate * d < X_MARGIN ? new Point(X_MARGIN, 25d)
-                            : new Point(left + (right - left) / 2 + transX, 25d);
+                    Point centerCircle = (transX) + xTranslate * d < X_MARGIN ? new Point(X_MARGIN, MEASURE_LINE_TOP_MARGIN)
+                            : new Point(left + (right - left) / 2 + transX, MEASURE_LINE_TOP_MARGIN);
 
                     //get text size of value test
-                    Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, 0.6d, 2, null);
+                    Size textSize = Imgproc.getTextSize(roundResult(resultValue), Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 2, null);
 
                     Imgproc.circle(valueMeasuredMat, centerCircle, CIRCLE_RADIUS, resultColor, -1, Imgproc.LINE_AA, 0);
-                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue), new Point(Math.max(0, centerCircle.x - textSize.width / 2), 55d),
-                            Core.FONT_HERSHEY_SIMPLEX, 0.6d, LAB_BLACK, 2, Core.LINE_AA, false);
+                    Imgproc.putText(valueMeasuredMat, roundResult(resultValue),
+                            new Point(Math.max(0, centerCircle.x - textSize.width / 2), MEASURE_LINE_VALUE_Y_POS),
+                            Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, LAB_GREY, 2, Core.LINE_AA, false);
 
                     resultIsDrawn = true;
                 }
@@ -314,33 +328,34 @@ public final class ResultUtil {
        * the color detected below which the result value measured
        */
     public static Mat createValueMeasuredMatGroup(JSONArray colours, double result, ColorDetected[] colorsDetected, int width, double xTranslate) {
-        int size = 50 + colorsDetected.length * (2 * CIRCLE_RADIUS + 5);
-        Mat valueMeasuredMat = new Mat(size, width, CvType.CV_8UC3, LAB_WHITE);
+        int height = MEASURE_LINE_HEIGHT_EXTRA + colorsDetected.length * (2 * CIRCLE_RADIUS + 5);
+        Mat valueMeasuredMat = new Mat(height, width, CvType.CV_8UC3, LAB_WHITE);
 
         JSONObject colourObj;
         JSONObject nextColourObj;
         boolean resultIsDrawn = false;
 
         //grey line with result values at left and right
-        Imgproc.line(valueMeasuredMat, new Point(X_MARGIN, 25), new Point(valueMeasuredMat.cols() - 2 * X_MARGIN, 25), LAB_GREY, 1, Core.LINE_AA, 0);
+//        Imgproc.line(valueMeasuredMat, new Point(X_MARGIN, MEASURE_LINE_TOP_MARGIN + 15),
+//                new Point(valueMeasuredMat.cols() - 2 * X_MARGIN, MEASURE_LINE_TOP_MARGIN + 15), LAB_GREY, 1, Core.LINE_AA, 0);
 
         //get values for lowest and highest result values from striptest range
-        double leftValue;
+//        double leftValue;
         try {
-            leftValue = colours.getJSONObject(0).getDouble("value");
+//            leftValue = colours.getJSONObject(0).getDouble("value");
 
-            double rightValue = colours.getJSONObject(colours.length() - 1).getDouble("value");
-            Size textSizeLeftValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", leftValue),
-                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
-            Size textSizeRightValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", rightValue),
-                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, 1, null);
+//            double rightValue = colours.getJSONObject(colours.length() - 1).getDouble("value");
+//            Size textSizeLeftValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", leftValue),
+//                    Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 1, null);
+//            Size textSizeRightValue = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.0f", rightValue),
+//                    Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 1, null);
 
-            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", leftValue),
-                    new Point((xTranslate - X_MARGIN) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
-                    0.3d, LAB_GREY, 1, Core.LINE_AA, false);
-            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", rightValue),
-                    new Point(valueMeasuredMat.cols() - X_MARGIN - (xTranslate - X_MARGIN) / 2 - textSizeRightValue.width / 2, 15),
-                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, LAB_GREY, 1, Core.LINE_AA, false);
+//            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", leftValue),
+//                    new Point((xTranslate - X_MARGIN) / 2 - textSizeLeftValue.width / 2, 15), Core.FONT_HERSHEY_SIMPLEX,
+//                    0.3d, LAB_GREY, 1, Core.LINE_AA, false);
+//            Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.0f", rightValue),
+//                    new Point(valueMeasuredMat.cols() - X_MARGIN - (xTranslate - X_MARGIN) / 2 - textSizeRightValue.width / 2, 15),
+//                    Core.FONT_HERSHEY_SIMPLEX, 0.3d, LAB_GREY, 1, Core.LINE_AA, false);
 
 
             // we need to iterate over the result values to determine where the circle should be placed
@@ -364,15 +379,16 @@ public final class ResultUtil {
                     //calculate where the center of the circle should be
                     double left = xTranslate * d;
                     double right = left + xTranslate - X_MARGIN;
-                    Point centerCircle = (transX) + xTranslate * d < X_MARGIN ? new Point(X_MARGIN, 25d)
-                            : new Point(left + (right - left) / 2 + transX, 25d);
+                    Point centerCircle = (transX) + xTranslate * d < X_MARGIN ? new Point(X_MARGIN, MEASURE_LINE_TOP_MARGIN + 10)
+                            : new Point(left + (right - left) / 2 + transX, MEASURE_LINE_TOP_MARGIN + 10);
 
                     //get text size of value test
                     Size textSize = Imgproc.getTextSize(String.format(Locale.getDefault(), "%.1f", result),
-                            Core.FONT_HERSHEY_SIMPLEX, 0.35d, 1, null);
+                            Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE, 1, null);
                     Imgproc.putText(valueMeasuredMat, String.format(Locale.getDefault(), "%.1f", result),
-                            new Point(centerCircle.x - textSize.width / 2, 15d), Core.FONT_HERSHEY_SIMPLEX, 0.35d,
-                            LAB_BLACK, 1, Core.LINE_AA, false);
+                            new Point(centerCircle.x - textSize.width / 2, GROUP_MEASURE_LINE_VALUE_Y_POS),
+                            Core.FONT_HERSHEY_SIMPLEX, NORMAL_FONT_SCALE,
+                            LAB_GREY, 2, Core.LINE_AA, false);
 
                     double offset = CIRCLE_RADIUS + 5;
                     for (ColorDetected aColorsDetected : colorsDetected) {
@@ -411,7 +427,7 @@ public final class ResultUtil {
     }
 
     public static Mat concatenateHorizontal(Mat m1, Mat m2) {
-        int width = m1.cols() + m2.cols() + 50;
+        int width = m1.cols() + m2.cols() + GUTTER_SPACE_WIDTH;
         int height = Math.max(m1.rows(), m2.rows());
 
         Mat result = new Mat(height, width, CvType.CV_8UC3,
@@ -422,7 +438,7 @@ public final class ResultUtil {
         Mat roiMat1 = result.submat(roi1);
         m1.copyTo(roiMat1);
 
-        Rect roi2 = new Rect(m1.cols() + 50, 0, m2.cols(), m2.rows());
+        Rect roi2 = new Rect(m1.cols() + GUTTER_SPACE_WIDTH, 0, m2.cols(), m2.rows());
         Mat roiMat2 = result.submat(roi2);
         m2.copyTo(roiMat2);
 
@@ -472,7 +488,7 @@ public final class ResultUtil {
         double resultPatchValueStart, resultPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
-        double LInter, aInter, bInter, vInter;
+        double lInter, aInter, bInter, vInter;
         double[][] interpolTable = new double[(colours.length() - 1) * INTERPOLATION_NUMBER + 1][4];
         int count = 0;
 
@@ -486,7 +502,7 @@ public final class ResultUtil {
                 resultPatchValueEnd = colours.getJSONObject(i + 1).getDouble("value");
                 pointEnd = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
-                double LStart = pointStart[0];
+                double lStart = pointStart[0];
                 double aStart = pointStart[1];
                 double bStart = pointStart[2];
 
@@ -499,12 +515,12 @@ public final class ResultUtil {
                 // but excluding the end point
 
                 for (int ii = 0; ii < INTERPOLATION_NUMBER; ii++) {
-                    LInter = LStart + ii * dL;
+                    lInter = lStart + ii * dL;
                     aInter = aStart + ii * da;
                     bInter = bStart + ii * db;
                     vInter = resultPatchValueStart + ii * dV;
 
-                    interpolTable[count][0] = LInter;
+                    interpolTable[count][0] = lInter;
                     interpolTable[count][1] = aInter;
                     interpolTable[count][2] = bInter;
                     interpolTable[count][3] = vInter;
@@ -534,7 +550,7 @@ public final class ResultUtil {
         }
 
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
-        double[] labPoint = new double[]{colorValues[0] / 2.55, colorValues[1] - 128, colorValues[2] - 128};
+        double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR, colorValues[1] - 128, colorValues[2] - 128};
 
         double dist;
         int minPos = 0;
@@ -571,7 +587,7 @@ public final class ResultUtil {
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
         double[][] labPoint = new double[patches.size()][];
         for (int p = 0; p < patches.size(); p++) {
-            labPoint[p] = new double[]{colorsValueLab[p][0] / 2.55, colorsValueLab[p][1] - 128, colorsValueLab[p][2] - 128};
+            labPoint[p] = new double[]{colorsValueLab[p][0] / LAB_COLOR_NORMAL_DIVISOR, colorsValueLab[p][1] - 128, colorsValueLab[p][2] - 128};
         }
 
         double dist;

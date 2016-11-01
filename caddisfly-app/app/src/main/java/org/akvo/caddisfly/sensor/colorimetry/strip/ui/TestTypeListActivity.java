@@ -59,7 +59,7 @@ public class TestTypeListActivity extends BaseActivity {
             stripTest = new StripTest();
         }
 
-        brands = stripTest.getBrandsAsList();
+        brands = stripTest.getBrandsAsList(this);
 
         if (brands != null) {
             //order alpha-numeric on brand
