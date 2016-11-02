@@ -308,6 +308,45 @@ public class AnalysisTest {
 
         leaveDiagnosticMode();
 
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(clearText(), closeSoftKeyboard());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("    "), closeSoftKeyboard());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.MONTH, 2);
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+                        date.get(Calendar.DATE)));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
+
+        onView(withText(R.string.save)).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        onView(withText("1" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        goToMainScreen();
+
         onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();

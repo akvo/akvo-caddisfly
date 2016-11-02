@@ -14,6 +14,8 @@ public final class SensorConstants {
     public static final String TYPE_NAME = "caddisfly";
     public static final String RESOURCE_ID = "caddisflyResourceUuid";
     public static final String RESPONSE = "response";
+    @Deprecated
+    public static final String RESPONSE_COMPAT = "response_compat";
     public static final String RESULT = "result";
     public static final String IMAGE = "image";
     public static final String DEVICE = "device";
@@ -29,6 +31,10 @@ public final class SensorConstants {
     public static final String ELECTRICAL_CONDUCTIVITY_ID = "f88237b7-be3d-4fac-bbee-ab328eefcd14";
     public static final String FREE_CHLORINE_ID = "c3535e72-ff77-4225-9f4a-41d3288780c6";
     public static final String FLUORIDE_ID = "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf";
+
+    public static final int DEGREES_90 = 90;
+    public static final int DEGREES_270 = 270;
+    public static final int DEGREES_180 = 180;
 
     private SensorConstants() {
     }

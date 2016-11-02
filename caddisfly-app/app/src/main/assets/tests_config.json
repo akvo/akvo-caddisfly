@@ -13,7 +13,7 @@
       "uuid": [
         "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf"
       ],
-      "shortCode":"fluor",
+      "shortCode": "fluor",
       "calibrate": "true",
       "ranges": "0,0.5,1,1.5,2",
       "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
@@ -40,6 +40,7 @@
       "uuid": [
         "c3535e72-ff77-4225-9f4a-41d3288780c6"
       ],
+      "shortCode": "chlor",
       "calibrate": "true",
       "ranges": "0,0.25,0.5,0.75,1.0",
       "monthsValid": "24",
@@ -64,6 +65,7 @@
       "uuid": [
         "f88237b7-be3d-4fac-bbee-ab328eefcd14"
       ],
+      "shortCode": "econd",
       "calibrate": "true",
       "ranges": "0",
       "results": [
@@ -75,6 +77,30 @@
         {
           "description": "Temperature",
           "id": 2,
+          "unit": "°Celsius"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Temperature"
+        },
+        {
+          "fr": "Température"
+        }
+      ],
+      "subtype": "sensor",
+      "uuid": [
+        "07302aa0-21eb-4570-8264-62b77659101c"
+      ],
+      "shortCode": "tempe",
+      "calibrate": "false",
+      "ranges": "0",
+      "results": [
+        {
+          "description": "Temperature",
+          "id": 1,
           "unit": "°Celsius"
         }
       ]

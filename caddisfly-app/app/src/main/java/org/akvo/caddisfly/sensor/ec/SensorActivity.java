@@ -192,10 +192,6 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
-        String cadUuid = null;
-        if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
-            cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
-        }
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
@@ -213,7 +209,6 @@ public class SensorActivity extends BaseActivity {
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
-        final String finalCadUuid = cadUuid;
         buttonAcceptResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,24 +218,19 @@ public class SensorActivity extends BaseActivity {
 
                 Intent resultIntent = new Intent(intent);
 
-                // If a UUID exists return result in json format otherwise return plain text result
-                if (finalCadUuid != null) {
+                ArrayList<String> results = new ArrayList<>();
+                results.add(mEc25Value);
+                results.add(mTemperature);
 
-                    ArrayList<String> results = new ArrayList<>();
-                    results.add(mEc25Value);
-                    results.add(mTemperature);
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
+                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
-                    JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
-                    resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
+                // TODO: Remove this when obsolete
+                // Backward compatibility. Return plain text result
+                if (mCurrentTestInfo != null && mCurrentTestInfo.getShortCode().equalsIgnoreCase("TEMPE")) {
+                    resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, mTemperature);
                 } else {
-                    // TODO: Remove this when obsolete
-                    // Backward compatibility. Return plain text result
-                    if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
-                        resultIntent.putExtra(SensorConstants.RESPONSE, mTemperature);
-                    } else {
-                        resultIntent.putExtra(SensorConstants.RESPONSE, mEc25Value);
-                    }
+                    resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, mEc25Value);
                 }
 
                 setResult(Activity.RESULT_OK, resultIntent);
@@ -259,11 +249,7 @@ public class SensorActivity extends BaseActivity {
         if (mIsInternal) {
             textTemperature.setVisibility(View.VISIBLE);
             textUnit2.setVisibility(View.VISIBLE);
-        } else if (cadUuid == null) {
-            textTemperature.setVisibility(View.GONE);
-            textUnit2.setVisibility(View.GONE);
         }
-
     }
 
     @Override

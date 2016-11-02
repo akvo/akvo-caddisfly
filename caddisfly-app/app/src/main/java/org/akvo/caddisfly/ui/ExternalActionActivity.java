@@ -37,6 +37,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
@@ -88,77 +89,39 @@ public class ExternalActionActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String type = intent.getType();
-        String caddisflyResourceUuid = intent.getStringExtra("caddisflyResourceUuid");
 
-        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
-            //todo: remove when obsolete
-            if ("text/plain".equals(type)) { //NON-NLS
+        if (type != null && "text/plain".equals(type)) { //NON-NLS
+
+            if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
+                    || AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
+
+                String caddisflyResourceUuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
+
                 mIsExternalAppCall = true;
+                mExternalAppLanguageCode = intent.getStringExtra("language");
+                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
                 String questionTitle = intent.getStringExtra("questionTitle");
 
-                mExternalAppLanguageCode = intent.getStringExtra("language");
+                if (caddisflyResourceUuid == null) {
 
-                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+                    //todo: remove when obsolete
+                    //UUID was not found so it must be old version survey, look for 5 letter code
+                    String code = questionTitle.trim().substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
 
-                //Extract the 5 letter code in the question and load the test config
-                String code = questionTitle.substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
-
-                switch (code) {
-                    case "fluor":
-                        caddisflyResourceUuid = SensorConstants.FLUORIDE_ID;
-                        break;
-
-                    case "chlor":
-                        caddisflyResourceUuid = SensorConstants.FREE_CHLORINE_ID;
-                        break;
-
-                    case "econd":
-                        caddisflyResourceUuid = SensorConstants.ELECTRICAL_CONDUCTIVITY_ID;
-                        break;
-
-                    case "strip":
+                    if (code.equalsIgnoreCase("strip")) {
                         final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
                         startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                         return;
-
-                    default:
-                        caddisflyResourceUuid = "";
-                }
-
-                CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
-
-                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
-                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
-                    alertTestTypeNotSupported();
-                } else {
-                    Configuration config = getResources().getConfiguration();
-                    ((TextView) findViewById(R.id.textTitle)).setText(
-                            CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
-
-                    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    if (AppPreferences.useExternalCamera()) {
-                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     }
 
-                    if (!ApiUtil.hasPermissions(this, permissions)) {
-                        ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
-                    } else {
-                        startTest(getIntent().getStringExtra("caddisflyResourceUuid"));
-                    }
+                    caddisflyResourceUuid = TestConfigHelper.getUuidFromShortCode(code);
                 }
-            }
-        } else if (AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction()) && type != null) {
-            if ("text/plain".equals(type)) { //NON-NLS
-                mIsExternalAppCall = true;
-
-                mExternalAppLanguageCode = intent.getStringExtra("language");
-
-                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
 
                 //Get the test config by uuid
                 CaddisflyApp.getApp().loadTestConfigurationByUuid(caddisflyResourceUuid);
 
                 if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
                     alertTestTypeNotSupported();
                 } else {
                     Configuration config = getResources().getConfiguration();
@@ -173,6 +136,7 @@ public class ExternalActionActivity extends BaseActivity {
                             permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         }
                     }
+
                     if (!ApiUtil.hasPermissions(this, permissions)) {
                         ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
                     } else {
@@ -401,7 +365,16 @@ public class ExternalActionActivity extends BaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     //return the test result to the external app
                     Intent intent = new Intent(getIntent());
-                    intent.putExtra("response", data.getStringExtra("response"));
+
+                    //todo: remove when obsolete
+                    if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
+                            && data.hasExtra(SensorConstants.RESPONSE_COMPAT)) {
+                        //if survey from old version server then don't send json response
+                        intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
+                    } else {
+                        intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
+                    }
+
                     intent.putExtra("image", data.getStringExtra("image"));
                     this.setResult(Activity.RESULT_OK, intent);
                 }

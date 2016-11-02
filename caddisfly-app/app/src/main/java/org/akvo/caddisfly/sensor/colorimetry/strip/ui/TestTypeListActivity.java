@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -101,7 +102,7 @@ public class TestTypeListActivity extends BaseActivity {
             setResult(resultCode, intent);
 
             if (resultCode == RESULT_OK) {
-                intent.putExtra("response", data.getStringExtra("response"));
+                intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
                 intent.putExtra("image", data.getStringExtra("image"));
             }
 

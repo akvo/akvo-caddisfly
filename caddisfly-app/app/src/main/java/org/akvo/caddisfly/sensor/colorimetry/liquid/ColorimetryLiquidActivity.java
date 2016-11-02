@@ -80,12 +80,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_270;
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
+
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
     private static final int RESULT_RESTART_TEST = 3;
+    private static final int MAX_SHAKE_DURATION = 2000;
+    private static final int MAX_SHAKE_DURATION_2 = 3000;
+    private static final int DELAY_MILLIS = 500;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -188,7 +195,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             }
         });
         mShakeDetector.setMinShakeAcceleration(5);
-        mShakeDetector.setMaxShakeDuration(2000);
+        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
         mUSBMonitor = new USBMonitor(this, null);
 
@@ -465,13 +472,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
-                                rotation = 90;
+                                rotation = DEGREES_90;
                                 break;
                             case Surface.ROTATION_180:
-                                rotation = 270;
+                                rotation = DEGREES_270;
                                 break;
                             case Surface.ROTATION_270:
-                                rotation = 180;
+                                rotation = DEGREES_180;
                                 break;
                             case Surface.ROTATION_90:
                             default:
@@ -554,7 +561,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         sound.playShortResource(R.raw.beep);
         mShakeDetector.setMinShakeAcceleration(1);
-        mShakeDetector.setMaxShakeDuration(3000);
+        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION_2);
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                 SensorManager.SENSOR_DELAY_UI);
 
@@ -580,13 +587,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
-                                rotation = 90;
+                                rotation = DEGREES_90;
                                 break;
                             case Surface.ROTATION_180:
-                                rotation = 270;
+                                rotation = DEGREES_270;
                                 break;
                             case Surface.ROTATION_270:
-                                rotation = 180;
+                                rotation = DEGREES_180;
                                 break;
                             case Surface.ROTATION_90:
                             default:
@@ -715,34 +722,27 @@ public class ColorimetryLiquidActivity extends BaseActivity
             // If this is a test and it was successful then build the result to return
             if (!mIsCalibration && result > -1 || color != Color.TRANSPARENT) {
                 Intent intent = getIntent();
-                String cadUuid = null;
-                if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
-                    cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
-                }
 
                 Intent resultIntent = new Intent(intent);
                 resultIntent.putExtra(SensorConstants.RESULT, resultText);
                 resultIntent.putExtra(SensorConstants.COLOR, color);
 
-                // If a UUID exists return result in json format otherwise return plain text result
-                if (cadUuid != null) {
+                // Save photo taken during the test
+                String resultImageUrl = UUID.randomUUID().toString() + ".png";
+                String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
 
-                    // Save photo taken during the test
-                    String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                    String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
+                ArrayList<String> results = new ArrayList<>();
+                results.add(resultText);
 
-                    ArrayList<String> results = new ArrayList<>();
-                    results.add(resultText);
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
 
-                    JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
+                resultIntent.putExtra(SensorConstants.IMAGE, path);
+                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
-                    resultIntent.putExtra(SensorConstants.IMAGE, path);
-                    resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-                } else {
-                    // TODO: Remove this when obsolete
-                    // Backward compatibility. Return plain text result
-                    resultIntent.putExtra(SensorConstants.RESPONSE, resultText);
-                }
+                // TODO: Remove this when obsolete
+                // Backward compatibility. Return plain text result
+                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, resultText);
+
                 setResult(Activity.RESULT_OK, resultIntent);
             }
             // Show the result dialog
@@ -770,7 +770,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     public void run() {
                         finish();
                     }
-                }, 500);
+                }, DELAY_MILLIS);
             }
         } else {
 
@@ -981,7 +981,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     @Override
     public void dialogCancelled() {
         Intent intent = new Intent(getIntent());
-        intent.putExtra("response", String.valueOf(""));
+        intent.putExtra(SensorConstants.RESPONSE, String.valueOf(""));
         this.setResult(Activity.RESULT_CANCELED, intent);
         releaseResources();
         finish();

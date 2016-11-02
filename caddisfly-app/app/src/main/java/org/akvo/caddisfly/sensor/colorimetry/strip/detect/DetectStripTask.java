@@ -44,10 +44,9 @@ import java.io.IOException;
  * reads in the YUV images, and extracts the strips
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
-
-    //    private static final int BITMAP_SCALED_WIDTH = 800;
+//    private static final int BITMAP_SCALED_WIDTH = 800;
 //    private static final int BITMAP_SCALED_HEIGHT = 480;
-    private static final boolean DEVELOP_MODE = false;
+//    private static final boolean DEVELOP_MODE = false;
     private static final Scalar RED_LAB_COLOR = new Scalar(135, 208, 195);
     private int format;
     private int width;

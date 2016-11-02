@@ -87,11 +87,21 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_270;
+import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
+
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidExternalActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
+    private static final int REQUEST_DELAY_MILLIS = 2000;
+    private static final int DELAY_MILLIS = 500;
+    private static final int MAX_COMMAND_INDEX = 99;
+    private static final int DELAY_MULTI_DEVICE_START = 5000;
+    private static final int DELAY_START = 12000;
+    private static final int TIMEOUT_DURATION_SECONDS_EXTRA = 14;
     private static final int RESULT_RESTART_TEST = 3;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -208,7 +218,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
                 mCommandIndex++;
 
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
 
                 if (mCommandIndex > requestQueue.size() - 1) {
                     requestsDone = true;
@@ -243,13 +253,13 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
         }
 
-        if (requestsDone && mCommandIndex < 99) {
+        if (requestsDone && mCommandIndex < MAX_COMMAND_INDEX) {
             Toast.makeText(this, "Initializing", Toast.LENGTH_LONG).show();
             if (AppPreferences.getExternalCameraMultiDeviceMode()) {
-                initializeHandler.postDelayed(initializeRunnable, 5000);
+                initializeHandler.postDelayed(initializeRunnable, DELAY_MULTI_DEVICE_START);
             } else {
-                initializeHandler.postDelayed(initializeRunnable, 12000);
-                testStartTime = System.currentTimeMillis() + 10000;
+                initializeHandler.postDelayed(initializeRunnable, DELAY_START);
+                testStartTime = System.currentTimeMillis() + DELAY_START;
             }
         }
     }
@@ -314,13 +324,14 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
         if (AppPreferences.getExternalCameraMultiDeviceMode()) {
             requestQueue.add("SET CAMERA ON\r\n");
         } else {
-            timeout = 14 + (AppPreferences.getSamplingTimes() * ((ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING / 1000) + 1));
+            timeout = TIMEOUT_DURATION_SECONDS_EXTRA
+                    + (AppPreferences.getSamplingTimes() * ((ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING / 1000) + 1));
             requestQueue.add("SET CAMERATIME " + timeout + "\r\n");
             requestQueue.add("USB\r\n");
         }
 
         mCommandIndex = 0;
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, REQUEST_DELAY_MILLIS);
     }
 
     @Override
@@ -629,13 +640,13 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                         int rotation;
                         switch (display.getRotation()) {
                             case Surface.ROTATION_0:
-                                rotation = 90;
+                                rotation = DEGREES_90;
                                 break;
                             case Surface.ROTATION_180:
-                                rotation = 270;
+                                rotation = DEGREES_270;
                                 break;
                             case Surface.ROTATION_270:
-                                rotation = 180;
+                                rotation = DEGREES_180;
                                 break;
                             case Surface.ROTATION_90:
                             default:
@@ -769,10 +780,6 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             int color = SwatchHelper.getAverageColor(mResults);
 
             Intent intent = getIntent();
-            String cadUuid = null;
-            if (intent.hasExtra(SensorConstants.RESOURCE_ID)) {
-                cadUuid = intent.getExtras().getString(SensorConstants.RESOURCE_ID);
-            }
 
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
@@ -780,25 +787,22 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
             resultIntent.putExtra(SensorConstants.RESULT, resultText);
             resultIntent.putExtra(SensorConstants.COLOR, color);
 
-            // If a UUID exists return result in json format otherwise return plain text result
-            if (cadUuid != null) {
 
-                // Save photo taken during the test
-                String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
+            // Save photo taken during the test
+            String resultImageUrl = UUID.randomUUID().toString() + ".png";
+            String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
 
-                ArrayList<String> results = new ArrayList<>();
-                results.add(resultText);
+            ArrayList<String> results = new ArrayList<>();
+            results.add(resultText);
 
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
 
-                resultIntent.putExtra(SensorConstants.IMAGE, path);
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-            } else {
-                // TODO: Remove this when obsolete
-                // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultText);
-            }
+            resultIntent.putExtra(SensorConstants.IMAGE, path);
+            resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+
+            // TODO: Remove this when obsolete
+            // Backward compatibility. Return plain text result
+            resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, resultText);
             setResult(Activity.RESULT_OK, resultIntent);
 
             if (isCalibration && color != Color.TRANSPARENT) {
@@ -817,7 +821,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                         public void run() {
                             finish();
                         }
-                    }, 500);
+                    }, DELAY_MILLIS);
                 }
             } else {
                 if (result < 0 || color == Color.TRANSPARENT) {
@@ -931,7 +935,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
     private void releaseResources() {
 
-        mCommandIndex = 99;
+        mCommandIndex = MAX_COMMAND_INDEX;
         handler.removeCallbacks(runnable);
 
         UsbService.SERVICE_CONNECTED = false;
@@ -1071,7 +1075,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
     @Override
     public void dialogCancelled() {
         Intent intent = new Intent(getIntent());
-        intent.putExtra("response", String.valueOf(""));
+        intent.putExtra(SensorConstants.RESPONSE, String.valueOf(""));
         setResult(Activity.RESULT_CANCELED, intent);
         releaseResources();
         finish();

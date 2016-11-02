@@ -62,7 +62,7 @@ public final class TestConfigHelper {
      */
     public static TestInfo loadTestByUuid(String uuid) {
 
-        if (!uuid.isEmpty()) {
+        if (uuid != null && !uuid.isEmpty()) {
 
             for (int i = 0; i < 3; i++) {
 
@@ -394,5 +394,34 @@ public final class TestConfigHelper {
         details.put("backDropDetection", !AppPreferences.getNoBackdropDetection());
         details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
+    }
+
+    /**
+     * Returns a Uuid for the given shortCode
+     *
+     * @param shortCode the test shortCode
+     * @return the Uuid
+     */
+    @Deprecated
+    public static String getUuidFromShortCode(String shortCode) {
+
+        if (!shortCode.isEmpty()) {
+
+            // Load the pre-configured tests from the app
+            String jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+            try {
+                JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject item = array.getJSONObject(i);
+                    if (item.has("shortCode") && shortCode.equalsIgnoreCase(item.getString("shortCode"))) {
+                        return item.getJSONArray("uuid").getString(0);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

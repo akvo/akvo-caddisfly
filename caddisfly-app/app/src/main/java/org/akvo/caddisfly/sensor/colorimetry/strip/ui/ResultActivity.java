@@ -184,7 +184,7 @@ public class ResultActivity extends BaseActivity {
                 }
 
                 Intent intent = new Intent(getIntent());
-                intent.putExtra("response", resultJsonObj.toString());
+                intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
                 intent.putExtra("image", path);
                 setResult(RESULT_OK, intent);
                 finish();

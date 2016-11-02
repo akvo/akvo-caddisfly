@@ -18,7 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 
 import org.akvo.caddisfly.helper.FileHelper;
 
@@ -62,14 +61,14 @@ public class FileStorage {
         return bb.array();
     }
 
-    /**
-     * Method to check whether external media available and writable. This is adapted from
-     * http://developer.android.com/guide/topics/data/data-storage.html#filesExternal
-     */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
+//    /**
+//     * Method to check whether external media available and writable. This is adapted from
+//     * http://developer.android.com/guide/topics/data/data-storage.html#filesExternal
+//     */
+//    public static boolean isExternalStorageWritable() {
+//        String state = Environment.getExternalStorageState();
+//        return Environment.MEDIA_MOUNTED.equals(state);
+//    }
 
     /**
      * Method to write characters to file on SD card. Note that you must add a
@@ -78,6 +77,7 @@ public class FileStorage {
      *
      * @return absolute path name of saved file, or empty string on failure.
      */
+    @SuppressWarnings("SameParameterValue")
     public static String writeBitmapToExternalStorage(Bitmap bitmap, String dirPath, String fileName) {
         // Find the root of the external storage
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
