@@ -325,6 +325,7 @@
       "length": 5.02,
       "height": 5.02,
       "unit": "mm",
+      "experimental": "true",
       "patches": [
         {
           "patchDesc":"Phosphate (ppm)",
@@ -369,6 +370,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "experimental": "true",
       "patches": [
         {
           "patchDesc":"Potassium (ppm)",
@@ -417,6 +419,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "experimental": "true",
       "patches": [
         {
           "patchDesc":"Ammonia (ppm)",

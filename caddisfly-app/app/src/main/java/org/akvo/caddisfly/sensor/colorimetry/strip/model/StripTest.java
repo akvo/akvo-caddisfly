@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,13 @@ public class StripTest {
                 if (stripsJson != null) {
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
+
+                        //Only show experimental tests if in diagnostic mode
+                        if (!AppPreferences.isDiagnosticMode()
+                                && (strip.has("experimental") && strip.getBoolean("experimental"))) {
+                            continue;
+                        }
+
                         brandNames.add(getBrand(context, strip.getString("uuid")));
                     }
                 }
