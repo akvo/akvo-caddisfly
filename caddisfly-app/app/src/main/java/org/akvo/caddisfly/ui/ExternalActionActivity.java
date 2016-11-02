@@ -114,6 +114,11 @@ public class ExternalActionActivity extends BaseActivity {
                         return;
                     }
 
+                    //Switch temperature to ec, since temperature is returned along with ec in json result
+                    if (code.equalsIgnoreCase("tempe") && AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
+                        code = "econd";
+                    }
+
                     caddisflyResourceUuid = TestConfigHelper.getUuidFromShortCode(code);
                 }
 

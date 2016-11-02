@@ -354,7 +354,7 @@
               "lab":[63.19,-5.04,-1.12]
             }
           ],
-          "timeLapse":0,
+          "timeLapse": 180,
           "unit": "ppm"
         }
       ]
