@@ -25,10 +25,10 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 145
-        versionName "1.0.0 Beta 4"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 146
+        versionName "1.0.0 Beta 5"
         resConfigs "en", "fr"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
 //    signingConfigs {
@@ -94,10 +94,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
     compile 'com.github.felHR85:UsbSerial:4.5'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.5.2'
-    testCompile 'org.robolectric:robolectric:3.1.2'
+    testCompile 'org.robolectric:robolectric:3.1.4'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:25.0.0'

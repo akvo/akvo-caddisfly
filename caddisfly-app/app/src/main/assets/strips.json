@@ -14,7 +14,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Total Chlorine (ppm)",
+          "patchDesc":"Total Chlorine",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -48,7 +48,7 @@
           "unit": "ppm"
         },
         {
-          "patchDesc":"Free Chlorine (ppm)",
+          "patchDesc":"Free Chlorine",
           "patchPos":17.2,
           "patchWidth":6,
           "id":2,
@@ -96,7 +96,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Nitrate Nitrogen (ppm), 60 sec",
+          "patchDesc":"Nitrate Nitrogen",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -134,7 +134,7 @@
           "unit": "ppm"
         },
         {
-          "patchDesc":"Nitrite Nitrogen (ppm) 30 sec",
+          "patchDesc":"Nitrite Nitrogen",
           "patchPos": 16.8,
           "patchWidth":6,
           "id":2,
@@ -182,7 +182,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Total iron (ppm)",
+          "patchDesc":"Total iron",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -282,7 +282,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Phosphate (ppm)",
+          "patchDesc":"Phosphate",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -328,7 +328,7 @@
       "experimental": "true",
       "patches": [
         {
-          "patchDesc":"Phosphate (ppm)",
+          "patchDesc":"Phosphate",
           "patchPos":2.5,
           "patchWidth":6,
           "id":1,
@@ -373,7 +373,7 @@
       "experimental": "true",
       "patches": [
         {
-          "patchDesc":"Potassium (ppm)",
+          "patchDesc":"Potassium",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -422,7 +422,7 @@
       "experimental": "true",
       "patches": [
         {
-          "patchDesc":"Ammonia (ppm)",
+          "patchDesc":"Ammonia",
           "patchPos":3.3,
           "patchWidth":6,
           "id":1,
@@ -472,7 +472,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Arsenic ppb",
+          "patchDesc":"Arsenic",
           "patchPos":6.2,
           "patchWidth":3,
           "id":1,
@@ -526,7 +526,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Arsenic ppb",
+          "patchDesc":"Arsenic",
           "patchPos":5.5,
           "patchWidth":3,
           "id":1,
@@ -574,7 +574,7 @@
       "unit": "mm",
       "patches": [
         {
-          "patchDesc":"Arsenic ppb",
+          "patchDesc":"Arsenic",
           "patchPos":5.6,
           "patchWidth":3,
           "id":1,

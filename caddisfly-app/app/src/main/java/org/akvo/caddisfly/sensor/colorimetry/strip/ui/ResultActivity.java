@@ -19,7 +19,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -39,7 +38,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.ResultUtil;
-import org.akvo.caddisfly.sensor.colorimetry.strip.widget.CircleFillView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -392,9 +390,9 @@ public class ResultActivity extends BaseActivity {
             // Create Mat to hold the colour range
             Mat colorRangeMat;
             if (grouped) {
-                colorRangeMat = ResultUtil.createColourRangeMatGroup(patches, resultMatWidth, xTranslate);
+                colorRangeMat = ResultUtil.createColourRangeMatGroup(patches, resultMatWidth);
             } else {
-                colorRangeMat = ResultUtil.createColourRangeMatSingle(patches, patchNum, resultMatWidth, xTranslate);
+                colorRangeMat = ResultUtil.createColourRangeMatSingle(patches, patchNum, resultMatWidth);
             }
 
             // create Mat to hold value measured
@@ -418,8 +416,8 @@ public class ResultActivity extends BaseActivity {
                     new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             combined = ResultUtil.concatenate(combined, mat); // add strip
-            combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
             combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
+            combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
 
             Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
                     Core.BORDER_CONSTANT, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
@@ -431,7 +429,7 @@ public class ResultActivity extends BaseActivity {
 
             //add patchDescription of patch to combined mat, at the top
             combined = ResultUtil.concatenate(descMat, combined);
-            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
+//            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
 
             //make bitmap to be sent to server
             if (!combined.empty()) {
@@ -485,16 +483,12 @@ public class ResultActivity extends BaseActivity {
             textTitle.setText(patchDescription);
 
             ImageView imageResult = (ImageView) itemResult.findViewById(R.id.image_result);
-            CircleFillView circleColor = (CircleFillView) itemResult.findViewById(R.id.circle_color);
 
             if (stripBitmap != null) {
                 imageResult.setImageBitmap(stripBitmap);
                 TextView textResult = (TextView) itemResult.findViewById(R.id.text_result);
 
                 if (!invalid) {
-                    if (colorDetected != null && !grouped) {
-                        circleColor.setColor(colorDetected.getColor());
-                    }
 
                     if (AppPreferences.isDiagnosticMode()) {
                         TextView textColor = (TextView) itemResult.findViewById(R.id.text_color);
@@ -513,13 +507,9 @@ public class ResultActivity extends BaseActivity {
                     } else {
                         invalid = true;
                     }
-                } else {
-                    textResult.setVisibility(View.GONE);
-                    circleColor.setVisibility(View.GONE);
                 }
             } else {
                 textTitle.append("\n\n" + getResources().getString(R.string.no_data));
-                circleColor.setColor(Color.RED);
                 invalid = true;
             }
 
