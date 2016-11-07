@@ -120,7 +120,7 @@ public final class CalibrationCard {
                     calData.addLocation(loc.getString("l"), loc.getDouble("x"), loc.getDouble("y"), loc.getBoolean("gray"));
                 }
 
-                // colours
+                // colors
                 JSONArray colJSON = calDataJSON.getJSONArray("calValues");
                 for (int i = 0; i < colJSON.length(); i++) {
                     JSONObject cal = colJSON.getJSONObject(i);
@@ -168,7 +168,7 @@ public final class CalibrationCard {
         return val < min ? min : val;
     }
 
-    // computes the colour around a single point
+    // computes the color around a single point
     // x and y in pixels
     // This method expects a CIELab file
     private static double[] getWhiteVal(Mat lab, int x, int y, int dp) {
@@ -428,7 +428,7 @@ public final class CalibrationCard {
             for (String label : calData.calValues.keySet()) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
-                float[] LAB_color = measurePatch(imgMat, loc.x, loc.y, calData); // measure patch colour
+                float[] LAB_color = measurePatch(imgMat, loc.x, loc.y, calData); // measure patch color
                 obsL.add(LAB_color[0], cal.getL());
                 obsA.add(LAB_color[1], cal.getA());
                 obsB.add(LAB_color[2], cal.getB());
@@ -568,7 +568,7 @@ public final class CalibrationCard {
         }
     }
 
-    private static void addCalColours(Mat imgMat, CalibrationData calData) {
+    private static void addCalColors(Mat imgMat, CalibrationData calData) {
         for (String label : calData.locations.keySet()) {
             CalibrationData.Location loc = calData.locations.get(label);
             addPatch(imgMat, loc.x, loc.y, calData, label);
@@ -578,10 +578,10 @@ public final class CalibrationCard {
     /*
     * Calibrate an image using a 3-step process. The steps are:
      * 1) straighten illumination profile
-     * 2) 1D colour balance
-     * 3) 3D colour balance
+     * 2) 1D color balance
+     * 3) 3D color balance
      *
-     * As a final step, we put the calibration colours in the image, so that the quality can be judged later
+     * As a final step, we put the calibration colors in the image, so that the quality can be judged later
      *
      * imgMat: CV_8UC3 (8-bit) Mat object, in BGR encoding.
      * @result: calibrated image
@@ -594,7 +594,7 @@ public final class CalibrationCard {
                 labImg = doIlluminationCorrection(labImg, calData);
             }
 
-            // 1D and 3D colour balance
+            // 1D and 3D color balance
             if (labImg != null) {
                 labImg = do1D_3DCorrection(labImg, calData);
             }
@@ -602,9 +602,9 @@ public final class CalibrationCard {
             // measure quality of the calibration
             double[] E94Result = computeE94Error(labImg, calData);
 
-            // insert calibration colours in image
+            // insert calibration colors in image
             if (labImg != null) {
-                addCalColours(labImg, calData);
+                addCalColors(labImg, calData);
             }
 
             return new CalibrationResultData(labImg, E94Result[0], E94Result[1], E94Result[2]);
@@ -613,8 +613,8 @@ public final class CalibrationCard {
     }
 
     /*
-    * Computes E94 distance between two colours.
-    * First normalises the colours as follows:
+    * Computes E94 distance between two colors.
+    * First normalises the colors as follows:
     * L : 0...100
     * a,b: -128 ... 128
     * follows http://colormine.org/delta-e-calculator/cie94
@@ -674,7 +674,7 @@ public final class CalibrationCard {
             for (String label : sortedKeys) {
                 CalibrationData.CalValue cal = calData.calValues.get(label);
                 CalibrationData.Location loc = calData.locations.get(label);
-                float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch colour
+                float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch color
 
                 if (AppPreferences.isDiagnosticMode()) {
                     calibrationColors.append(String.format(Locale.US,

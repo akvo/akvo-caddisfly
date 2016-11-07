@@ -50,6 +50,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.LiquidTimeLapsePreferenceFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -98,7 +99,6 @@ public class TimeLapseActivity extends BaseActivity {
 
             mUuid = getIntent().getDataString();
 
-
             int delayMinute;
             int numberOfSamples;
 
@@ -113,7 +113,6 @@ public class TimeLapseActivity extends BaseActivity {
 
             numberOfSamples = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                     testInfo.getShortCode() + "_NumberOfSamples", "1"));
-
 
             File[] files = folder.listFiles();
             if (files != null) {
@@ -261,6 +260,11 @@ public class TimeLapseActivity extends BaseActivity {
                     + PreferencesUtil.getString(this, getString(R.string.colif_testDescriptionKey), "");
 
             testId = PreferencesUtil.getString(this, getString(R.string.colif_TestIdKey), "") + "_";
+        }
+
+        File folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, testInfo.getName());
+        if (folder.exists()) {
+            FileUtil.deleteRecursive(folder);
         }
 
         PreferencesUtil.setString(this, R.string.turbiditySavePathKey,

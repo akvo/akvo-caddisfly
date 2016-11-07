@@ -83,7 +83,7 @@ public class CalibrateListFragment extends ListFragment {
                     getString(R.string.calibrateWithNewReagent)));
             textCalibrationError.setVisibility(View.VISIBLE);
         } else if (SwatchHelper.isCalibrationComplete(currentTestInfo.getSwatches())
-                && !SwatchHelper.isSwatchListValid(currentTestInfo.getSwatches())) {
+                && !SwatchHelper.isSwatchListValid(currentTestInfo)) {
             //Display error if calibration is completed but invalid
             textCalibrationError.setText(String.format("%s. %s",
                     getString(R.string.calibrationIsInvalid), getString(R.string.tryRecalibrating)));

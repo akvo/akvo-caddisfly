@@ -299,7 +299,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122), Color.TRANSPARENT));
 
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -311,7 +311,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123), Color.TRANSPARENT));
 
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -324,7 +324,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 113), Color.TRANSPARENT));
 
         assertEquals(31.82420654296875, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -337,7 +337,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123), Color.TRANSPARENT));
 
         assertEquals(22.2095458984375, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -350,7 +350,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122), Color.TRANSPARENT));
 
         assertEquals(21.658697509765624, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -363,7 +363,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86), Color.TRANSPARENT));
 
         assertEquals(29.022808837890626, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -376,7 +376,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86), Color.TRANSPARENT));
 
         assertEquals(17.87760009765625, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -389,7 +389,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99), Color.TRANSPARENT));
 
         assertEquals(24.640643310546874, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -402,7 +402,7 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 112, 93), Color.TRANSPARENT));
 
         assertEquals(22.0148193359375, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
     @Test
@@ -415,7 +415,15 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(195, 0, 0), Color.TRANSPARENT));
 
         assertEquals(0.0, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+
+        testInfo.setHueTrend(1);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(-1);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
+
     }
 
 
@@ -429,7 +437,64 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 0, 0), Color.TRANSPARENT));
 
         assertEquals(-5.996826171875, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo.getSwatches()));
+
+        testInfo.setHueTrend(1);
+
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(-1);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
+
+    @Test
+    public void testValidateCalibration10() {
+        TestInfo testInfo = new TestInfo();
+
+        testInfo.addSwatch(new Swatch(0, Color.rgb(196, 178, 112), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.25, Color.rgb(209, 168, 138), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(219, 152, 125), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.75, Color.rgb(248, 105, 123), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 62, 108), Color.TRANSPARENT));
+
+        assertEquals(-62.31651611328125, SwatchHelper.calculateSlope(testInfo.getSwatches()));
+
+        testInfo.setHueTrend(1);
+
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(-1);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(0);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
+
+    }
+
+    @Test
+    public void testValidateCalibration11() {
+        TestInfo testInfo = new TestInfo();
+
+        testInfo.addSwatch(new Swatch(0, Color.rgb(196, 178, 112), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.25, Color.rgb(209, 168, 138), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.5, Color.rgb(219, 152, 125), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(0.75, Color.rgb(255, 62, 108), Color.TRANSPARENT));
+        testInfo.addSwatch(new Swatch(1, Color.rgb(248, 105, 123), Color.TRANSPARENT));
+
+        testInfo.setHueTrend(1);
+
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(-1);
+
+        assertEquals(false, SwatchHelper.isSwatchListValid(testInfo));
+
+        testInfo.setHueTrend(0);
+
+        assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
+
+    }
 }

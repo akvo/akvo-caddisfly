@@ -130,9 +130,9 @@ public class StripTest {
                                         int patchWidth = patchObj.getInt("patchWidth");
                                         double timeLapse = patchObj.getDouble("timeLapse");
                                         String unit = patchObj.getString("unit");
-                                        JSONArray colours = patchObj.getJSONArray("colours");
+                                        JSONArray colors = patchObj.getJSONArray("colours");
 
-                                        patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colours));
+                                        patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colors));
                                     }
 
                                 } catch (JSONException e) {
@@ -224,11 +224,11 @@ public class StripTest {
             private final double timeLapse; //seconds between this and previous patch
             private final String unit;
 
-            private final JSONArray colours;
+            private final JSONArray colors;
 
             @SuppressWarnings("SameParameterValue")
             Patch(int id, String desc, double width, double height, double position,
-                  double timeLapse, String unit, JSONArray colours) {
+                  double timeLapse, String unit, JSONArray colors) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;
@@ -236,7 +236,7 @@ public class StripTest {
                 this.position = position;
                 this.timeLapse = timeLapse;
                 this.unit = unit;
-                this.colours = colours;
+                this.colors = colors;
             }
 
             public int getId() {
@@ -251,8 +251,8 @@ public class StripTest {
                 return position;
             }
 
-            public JSONArray getColours() {
-                return colours;
+            public JSONArray getColors() {
+                return colors;
             }
 
             public double getTimeLapse() {

@@ -58,6 +58,7 @@ public class TestInfo {
     private long expiryDate;
     private boolean useGrayScale;
     private String shortCode;
+    private int hueTrend;
 
     public TestInfo(Hashtable names, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -318,6 +319,14 @@ public class TestInfo {
 
     public void setMonthsValid(int monthsValid) {
         this.monthsValid = monthsValid;
+    }
+
+    public void setHueTrend(int hueTrend) {
+        this.hueTrend = hueTrend;
+    }
+
+    public int getHueTrend() {
+        return hueTrend;
     }
 
     public static class SubTest {

@@ -280,7 +280,7 @@ public class ExternalActionActivity extends BaseActivity {
                     }
                 }
 
-                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
+                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo())) {
                     alertCalibrationIncomplete();
                     return;
                 }

@@ -179,7 +179,7 @@ public final class OpenCVUtil {
         Mat rotMat = Imgproc.getRotationMatrix2D(center, rotAngleDeg, 1.0);
         Imgproc.warpAffine(binary, dstBinary, rotMat, binary.size(), Imgproc.INTER_CUBIC + Imgproc.WARP_FILL_OUTLIERS);
 
-        // also apply rotation to coloured strip
+        // also apply rotation to colored strip
         Mat dstStrip = new Mat(stripArea.rows(), stripArea.cols(), stripArea.type());
         Imgproc.warpAffine(stripArea, dstStrip, rotMat, binary.size(), Imgproc.INTER_CUBIC + Imgproc.WARP_FILL_OUTLIERS);
 
@@ -221,8 +221,8 @@ public final class OpenCVUtil {
         org.opencv.core.Rect stripAreaRect = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
         Mat binaryStrip = dstBinary.submat(stripAreaRect);
 
-        // also cut out coloured strip
-        Mat colourStrip = dstStrip.submat(stripAreaRect);
+        // also cut out colored strip
+        Mat colorStrip = dstStrip.submat(stripAreaRect);
 
         // now right end of strip
         // method: first rising edge
@@ -243,7 +243,7 @@ public final class OpenCVUtil {
 
         stripAreaRect = getStripRectangle(binaryStrip, colCount, brand.getStripLength(), ratioW);
 
-        Mat resultStrip = colourStrip.submat(stripAreaRect).clone();
+        Mat resultStrip = colorStrip.submat(stripAreaRect).clone();
 
         // release Mat objects
         stripArea.release();
@@ -252,7 +252,7 @@ public final class OpenCVUtil {
         dstBinary.release();
         dstStrip.release();
         binaryStrip.release();
-        colourStrip.release();
+        colorStrip.release();
 
         return resultStrip;
     }
@@ -307,13 +307,13 @@ public final class OpenCVUtil {
     }
 
     static ColorDetected detectStripPatchColor(Mat lab) {
-        // compute mean lab colour. This is the value that will be
+        // compute mean lab color. This is the value that will be
         // used for the result computation
         Scalar mean = Core.mean(lab);
         ColorDetected colorDetected = new ColorDetected();
         colorDetected.setLab(mean);
 
-        // compute rgb colour. This will be used for display only.
+        // compute rgb color. This will be used for display only.
         Mat rgb = new Mat();
         Imgproc.cvtColor(lab, rgb, Imgproc.COLOR_Lab2RGB);
         mean = Core.mean(rgb);

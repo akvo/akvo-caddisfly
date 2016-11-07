@@ -174,13 +174,13 @@ public class TestTypeListActivity extends BaseActivity {
                         StringBuilder ranges = new StringBuilder();
                         for (StripTest.Brand.Patch patch : patches) {
                             try {
-                                int valueCount = patch.getColours().length();
+                                int valueCount = patch.getColors().length();
                                 if (ranges.length() > 0) {
                                     ranges.append(", ");
                                 }
                                 ranges.append(String.format(Locale.US, "%.0f - %.0f",
-                                        patch.getColours().getJSONObject(0).getDouble("value"),
-                                        patch.getColours().getJSONObject(valueCount - 1).getDouble("value")));
+                                        patch.getColors().getJSONObject(0).getDouble("value"),
+                                        patch.getColors().getJSONObject(valueCount - 1).getDouble("value")));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

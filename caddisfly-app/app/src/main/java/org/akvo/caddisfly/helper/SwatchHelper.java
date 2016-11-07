@@ -52,6 +52,12 @@ import java.util.Map;
 
 public final class SwatchHelper {
 
+    private static final int MAX_DISTANCE = 999;
+    private static final int MAX_DIFFERENCE = 150;
+    private static final double MAX_DIFF_FOR_AVG_CALC = 0.21;
+    private static final double INCREMENT = 0.01;
+    private static final int HSV_CROSSOVER_DIFFERENCE = 200;
+
     private SwatchHelper() {
     }
 
@@ -74,7 +80,7 @@ public final class SwatchHelper {
 
         ColorCompareInfo colorCompareInfo;
 
-        ArrayList<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel, 0.01);
+        ArrayList<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel, INCREMENT);
 
         //Find the color within the generated gradient that matches the photoColor
         colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
@@ -109,7 +115,7 @@ public final class SwatchHelper {
         double resultValue = -1;
         int matchedColor = -1;
         double tempDistance;
-        double nearestDistance = 999;
+        double nearestDistance = MAX_DISTANCE;
         int nearestMatchedColor = -1;
 
         for (int i = 0; i < swatches.size(); i++) {
@@ -187,12 +193,14 @@ public final class SwatchHelper {
     /**
      * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
      *
-     * @param swatches the range of colors
+     * @param testInfo the test Information
      * @return True if valid otherwise false
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isSwatchListValid(ArrayList<Swatch> swatches) {
+    public static boolean isSwatchListValid(TestInfo testInfo) {
         boolean result = true;
+
+        ArrayList<Swatch> swatches = testInfo.getSwatches();
 
         if (swatches.size() < 1) {
             return false;
@@ -224,17 +232,17 @@ public final class SwatchHelper {
                 int greenDifference = Color.green(swatch1.getColor()) - Color.green(previousSwatch.getColor());
                 int blueDifference = Color.blue(swatch1.getColor()) - Color.blue(previousSwatch.getColor());
 
-                if (Math.abs(swatch1.getRedDifference() - redDifference) > 150) {
+                if (Math.abs(swatch1.getRedDifference() - redDifference) > MAX_DIFFERENCE) {
                     result = false;
                     break;
                 }
 
-                if (Math.abs(swatch1.getGreenDifference() - greenDifference) > 150) {
+                if (Math.abs(swatch1.getGreenDifference() - greenDifference) > MAX_DIFFERENCE) {
                     result = false;
                     break;
                 }
 
-                if (Math.abs(swatch1.getBlueDifference() - blueDifference) > 150) {
+                if (Math.abs(swatch1.getBlueDifference() - blueDifference) > MAX_DIFFERENCE) {
                     result = false;
                     break;
                 }
@@ -242,45 +250,37 @@ public final class SwatchHelper {
             previousSwatch = swatch1;
         }
 
-        if (result) {
-            result = validateHueTrend(swatches);
+        if (result && testInfo.getHueTrend() != 0) {
+            result = validateHueTrend(swatches, testInfo.getHueTrend());
         }
 
         return result;
     }
 
-    private static boolean validateHueTrend(ArrayList<Swatch> swatches) {
+    private static boolean validateHueTrend(ArrayList<Swatch> swatches, int trend) {
 
         float[] colorHSV = new float[3];
         float previousHue = 0f;
-
-        boolean decreasingTrend = false;
 
         boolean crossed = false;
         for (int i = 0; i < swatches.size(); i++) {
             //noinspection ResourceType
             Color.colorToHSV(swatches.get(i).getColor(), colorHSV);
-            if (!crossed && previousHue > colorHSV[0]) {
-                if (previousHue > 300 && colorHSV[0] < 50) {
+
+            if (trend < 0) {
+                if (!crossed && colorHSV[0] - previousHue > HSV_CROSSOVER_DIFFERENCE) {
                     previousHue = colorHSV[0];
                     crossed = true;
                 }
-            }
-
-            // Determine if the sequence of colors are increasing or decreasing
-            if (previousHue > colorHSV[0]) {
-                if (i == 1) {
-                    decreasingTrend = !decreasingTrend;
-                }
-            }
-
-            // Check if sequence of colors are in correct order
-            if (decreasingTrend) {
-                if (previousHue < colorHSV[0]) {
+                if (i > 0 && previousHue < colorHSV[0]) {
                     return false;
                 }
             } else {
-                if (previousHue > colorHSV[0]) {
+                if (!crossed && colorHSV[0] - previousHue < -HSV_CROSSOVER_DIFFERENCE) {
+                    previousHue = colorHSV[0];
+                    crossed = true;
+                }
+                if (i > 0 && previousHue > colorHSV[0]) {
                     return false;
                 }
             }
@@ -392,7 +392,7 @@ public final class SwatchHelper {
 
         for (int i = 0; i < results.size(); i++) {
             double value = results.get(i).getResults().get(0).getResult();
-            if (value > -1 && Math.abs(value - commonResult) < 0.21) {
+            if (value > -1 && Math.abs(value - commonResult) < MAX_DIFF_FOR_AVG_CALC) {
                 result += value;
             } else {
                 return -1;

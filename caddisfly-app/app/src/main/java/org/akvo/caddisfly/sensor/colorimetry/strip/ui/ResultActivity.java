@@ -281,7 +281,7 @@ public class ResultActivity extends BaseActivity {
 
             // depending on the boolean grouped, we either handle all patches at once, or we handle only a single one
 
-            JSONArray colours;
+            JSONArray colors;
             Point patchCenter = null;
 
             double xTranslate;
@@ -292,7 +292,7 @@ public class ResultActivity extends BaseActivity {
             // compute location of point to be sampled
             Mat patchArea;
             if (grouped) {
-                // collect colours
+                // collect colors
                 double ratioW = strip.width() / brand.getStripLength();
                 colorsDetected = new ColorDetected[patches.size()];
                 double[][] colorsValueLab = new double[patches.size()][3];
@@ -301,7 +301,7 @@ public class ResultActivity extends BaseActivity {
                     double y = strip.height() / 2d;
                     patchCenter = new Point(x, y);
 
-                    colorDetected = ResultUtil.getPatchColour(mat, patchCenter, subMatSize);
+                    colorDetected = ResultUtil.getPatchColor(mat, patchCenter, subMatSize);
                     double[] colorValueLab = colorDetected.getLab().val;
 
                     colorsDetected[p] = colorDetected;
@@ -332,9 +332,9 @@ public class ResultActivity extends BaseActivity {
                 }
 
                 // calculate size of each color range block
-                // divide the original strip width by the number of colours
-                colours = patches.get(0).getColours();
-                xTranslate = (double) resultMatWidth / (double) colours.length();
+                // divide the original strip width by the number of colors
+                colors = patches.get(0).getColors();
+                xTranslate = (double) resultMatWidth / (double) colors.length();
 
             } else {
                 double ratioW = strip.width() / brand.getStripLength();
@@ -361,22 +361,22 @@ public class ResultActivity extends BaseActivity {
                 resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
                 resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
 
-                colorDetected = ResultUtil.getPatchColour(mat, patchCenter, subMatSize);
+                colorDetected = ResultUtil.getPatchColor(mat, patchCenter, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
 
-                //set the colours needed to calculate resultValue
-                colours = patches.get(patchNum).getColours();
+                //set the colors needed to calculate resultValue
+                colors = patches.get(patchNum).getColors();
 
                 try {
-                    resultValue = ResultUtil.calculateResultSingle(colorValueLab, colours);
+                    resultValue = ResultUtil.calculateResultSingle(colorValueLab, colors);
                 } catch (Exception e) {
                     e.printStackTrace();
                     resultValue = Double.NaN;
                 }
 
                 // calculate size of each color range block
-                // divide the original strip width by the number of colours
-                xTranslate = (double) resultMatWidth / (double) colours.length();
+                // divide the original strip width by the number of colors
+                xTranslate = (double) resultMatWidth / (double) colors.length();
             }
 
             ////////////// Create Image ////////////////////
@@ -387,22 +387,22 @@ public class ResultActivity extends BaseActivity {
             // Create Mat to hold patchDescription of patch
             Mat descMat = ResultUtil.createDescriptionMat(patchDescription, resultMatWidth);
 
-            // Create Mat to hold the colour range
+            // Create Mat to hold the color range
             Mat colorRangeMat;
             if (grouped) {
-                colorRangeMat = ResultUtil.createColourRangeMatGroup(patches, resultMatWidth);
+                colorRangeMat = ResultUtil.createColorRangeMatGroup(patches, resultMatWidth);
             } else {
-                colorRangeMat = ResultUtil.createColourRangeMatSingle(patches, patchNum, resultMatWidth);
+                colorRangeMat = ResultUtil.createColorRangeMatSingle(patches, patchNum, resultMatWidth);
             }
 
             // create Mat to hold value measured
             Mat valueMeasuredMat;
             if (grouped) {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(
-                        colours, resultValue, colorsDetected, resultMatWidth, xTranslate);
+                        colors, resultValue, colorsDetected, resultMatWidth, xTranslate);
             } else {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(
-                        colours, resultValue, colorDetected, resultMatWidth, xTranslate);
+                        colors, resultValue, colorDetected, resultMatWidth, xTranslate);
             }
 
             // PUTTING IT ALL TOGETHER

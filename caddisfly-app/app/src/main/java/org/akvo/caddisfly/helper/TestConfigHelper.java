@@ -287,10 +287,11 @@ public final class TestConfigHelper {
 
             testInfo.setShortCode(item.has("shortCode") ? item.getString("shortCode") : "");
 
+            testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
+
             testInfo.setUseGrayScale(item.has("grayScale") && item.getBoolean("grayScale"));
 
             testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);
-
 
             //if calibrate not specified then default to false otherwise use specified value
             testInfo.setRequiresCalibration(item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"));
