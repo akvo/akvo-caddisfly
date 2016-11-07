@@ -50,8 +50,7 @@ public class OtherPreferenceFragment extends PreferenceFragment {
 
         Preference aboutPreference = findPreference("about");
         if (aboutPreference != null) {
-            aboutPreference.setSummary(String.format("%s %s", getString(R.string.version),
-                    CaddisflyApp.getAppVersion()));
+            aboutPreference.setSummary(CaddisflyApp.getAppVersion());
         }
 
         return rootView;

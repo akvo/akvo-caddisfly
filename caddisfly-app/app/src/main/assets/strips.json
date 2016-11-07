@@ -314,7 +314,7 @@
       ]
     },
     {
-      "name": "Phosphate",
+      "name": "Phosphorous",
       "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
       "calibration": "measured on 25-10-2016 using X-Rite iPro2",
       "brand": "Precision Labs 800-733-0266",
@@ -328,30 +328,30 @@
       "experimental": "true",
       "patches": [
         {
-          "patchDesc":"Phosphate",
+          "patchDesc":"Phosphorous",
           "patchPos":2.5,
           "patchWidth":6,
           "id":1,
           "colours":[
             {
               "value": 0,
-              "lab":[67.72,7.05,-2.12]
+              "lab":[66.61,-2.90,0.06]
             },
             {
               "value": 5,
-              "lab":[66.11,3.91,-2.43]
+              "lab":[56.69,-3.62,-4.81]
             },
             {
               "value": 15,
-              "lab":[65.48,0.48,-2.47]
+              "lab":[49.52,-3.88,-9.45]
             },
             {
               "value": 30,
-              "lab":[64.47,-2.77,-1.95]
+              "lab":[47.28,-3.87,-10.22]
             },
             {
               "value": 50,
-              "lab":[63.19,-5.04,-1.12]
+              "lab":[40.84,-2.74,-13.69]
             }
           ],
           "timeLapse": 180,
