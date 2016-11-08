@@ -135,6 +135,28 @@ public class StripTest {
                                         patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colors));
                                     }
 
+                                    switch (groupingType) {
+
+                                        case GROUP:
+                                            // sort by position of the patches on the strip
+                                            Collections.sort(patches, new Comparator<Patch>() {
+                                                @Override
+                                                public int compare(Patch lhs, Patch rhs) {
+                                                    return Double.compare(lhs.getPosition(), rhs.getPosition());
+                                                }
+                                            });
+                                            break;
+                                        case INDIVIDUAL:
+                                            // sort by time delay for analyzing each patch
+                                            Collections.sort(patches, new Comparator<Patch>() {
+                                                @Override
+                                                public int compare(final Patch lhs, final Patch rhs) {
+                                                    return Double.compare(lhs.timeLapse, rhs.timeLapse);
+                                                }
+                                            });
+                                            break;
+                                    }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -193,17 +215,6 @@ public class StripTest {
 
         public JSONArray getInstructions() {
             return instructions;
-        }
-
-
-        public List<Patch> getPatchesOrderedByTimeLapse() {
-            Collections.sort(patches, new Comparator<Patch>() {
-                @Override
-                public int compare(final Patch lhs, final Patch rhs) {
-                    return Double.compare(lhs.timeLapse, rhs.timeLapse);
-                }
-            });
-            return patches;
         }
 
         public String getImage() {
