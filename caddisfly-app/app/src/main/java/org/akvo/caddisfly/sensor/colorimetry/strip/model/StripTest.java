@@ -256,7 +256,11 @@ public class StripTest {
             }
 
             public double getTimeLapse() {
-                return timeLapse;
+                if (AppPreferences.ignoreStripTestDelay()) {
+                    return 3;
+                } else {
+                    return timeLapse;
+                }
             }
 
             public String getUnit() {

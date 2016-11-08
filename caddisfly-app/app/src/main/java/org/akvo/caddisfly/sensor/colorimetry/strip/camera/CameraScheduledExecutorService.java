@@ -57,23 +57,25 @@ class CameraScheduledExecutorService {
                     if (canceled) {
                         tasks.remove(s);
                     }
-
-                    //System.out.println("***task key = " + s + " is canceled: " + canceled);
                 }
             }
         }, delay, TimeUnit.MILLISECONDS);
     }
 
-    /*
-        * This method schedules a task to be executed periodically.
-        * The task is executed the first time after the initialDelay, and then repeats every time the period expires.
-    */
+    /**
+     * Schedules a task to be executed periodically
+     *
+     * @param runnable     the runnable to execute
+     * @param initialDelay the initial delay before executing the first time
+     * @param delay        the delay between subsequent execution
+     */
     @SuppressWarnings("SameParameterValue")
     void scheduleRunnableWithFixedDelay(Runnable runnable, long initialDelay, long delay) {
         try {
             if (!scheduledExecutorService.isShutdown()) {
 
-                ScheduledFuture taskExecuted = scheduledExecutorService.scheduleWithFixedDelay(runnable, initialDelay, delay, TimeUnit.MILLISECONDS);
+                ScheduledFuture taskExecuted = scheduledExecutorService.scheduleWithFixedDelay(runnable,
+                        initialDelay, delay, TimeUnit.MILLISECONDS);
                 tasks.put(runnable.toString(), taskExecuted);
             }
         } catch (Exception e) {

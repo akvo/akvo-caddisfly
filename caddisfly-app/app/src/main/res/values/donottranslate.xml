@@ -87,5 +87,18 @@
     <string name="colif_brothMediumKey">colif_brothMedium</string>
     <string name="colif_volumeKey">colif_volume</string>
     <string name="colif_testDescriptionKey">colif_testDescription</string>
+    <string name="ignoreStripTestDelayKey">ignoreStripTestDelay</string>
+
+    <!--Diagnostic-->
+    <string name="cameraPreview">Colorimeter camera preview</string>
+    <string name="noBackdropDetection">No backdrop detection</string>
+    <string name="debuggingOn">Show debug messages</string>
+    <string name="useFlashMode">Use flash mode</string>
+    <string name="noSound">Turn sound off</string>
+    <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
+    <string name="ignoreStripTestDelay">Ignore strip test delay</string>
+    <string name="experimental">Experimental</string>
+
+
 
 </resources>

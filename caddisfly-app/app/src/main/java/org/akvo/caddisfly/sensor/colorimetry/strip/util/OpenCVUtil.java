@@ -297,13 +297,8 @@ public final class OpenCVUtil {
         // cut out final strip
         Point stripTopLeft = new Point(posLeft, 0);
         Point stripBottomRight = new Point(posRight, binaryStrip.rows());
-        Rect stripAreaRect = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
-        // sanity check: the strip should be at least larger than half of the black area
-        if (Math.abs(posRight - posLeft) < binaryStrip.cols() / 2f) {
-            return null;
-        }
 
-        return stripAreaRect;
+        return new Rect(stripTopLeft, stripBottomRight);
     }
 
     static ColorDetected detectStripPatchColor(Mat lab) {

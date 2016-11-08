@@ -33,6 +33,7 @@ public class StripTestNavigation {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    @SuppressWarnings("SameParameterValue")
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 

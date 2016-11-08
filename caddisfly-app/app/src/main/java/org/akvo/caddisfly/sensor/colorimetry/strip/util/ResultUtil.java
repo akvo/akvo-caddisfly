@@ -76,9 +76,10 @@ public final class ResultUtil {
     }
 
     public static Mat getMatFromFile(FileStorage fileStorage, int imageNo) {
-        //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
 
         String fileName = Constant.STRIP + imageNo;
+
+        //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
         if (fileStorage.fileExists(fileName + Constant.ERROR)) {
             fileName += Constant.ERROR;
         }
@@ -181,15 +182,14 @@ public final class ResultUtil {
         return descMat;
     }
 
-    /*
-      * COLOR RANGE AS IN JSON FILE (FROM MANUFACTURER)
-      * Create Mat to hold a rectangle for each color
-      * the corresponding value written as text above that rectangle
-      */
-    public static Mat createColorRangeMatSingle(List<StripTest.Brand.Patch> patches, int patchNum,
-                                                int width) {
-
-        JSONArray colors = patches.get(patchNum).getColors();
+    /**
+     * Create Mat with swatches for the colors in the color chart range and also write the value
+     *
+     * @param colors the colors to draw
+     * @param width  the final width of the Mat
+     * @return the created Mat
+     */
+    public static Mat createColorRangeMatSingle(JSONArray colors, int width) {
 
         double gutterWidth = X_MARGIN;
         if (colors.length() > 10) {
@@ -250,13 +250,15 @@ public final class ResultUtil {
         return colorRangeMat;
     }
 
-    /*
-  * COLOR RANGE AS IN JSON FILE (FROM MANUFACTURER)
-  * Create Mat to hold a rectangle for each color
-  * the corresponding value written as text above that rectangle
-  */
+    /**
+     * Create Mat to hold a rectangle for each color with the corresponding value
+     *
+     * @param patches the patches on the strip
+     * @param width   the width of the Mat to be returned
+     * @return the Mat with the color range
+     */
     public static Mat createColorRangeMatGroup(List<StripTest.Brand.Patch> patches, int width) {
-        // horizontal size of mat: width
+
         // vertical size of mat: size of color block - X_MARGIN + top distance
 
         double xTranslate = (double) width / (double) patches.get(0).getColors().length();
@@ -302,14 +304,20 @@ public final class ResultUtil {
         return colorRangeMat;
     }
 
-    /*
-       * VALUE MEASURED
-       * Create Mat to hold a line between min and max values, on it a circle filled with
-       * the color detected below which the result value measured
-       */
-    public static Mat createValueMeasuredMatSingle(JSONArray colors, double resultValue,
-                                                   ColorDetected colorDetected, int width, double xTranslate) {
+    /**
+     * Create a Mat to show the point at which the matched color occurs
+     *
+     * @param colors        the range of colors
+     * @param result        the result
+     * @param colorDetected the colors extracted from the patch
+     * @param width         the width of the mat to be returned
+     * @return the Mat with the point or arrow drawn
+     */
+    public static Mat createValueMeasuredMatSingle(JSONArray colors, double result,
+                                                   ColorDetected colorDetected, int width) {
+
         Mat mat = new Mat(MEASURE_LINE_HEIGHT, width, CvType.CV_8UC3, LAB_WHITE);
+        double xTranslate = (double) width / (double) colors.length();
 
         try {
             // determine where the circle should be placed
@@ -317,13 +325,13 @@ public final class ResultUtil {
 
                 double nextValue = colors.getJSONObject(Math.min(d + 1, colors.length() - 1)).getDouble("value");
 
-                if (resultValue <= nextValue) {
+                if (result <= nextValue) {
 
                     Scalar resultColor = colorDetected.getLab();
                     double value = colors.getJSONObject(d).getDouble("value");
 
                     //calculate number of pixels needed to translate in x direction
-                    double transX = xTranslate * ((resultValue - value) / (nextValue - value));
+                    double transX = xTranslate * ((result - value) / (nextValue - value));
                     double left = xTranslate * d;
                     double right = left + xTranslate - X_MARGIN;
 
@@ -350,14 +358,20 @@ public final class ResultUtil {
         return mat;
     }
 
-    /*
-       * VALUE MEASURED
-       * Create Mat to hold a line between min and max values, on it a circle filled with
-       * the color detected below which the result value measured
-       */
-    public static Mat createValueMeasuredMatGroup(JSONArray colors, double result, ColorDetected[] colorsDetected, int width, double xTranslate) {
+    /**
+     * Create a Mat to show the point at which the matched color occurs for group patch test
+     *
+     * @param colors         the range of colors
+     * @param result         the result
+     * @param colorsDetected the colors extracted from the patch
+     * @param width          the width of the mat to be returned
+     * @return the Mat with the point or arrow drawn
+     */
+    public static Mat createValueMeasuredMatGroup(JSONArray colors, double result,
+                                                  ColorDetected[] colorsDetected, int width) {
         int height = COLOR_INDICATOR_SIZE * colorsDetected.length;
         Mat valueMeasuredMat = new Mat(height, width, CvType.CV_8UC3, LAB_WHITE);
+        double xTranslate = (double) width / (double) colors.length();
 
         try {
 
@@ -414,7 +428,8 @@ public final class ResultUtil {
         int width = Math.max(m1.cols(), m2.cols());
         int height = m1.rows() + m2.rows();
 
-        Mat result = new Mat(height, width, CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+        Mat result = new Mat(height, width, CvType.CV_8UC3,
+                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
         // rect works with x, y, width, height
         Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());
@@ -554,24 +569,27 @@ public final class ResultUtil {
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
         double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR, colorValues[1] - 128, colorValues[2] - 128};
 
-        double dist;
-        int minPos = 0;
-        double smallestE94Dist = Double.MAX_VALUE;
+        double distance;
+        int index = 0;
+        double nearest = Double.MAX_VALUE;
 
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize
-            dist = CalibrationCard.E94(labPoint[0], labPoint[1], labPoint[2], interpolTable[j][0], interpolTable[j][1], interpolTable[j][2], false);
-            if (dist < smallestE94Dist) {
-                smallestE94Dist = dist;
-                minPos = j;
+            distance = CalibrationCard.E94(labPoint[0], labPoint[1], labPoint[2], interpolTable[j][0],
+                    interpolTable[j][1], interpolTable[j][2], false);
+            if (distance < nearest) {
+                nearest = distance;
+                index = j;
             }
         }
 
-        return interpolTable[minPos][3];
+        return interpolTable[index][3];
     }
 
-    public static double calculateResultGroup(double[][] colorsValueLab, List<StripTest.Brand.Patch> patches) throws Exception {
+    public static double calculateResultGroup(double[][] colorsValueLab,
+                                              List<StripTest.Brand.Patch> patches) throws Exception {
+
         double[][][] interpolTables = new double[patches.size()][][];
 
         // create all interpol tables
@@ -589,28 +607,29 @@ public final class ResultUtil {
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
         double[][] labPoint = new double[patches.size()][];
         for (int p = 0; p < patches.size(); p++) {
-            labPoint[p] = new double[]{colorsValueLab[p][0] / LAB_COLOR_NORMAL_DIVISOR, colorsValueLab[p][1] - 128, colorsValueLab[p][2] - 128};
+            labPoint[p] = new double[]{colorsValueLab[p][0] / LAB_COLOR_NORMAL_DIVISOR,
+                    colorsValueLab[p][1] - 128, colorsValueLab[p][2] - 128};
         }
 
-        double dist;
-        int minPos = 0;
-        double smallestE94Dist = Double.MAX_VALUE;
+        double distance;
+        int index = 0;
+        double nearest = Double.MAX_VALUE;
 
         // compute smallest distance, combining all interpolation tables as we want the global minimum
         // all interpol tables should have the same length here, so we use the length of the first one
 
         for (int j = 0; j < interpolTables[0].length; j++) {
-            dist = 0;
+            distance = 0;
             for (int p = 0; p < patches.size(); p++) {
-                dist += CalibrationCard.E94(labPoint[p][0], labPoint[p][1],
-                        labPoint[p][2], interpolTables[p][j][0], interpolTables[p][j][1], interpolTables[p][j][2], false);
+                distance += CalibrationCard.E94(labPoint[p][0], labPoint[p][1], labPoint[p][2],
+                        interpolTables[p][j][0], interpolTables[p][j][1], interpolTables[p][j][2], false);
             }
-            if (dist < smallestE94Dist) {
-                smallestE94Dist = dist;
-                minPos = j;
+            if (distance < nearest) {
+                nearest = distance;
+                index = j;
             }
         }
 
-        return interpolTables[0][minPos][3];
+        return interpolTables[0][index][3];
     }
 }

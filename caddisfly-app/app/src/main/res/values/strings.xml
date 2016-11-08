@@ -144,14 +144,9 @@
     <string name="fileSaved">File saved</string>
     <string name="calibrationLoaded">%1$s loaded</string>
 
-    <!--Diagnostic Mode: Settings-->
+    <string name="customTests">Custom tests</string>
+
     <string name="diagnostics">Diagnostics</string>
-    <string name="cameraPreview">Colorimeter camera preview</string>
-    <string name="noBackdropDetection">No backdrop detection</string>
-    <string name="debuggingOn">Show debug messages</string>
-    <string name="useFlashMode">Use flash mode</string>
-    <string name="noSound">Turn sound off</string>
-    <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="deviceConnected">Device connected</string>
     <string name="go">Go</string>
     <string name="next">Next</string>
@@ -161,12 +156,8 @@
     <string name="verifySensorDetails">Verify sensor details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>
-
-    <string name="customTests">Custom tests</string>
-    <string name="experimental">Experimental</string>
     <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
     <string name="testWithDilution">Test with Dilution</string>
-
 
     <!--StripTest-->
     <!--paths to assets-->

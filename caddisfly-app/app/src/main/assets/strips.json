@@ -316,7 +316,7 @@
     {
       "name": "Phosphorous",
       "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
-      "calibration": "measured on 25-10-2016 using X-Rite iPro2",
+      "calibration": "measured on 07-11-2016 using X-Rite iPro2",
       "brand": "Precision Labs 800-733-0266",
       "image": "Precision-800-733-0266",
       "numPatch": 1,
@@ -338,19 +338,19 @@
               "lab":[66.61,-2.90,0.06]
             },
             {
-              "value": 5,
+              "value": 10,
               "lab":[56.69,-3.62,-4.81]
             },
             {
-              "value": 15,
+              "value": 25,
               "lab":[49.52,-3.88,-9.45]
             },
             {
-              "value": 30,
+              "value": 50,
               "lab":[47.28,-3.87,-10.22]
             },
             {
-              "value": 50,
+              "value": 100,
               "lab":[40.84,-2.74,-13.69]
             }
           ],

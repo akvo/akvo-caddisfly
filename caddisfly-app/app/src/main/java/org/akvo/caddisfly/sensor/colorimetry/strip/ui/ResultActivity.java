@@ -284,8 +284,6 @@ public class ResultActivity extends BaseActivity {
             JSONArray colors;
             Point patchCenter = null;
 
-            double xTranslate;
-
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             int resultMatWidth = Math.max(MIN_DISPLAY_WIDTH, Math.min(displayMetrics.widthPixels, MAX_DISPLAY_WIDTH));
 
@@ -312,8 +310,9 @@ public class ResultActivity extends BaseActivity {
                         CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
                 patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
-                Imgproc.resize(patchArea, patchArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
-                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
+                Imgproc.resize(patchArea, patchArea,
+                        new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
+                                Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
 
                 analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
                 Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
@@ -334,7 +333,6 @@ public class ResultActivity extends BaseActivity {
                 // calculate size of each color range block
                 // divide the original strip width by the number of colors
                 colors = patches.get(0).getColors();
-                xTranslate = (double) resultMatWidth / (double) colors.length();
 
             } else {
                 double ratioW = strip.width() / brand.getStripLength();
@@ -370,13 +368,8 @@ public class ResultActivity extends BaseActivity {
                 try {
                     resultValue = ResultUtil.calculateResultSingle(colorValueLab, colors);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     resultValue = Double.NaN;
                 }
-
-                // calculate size of each color range block
-                // divide the original strip width by the number of colors
-                xTranslate = (double) resultMatWidth / (double) colors.length();
             }
 
             ////////////// Create Image ////////////////////
@@ -392,17 +385,18 @@ public class ResultActivity extends BaseActivity {
             if (grouped) {
                 colorRangeMat = ResultUtil.createColorRangeMatGroup(patches, resultMatWidth);
             } else {
-                colorRangeMat = ResultUtil.createColorRangeMatSingle(patches, patchNum, resultMatWidth);
+                colorRangeMat = ResultUtil.createColorRangeMatSingle(patches.get(patchNum).getColors(),
+                        resultMatWidth);
             }
 
             // create Mat to hold value measured
             Mat valueMeasuredMat;
             if (grouped) {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatGroup(
-                        colors, resultValue, colorsDetected, resultMatWidth, xTranslate);
+                        colors, resultValue, colorsDetected, resultMatWidth);
             } else {
                 valueMeasuredMat = ResultUtil.createValueMeasuredMatSingle(
-                        colors, resultValue, colorDetected, resultMatWidth, xTranslate);
+                        colors, resultValue, colorDetected, resultMatWidth);
             }
 
             // PUTTING IT ALL TOGETHER
@@ -420,7 +414,8 @@ public class ResultActivity extends BaseActivity {
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
 
             Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
-                    Core.BORDER_CONSTANT, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+                    Core.BORDER_CONSTANT, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE,
+                            MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             //make bitmap to be rendered on screen, which doesn't contain the patch patchDescription
             if (!combined.empty()) {
@@ -493,8 +488,10 @@ public class ResultActivity extends BaseActivity {
                     if (AppPreferences.isDiagnosticMode()) {
                         TextView textColor = (TextView) itemResult.findViewById(R.id.text_color);
                         double[] colorValues = colorDetected.getLab().val;
-                        double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR, colorValues[1] - 128, colorValues[2] - 128};
-                        textColor.setText(String.format(Locale.US, "%.2f, %.2f, %.2f", labPoint[0], labPoint[1], labPoint[2]));
+                        double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR,
+                                colorValues[1] - 128, colorValues[2] - 128};
+                        textColor.setText(String.format(Locale.US, "%.2f, %.2f, %.2f", labPoint[0],
+                                labPoint[1], labPoint[2]));
                         textColor.setVisibility(View.VISIBLE);
                     }
 
