@@ -171,8 +171,10 @@ public class TestTypeListActivity extends BaseActivity {
 
                 if (brand != null) {
 
-                    List<StripTest.Brand.Patch> patches = brand.getPatches();
+                    // for display purposes sort patches by position on the strip
+                    List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
 
+                    // display the range in the description
                     if (patches != null && patches.size() > 0) {
                         StringBuilder ranges = new StringBuilder();
                         for (StripTest.Brand.Patch patch : patches) {

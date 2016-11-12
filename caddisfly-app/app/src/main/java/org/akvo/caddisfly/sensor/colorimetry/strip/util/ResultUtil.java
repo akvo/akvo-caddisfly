@@ -20,10 +20,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -530,7 +533,7 @@ public final class ResultUtil {
         return interpolTable;
     }
 
-    public static double calculateResultSingle(double[] colorValues, JSONArray colors) {
+    public static double calculateResultSingle(double[] colorValues, JSONArray colors, int id) {
         double[][] interpolTable = createInterpolTable(colors);
 
         // determine closest value
@@ -557,11 +560,21 @@ public final class ResultUtil {
             }
         }
 
-        return interpolTable[index][3];
+        if (AppPreferences.isDiagnosticMode()) {
+            PreferencesUtil.setString(CaddisflyApp.getApp().getApplicationContext(),
+                    Constant.DISTANCE_INFO + id, String.format(Locale.US, "%.2f", nearest));
+        }
+
+        if (nearest < Constant.MAX_COLOR_DISTANCE) {
+            // return result only if the color distance is not too big
+            return interpolTable[index][3];
+        } else {
+            return Double.NaN;
+        }
     }
 
     public static double calculateResultGroup(double[][] colorsValueLab,
-                                              List<StripTest.Brand.Patch> patches) {
+                                              List<StripTest.Brand.Patch> patches, int id) {
 
         double[][][] interpolTables = new double[patches.size()][][];
 
@@ -603,6 +616,16 @@ public final class ResultUtil {
             }
         }
 
-        return interpolTables[0][index][3];
+        if (AppPreferences.isDiagnosticMode()) {
+            PreferencesUtil.setString(CaddisflyApp.getApp().getApplicationContext(),
+                    Constant.DISTANCE_INFO + id, String.format(Locale.US, "%.2f", nearest));
+        }
+
+        if (nearest < Constant.MAX_COLOR_DISTANCE * patches.size()) {
+            // return result only if the color distance is not too big
+            return interpolTables[0][index][3];
+        } else {
+            return Double.NaN;
+        }
     }
 }

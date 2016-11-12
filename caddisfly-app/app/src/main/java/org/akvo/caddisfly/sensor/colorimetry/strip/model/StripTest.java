@@ -77,6 +77,10 @@ public class StripTest {
         return new JSONObject(jsonString);
     }
 
+    public int getPatchCount(Context context, String uuid) {
+        return getBrand(context, uuid).getPatches().size();
+    }
+
     public enum GroupType {
         GROUP, INDIVIDUAL
     }
@@ -187,6 +191,19 @@ public class StripTest {
 
         public List<Patch> getPatches() {
             return patches;
+        }
+
+        public List<Patch> getPatchesSortedByPosition() {
+
+            // sort after moving to new list so that the order of original list is not changed
+            List<Patch> newList = new ArrayList<>(patches);
+            Collections.sort(newList, new Comparator<Patch>() {
+                @Override
+                public int compare(Patch lhs, Patch rhs) {
+                    return Double.compare(lhs.getPosition(), rhs.getPosition());
+                }
+            });
+            return newList;
         }
 
 //        public double getStripHeight() {

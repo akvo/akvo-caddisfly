@@ -94,7 +94,9 @@ public class ResultActivity extends BaseActivity {
 
             // get information on the strip test from JSON
             brand = stripTest.getBrand(this, uuid);
-            List<StripTest.Brand.Patch> patches = brand.getPatches();
+
+            // for display purposes sort the patches by position on the strip
+            List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
 
             // get the JSON describing the images of the patches that were stored before
             JSONArray imagePatchArray = null;
@@ -328,7 +330,7 @@ public class ResultActivity extends BaseActivity {
 //                resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
 
                 try {
-                    resultValue = ResultUtil.calculateResultGroup(colorsValueLab, patches);
+                    resultValue = ResultUtil.calculateResultGroup(colorsValueLab, patches, id);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     resultValue = Double.NaN;
@@ -370,7 +372,7 @@ public class ResultActivity extends BaseActivity {
                 colors = patches.get(patchNum).getColors();
 
                 try {
-                    resultValue = ResultUtil.calculateResultSingle(colorValueLab, colors);
+                    resultValue = ResultUtil.calculateResultSingle(colorValueLab, colors, id);
                 } catch (Exception e) {
                     resultValue = Double.NaN;
                 }
@@ -407,14 +409,19 @@ public class ResultActivity extends BaseActivity {
             // transform all mats to RGB. The strip Mat is already RGB
             Imgproc.cvtColor(descMat, descMat, Imgproc.COLOR_Lab2RGB);
             Imgproc.cvtColor(colorRangeMat, colorRangeMat, Imgproc.COLOR_Lab2RGB);
-            Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
 
             // create empty mat to serve as a template
             combined = new Mat(0, resultMatWidth, CvType.CV_8UC3,
                     new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
             combined = ResultUtil.concatenate(combined, mat); // add strip
-            combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
+
+            // display extracted color only if there was a match
+            if (!Double.isNaN(resultValue)) {
+                Imgproc.cvtColor(valueMeasuredMat, valueMeasuredMat, Imgproc.COLOR_Lab2RGB);
+                combined = ResultUtil.concatenate(combined, valueMeasuredMat); // add measured value
+            }
+
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
 
             Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
@@ -494,10 +501,13 @@ public class ResultActivity extends BaseActivity {
                         double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR,
                                 colorValues[1] - 128, colorValues[2] - 128};
 
-                        String distanceInfo = PreferencesUtil.getString(getBaseContext(), Constant.CALIBRATION_INFO, "");
+                        String calibrationInfo = PreferencesUtil.getString(getBaseContext(), Constant.CALIBRATION_INFO, "");
 
-                        textColor.setText(String.format(Locale.US, "Lab: %.2f, %.2f, %.2f%n%s%n",
-                                labPoint[0], labPoint[1], labPoint[2], distanceInfo));
+                        String distanceInfo = PreferencesUtil.getString(
+                                CaddisflyApp.getApp().getApplicationContext(), Constant.DISTANCE_INFO + id, "");
+
+                        textColor.setText(String.format(Locale.US, "Lab: %.2f, %.2f, %.2f%nDistance: %s%n%s%n",
+                                labPoint[0], labPoint[1], labPoint[2], distanceInfo, calibrationInfo));
                         textColor.setVisibility(View.VISIBLE);
 
                         String diagnosticInfo = PreferencesUtil.getString(
@@ -529,6 +539,7 @@ public class ResultActivity extends BaseActivity {
                             textResult.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
                         }
                     } else {
+                        textResult.setText(R.string.no_result);
                         invalid = true;
                     }
                 }

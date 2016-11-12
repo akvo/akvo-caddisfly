@@ -91,7 +91,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         String uuid = intent.getStringExtra(Constant.UUID);
 
         StripTest stripTest = new StripTest();
-        int numPatches = stripTest.getBrand(context, uuid).getPatches().size();
+        int numPatches = stripTest.getPatchCount(context, uuid);
 
         format = intent.getIntExtra(Constant.FORMAT, ImageFormat.NV21);
         width = intent.getIntExtra(Constant.WIDTH, 0);
