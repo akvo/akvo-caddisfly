@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,6 +127,8 @@ public class TestTypeListActivity extends BaseActivity {
 
     static class StripAdapter extends ArrayAdapter<StripTest.Brand> {
 
+        private static final String TAG = "StripAdapter";
+
         private final List<StripTest.Brand> brandList;
         private final int resource;
         private final Context context;
@@ -179,11 +182,11 @@ public class TestTypeListActivity extends BaseActivity {
                                     ranges.append(", ");
                                 }
                                 ranges.append(String.format(Locale.US, "%.0f - %.0f",
-                                        patch.getColors().getJSONObject(0).getDouble("value"),
-                                        patch.getColors().getJSONObject(valueCount - 1).getDouble("value")));
+                                        patch.getColors().getJSONObject(0).getDouble(SensorConstants.VALUE),
+                                        patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
 
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                Log.e(TAG, e.getMessage(), e);
                             }
                             if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
                                 break;

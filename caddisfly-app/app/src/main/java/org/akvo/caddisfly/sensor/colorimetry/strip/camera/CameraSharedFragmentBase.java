@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -35,6 +36,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public abstract class CameraSharedFragmentBase extends Fragment {
 
+    private static final String TAG = "CamSharedFragmentBase";
     private TextView countQualityView;
 
     void showBrightness(double value) {
@@ -83,7 +85,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 });
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
@@ -119,7 +121,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 

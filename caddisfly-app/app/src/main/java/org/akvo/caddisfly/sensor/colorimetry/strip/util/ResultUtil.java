@@ -16,8 +16,11 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
@@ -46,10 +49,11 @@ import java.util.Locale;
  */
 public final class ResultUtil {
 
+    private static final String TAG = "ResultUtil";
+
     private static final int BORDER_SIZE = 10;
     private static final int MEASURE_LINE_HEIGHT = 60;
     private static final int MIN_COLOR_LABEL_WIDTH = 50;
-    private static final int GUTTER_SPACE_WIDTH = 50;
     private static final int COLOR_INDICATOR_SIZE = 40;
     private static final double TITLE_FONT_SIZE = 0.8d;
     private static final double NORMAL_FONT_SCALE = 0.6d;
@@ -75,19 +79,19 @@ public final class ResultUtil {
     private ResultUtil() {
     }
 
-    public static Mat getMatFromFile(FileStorage fileStorage, int imageNo) {
+    public static Mat getMatFromFile(Context context, int imageNo) {
 
         String fileName = Constant.STRIP + imageNo;
 
         //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
-        if (fileStorage.fileExists(fileName + Constant.ERROR)) {
+        if (FileStorage.fileExists(context, fileName + Constant.ERROR)) {
             fileName += Constant.ERROR;
         }
 
         // read the Mat object from internal storage
         byte[] data;
         try {
-            data = fileStorage.readByteArray(fileName);
+            data = FileStorage.readByteArray(context, fileName);
 
             if (data != null) {
                 // determine cols and rows dimensions
@@ -112,7 +116,7 @@ public final class ResultUtil {
                 return result;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return null;
     }
@@ -131,7 +135,7 @@ public final class ResultUtil {
             return Bitmap.createScaledBitmap(bitmap, mat.width(), mat.height(), false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return null;
     }
@@ -207,8 +211,8 @@ public final class ResultUtil {
 
                 JSONObject colorObj = colors.getJSONObject(d);
 
-                double value = colorObj.getDouble("value");
-                JSONArray lab = colorObj.getJSONArray("lab");
+                double value = colorObj.getDouble(SensorConstants.VALUE);
+                JSONArray lab = colorObj.getJSONArray(SensorConstants.LAB);
                 Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE,
                         lab.getDouble(1) + 128, lab.getDouble(2) + 128);
 
@@ -244,7 +248,7 @@ public final class ResultUtil {
                 }
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return colorRangeMat;
@@ -275,8 +279,8 @@ public final class ResultUtil {
 
                     JSONObject colorObj = colors.getJSONObject(d);
 
-                    double value = colorObj.getDouble("value");
-                    JSONArray lab = colorObj.getJSONArray("lab");
+                    double value = colorObj.getDouble(SensorConstants.VALUE);
+                    JSONArray lab = colorObj.getJSONArray(SensorConstants.LAB);
                     Scalar scalarLab = new Scalar((lab.getDouble(0) / 100) * MAX_RGB_INT_VALUE,
                             lab.getDouble(1) + 128, lab.getDouble(2) + 128);
 
@@ -296,7 +300,7 @@ public final class ResultUtil {
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
             offset += xTranslate;
@@ -323,12 +327,12 @@ public final class ResultUtil {
             // determine where the circle should be placed
             for (int d = 0; d < colors.length(); d++) {
 
-                double nextValue = colors.getJSONObject(Math.min(d + 1, colors.length() - 1)).getDouble("value");
+                double nextValue = colors.getJSONObject(Math.min(d + 1, colors.length() - 1)).getDouble(SensorConstants.VALUE);
 
                 if (result <= nextValue) {
 
                     Scalar resultColor = colorDetected.getLab();
-                    double value = colors.getJSONObject(d).getDouble("value");
+                    double value = colors.getJSONObject(d).getDouble(SensorConstants.VALUE);
 
                     //calculate number of pixels needed to translate in x direction
                     double transX = xTranslate * ((result - value) / (nextValue - value));
@@ -352,7 +356,7 @@ public final class ResultUtil {
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return mat;
@@ -378,12 +382,12 @@ public final class ResultUtil {
             // determine where the circle should be placed
             for (int d = 0; d < colors.length(); d++) {
 
-                double nextValue = colors.getJSONObject(Math.min(d + 1, colors.length() - 1)).getDouble("value");
+                double nextValue = colors.getJSONObject(Math.min(d + 1, colors.length() - 1)).getDouble(SensorConstants.VALUE);
 
                 Scalar resultColor = null;
                 if (result < nextValue) {
 
-                    double value = colors.getJSONObject(d).getDouble("value");
+                    double value = colors.getJSONObject(d).getDouble(SensorConstants.VALUE);
 
                     //calculate number of pixels needed to translate in x direction
                     double transX = xTranslate * ((result - value) / (nextValue - value));
@@ -418,7 +422,7 @@ public final class ResultUtil {
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return valueMeasuredMat;
@@ -441,37 +445,6 @@ public final class ResultUtil {
         m2.copyTo(roiMat2);
 
         return result;
-    }
-
-    public static Mat concatenateHorizontal(Mat m1, Mat m2) {
-        int width = m1.cols() + m2.cols() + GUTTER_SPACE_WIDTH;
-        int height = Math.max(m1.rows(), m2.rows());
-
-        Mat result = new Mat(height, width, CvType.CV_8UC3,
-                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
-
-        // rect works with x, y, width, height
-        Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());
-        Mat roiMat1 = result.submat(roi1);
-        m1.copyTo(roiMat1);
-
-        Rect roi2 = new Rect(m1.cols() + GUTTER_SPACE_WIDTH, 0, m2.cols(), m2.rows());
-        Mat roiMat2 = result.submat(roi2);
-        m2.copyTo(roiMat2);
-
-        return result;
-    }
-
-    public static Mat getPatch(Mat mat, Point patchCenter, int subMatSize) {
-
-        //make a subMat around center of the patch
-        int minRow = (int) Math.round(Math.max(patchCenter.y - subMatSize, 0));
-        int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
-        int minCol = (int) Math.round(Math.max(patchCenter.x - subMatSize, 0));
-        int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
-
-        //  create subMat
-        return mat.submat(minRow, maxRow, minCol, maxCol).clone();
     }
 
     public static ColorDetected getPatchColor(Mat mat, Point patchCenter, int subMatSize) {
@@ -511,12 +484,12 @@ public final class ResultUtil {
 
         for (int i = 0; i < colors.length() - 1; i++) {
             try {
-                patchColorValues = colors.getJSONObject(i).getJSONArray("lab");
-                resultPatchValueStart = colors.getJSONObject(i).getDouble("value");
+                patchColorValues = colors.getJSONObject(i).getJSONArray(SensorConstants.LAB);
+                resultPatchValueStart = colors.getJSONObject(i).getDouble(SensorConstants.VALUE);
                 pointStart = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
-                patchColorValues = colors.getJSONObject(i + 1).getJSONArray("lab");
-                resultPatchValueEnd = colors.getJSONObject(i + 1).getDouble("value");
+                patchColorValues = colors.getJSONObject(i + 1).getJSONArray(SensorConstants.LAB);
+                resultPatchValueEnd = colors.getJSONObject(i + 1).getDouble(SensorConstants.VALUE);
                 pointEnd = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
 
                 double lStart = pointStart[0];
@@ -545,25 +518,25 @@ public final class ResultUtil {
                 }
 
                 // add final point
-                patchColorValues = colors.getJSONObject(colors.length() - 1).getJSONArray("lab");
+                patchColorValues = colors.getJSONObject(colors.length() - 1).getJSONArray(SensorConstants.LAB);
                 interpolTable[count][0] = patchColorValues.getDouble(0);
                 interpolTable[count][1] = patchColorValues.getDouble(1);
                 interpolTable[count][2] = patchColorValues.getDouble(2);
-                interpolTable[count][3] = colors.getJSONObject(colors.length() - 1).getDouble("value");
+                interpolTable[count][3] = colors.getJSONObject(colors.length() - 1).getDouble(SensorConstants.VALUE);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return interpolTable;
     }
 
-    public static double calculateResultSingle(double[] colorValues, JSONArray colors) throws Exception {
+    public static double calculateResultSingle(double[] colorValues, JSONArray colors) {
         double[][] interpolTable = createInterpolTable(colors);
 
         // determine closest value
         // create interpolation and extrapolation tables using linear approximation
         if (colorValues == null || colorValues.length < 3) {
-            throw new Exception("no valid lab color data.");
+            throw new IllegalArgumentException("invalid color data.");
         }
 
         // normalise lab values to standard ranges L:0..100, a and b: -127 ... 128
@@ -588,7 +561,7 @@ public final class ResultUtil {
     }
 
     public static double calculateResultGroup(double[][] colorsValueLab,
-                                              List<StripTest.Brand.Patch> patches) throws Exception {
+                                              List<StripTest.Brand.Patch> patches) {
 
         double[][][] interpolTables = new double[patches.size()][][];
 
@@ -600,7 +573,7 @@ public final class ResultUtil {
             interpolTables[p] = createInterpolTable(colors);
 
             if (colorsValueLab[p] == null || colorsValueLab[p].length < 3) {
-                throw new Exception("no valid lab color data.");
+                throw new IllegalArgumentException("invalid color data.");
             }
         }
 

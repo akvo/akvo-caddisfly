@@ -29,22 +29,18 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfoToJson;
  */
 class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
 
-    private int imageCount;
-    private byte[] data;
-    private FinderPatternInfo info;
-    private CameraViewListener listener;
-    private Context context;
+    private final int imageCount;
+    private final byte[] data;
+    private final FinderPatternInfo info;
+    private final CameraViewListener listener;
+    private final Context context;
 
     StoreDataTask(Context listener,
                   int imageCount, byte[] data, FinderPatternInfo info) {
 
-        try {
-            this.listener = (CameraViewListener) listener;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("must implement listener");
-        }
+        this.listener = (CameraViewListener) listener;
         this.imageCount = imageCount;
-        this.data = data;
+        this.data = data == null ? null : data.clone();
         this.info = info;
         this.context = listener;
 
@@ -53,10 +49,9 @@ class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     // The data here is still in the original YUV preview format.
     @Override
     protected Boolean doInBackground(Void... params) {
-        FileStorage fileStorage = new FileStorage(context);
-        fileStorage.writeByteArray(data, Constant.DATA + imageCount);
+        FileStorage.writeByteArray(context, data, Constant.DATA + imageCount);
         String json = FinderPatternInfoToJson.toJson(info);
-        fileStorage.writeToInternalStorage(Constant.INFO + imageCount, json);
+        FileStorage.writeToInternalStorage(context, Constant.INFO + imageCount, json);
         return true;
     }
 

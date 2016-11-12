@@ -21,6 +21,8 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -55,10 +57,12 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class CameraActivity extends BaseActivity implements CameraViewListener, DetectStripListener {
 
+    private static final String TAG = "CameraActivity";
+
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
-    //private boolean torchModeOn = false;
+    private boolean torchModeOn = false;
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
     private SoundPoolPlayer sound;
@@ -174,7 +178,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                 previewLayout.addView(cameraPreview);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Could not start preview");
             }
         }
     }
@@ -186,7 +190,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
                     R.id.layout_cameraPlaceholder, currentFragment
             ).commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
@@ -220,19 +224,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
 
     public void onResume() {
 
-        if (getIntent().getStringExtra(Constant.UUID) != null) {
-            uuid = getIntent().getStringExtra(Constant.UUID);
+        uuid = getIntent().getStringExtra(Constant.UUID);
+
+        if (uuid != null) {
+            StripTest stripTest = new StripTest();
+            setTitle(stripTest.getBrand(this, uuid).getName());
+
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+
+            //Delete all finder pattern info and image data from internal storage
+            new DeleteTask().execute();
         } else {
-            throw new NullPointerException("Cannot proceed without brand.");
+            finish();
         }
-
-        StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(this, uuid).getName());
-
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-
-        //Delete all finder pattern info and image data from internal storage
-        new DeleteTask().execute();
 
         super.onResume();
     }
@@ -246,16 +250,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         }
     }
 
-//    @Override
-//    public void toggleFlashMode(boolean userSelect) {
-//        if (cameraPreview != null) {
-//            if (userSelect) {
-//                torchModeOn = cameraPreview.toggleFlashMode();
-//            } else {
-//                cameraPreview.toggleFlashMode();
-//            }
-//        }
-//    }
+    @Override
+    public void toggleFlashMode(boolean userSelect) {
+        if (cameraPreview != null) {
+            if (userSelect) {
+                torchModeOn = cameraPreview.toggleFlashMode();
+            } else {
+                cameraPreview.toggleFlashMode();
+            }
+        }
+    }
 
     @Override
     public void stopPreview() {
@@ -304,11 +308,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void addCountToQualityCheckCount(int[] countArray) {
-
-        if (countArray == null) {
-            throw new NullPointerException("quality checks array is NULL");
-        }
+    public void addCountToQualityCheckCount(@NonNull int[] countArray) {
 
         if (!CalibrationCard.hasError()) {
             int ci = 0;
@@ -383,10 +383,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         handler.post(showLevelRunnable);
     }
 
-//    @Override
-//    public boolean isTorchModeOn() {
-//        return torchModeOn;
-//    }
+    @Override
+    public boolean isTorchModeOn() {
+        return torchModeOn;
+    }
 
     @Override
     public void adjustExposureCompensation(int delta) {
@@ -413,12 +413,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void dataSent() {
 
-        if (currentFragment instanceof CameraStartTestFragment) {
-            if (previewFormat > 0 && previewWidth > 0 && previewHeight > 0) {
-                ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
-                        previewWidth,
-                        previewHeight);
-            }
+        if (currentFragment instanceof CameraStartTestFragment && previewFormat > 0
+                && previewWidth > 0 && previewHeight > 0) {
+            ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
+                    previewWidth,
+                    previewHeight);
         }
     }
 
@@ -486,13 +485,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private class DeleteTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            final FileStorage fileStorage = new FileStorage(CameraActivity.this);
-
             try {
-                fileStorage.deleteFromInternalStorage(Constant.INFO);
-                fileStorage.deleteFromInternalStorage(Constant.DATA);
-                fileStorage.deleteFromInternalStorage(Constant.STRIP);
-                fileStorage.deleteFromInternalStorage(Constant.IMAGE_PATCH);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
             } catch (IOException e) {
                 showError(e.getMessage());
             }
@@ -543,7 +540,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         }
 
         void setAngles(float[] tiltValues) {
-            this.tilts = tiltValues;
+            this.tilts = tiltValues == null ? null : tiltValues.clone();
         }
     }
 }

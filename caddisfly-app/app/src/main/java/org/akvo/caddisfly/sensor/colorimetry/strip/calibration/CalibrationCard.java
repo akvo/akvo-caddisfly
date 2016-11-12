@@ -16,15 +16,17 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 
-import android.os.Build;
+import android.util.Log;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.CalibrationException;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
-import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.util.detector.BitMatrix;
 import org.akvo.caddisfly.util.detector.Detector;
 import org.akvo.caddisfly.util.detector.FinderPattern;
@@ -43,10 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Mat;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +54,9 @@ import java.util.Map;
 
 // Performs the calibration of the image
 public final class CalibrationCard {
+
+    private static final String TAG = "CalibrationCard";
+
     private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
     private static final SparseIntArray versionNumberMap = new SparseIntArray();
@@ -73,7 +75,7 @@ public final class CalibrationCard {
         versionNumberMap.put(number, existingFrequency + 1);
     }
 
-    private static int getMostFrequentVersionNumber() {
+    public static int getMostFrequentVersionNumber() {
         int mostFrequent = 0;
         int value = -1;
 
@@ -90,7 +92,7 @@ public final class CalibrationCard {
         return value;
     }
 
-    public static CalibrationData readCalibrationFile() throws Exception {
+    public static CalibrationData readCalibrationFile() throws CalibrationException {
 
         int version = getMostFrequentVersionNumber();
         String calFileName = "calibration" + version + ".json";
@@ -147,14 +149,14 @@ public final class CalibrationCard {
                 return calData;
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error reading calibration file", e);
             }
         } else {
             // Wait for a few version readings before declaring error
             if (versionNumberMap.get(version) > 3) {
                 initialize();
                 errorFound = true;
-                throw new Exception("Unknown version of color card");
+                throw new CalibrationException("Unknown version of color card");
             }
         }
         return null;
@@ -412,10 +414,10 @@ public final class CalibrationCard {
     * 1) a 1D calibration which looks at the individual L, A, B channels and corrects them
     * 2) a 3d calibration which can mix the L,A,B channels to arrive at optimal results
      */
-    private static Mat do1D_3DCorrection(Mat imgMat, CalibrationData calData) throws Exception {
+    private static Mat do1D_3DCorrection(Mat imgMat, CalibrationData calData) throws CalibrationException {
 
         if (calData == null) {
-            throw new Exception("no calibration data.");
+            throw new CalibrationException("no calibration data.");
         }
 
         final WeightedObservedPoints obsL = new WeightedObservedPoints();
@@ -435,8 +437,7 @@ public final class CalibrationCard {
                 calResultIllumination.put(label, new double[]{LAB_color[0], LAB_color[1], LAB_color[2]});
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("1D calibration: error iterating over all patches.");
+            throw new CalibrationException("1D calibration: error iterating over all patches.", e);
         }
 
         // Instantiate a second-degree polynomial fitter.
@@ -541,8 +542,7 @@ public final class CalibrationCard {
 
             return imgMat;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("error while performing calibration: ", e);
+            throw new CalibrationException("error while performing calibration: ", e);
         }
     }
 
@@ -586,7 +586,7 @@ public final class CalibrationCard {
      * imgMat: CV_8UC3 (8-bit) Mat object, in BGR encoding.
      * @result: calibrated image
      */
-    public static CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws Exception {
+    public static CalibrationResultData calibrateImage(Mat labImg, CalibrationData calData) throws CalibrationException {
 
         if (calData != null) {
             // illumination correction
@@ -633,78 +633,80 @@ public final class CalibrationCard {
             b2 = b2 - 128;
         }
 
-        double dL = l1 - l2;
-        double C1 = Math.sqrt(a1 * a1 + b1 * b1);
-        double C2 = Math.sqrt(a2 * a2 + b2 * b2);
-        double dC = C1 - C2;
-        double da = a1 - a2;
-        double db = b1 - b2;
-        double dH2 = da * da + db * db - dC * dC;
-        double dH;
+        final double dL = l1 - l2;
+        final double da = a1 - a2;
+        final double db = b1 - b2;
 
-        if (dH2 < 0) {
-            dH = 0;
-        } else {
-            dH = Math.sqrt(dH2);
-        }
+        final double c1 = Math.sqrt(a1 * a1 + b1 * b1);
+        final double c2 = Math.sqrt(a2 * a2 + b2 * b2);
+        final double dC = c1 - c2;
 
-        double SL = 1.0;
-        double SC = 1.0 + 0.045 * C1;
-        double SH = 1.0 + 0.015 * C1;
+        double dH = da * da + db * db - dC * dC;
+        dH = dH < 0 ? 0 : Math.sqrt(dH);
 
-        return Math.sqrt(Math.pow(dL / SL, 2) + Math.pow(dC / SC, 2) + Math.pow(dH / SH, 2));
+        final double sl = 1.0;
+        final double sc = 1.0 + 0.045 * c1;
+        final double sh = 1.0 + 0.015 * c1;
+
+        return Math.sqrt(Math.pow(dL / sl, 2) + Math.pow(dC / sc, 2) + Math.pow(dH / sh, 2));
     }
 
     /*
     * Computes mean and max E94 distance of calibrated image and the calibration patches
     * @returns: vector of double, with [mean E94, max E94]
      */
-    private static double[] computeE94Error(Mat labImg, CalibrationData calData) throws Exception {
-        try {
-            int num = 0;
-            double totE94 = 0;
-            double maxE94 = 0;
-            StringBuilder calibrationColors = new StringBuilder();
+    private static double[] computeE94Error(Mat labImg, CalibrationData calData) {
+        int num = 0;
+        double totE94 = 0;
+        double maxE94 = 0;
+        StringBuilder calibrationColors = new StringBuilder();
 
-            List<String> sortedKeys = new ArrayList<>(calData.calValues.keySet());
-            if (AppPreferences.isDiagnosticMode()) {
-                Collections.sort(sortedKeys);
-            }
-
-            for (String label : sortedKeys) {
-                CalibrationData.CalValue cal = calData.calValues.get(label);
-                CalibrationData.Location loc = calData.locations.get(label);
-                float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch color
-
-                if (AppPreferences.isDiagnosticMode()) {
-                    calibrationColors.append(String.format(Locale.US,
-                            "{\"l\":\"%s\",\"CAL_L\":\"%.2f\",\"CAL_A\":\"%.2f\",\"CAL_B\":\"%.2f\",\"CIE_L\":\"%.2f\",\"CIE_A\":\"%.2f\",\"CIE_B\":\"%.2f\"},%n",
-                            label, cal.getL() / 2.55, cal.getA() - 128, cal.getB() - 128, LAB_color[0] / 2.55, LAB_color[1] - 128, LAB_color[2] - 128));
-                }
-
-                // as both measured and calibration values are in openCV range, we need to normalise the values
-                double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
-                totE94 += E94Dist;
-                if (E94Dist > maxE94) {
-                    maxE94 = E94Dist;
-                }
-                num++;
-            }
-
-            if (AppPreferences.isDiagnosticMode()) {
-                calibrationColors.deleteCharAt(calibrationColors.length() - 2);
-                File path = FileHelper.getFilesDir(FileHelper.FileType.CARD, "");
-                FileUtil.saveToFile(path, new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.US).format(Calendar.getInstance().getTimeInMillis())
-                                + "_" + Build.MODEL.replace("_", "-") + "_CC"
-                                + String.valueOf(getMostFrequentVersionNumber()) + ".json",
-                        "{\"calData\": {\"calValues\": [" + calibrationColors.toString() + "]}}");
-            }
-
-            return new double[]{totE94 / num, maxE94, totE94};
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Error determining E94 calibration distance");
+        List<String> sortedKeys = new ArrayList<>(calData.calValues.keySet());
+        if (AppPreferences.isDiagnosticMode()) {
+            Collections.sort(sortedKeys);
         }
+
+        for (String label : sortedKeys) {
+            CalibrationData.CalValue cal = calData.calValues.get(label);
+            CalibrationData.Location loc = calData.locations.get(label);
+            float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch color
+
+            if (AppPreferences.isDiagnosticMode()) {
+                calibrationColors.append(String.format(Locale.US,
+                        "{\"l\":\"%s\",\"CAL_L\":\"%.2f\",\"CAL_A\":\"%.2f\",\"CAL_B\":\"%.2f\""
+                                + ",\"CIE_L\":\"%.2f\",\"CIE_A\":\"%.2f\",\"CIE_B\":\"%.2f\"},%n",
+                        label, cal.getL() / 2.55, cal.getA() - 128, cal.getB() - 128,
+                        LAB_color[0] / 2.55, LAB_color[1] - 128, LAB_color[2] - 128));
+            }
+
+            // as both measured and calibration values are in openCV range, we need to normalise the values
+            double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
+            totE94 += E94Dist;
+            if (E94Dist > maxE94) {
+                maxE94 = E94Dist;
+            }
+            num++;
+        }
+
+        if (AppPreferences.isDiagnosticMode()) {
+            calibrationColors.deleteCharAt(calibrationColors.length() - 2);
+
+            String distanceInfo = String.format(Locale.getDefault(),
+                    "AD: %.2f, MD: %.2f, TD: %.2f", totE94 / num, maxE94, totE94);
+
+            String diagnosticInfo = "{\"calData\": {"
+                    + "{Result}"
+                    + "\"info\" : \"" + distanceInfo + "\","
+                    + "\"calValues\": [" + calibrationColors.toString() + "]}}";
+
+            PreferencesUtil.setString(CaddisflyApp.getApp().getApplicationContext(),
+                    Constant.DIAGNOSTIC_INFO, diagnosticInfo);
+
+            PreferencesUtil.setString(CaddisflyApp.getApp().getApplicationContext(),
+                    Constant.CALIBRATION_INFO, distanceInfo);
+        }
+
+        return new double[]{totE94 / num, maxE94, totE94};
 
     }
 
@@ -748,7 +750,6 @@ public final class CalibrationCard {
 
             // check if left and right are ok
             if (lry > 0) {
-                //System.out.println("***decodeCalibrationCard lry > 0");
                 return CODE_NOT_FOUND;
             }
 
@@ -769,8 +770,7 @@ public final class CalibrationCard {
                     index++;
                 }
             } catch (Exception e) {
-                //System.out.println("***decodeCalibrationCard error sample line into new row");
-                e.printStackTrace();
+                Log.e(TAG, "Error sample line into new row");
                 return CODE_NOT_FOUND;
             }
 
@@ -798,7 +798,7 @@ public final class CalibrationCard {
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    //System.out.println("***decodeCalibrationCard lengthPattern < 20");
+                    Log.e(TAG, "Length of pattern too small");
                     return CODE_NOT_FOUND;
                 }
 
@@ -824,7 +824,6 @@ public final class CalibrationCard {
 
                 // check parity bit
                 if (parity(bitResult) != bitResult[9]) {
-                    //System.out.println("***decodeCalibrationCard parity(bitResult) != bitResult[9]");
                     return CODE_NOT_FOUND;
                 }
 
@@ -840,7 +839,6 @@ public final class CalibrationCard {
 
                 return code;
             } catch (Exception e) {
-                e.printStackTrace();
                 return CODE_NOT_FOUND;
             }
         } else {

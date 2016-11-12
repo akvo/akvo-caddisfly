@@ -21,6 +21,7 @@ public final class SensorConstants {
     public static final String DEVICE = "device";
     public static final String APP = "app";
     public static final String VALUE = "value";
+    public static final String LAB = "lab";
     public static final String NAME = "name";
     public static final String UNIT = "unit";
     public static final String ID = "id";

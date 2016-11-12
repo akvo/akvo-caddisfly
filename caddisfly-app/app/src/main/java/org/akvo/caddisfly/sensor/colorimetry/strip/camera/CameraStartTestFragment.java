@@ -167,10 +167,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             for (int i = 0; i < patches.size(); i++) {
 
                 //Skip if there is no timeLapse.
-                if (i > 0) {
-                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
-                        continue;
-                    }
+                if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
+                    continue;
                 }
                 progressIndicatorViewAnim.addStep((int) patches.get(i).getTimeLapse());
             }
@@ -180,14 +178,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         handler = new Handler(Looper.getMainLooper());
 
         //use brightness view as a button to switch on and off the flash
-//        if (exposureView != null) {
-//            exposureView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mListener.toggleFlashMode(true);
-//                }
-//            });
-//        }
+        if (exposureView != null) {
+            exposureView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.toggleFlashMode(true);
+                }
+            });
+        }
 
         return rootView;
     }
@@ -195,12 +193,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            mListener = (CameraViewListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement CameraViewListener");
-        }
+
+        mListener = (CameraViewListener) context;
 
         //reset quality checks count to zero
         if (mListener != null) {
@@ -209,9 +203,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
 
             mListener.startPreview();
-//            if (mListener.isTorchModeOn()) {
-//                mListener.toggleFlashMode(false);
-//            }
+            if (mListener.isTorchModeOn()) {
+                mListener.toggleFlashMode(false);
+            }
         }
     }
 
@@ -230,14 +224,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        try {
-
-            setHeightOfOverlay(0);
-
-            startCountdown();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        setHeightOfOverlay(0);
+        startCountdown();
     }
 
     @Override
@@ -303,11 +291,10 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         for (int i = 0; i < patches.size(); i++) {
 
             //if next patch is no later than previous, skip.
-            if (i > 0) {
-                if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
-                    continue;
-                }
+            if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
+                continue;
             }
+
             //tell CameraActivity when it is time to take the next picture
             //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
             mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
@@ -376,11 +363,10 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
                 patchesCovered = i;
 
                 //keep track of stepsCovered ('step' is the patches that have the same time lapse)
-                if (i > 0) {
-                    if (patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
-                        stepsCovered++;
-                    }
+                if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() > 0) {
+                    stepsCovered++;
                 }
+
                 //keep track of which image belongs to which patch
                 JSONArray array = new JSONArray();
                 array.put(imageCount);
@@ -398,8 +384,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //The two files can be retrieved and combined later, because they share 'imageCount'
         // and imagePatchArray contains a value that corresponds with that.
         new StoreDataTask(getActivity(), imageCount, data, info).execute();
-
-        //System.out.println("***imageCount: " + imageCount + " stepsCovered: " + stepsCovered + " patchesCovered: " + patchesCovered);
 
         //add one to imageCount
         imageCount++;
@@ -439,8 +423,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             //check if we really do have data in the json-array
             if (imagePatchArray.length() > 0) {
                 //write image/patch info to internal storage
-                FileStorage fileStorage = new FileStorage(getActivity());
-                fileStorage.writeToInternalStorage(Constant.IMAGE_PATCH, imagePatchArray.toString());
+                FileStorage.writeToInternalStorage(getActivity(), Constant.IMAGE_PATCH, imagePatchArray.toString());
 
                 Intent detectStripIntent = createDetectStripIntent(format, width, height);
 

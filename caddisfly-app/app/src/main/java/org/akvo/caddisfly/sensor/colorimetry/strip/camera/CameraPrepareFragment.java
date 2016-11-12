@@ -18,6 +18,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,8 @@ import java.lang.ref.WeakReference;
  */
 @SuppressWarnings("deprecation")
 public class CameraPrepareFragment extends CameraSharedFragmentBase {
+
+    private static final String TAG = "CameraPrepareFragment";
 
     private CameraViewListener mListener;
     private WeakReference<PercentageMeterView> wrExposureView;
@@ -67,14 +70,14 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         wrContrastView = new WeakReference<>(contrastView);
 
         //use brightness view as a button to switch on and off the flash
-//        if (exposureView != null) {
-//            exposureView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mListener.toggleFlashMode(true);
-//                }
-//            });
-//        }
+        if (exposureView != null) {
+            exposureView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.toggleFlashMode(true);
+                }
+            });
+        }
         return rootView;
     }
 
@@ -104,9 +107,9 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     public void goNext() {
 
         if (mListener != null) {
-//            if (mListener.isTorchModeOn()) {
-//                mListener.toggleFlashMode(false);
-//            }
+            if (mListener.isTorchModeOn()) {
+                mListener.toggleFlashMode(false);
+            }
 
             mListener.stopPreview();
 
@@ -121,8 +124,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
             mListener = (CameraViewListener) activity;
             mListener.setQualityCheckCountZero();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CameraViewListener");
+            throw new IllegalArgumentException(activity.toString()
+                    + " must implement CameraViewListener", e);
         }
     }
 
@@ -143,8 +146,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
                 mListener.startNextPreview();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 }

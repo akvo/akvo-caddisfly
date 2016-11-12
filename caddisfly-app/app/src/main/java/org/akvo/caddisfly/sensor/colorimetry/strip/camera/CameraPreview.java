@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.detector.CameraConfigurationUtils;
 
 import java.io.IOException;
@@ -33,8 +34,11 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
+    private static final String TAG = "CameraPreview";
+
+    private static final int MIN_CAMERA_WIDTH = 1300;
     private final Camera mCamera;
-    private CameraActivity activity;
+    private final CameraActivity activity;
     private Camera.Parameters parameters;
 
     public CameraPreview(Context context) {
@@ -45,7 +49,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             activity = (CameraActivity) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException("must have CameraActivity as Context.");
+            throw new IllegalArgumentException("must have CameraActivity as Context.", e);
         }
         // SurfaceHolder callback to track when underlying surface is created and destroyed.
         SurfaceHolder mHolder = getHolder();
@@ -92,7 +96,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             parameters = mCamera.getParameters();
         } catch (Exception e) {
-            e.printStackTrace();
+            return;
 
         }
         if (parameters == null) {
@@ -104,7 +108,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         int maxWidth = 0;
         for (Camera.Size size : sizes) {
-            if (size.width > 1300) {
+            if (size.width > MIN_CAMERA_WIDTH) {
                 continue;
             }
             if (size.width > maxWidth) {
@@ -114,7 +118,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         //portrait mode
-        mCamera.setDisplayOrientation(90);
+        mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
 
         //preview size
         assert bestSize != null;
@@ -136,9 +140,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         try {
             CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         //white balance
@@ -148,38 +151,35 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         try {
-
             mCamera.setParameters(parameters);
-
         } catch (Exception e) {
-            Log.d("", "Error setting camera parameters: " + e.getMessage());
+            Log.e(TAG, "Error setting camera parameters: " + e.getMessage(), e);
         }
 
         try {
             mCamera.setPreviewDisplay(holder);
             activity.setPreviewProperties();
             mCamera.startPreview();
-
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }
 
-//    public boolean toggleFlashMode() {
-//        if (mCamera == null) {
-//            return false;
-//        }
-//        parameters = mCamera.getParameters();
-//
-//        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)
-//                ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
-//        parameters.setFlashMode(flashMode);
-//
-//        mCamera.setParameters(parameters);
-//
-//        return flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH);
-//    }
+    public boolean toggleFlashMode() {
+        if (mCamera == null) {
+            return false;
+        }
+        parameters = mCamera.getParameters();
+
+        String flashMode = mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)
+                ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+        parameters.setFlashMode(flashMode);
+
+        mCamera.setParameters(parameters);
+
+        return flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH);
+    }
 
     //exposure compensation
     public void adjustExposure(int delta) throws RuntimeException {

@@ -20,8 +20,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.CalibrationException;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
@@ -30,6 +33,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -44,10 +48,12 @@ import java.io.IOException;
  * reads in the YUV images, and extracts the strips
  */
 public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
-//    private static final int BITMAP_SCALED_WIDTH = 800;
-//    private static final int BITMAP_SCALED_HEIGHT = 480;
-//    private static final boolean DEVELOP_MODE = false;
+
+    private static final String TAG = "DetectStripTask";
+
     private static final Scalar RED_LAB_COLOR = new Scalar(135, 208, 195);
+    private final DetectStripListener listener;
+    private final Context context;
     private int format;
     private int width;
     private int height;
@@ -55,19 +61,14 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     private double ratioH = 1;
     private org.opencv.core.Rect roiStripArea = null;
     private Mat warpMat;
-    private DetectStripListener listener;
-    private Context context;
-    private FileStorage fileStorage;
 
     public DetectStripTask(Context listener) {
         try {
             this.listener = (DetectStripListener) listener;
             this.context = listener;
         } catch (ClassCastException e) {
-            throw new ClassCastException("must implement DetectStripListener");
+            throw new IllegalArgumentException("must implement DetectStripListener", e);
         }
-
-        fileStorage = new FileStorage(context);
     }
 
     @Override
@@ -75,11 +76,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         if (listener == null) {
             cancel(true);
         } else {
-            try {
-                listener.showSpinner();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            listener.showSpinner();
         }
     }
 
@@ -110,10 +107,10 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         Mat labStrip; // Mat for detected strip
 
         try {
-            String json = fileStorage.readFromInternalStorage(Constant.IMAGE_PATCH + ".txt");
+            String json = FileStorage.readFromInternalStorage(context, Constant.IMAGE_PATCH);
             imagePatchArray = new JSONArray(json);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         for (int i = 0; i < numPatches; i++) {
@@ -132,7 +129,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                         listener.showMessage();
 
-                        byte[] data = fileStorage.readByteArray(Constant.DATA + imageNo);
+                        byte[] data = FileStorage.readByteArray(context, Constant.DATA + imageNo);
                         if (data == null) {
                             throw new IOException();
                         }
@@ -141,15 +138,21 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         try {
                             labImg = makeLab(data);
                         } catch (Exception e) {
-                            listener.showError(context.getString(R.string.error_conversion));
+                            if (context != null) {
+                                listener.showError(context.getString(R.string.error_conversion));
+                            }
                             continue;
                         }
 
                         //perspectiveTransform
                         try {
-                            warp(labImg, imageNo);
+                            if (labImg != null) {
+                                warp(labImg, imageNo);
+                            }
                         } catch (Exception e) {
-                            listener.showError(context.getString(R.string.error_no_finder_pattern_info));
+                            if (context != null) {
+                                listener.showError(context.getString(R.string.error_no_finder_pattern_info));
+                            }
                             continue;
                         }
 
@@ -192,8 +195,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 //                            }
                         } catch (Exception e) {
-                            e.printStackTrace();
-                            listener.showError(context.getString(R.string.error_detection));
+                            listener.showError(e.getMessage());
                             calibrationMat = warpMat.clone();
                         }
 
@@ -222,14 +224,16 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 StripTest.Brand brand = stripTest.getBrand(context, uuid);
                                 strip = OpenCVUtil.detectStrip(stripArea, brand, ratioW, ratioH);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e(TAG, e.getMessage(), e);
                             }
 
                             String error = "";
                             if (strip != null) {
                                 labStrip = strip.clone();
                             } else {
-                                listener.showError(context.getString(R.string.error_calibrating));
+                                if (context != null) {
+                                    listener.showError(context.getString(R.string.error_calibrating));
+                                }
                                 labStrip = stripArea.clone();
 
                                 error = Constant.ERROR;
@@ -260,14 +264,14 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 System.arraycopy(matByteArray, 0, payload, 0, dataSize);
                                 System.arraycopy(rows, 0, payload, dataSize, 4);
                                 System.arraycopy(cols, 0, payload, dataSize + 4, 4);
-                                fileStorage.writeByteArray(payload, Constant.STRIP + i + error);
+                                FileStorage.writeByteArray(context, payload, Constant.STRIP + i + error);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e(TAG, e.getMessage(), e);
                             }
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (JSONException | IOException e) {
 
                 if (context != null) {
                     listener.showError(context.getString(R.string.error_cut_out_strip));
@@ -302,15 +306,11 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         return null;
     }
 
-    private void warp(Mat labImg, int i) throws Exception {
-        if (labImg == null) {
-            throw new Exception("no image");
-        }
+    private void warp(@NonNull Mat labImg, int i) throws IOException, JSONException {
 
-        String jsonInfo = fileStorage.readFromInternalStorage(Constant.INFO + i + ".txt");
+        String jsonInfo = FileStorage.readFromInternalStorage(context, Constant.INFO + i);
         if (jsonInfo == null) {
-
-            throw new Exception("no finder pattern info");
+            throw new IOException("no finder pattern info");
         }
 
         JSONObject jsonObject = new JSONObject(jsonInfo);
@@ -326,7 +326,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         warpMat = OpenCVUtil.perspectiveTransform(topLeft, topRight, bottomLeft, bottomRight, labImg);
     }
 
-    private void divideIntoCalibrationAndStripArea() throws Exception {
+    private void divideIntoCalibrationAndStripArea() throws CalibrationException {
         CalibrationData data = CalibrationCard.readCalibrationFile();
 
         if (warpMat != null && data != null) {
@@ -352,7 +352,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         }
     }
 
-    private CalibrationResultData getCalibratedImage(Mat mat) throws Exception {
+    private CalibrationResultData getCalibratedImage(Mat mat) throws CalibrationException {
         CalibrationData data = CalibrationCard.readCalibrationFile();
         return CalibrationCard.calibrateImage(mat, data);
     }

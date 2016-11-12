@@ -17,6 +17,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.hardware.Camera;
+import android.support.annotation.NonNull;
 
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -45,7 +46,7 @@ interface CameraViewListener {
 
     void showLevel(float[] tilts);
 
-    void addCountToQualityCheckCount(int[] countArray);
+    void addCountToQualityCheckCount(@NonNull int[] countArray);
 
     void startNextPreview();
 
@@ -59,9 +60,9 @@ interface CameraViewListener {
 
     void setQualityCheckCountZero();
 
-//    void toggleFlashMode(boolean userSelect);
+    void toggleFlashMode(boolean userSelect);
 
-//    boolean isTorchModeOn();
+    boolean isTorchModeOn();
 
     void stopPreview();
 

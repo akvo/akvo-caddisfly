@@ -18,6 +18,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
 
@@ -39,13 +40,11 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by linda on 9/13/15
  */
-@SuppressWarnings("HardCodedStringLiteral")
-public class FileStorage {
+public final class FileStorage {
 
-    private final Context context;
+    private static final String TAG = "FileStorage";
 
-    public FileStorage(Context context) {
-        this.context = context;
+    private FileStorage() {
     }
 
     static int byteArrayToLeInt(byte[] b) {
@@ -108,15 +107,14 @@ public class FileStorage {
                 f.close();
                 return file.getAbsolutePath();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         // on failure, return empty string
         return "";
     }
 
-    public void writeByteArray(byte[] data, String name) {
-        String fileName = name + ".txt";
+    public static void writeByteArray(Context context, byte[] data, String fileName) {
 
         FileOutputStream outputStream;
 
@@ -130,12 +128,12 @@ public class FileStorage {
             outputStream.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
-    public byte[] readByteArray(String name) throws IOException {
-        String fileName = name + ".txt";
+    public static byte[] readByteArray(Context context, String fileName) throws IOException {
+
         byte[] data;
         int c;
 
@@ -157,8 +155,7 @@ public class FileStorage {
         return data;
     }
 
-    public void writeToInternalStorage(String name, String json) {
-        String fileName = name + ".txt";
+    public static void writeToInternalStorage(Context context, String fileName, String json) {
 
         FileOutputStream outputStream = null;
         try {
@@ -167,19 +164,19 @@ public class FileStorage {
                 outputStream.write(s);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         } finally {
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
         }
     }
 
-    public String readFromInternalStorage(String fileName) {
+    public static String readFromInternalStorage(Context context, String fileName) {
 
         File file = new File(context.getFilesDir(), fileName);
 
@@ -202,13 +199,13 @@ public class FileStorage {
 
             return json;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return null;
     }
 
-    public void deleteFromInternalStorage(final String contains) throws IOException {
+    public static void deleteFromInternalStorage(Context context, final String contains) throws IOException {
         File file = context.getFilesDir();
         FilenameFilter filter = new FilenameFilter() {
             @Override
@@ -227,7 +224,7 @@ public class FileStorage {
         }
     }
 
-    public boolean fileExists(String fileName) {
-        return new File(context.getFilesDir() + File.separator + fileName + ".txt").exists();
+    public static boolean fileExists(Context context, String fileName) {
+        return new File(context.getFilesDir() + File.separator + fileName).exists();
     }
 }
