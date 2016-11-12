@@ -159,7 +159,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             StripTest stripTest = new StripTest();
             //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(getContext(), uuid).getPatchesOrderedByTimeLapse();
+            patches = stripTest.getBrand(getContext(), uuid).getPatches();
 
             progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.progress_indicator);
 
@@ -298,7 +298,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         StripTest stripTest = new StripTest();
 
-        patches = stripTest.getBrand(getContext(), uuid).getPatchesOrderedByTimeLapse();
+        patches = stripTest.getBrand(getContext(), uuid).getPatches();
 
         for (int i = 0; i < patches.size(); i++) {
 
