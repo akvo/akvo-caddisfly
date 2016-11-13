@@ -37,7 +37,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -229,8 +229,8 @@ public final class TestConfigHelper {
             //Get the name for this test
             JSONArray nameArray = item.getJSONArray("name");
 
-            Hashtable<String, String> namesHashTable =
-                    new Hashtable<>(nameArray.length(), nameArray.length());
+            HashMap<String, String> namesHashTable =
+                    new HashMap<>(nameArray.length(), nameArray.length());
 
             //Load test names in different languages
             for (int j = 0; j < nameArray.length(); j++) {

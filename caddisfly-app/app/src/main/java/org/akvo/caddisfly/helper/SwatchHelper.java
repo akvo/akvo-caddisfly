@@ -75,12 +75,12 @@ public final class SwatchHelper {
      * @param photoColor The color to compare
      * @param swatches   The range of colors to compare against
      */
-    public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, ArrayList<Swatch> swatches,
+    public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, List<Swatch> swatches,
                                             ColorUtil.ColorModel colorModel) {
 
         ColorCompareInfo colorCompareInfo;
 
-        ArrayList<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel, INCREMENT);
+        List<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel, INCREMENT);
 
         //Find the color within the generated gradient that matches the photoColor
         colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(),
@@ -107,7 +107,7 @@ public final class SwatchHelper {
      * @return details of the matching color with its corresponding value
      */
     private static ColorCompareInfo getNearestColorFromSwatches(
-            int colorToFind, ArrayList<Swatch> swatches) {
+            int colorToFind, List<Swatch> swatches) {
 
         double distance;
         distance = ColorUtil.getMaxDistance(AppPreferences.getColorDistanceTolerance());
@@ -152,7 +152,7 @@ public final class SwatchHelper {
      * @param swatches the range of colors
      * @return The slope value
      */
-    public static double calculateSlope(ArrayList<Swatch> swatches) {
+    public static double calculateSlope(List<Swatch> swatches) {
 
         double a = 0, b, c, d;
         double xSum = 0, xSquaredSum = 0, ySum = 0;
@@ -200,7 +200,7 @@ public final class SwatchHelper {
     public static boolean isSwatchListValid(TestInfo testInfo) {
         boolean result = true;
 
-        ArrayList<Swatch> swatches = testInfo.getSwatches();
+        List<Swatch> swatches = testInfo.getSwatches();
 
         if (swatches.size() < 1) {
             return false;
@@ -257,7 +257,7 @@ public final class SwatchHelper {
         return result;
     }
 
-    private static boolean validateHueTrend(ArrayList<Swatch> swatches, int trend) {
+    private static boolean validateHueTrend(List<Swatch> swatches, int trend) {
 
         float[] colorHSV = new float[3];
         float previousHue = 0f;
@@ -290,7 +290,7 @@ public final class SwatchHelper {
         return true;
     }
 
-    public static int getCalibratedSwatchCount(ArrayList<Swatch> swatches) {
+    public static int getCalibratedSwatchCount(List<Swatch> swatches) {
 
         int count = 0;
         for (Swatch swatch1 : swatches) {
@@ -308,7 +308,7 @@ public final class SwatchHelper {
      * @param results the list of results
      * @return the average color
      */
-    public static int getAverageColor(ArrayList<Result> results) {
+    public static int getAverageColor(List<Result> results) {
 
         int red = 0;
         int green = 0;
@@ -379,7 +379,7 @@ public final class SwatchHelper {
      * @param results the results
      * @return the average value
      */
-    public static double getAverageResult(ArrayList<Result> results) {
+    public static double getAverageResult(List<Result> results) {
 
         double result = 0;
 
@@ -420,32 +420,38 @@ public final class SwatchHelper {
         return bd.doubleValue();
     }
 
-    public static void generateSwatches(ArrayList<Swatch> swatches, ArrayList<Swatch> testSwatches) {
+    public static void generateSwatches(List<Swatch> swatches, List<Swatch> testSwatches) {
         int redDifferenceTotal = 0;
         int greenDifferenceTotal = 0;
         int blueDifferenceTotal = 0;
 
         for (int i = 0; i < testSwatches.size(); i++) {
-            Swatch clonedSwatch = (Swatch) testSwatches.get(i).clone();
-            clonedSwatch.setColor(Color.TRANSPARENT);
+            Swatch clonedSwatch;
+            try {
+                clonedSwatch = (Swatch) testSwatches.get(i).clone();
+                clonedSwatch.setColor(Color.TRANSPARENT);
 
-            if (swatches.size() > i) {
-                Swatch swatch = swatches.get(i);
-                if (swatch.getValue() != testSwatches.get(i).getValue()) {
-                    swatches.add(i, clonedSwatch);
+                if (swatches.size() > i) {
+                    Swatch swatch = swatches.get(i);
+                    if (swatch.getValue() != testSwatches.get(i).getValue()) {
+                        swatches.add(i, clonedSwatch);
+                    } else {
+
+                        int redDifference = Color.red(swatch.getColor()) - Color.red(swatch.getDefaultColor());
+                        int greenDifference = Color.green(swatch.getColor()) - Color.green(swatch.getDefaultColor());
+                        int blueDifference = Color.blue(swatch.getColor()) - Color.blue(swatch.getDefaultColor());
+
+                        redDifferenceTotal += redDifference;
+                        greenDifferenceTotal += greenDifference;
+                        blueDifferenceTotal += blueDifference;
+                    }
                 } else {
-
-                    int redDifference = Color.red(swatch.getColor()) - Color.red(swatch.getDefaultColor());
-                    int greenDifference = Color.green(swatch.getColor()) - Color.green(swatch.getDefaultColor());
-                    int blueDifference = Color.blue(swatch.getColor()) - Color.blue(swatch.getDefaultColor());
-
-                    redDifferenceTotal += redDifference;
-                    greenDifferenceTotal += greenDifference;
-                    blueDifferenceTotal += blueDifference;
+                    swatches.add(clonedSwatch);
                 }
-            } else {
-                swatches.add(clonedSwatch);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
             }
+
         }
 
         redDifferenceTotal = redDifferenceTotal / testSwatches.size();
@@ -518,7 +524,7 @@ public final class SwatchHelper {
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
-        ArrayList<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
+        List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
 
         if (calibrationDetails != null) {
 
@@ -618,10 +624,10 @@ public final class SwatchHelper {
      * @return The list of generated color swatches
      */
     @SuppressWarnings("SameParameterValue")
-    public static ArrayList<Swatch> generateGradient(
-            ArrayList<Swatch> swatches, ColorUtil.ColorModel colorModel, double increment) {
+    public static List<Swatch> generateGradient(
+            List<Swatch> swatches, ColorUtil.ColorModel colorModel, double increment) {
 
-        ArrayList<Swatch> list = new ArrayList<>();
+        List<Swatch> list = new ArrayList<>();
 
         for (int i = 0; i < swatches.size() - 1; i++) {
 
@@ -656,7 +662,7 @@ public final class SwatchHelper {
      * @param swatches the range of colors
      * @return True if calibration is complete
      */
-    public static boolean isCalibrationComplete(ArrayList<Swatch> swatches) {
+    public static boolean isCalibrationComplete(List<Swatch> swatches) {
         for (Swatch swatch : swatches) {
             if (swatch.getColor() == 0 || swatch.getColor() == Color.BLACK) {
                 //Calibration is incomplete

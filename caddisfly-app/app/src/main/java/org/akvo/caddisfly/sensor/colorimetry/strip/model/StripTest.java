@@ -18,6 +18,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -36,6 +37,10 @@ import java.util.List;
  */
 public class StripTest {
 
+    private static final String TAG = "StripTest";
+
+    private static final String STRIPS = "strips";
+
     public StripTest() {
     }
 
@@ -44,8 +49,8 @@ public class StripTest {
 
         try {
             JSONObject object = getJsonFromAssets(context, R.string.strips_json);
-            if (!object.isNull("strips")) {
-                JSONArray stripsJson = object.getJSONArray("strips");
+            if (!object.isNull(STRIPS)) {
+                JSONArray stripsJson = object.getJSONArray(STRIPS);
                 JSONObject strip;
                 if (stripsJson != null) {
                     for (int i = 0; i < stripsJson.length(); i++) {
@@ -104,8 +109,8 @@ public class StripTest {
                 // read the json file with strip information from assets
                 JSONObject object = getJsonFromAssets(context, R.string.strips_json);
 
-                if (!object.isNull("strips")) {
-                    JSONArray stripsJson = object.getJSONArray("strips");
+                if (!object.isNull(STRIPS)) {
+                    JSONArray stripsJson = object.getJSONArray(STRIPS);
                     JSONObject strip;
 
                     if (stripsJson != null) {
@@ -162,7 +167,7 @@ public class StripTest {
                                     }
 
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.e(TAG, e.getMessage(), e);
                                 }
                                 break;
                             }
@@ -172,7 +177,7 @@ public class StripTest {
 
                 //add instructions
                 JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
-                JSONArray stripsJson = instructionObj.getJSONArray("strips");
+                JSONArray stripsJson = instructionObj.getJSONArray(STRIPS);
                 JSONObject strip;
 
                 if (stripsJson != null) {
@@ -185,7 +190,7 @@ public class StripTest {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
 

@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ as the String 'brand' in the JsonObject 'strip' in strips.json from assets
 */
 public class InstructionActivity extends BaseActivity {
 
+    private static final String TAG = "InstructionActivity";
     private final List<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
 
@@ -65,7 +67,7 @@ public class InstructionActivity extends BaseActivity {
                             instructions.getJSONObject(i).has("png")
                                     ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
 

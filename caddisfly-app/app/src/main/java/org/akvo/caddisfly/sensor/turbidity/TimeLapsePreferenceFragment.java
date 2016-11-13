@@ -155,10 +155,9 @@ public class TimeLapsePreferenceFragment extends PreferenceFragment
 
         final EditTextPreference volumePreference =
                 (EditTextPreference) findPreference(getString(R.string.colif_volumeKey));
-        if (volumePreference != null) {
-            if (volumePreference.getText() != null) {
-                volumePreference.setSummary(String.format("%s ml", volumePreference.getText()));
-            }
+
+        if (volumePreference != null && volumePreference.getText() != null) {
+            volumePreference.setSummary(String.format("%s ml", volumePreference.getText()));
         }
 
         final EditTextPreference testDescription =

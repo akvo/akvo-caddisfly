@@ -102,7 +102,7 @@ public class SettingsActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         try {
             setSupportActionBar(toolbar);
-        } catch (Throwable t) {
+        } catch (Exception ignored) {
             //Ignore crash in Samsung
         }
 

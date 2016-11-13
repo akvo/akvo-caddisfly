@@ -27,6 +27,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -52,6 +53,14 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public class CameraDialogFragment extends CameraDialog {
+
+    private static final int METERING_AREA_SIZE = 100;
+    private static final int EXPOSURE_COMPENSATION = -2;
+    private static final int MIN_PICTURE_WIDTH = 640;
+    private static final int MIN_PICTURE_HEIGHT = 480;
+    private static final int MIN_SUPPORTED_WIDTH = 400;
+    private static final int RADIUS = 40;
+
     private int mNumberOfPhotosToTake;
     private int mPhotoCurrentCount = 0;
     private long mSamplingDelay;
@@ -191,7 +200,7 @@ public class CameraDialogFragment extends CameraDialog {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        if (getActivity() != null && getActivity() instanceof Cancelled) {
+        if (getActivity() instanceof Cancelled) {
             ((Cancelled) getActivity()).dialogCancelled();
         }
         super.onCancel(dialog);
@@ -213,6 +222,7 @@ public class CameraDialogFragment extends CameraDialog {
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         static final double ASPECT_TOLERANCE = 0.1;
+        private static final String TAG = "CameraPreview";
         private final SurfaceHolder mHolder;
         private Paint circleStroke;
         private List<Camera.Size> mSupportedPreviewSizes;
@@ -255,7 +265,7 @@ public class CameraDialogFragment extends CameraDialog {
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
 
@@ -300,7 +310,8 @@ public class CameraDialogFragment extends CameraDialog {
 
             if (parameters.getMaxNumMeteringAreas() > 0) {
                 List<Camera.Area> meteringAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-100, -100, 100, 100);
+                Rect areaRect1 = new Rect(-METERING_AREA_SIZE, -METERING_AREA_SIZE,
+                        METERING_AREA_SIZE, METERING_AREA_SIZE);
                 meteringAreas.add(new Camera.Area(areaRect1, 1000));
                 parameters.setMeteringAreas(meteringAreas);
             }
@@ -314,13 +325,13 @@ public class CameraDialogFragment extends CameraDialog {
                 }
             }
 
-            parameters.setExposureCompensation(-2);
+            parameters.setExposureCompensation(EXPOSURE_COMPENSATION);
 
             parameters.setZoom(0);
 
-            mCamera.setDisplayOrientation(90);
+            mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
 
-            parameters.setPictureSize(640, 480);
+            parameters.setPictureSize(MIN_PICTURE_WIDTH, MIN_PICTURE_HEIGHT);
 
             try {
                 mCamera.setParameters(parameters);
@@ -332,7 +343,7 @@ public class CameraDialogFragment extends CameraDialog {
                         supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
 
                 for (Camera.Size size : supportedPictureSizes) {
-                    if (size.width > 400 && size.width < 1000) {
+                    if (size.width > MIN_SUPPORTED_WIDTH && size.width < 1000) {
                         parameters.setPictureSize(size.width, size.height);
                         break;
                     }
@@ -372,11 +383,11 @@ public class CameraDialogFragment extends CameraDialog {
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
             mCamera.setParameters(parameters);
-            mCamera.setDisplayOrientation(90);
+            mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
             try {
                 mCamera.setPreviewDisplay(mHolder);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
             mCamera.startPreview();
         }
@@ -421,7 +432,7 @@ public class CameraDialogFragment extends CameraDialog {
             int w = getWidth();
             int h = getHeight();
 
-            canvas.drawCircle(w / 2f, h / 2f, 40, circleStroke);
+            canvas.drawCircle(w / 2f, h / 2f, RADIUS, circleStroke);
 
             super.onDraw(canvas);
         }

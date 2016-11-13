@@ -18,13 +18,13 @@ package org.akvo.caddisfly.model;
 
 import android.graphics.Bitmap;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Result {
     private final Bitmap bitmap;
-    private final ArrayList<ResultDetail> results;
+    private final List<ResultDetail> results;
 
-    public Result(Bitmap bitmap, ArrayList<ResultDetail> results) {
+    public Result(Bitmap bitmap, List<ResultDetail> results) {
         this.bitmap = bitmap;
         this.results = results;
     }
@@ -33,7 +33,7 @@ public class Result {
         return bitmap;
     }
 
-    public ArrayList<ResultDetail> getResults() {
+    public List<ResultDetail> getResults() {
         return results;
     }
 }

@@ -309,7 +309,7 @@ public final class ColorUtil {
     @NonNull
     public static LabColor getGradientLabColor(@NonNull LabColor c1, @NonNull LabColor c2, int n, int index) {
         double alpha = (double) index / (n - 1);  // 0.0 <= alpha <= 1.0
-        double L = (1 - alpha) * c1.L + alpha * c2.L;
+        double L = (1 - alpha) * c1.l + alpha * c2.l;
         double a = (1 - alpha) * c1.a + alpha * c2.a;
         double b = (1 - alpha) * c1.b + alpha * c2.b;
         return new LabColor(L, a, b);
@@ -323,7 +323,7 @@ public final class ColorUtil {
      */
     public static int labToColor(@NonNull LabColor color) {
         double a, b, g, l, r, x, y, z;
-        l = color.L;
+        l = color.l;
         a = color.a;
         b = color.b;
         y = (l + 16) / 116;
@@ -397,8 +397,8 @@ public final class ColorUtil {
 
         // compute terms
         double pi = Math.PI,
-                L1 = x.L, a1 = x.a, b1 = x.b, Cab1 = Math.sqrt(a1 * a1 + b1 * b1),
-                L2 = y.L, a2 = y.a, b2 = y.b, Cab2 = Math.sqrt(a2 * a2 + b2 * b2),
+                L1 = x.l, a1 = x.a, b1 = x.b, Cab1 = Math.sqrt(a1 * a1 + b1 * b1),
+                L2 = y.l, a2 = y.a, b2 = y.b, Cab2 = Math.sqrt(a2 * a2 + b2 * b2),
                 Cab = 0.5 * (Cab1 + Cab2),
                 G = 0.5 * (1 - Math.sqrt(Math.pow(Cab, 7) / (Math.pow(Cab, 7) + Math.pow(25, 7)))),
                 ap1 = (1 + G) * a1,

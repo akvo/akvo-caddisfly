@@ -439,7 +439,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
         handler.post(runnable);
     }
 
-    public void showResults() {
+    private void showResults() {
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.UUID, uuid);
         resultIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));

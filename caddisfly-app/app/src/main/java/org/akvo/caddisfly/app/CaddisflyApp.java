@@ -137,15 +137,13 @@ public class CaddisflyApp extends Application {
 
         mCurrentTestInfo = TestConfigHelper.loadTestByUuid(uuid);
 
-        if (mCurrentTestInfo != null) {
-            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(mCurrentTestInfo);
+        if (mCurrentTestInfo != null && mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+            loadCalibratedSwatches(mCurrentTestInfo);
 
-                if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
-                    try {
-                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
-                    } catch (Exception ignored) {
-                    }
+            if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
+                try {
+                    SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
+                } catch (Exception ignored) {
                 }
             }
         }

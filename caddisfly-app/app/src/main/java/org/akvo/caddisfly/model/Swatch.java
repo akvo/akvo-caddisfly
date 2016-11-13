@@ -46,12 +46,8 @@ public class Swatch implements Cloneable {
         return defaultColor;
     }
 
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public int getRedDifference() {

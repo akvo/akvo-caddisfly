@@ -18,6 +18,7 @@ package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONArray;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,12 +38,15 @@ import java.util.Locale;
  * Model to hold test configuration information
  */
 public class TestInfo {
+
+    private static final String TAG = "TestInfo";
+
     private static final double RESULT_ERROR_MARGIN = 0.2;
-    private final Hashtable names;
-    private final ArrayList<String> uuid;
-    private final ArrayList<Swatch> swatches;
+    private final HashMap names;
+    private final List<String> uuid;
+    private final List<Swatch> swatches;
     private final TestType testType;
-    private final ArrayList<Integer> dilutions;
+    private final List<Integer> dilutions;
     private final List<SubTest> subTests = new ArrayList<>();
     private String unit;
     private boolean requiresCalibration;
@@ -60,10 +64,10 @@ public class TestInfo {
     private String shortCode;
     private int hueTrend;
 
-    public TestInfo(Hashtable names, TestType testType, String[] swatchArray,
+    public TestInfo(HashMap names, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
-                    ArrayList<String> uuids, JSONArray resultsArray) {
-        this.names = names == null ? null : (Hashtable) names.clone();
+                    List<String> uuids, JSONArray resultsArray) {
+        this.names = names == null ? null : (HashMap) names.clone();
         this.testType = testType;
         this.uuid = uuids;
         swatches = new ArrayList<>();
@@ -118,7 +122,7 @@ public class TestInfo {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
         }
@@ -172,7 +176,7 @@ public class TestInfo {
         return uuid.size() > 0 ? uuid.get(0) : "";
     }
 
-    public ArrayList<String> getUuid() {
+    public List<String> getUuid() {
         return uuid;
     }
 
@@ -180,7 +184,7 @@ public class TestInfo {
         return unit;
     }
 
-    public ArrayList<Swatch> getSwatches() {
+    public List<Swatch> getSwatches() {
         //ensure that swatches is always sorted
         if (mIsDirty) {
             mIsDirty = false;

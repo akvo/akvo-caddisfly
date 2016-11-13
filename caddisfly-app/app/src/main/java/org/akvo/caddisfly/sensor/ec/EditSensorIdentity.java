@@ -100,15 +100,12 @@ public class EditSensorIdentity extends DialogFragment {
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (formEntryValid()) {
-
-                        if (!editId.getText().toString().trim().isEmpty()) {
-                            if (mListener != null) {
-                                mListener.onFragmentInteraction(editId.getText().toString());
-                            }
-                            closeKeyboard(context, editId);
-                            dismiss();
+                    if (formEntryValid() && !editId.getText().toString().trim().isEmpty()) {
+                        if (mListener != null) {
+                            mListener.onFragmentInteraction(editId.getText().toString());
                         }
+                        closeKeyboard(context, editId);
+                        dismiss();
                     }
                 }
 
@@ -130,7 +127,7 @@ public class EditSensorIdentity extends DialogFragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }

@@ -26,7 +26,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -37,7 +37,7 @@ import java.util.ArrayList;
  */
 public class TypeListFragment extends ListFragment {
 
-    private ArrayList<TestInfo> mTests;
+    private List<TestInfo> mTests;
 
     private OnFragmentInteractionListener mListener;
 
@@ -86,8 +86,8 @@ public class TypeListFragment extends ListFragment {
         try {
             mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new IllegalArgumentException(context.toString()
+                    + " must implement OnFragmentInteractionListener", e);
         }
     }
 

@@ -25,7 +25,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class ColorUtilTest extends TestCase {
@@ -53,7 +53,7 @@ public class ColorUtilTest extends TestCase {
             testInfo.addSwatch(swatch);
         }
 
-        ArrayList<Swatch> list = SwatchHelper.generateGradient(testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL, 0.01);
+        List<Swatch> list = SwatchHelper.generateGradient(testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL, 0.01);
 
         assertEquals(401, list.size());
 

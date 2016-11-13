@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -32,6 +33,8 @@ import java.util.Locale;
  * Created by linda on 8/19/15
  */
 public final class AssetsManager {
+
+    private static final String TAG = "AssetsManager";
 
     private static AssetsManager assetsManager;
     private final AssetManager manager;
@@ -84,14 +87,14 @@ public final class AssetsManager {
 
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Log.e(TAG, ex.getMessage(), ex);
             return null;
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
         }

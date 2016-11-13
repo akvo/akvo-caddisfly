@@ -33,6 +33,7 @@ import org.akvo.caddisfly.R;
 /**
  * Utility functions to show alert messages
  */
+@SuppressWarnings("SameParameterValue")
 public final class AlertUtil {
 
     private AlertUtil() {
@@ -42,12 +43,10 @@ public final class AlertUtil {
         showAlert(context, title, message, null, null, null);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void showMessage(Context context, @StringRes int title, String message) {
         showAlert(context, title, message, null, null, null);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void askQuestion(Context context, @StringRes int title, @StringRes int message,
                                    @StringRes int okButtonText, @StringRes int cancelButtonText,
                                    boolean isDestructive,
@@ -63,7 +62,6 @@ public final class AlertUtil {
                 }, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, @StringRes int title, String message,
                                  @StringRes int okButtonText,
                                  DialogInterface.OnClickListener positiveListener,
@@ -73,7 +71,6 @@ public final class AlertUtil {
                 true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, @StringRes int title, @StringRes int message,
                                  @StringRes int okButtonText,
                                  DialogInterface.OnClickListener positiveListener,
@@ -83,7 +80,6 @@ public final class AlertUtil {
                 R.string.cancel, true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void showAlert(Context context, @StringRes int title, @StringRes int message,
                                  DialogInterface.OnClickListener positiveListener,
                                  DialogInterface.OnClickListener negativeListener,
@@ -93,7 +89,6 @@ public final class AlertUtil {
                 true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
     private static void showAlert(Context context, @StringRes int title, String message,
                                   DialogInterface.OnClickListener positiveListener,
                                   DialogInterface.OnClickListener negativeListener,
@@ -114,7 +109,6 @@ public final class AlertUtil {
      * @param negativeListener cancel button listener
      * @return the alert dialog
      */
-    @SuppressWarnings("SameParameterValue")
     private static AlertDialog showAlert(final Context context, String title, String message,
                                          @StringRes int okButtonText, @StringRes int cancelButtonText,
                                          boolean cancelable, boolean isDestructive,
@@ -173,7 +167,6 @@ public final class AlertUtil {
      * @param negativeListener cancel button listener
      * @return the alert dialog
      */
-    @SuppressWarnings("SameParameterValue")
     @SuppressLint("InflateParams")
     public static AlertDialog showError(Context context, @StringRes int title, String message, Bitmap bitmap,
                                         @StringRes int okButtonText, DialogInterface.OnClickListener positiveListener,

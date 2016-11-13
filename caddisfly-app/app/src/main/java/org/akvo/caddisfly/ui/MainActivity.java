@@ -230,11 +230,6 @@ public class MainActivity extends BaseActivity {
         AlertUtil.showMessage(this, R.string.notFound, message);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     /**
      * Handler to restart the app after language has been changed
      */

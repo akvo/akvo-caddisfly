@@ -32,6 +32,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,8 @@ import java.util.Locale;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class TimeLapseActivity extends BaseActivity {
+
+    private static final String TAG = "TimeLapseActivity";
 
     private static final int PERMISSION_ALL = 1;
     private static final int INITIAL_DELAY = 25000;
@@ -155,7 +158,7 @@ public class TimeLapseActivity extends BaseActivity {
                                     "%02d:%02d:%02d", hours, minutes, seconds));
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
             }

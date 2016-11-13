@@ -36,7 +36,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -64,7 +64,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         @SuppressLint("ViewHolder")
         View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
-        ArrayList<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
+        List<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
         Swatch swatch = swatches.get(position);
 
         TextView textName = (TextView) rowView.findViewById(R.id.textName);

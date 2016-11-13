@@ -38,7 +38,7 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -48,7 +48,8 @@ import java.util.Locale;
  */
 public class DiagnosticResultDialog extends DialogFragment {
 
-    private ArrayList<Result> mResults;
+    private static final int TEXT_SIZE = 14;
+    private List<Result> mResults;
     private boolean mIsCalibration;
 
     public DiagnosticResultDialog() {
@@ -65,7 +66,7 @@ public class DiagnosticResultDialog extends DialogFragment {
      * @param isCalibration is this a calibration result
      * @return the dialog
      */
-    public static DiagnosticResultDialog newInstance(ArrayList<Result> results, boolean allowRetry,
+    public static DiagnosticResultDialog newInstance(List<Result> results, boolean allowRetry,
                                                      String result, int color, boolean isCalibration) {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
@@ -211,9 +212,9 @@ public class DiagnosticResultDialog extends DialogFragment {
 
     public class ResultsDetailsAdapter extends BaseAdapter {
 
-        final ArrayList<ResultDetail> mResults;
+        final List<ResultDetail> mResults;
 
-        ResultsDetailsAdapter(ArrayList<ResultDetail> results) {
+        ResultsDetailsAdapter(List<ResultDetail> results) {
             mResults = results;
         }
 
@@ -268,7 +269,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
 
                                 textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
-                                textResult.setTextSize(14);
+                                textResult.setTextSize(TEXT_SIZE);
                             }
                             break;
                         case RGB:
@@ -278,7 +279,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                             } else {
                                 textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
                                 textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
-                                textResult.setTextSize(14);
+                                textResult.setTextSize(TEXT_SIZE);
                             }
                             break;
                     }

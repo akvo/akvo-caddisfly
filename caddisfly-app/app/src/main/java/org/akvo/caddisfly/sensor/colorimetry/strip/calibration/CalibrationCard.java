@@ -624,7 +624,7 @@ public final class CalibrationCard {
     /*
     * Computes E94 distance between two colors.
     * First normalises the colors as follows:
-    * L : 0...100
+    * l : 0...100
     * a,b: -128 ... 128
     * follows http://colormine.org/delta-e-calculator/cie94
     *

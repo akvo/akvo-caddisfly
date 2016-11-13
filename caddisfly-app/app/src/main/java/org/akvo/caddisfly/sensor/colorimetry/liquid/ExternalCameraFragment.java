@@ -50,6 +50,7 @@ import java.util.List;
 
 public final class ExternalCameraFragment extends CameraDialog {
 
+    private static final int INITIAL_DELAY_MILLIS = 500;
     /**
      * preview resolution(width)
      * if your camera does not support specific resolution and mode,
@@ -150,7 +151,7 @@ public final class ExternalCameraFragment extends CameraDialog {
         Dialog dialog = new Dialog(getActivity(), getTheme()) {
             @Override
             public void onBackPressed() {
-                if (getActivity() != null && getActivity() instanceof Cancelled) {
+                if (getActivity() instanceof Cancelled) {
                     ((Cancelled) getActivity()).dialogCancelled();
                 }
                 dismiss();
@@ -166,7 +167,7 @@ public final class ExternalCameraFragment extends CameraDialog {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        if (getActivity() != null && getActivity() instanceof Cancelled) {
+        if (getActivity() instanceof Cancelled) {
             ((Cancelled) getActivity()).dialogCancelled();
         }
         super.onCancel(dialog);
@@ -206,7 +207,7 @@ public final class ExternalCameraFragment extends CameraDialog {
             }
         };
 
-        delayHandler.postDelayed(delayRunnable, 500);
+        delayHandler.postDelayed(delayRunnable, INITIAL_DELAY_MILLIS);
     }
 
     @Override
@@ -250,11 +251,8 @@ public final class ExternalCameraFragment extends CameraDialog {
             @Override
             public void run() {
 
-                if (getActivity() != null) {
-
-                    if (mHandler != null && mHandler.isCameraOpened()) {
-                        mHandler.captureStill();
-                    }
+                if (getActivity() != null && mHandler != null && mHandler.isCameraOpened()) {
+                    mHandler.captureStill();
                 }
             }
         }, mSamplingDelay);
@@ -383,7 +381,7 @@ public final class ExternalCameraFragment extends CameraDialog {
                     thread.handleRelease();
                     break;
                 default:
-                    throw new RuntimeException("unsupported message:what=" + msg.what);
+                    throw new IllegalArgumentException("unsupported message:what=" + msg.what);
             }
         }
 

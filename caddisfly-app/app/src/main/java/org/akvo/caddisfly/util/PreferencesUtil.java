@@ -25,7 +25,10 @@ import android.support.annotation.StringRes;
 /**
  * Various utility functions to get/set values from/to SharedPreferences
  */
+@SuppressWarnings("SameParameterValue")
 public final class PreferencesUtil {
+
+    private static final String KEY_FORMAT = "%s_%s";
 
     private PreferencesUtil() {
     }
@@ -49,7 +52,6 @@ public final class PreferencesUtil {
      * @param defaultValue the default value
      * @return the stored boolean value
      */
-    @SuppressWarnings("SameParameterValue")
     public static boolean getBoolean(Context context, @StringRes int keyId, boolean defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -63,7 +65,6 @@ public final class PreferencesUtil {
      * @param keyId   the key id
      * @param value   the value
      */
-    @SuppressWarnings("SameParameterValue")
     public static void setBoolean(Context context, @StringRes int keyId, boolean value) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -81,7 +82,6 @@ public final class PreferencesUtil {
      * @param defaultValue the default value
      * @return stored int value
      */
-    @SuppressWarnings("SameParameterValue")
     public static int getInt(Context context, String key, int defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -95,11 +95,9 @@ public final class PreferencesUtil {
      * @param keyId   the key id
      * @return the stored long value
      */
-    @SuppressWarnings({"SameParameterValue", "unused"})
     public static int getInt(Context context, @StringRes int keyId, int defaultValue) {
         return PreferencesUtil.getInt(context, getKey(context, keyId), defaultValue);
     }
-
 
     public static void setInt(Context context, @StringRes int keyId, int value) {
         PreferencesUtil.setInt(context, getKey(context, keyId), value);
@@ -120,17 +118,16 @@ public final class PreferencesUtil {
         editor.apply();
     }
 
-    /**
-     * Gets a long value from preferences
-     *
-     * @param context the context
-     * @param keyId   the key id
-     * @return the stored long value
-     */
-    @SuppressWarnings({"SameParameterValue", "unused"})
-    public static long getLong(Context context, @StringRes int keyId) {
-        return PreferencesUtil.getLong(context, getKey(context, keyId));
-    }
+//    /**
+//     * Gets a long value from preferences
+//     *
+//     * @param context the context
+//     * @param keyId   the key id
+//     * @return the stored long value
+//     */
+//    public static long getLong(Context context, @StringRes int keyId) {
+//        return PreferencesUtil.getLong(context, getKey(context, keyId));
+//    }
 
     /**
      * Gets a long value from preferences
@@ -140,7 +137,7 @@ public final class PreferencesUtil {
      * @return the stored long value
      */
     public static long getLong(Context context, String code, @StringRes int keyId) {
-        String key = String.format("%s_%s", code, getKey(context, keyId));
+        String key = String.format(KEY_FORMAT, code, getKey(context, keyId));
         return getLong(context, key);
     }
 
@@ -159,7 +156,7 @@ public final class PreferencesUtil {
     }
 
     public static void setLong(Context context, String code, @StringRes int keyId, long value) {
-        String key = String.format("%s_%s", code, getKey(context, keyId));
+        String key = String.format(KEY_FORMAT, code, getKey(context, keyId));
         setLong(context, key, value);
     }
 
@@ -170,7 +167,7 @@ public final class PreferencesUtil {
      * @param keyId   the key id
      * @param value   the value
      */
-    @SuppressWarnings({"SameParameterValue", "unused"})
+    @SuppressWarnings({"unused"})
     public static void setLong(Context context, @StringRes int keyId, long value) {
         setLong(context, getKey(context, keyId), value);
     }
@@ -198,7 +195,6 @@ public final class PreferencesUtil {
      * @param defaultValue default value
      * @return the stored string value
      */
-    @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, @StringRes int keyId, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -213,16 +209,14 @@ public final class PreferencesUtil {
      * @param defaultValue default value
      * @return the stored string value
      */
-    @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, String keyId, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getString(keyId, defaultValue);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static String getString(Context context, String code, @StringRes int keyId, String defaultValue) {
-        String key = String.format("%s_%s", code, getKey(context, keyId));
+        String key = String.format(KEY_FORMAT, code, getKey(context, keyId));
         return getString(context, key, defaultValue);
     }
 
@@ -240,9 +234,8 @@ public final class PreferencesUtil {
         editor.apply();
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void setString(Context context, String code, @StringRes int keyId, String value) {
-        String key = String.format("%s_%s", code, getKey(context, keyId));
+        String key = String.format(KEY_FORMAT, code, getKey(context, keyId));
         setString(context, key, value);
     }
 
@@ -261,7 +254,7 @@ public final class PreferencesUtil {
         editor.apply();
     }
 
-    @SuppressWarnings({"SameParameterValue", "unused"})
+    @SuppressWarnings({"unused"})
     public static void removeKey(Context context, @StringRes int keyId) {
         removeKey(context, getKey(context, keyId));
     }
@@ -287,7 +280,6 @@ public final class PreferencesUtil {
      * @param keyId   the key id
      * @return true if found
      */
-    @SuppressWarnings("SameParameterValue")
     public static boolean containsKey(Context context, @StringRes int keyId) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);

@@ -42,6 +42,7 @@ import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -50,6 +51,7 @@ import java.util.List;
 
 public class DiagnosticPreviewFragment extends DialogFragment implements CameraDialog.Cancelled {
 
+    private static final int MAX_SHAKE_DURATION = 2000;
     private SensorManager mSensorManager;
     private ShakeDetector mShakeDetector;
     private SoundPoolPlayer sound;
@@ -93,10 +95,10 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
                 int rotation;
                 switch (display.getRotation()) {
                     case Surface.ROTATION_0:
-                        rotation = 90;
+                        rotation = SensorConstants.DEGREES_90;
                         break;
                     case Surface.ROTATION_180:
-                        rotation = 270;
+                        rotation = SensorConstants.DEGREES_270;
                         break;
                     case Surface.ROTATION_270:
                         rotation = 180;
@@ -176,7 +178,7 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
         });
 
         mShakeDetector.setMinShakeAcceleration(5);
-        mShakeDetector.setMaxShakeDuration(2000);
+        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
         mSensorManager.registerListener(mShakeDetector, accelerometer,
                 SensorManager.SENSOR_DELAY_UI);

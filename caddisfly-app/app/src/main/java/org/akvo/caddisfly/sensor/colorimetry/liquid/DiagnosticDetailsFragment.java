@@ -41,6 +41,8 @@ import java.util.Locale;
 
 public class DiagnosticDetailsFragment extends DialogFragment {
 
+    private static final double WIDTH_PERCENTAGE = 0.98;
+    private static final double HEIGHT_PERCENTAGE = 0.9;
     private Bitmap mExtractBitmap;
     private Bitmap mPhotoBitmap;
     private String mDimension;
@@ -138,8 +140,8 @@ public class DiagnosticDetailsFragment extends DialogFragment {
             return;
         }
 
-        int dialogWidth = (int) (0.98 * getResources().getDisplayMetrics().widthPixels);
-        int dialogHeight = (int) (0.9 * getResources().getDisplayMetrics().heightPixels);
+        int dialogWidth = (int) (WIDTH_PERCENTAGE * getResources().getDisplayMetrics().widthPixels);
+        int dialogHeight = (int) (HEIGHT_PERCENTAGE * getResources().getDisplayMetrics().heightPixels);
 
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

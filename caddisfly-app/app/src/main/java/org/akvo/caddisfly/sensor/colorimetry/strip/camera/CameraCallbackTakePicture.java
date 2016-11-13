@@ -18,6 +18,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.util.Log;
 
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 
@@ -55,6 +56,9 @@ import org.akvo.caddisfly.util.detector.FinderPatternInfo;
  */
 @SuppressWarnings("deprecation")
 class CameraCallbackTakePicture extends CameraCallbackBase {
+
+    private static final String TAG = "CamCallbackTakePicture";
+
     private static final int TAKE_PICTURE_DELAY_MILLIS = 500;
     private boolean sending;
 
@@ -108,7 +112,7 @@ class CameraCallbackTakePicture extends CameraCallbackBase {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             listener.showError(e.getMessage());
             listener.takeNextPicture(TAKE_PICTURE_DELAY_MILLIS);
         } finally {

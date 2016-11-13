@@ -49,10 +49,8 @@ public class UsbConnectionActivity extends Activity {
         progressDialog.setMessage(getString(R.string.deviceConnecting));
         progressDialog.setCancelable(false);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (progressDialog.getWindow() != null) {
-                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && progressDialog.getWindow() != null) {
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         progressDialog.show();
 

@@ -30,7 +30,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -39,9 +39,9 @@ import java.util.Locale;
 class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
-    private final ArrayList<Swatch> colorArray;
+    private final List<Swatch> colorArray;
 
-    DiagnosticSwatchesAdapter(Activity activity, ArrayList<Swatch> colorArray) {
+    DiagnosticSwatchesAdapter(Activity activity, List<Swatch> colorArray) {
         super(activity, R.layout.row_swatch, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;

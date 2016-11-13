@@ -36,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -89,6 +90,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
+
+    private static final String RESULT_DIALOG_TAG = "resultDialog";
+    private static final String TAG = "ColorLiquidActivity";
     private static final int RESULT_RESTART_TEST = 3;
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
@@ -119,7 +123,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private CameraDialog mCameraFragment;
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
-    private ArrayList<Result> mResults;
+    private List<Result> mResults;
     private boolean mTestCompleted;
     private boolean mHighLevelsFound;
     private boolean mIgnoreShake;
@@ -137,13 +141,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            if (mIsCalibration) {
-                String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
-                        getResources().getString(R.string.calibrate),
-                        mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
-                textDilution.setText(subTitle);
-            }
+        if (mIsCalibration && getSupportActionBar() != null) {
+            String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
+                    getResources().getString(R.string.calibrate),
+                    mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
+            textDilution.setText(subTitle);
         }
     }
 
@@ -175,10 +177,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     return;
                 }
 
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (isDestroyed()) {
-                        return;
-                    }
+                if (isDestroyed() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    return;
                 }
 
                 mWaitingForStillness = true;
@@ -403,29 +403,34 @@ public class ColorimetryLiquidActivity extends BaseActivity
             ArrayList<Swatch> swatches = new ArrayList<>();
 
             //1 step analysis
-            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.LAB));
-            results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.RGB));
+            try {
+                swatches.add((Swatch) testInfo.getSwatch(0).clone());
+                SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
+                results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.LAB));
+                results.add(SwatchHelper.analyzeColor(1, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
-            swatches.clear();
+                swatches.clear();
 
-            //add only the first and last swatch for a 2 step analysis
-            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-            swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
-            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.LAB));
-            results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.RGB));
+                //add only the first and last swatch for a 2 step analysis
+                swatches.add((Swatch) testInfo.getSwatch(0).clone());
+                swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
+                SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
+                results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.LAB));
+                results.add(SwatchHelper.analyzeColor(2, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
-            swatches.clear();
+                swatches.clear();
 
-            //add the middle swatch for a 3 step analysis
-            swatches.add((Swatch) testInfo.getSwatch(0).clone());
-            swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
-            swatches.add(1, (Swatch) testInfo.getSwatch(testInfo.getSwatches().size() / 2).clone());
-            SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
-            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.LAB));
-            results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
+                //add the middle swatch for a 3 step analysis
+                swatches.add((Swatch) testInfo.getSwatch(0).clone());
+                swatches.add((Swatch) testInfo.getSwatch(testInfo.getSwatches().size() - 1).clone());
+                swatches.add(1, (Swatch) testInfo.getSwatch(testInfo.getSwatches().size() / 2).clone());
+                SwatchHelper.generateSwatches(swatches, testInfo.getSwatches());
+                results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.LAB));
+                results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
+
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
 
             //use all the swatches for an all steps analysis
             results.add(SwatchHelper.analyzeColor(testInfo.getSwatches().size(), photoColor,
@@ -541,7 +546,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Log.e(TAG, e.getMessage(), e);
                             finish();
                         }
                     }
@@ -655,7 +660,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Log.e(TAG, e.getMessage(), e);
                             finish();
                         }
                     }
@@ -840,13 +845,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             resultText, mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                    Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+                    Fragment fragment = getFragmentManager().findFragmentByTag(RESULT_DIALOG_TAG);
                     if (fragment != null) {
                         ft.remove(fragment);
                     }
 
                     mResultDialogFragment.setCancelable(false);
-                    mResultDialogFragment.show(ft, "resultDialog");
+                    mResultDialogFragment.show(ft, RESULT_DIALOG_TAG);
                 }
             }
         }
@@ -952,13 +957,13 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     mDilutionLevel, message, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+            Fragment fragment = getFragmentManager().findFragmentByTag(RESULT_DIALOG_TAG);
             if (fragment != null) {
                 ft.remove(fragment);
             }
 
             mResultDialogFragment.setCancelable(false);
-            mResultDialogFragment.show(ft, "resultDialog");
+            mResultDialogFragment.show(ft, RESULT_DIALOG_TAG);
 
         } else if (retry) {
             mCameraFragment.dismiss();

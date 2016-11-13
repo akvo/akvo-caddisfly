@@ -18,6 +18,7 @@ package org.akvo.caddisfly.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 
@@ -32,11 +33,14 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility functions to file and folder manipulation
  */
 public final class FileUtil {
+
+    private static final String TAG = "FileUtil";
 
     private FileUtil() {
     }
@@ -89,7 +93,7 @@ public final class FileUtil {
             pw.write(data);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         } finally {
             if (pw != null) {
                 pw.close();
@@ -128,14 +132,14 @@ public final class FileUtil {
                     try {
                         isr.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
             }
@@ -151,7 +155,7 @@ public final class FileUtil {
      * @param fileName the file name
      * @return an list of string lines
      */
-    public static ArrayList<String> loadFromFile(File path, String fileName) {
+    public static List<String> loadFromFile(File path, String fileName) {
 
         ArrayList<String> arrayList = new ArrayList<>();
         if (path.exists()) {
@@ -180,21 +184,21 @@ public final class FileUtil {
                     try {
                         isr.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
                 if (bufferedReader != null) {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
             }

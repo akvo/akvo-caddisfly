@@ -175,7 +175,6 @@
     <string name="no_data">No data for patch</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
-    <string name="analysing">Analysing image…</string>
     <string name="prepare_test">Prepare for test</string>
     <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK</string>
     <string name="picture_taken">Picture taken</string>

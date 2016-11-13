@@ -73,7 +73,7 @@ public class PercentageMeterView extends View {
         canvas.save();
 
         // Set each dot's diameter to half the canvas height
-        canvas.translate(canvas.getWidth() / 2f - ((canvas.getHeight() * 0.5f + 0.2f) * 2.5f), 0);
+        canvas.translate(canvas.getWidth() / 2f - ((canvas.getHeight() / 2 + 0.2f) * 2.5f), 0);
 
         for (double i = 0; i < NUMBER_OF_BARS; i++) {
 
@@ -107,10 +107,10 @@ public class PercentageMeterView extends View {
                 }
             }
 
-            canvas.drawCircle(0, canvas.getHeight() * 0.5f, canvas.getHeight() * 0.25f, paint);
+            canvas.drawCircle(0, canvas.getHeight() / 2, canvas.getHeight() / 4, paint);
 
             // Position next circle
-            canvas.translate(canvas.getHeight() * 0.5f + 0.2f, 0);
+            canvas.translate(canvas.getHeight() / 2 + 0.2f, 0);
         }
 
         canvas.restore();

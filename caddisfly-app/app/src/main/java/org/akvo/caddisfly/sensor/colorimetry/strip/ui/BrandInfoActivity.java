@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,8 @@ import java.io.InputStream;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class BrandInfoActivity extends BaseActivity {
+
+    private static final String TAG = "BrandInfoActivity";
 
     private static final int PERMISSION_ALL = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -108,13 +111,13 @@ public class BrandInfoActivity extends BaseActivity {
                 imageView.setScaleType(stripTest.getBrand(this, mUuid).getImageScale().equals("centerCrop")
                         ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Log.e(TAG, ex.getMessage(), ex);
             } finally {
                 if (ims != null) {
                     try {
                         ims.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage(), e);
                     }
                 }
 

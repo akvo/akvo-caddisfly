@@ -56,6 +56,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+    private static final int MAX_TOLERANCE = 399;
 
     private ListView list;
     private View coordinatorLayout;
@@ -157,8 +158,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > 399) {
-                            newValue = 399;
+                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_TOLERANCE) {
+                            newValue = MAX_TOLERANCE;
                         }
 
                         if (Integer.parseInt(String.valueOf(newValue)) < 1) {

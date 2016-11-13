@@ -34,29 +34,27 @@ public class TurbidityStartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (intent != null) {
-            if (TurbidityConfig.ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
+        if (intent != null && TurbidityConfig.ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
 
-                String uuid = intent.getStringExtra("uuid");
-                CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
+            String uuid = intent.getStringExtra("uuid");
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TurbidityConfig.setRepeatingAlarm(context, -1, uuid);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                TurbidityConfig.setRepeatingAlarm(context, -1, uuid);
+            }
 
-                String folderName = intent.getStringExtra("savePath");
+            String folderName = intent.getStringExtra("savePath");
 
-                if (AppPreferences.useExternalCamera()) {
-                    final Intent cameraIntent = new Intent();
-                    cameraIntent.setClass(context, ExternalCameraActivity.class);
-                    cameraIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    cameraIntent.putExtra("uuid", uuid.trim().toLowerCase(Locale.US));
-                    cameraIntent.putExtra("savePath", folderName);
-                    context.startActivity(cameraIntent);
-                } else {
-                    CameraHandler cameraHandler = new CameraHandler(context);
-                    cameraHandler.takePicture(folderName);
-                }
+            if (AppPreferences.useExternalCamera()) {
+                final Intent cameraIntent = new Intent();
+                cameraIntent.setClass(context, ExternalCameraActivity.class);
+                cameraIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                cameraIntent.putExtra("uuid", uuid.trim().toLowerCase(Locale.US));
+                cameraIntent.putExtra("savePath", folderName);
+                context.startActivity(cameraIntent);
+            } else {
+                CameraHandler cameraHandler = new CameraHandler(context);
+                cameraHandler.takePicture(folderName);
             }
         }
     }
