@@ -17,20 +17,17 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripTask;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
@@ -70,15 +67,18 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private ProgressIndicatorView progressIndicatorViewAnim;
     private int timeLapsed = 0;
     private Handler handler;
+    @Nullable
     private String uuid;
     private int patchesCovered = -1;
     private int stepsCovered = 0;
     private int imageCount = 0;
+    @NonNull
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
     /*
      * Update the ProgressIndicatorView every second
     */
+    @Nullable
     private final Runnable countdownRunnable = new Runnable() {
         @Override
         public void run() {
@@ -95,14 +95,12 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     //private TextView countQualityView;
     private PercentageMeterView exposureView;
     private PercentageMeterView contrastView;
-    private ImageView finishImage;
-    private Animation rotate;
-
 
     public CameraStartTestFragment() {
         // Required empty public constructor
     }
 
+    @NonNull
     public static CameraStartTestFragment newInstance(String uuid) {
 
         CameraStartTestFragment fragment = new CameraStartTestFragment();
@@ -123,14 +121,13 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     * Set global properties with the values we now know.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_start, container, false);
 
         exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        finishImage = (ImageView) rootView.findViewById(R.id.image_finishIndicator);
         setCountQualityView((TextView) rootView.findViewById(R.id.text_startIndicator));
 
 
@@ -199,8 +196,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //reset quality checks count to zero
         if (mListener != null) {
             mListener.setQualityCheckCountZero();
-
-            rotate = AnimationUtils.loadAnimation(context, R.anim.rotate);
 
             mListener.startPreview();
             if (mListener.isTorchModeOn()) {
@@ -339,8 +334,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     * Store image data together with FinderPatternInfo data.
     * Update JSONArray imagePatchArray to keep track of which picture goes with which patch.
      */
-    public void sendData(final byte[] data, long timeMillis,
-                         final FinderPatternInfo info) {
+    public void sendData(final byte[] data, long timeMillis, final FinderPatternInfo info) {
+
         //check if image count is lower than patches size. if not, abort
         if (imageCount >= patches.size()) {
             return;
@@ -389,13 +384,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         imageCount++;
     }
 
-    public void showSpinner() {
-        if (finishImage != null) {
-            finishImage.setImageResource(R.drawable.spinner);
-            finishImage.startAnimation(rotate);
-        }
-    }
-
     /*
     * If picture data (Camera Preview data) is stored,
     * proceed to calibrate and detect the strip from it.
@@ -411,7 +399,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     *
     * @params: format, width, height. Those should be the format, width and height of the Camera.Size
      */
-    public void dataSent(int format, int width, int height) {
+    public boolean dataSent() {
 
         //check if we do have images for all patches
         if (patchesCovered == patches.size() - 1) {
@@ -424,38 +412,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             if (imagePatchArray.length() > 0) {
                 //write image/patch info to internal storage
                 FileStorage.writeToInternalStorage(getActivity(), Constant.IMAGE_PATCH, imagePatchArray.toString());
-
-                Intent detectStripIntent = createDetectStripIntent(format, width, height);
-
-                new DetectStripTask(getActivity()).execute(detectStripIntent);
+                return true;
             }
         }
-    }
-
-    /*
-    * Create an Intent that holds information about the preview data:
-    * preview format
-    * preview width
-    * preview height
-    *
-    * and information about the strip test brand we are now handling
-    *
-    * It is used to
-    * a. start an Activity with this intent
-    * b. start an AsyncTask passing this intent as param
-    *
-    * in the method dataSent() above
-     */
-    private Intent createDetectStripIntent(int format, int width, int height) {
-        Intent detectStripIntent = new Intent();
-        //put Extras into intent
-        detectStripIntent.putExtra(Constant.UUID, uuid);
-        detectStripIntent.putExtra(Constant.FORMAT, format);
-        detectStripIntent.putExtra(Constant.WIDTH, width);
-        detectStripIntent.putExtra(Constant.HEIGHT, height);
-
-        detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        return detectStripIntent;
+        return false;
     }
 }

@@ -26,13 +26,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
-import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripListener;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -56,7 +54,7 @@ import java.util.Map;
  * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
-public class CameraActivity extends BaseActivity implements CameraViewListener, DetectStripListener {
+public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     private static final String TAG = "CameraActivity";
 
@@ -401,8 +399,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public void sendData(final byte[] data, long timeMillis,
-                         final FinderPatternInfo info) {
+    public void sendData(final byte[] data, long timeMillis, final FinderPatternInfo info) {
 
         if (currentFragment instanceof CameraStartTestFragment) {
             ((CameraStartTestFragment) currentFragment).sendData(data, timeMillis, info);
@@ -418,38 +415,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     @Override
     public void dataSent() {
 
-        if (currentFragment instanceof CameraStartTestFragment && previewFormat > 0
-                && previewWidth > 0 && previewHeight > 0) {
-            ((CameraStartTestFragment) currentFragment).dataSent(previewFormat,
-                    previewWidth,
-                    previewHeight);
+        if (currentFragment instanceof CameraStartTestFragment
+                && previewFormat > 0 && previewWidth > 0 && previewHeight > 0
+                && ((CameraStartTestFragment) currentFragment).dataSent()) {
+            showResults();
         }
     }
 
     @Override
     public void playSound() {
         sound.playShortResource(R.raw.futurebeep2);
-    }
-
-    @Override
-    public void showSpinner() {
-        if (currentFragment instanceof CameraStartTestFragment) {
-            ((CameraStartTestFragment) currentFragment).showSpinner();
-        }
-    }
-
-    @Override
-    public void showMessage() {
-        final TextView finish = (TextView) findViewById(R.id.activity_cameraFinishText);
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (finish != null) {
-                    finish.setText(R.string.analysing);
-                }
-            }
-        };
-        handler.post(runnable);
     }
 
     @Override
@@ -464,11 +439,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
         handler.post(runnable);
     }
 
-    @Override
     public void showResults() {
         Intent resultIntent = new Intent(this, ResultActivity.class);
         resultIntent.putExtra(Constant.UUID, uuid);
         resultIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
+        resultIntent.putExtra(Constant.FORMAT, previewFormat);
+        resultIntent.putExtra(Constant.WIDTH, previewWidth);
+        resultIntent.putExtra(Constant.HEIGHT, previewHeight);
+
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         startActivity(resultIntent);
         finish();

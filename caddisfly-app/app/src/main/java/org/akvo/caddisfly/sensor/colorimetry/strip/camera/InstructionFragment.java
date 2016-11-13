@@ -21,6 +21,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,15 +50,18 @@ import org.json.JSONException;
  */
 public class InstructionFragment extends CameraSharedFragmentBase {
 
+    private static final String TAG = "InstructionFragment";
+
     private static final int BUTTON_ENABLE_DELAY = 4000;
-    private static final int ANIMATION_DURATION_MILLIS = 1000;
-    private static final float BUTTON_START_ALPHA = 0.3f;
+    private static final int ANIMATION_DURATION_MILLIS = 2000;
+    private static final float BUTTON_START_ALPHA = 0.2f;
     private CameraViewListener mListener;
 
     public InstructionFragment() {
         // Required empty public constructor
     }
 
+    @NonNull
     public static InstructionFragment newInstance(String uuid) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
@@ -66,7 +71,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
@@ -97,7 +102,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
 
@@ -113,10 +118,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 buttonStart.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1.0f);
-                animation.setDuration(ANIMATION_DURATION_MILLIS);
-                animation.setFillAfter(true);
+                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
                 buttonStart.setAlpha(1f);
+                animation.setDuration(ANIMATION_DURATION_MILLIS);
                 buttonStart.startAnimation(animation);
             }
         }, BUTTON_ENABLE_DELAY);
@@ -125,7 +129,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         return rootView;
     }
 
-    private void showInstruction(LinearLayout linearLayout, String instruction, int style) {
+    private void showInstruction(@NonNull LinearLayout linearLayout, @NonNull String instruction, int style) {
         TextView textView = new TextView(getActivity());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.mediumTextSize));
@@ -152,13 +156,13 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             mListener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement CameraViewListener");
+            throw new IllegalArgumentException(context.toString()
+                    + " must implement CameraViewListener", e);
         }
     }
 

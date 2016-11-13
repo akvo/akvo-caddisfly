@@ -171,14 +171,14 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                         //save warped image to external storage
 //                        if (DEVELOP_MODE) {
-//                            Mat rgb = new Mat();
-//                            Imgproc.cvtColor(warpMat, rgb, Imgproc.COLOR_Lab2RGB);
-//                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
-//                            Utils.matToBitmap(rgb, bitmap);
+//                        Mat rgb = new Mat();
+//                        Imgproc.cvtColor(warpMat, rgb, Imgproc.COLOR_Lab2RGB);
+//                        Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
+//                        Utils.matToBitmap(rgb, bitmap);
 //
-//                            if (FileStorage.isExternalStorageWritable()) {
-//                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
-//                            }
+//                        //if (FileStorage.isExternalStorageWritable()) {
+//                        FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
+                        //}
 //                            //Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
 //                        }
 

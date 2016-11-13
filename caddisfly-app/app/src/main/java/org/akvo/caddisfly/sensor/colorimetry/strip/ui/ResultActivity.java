@@ -22,6 +22,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +40,8 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
+import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripListener;
+import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripTask;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -64,7 +68,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class ResultActivity extends BaseActivity {
+public class ResultActivity extends BaseActivity implements DetectStripListener {
 
     private static final String TAG = "ResultActivity";
 
@@ -73,102 +77,18 @@ public class ResultActivity extends BaseActivity {
     private final JSONObject resultJsonObj = new JSONObject();
     private final JSONArray resultJsonArr = new JSONArray();
     private Button buttonSave;
+    private Button buttonCancel;
+    @Nullable
     private Mat resultImage = null;
     private String resultImageUrl;
     private StripTest.Brand brand;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
         setTitle(R.string.result);
-
-        if (savedInstanceState == null) {
-            resultImageUrl = UUID.randomUUID().toString() + ".png";
-            Intent intent = getIntent();
-            String uuid = intent.getStringExtra(Constant.UUID);
-
-            Mat strip;
-            StripTest stripTest = new StripTest();
-
-            // get information on the strip test from JSON
-            brand = stripTest.getBrand(this, uuid);
-
-            // for display purposes sort the patches by position on the strip
-            List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
-
-            // get the JSON describing the images of the patches that were stored before
-            JSONArray imagePatchArray = null;
-            try {
-                String json = FileStorage.readFromInternalStorage(this, Constant.IMAGE_PATCH);
-                if (json != null) {
-                    imagePatchArray = new JSONArray(json);
-                }
-
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-
-            // cycle over the patches and interpret them
-            if (imagePatchArray != null) {
-                // if this strip is of type 'GROUP', take the first image and use that for all the patches
-                if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
-                    // handle grouping case
-
-                    // get the first patch image
-                    JSONArray array;
-                    try {
-                        // get strip image into Mat object
-                        array = imagePatchArray.getJSONArray(0);
-                        int imageNo = array.getInt(0);
-
-                        boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
-                        strip = ResultUtil.getMatFromFile(this, imageNo);
-                        if (strip != null) {
-                            // create empty mat to serve as a template
-                            resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
-                                    new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
-                            new BitmapTask(isInvalidStrip, strip, true, brand, patches, 0).execute(strip);
-                        }
-                    } catch (JSONException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                } else {
-                    // if this strip is of type 'INDIVIDUAL' handle patch by patch
-                    for (int i = 0; i < patches.size(); i++) { // handle patch
-                        JSONArray array;
-                        try {
-                            array = imagePatchArray.getJSONArray(i);
-
-                            // get the image number from the json array
-                            int imageNo = array.getInt(0);
-                            boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
-
-                            // read strip from file
-                            strip = ResultUtil.getMatFromFile(this, imageNo);
-
-                            if (strip != null) {
-                                if (i == 0) {
-                                    // create empty mat to serve as a template
-                                    resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
-                                            new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
-                                }
-                                new BitmapTask(isInvalidStrip, strip, false, brand, patches, i).execute(strip);
-                            }
-                        } catch (JSONException e) {
-                            Log.e(TAG, e.getMessage(), e);
-                        }
-                    }
-                }
-            } else {
-                TextView textView = new TextView(this);
-                textView.setText(R.string.noData);
-                LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
-
-                layout.addView(textView);
-            }
-        }
 
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +118,7 @@ public class ResultActivity extends BaseActivity {
             }
         });
 
-        Button buttonCancel = (Button) findViewById(R.id.button_cancel);
+        buttonCancel = (Button) findViewById(R.id.button_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,9 +137,45 @@ public class ResultActivity extends BaseActivity {
             }
         });
 
-        boolean isInternal = getIntent().getBooleanExtra("internal", false);
-        buttonSave.setVisibility(isInternal ? View.GONE : View.VISIBLE);
-        buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
+        if (savedInstanceState == null) {
+            int format = getIntent().getIntExtra(Constant.FORMAT, 0);
+            int width = getIntent().getIntExtra(Constant.WIDTH, 0);
+            int height = getIntent().getIntExtra(Constant.HEIGHT, 0);
+            Intent detectStripIntent = createDetectStripIntent(format, width, height);
+
+            new DetectStripTask(this).execute(detectStripIntent);
+        }
+    }
+
+    /*
+    * Create an Intent that holds information about the preview data:
+    * preview format
+    * preview width
+    * preview height
+    *
+    * and information about the strip test brand we are now handling
+    *
+    * It is used to
+    * a. start an Activity with this intent
+    * b. start an AsyncTask passing this intent as param
+    *
+    * in the method dataSent() above
+     */
+    @NonNull
+    private Intent createDetectStripIntent(int format, int width, int height) {
+        Intent detectStripIntent = new Intent();
+
+        String uuid = getIntent().getStringExtra(Constant.UUID);
+
+        //put Extras into intent
+        detectStripIntent.putExtra(Constant.UUID, uuid);
+        detectStripIntent.putExtra(Constant.FORMAT, format);
+        detectStripIntent.putExtra(Constant.WIDTH, width);
+        detectStripIntent.putExtra(Constant.HEIGHT, height);
+
+        //detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        return detectStripIntent;
     }
 
     @Override
@@ -229,6 +185,112 @@ public class ResultActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    @Override
+    public void showSpinner() {
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showMessage() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void showResults() {
+        resultImageUrl = UUID.randomUUID().toString() + ".png";
+        Intent intent = getIntent();
+        String uuid = intent.getStringExtra(Constant.UUID);
+
+        Mat strip;
+        StripTest stripTest = new StripTest();
+
+        // get information on the strip test from JSON
+        brand = stripTest.getBrand(this, uuid);
+
+        // for display purposes sort the patches by position on the strip
+        List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
+
+        // get the JSON describing the images of the patches that were stored before
+        JSONArray imagePatchArray = null;
+        try {
+            String json = FileStorage.readFromInternalStorage(this, Constant.IMAGE_PATCH);
+            if (json != null) {
+                imagePatchArray = new JSONArray(json);
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+
+        // cycle over the patches and interpret them
+        if (imagePatchArray != null) {
+            // if this strip is of type 'GROUP', take the first image and use that for all the patches
+            if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
+                // handle grouping case
+
+                // get the first patch image
+                JSONArray array;
+                try {
+                    // get strip image into Mat object
+                    array = imagePatchArray.getJSONArray(0);
+                    int imageNo = array.getInt(0);
+
+                    boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
+                    strip = ResultUtil.getMatFromFile(this, imageNo);
+                    if (strip != null) {
+                        // create empty mat to serve as a template
+                        resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
+                                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+                        new BitmapTask(isInvalidStrip, strip, true, brand, patches, 0).execute(strip);
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            } else {
+                // if this strip is of type 'INDIVIDUAL' handle patch by patch
+                for (int i = 0; i < patches.size(); i++) { // handle patch
+                    JSONArray array;
+                    try {
+                        array = imagePatchArray.getJSONArray(i);
+
+                        // get the image number from the json array
+                        int imageNo = array.getInt(0);
+                        boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
+
+                        // read strip from file
+                        strip = ResultUtil.getMatFromFile(this, imageNo);
+
+                        if (strip != null) {
+                            if (i == 0) {
+                                // create empty mat to serve as a template
+                                resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
+                                        new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+                            }
+                            new BitmapTask(isInvalidStrip, strip, false, brand, patches, i).execute(strip);
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
+            }
+        } else {
+            TextView textView = new TextView(this);
+            textView.setText(R.string.noData);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
+
+            layout.addView(textView);
+        }
+
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
+
+
     }
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {
@@ -245,6 +307,7 @@ public class ResultActivity extends BaseActivity {
         private int id;
         private String patchDescription;
         private boolean invalid;
+        @Nullable
         private Bitmap stripBitmap = null;
         private Mat combined;
         //        private Mat resultPatchAreas;
@@ -262,6 +325,7 @@ public class ResultActivity extends BaseActivity {
             this.patchNum = patchNum;
         }
 
+        @Nullable
         @Override
         protected Void doInBackground(Mat... params) {
 
@@ -548,9 +612,9 @@ public class ResultActivity extends BaseActivity {
                 invalid = true;
             }
 
-            if (invalid) {
-                buttonSave.setVisibility(View.GONE);
-            }
+            boolean isInternal = getIntent().getBooleanExtra("internal", false);
+            buttonSave.setVisibility(isInternal || invalid ? View.GONE : View.VISIBLE);
+            buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
             layout.addView(itemResult);
