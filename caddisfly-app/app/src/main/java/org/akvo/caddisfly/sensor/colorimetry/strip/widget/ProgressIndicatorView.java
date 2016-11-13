@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
@@ -48,8 +49,11 @@ public class ProgressIndicatorView extends LinearLayout {
     private final Bitmap checkedBox;
     private final Bitmap uncheckedBox;
     private final Bitmap background;
+    @NonNull
     private final Context context;
+    @NonNull
     private final Paint paint;
+    @NonNull
     private final TextPaint textPaint;
     private final float horMargin;
     private boolean set;
@@ -60,15 +64,15 @@ public class ProgressIndicatorView extends LinearLayout {
     private float verMargin;
     private boolean running = false;
 
-    public ProgressIndicatorView(Context context) {
+    public ProgressIndicatorView(@NonNull Context context) {
         this(context, null);
     }
 
-    public ProgressIndicatorView(Context context, AttributeSet attrs) {
+    public ProgressIndicatorView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ProgressIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ProgressIndicatorView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setWillNotDraw(false); //needed for invalidate() to work
@@ -181,16 +185,14 @@ public class ProgressIndicatorView extends LinearLayout {
                 blink.setDuration(Math.min(MAX_ANIMATION_DURATION, steps.get(i).timeLapse * 1000));
                 blink.setAnimationListener(new BlinkAnimListener(i));
 
-                if (steps.get(i).getTimeLapse() - timeLapsed < 5) {
-                    if (getChildCount() > 0 && getChildAt(i) != null) {
-                        if (i >= stepsTaken) {
-                            if (!steps.get(i).animationEnded) {
-                                getChildAt(i).startAnimation(blink);
-                            }
-
-                        } else {
-                            getChildAt(i).clearAnimation();
+                if (steps.get(i).getTimeLapse() - timeLapsed < 5 && getChildCount() > 0 && getChildAt(i) != null) {
+                    if (i >= stepsTaken) {
+                        if (!steps.get(i).animationEnded) {
+                            getChildAt(i).startAnimation(blink);
                         }
+
+                    } else {
+                        getChildAt(i).clearAnimation();
                     }
                 }
             }
@@ -210,7 +212,7 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (steps == null) {
             return;
         }
@@ -234,7 +236,7 @@ public class ProgressIndicatorView extends LinearLayout {
                 canvas.drawBitmap(checkedBox, 0, 0, paint);
 
             } else if (steps.get(i).animationEnded) {
-                message = getContext().getString(R.string.ready_for_picture) + " " + String.valueOf(i + 1);
+                message = getContext().getString(R.string.ready_for_picture) + " " + (i + 1);
                 canvas.drawBitmap(background, 0, 0, paint);
 
             } else {
@@ -276,6 +278,35 @@ public class ProgressIndicatorView extends LinearLayout {
         canvas.restore();
     }
 
+    private static class Step {
+        private final int timeLapse;
+        private boolean animationEnded = false;
+        private boolean pictureTaken = false;
+
+        Step(int timeLapse) {
+            this.timeLapse = timeLapse;
+        }
+
+        int getTimeLapse() {
+            return timeLapse;
+        }
+    }
+
+    private static class StepComparator implements Comparator<Step>, Serializable {
+
+        @Override
+        public int compare(@NonNull Step lhs, @NonNull Step rhs) {
+            if (lhs.timeLapse < rhs.timeLapse) {
+                return -1;
+            }
+            if (lhs.timeLapse == rhs.timeLapse) {
+                return 0;
+            }
+
+            return 1;
+        }
+    }
+
     private class BlinkAnimListener implements Animation.AnimationListener {
 
         private final int i;
@@ -298,35 +329,6 @@ public class ProgressIndicatorView extends LinearLayout {
         @Override
         public void onAnimationRepeat(Animation animation) {
 
-        }
-    }
-
-    private static class Step {
-        private final int timeLapse;
-        private boolean animationEnded = false;
-        private boolean pictureTaken = false;
-
-        Step(int timeLapse) {
-            this.timeLapse = timeLapse;
-        }
-
-        int getTimeLapse() {
-            return timeLapse;
-        }
-    }
-
-    private static class StepComparator implements Comparator<Step>, Serializable {
-
-        @Override
-        public int compare(Step lhs, Step rhs) {
-            if (lhs.timeLapse < rhs.timeLapse) {
-                return -1;
-            }
-            if (lhs.timeLapse == rhs.timeLapse) {
-                return 0;
-            }
-
-            return 1;
         }
     }
 }

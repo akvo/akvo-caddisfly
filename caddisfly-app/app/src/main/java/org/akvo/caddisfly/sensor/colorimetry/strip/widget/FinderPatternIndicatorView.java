@@ -20,6 +20,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Camera;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -32,6 +35,7 @@ import java.util.List;
  */
 public class FinderPatternIndicatorView extends SurfaceView {
 
+    @NonNull
     private final Paint paint;
     private List<FinderPattern> patterns;
     private int width;
@@ -52,11 +56,11 @@ public class FinderPatternIndicatorView extends SurfaceView {
         paint.setColor(Color.RED);
     }
 
-    public void showPatterns(List<FinderPattern> patternList, int width, int height) {
+    public void showPatterns(List<FinderPattern> patternList, @Nullable Camera.Size size) {
 
         patterns = patternList;
-        this.width = width;
-        this.height = height;
+        this.width = size == null ? 0 : size.width;
+        this.height = size == null ? 0 : size.height;
 
         invalidate();
 
@@ -67,7 +71,7 @@ public class FinderPatternIndicatorView extends SurfaceView {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
 
         // Have the view being transparent
         canvas.drawARGB(0, 0, 0, 0);

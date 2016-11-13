@@ -30,6 +30,7 @@ import android.hardware.Camera;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -39,6 +40,7 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -54,12 +56,28 @@ import java.util.Locale;
 @SuppressWarnings("deprecation")
 class CameraHandler implements Camera.PictureCallback {
 
+    private static final int MIN_PICTURE_WIDTH = 640;
+    private static final int MIN_PICTURE_HEIGHT = 480;
+    //Custom color matrix to convert to GrayScale
+    private static final float[] MATRIX = new float[]{
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0, 0, 0, 1, 0};
+    private static final int MIN_SUPPORTED_WIDTH = 400;
+    private static final int METERING_AREA_SIZE = 100;
+    private static final int PREVIEW_START_WAIT_MILLIS = 3000;
+    private static final int WAKE_LOCK_RELEASE_DELAY = 10000;
+    private static final int PICTURE_TAKEN_DELAY = 2000;
+    private static final int EXPOSURE_COMPENSATION = -2;
     private final PowerManager.WakeLock wakeLock;
+    @NonNull
     private final Context mContext;
     private Camera mCamera;
     private String mSavePath;
 
-    CameraHandler(Context context) {
+
+    CameraHandler(@NonNull Context context) {
         mContext = context;
 
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -70,6 +88,7 @@ class CameraHandler implements Camera.PictureCallback {
         wakeLock.acquire();
     }
 
+    @NonNull
     @SuppressWarnings("UnusedReturnValue")
     Boolean takePicture(String savePath) {
 
@@ -90,7 +109,7 @@ class CameraHandler implements Camera.PictureCallback {
             setCamera(mCamera);
             mCamera.startPreview();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(PREVIEW_START_WAIT_MILLIS);
             } catch (Exception ignored) {
             }
 
@@ -102,7 +121,7 @@ class CameraHandler implements Camera.PictureCallback {
                         wakeLock.release();
                     }
                 }
-            }, 10000);
+            }, WAKE_LOCK_RELEASE_DELAY);
 
         } catch (Exception ex) {
             return false;
@@ -111,7 +130,7 @@ class CameraHandler implements Camera.PictureCallback {
     }
 
     @Override
-    public void onPictureTaken(byte[] data, Camera camera) {
+    public void onPictureTaken(@NonNull byte[] data, Camera camera) {
 
         mCamera.release();
         mCamera = null;
@@ -122,7 +141,7 @@ class CameraHandler implements Camera.PictureCallback {
         saveImage(data);
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(PICTURE_TAKEN_DELAY);
         } catch (Exception ignored) {
         }
     }
@@ -168,7 +187,8 @@ class CameraHandler implements Camera.PictureCallback {
 
         if (parameters.getMaxNumMeteringAreas() > 0) {
             List<Camera.Area> meteringAreas = new ArrayList<>();
-            Rect areaRect1 = new Rect(-100, -100, 100, 100);
+            Rect areaRect1 = new Rect(-METERING_AREA_SIZE, -METERING_AREA_SIZE,
+                    METERING_AREA_SIZE, METERING_AREA_SIZE);
             meteringAreas.add(new Camera.Area(areaRect1, 1000));
             parameters.setMeteringAreas(meteringAreas);
         }
@@ -182,7 +202,7 @@ class CameraHandler implements Camera.PictureCallback {
             }
         }
 
-        parameters.setExposureCompensation(-2);
+        parameters.setExposureCompensation(EXPOSURE_COMPENSATION);
 
         parameters.setZoom(0);
 
@@ -190,7 +210,7 @@ class CameraHandler implements Camera.PictureCallback {
 
         //parameters.setPictureSize(1280, 960);
 
-        parameters.setPictureSize(640, 480);
+        parameters.setPictureSize(MIN_PICTURE_WIDTH, MIN_PICTURE_HEIGHT);
 
         try {
             mCamera.setParameters(parameters);
@@ -202,7 +222,7 @@ class CameraHandler implements Camera.PictureCallback {
                     supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
 
             for (Camera.Size size : supportedPictureSizes) {
-                if (size.width > 400 && size.width < 1000) {
+                if (size.width > MIN_SUPPORTED_WIDTH && size.width < 1000) {
                     parameters.setPictureSize(size.width, size.height);
                     break;
                 }
@@ -213,7 +233,7 @@ class CameraHandler implements Camera.PictureCallback {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void saveImage(byte[] data) {
+    private void saveImage(@NonNull byte[] data) {
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = mContext.registerReceiver(null, intentFilter);
@@ -235,8 +255,12 @@ class CameraHandler implements Camera.PictureCallback {
 
         if (testInfo.isUseGrayScale()) {
 
-            bitmap = ImageUtil.rotateImage(bitmap, 90);
+            bitmap = ImageUtil.rotateImage(bitmap, SensorConstants.DEGREES_90);
             bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
+
+            if (bitmap == null) {
+                return;
+            }
 
             Bitmap croppedGrayBitmap = getGrayscale(bitmap);
             int[] brightnessValues = getContrast(croppedGrayBitmap);
@@ -260,10 +284,14 @@ class CameraHandler implements Camera.PictureCallback {
             folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
 
         } else if (testInfo.getShortCode().equals("fluor")) {
-            bitmap = ImageUtil.rotateImage(bitmap, 90);
+            bitmap = ImageUtil.rotateImage(bitmap, SensorConstants.DEGREES_90);
 
             Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+            if (croppedBitmap == null) {
+                return;
+            }
 
             //Extract the color from the photo which will be used for comparison
             ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
@@ -298,14 +326,7 @@ class CameraHandler implements Camera.PictureCallback {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
-    private Bitmap getGrayscale(Bitmap src) {
-
-        //Custom color matrix to convert to GrayScale
-        float[] matrix = new float[]{
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0, 0, 0, 1, 0};
+    private Bitmap getGrayscale(@NonNull Bitmap src) {
 
         Bitmap dest = Bitmap.createBitmap(
                 src.getWidth(),
@@ -314,14 +335,15 @@ class CameraHandler implements Camera.PictureCallback {
 
         Canvas canvas = new Canvas(dest);
         Paint paint = new Paint();
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
         paint.setColorFilter(filter);
         canvas.drawBitmap(src, 0, 0, paint);
 
         return dest;
     }
 
-    private int[] getContrast(Bitmap image) {
+    @NonNull
+    private int[] getContrast(@NonNull Bitmap image) {
 
         int width = image.getWidth();
         int height = image.getHeight();

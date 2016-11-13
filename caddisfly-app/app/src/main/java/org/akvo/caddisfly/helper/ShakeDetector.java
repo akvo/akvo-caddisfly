@@ -19,6 +19,7 @@ package org.akvo.caddisfly.helper;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.support.annotation.NonNull;
 
 /**
  * Implements SensorEventListener for receiving notifications from the SensorManager when
@@ -36,6 +37,8 @@ public class ShakeDetector implements SensorEventListener {
     private static final int X = 0;
     private static final int Y = 1;
     private static final int Z = 2;
+    private static final int MIN_INCLINATION = 172;
+    private static final int MIN_NO_SHAKE_DURATION = 400;
     // Arrays to store gravity and linear acceleration values
     private final float[] mGravity = {0.0f, 0.0f, 0.0f};
     private final float[] mLinearAcceleration = {0.0f, 0.0f, 0.0f};
@@ -46,7 +49,7 @@ public class ShakeDetector implements SensorEventListener {
     // Minimum acceleration needed to count as a shake movement
     private double minShakeAcceleration = 5;
     // Maximum time (in milliseconds) for the whole shake to occur
-    private int maxShakeDuration = 2000;
+    private int maxShakeDuration;
     // Start time for the shake detection
     private long startTime = 0;
 
@@ -64,13 +67,13 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public void onSensorChanged(@NonNull SensorEvent event) {
 
         setCurrentAcceleration(event);
 
         float maxLinearAcceleration = getMaxCurrentLinearAcceleration();
 
-        //http://stackoverflow.com/questions/11175599/how-to-measure-the-tilt-of-the-phone-in-xy-plane-using-accelerometer-in-android/15149421#15149421
+        //stackoverflow.com/questions/11175599/how-to-measure-the-tilt-of-the-phone-in-xy-plane-using-accelerometer-in-android/15149421#15149421
         float[] g;
         g = event.values.clone();
 
@@ -84,7 +87,7 @@ public class ShakeDetector implements SensorEventListener {
         int inclination = (int) Math.round(Math.toDegrees(Math.acos(g[2])));
 
         // check inclination to detect if the phone is placed face down on a flat surface
-        if (inclination > 172) {
+        if (inclination > MIN_INCLINATION) {
             synchronized (this) {
                 long nowNoShake = System.currentTimeMillis();
                 if (Math.abs(maxLinearAcceleration) < MAX_SHAKE_ACCELERATION) {
@@ -93,7 +96,7 @@ public class ShakeDetector implements SensorEventListener {
                     if (elapsedNoShakeTime > maxShakeDuration) {
                         noShakeStartTime = nowNoShake;
 
-                        if (System.currentTimeMillis() - previousNoShake > 400) {
+                        if (System.currentTimeMillis() - previousNoShake > MIN_NO_SHAKE_DURATION) {
                             previousNoShake = System.currentTimeMillis();
                             mNoShakeListener.onNoShake();
                         }
@@ -142,7 +145,7 @@ public class ShakeDetector implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    private void setCurrentAcceleration(SensorEvent event) {
+    private void setCurrentAcceleration(@NonNull SensorEvent event) {
         // BEGIN SECTION from Android dev site. This code accounts for
         // gravity using a high-pass filter
 

@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,31 +32,28 @@ import org.akvo.caddisfly.R;
 public class PageIndicatorView extends View {
 
     private static final float DISTANCE = 24;
-    private static final int BULLET_RADIUS = 5;
+    private static final int BULLET_RADIUS = 6;
 
+    @NonNull
     private final Paint fillPaint;
     private int pageCount;
     private int activePage;
 
-    public PageIndicatorView(Context context) {
+    public PageIndicatorView(@NonNull Context context) {
         this(context, null);
     }
 
-    public PageIndicatorView(Context context, AttributeSet attrs) {
+    public PageIndicatorView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PageIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PageIndicatorView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setColor(ContextCompat.getColor(context, R.color.cyan));
         fillPaint.setAntiAlias(true);
-
-//        Paint strokePaint = new Paint(fillPaint);
-//        strokePaint.setStyle(Paint.Style.STROKE);
-//        strokePaint.setStrokeWidth(2);
     }
 
     public void setPageCount(int value) {
@@ -76,15 +74,15 @@ public class PageIndicatorView extends View {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
 
         if (pageCount > 1) {
             for (int i = 0; i < pageCount; i++) {
                 if (activePage == i) {
-                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2f,
-                            BULLET_RADIUS + 6, fillPaint);
+                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
+                            BULLET_RADIUS * 2, fillPaint);
                 } else {
-                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS + 6, canvas.getHeight() / 2f,
+                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
                             BULLET_RADIUS, fillPaint);
                 }
             }

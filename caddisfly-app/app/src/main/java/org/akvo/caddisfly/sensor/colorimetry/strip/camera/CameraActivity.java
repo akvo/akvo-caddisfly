@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -66,8 +67,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
     private SoundPoolPlayer sound;
+    @Nullable
     private WeakReference<Camera> wrCamera;
     private FrameLayout previewLayout;
+    @Nullable
     private CameraPreview cameraPreview;
     private FinderPatternIndicatorView finderPatternIndicatorView;
     private LevelView levelView;
@@ -98,6 +101,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     //get instance of CameraPreviewCallback
     //and do a oneShotPreviewCallback.
     //do not do this if currentFragment is instructions, only for prepare and start test fragments
+    @Nullable
     private final Runnable startNextPreviewRunnable = new Runnable() {
         @Override
         public void run() {
@@ -119,6 +123,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     };
     private CameraCallbackTakePicture cameraCallbackTakePicture;
     //set takePicture to true in CameraPreviewCallback and start oneShotPreviewCallback with that.
+    @Nullable
     private final Runnable takeNextPictureRunnable = new Runnable() {
         @Override
         public void run() {
@@ -470,7 +475,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -483,6 +488,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     private class DeleteTask extends AsyncTask<Void, Void, Void> {
+        @Nullable
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -511,8 +517,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             FinderPatternIndicatorView indicatorView = wrFinderPatternIndicatorView.get();
             if (indicatorView != null) {
                 indicatorView.setColor(color);
-                indicatorView.showPatterns(patterns, size == null ? 0 : size.width,
-                        size == null ? 0 : size.height);
+                indicatorView.showPatterns(patterns, size);
             }
         }
 
@@ -530,6 +535,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
     }
 
     private class ShowLevelRunnable implements Runnable {
+        @Nullable
         private float[] tilts;
 
         @Override
@@ -539,7 +545,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener, 
             }
         }
 
-        void setAngles(float[] tiltValues) {
+        void setAngles(@Nullable float[] tiltValues) {
             this.tilts = tiltValues == null ? null : tiltValues.clone();
         }
     }

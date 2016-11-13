@@ -19,8 +19,10 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 import android.content.Context;
 import android.hardware.Camera;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.CalibrationException;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -48,6 +50,9 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 abstract class CameraCallbackBase implements Camera.PreviewCallback {
+
+    private static final String TAG = "CameraCallbackBase";
+
     private static final int NO_SHADOW_DATA = 101;
     private static final int MAX_LIST_COUNT = 25;
     private static final int MAX_RGB_INT_VALUE = 255;
@@ -66,13 +71,12 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     private Mat bgr = null;
     private Mat previewMat = null;
     private FinderPatternInfo patternInfo = null;
-    private BitMatrix bitMatrix = null;
 
     CameraCallbackBase(Context context, Camera.Parameters parameters) {
         try {
             listener = (CameraViewListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Must implement camera view Listener");
+            throw new IllegalArgumentException("Must implement camera view Listener", e);
         }
 
         finderPatternColor = ContextCompat.getColor(context, R.color.jungle_green);
@@ -155,7 +159,10 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 if (possibleCenters.size() == 4) {
                     tilts = PreviewUtil.getTilt(info);
                     // The tilt in both directions should not exceed Constant.MAX_TILT_DIFF
-                    titleLevel = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                    if (tilts != null) {
+                        titleLevel = Math.abs(tilts[0] - 1) < Constant.MAX_TILT_DIFF
+                                && Math.abs(tilts[1] - 1) < Constant.MAX_TILT_DIFF ? 1 : 0;
+                    }
                 } else {
                     tilts = null;
                 }
@@ -186,7 +193,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         } finally {
             if (bgr != null) {
                 bgr.release();
@@ -229,7 +236,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     shadowTrack.add(shadowPercentage);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             } finally {
                 if (mat != null) {
                     mat.release();
@@ -290,7 +297,10 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return maxLuminance;
     }
 
-    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws Exception {
+    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws CalibrationException {
+
+        BitMatrix bitMatrix = null;
+
         // crop preview image to only contain the known region for the finder pattern
         // this leads to an image in portrait view
         PlanarYUVLuminanceSource myYUV = new PlanarYUVLuminanceSource(data, size.width,
@@ -303,8 +313,8 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
-        } catch (NotFoundException | NullPointerException e) {
-            e.printStackTrace();
+        } catch (NotFoundException e) {
+            Log.e(TAG, e.getMessage(), e);
         }
 
         if (bitMatrix != null && previewSize != null) {

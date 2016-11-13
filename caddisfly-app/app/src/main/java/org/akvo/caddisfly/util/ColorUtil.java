@@ -18,6 +18,8 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.model.ColorInfo;
@@ -31,6 +33,9 @@ import java.util.Locale;
  * Set of utility functions for color calculations and analysis
  */
 public final class ColorUtil {
+
+    private static final String TAG = "ColorUtil";
+
     /**
      * The default color model used for analysis
      */
@@ -96,7 +101,8 @@ public final class ColorUtil {
      * @param sampleLength The max length of the image to traverse
      * @return The extracted color information
      */
-    public static ColorInfo getColorFromBitmap(Bitmap bitmap,
+    @NonNull
+    public static ColorInfo getColorFromBitmap(@NonNull Bitmap bitmap,
                                                @SuppressWarnings("SameParameterValue") int sampleLength) {
         int highestCount = 0;
         int commonColor = -1;
@@ -150,7 +156,7 @@ public final class ColorUtil {
             m.clear();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return new ColorInfo(commonColor, quality);
@@ -283,7 +289,7 @@ public final class ColorUtil {
      * @param rgb The rgb string representation of the color
      * @return An Integer color value
      */
-    public static Integer getColorFromRgb(String rgb) {
+    public static Integer getColorFromRgb(@NonNull String rgb) {
         String[] rgbArray = rgb.split("\\s+");
         return Color.rgb(Integer.parseInt(rgbArray[0]), Integer.parseInt(rgbArray[1]), Integer.parseInt(rgbArray[2]));
     }
@@ -294,12 +300,14 @@ public final class ColorUtil {
      * @param color The color to convert
      * @return The lab color
      */
+    @NonNull
     public static LabColor colorToLab(int color) {
         return rgbToLab(Color.red(color), Color.green(color), Color.blue(color));
     }
 
     //http://stackoverflow.com/questions/27090107/color-gradient-algorithm-in-lab-color-space
-    public static LabColor getGradientLabColor(LabColor c1, LabColor c2, int n, int index) {
+    @NonNull
+    public static LabColor getGradientLabColor(@NonNull LabColor c1, @NonNull LabColor c2, int n, int index) {
         double alpha = (double) index / (n - 1);  // 0.0 <= alpha <= 1.0
         double L = (1 - alpha) * c1.L + alpha * c2.L;
         double a = (1 - alpha) * c1.a + alpha * c2.a;
@@ -313,7 +321,7 @@ public final class ColorUtil {
      * @param color the LAB color
      * @return int color value
      */
-    public static int labToColor(LabColor color) {
+    public static int labToColor(@NonNull LabColor color) {
         double a, b, g, l, r, x, y, z;
         l = color.L;
         a = color.a;
@@ -345,6 +353,7 @@ public final class ColorUtil {
         return Math.round(255 * (r <= 0.00304 ? 12.92 * r : 1.055 * Math.pow(r, 1 / 2.4) - 0.055));
     }
 
+    @NonNull
     private static LabColor rgbToLab(double r, double g, double b) {
         XyzColor xyzColor = rgbToXyz(r, g, b);
         return new LabColor(116 * xyzColor.y - 16, 500 * (xyzColor.x - xyzColor.y), 200 * (xyzColor.y - xyzColor.z));
@@ -366,6 +375,7 @@ public final class ColorUtil {
         }
     }
 
+    @NonNull
     private static XyzColor rgbToXyz(double r, double g, double b) {
         double x, y, z;
         r = rgb_xyz(r);
@@ -378,7 +388,7 @@ public final class ColorUtil {
     }
 
     //https://github.com/StanfordHCI/c3/blob/master/java/src/edu/stanford/vis/color/LAB.java
-    public static double getColorDistanceLab(LabColor x, LabColor y) {
+    public static double getColorDistanceLab(@NonNull LabColor x, @NonNull LabColor y) {
         // adapted from Sharma et al's MATLAB implementation at
         //  http://www.ece.rochester.edu/~gsharma/ciede2000/
 
@@ -435,12 +445,18 @@ public final class ColorUtil {
         // Average hue is computed in radians and converted to degrees where needed
         double hp = 0.5 * (hp1 + hp2);
         // Identify positions for which abs hue diff exceeds 180 degrees
-        if (Math.abs(hp1 - hp2) > pi) hp -= pi;
-        if (hp < 0) hp += 2 * pi;
+        if (Math.abs(hp1 - hp2) > pi) {
+            hp -= pi;
+        }
+        if (hp < 0) {
+            hp += 2 * pi;
+        }
 
         // Check if one of the chroma values is zero, in which case set
         // mean hue to the sum which is equivalent to other value
-        if (Cpp == 0) hp = hp1 + hp2;
+        if (Cpp == 0) {
+            hp = hp1 + hp2;
+        }
 
         double Lpm502 = (Lp - 50) * (Lp - 50),
                 Sl = 1 + 0.015 * Lpm502 / Math.sqrt(20 + Lpm502),

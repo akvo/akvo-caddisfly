@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
@@ -59,6 +60,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
     private int height;
     private double ratioW = 1;
     private double ratioH = 1;
+    @Nullable
     private org.opencv.core.Rect roiStripArea = null;
     private Mat warpMat;
 
@@ -80,6 +82,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         }
     }
 
+    @Nullable
     @Override
     protected Void doInBackground(Intent... params) {
         Intent intent = params[0];
@@ -184,7 +187,12 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         try {
                             listener.showMessage();
                             CalibrationResultData calResult = getCalibratedImage(warpMat);
-                            calibrationMat = calResult.calibratedImage;
+                            if (calResult == null) {
+                                return null;
+                            } else {
+                                calibrationMat = calResult.getCalibratedImage();
+                            }
+
 //                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
 //                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
 //                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
@@ -196,7 +204,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                            }
                         } catch (Exception e) {
                             listener.showError(e.getMessage());
-                            calibrationMat = warpMat.clone();
+                            return null;
                         }
 
                         //show calibrated image
@@ -271,7 +279,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
                     }
                 }
-            } catch (JSONException | IOException e) {
+            } catch (@NonNull JSONException | IOException e) {
 
                 if (context != null) {
                     listener.showError(context.getString(R.string.error_cut_out_strip));
@@ -352,6 +360,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         }
     }
 
+    @Nullable
     private CalibrationResultData getCalibratedImage(Mat mat) throws CalibrationException {
         CalibrationData data = CalibrationCard.readCalibrationFile();
         return CalibrationCard.calibrateImage(mat, data);

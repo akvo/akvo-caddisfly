@@ -16,6 +16,9 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -30,11 +33,12 @@ import java.util.Locale;
  */
 public final class PreviewUtil {
 
-    private static final int HOUR_IN_SECONDS = 3600;
+    private static final int LUMINOSITY_WEIGHT = 9;
 
     private PreviewUtil() {
     }
 
+    @NonNull
     public static double[] getDiffLuminosity(Mat mat) {
         //find min and max luminosity
         Core.MinMaxLocResult result = Core.minMaxLoc(mat);
@@ -46,7 +50,7 @@ public final class PreviewUtil {
    * @return :  percentage of the points that deviate more than @link Constant.CONTRAST_DEVIATION_PERCENTAGE from the average luminosity
    *  points with luminosity with a larger difference than Constant.CONTRAST_MAX_DEVIATION_PERCENTAGE count 10 times in the result.
     */
-    public static double getShadowPercentage(Mat bgr, CalibrationData data) {
+    public static double getShadowPercentage(Mat bgr, @NonNull CalibrationData data) {
 
         double sumLum = 0;
         int countDev = 0;
@@ -84,7 +88,7 @@ public final class PreviewUtil {
         // the countMaxDev is already counted once in countDev. The following formula
         // lets points that are way off count 10 times as heavy in the result.
         // maximise to 100%
-        double result = Math.min(countDev + 9 * countMaxDev, points.length);
+        double result = Math.min(countDev + LUMINOSITY_WEIGHT * countMaxDev, points.length);
 
         lab.release();
         return (result / points.length) * 100.0;
@@ -96,7 +100,8 @@ public final class PreviewUtil {
 
     //method to calculate the amount of perspective, based on the difference of distances at the top and sides
     // horizontal and vertical are according to calibration card in landscape view
-    public static float[] getTilt(FinderPatternInfo info) {
+    @Nullable
+    public static float[] getTilt(@Nullable FinderPatternInfo info) {
         if (info == null) {
             return null;
         }
@@ -116,9 +121,8 @@ public final class PreviewUtil {
         return new float[]{hDistanceTop / hDistanceBottom, vDistanceLeft / vDistanceRight};
     }
 
-    public static String fromSecondsToMMSS(int seconds) throws Exception {
-        if (seconds > HOUR_IN_SECONDS)
-            throw new Exception("more than an hour");
+    @NonNull
+    public static String fromSecondsToMMSS(int seconds) {
 
         int m = seconds / 60;
         int s = seconds - (m * 60);

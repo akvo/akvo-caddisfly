@@ -27,6 +27,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -88,7 +90,7 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionSwatches:
                 final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
@@ -151,6 +153,7 @@ public class CalibrateListActivity extends BaseActivity
     private void showEditCalibrationDetailsDialog(boolean isEdit) {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance(isEdit);
+        saveCalibrationDialogFragment.setCancelable(false);
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
@@ -252,7 +255,7 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CALIBRATE:
@@ -290,7 +293,7 @@ public class CalibrateListActivity extends BaseActivity
      * @param swatch      The swatch object
      * @param resultColor The color value
      */
-    private void saveCalibratedData(Swatch swatch, final int resultColor) {
+    private void saveCalibratedData(@NonNull Swatch swatch, final int resultColor) {
         String colorKey = String.format(Locale.US, "%s-%.2f",
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(), swatch.getValue());
 
@@ -324,7 +327,7 @@ public class CalibrateListActivity extends BaseActivity
      *
      * @param callback callback to be initiated once the loading is complete
      */
-    private void loadCalibration(final Context context, final Handler.Callback callback) {
+    private void loadCalibration(@NonNull final Context context, @NonNull final Handler.Callback callback) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.loadCalibration);
@@ -351,7 +354,7 @@ public class CalibrateListActivity extends BaseActivity
                 builder.setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(@NonNull DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         }
@@ -366,6 +369,7 @@ public class CalibrateListActivity extends BaseActivity
                                     final ArrayList<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
 
                                     (new AsyncTask<Void, Void, Void>() {
+                                        @Nullable
                                         @Override
                                         protected Void doInBackground(Void... params) {
                                             SwatchHelper.saveCalibratedSwatches(context, swatchList);
@@ -385,7 +389,7 @@ public class CalibrateListActivity extends BaseActivity
                                             null, R.string.ok,
                                             new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(@NonNull DialogInterface dialog, int which) {
                                                     dialog.dismiss();
                                                 }
                                             }, null, null);

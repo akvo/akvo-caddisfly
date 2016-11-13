@@ -38,7 +38,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -85,6 +88,20 @@ import java.util.Set;
 
 @SuppressWarnings("deprecation")
 public class ExternalCameraActivity extends BaseActivity {
+
+    private static final int FINISH_DELAY_MILLIS = 500;
+    private static final String TAG = "ExternalCameraActivity";
+    private static final int MAX_COMMAND_INDEX = 99;
+    //Custom color matrix to convert to GrayScale
+    private static final float[] MATRIX = new float[]{
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0, 0, 0, 1, 0};
+    private static final int REQUEST_DELAY_MILLIS = 2000;
+    private static final int INITIAL_DELAY_MULTI_MODE = 5000;
+    private static final int INITIAL_DELAY_MILLIS = 12000;
+    private static final int TIMEOUT_EXTRA = 14;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -103,11 +120,9 @@ public class ExternalCameraActivity extends BaseActivity {
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) {
-                if (mDebug) {
-                    Toast.makeText(arg0, "USB device connected", Toast.LENGTH_SHORT).show();
-                }
+        public void onReceive(Context arg0, @NonNull Intent arg1) {
+            if (mDebug && arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) {
+                Toast.makeText(arg0, "USB device connected", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -116,15 +131,19 @@ public class ExternalCameraActivity extends BaseActivity {
     private TextView textDilution;
     private SoundPoolPlayer sound;
     private CameraDialog mCameraFragment;
+    @Nullable
     private Runnable delayRunnable;
     private PowerManager.WakeLock wakeLock;
     private USBMonitor mUSBMonitor;
+    @NonNull
     private String mReceivedData = "";
+    @Nullable
     private UsbService usbService;
     private MyHandler mHandler;
+    @Nullable
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+        public void onServiceConnected(ComponentName arg0, @NonNull IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
         }
@@ -135,7 +154,7 @@ public class ExternalCameraActivity extends BaseActivity {
         }
     };
     private Handler initializeHandler;
-    private ArrayList<String> requestQueue;
+    private List<String> requestQueue;
     private int mCommandIndex = 0;
     private boolean requestsDone;
     private final Runnable runnable = new Runnable() {
@@ -146,7 +165,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
                 mCommandIndex++;
 
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
 
                 if (mCommandIndex > requestQueue.size() - 1) {
                     requestsDone = true;
@@ -159,6 +178,7 @@ public class ExternalCameraActivity extends BaseActivity {
         }
     };
     private String mSavePath;
+    @Nullable
     private final Runnable initializeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -173,7 +193,7 @@ public class ExternalCameraActivity extends BaseActivity {
         }
     };
 
-    private UsbDevice getCameraDevice(List<UsbDevice> usbDeviceList) {
+    private UsbDevice getCameraDevice(@NonNull List<UsbDevice> usbDeviceList) {
 
         for (int i = 0; i < usbDeviceList.size(); i++) {
             if (usbDeviceList.get(i).getVendorId() == AppConfig.CAMERA_VENDOR_ID) {
@@ -189,23 +209,23 @@ public class ExternalCameraActivity extends BaseActivity {
         return mUSBMonitor.getDeviceList(filter.get(0));
     }
 
-    private void displayResult(final String value) {
+    private void displayResult(@NonNull final String value) {
 
         if (mDebug) {
             Toast.makeText(this, value.trim(), Toast.LENGTH_SHORT).show();
         }
 
-        if (requestsDone && mCommandIndex < 99) {
+        if (requestsDone && mCommandIndex < MAX_COMMAND_INDEX) {
             Toast.makeText(this, "Initializing", Toast.LENGTH_LONG).show();
             if (AppPreferences.getExternalCameraMultiDeviceMode()) {
-                initializeHandler.postDelayed(initializeRunnable, 5000);
+                initializeHandler.postDelayed(initializeRunnable, INITIAL_DELAY_MULTI_MODE);
             } else {
-                initializeHandler.postDelayed(initializeRunnable, 12000);
+                initializeHandler.postDelayed(initializeRunnable, INITIAL_DELAY_MILLIS);
             }
         }
     }
 
-    private void requestResult(String command) {
+    private void requestResult(@NonNull String command) {
 
         if (usbService != null) {
             if (mDebug) {
@@ -216,7 +236,7 @@ public class ExternalCameraActivity extends BaseActivity {
                 // if UsbService was correctly bound, Send data
                 usbService.write(command.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
     }
@@ -232,7 +252,7 @@ public class ExternalCameraActivity extends BaseActivity {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+    private void startService(Class<?> service, ServiceConnection serviceConnection, @Nullable Bundle extras) {
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);
@@ -265,13 +285,13 @@ public class ExternalCameraActivity extends BaseActivity {
         if (AppPreferences.getExternalCameraMultiDeviceMode()) {
             requestQueue.add("SET CAMERA ON\r\n");
         } else {
-            int timeout = 14 + (AppPreferences.getSamplingTimes() * ((ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING / 1000) + 1));
+            int timeout = TIMEOUT_EXTRA + (AppPreferences.getSamplingTimes() * ((ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING / 1000) + 1));
             requestQueue.add("SET CAMERATIME " + timeout + "\r\n");
             requestQueue.add("USB\r\n");
         }
 
         mCommandIndex = 0;
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, REQUEST_DELAY_MILLIS);
     }
 
     @Override
@@ -303,13 +323,11 @@ public class ExternalCameraActivity extends BaseActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            if (mIsCalibration) {
-                String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
-                        getResources().getString(R.string.calibrate),
-                        mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
-                textDilution.setText(subTitle);
-            }
+        if (mIsCalibration && getSupportActionBar() != null) {
+            String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
+                    getResources().getString(R.string.calibrate),
+                    mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
+            textDilution.setText(subTitle);
         }
     }
 
@@ -332,7 +350,7 @@ public class ExternalCameraActivity extends BaseActivity {
         mIsCalibration = intent.getBooleanExtra("isCalibration", false);
         mSwatchValue = intent.getDoubleExtra("swatchValue", 0);
         mSavePath = intent.getStringExtra("savePath");
-        String uuid = intent.getStringExtra("uuid");
+        String uuid = intent.getStringExtra(SensorConstants.UUID);
 
         CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
@@ -378,7 +396,7 @@ public class ExternalCameraActivity extends BaseActivity {
                 break;
         }
 
-        String uuid = getIntent().getStringExtra("uuid");
+        String uuid = getIntent().getStringExtra(SensorConstants.UUID);
         CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -432,6 +450,7 @@ public class ExternalCameraActivity extends BaseActivity {
         findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
         (new AsyncTask<Void, Void, Void>() {
 
+            @Nullable
             @Override
             protected Void doInBackground(Void... params) {
                 return null;
@@ -446,7 +465,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
                 mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
                     @Override
-                    public void onPictureTaken(final byte[] bytes, boolean completed) {
+                    public void onPictureTaken(@NonNull final byte[] bytes, boolean completed) {
                         if (completed) {
 
                             mCameraFragment.dismiss();
@@ -470,7 +489,7 @@ public class ExternalCameraActivity extends BaseActivity {
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Log.e(TAG, e.getMessage(), e);
                         }
                     }
                 };
@@ -487,10 +506,10 @@ public class ExternalCameraActivity extends BaseActivity {
      *
      * @param data image data to be displayed if error in analysis
      */
-    private void analyzeFinalResult(byte[] data) {
+    private void analyzeFinalResult(@NonNull byte[] data) {
 
         releaseResources();
-        String uuid = getIntent().getStringExtra("uuid");
+        String uuid = getIntent().getStringExtra(SensorConstants.UUID);
         CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -500,12 +519,12 @@ public class ExternalCameraActivity extends BaseActivity {
             public void run() {
                 finish();
             }
-        }, 500);
+        }, FINISH_DELAY_MILLIS);
     }
 
     private void releaseResources() {
 
-        mCommandIndex = 99;
+        mCommandIndex = MAX_COMMAND_INDEX;
         handler.removeCallbacks(runnable);
 
         UsbService.SERVICE_CONNECTED = false;
@@ -546,7 +565,7 @@ public class ExternalCameraActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -570,7 +589,7 @@ public class ExternalCameraActivity extends BaseActivity {
 
 
     @SuppressWarnings("SameParameterValue")
-    private void saveImage(byte[] data, TestInfo testInfo) {
+    private void saveImage(@NonNull byte[] data, @NonNull TestInfo testInfo) {
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = getApplicationContext().registerReceiver(null, intentFilter);
@@ -584,16 +603,21 @@ public class ExternalCameraActivity extends BaseActivity {
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(new Date());
 
-        String fileName;
-        File folder;
+        String fileName = null;
+        File folder = null;
+
+        Bitmap bitmap = ImageUtil.getBitmap(data);
+        bitmap = ImageUtil.rotateImage(bitmap, SensorConstants.DEGREES_90);
 
         switch (testInfo.getCode().toLowerCase(Locale.US)) {
             case SensorConstants.FLUORIDE_ID:
 
-                Bitmap bitmap = ImageUtil.getBitmap(data);
-                bitmap = ImageUtil.rotateImage(bitmap, 90);
                 Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                         ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+
+                if (croppedBitmap == null) {
+                    return;
+                }
 
                 //Extract the color from the photo which will be used for comparison
                 ColorInfo photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
@@ -610,60 +634,56 @@ public class ExternalCameraActivity extends BaseActivity {
 
             default:
 
-                bitmap = ImageUtil.getBitmap(data);
-                bitmap = ImageUtil.rotateImage(bitmap, 90);
                 bitmap = ImageUtil.getCroppedBitmap(bitmap, 180, false);
 
-                Bitmap croppedGrayBitmap = getGrayscale(bitmap);
-                int[] brightnessValues = getContrast(croppedGrayBitmap);
+                if (bitmap != null) {
 
-                int blackIndex = 0;
-                for (int i = 0; i < brightnessValues.length; i++) {
-                    if (brightnessValues[blackIndex] > brightnessValues[i]) {
-                        blackIndex = i;
+                    Bitmap croppedGrayBitmap = getGrayscale(bitmap);
+
+                    int[] brightnessValues = getContrast(croppedGrayBitmap);
+
+                    int blackIndex = 0;
+                    for (int i = 0; i < brightnessValues.length; i++) {
+                        if (brightnessValues[blackIndex] > brightnessValues[i]) {
+                            blackIndex = i;
+                        }
                     }
-                }
 
-                int whiteIndex = 0;
-                for (int i = 0; i < brightnessValues.length; i++) {
-                    if (brightnessValues[whiteIndex] < brightnessValues[i]) {
-                        whiteIndex = i;
+                    int whiteIndex = 0;
+                    for (int i = 0; i < brightnessValues.length; i++) {
+                        if (brightnessValues[whiteIndex] < brightnessValues[i]) {
+                            whiteIndex = i;
+                        }
                     }
+
+                    fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
+
+                    folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
                 }
-
-                fileName = date + "_" + blackIndex + "_" + whiteIndex + "_" + batteryPercent;
-
-                folder = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, mSavePath);
 
                 break;
         }
 
+        if (fileName != null) {
+            File photo = new File(folder, fileName + ".jpg");
 
-        File photo = new File(folder, fileName + ".jpg");
+            try {
+                FileOutputStream fos = new FileOutputStream(photo.getPath());
 
-        try {
-            FileOutputStream fos = new FileOutputStream(photo.getPath());
+                fos.write(data);
+                fos.close();
+            } catch (Exception ignored) {
 
-            fos.write(data);
-            fos.close();
-        } catch (Exception ignored) {
-
+            }
         }
 
         Intent intent = new Intent("custom-event-name");
         intent.putExtra("savePath", mSavePath);
-        intent.putExtra("uuid", testInfo.getUuid().get(0));
+        intent.putExtra(SensorConstants.UUID, testInfo.getUuid().get(0));
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
-    private Bitmap getGrayscale(Bitmap src) {
-
-        //Custom color matrix to convert to GrayScale
-        float[] matrix = new float[]{
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0.3f, 0.59f, 0.11f, 0, 0,
-                0, 0, 0, 1, 0};
+    private Bitmap getGrayscale(@NonNull Bitmap src) {
 
         Bitmap dest = Bitmap.createBitmap(
                 src.getWidth(),
@@ -672,14 +692,15 @@ public class ExternalCameraActivity extends BaseActivity {
 
         Canvas canvas = new Canvas(dest);
         Paint paint = new Paint();
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
         paint.setColorFilter(filter);
         canvas.drawBitmap(src, 0, 0, paint);
 
         return dest;
     }
 
-    private int[] getContrast(Bitmap image) {
+    @NonNull
+    private int[] getContrast(@NonNull Bitmap image) {
 
         int width = image.getWidth();
         int height = image.getHeight();
@@ -705,6 +726,7 @@ public class ExternalCameraActivity extends BaseActivity {
      * Data received from serial port is displayed through this handler
      */
     private static class MyHandler extends Handler {
+        @NonNull
         private final WeakReference<ExternalCameraActivity> mActivity;
 
         MyHandler(ExternalCameraActivity activity) {
@@ -712,7 +734,7 @@ public class ExternalCameraActivity extends BaseActivity {
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
                 String data = (String) msg.obj;
                 ExternalCameraActivity colorimetryLiquidActivity = mActivity.get();

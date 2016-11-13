@@ -29,8 +29,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -51,11 +54,18 @@ import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity implements EditSensorIdentity.OnFragmentInteractionListener {
 
+    private static final String TAG = "CalibrateSensorActivity";
+
+    private static final String LINE_FEED = "\r\n";
+    private static final int INITIAL_DELAY_MILLIS = 2000;
+    private static final int PROGRESS_MAX = 15;
+    private static final int CALIBRATION_DELAY_MILLIS = 15000;
+    private static final int SAVING_DELAY_MILLIS = 4000;
     private final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context arg0, Intent arg1) {
+        public void onReceive(Context arg0, @NonNull Intent arg1) {
 //            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
 //            {
 //                Toast.makeText(arg0, "USB Ready", Toast.LENGTH_SHORT).show();
@@ -92,9 +102,10 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     };
     private TextView textId;
     private UsbDataHandler mHandler;
+    @Nullable
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+        public void onServiceConnected(ComponentName arg0, @NonNull IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
         }
@@ -104,6 +115,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             usbService = null;
         }
     };
+    @NonNull
     private String mReceivedData = "";
     private FloatingActionButton fabEdit;
 
@@ -134,7 +146,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+    private void startService(Class<?> service, ServiceConnection serviceConnection, @Nullable Bundle extras) {
 
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(this, service);
@@ -193,7 +205,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             public void onClick(View view) {
                 if (usbService.isUsbConnected()) {
 
-                    final ProgressDialog progressDialog = ProgressDialog.show(mContext,
+                    final ProgressDialog connectingProgressDialog = ProgressDialog.show(mContext,
                             getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true, false);
 
                     new Handler().postDelayed(runnable, 100);
@@ -209,9 +221,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                             } else {
                                 showEditDetailsDialog();
                             }
-                            progressDialog.dismiss();
+                            connectingProgressDialog.dismiss();
                         }
-                    }, 2000);
+                    }, INITIAL_DELAY_MILLIS);
 
                 } else {
                     AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
@@ -278,7 +290,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         progressDialog.setTitle(R.string.pleaseWait);
         progressDialog.setMessage(getString(R.string.calibrating));
         progressDialog.setIndeterminate(false);
-        progressDialog.setMax(15);
+        progressDialog.setMax(PROGRESS_MAX);
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
@@ -297,7 +309,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
         }).start();
@@ -307,7 +319,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             @Override
             public void run() {
 
-                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrations[index] + "\r\n";
+                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrations[index] + LINE_FEED;
 
                 usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 
@@ -332,7 +344,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     }
                 }, 1000);
             }
-        }, 15000);
+        }, CALIBRATION_DELAY_MILLIS);
     }
 
     @Override
@@ -343,7 +355,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -360,27 +372,27 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     }
 
     private void displayId(String value) {
-        value = value.replace("\r\n", "");
+        value = value.replace(LINE_FEED, "");
         textId.setText(value);
         deviceHasId = (!value.trim().equals("") && !value.trim().equals("0"));
     }
 
     @Override
     public void onFragmentInteraction(String value) {
-        String requestCommand = "SET ID " + value + "\r\n";
+        String requestCommand = "SET ID " + value + LINE_FEED;
 
         usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 
-        final ProgressDialog progressDialog = ProgressDialog.show(mContext,
+        final ProgressDialog savingProgressDialog = ProgressDialog.show(mContext,
                 getString(R.string.pleaseWait), getString(R.string.saving), true, false);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String getIdRequest = "GET ID" + "\r\n";
+                String getIdRequest = "GET ID" + LINE_FEED;
                 usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
 
-                progressDialog.dismiss();
+                savingProgressDialog.dismiss();
 
                 displayInformation(calibrationIndex);
 
@@ -389,7 +401,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     fabEdit.setVisibility(View.VISIBLE);
                 }
             }
-        }, 4000);
+        }, SAVING_DELAY_MILLIS);
 
     }
 
@@ -397,6 +409,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
      * Handler to restart the app after language has been changed
      */
     private static class WeakRefHandler extends Handler {
+        @NonNull
         private final WeakReference<CalibrateSensorActivity> ref;
 
         WeakRefHandler(CalibrateSensorActivity ref) {
@@ -417,6 +430,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     * Data received from serial port is displayed through this handler
     */
     private static class UsbDataHandler extends Handler {
+        @NonNull
         private final WeakReference<CalibrateSensorActivity> mActivity;
 
         UsbDataHandler(CalibrateSensorActivity activity) {
@@ -424,13 +438,13 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             if (msg.what == UsbService.MESSAGE_FROM_SERIAL_PORT) {
                 String data = (String) msg.obj;
                 CalibrateSensorActivity sensorActivity = mActivity.get();
                 if (sensorActivity != null) {
                     sensorActivity.mReceivedData += data;
-                    if (sensorActivity.mReceivedData.contains("\r\n")) {
+                    if (sensorActivity.mReceivedData.contains(LINE_FEED)) {
                         if (!sensorActivity.mReceivedData.contains("OK")) {
                             sensorActivity.displayId(sensorActivity.mReceivedData);
                         }

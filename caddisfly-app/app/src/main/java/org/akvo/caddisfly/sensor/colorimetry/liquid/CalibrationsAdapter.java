@@ -44,10 +44,12 @@ import java.util.Locale;
  */
 class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
+    private static final float SMALL_FONT_SIZE = .6f;
+    @NonNull
     private final Activity activity;
     private final boolean mDisplayDecimal;
 
-    CalibrationsAdapter(Activity activity, Swatch[] rangeArray, boolean displayDecimal) {
+    CalibrationsAdapter(@NonNull Activity activity, @NonNull Swatch[] rangeArray, boolean displayDecimal) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
         mDisplayDecimal = displayDecimal;
@@ -85,7 +87,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         wordTwo.setSpan(new ForegroundColorSpan(Color.GRAY), 0, wordTwo.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
+        wordTwo.setSpan(new RelativeSizeSpan(SMALL_FONT_SIZE), 0, wordTwo.length(), 0);
 
         textName.append(wordTwo);
 
