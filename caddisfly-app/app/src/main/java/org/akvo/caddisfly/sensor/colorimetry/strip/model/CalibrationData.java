@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,15 +27,19 @@ import java.util.Map;
  * Created by markwestra on 01/08/2015
  */
 public class CalibrationData {
-    public final Map<String, Location> locations;
-    public final Map<String, CalValue> calValues;
-    public final List<WhiteLine> whiteLines;
-    public final double[] stripArea;
+    @NonNull
+    private final Map<String, Location> locations;
+    @NonNull
+    private final Map<String, CalValue> calValues;
+    @NonNull
+    private final List<WhiteLine> whiteLines;
+    @NonNull
+    private final double[] stripArea;
     public int hSizePixel;
     public int vSizePixel;
-    public double patchSize;
     public double hSize;
     public double vSize;
+    private double patchSize;
 
     public CalibrationData() {
         this.locations = new HashMap<>();
@@ -55,6 +61,40 @@ public class CalibrationData {
     public void addWhiteLine(Double x1, Double y1, Double x2, Double y2, Double width) {
         WhiteLine line = new WhiteLine(x1, y1, x2, y2, width);
         this.whiteLines.add(line);
+    }
+
+    public double getPatchSize() {
+        return patchSize;
+    }
+
+    public void setPatchSize(double patchSize) {
+        this.patchSize = patchSize;
+    }
+
+    public double[] getStripArea() {
+        return stripArea.clone();
+    }
+
+    public void setStripArea(double x1, double y1, double x2, double y2) {
+        stripArea[0] = x1;
+        stripArea[1] = y1;
+        stripArea[2] = x2;
+        stripArea[3] = y2;
+    }
+
+    @NonNull
+    public List<WhiteLine> getWhiteLines() {
+        return whiteLines;
+    }
+
+    @NonNull
+    public Map<String, Location> getLocations() {
+        return locations;
+    }
+
+    @NonNull
+    public Map<String, CalValue> getCalValues() {
+        return calValues;
     }
 
     public static class Location {
@@ -95,6 +135,7 @@ public class CalibrationData {
     }
 
     public static class WhiteLine {
+        @NonNull
         private final Double[] p;
         private final Double width;
 

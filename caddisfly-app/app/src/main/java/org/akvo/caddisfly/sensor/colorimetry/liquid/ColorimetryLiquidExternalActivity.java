@@ -672,7 +672,9 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
                             croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 
-                            croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                            if (croppedBitmap != null) {
+                                croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                            }
                         } else {
                             croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                                     ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);

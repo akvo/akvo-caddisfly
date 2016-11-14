@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,22 +32,25 @@ import org.akvo.caddisfly.R;
  */
 public class PercentageMeterView extends View {
 
+    private static final float GUTTER_SPACE = 0.2f;
+    private static final double PERCENT = 0.01;
     private static final int NUMBER_OF_BARS = 6;
+    @NonNull
     private final Paint paint;
     private float percentage = Float.NaN;
     private int green = 0;
     private int orange = 0;
     private int red = 0;
 
-    public PercentageMeterView(Context context) {
+    public PercentageMeterView(@NonNull Context context) {
         this(context, null);
     }
 
-    public PercentageMeterView(Context context, AttributeSet attrs) {
+    public PercentageMeterView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PercentageMeterView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PercentageMeterView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         paint = new Paint();
@@ -62,18 +66,18 @@ public class PercentageMeterView extends View {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
 
         if (Float.isNaN(percentage)) {
             return;
         }
 
-        double number = (100 - percentage) * NUMBER_OF_BARS * 0.01;
+        double number = (100 - percentage) * NUMBER_OF_BARS *  PERCENT;
 
         canvas.save();
 
         // Set each dot's diameter to half the canvas height
-        canvas.translate(canvas.getWidth() / 2f - ((canvas.getHeight() / 2 + 0.2f) * 2.5f), 0);
+        canvas.translate(canvas.getWidth() / 2f - ((canvas.getHeight() / 2f + GUTTER_SPACE) * ((NUMBER_OF_BARS - 1) / 2f)), 0);
 
         for (double i = 0; i < NUMBER_OF_BARS; i++) {
 
@@ -107,10 +111,10 @@ public class PercentageMeterView extends View {
                 }
             }
 
-            canvas.drawCircle(0, canvas.getHeight() / 2, canvas.getHeight() / 4, paint);
+            canvas.drawCircle(0, canvas.getHeight() / 2f, canvas.getHeight() / 4f, paint);
 
             // Position next circle
-            canvas.translate(canvas.getHeight() / 2 + 0.2f, 0);
+            canvas.translate(canvas.getHeight() / 2f + GUTTER_SPACE, 0);
         }
 
         canvas.restore();

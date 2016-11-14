@@ -27,6 +27,7 @@ import android.hardware.SensorManager;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -57,13 +58,14 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
     private SoundPoolPlayer sound;
     private CameraDialog mCameraDialog;
 
+    @NonNull
     public static DiagnosticPreviewFragment newInstance() {
         return new DiagnosticPreviewFragment();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnostic_preview, container, false);
 
@@ -83,7 +85,7 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
 
         mCameraDialog.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
             @Override
-            public void onPictureTaken(byte[] bytes, boolean completed) {
+            public void onPictureTaken(@NonNull byte[] bytes, boolean completed) {
 
                 sound.playShortResource(R.raw.beep);
 
@@ -119,7 +121,9 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
                     croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                             ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
 
-                    croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                    if (croppedBitmap != null) {
+                        croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                    }
                 } else {
                     croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                             ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);

@@ -340,7 +340,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         if (warpMat != null && data != null) {
             double hSize = data.hSize;
             double vSize = data.vSize;
-            double[] area = data.stripArea;
+            double[] area = data.getStripArea();
 
             if (area.length == 4) {
                 ratioW = warpMat.width() / hSize;

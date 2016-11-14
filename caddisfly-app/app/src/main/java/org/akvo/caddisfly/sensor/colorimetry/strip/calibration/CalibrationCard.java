@@ -113,7 +113,7 @@ public final class CalibrationCard {
 
                 // sizes
                 JSONObject calDataJSON = obj.getJSONObject("calData");
-                calData.patchSize = calDataJSON.getDouble("patchSize");
+                calData.setPatchSize(calDataJSON.getDouble("patchSize"));
                 calData.hSize = calDataJSON.getDouble("hSize");
                 calData.vSize = calDataJSON.getDouble("vSize");
 
@@ -142,10 +142,7 @@ public final class CalibrationCard {
 
                 // strip area
                 JSONArray stripArea = obj.getJSONObject("stripAreaData").getJSONArray("area");
-                calData.stripArea[0] = stripArea.getDouble(0);
-                calData.stripArea[1] = stripArea.getDouble(1);
-                calData.stripArea[2] = stripArea.getDouble(2);
-                calData.stripArea[3] = stripArea.getDouble(3);
+                calData.setStripArea(stripArea.getDouble(0), stripArea.getDouble(1), stripArea.getDouble(2), stripArea.getDouble(3));
 
                 errorFound = false;
                 return calData;
@@ -199,7 +196,7 @@ public final class CalibrationCard {
      */
     @NonNull
     public static double[][] createWhitePointArray(@NonNull Mat lab, @NonNull CalibrationData calData) {
-        List<CalibrationData.WhiteLine> lines = calData.whiteLines;
+        List<CalibrationData.WhiteLine> lines = calData.getWhiteLines();
         int numLines = lines.size() * 10; // on each line, we sample 10 points
         double[][] points = new double[numLines][5];
         int index = 0;
@@ -395,7 +392,7 @@ public final class CalibrationCard {
 
         int xp = (int) Math.round(x * hPixels);
         int yp = (int) Math.round(y * vPixels);
-        int dp = (int) Math.round(calData.patchSize * hPixels * 0.25);
+        int dp = (int) Math.round(calData.getPatchSize() * hPixels * 0.25);
         byte[] temp = new byte[(2 * dp + 1) * imgMat.channels()];
         int ii3;
         for (int i = -dp; i <= dp; i++) {
@@ -434,9 +431,9 @@ public final class CalibrationCard {
         Map<String, double[]> calResultIllumination = new HashMap<>();
         // iterate over all patches
         try {
-            for (String label : calData.calValues.keySet()) {
-                CalibrationData.CalValue cal = calData.calValues.get(label);
-                CalibrationData.Location loc = calData.locations.get(label);
+            for (String label : calData.getCalValues().keySet()) {
+                CalibrationData.CalValue cal = calData.getCalValues().get(label);
+                CalibrationData.Location loc = calData.getLocations().get(label);
                 float[] LAB_color = measurePatch(imgMat, loc.x, loc.y, calData); // measure patch color
                 obsL.add(LAB_color[0], cal.getL());
                 obsA.add(LAB_color[1], cal.getA());
@@ -462,7 +459,7 @@ public final class CalibrationCard {
 
             // transform patch values using the 1d calibration results
             Map<String, double[]> calResult1D = new HashMap<>();
-            for (String label : calData.calValues.keySet()) {
+            for (String label : calData.getCalValues().keySet()) {
                 valIllumination = calResultIllumination.get(label);
 
                 L_orig = valIllumination[0];
@@ -479,14 +476,14 @@ public final class CalibrationCard {
             // use the 1D calibration result for the second calibration step
             // Following http://docs.scipy.org/doc/scipy/reference/tutorial/linalg.html#solving-linear-least-squares-problems-and-pseudo-inverses
             // we will solve P = M x
-            int total = calData.locations.keySet().size();
+            int total = calData.getLocations().keySet().size();
             RealMatrix coefficient = new Array2DRowRealMatrix(total, 3);
             RealMatrix cal = new Array2DRowRealMatrix(total, 3);
             int index = 0;
 
             // create coefficient and calibration vectors
-            for (String label : calData.calValues.keySet()) {
-                CalibrationData.CalValue calv = calData.calValues.get(label);
+            for (String label : calData.getCalValues().keySet()) {
+                CalibrationData.CalValue calv = calData.getCalValues().get(label);
                 double[] cal1dResult = calResult1D.get(label);
                 coefficient.setEntry(index, 0, cal1dResult[0]);
                 coefficient.setEntry(index, 1, cal1dResult[1]);
@@ -555,7 +552,7 @@ public final class CalibrationCard {
 
     private static void addPatch(@NonNull Mat imgMat, Double x, Double y, @NonNull CalibrationData calData, String label) {
 
-        CalibrationData.CalValue calValue = calData.calValues.get(label);
+        CalibrationData.CalValue calValue = calData.getCalValues().get(label);
         calData.hSizePixel = imgMat.cols();
         double hPixels = calData.hSizePixel / calData.hSize; // pixel per mm
         calData.vSizePixel = imgMat.rows();
@@ -563,7 +560,7 @@ public final class CalibrationCard {
 
         int xp = (int) Math.round(x * hPixels);
         int yp = (int) Math.round(y * vPixels);
-        int dp = (int) Math.round(calData.patchSize * hPixels * 0.150);
+        int dp = (int) Math.round(calData.getPatchSize() * hPixels * 0.150);
         for (int i = -dp; i <= dp; i++) {
             for (int ii = -dp; ii <= dp; ii++) {
                 byte[] col = new byte[3];
@@ -576,8 +573,8 @@ public final class CalibrationCard {
     }
 
     private static void addCalColors(@NonNull Mat imgMat, @NonNull CalibrationData calData) {
-        for (String label : calData.locations.keySet()) {
-            CalibrationData.Location loc = calData.locations.get(label);
+        for (String label : calData.getLocations().keySet()) {
+            CalibrationData.Location loc = calData.getLocations().get(label);
             addPatch(imgMat, loc.x, loc.y, calData, label);
         }
     }
@@ -670,14 +667,14 @@ public final class CalibrationCard {
         double maxE94 = 0;
         StringBuilder calibrationColors = new StringBuilder();
 
-        List<String> sortedKeys = new ArrayList<>(calData.calValues.keySet());
+        List<String> sortedKeys = new ArrayList<>(calData.getCalValues().keySet());
         if (AppPreferences.isDiagnosticMode()) {
             Collections.sort(sortedKeys);
         }
 
         for (String label : sortedKeys) {
-            CalibrationData.CalValue cal = calData.calValues.get(label);
-            CalibrationData.Location loc = calData.locations.get(label);
+            CalibrationData.CalValue cal = calData.getCalValues().get(label);
+            CalibrationData.Location loc = calData.getLocations().get(label);
             float[] LAB_color = measurePatch(labImg, loc.x, loc.y, calData); // measure patch color
 
             if (AppPreferences.isDiagnosticMode()) {

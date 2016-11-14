@@ -112,7 +112,6 @@
     <string name="no_data">Pas de donnees pour patch no.</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Ombres</string>
-    <string name="analysing">Analyser image …</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instr">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="picture_taken">Photo a été prise</string>
