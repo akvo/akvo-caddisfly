@@ -190,4 +190,9 @@
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nAt least 5 megapixel camera required.</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="just_a_moment">Just a moment…</string>
+    <string name="information">Information</string>
+    <string name="unableToCompleteQualityChecks">Unable to complete quality checks.</string>
+    <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
+
+
 </resources>

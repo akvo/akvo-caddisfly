@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
@@ -238,6 +239,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     }
 
     public void onPause() {
+        releaseResources();
+        super.onPause();
+    }
+
+    private void releaseResources() {
         cameraScheduledExecutorService.shutdown();
 
         if (mCamera != null) {
@@ -262,7 +268,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             previewLayout.removeView(cameraPreview);
             cameraPreview = null;
         }
-        super.onPause();
     }
 
     public void onResume() {
@@ -483,6 +488,29 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         };
         handler.post(runnable);
+    }
+
+    @Override
+    public void timeOut() {
+
+        releaseResources();
+
+        String message = String.format("%s%n%n%s", getString(R.string.unableToCompleteQualityChecks),
+                getString(R.string.tryTestingInAWellLitArea));
+
+        AlertDialog alertDialog = AlertUtil.showAlert(this, R.string.information, message, R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null, null);
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     private void showResults() {

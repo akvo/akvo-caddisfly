@@ -69,4 +69,6 @@ interface CameraViewListener {
     void startPreview();
 
     void showError(String message);
+
+    void timeOut();
 }

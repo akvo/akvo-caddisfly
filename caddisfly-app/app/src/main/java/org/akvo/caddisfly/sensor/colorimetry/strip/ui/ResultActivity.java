@@ -510,7 +510,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 try {
                     JSONObject object = new JSONObject();
                     object.put(SensorConstants.NAME, patchDescription);
-                    object.put(SensorConstants.VALUE, ResultUtil.roundSignificant(resultValue));
+                    object.put(SensorConstants.VALUE, Double.isNaN(resultValue) ? "" : ResultUtil.roundSignificant(resultValue));
                     object.put(SensorConstants.UNIT, unit);
                     object.put(SensorConstants.ID, id);
                     resultJsonArr.put(object);

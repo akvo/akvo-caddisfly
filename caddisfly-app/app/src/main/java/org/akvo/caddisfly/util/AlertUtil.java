@@ -68,12 +68,12 @@ public final class AlertUtil {
                 cancelButtonText, true, isDestructive, positiveListener, cancelListener, null);
     }
 
-    public static void showAlert(@NonNull Context context, @StringRes int title, String message,
-                                 @StringRes int okButtonText,
-                                 DialogInterface.OnClickListener positiveListener,
-                                 DialogInterface.OnClickListener negativeListener,
-                                 DialogInterface.OnCancelListener cancelListener) {
-        showAlert(context, context.getString(title), message, okButtonText, R.string.cancel,
+    public static AlertDialog showAlert(@NonNull Context context, @StringRes int title, String message,
+                                        @StringRes int okButtonText,
+                                        DialogInterface.OnClickListener positiveListener,
+                                        DialogInterface.OnClickListener negativeListener,
+                                        DialogInterface.OnCancelListener cancelListener) {
+        return showAlert(context, context.getString(title), message, okButtonText, R.string.cancel,
                 true, false, positiveListener, negativeListener, cancelListener);
     }
 

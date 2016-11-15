@@ -35,6 +35,13 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
     private static final String TAG = "CamSharedFragmentBase";
     private TextView countQualityView;
+    private int previousQualityCount = 0;
+    private long lastQualityIncrementTime;
+
+    // track the last a single quality check was successful
+    protected long getLastQualityIncrementTime() {
+        return lastQualityIncrementTime;
+    }
 
     void showBrightness(double value) {
     }
@@ -60,6 +67,12 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 }
 
                 count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
+                if (count > previousQualityCount) {
+                    lastQualityIncrementTime = System.currentTimeMillis();
+                }
+
+                previousQualityCount = count;
                 String text = getResources().getString(R.string.quality_checks_counter, count,
                         Constant.COUNT_QUALITY_CHECK_LIMIT);
                 countQualityView.setText(text);
@@ -74,7 +87,6 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 }
 
                 countQualityView.setTextColor(getResources().getColor(R.color.text_primary));
-
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
