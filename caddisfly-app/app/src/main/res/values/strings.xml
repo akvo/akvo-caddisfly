@@ -187,4 +187,7 @@
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="stripTest">Strip Test</string>
     <string name="no_result">No result</string>
+    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nAt least 5 megapixel camera required.</string>
+    <string name="continue_anyway">Continue anyway</string>
+    <string name="just_a_moment">Just a moment…</string>
 </resources>

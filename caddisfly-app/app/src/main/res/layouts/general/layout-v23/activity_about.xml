@@ -14,91 +14,102 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
+
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.AboutActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?primaryBackgroundStyle"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar" />
 
         <LinearLayout
-            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonSurvey"
-                style="@style/Button"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:layout_marginTop="2dp"
-                android:drawableEnd="?listArrowRight"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="22dp"
-                android:text="@string/survey"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+                android:layout_marginTop="-20dp"
+                android:alpha="0.8"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/appName"
+                android:textAllCaps="false"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                tools:ignore="SpUsage" />
 
-            <Button
-                android:id="@+id/buttonStripTest"
-                style="@style/Button"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="22dp"
-                android:text="@string/stripTest"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+                android:alpha="0.7"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/waterQualitySystem"
+                android:textAllCaps="true"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                tools:ignore="SpUsage" />
 
-            <Button
-                android:id="@+id/buttonEcSensor"
-                style="@style/Button"
+            <TextView
+                android:id="@+id/textVersion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="22dp"
-                android:text="@string/electricalConductivity"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="Version 1.0" />
 
-            <Button
-                android:id="@+id/buttonCalibrate"
-                style="@style/Button"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="10dp"
+                android:minHeight="80dp"
+                android:minWidth="80dp"
+                android:contentDescription="@null"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="22dp"
-                android:text="@string/calibrate"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/copyrightMessage"
+                android:textSize="15sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/buttonSoftwareNotices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/legalInformation"
+                android:textColor="@color/cyan"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/viewInstallType"
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#e4e4e4" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -114,14 +125,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
             android:maxLines="1"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2a01a2bc"
+            android:textColor="#2a007a8d"
             android:textSize="46dp"
             tools:ignore="SpUsage" />
 
@@ -132,9 +143,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textDiagnostics"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
             android:src="@android:drawable/ic_menu_revert"
             app:backgroundTint="@color/diagnostic"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>
 </merge>
-

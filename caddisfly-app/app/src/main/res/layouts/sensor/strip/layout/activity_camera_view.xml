@@ -15,6 +15,7 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_cameraMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
@@ -24,9 +25,8 @@
     <include layout="@layout/toolbar" />
 
     <RelativeLayout
-        android:id="@+id/activity_cameraMainRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/camera_preview"
@@ -50,11 +50,31 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:visibility="visible" />
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                tools:ignore="UselessLeaf" />
+
+            <FrameLayout
+                android:id="@+id/layout_cameraPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".6"
+                android:background="@color/orange_background" />
+        </LinearLayout>
+
         <FrameLayout
-            android:id="@+id/layout_cameraPlaceholder"
+            android:id="@+id/layout_instructionLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_alignParentBottom="true" />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 </LinearLayout>

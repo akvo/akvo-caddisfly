@@ -16,6 +16,7 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -38,6 +39,8 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.LevelView;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.opencv.android.BaseLoaderCallback;
@@ -74,7 +77,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private LevelView levelView;
     private String uuid;
     private CameraSharedFragmentBase currentFragment;
-
     //OpenCV Manager
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -164,8 +166,21 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         cameraScheduledExecutorService = new CameraScheduledExecutorService();
 
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                startCameraPreview();
+            }
+        }, 0);
+    }
+
+
+    private void startCameraPreview() {
+
         cameraPreview = new CameraPreview(this);
+
         mCamera = cameraPreview.getCamera();
+
+        previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
 
         if (mCamera == null) {
             Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera",
@@ -175,11 +190,34 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             try {
                 wrCamera = new WeakReference<>(mCamera);
 
-                // Create our Preview view and set it as the content of our activity.
-                previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
-                previewLayout.removeAllViews();
-                previewLayout.addView(cameraPreview);
-
+                if (ApiUtil.getMaxSupportedMegaPixelsByCamera(mCamera) < Constant.MIN_CAMERA_MEGA_PIXELS) {
+                    AlertUtil.askQuestion(this, R.string.warning, R.string.camera_not_good,
+                            R.string.continue_anyway, R.string.cancel, true,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    previewLayout.removeAllViews();
+                                    if (cameraPreview != null) {
+                                        previewLayout.addView(cameraPreview);
+                                    } else {
+                                        finish();
+                                    }
+                                }
+                            },
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            });
+                } else {
+                    previewLayout.removeAllViews();
+                    if (cameraPreview != null) {
+                        previewLayout.addView(cameraPreview);
+                    } else {
+                        finish();
+                    }
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Could not start preview");
             }
@@ -188,10 +226,12 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     private void init() {
         try {
-            currentFragment = CameraPrepareFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(
-                    R.id.layout_cameraPlaceholder, currentFragment
-            ).commit();
+            if (currentFragment == null) {
+                currentFragment = CameraPrepareFragment.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(
+                        R.id.layout_cameraPlaceholder, currentFragment
+                ).commit();
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -337,13 +377,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
         if (currentFragment instanceof CameraPrepareFragment) {
             // Display instructions
             currentFragment = InstructionFragment.newInstance(uuid);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.layout_instructionLayout, currentFragment)
+                    .commit();
         } else if (currentFragment instanceof InstructionFragment) {
-            currentFragment = CameraStartTestFragment.newInstance(uuid);
-        }
+            getSupportFragmentManager().beginTransaction()
+                    .remove(currentFragment)
+                    .commit();
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_cameraPlaceholder, currentFragment)
-                .commit();
+            currentFragment = CameraStartTestFragment.newInstance(uuid);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.layout_cameraPlaceholder, currentFragment)
+                    .commit();
+        }
     }
 
     @Override

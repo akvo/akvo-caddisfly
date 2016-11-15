@@ -315,6 +315,17 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        closeKeyboard(getActivity(), editBatchCode);
     }
 
     @Override

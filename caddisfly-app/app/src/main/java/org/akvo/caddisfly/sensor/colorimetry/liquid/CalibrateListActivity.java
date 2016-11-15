@@ -153,7 +153,6 @@ public class CalibrateListActivity extends BaseActivity
     private void showEditCalibrationDetailsDialog(boolean isEdit) {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         SaveCalibrationDialogFragment saveCalibrationDialogFragment = SaveCalibrationDialogFragment.newInstance(isEdit);
-        saveCalibrationDialogFragment.setCancelable(false);
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 

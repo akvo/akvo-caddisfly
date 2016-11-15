@@ -18,6 +18,8 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
     private static final String TAG = "CameraPrepareFragment";
 
+    @Nullable
     private CameraViewListener mListener;
     private WeakReference<PercentageMeterView> wrExposureView;
     private WeakReference<PercentageMeterView> wrContrastView;
@@ -51,13 +54,14 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         // Required empty public constructor
     }
 
+    @NonNull
     public static CameraPrepareFragment newInstance() {
 
         return new CameraPrepareFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
@@ -74,7 +78,9 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.toggleFlashMode(true);
+                    if (mListener != null) {
+                        mListener.toggleFlashMode(true);
+                    }
                 }
             });
         }
@@ -118,7 +124,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (CameraViewListener) activity;
@@ -140,8 +146,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         super.onActivityCreated(savedInstanceState);
 
         try {
-            setHeightOfOverlay(0);
-
             if (mListener != null) {
                 mListener.startNextPreview();
             }

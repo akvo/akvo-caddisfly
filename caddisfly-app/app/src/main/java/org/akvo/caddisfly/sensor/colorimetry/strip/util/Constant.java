@@ -24,7 +24,6 @@ public final class Constant {
     public static final double MAX_LUM_UPPER = 254;
     public static final double MAX_SHADOW_PERCENTAGE = 10;
     public static final double PERCENT_ILLUMINATION = 1.05;
-    public static final double CROP_CAMERA_VIEW_FACTOR = 0.6;
     public static final double CROP_FINDER_PATTERN_FACTOR = 0.75;
     public static final float MAX_TILT_DIFF = 0.03f;
     public static final int COUNT_QUALITY_CHECK_LIMIT = 15;
@@ -45,10 +44,11 @@ public final class Constant {
     public static final String ERROR = "org.akvo.caddisfly.error";
     public static final String DIAGNOSTIC_INFO = "diagnostic_info_key";
     public static final String CALIBRATION_INFO = "calibration_info_key";
+    public static final String DISTANCE_INFO = "distance_info_key";
+    public static final int MIN_CAMERA_MEGA_PIXELS = 5;
     static final int MAX_COLOR_DISTANCE = 22;
     static final double CONTRAST_DEVIATION_FRACTION = 0.05;
     static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
-    public static final String DISTANCE_INFO = "distance_info_key";
 
     private Constant() {
     }

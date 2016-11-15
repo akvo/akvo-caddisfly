@@ -47,6 +47,17 @@
         android:layout_marginTop="60dp"
         tools:ignore="UnknownIdInLayout" />
 
+    <TextView
+        android:layout_below="@+id/progressBar"
+        android:id="@+id/testProgress"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:text="@string/just_a_moment"/>
+
     <LinearLayout
         android:id="@+id/layoutFooter"
         style=" ?android:attr/buttonBarStyle"

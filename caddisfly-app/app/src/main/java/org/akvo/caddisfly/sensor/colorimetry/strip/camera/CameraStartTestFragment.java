@@ -219,7 +219,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setHeightOfOverlay(0);
         startCountdown();
     }
 

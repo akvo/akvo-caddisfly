@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -170,19 +169,5 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (getView() != null) {
-            final FrameLayout parentView = (FrameLayout) getActivity()
-                    .findViewById(((View) getView().getParent()).getId());
-            ViewGroup.LayoutParams params = parentView.getLayoutParams();
-            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            parentView.setLayoutParams(params);
-        }
-
     }
 }

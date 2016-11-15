@@ -289,8 +289,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         }
 
         findViewById(R.id.progressBar).setVisibility(View.GONE);
-
-
+        findViewById(R.id.testProgress).setVisibility(View.GONE);
     }
 
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {

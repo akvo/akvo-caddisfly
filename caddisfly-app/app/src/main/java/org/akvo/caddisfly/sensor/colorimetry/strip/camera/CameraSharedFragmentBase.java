@@ -16,12 +16,9 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -48,51 +45,10 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     public void goNext() {
     }
 
-    @SuppressWarnings("SameParameterValue")
-    void setHeightOfOverlay(int shrinkOrEnlarge) {
-        try {
-            final RelativeLayout parentView = (RelativeLayout) getActivity().findViewById(R.id.activity_cameraMainRelativeLayout);
-
-            if (getView() != null) {
-                final FrameLayout placeholderView = (FrameLayout) getActivity().findViewById(((View) getView().getParent()).getId());
-
-                //find the overlay that hides part of the preview
-                final RelativeLayout overlay = (RelativeLayout) getView().findViewById(R.id.overlay);
-
-                final ViewGroup.LayoutParams paramsP = placeholderView.getLayoutParams();
-                final ViewGroup.LayoutParams params = overlay.getLayoutParams();
-
-                //shrinkOrEnlarge the overlay view based on a factor of its parent height
-                switch (shrinkOrEnlarge) {
-                    case 0: //shrink
-                        params.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
-                        paramsP.height = (int) Math.round(parentView.getHeight() * Constant.CROP_CAMERA_VIEW_FACTOR);
-                        break;
-                    default: //enlarge
-                        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                        paramsP.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                        break;
-                }
-
-                overlay.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        placeholderView.setLayoutParams(paramsP);
-                        overlay.setLayoutParams(params);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-    }
-
     /*
     *  Display number of successful quality checks
     */
-    public void displayCountQuality(Map<String, Integer> countMap) {
+    public void displayCountQuality(@NonNull Map<String, Integer> countMap) {
 
         try {
             if (countQualityView != null) {
