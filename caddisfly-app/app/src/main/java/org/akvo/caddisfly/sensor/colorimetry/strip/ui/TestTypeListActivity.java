@@ -104,7 +104,7 @@ public class TestTypeListActivity extends BaseActivity {
 
             if (resultCode == RESULT_OK) {
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-                intent.putExtra("image", data.getStringExtra("image"));
+                intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
             }
 
             // If an external activity is expecting the result then finish

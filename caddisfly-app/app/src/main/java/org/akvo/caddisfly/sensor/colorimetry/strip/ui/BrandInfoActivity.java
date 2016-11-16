@@ -174,11 +174,9 @@ public class BrandInfoActivity extends BaseActivity {
     }
 
     private void startCamera() {
-        Boolean isInternal = getIntent().getBooleanExtra("internal", false);
-        Intent intent = new Intent(getBaseContext(), CameraActivity.class);
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constant.UUID, mUuid);
-        intent.putExtra("internal", isInternal);
         startActivityForResult(intent, 100);
     }
 
@@ -192,7 +190,7 @@ public class BrandInfoActivity extends BaseActivity {
 
             if (resultCode == RESULT_OK) {
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-                intent.putExtra("image", data.getStringExtra("image"));
+                intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
             }
 
             finish();

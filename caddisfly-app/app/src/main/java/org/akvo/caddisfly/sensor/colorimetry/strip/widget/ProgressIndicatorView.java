@@ -25,13 +25,10 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +42,6 @@ import java.util.List;
 public class ProgressIndicatorView extends LinearLayout {
 
     private static final int FULLY_OPAQUE = 255;
-    private static final int MAX_ANIMATION_DURATION = 5000;
     private final Bitmap checkedBox;
     private final Bitmap uncheckedBox;
     private final Bitmap background;
@@ -57,12 +53,8 @@ public class ProgressIndicatorView extends LinearLayout {
     private final TextPaint textPaint;
     private final float horMargin;
     private boolean set;
-    private boolean start;
     private List<Step> steps;
-    private int stepsTaken = 0;
-    private int timeLapsed = 0;
     private float verMargin;
-    private boolean running = false;
 
     public ProgressIndicatorView(@NonNull Context context) {
         this(context, null);
@@ -96,12 +88,12 @@ public class ProgressIndicatorView extends LinearLayout {
         verMargin = getResources().getDimension(R.dimen.activity_vertical_margin);
     }
 
-    public void addStep(int timeLapse) {
+    public void addStep(int timeLapse, String name) {
         if (steps == null) {
             steps = new ArrayList<>();
         }
 
-        steps.add(new Step(timeLapse));
+        steps.add(new Step(timeLapse, name));
     }
 
     private void initView() {
@@ -145,13 +137,7 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
-    public void start() {
-        this.start = true;
-    }
-
     public void setStepsTaken(int stepsTaken) {
-
-        this.stepsTaken = stepsTaken;
 
         if (steps != null) {
             for (int i = 0; i < steps.size(); i++) {
@@ -163,40 +149,8 @@ public class ProgressIndicatorView extends LinearLayout {
         }
     }
 
-    public void setTimeLapsed(int timeLapsed) {
-
-        this.timeLapsed = timeLapsed;
-
+    public void setTimeLapsed() {
         invalidate();
-
-        if (!running && start) {
-            startAnim();
-        }
-    }
-
-    private void startAnim() {
-        if (steps != null) {
-            //sort on time lapse ascending
-            Collections.sort(steps, new StepComparator());
-
-            for (int i = 0; i < steps.size(); i++) {
-
-                Animation blink = AnimationUtils.loadAnimation(context, R.anim.blink);
-                blink.setDuration(Math.min(MAX_ANIMATION_DURATION, steps.get(i).timeLapse * 1000));
-                blink.setAnimationListener(new BlinkAnimListener(i));
-
-                if (steps.get(i).getTimeLapse() - timeLapsed < 5 && getChildCount() > 0 && getChildAt(i) != null) {
-                    if (i >= stepsTaken) {
-                        if (!steps.get(i).animationEnded) {
-                            getChildAt(i).startAnimation(blink);
-                        }
-
-                    } else {
-                        getChildAt(i).clearAnimation();
-                    }
-                }
-            }
-        }
     }
 
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -217,10 +171,6 @@ public class ProgressIndicatorView extends LinearLayout {
             return;
         }
 
-        if (!start) {
-            return;
-        }
-
         paint.setAlpha(FULLY_OPAQUE);
 
         canvas.save();
@@ -232,43 +182,14 @@ public class ProgressIndicatorView extends LinearLayout {
 
             String message;
             if (steps.get(i).pictureTaken) {
-                message = getContext().getString(R.string.picture_taken);
                 canvas.drawBitmap(checkedBox, 0, 0, paint);
-
-            } else if (steps.get(i).animationEnded) {
-                message = getContext().getString(R.string.ready_for_picture) + " " + (i + 1);
-                canvas.drawBitmap(background, 0, 0, paint);
-
             } else {
-
                 canvas.drawBitmap(background, 0, 0, paint);
-
-                // If the previous step is finished, either picture taken or not, we start the counter
-                if (i > 0) {
-                    if (steps.get(i - 1).animationEnded) {
-                        try {
-                            message = getContext().getString(R.string.waiting) + " " + PreviewUtil.fromSecondsToMMSS(
-                                    Math.max(0, steps.get(i).getTimeLapse() - timeLapsed)) + " sec. ";
-                        } catch (Exception e) {
-                            message = e.getMessage();
-                        }
-                    } else {
-                        message = "";
-
-                    }
-                } else {
-                    //first one does have a count
-                    try {
-                        message = getContext().getString(R.string.waiting) + " "
-                                + PreviewUtil.fromSecondsToMMSS(Math.max(0, steps.get(i).getTimeLapse()
-                                - timeLapsed)) + " sec. ";
-                    } catch (Exception e) {
-                        message = e.getMessage();
-                    }
-                }
             }
 
-            float textHeight = Math.abs(textPaint.ascent());
+            message = steps.get(i).getName();
+
+            float textHeight = Math.abs(textPaint.ascent()) - 3;
             float yPos = background.getHeight() / 2f + textHeight / 2f;
             canvas.drawText(message, background.getWidth() + horMargin, yPos, textPaint);
 
@@ -279,16 +200,17 @@ public class ProgressIndicatorView extends LinearLayout {
     }
 
     private static class Step {
+        private final String name;
         private final int timeLapse;
-        private boolean animationEnded = false;
         private boolean pictureTaken = false;
 
-        Step(int timeLapse) {
+        Step(int timeLapse, String name) {
             this.timeLapse = timeLapse;
+            this.name = name;
         }
 
-        int getTimeLapse() {
-            return timeLapse;
+        public String getName() {
+            return name;
         }
     }
 
@@ -304,31 +226,6 @@ public class ProgressIndicatorView extends LinearLayout {
             }
 
             return 1;
-        }
-    }
-
-    private class BlinkAnimListener implements Animation.AnimationListener {
-
-        private final int i;
-
-        BlinkAnimListener(int i) {
-            this.i = i;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            running = true;
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            steps.get(i).animationEnded = true;
-            running = false;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
         }
     }
 }

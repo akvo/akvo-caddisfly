@@ -306,7 +306,7 @@ public class NavigationTest {
         //mDevice.pressBack();
 
         //pH
-        clickExternalSourceButton(2);
+//        clickExternalSourceButton(2);
 
         //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 

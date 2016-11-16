@@ -14,6 +14,7 @@ public final class SensorConstants {
     public static final String TYPE_NAME = "caddisfly";
     public static final String RESOURCE_ID = "caddisflyResourceUuid";
     public static final String RESPONSE = "response";
+    public static final String IS_EXTERNAL_ACTION = "external_action";
     @Deprecated
     public static final String RESPONSE_COMPAT = "response_compat";
     public static final String RESULT = "result";
@@ -36,6 +37,8 @@ public final class SensorConstants {
     public static final int DEGREES_90 = 90;
     public static final int DEGREES_270 = 270;
     public static final int DEGREES_180 = 180;
+    public static final String LANGUAGE = "language";
+    public static final String QUESTION_TITLE = "questionTitle";
 
     private SensorConstants() {
     }

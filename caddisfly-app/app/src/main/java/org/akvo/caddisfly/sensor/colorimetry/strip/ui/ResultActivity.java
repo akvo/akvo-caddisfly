@@ -58,6 +58,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -67,6 +68,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 
 public class ResultActivity extends BaseActivity implements DetectStripListener {
 
@@ -94,25 +97,30 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path = "";
+                Intent intent = new Intent(getIntent());
+                String path;
                 try {
-                    // store image on sd card
-                    path = FileStorage.writeBitmapToExternalStorage(
-                            ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
+
+                    if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false) && resultImage != null) {
+
+                        // store image on sd card
+                        path = FileStorage.writeBitmapToExternalStorage(
+                                ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
+                        intent.putExtra(SensorConstants.IMAGE, path);
+
+                        if (path.length() > 0) {
+                            resultJsonObj.put(SensorConstants.IMAGE, resultImageUrl);
+                        }
+                    }
 
                     resultJsonObj.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
                     resultJsonObj.put(SensorConstants.NAME, brand.getName());
                     resultJsonObj.put(SensorConstants.UUID, brand.getUuid());
-                    if (path.length() > 0) {
-                        resultJsonObj.put(SensorConstants.IMAGE, resultImageUrl);
-                    }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
 
-                Intent intent = new Intent(getIntent());
                 intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-                intent.putExtra("image", path);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -122,15 +130,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
-                    FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
-                    FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
-                    FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage(), e);
-                }
-
                 Intent intent = new Intent(getIntent());
                 setResult(RESULT_CANCELED, intent);
                 finish();
@@ -292,11 +291,28 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         findViewById(R.id.testProgress).setVisibility(View.GONE);
     }
 
+    private class DeleteTask extends AsyncTask<Void, Void, Void> {
+        @Nullable
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
+                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
+            } catch (IOException e) {
+                showError(e.getMessage());
+            }
+
+            return null;
+        }
+    }
+
     private class BitmapTask extends AsyncTask<Mat, Void, Void> {
         private static final int MIN_DISPLAY_WIDTH = 420;
         private static final int MAX_DISPLAY_WIDTH = 600;
-        //        private static final int MAT_SIZE_MULTIPLIER = 50;
-//        private static final int MAX_MAT_SIZE = 150;
+        private static final int MAT_SIZE_MULTIPLIER = 50;
+        private static final int MAX_MAT_SIZE = 150;
         private final Boolean grouped;
         private final StripTest.Brand brand;
         private final List<StripTest.Brand.Patch> patches;
@@ -309,7 +325,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         @Nullable
         private Bitmap stripBitmap = null;
         private Mat combined;
-        //        private Mat resultPatchAreas;
+        private Mat resultPatchAreas;
         private ColorDetected colorDetected;
         private ColorDetected[] colorsDetected;
         private double resultValue = -1;
@@ -345,8 +361,8 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             JSONArray colors;
             Point patchCenter = null;
-//            Mat analyzedArea;
-//            Mat patchArea;
+            Mat analyzedArea = null;
+            Mat patchArea = null;
 
             // get the name and unit of the patch
             patchDescription = patches.get(patchNum).getDesc();
@@ -409,24 +425,26 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 double y = strip.height() / 2d;
                 patchCenter = new Point(x, y);
 
-//                resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
-//                        CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+                if (AppPreferences.isDiagnosticMode()) {
+                    resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
+                            CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
-//                patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
-//                Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
-//
-//                Imgproc.resize(patchArea, patchArea,
-//                        new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
-//                                Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
-//
-//                analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
-//                Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
-//                        Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
-//
-//                Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
+                    patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
+                    Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
 
-//                resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
-//                resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
+                    Imgproc.resize(patchArea, patchArea,
+                            new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
+                                    Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
+
+                    analyzedArea = ResultUtil.getPatch(mat, patchCenter, subMatSize);
+                    Imgproc.resize(analyzedArea, analyzedArea, new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
+                            Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE)), 0, 0, INTER_CUBIC);
+
+                    Imgproc.cvtColor(analyzedArea, analyzedArea, Imgproc.COLOR_Lab2RGB);
+
+                    resultPatchAreas = ResultUtil.concatenate(resultPatchAreas, patchArea);
+                    resultPatchAreas = ResultUtil.concatenateHorizontal(resultPatchAreas, analyzedArea);
+                }
 
                 colorDetected = ResultUtil.getPatchColor(mat, patchCenter, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
@@ -444,6 +462,9 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             ////////////// Create Image ////////////////////
 
             // create Mat to hold strip itself
+            if (patchCenter == null) {
+                return null;
+            }
             mat = ResultUtil.createStripMat(mat, patchCenter, grouped, resultMatWidth);
 
             // Create Mat to hold patchDescription of patch
@@ -487,6 +508,10 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             combined = ResultUtil.concatenate(combined, colorRangeMat); // add color range
 
+            if (AppPreferences.isDiagnosticMode()) {
+                combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
+            }
+
             Core.copyMakeBorder(combined, combined, 0, 0, 10, 0,
                     Core.BORDER_CONSTANT, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE,
                             MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
@@ -498,10 +523,9 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             //add patchDescription of patch to combined mat, at the top
             combined = ResultUtil.concatenate(descMat, combined);
-//            combined = ResultUtil.concatenate(combined, resultPatchAreas); // add patch
 
             //make bitmap to be sent to server
-            if (!combined.empty()) {
+            if (!combined.empty() && resultImage != null) {
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
 
@@ -529,9 +553,15 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             mat.release();
             valueMeasuredMat.release();
             colorRangeMat.release();
-//            analyzedArea.release();
-//            patchArea.release();
-            //resultPatchAreas.release();
+            if (AppPreferences.isDiagnosticMode()) {
+                if (analyzedArea != null) {
+                    analyzedArea.release();
+                }
+                if (patchArea != null) {
+                    patchArea.release();
+                }
+                resultPatchAreas.release();
+            }
             descMat.release();
 
             return null;
@@ -579,11 +609,20 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                         String resultJson = "\"type\" : \"" + String.format(Locale.getDefault(),
                                 "%s", patchDescription) + "\",";
 
+                        resultJson += "\"color\" : \"" + String.format(Locale.getDefault(),
+                                "%s", colorDetected.getLab()) + "\",";
+
                         resultJson += "\"result\" : \"" + String.format(Locale.getDefault(),
                                 "%.2f", resultValue) + "\",";
 
-                        resultJson += "\"color\" : \"" + String.format(Locale.getDefault(),
-                                "%s", colorDetected.getLab()) + "\",";
+                        resultJson += "\"version\" : \"" + String.format(Locale.getDefault(),
+                                "%s", CaddisflyApp.getAppVersion()) + "\",";
+
+                        resultJson += "\"phone\" : \"" + String.format(Locale.getDefault(),
+                                "%s", Build.MODEL.replace("_", "-")) + "\",";
+
+                        resultJson += "\"colorCard\" : \"" + String.format(Locale.getDefault(),
+                                "%s", String.valueOf(CalibrationCard.getMostFrequentVersionNumber())) + "\",";
 
                         diagnosticInfo = diagnosticInfo.replace("{Result}", resultJson);
 
@@ -617,6 +656,8 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
             layout.addView(itemResult);
+
+            new DeleteTask().execute();
         }
     }
 }

@@ -16,13 +16,16 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 import java.util.Map;
@@ -34,12 +37,30 @@ import java.util.Map;
 public abstract class CameraSharedFragmentBase extends Fragment {
 
     private static final String TAG = "CamSharedFragmentBase";
-    private TextView countQualityView;
+    ProgressBar progressBar;
+    int progressIncrement = 0;
+    boolean qualityChecksDone;
+    private TextView textMessage;
     private int previousQualityCount = 0;
     private long lastQualityIncrementTime;
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        textMessage = (TextView) view.findViewById(R.id.textMessage);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        if (progressBar != null) {
+            progressBar.setMax(Constant.COUNT_QUALITY_CHECK_LIMIT);
+            progressBar.setProgress(0);
+        }
+        if (textMessage != null) {
+            textMessage.setText(R.string.checking_quality);
+        }
+    }
+
     // track the last a single quality check was successful
-    protected long getLastQualityIncrementTime() {
+    long getLastQualityIncrementTime() {
         return lastQualityIncrementTime;
     }
 
@@ -58,7 +79,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     public void displayCountQuality(@NonNull Map<String, Integer> countMap) {
 
         try {
-            if (countQualityView != null) {
+            if (textMessage != null) {
                 int count = 0;
 
                 // Each parameter counts for 1/3 towards the final count shown.
@@ -73,20 +94,21 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 }
 
                 previousQualityCount = count;
-                String text = getResources().getString(R.string.quality_checks_counter, count,
-                        Constant.COUNT_QUALITY_CHECK_LIMIT);
-                countQualityView.setText(text);
 
-                //Debugging: Display count per quality parameter
-                if (AppPreferences.isDiagnosticMode()) {
-                    StringBuilder debugText = new StringBuilder();
-                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                        debugText.append(entry.getKey()).append(": ").append(entry.getValue()).append(" ");
-                    }
-                    countQualityView.setText(debugText.toString() + " " + text);
-                }
+                progressBar.setProgress(count + progressIncrement);
 
-                countQualityView.setTextColor(getResources().getColor(R.color.text_primary));
+                qualityChecksDone = count >= Constant.COUNT_QUALITY_CHECK_LIMIT;
+
+//                Debugging: Display count per quality parameter
+//                if (AppPreferences.isDiagnosticMode()) {
+//                    StringBuilder debugText = new StringBuilder();
+//                    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+//                        debugText.append(entry.getKey()).append(": ").append(entry.getValue()).append(" ");
+//                    }
+//                    textMessage.setText(debugText.toString());
+//                }
+
+                textMessage.setTextColor(getResources().getColor(R.color.text_primary));
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -94,17 +116,13 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     }
 
     public void showError(String message) {
-        if (countQualityView != null) {
-            countQualityView.setText(message);
-            countQualityView.setTextColor(getResources().getColor(R.color.error));
+        if (textMessage != null) {
+            textMessage.setText(message);
+            textMessage.setTextColor(getResources().getColor(R.color.error));
         }
     }
 
-    TextView getCountQualityView() {
-        return countQualityView;
-    }
-
-    void setCountQualityView(TextView countQualityView) {
-        this.countQualityView = countQualityView;
+    TextView getTextMessage() {
+        return textMessage;
     }
 }

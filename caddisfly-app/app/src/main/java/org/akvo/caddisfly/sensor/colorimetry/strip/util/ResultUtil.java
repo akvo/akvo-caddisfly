@@ -18,6 +18,8 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -77,6 +79,7 @@ public final class ResultUtil {
     private static final int ARROW_TRIANGLE_HEIGHT = 20;
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
+    private static final int HORIZONTAL_MARGIN = 50;
 
     //
     private ResultUtil() {
@@ -124,7 +127,7 @@ public final class ResultUtil {
         return null;
     }
 
-    public static Bitmap makeBitmap(Mat mat) {
+    public static Bitmap makeBitmap(@NonNull Mat mat) {
         try {
             Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bitmap);
@@ -143,7 +146,8 @@ public final class ResultUtil {
         return null;
     }
 
-    public static Mat createStripMat(Mat mat, Point centerPatch, boolean grouped, int maxWidth) {
+    @NonNull
+    public static Mat createStripMat(@NonNull Mat mat, @NonNull Point centerPatch, boolean grouped, int maxWidth) {
         //done with lab schema, make rgb to show in image view
         // mat holds the strip image
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_Lab2RGB);
@@ -179,6 +183,7 @@ public final class ResultUtil {
         return mat;
     }
 
+    @NonNull
     public static Mat createDescriptionMat(String desc, int width) {
         int[] baseline = new int[1];
         Size textSizeDesc = Imgproc.getTextSize(desc, Core.FONT_HERSHEY_SIMPLEX, TITLE_FONT_SIZE, 1, baseline);
@@ -196,7 +201,8 @@ public final class ResultUtil {
      * @param width  the final width of the Mat
      * @return the created Mat
      */
-    public static Mat createColorRangeMatSingle(JSONArray colors, int width) {
+    @NonNull
+    public static Mat createColorRangeMatSingle(@NonNull JSONArray colors, int width) {
 
         double gutterWidth = X_MARGIN;
         if (colors.length() > 10) {
@@ -264,7 +270,8 @@ public final class ResultUtil {
      * @param width   the width of the Mat to be returned
      * @return the Mat with the color range
      */
-    public static Mat createColorRangeMatGroup(List<StripTest.Brand.Patch> patches, int width) {
+    @NonNull
+    public static Mat createColorRangeMatGroup(@NonNull List<StripTest.Brand.Patch> patches, int width) {
 
         // vertical size of mat: size of color block - X_MARGIN + top distance
 
@@ -320,8 +327,9 @@ public final class ResultUtil {
      * @param width         the width of the mat to be returned
      * @return the Mat with the point or arrow drawn
      */
-    public static Mat createValueMeasuredMatSingle(JSONArray colors, double result,
-                                                   ColorDetected colorDetected, int width) {
+    @NonNull
+    public static Mat createValueMeasuredMatSingle(@NonNull JSONArray colors, double result,
+                                                   @NonNull ColorDetected colorDetected, int width) {
 
         Mat mat = new Mat(MEASURE_LINE_HEIGHT, width, CvType.CV_8UC3, LAB_WHITE);
         double xTranslate = (double) width / (double) colors.length();
@@ -374,8 +382,9 @@ public final class ResultUtil {
      * @param width          the width of the mat to be returned
      * @return the Mat with the point or arrow drawn
      */
-    public static Mat createValueMeasuredMatGroup(JSONArray colors, double result,
-                                                  ColorDetected[] colorsDetected, int width) {
+    @NonNull
+    public static Mat createValueMeasuredMatGroup(@NonNull JSONArray colors, double result,
+                                                  @NonNull ColorDetected[] colorsDetected, int width) {
         int height = COLOR_INDICATOR_SIZE * colorsDetected.length;
         Mat valueMeasuredMat = new Mat(height, width, CvType.CV_8UC3, LAB_WHITE);
         double xTranslate = (double) width / (double) colors.length();
@@ -431,7 +440,8 @@ public final class ResultUtil {
         return valueMeasuredMat;
     }
 
-    public static Mat concatenate(Mat m1, Mat m2) {
+    @NonNull
+    public static Mat concatenate(@NonNull Mat m1, @NonNull Mat m2) {
         int width = Math.max(m1.cols(), m2.cols());
         int height = m1.rows() + m2.rows();
 
@@ -450,7 +460,39 @@ public final class ResultUtil {
         return result;
     }
 
-    public static ColorDetected getPatchColor(Mat mat, Point patchCenter, int subMatSize) {
+    @NonNull
+    public static Mat concatenateHorizontal(@NonNull Mat m1, @NonNull Mat m2) {
+        int width = m1.cols() + m2.cols() + HORIZONTAL_MARGIN;
+        int height = Math.max(m1.rows(), m2.rows());
+
+        Mat result = new Mat(height, width, CvType.CV_8UC3,
+                new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
+
+        // rect works with x, y, width, height
+        Rect roi1 = new Rect(0, 0, m1.cols(), m1.rows());
+        Mat roiMat1 = result.submat(roi1);
+        m1.copyTo(roiMat1);
+
+        Rect roi2 = new Rect(m1.cols() + HORIZONTAL_MARGIN, 0, m2.cols(), m2.rows());
+        Mat roiMat2 = result.submat(roi2);
+        m2.copyTo(roiMat2);
+
+        return result;
+    }
+
+    public static Mat getPatch(@NonNull Mat mat, @NonNull Point patchCenter, int subMatSize) {
+
+        //make a subMat around center of the patch
+        int minRow = (int) Math.round(Math.max(patchCenter.y - subMatSize, 0));
+        int maxRow = (int) Math.round(Math.min(patchCenter.y + subMatSize, mat.height()));
+        int minCol = (int) Math.round(Math.max(patchCenter.x - subMatSize, 0));
+        int maxCol = (int) Math.round(Math.min(patchCenter.x + subMatSize, mat.width()));
+
+        //  create subMat
+        return mat.submat(minRow, maxRow, minCol, maxCol).clone();
+    }
+
+    public static ColorDetected getPatchColor(@NonNull Mat mat, @NonNull Point patchCenter, int subMatSize) {
 
         //make a subMat around center of the patch
         int minRow = (int) Math.round(Math.max(patchCenter.y - subMatSize, 0));
@@ -476,7 +518,8 @@ public final class ResultUtil {
         }
     }
 
-    private static double[][] createInterpolTable(JSONArray colors) {
+    @NonNull
+    private static double[][] createInterpolTable(@NonNull JSONArray colors) {
         JSONArray patchColorValues;
         double resultPatchValueStart, resultPatchValueEnd;
         double[] pointStart;
@@ -533,7 +576,7 @@ public final class ResultUtil {
         return interpolTable;
     }
 
-    public static double calculateResultSingle(double[] colorValues, JSONArray colors, int id) {
+    public static double calculateResultSingle(@Nullable double[] colorValues, @NonNull JSONArray colors, int id) {
         double[][] interpolTable = createInterpolTable(colors);
 
         // determine closest value
@@ -574,7 +617,7 @@ public final class ResultUtil {
     }
 
     public static double calculateResultGroup(double[][] colorsValueLab,
-                                              List<StripTest.Brand.Patch> patches, int id) {
+                                              @NonNull List<StripTest.Brand.Patch> patches, int id) {
 
         double[][][] interpolTables = new double[patches.size()][][];
 

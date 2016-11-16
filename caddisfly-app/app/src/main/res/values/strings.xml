@@ -170,17 +170,14 @@
     <string name="error_conversion">Could not convert image</string>
     <string name="error_cut_out_strip">No strip found</string>
     <string name="error_no_finder_pattern_info">No info about finder patterns</string>
-    <string name="finished">Finish</string>
     <string name="light">Brightness</string>
     <string name="no_data">No data for patch</string>
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
     <string name="prepare_test">Prepare for test</string>
-    <string name="prepare_camera_instr">Do not take a sample yet.\n\nHold camera above color card and adjust position until checks are OK</string>
-    <string name="picture_taken">Picture taken</string>
+    <string name="prepare_camera_instruction">Don\'t take a sample yet. Hold camera above color card and adjust position until check succeeds.</string>
     <string name="ready_for_picture">Ready for picture</string>
     <string name="waiting">Waiting</string>
-    <string name="quality_checks_counter">Quality checks: %1$d of %2$d</string>
     <string name="success_quality_checks">Success! Quality checks passed</string>
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
@@ -190,9 +187,7 @@
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nAt least 5 megapixel camera required.</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="just_a_moment">Just a moment…</string>
-    <string name="information">Information</string>
-    <string name="unableToCompleteQualityChecks">Unable to complete quality checks.</string>
+    <string name="qualityCheckFailed">Quality check failed</string>
     <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
-
-
+    <string name="checking_quality">Checking quality</string>
 </resources>

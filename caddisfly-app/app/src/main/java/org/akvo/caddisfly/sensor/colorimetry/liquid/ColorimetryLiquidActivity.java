@@ -62,6 +62,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
@@ -113,6 +114,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             }
         }
     };
+    private double mResult;
+    private Bitmap mCroppedBitmap;
     private boolean mIsCalibration;
     private double mSwatchValue;
     private int mDilutionLevel = 0;
@@ -579,7 +582,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mWaitingForStillness = false;
         mIsFirstResult = true;
 
-        sound.playShortResource(R.raw.beep);
+        //sound.playShortResource(R.raw.beep);
         mShakeDetector.setMinShakeAcceleration(1);
         mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION_2);
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
@@ -710,73 +713,51 @@ public class ColorimetryLiquidActivity extends BaseActivity
             mTestCompleted = true;
 
             // Get the result
-            double result = SwatchHelper.getAverageResult(mResults);
-
-            // Get the average color across the results
-            int color = SwatchHelper.getAverageColor(mResults);
+            mResult = SwatchHelper.getAverageResult(mResults);
 
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
             // Check if contamination level is too high
-            if (result >= testInfo.getDilutionRequiredLevel() && testInfo.getCanUseDilution()) {
+            if (mResult >= testInfo.getDilutionRequiredLevel() && testInfo.getCanUseDilution()) {
                 mHighLevelsFound = true;
             }
 
             // Calculate final result based on dilution
             switch (mDilutionLevel) {
                 case 1:
-                    result = result * 2;
+                    mResult = mResult * 2;
                     break;
                 case 2:
-                    result = result * 5;
+                    mResult = mResult * 5;
                     break;
                 default:
                     break;
             }
 
             // Format the result
-            String resultText = String.format(Locale.getDefault(), "%.2f", result);
+            String resultText = String.format(Locale.getDefault(), "%.2f", mResult);
 
             // Add 'greater than' symbol if result could be an unknown high value
             if (mHighLevelsFound) {
                 resultText = "> " + resultText;
             }
-
-            // If this is a test and it was successful then build the result to return
-            if (!mIsCalibration && result > -1 || color != Color.TRANSPARENT) {
-                Intent intent = getIntent();
-
-                Intent resultIntent = new Intent(intent);
-                resultIntent.putExtra(SensorConstants.RESULT, resultText);
-                resultIntent.putExtra(SensorConstants.COLOR, color);
-
-                // Save photo taken during the test
-                String resultImageUrl = UUID.randomUUID().toString() + ".png";
-                String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
-
-                ArrayList<String> results = new ArrayList<>();
-                results.add(resultText);
-
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
-
-                resultIntent.putExtra(SensorConstants.IMAGE, path);
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-                // TODO: Remove this when obsolete
-                // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, resultText);
-
-                setResult(Activity.RESULT_OK, resultIntent);
-            }
+            mCroppedBitmap = croppedBitmap;
             // Show the result dialog
-            showResult(data, result, resultText, color);
+            showResult(data, mResult, resultText);
         }
     }
 
-    private void showResult(@NonNull byte[] data, double result, String resultText, int color) {
+    private void showResult(@NonNull byte[] data, double result, String resultText) {
+
+        // Get the average color across the results
+        int color = SwatchHelper.getAverageColor(mResults);
 
         // If calibrating then finish if successful
         if (mIsCalibration && color != Color.TRANSPARENT) {
+
+            Intent resultIntent = new Intent(getIntent());
+            setResult(Activity.RESULT_OK, resultIntent);
+            resultIntent.putExtra(SensorConstants.COLOR, color);
 
             sound.playShortResource(R.raw.done);
             PreferencesUtil.setInt(this, R.string.totalSuccessfulCalibrationsKey,
@@ -900,10 +881,56 @@ public class ColorimetryLiquidActivity extends BaseActivity
     @Override
     public void onSuccessFinishDialog(boolean resultOk) {
         if (resultOk) {
-            finish();
+            setResultIntent();
         } else {
             setResult(RESULT_RESTART_TEST);
-            finish();
+        }
+
+        finish();
+
+    }
+
+    private void setResultIntent() {
+        // Get the average color across the results
+        int color = SwatchHelper.getAverageColor(mResults);
+
+        // If this is a test and it was successful then build the result to return
+        if (!mIsCalibration && (mResult > -1 || color != Color.TRANSPARENT)) {
+            Intent intent = getIntent();
+
+            String resultText = String.format(Locale.getDefault(), "%.2f", mResult);
+
+            // Add 'greater than' symbol if result could be an unknown high value
+            if (mHighLevelsFound) {
+                resultText = "> " + resultText;
+            }
+
+            Intent resultIntent = new Intent(intent);
+            resultIntent.putExtra(SensorConstants.RESULT, resultText);
+            resultIntent.putExtra(SensorConstants.COLOR, color);
+
+            String resultImageUrl = EMPTY_STRING;
+            if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false)) {
+                // Save photo taken during the test
+                resultImageUrl = UUID.randomUUID().toString() + ".png";
+                String path = FileStorage.writeBitmapToExternalStorage(mCroppedBitmap, "/result-images", resultImageUrl);
+                resultIntent.putExtra(SensorConstants.IMAGE, path);
+            }
+
+            ArrayList<String> results = new ArrayList<>();
+            results.add(resultText);
+
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
+
+            resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+
+            // TODO: Remove this when obsolete
+            // Backward compatibility. Return plain text result
+            resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, resultText);
+
+            setResult(Activity.RESULT_OK, resultIntent);
+
         }
     }
 
@@ -991,6 +1018,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             releaseResources();
             if (cancelled) {
                 setResult(Activity.RESULT_CANCELED);
+            } else {
+                setResultIntent();
             }
             finish();
         }

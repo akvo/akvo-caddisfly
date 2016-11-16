@@ -180,7 +180,7 @@ final class TestHelper {
         findButtonInScrollable("useExternalSource");
 
         List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get("useExternalSource")));
-        buttons.get(buttons.size() - 1 - index).click();
+        buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -215,7 +215,7 @@ final class TestHelper {
             }
         }
 
-        mDevice.findObject(By.text("Caddisfly Tests")).click();
+       // mDevice.findObject(By.text("Caddisfly Tests")).click();
     }
 
     public static void enterDiagnosticMode() {

@@ -17,24 +17,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/activity_horizontal_margin"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/text_startIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_weight="0.1"
-        android:background="@android:color/transparent"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:drawableStart="@drawable/unchecked_box"
-        android:gravity="start|center_vertical"
-        android:text="@string/start"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/mediumTextSize" />
+    android:background="#ededed"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp">
 
     <org.akvo.caddisfly.sensor.colorimetry.strip.widget.ProgressIndicatorView
         android:id="@+id/progress_indicator"
@@ -45,33 +31,4 @@
         android:layout_weight="0"
         android:gravity="bottom"
         android:orientation="vertical" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_weight="0.1">
-
-        <ImageView
-            android:id="@+id/image_finishIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/unchecked_box" />
-
-        <TextView
-            android:id="@+id/activity_cameraFinishText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:background="@android:color/transparent"
-            android:text="@string/finished"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/mediumTextSize" />
-    </LinearLayout>
 </LinearLayout>

@@ -25,12 +25,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.ProgressIndicatorView;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -62,6 +62,8 @@ import java.util.List;
  */
 public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
+    private static final int SHADOW_UNKNOWN_VALUE = 101;
+    @Nullable
     private CameraViewListener mListener;
     private List<StripTest.Brand.Patch> patches;
     private ProgressIndicatorView progressIndicatorViewAnim;
@@ -84,15 +86,31 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         public void run() {
 
             if (progressIndicatorViewAnim != null && handler != null) {
-
                 timeLapsed = (int) (Math.floor((System.currentTimeMillis() - initTimeMillis) / 1000d));
-                progressIndicatorViewAnim.setTimeLapsed(timeLapsed);
+                progressIndicatorViewAnim.setTimeLapsed();
                 handler.postDelayed(this, 1000);
+            }
 
+            if (qualityChecksDone) {
+
+                if (patchesCovered < patches.size() - 1) {
+
+                    int secondsLeft = (int) (Math.max(0, patches
+                            .get(patchesCovered + 1).getTimeLapse() - timeLapsed));
+
+                    if (secondsLeft > 0) {
+                        getTextMessage().setText(getString(R.string.waiting) + " "
+                                + PreviewUtil.fromSecondsToMMSS(secondsLeft) + " sec. ");
+                    } else {
+                        getTextMessage().setText(R.string.ready_for_picture);
+                    }
+                } else {
+                    getTextMessage().setText(R.string.ready_for_picture);
+                }
             }
         }
     };
-    //private TextView countQualityView;
+
     private PercentageMeterView exposureView;
     private PercentageMeterView contrastView;
 
@@ -128,8 +146,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
-        setCountQualityView((TextView) rootView.findViewById(R.id.text_startIndicator));
-
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);
@@ -150,27 +166,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 //        });
         // ************* END HACK FOR TESTING ******************
 
-        if (getArguments() != null) {
-
-            uuid = getArguments().getString(Constant.UUID);
-
-            StripTest stripTest = new StripTest();
-            //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(getContext(), uuid).getPatches();
-
-            progressIndicatorViewAnim = (ProgressIndicatorView) rootView.findViewById(R.id.progress_indicator);
-
-            //Add a step per time lapse to progressIndicatorView
-            for (int i = 0; i < patches.size(); i++) {
-
-                //Skip if there is no timeLapse.
-                if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
-                    continue;
-                }
-                progressIndicatorViewAnim.addStep((int) patches.get(i).getTimeLapse());
-            }
-        }
-
         //Prepare handler
         handler = new Handler(Looper.getMainLooper());
 
@@ -179,12 +174,45 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.toggleFlashMode(true);
+                    if (mListener != null) {
+                        mListener.toggleFlashMode(true);
+                    }
                 }
             });
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getArguments() != null) {
+
+            uuid = getArguments().getString(Constant.UUID);
+
+            StripTest stripTest = new StripTest();
+            //get the patches ordered by time-lapse
+            patches = stripTest.getBrand(getContext(), uuid).getPatches();
+
+            progressIndicatorViewAnim = (ProgressIndicatorView) view.findViewById(R.id.progress_indicator);
+
+            //Add a step per time lapse to progressIndicatorView
+            for (int i = 0; i < patches.size(); i++) {
+
+                //Skip if there is no timeLapse.
+                if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
+                    continue;
+                }
+                progressIndicatorViewAnim.addStep((int) patches.get(i).getTimeLapse(), patches.get(i).getDesc());
+            }
+
+            progressBar.setMax(progressBar.getMax() + patches.size());
+        }
+
+        showBrightness(-1);
+        showShadow(SHADOW_UNKNOWN_VALUE);
     }
 
     @Override
@@ -231,7 +259,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    protected void showBrightness(double value) {
+    void showBrightness(double value) {
 
         if (exposureView != null) {
             exposureView.setPercentage((float) (100 - value));
@@ -239,7 +267,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    protected void showShadow(double value) {
+    void showShadow(double value) {
 
         if (contrastView != null) {
             contrastView.setPercentage((float) value);
@@ -291,22 +319,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             //tell CameraActivity when it is time to take the next picture
             //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
-            mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
-        }
-    }
-
-    /*
-    * Update the start button in progressIndicatorView to show green checked box
-    * Update progressIndicatorView to set its property: 'start' to true.
-    * ProgressIndicatorView depends on start == true to draw on its Canvas and to animate its Views
-     */
-    @Override
-    public void goNext() {
-
-        getCountQualityView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked_box, 0, 0, 0);
-
-        if (progressIndicatorViewAnim != null) {
-            progressIndicatorViewAnim.start();
+            if (mListener != null) {
+                mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
+            }
         }
     }
 
@@ -314,6 +329,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     * Update progressIndicatorView with the number of steps that we have a picture of
      */
     private void setStepsTaken(final int number) {
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -399,6 +415,9 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     * @params: format, width, height. Those should be the format, width and height of the Camera.Size
      */
     public boolean dataSent() {
+
+        progressIncrement += 1;
+        progressBar.incrementProgressBy(1);
 
         //check if we do have images for all patches
         if (patchesCovered == patches.size() - 1) {

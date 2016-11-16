@@ -44,7 +44,7 @@
         android:paddingBottom="7dp"
         android:paddingEnd="0sp"
         android:paddingStart="5sp"
-        android:textColor="#5c5c5c"
+        android:textColor="#6c6c6c"
         android:textSize="14sp"
         tools:text="BRAND 23426435" />
 </LinearLayout>

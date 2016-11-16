@@ -22,32 +22,55 @@
     android:background="@android:color/background_light"
     tools:context=".sensor.colorimetry.strip.camera.CameraPrepareFragment">
 
-    <include layout="@layout/partial_quality_meter" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:gravity="center_horizontal"
+        android:max="15"
+        android:progress="10"
+        android:progressDrawable="@drawable/custom_progress_bar"
+        tools:ignore="UnknownIdInLayout" />
 
     <TextView
         android:id="@+id/textMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_qualityMeter"
+        android:layout_below="@+id/progressBar"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:gravity="center_horizontal"
         android:textColor="@android:color/tertiary_text_dark"
         android:textSize="16sp"
         tools:ignore="UnknownIdInLayout"
-        tools:text="Quality checks: 0 out of 15" />
+        tools:text="Checking quality" />
+
+    <include
+        layout="@layout/partial_quality_meter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMessage" />
 
     <TextView
         android:id="@+id/text_prepareInfo"
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textMessage"
-        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"
+        android:background="#ededed"
         android:gravity="center_horizontal"
-        android:lineSpacingExtra="4dp"
-        android:text="@string/prepare_camera_instr"
+        android:lineSpacingExtra="6dp"
+        android:paddingBottom="20dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="20dp"
+        android:text="@string/prepare_camera_instruction"
         android:textColor="@android:color/secondary_text_light"
-        android:textSize="18sp" />
+        android:textSize="15sp"
+        tools:ignore="UnknownIdInLayout" />
 
 </RelativeLayout>
 

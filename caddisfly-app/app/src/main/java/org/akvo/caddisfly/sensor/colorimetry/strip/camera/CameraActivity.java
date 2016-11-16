@@ -240,6 +240,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     public void onPause() {
         releaseResources();
+        if (!isFinishing()) {
+            finish();
+        }
         super.onPause();
     }
 
@@ -311,7 +314,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     @Override
     public void stopPreview() {
-        mCamera.stopPreview();
+        if (mCamera != null) {
+            mCamera.stopPreview();
+        }
     }
 
     @Override
@@ -495,10 +500,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         releaseResources();
 
-        String message = String.format("%s%n%n%s", getString(R.string.unableToCompleteQualityChecks),
-                getString(R.string.tryTestingInAWellLitArea));
-
-        AlertDialog alertDialog = AlertUtil.showAlert(this, R.string.information, message, R.string.ok,
+        AlertDialog alertDialog = AlertUtil.showAlert(this, R.string.qualityCheckFailed,
+                R.string.tryTestingInAWellLitArea, R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -514,13 +517,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     }
 
     private void showResults() {
-        Intent resultIntent = new Intent(this, ResultActivity.class);
-        resultIntent.putExtra(Constant.UUID, uuid);
-        resultIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
+        Intent resultIntent = new Intent(getIntent());
+        resultIntent.setClass(this, ResultActivity.class);
         resultIntent.putExtra(Constant.FORMAT, previewFormat);
         resultIntent.putExtra(Constant.WIDTH, previewWidth);
         resultIntent.putExtra(Constant.HEIGHT, previewHeight);
-
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         startActivity(resultIntent);
         finish();
