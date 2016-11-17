@@ -25,7 +25,7 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 154
+        versionCode 155
         versionName "1.0.0 Beta 5"
         resConfigs "en", "fr"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -94,7 +94,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
     compile 'com.github.felHR85:UsbSerial:4.5'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.5.2'
     testCompile 'org.robolectric:robolectric:3.1.4'

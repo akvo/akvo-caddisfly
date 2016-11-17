@@ -27,6 +27,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
+import org.akvo.caddisfly.widget.TimerView;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -63,6 +67,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private static final String TAG = "CameraActivity";
 
     private static final long CAMERA_PREVIEW_DELAY = 500;
+    private static final int PROGRESS_FADE_DURATION_MILLIS = 4000;
+    private static final int GET_READY_SECONDS = 15;
+    private static final int LONG_TIME = 35;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private boolean torchModeOn = false;
@@ -142,6 +149,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         }
     };
+    private TimerView timerCountdown;
+    private boolean mCameraPaused;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,7 +162,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         finderPatternIndicatorView =
                 (FinderPatternIndicatorView) findViewById(R.id.finder_indicator);
+
         levelView = (LevelView) findViewById(R.id.level_cameraLevel);
+
+        timerCountdown = (TimerView) findViewById(R.id.countdownTimer);
 
         showFinderPatternRunnable = new ShowFinderPatternRunnable();
         showLevelRunnable = new ShowLevelRunnable();
@@ -514,6 +526,75 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void showCountdownTimer(final int value, final double max) {
+
+        // don't show progressbar if it is not showing and only a few seconds left
+        if (timerCountdown.getVisibility() == View.INVISIBLE && value < 8) {
+            return;
+        }
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                timerCountdown.setProgress(value, (int) max);
+
+                if (value > 0) {
+                    timerCountdown.setVisibility(View.VISIBLE);
+
+                    // if long time left turn off the camera preview
+                    if (value > LONG_TIME && !mCameraPaused) {
+                        mCameraPaused = true;
+                        if (cameraPreview != null) {
+                            finderPatternIndicatorView.clearPatterns();
+                            finderPatternIndicatorView.invalidate();
+                            cameraPreview.setVisibility(View.INVISIBLE);
+                        }
+                        stopPreview();
+                    }
+
+                    // start the camera preview again in last few seconds
+                    if (value <= GET_READY_SECONDS && mCameraPaused) {
+                        mCameraPaused = false;
+                        if (cameraPreview != null) {
+                            cameraPreview.setVisibility(View.VISIBLE);
+                        }
+                        mCamera.startPreview();
+                    }
+
+                    if (value == GET_READY_SECONDS && max > 60) {
+                        playSound();
+                    }
+                }
+
+                if (timerCountdown.getAnimation() == null && value <= 3 && value > 0) {
+                    AlphaAnimation animation = new AlphaAnimation(1f, 0);
+                    animation.setDuration(PROGRESS_FADE_DURATION_MILLIS);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            timerCountdown.setAnimation(null);
+                            timerCountdown.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    timerCountdown.startAnimation(animation);
+                }
+            }
+        };
+        handler.post(runnable);
     }
 
     private void showResults() {

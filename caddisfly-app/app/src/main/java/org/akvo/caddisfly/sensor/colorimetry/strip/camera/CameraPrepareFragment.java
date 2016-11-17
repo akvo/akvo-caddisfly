@@ -46,11 +46,11 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
     private static final String TAG = "CameraPrepareFragment";
     private static final int SHADOW_UNKNOWN_VALUE = 101;
+    private final Handler handler = new Handler();
     @Nullable
     private CameraViewListener mListener;
     private WeakReference<PercentageMeterView> wrExposureView;
     private WeakReference<PercentageMeterView> wrContrastView;
-    private final Handler handler = new Handler();
     private long startTime;
     @Nullable
     private final Runnable runnable = new Runnable() {
@@ -146,6 +146,11 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
             mListener.nextFragment();
         }
+    }
+
+    @Override
+    protected void hideProgressBar() {
+
     }
 
     @Override

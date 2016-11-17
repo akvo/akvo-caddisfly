@@ -71,4 +71,6 @@ interface CameraViewListener {
     void showError(String message);
 
     void timeOut();
+
+    void showCountdownTimer(int value, double max);
 }

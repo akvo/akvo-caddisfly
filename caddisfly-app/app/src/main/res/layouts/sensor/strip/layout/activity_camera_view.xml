@@ -14,6 +14,7 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_cameraMainLayout"
     android:layout_width="match_parent"
@@ -54,20 +55,29 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
+
             android:orientation="vertical"
             android:weightSum="1.0">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".4"
-                tools:ignore="UselessLeaf" />
+                android:layout_weight=".3">
+
+                <org.akvo.caddisfly.widget.TimerView
+                    android:id="@+id/countdownTimer"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    app:circleColor="#016ec6" />
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/layout_cameraPlaceholder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".6"
+                android:layout_weight=".7"
                 android:background="@color/orange_background" />
         </LinearLayout>
 

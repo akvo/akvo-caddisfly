@@ -170,4 +170,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    protected void hideProgressBar() {
+
+    }
 }

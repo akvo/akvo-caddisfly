@@ -57,6 +57,7 @@
 
     <!-- StripTest -->
     <color name="jungle_green">#ff2cb673</color>
+    <color name="spring_green">#00dc6e</color>
     <color name="cardinal">#ffBB1A30</color>
 
     <!-- card colors -->

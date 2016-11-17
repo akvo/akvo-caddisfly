@@ -26,8 +26,6 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.Locale;
-
 /**
  * Created by linda on 10/3/15
  */
@@ -119,17 +117,5 @@ public final class PreviewUtil {
 
         // return ratio of horizontal distances top and bottom and ratio of vertical distances left and right
         return new float[]{hDistanceTop / hDistanceBottom, vDistanceLeft / vDistanceRight};
-    }
-
-    @NonNull
-    public static String fromSecondsToMMSS(int seconds) {
-
-        int m = seconds / 60;
-        int s = seconds - (m * 60);
-
-        String mm = m > 0 ? String.format(Locale.US, "%2d", m) + ":" : "";
-        String ss = m > 0 ? String.format(Locale.US, "%02d", s) : String.format(Locale.US, "%2d", s);
-
-        return mm + ss;
     }
 }

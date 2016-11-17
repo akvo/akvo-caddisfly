@@ -79,7 +79,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             throw new IllegalArgumentException("Must implement camera view Listener", e);
         }
 
-        finderPatternColor = ContextCompat.getColor(context, R.color.jungle_green);
+        finderPatternColor = ContextCompat.getColor(context, R.color.spring_green);
 
         possibleCenters = new ArrayList<>();
 
@@ -104,7 +104,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         int titleLevel = 0;
 
         try {
-            if (possibleCenters.size() > 0) {
+            if (possibleCenters != null && possibleCenters.size() > 0) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object

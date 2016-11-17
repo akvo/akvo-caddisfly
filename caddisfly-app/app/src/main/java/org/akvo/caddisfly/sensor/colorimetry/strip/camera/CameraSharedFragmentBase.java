@@ -38,7 +38,6 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
     private static final String TAG = "CamSharedFragmentBase";
     ProgressBar progressBar;
-    int progressIncrement = 0;
     boolean qualityChecksDone;
     private TextView textMessage;
     private int previousQualityCount = 0;
@@ -95,9 +94,11 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
                 previousQualityCount = count;
 
-                progressBar.setProgress(count + progressIncrement);
-
-                qualityChecksDone = count >= Constant.COUNT_QUALITY_CHECK_LIMIT;
+                progressBar.setProgress(count);
+                if (!qualityChecksDone && count >= Constant.COUNT_QUALITY_CHECK_LIMIT) {
+                    hideProgressBar();
+                    qualityChecksDone = true;
+                }
 
 //                Debugging: Display count per quality parameter
 //                if (AppPreferences.isDiagnosticMode()) {
@@ -114,6 +115,8 @@ public abstract class CameraSharedFragmentBase extends Fragment {
             Log.e(TAG, e.getMessage(), e);
         }
     }
+
+    protected abstract void hideProgressBar();
 
     public void showError(String message) {
         if (textMessage != null) {

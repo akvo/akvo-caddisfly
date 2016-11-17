@@ -25,12 +25,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.PreviewUtil;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.ProgressIndicatorView;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -62,6 +63,8 @@ import java.util.List;
  */
 public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
+    private static final int GET_READY_SECONDS = 15;
+    private static final int PROGRESS_FADE_DURATION_MILLIS = 3000;
     private static final int SHADOW_UNKNOWN_VALUE = 101;
     @Nullable
     private CameraViewListener mListener;
@@ -92,17 +95,22 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             }
 
             if (qualityChecksDone) {
-
                 if (patchesCovered < patches.size() - 1) {
+                    if (mListener != null) {
+                        int secondsLeft = (int) (Math.max(0, patches.get(patchesCovered + 1).getTimeLapse() - timeLapsed));
 
-                    int secondsLeft = (int) (Math.max(0, patches
-                            .get(patchesCovered + 1).getTimeLapse() - timeLapsed));
+                        if (secondsLeft > GET_READY_SECONDS) {
+                            getTextMessage().setText(getString(R.string.waiting));
+                        } else if (secondsLeft <= 1) {
+                            getTextMessage().setText(R.string.ready_for_picture);
+                        } else {
+                            getTextMessage().setText(getString(R.string.get_ready));
+                        }
 
-                    if (secondsLeft > 0) {
-                        getTextMessage().setText(getString(R.string.waiting) + " "
-                                + PreviewUtil.fromSecondsToMMSS(secondsLeft) + " sec. ");
-                    } else {
-                        getTextMessage().setText(R.string.ready_for_picture);
+                        mListener.showCountdownTimer(secondsLeft,
+                                patches.get(patchesCovered + 1).getTimeLapse()
+                                        - (patchesCovered >= 0 ? patches.get(patchesCovered).getTimeLapse() : 0));
+
                     }
                 } else {
                     getTextMessage().setText(R.string.ready_for_picture);
@@ -110,7 +118,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             }
         }
     };
-
     private PercentageMeterView exposureView;
     private PercentageMeterView contrastView;
 
@@ -208,7 +215,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
                 progressIndicatorViewAnim.addStep((int) patches.get(i).getTimeLapse(), patches.get(i).getDesc());
             }
 
-            progressBar.setMax(progressBar.getMax() + patches.size());
+            //progressBar.setMax(progressBar.getMax() + patches.size());
         }
 
         showBrightness(-1);
@@ -272,6 +279,29 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         if (contrastView != null) {
             contrastView.setPercentage((float) value);
         }
+    }
+
+    @Override
+    protected void hideProgressBar() {
+        AlphaAnimation animation = new AlphaAnimation(1f, 0);
+        animation.setDuration(PROGRESS_FADE_DURATION_MILLIS);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                progressBar.setAlpha(0);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        progressBar.startAnimation(animation);
     }
 
     /*
@@ -416,8 +446,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
      */
     public boolean dataSent() {
 
-        progressIncrement += 1;
-        progressBar.incrementProgressBy(1);
+        //progressIncrement += 1;
+        //progressBar.incrementProgressBy(1);
 
         //check if we do have images for all patches
         if (patchesCovered == patches.size() - 1) {

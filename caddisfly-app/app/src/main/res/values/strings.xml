@@ -177,7 +177,8 @@
     <string name="prepare_test">Prepare for test</string>
     <string name="prepare_camera_instruction">Don\'t take a sample yet. Hold camera above color card and adjust position until check succeeds.</string>
     <string name="ready_for_picture">Ready for picture</string>
-    <string name="waiting">Waiting</string>
+    <string name="get_ready">Get ready</string>
+    <string name="waiting">Waiting…</string>
     <string name="success_quality_checks">Success! Quality checks passed</string>
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>

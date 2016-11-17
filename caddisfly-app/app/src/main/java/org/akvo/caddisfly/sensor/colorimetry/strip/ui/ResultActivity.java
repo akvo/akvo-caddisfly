@@ -350,6 +350,8 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 return null;
             }
 
+            patchDescription = patches.get(patchNum).getDesc();
+
             if (invalid) {
                 if (!mat.empty()) {
                     //done with lab schema, make rgb to show in image view
@@ -364,8 +366,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             Mat analyzedArea = null;
             Mat patchArea = null;
 
-            // get the name and unit of the patch
-            patchDescription = patches.get(patchNum).getDesc();
             unit = patches.get(patchNum).getUnit();
             id = patches.get(patchNum).getId();
 
@@ -644,6 +644,8 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                         textResult.setText(R.string.no_result);
                         invalid = true;
                     }
+                } else {
+                    textResult.setText(R.string.no_result);
                 }
             } else {
                 textTitle.append("\n\n" + getResources().getString(R.string.no_data));

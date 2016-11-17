@@ -56,6 +56,10 @@ public class FinderPatternIndicatorView extends SurfaceView {
         paint.setColor(Color.RED);
     }
 
+    public void clearPatterns() {
+        this.patterns = null;
+    }
+
     public void showPatterns(List<FinderPattern> patternList, @Nullable Camera.Size size) {
 
         patterns = patternList;
@@ -63,7 +67,6 @@ public class FinderPatternIndicatorView extends SurfaceView {
         this.height = size == null ? 0 : size.height;
 
         invalidate();
-
     }
 
     public void setColor(int color) {
