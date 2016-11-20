@@ -17,15 +17,24 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.model.TestStatus;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 import java.util.Map;
@@ -37,28 +46,62 @@ import java.util.Map;
 public abstract class CameraSharedFragmentBase extends Fragment {
 
     private static final String TAG = "CamSharedFragmentBase";
-    ProgressBar progressBar;
-    boolean qualityChecksDone;
-    private TextView textMessage;
+
+    private static final int PROGRESS_FADE_DURATION_MILLIS = 3000;
+    private static final long INITIAL_DELAY_MILLIS = 200;
+    private TestStatus status = TestStatus.CHECKING_QUALITY;
+    private TextSwitcher textSwitcher;
+    private ProgressBar progressBar;
     private int previousQualityCount = 0;
     private long lastQualityIncrementTime;
 
+    TestStatus getStatus() {
+        return status;
+    }
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textMessage = (TextView) view.findViewById(R.id.textMessage);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         if (progressBar != null) {
             progressBar.setMax(Constant.COUNT_QUALITY_CHECK_LIMIT);
             progressBar.setProgress(0);
         }
-        if (textMessage != null) {
-            textMessage.setText(R.string.checking_quality);
+
+        textSwitcher = (TextSwitcher) view.findViewById(R.id.textSwitcher);
+
+        if (textSwitcher != null) {
+
+            textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+                private TextView textView;
+                private boolean isFirst = true;
+
+                @Override
+                public View makeView() {
+
+                    if (isFirst) {
+                        isFirst = false;
+                        textView = (TextView) view.findViewById(R.id.textMessage1);
+                        ((ViewGroup) textView.getParent()).removeViewAt(0);
+                    } else {
+                        textView = (TextView) view.findViewById(R.id.textMessage2);
+                        ((ViewGroup) textView.getParent()).removeViewAt(0);
+                    }
+                    return textView;
+                }
+            });
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textSwitcher.setText(getString(R.string.detecting_color_card));
+                }
+            }, INITIAL_DELAY_MILLIS);
         }
     }
 
-    // track the last a single quality check was successful
+    // track the last time a single quality check was successful
     long getLastQualityIncrementTime() {
         return lastQualityIncrementTime;
     }
@@ -78,15 +121,16 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     public void displayCountQuality(@NonNull Map<String, Integer> countMap) {
 
         try {
-            if (textMessage != null) {
-                int count = 0;
+            int count = 0;
 
-                // Each parameter counts for 1/3 towards the final count shown.
-                for (int i : countMap.values()) {
-                    count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
-                }
+            // Each parameter counts for 1/3 towards the final count shown.
+            for (int i : countMap.values()) {
+                count += Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT / countMap.size(), i);
+            }
 
-                count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+            count = Math.max(0, Math.min(Constant.COUNT_QUALITY_CHECK_LIMIT, count));
+
+            if (status != TestStatus.QUALITY_CHECK_DONE) {
 
                 if (count > previousQualityCount) {
                     lastQualityIncrementTime = System.currentTimeMillis();
@@ -95,10 +139,15 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 previousQualityCount = count;
 
                 progressBar.setProgress(count);
-                if (!qualityChecksDone && count >= Constant.COUNT_QUALITY_CHECK_LIMIT) {
+
+                if (count >= Constant.COUNT_QUALITY_CHECK_LIMIT) {
                     hideProgressBar();
-                    qualityChecksDone = true;
+                    status = TestStatus.QUALITY_CHECK_DONE;
+                } else if (count > 0) {
+                    showMessage(R.string.checking_quality);
+                    status = TestStatus.CHECKING_QUALITY;
                 }
+            }
 
 //                Debugging: Display count per quality parameter
 //                if (AppPreferences.isDiagnosticMode()) {
@@ -109,23 +158,47 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 //                    textMessage.setText(debugText.toString());
 //                }
 
-                textMessage.setTextColor(getResources().getColor(R.color.text_primary));
-            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
     }
 
-    protected abstract void hideProgressBar();
-
     public void showError(String message) {
-        if (textMessage != null) {
-            textMessage.setText(message);
-            textMessage.setTextColor(getResources().getColor(R.color.error));
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    void showMessage(@StringRes int id) {
+        showMessage(getString(id));
+    }
+
+    void showMessage(final String message) {
+        if (!((TextView) textSwitcher.getCurrentView()).getText().equals(message)) {
+            textSwitcher.setText(message);
         }
     }
 
-    TextView getTextMessage() {
-        return textMessage;
+    private void clearProgress() {
+        progressBar.setProgress(0);
+    }
+
+    private void hideProgressBar() {
+        AlphaAnimation animation = new AlphaAnimation(1f, 0);
+        animation.setDuration(PROGRESS_FADE_DURATION_MILLIS);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                clearProgress();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

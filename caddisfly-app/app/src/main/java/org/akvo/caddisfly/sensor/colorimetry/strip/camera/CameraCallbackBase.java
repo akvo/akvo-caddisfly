@@ -104,7 +104,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         int titleLevel = 0;
 
         try {
-            if (possibleCenters != null && possibleCenters.size() > 0) {
+            if (possibleCenters != null && possibleCenters.size() == 4) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -324,7 +324,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 patternInfo = finderPatternFinder.find(null);
                 possibleCenters = finderPatternFinder.getPossibleCenters();
 
-                //detect centers that are to small in order to get rid of noise
+                //detect centers that are too small in order to get rid of noise
                 for (int i = 0; i < possibleCenters.size(); i++) {
                     if (possibleCenters.get(i).getEstimatedModuleSize() < 2) {
                         return null;

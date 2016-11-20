@@ -38,6 +38,8 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static android.graphics.Typeface.BOLD;
+
 /**
  * Activities that contain this fragment must implement the
  * {@link CameraViewListener} interface
@@ -91,7 +93,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
             StripTest stripTest = new StripTest();
             JSONArray instructions = stripTest.getBrand(getContext(), uuid).getInstructions();
 
-            showInstruction(linearLayout, getString(R.string.success_quality_checks), Typeface.BOLD);
+            showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
 
             if (instructions != null) {
                 try {
@@ -146,6 +148,10 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                 getResources().getDisplayMetrics()), 1.0f);
 
         textView.setTypeface(null, style);
+        if (style == BOLD) {
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(R.dimen.titleTextSize));
+        }
 
         String text = instruction.replaceAll(">", "");
         if (!text.isEmpty()) {
@@ -171,8 +177,4 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         mListener = null;
     }
 
-    @Override
-    protected void hideProgressBar() {
-
-    }
 }

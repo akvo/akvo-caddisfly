@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 
@@ -64,7 +65,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
                     && currentTime - getLastQualityIncrementTime() > Constant.TIMEOUT_PREPARE_EXTEND) {
                 if (mListener != null) {
                     mListener.stopPreview();
-                    mListener.timeOut();
+                    mListener.timeOut(getStatus());
                 }
             } else {
                 handler.postDelayed(this, 1000);
@@ -97,7 +98,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         wrContrastView = new WeakReference<>(contrastView);
 
         //use brightness view as a button to switch on and off the flash
-        if (exposureView != null) {
+        if (AppPreferences.isDiagnosticMode() && exposureView != null) {
             exposureView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -146,11 +147,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
             mListener.nextFragment();
         }
-    }
-
-    @Override
-    protected void hideProgressBar() {
-
     }
 
     @Override

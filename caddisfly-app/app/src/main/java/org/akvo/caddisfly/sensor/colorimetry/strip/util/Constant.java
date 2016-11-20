@@ -46,9 +46,10 @@ public final class Constant {
     public static final String CALIBRATION_INFO = "calibration_info_key";
     public static final String DISTANCE_INFO = "distance_info_key";
     public static final int MIN_CAMERA_MEGA_PIXELS = 5;
-    public static final int TIMEOUT_PREPARE = 30000;
+    public static final int TIMEOUT_PREPARE = 20000;
     public static final int TIMEOUT_PREPARE_EXTEND = 10000;
     public static final String SEND_IMAGE_IN_RESULT = "send_image";
+    public static final int GET_READY_SECONDS = 12;
     static final int MAX_COLOR_DISTANCE = 18;
     static final double CONTRAST_DEVIATION_FRACTION = 0.05;
     static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;

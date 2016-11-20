@@ -12,6 +12,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "background": "#4540D2",
       "patches": [
         {
           "patchDesc":"Total Chlorine",
@@ -94,6 +95,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "background": "#60bbc2",
       "patches": [
         {
           "patchDesc":"Nitrate Nitrogen",
@@ -180,6 +182,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "background": "#F97B1A",
       "patches": [
         {
           "patchDesc":"Total iron",
@@ -232,6 +235,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "background": "#60bbc2",
       "patches": [
         {
           "patchDesc":"pH",
@@ -280,6 +284,7 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
+      "background": "#60bbc2",
       "patches": [
         {
           "patchDesc":"Phosphate",
@@ -362,45 +367,41 @@
     {
       "name": "Potassium",
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
-      "calibration": "measured on __-__-2016 using X-Rite iPro2",
+      "calibration": "measured on 18-11-2016 using X-Rite iPro2",
       "brand": "MERCK 117985",
       "numPatch": 1,
       "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
-      "length": 82.6,
-      "height": 5.2,
+      "length": 74,
+      "height": 6,
       "unit": "mm",
       "experimental": "true",
       "patches": [
         {
           "patchDesc":"Potassium",
-          "patchPos":3.3,
-          "patchWidth":6,
+          "patchPos":4.5,
+          "patchWidth":7,
           "id":1,
           "colours":[
             {
               "value": 0,
-              "lab":[84.37,8.38,71.80]
+              "lab":[78.90,12.62,47.41]
             },
             {
               "value": 250,
-              "lab":[76.42,22.99,64.42]
+              "lab":[73.59,24.18,53.73]
             },
             {
               "value": 450,
-              "lab":[66.45,43.10,60.47]
+              "lab":[65.05,41.19,55.50]
             },
             {
               "value": 700,
-              "lab":[59.96,57.48,48.66]
+              "lab":[59.62,50.94,54.60]
             },
             {
               "value": 1000,
-              "lab":[55.90,66.17,49.19]
-            },
-            {
-              "value": 1500,
-              "lab":[52.94,72.47,47.83]
+              "lab":[53.77,58.94,52.64]
             }
           ],
           "timeLapse":0,
@@ -634,6 +635,7 @@
       "length": 74.3,
       "height": 5.8,
       "unit": "mm",
+      "background": "#60bbc2",
       "patches": [
         {
           "patchDesc":"pH",

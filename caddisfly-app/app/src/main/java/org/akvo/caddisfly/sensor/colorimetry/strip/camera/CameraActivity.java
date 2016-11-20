@@ -16,8 +16,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -28,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
@@ -35,16 +34,16 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.model.TestStatus;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.LevelView;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.akvo.caddisfly.widget.TimerView;
@@ -68,7 +67,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private static final int PROGRESS_FADE_DURATION_MILLIS = 4000;
-    private static final int GET_READY_SECONDS = 15;
     private static final int LONG_TIME = 35;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
@@ -158,6 +156,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         setContentView(R.layout.activity_camera_view);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         sound = new SoundPoolPlayer(this);
 
         finderPatternIndicatorView =
@@ -203,34 +203,13 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             try {
                 wrCamera = new WeakReference<>(mCamera);
 
-                if (ApiUtil.getMaxSupportedMegaPixelsByCamera(mCamera) < Constant.MIN_CAMERA_MEGA_PIXELS) {
-                    AlertUtil.askQuestion(this, R.string.warning, R.string.camera_not_good,
-                            R.string.continue_anyway, R.string.cancel, true,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    previewLayout.removeAllViews();
-                                    if (cameraPreview != null) {
-                                        previewLayout.addView(cameraPreview);
-                                    } else {
-                                        finish();
-                                    }
-                                }
-                            },
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            });
+                previewLayout.removeAllViews();
+                if (cameraPreview != null) {
+                    previewLayout.addView(cameraPreview);
                 } else {
-                    previewLayout.removeAllViews();
-                    if (cameraPreview != null) {
-                        previewLayout.addView(cameraPreview);
-                    } else {
-                        finish();
-                    }
+                    finish();
                 }
+
             } catch (Exception e) {
                 Log.e(TAG, "Could not start preview");
             }
@@ -508,24 +487,30 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     }
 
     @Override
-    public void timeOut() {
+    public void timeOut(TestStatus status) {
 
         releaseResources();
 
-        AlertDialog alertDialog = AlertUtil.showAlert(this, R.string.qualityCheckFailed,
-                R.string.tryTestingInAWellLitArea, R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }, null, null);
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                finish();
-            }
-        });
+        int title;
+        switch (status) {
+            case CHECKING_QUALITY:
+                title = R.string.color_card_not_found;
+                break;
+            case QUALITY_CHECK_DONE:
+                if (qualityCountMap.get("B") < 5) {
+                    title = R.string.better_light_required;
+                } else {
+                    title = R.string.shadows_detected;
+                }
+                break;
+            default:
+                title = R.string.qualityCheckFailed;
+        }
+
+        Intent intent = new Intent(getIntent());
+        intent.putExtra(SensorConstants.ERROR, title);
+        setResult(100, intent);
+        finish();
     }
 
     @Override
@@ -557,7 +542,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                     }
 
                     // start the camera preview again in last few seconds
-                    if (value <= GET_READY_SECONDS && mCameraPaused) {
+                    if (value <= Constant.GET_READY_SECONDS && mCameraPaused) {
                         mCameraPaused = false;
                         if (cameraPreview != null) {
                             cameraPreview.setVisibility(View.VISIBLE);
@@ -565,7 +550,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                         mCamera.startPreview();
                     }
 
-                    if (value == GET_READY_SECONDS && max > 60) {
+                    if (value == Constant.GET_READY_SECONDS && max > 60) {
                         playSound();
                     }
                 }
@@ -626,10 +611,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
             } catch (IOException e) {
                 showError(e.getMessage());
             }

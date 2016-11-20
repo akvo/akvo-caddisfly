@@ -14,21 +14,13 @@
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ededed"
-    android:orientation="vertical"
-    android:paddingBottom="20dp"
-    android:paddingTop="20dp">
+<resources>
 
-    <org.akvo.caddisfly.sensor.colorimetry.strip.widget.ProgressIndicatorView
-        android:id="@+id/progress_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_weight="0"
-        android:gravity="bottom"
-        android:orientation="vertical" />
-</LinearLayout>
+    <string name="errorTestFailed">Color does not match any calibrated colors. Check chamber placement</string>
+    <string name="start_camera_instruction">Place the strip in the black area on the color card and hold camera above the card to analyze.</string>
+    <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above color card and adjust position until check succeeds.</string>
+    <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
+    <string name="detecting_color_card">Looking for color card</string>
+    <string name="color_card_not_found">Color card not found</string>
+
+</resources>

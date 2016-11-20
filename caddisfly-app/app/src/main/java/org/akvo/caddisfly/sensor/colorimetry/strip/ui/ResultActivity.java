@@ -45,7 +45,6 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.detect.DetectStripTask;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.ResultUtil;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.FileUtil;
@@ -73,8 +72,8 @@ import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 
 public class ResultActivity extends BaseActivity implements DetectStripListener {
 
+    private static final Scalar GREEN_COLOR = new Scalar(0, 255, 0);
     private static final String TAG = "ResultActivity";
-
     private static final int MAX_RGB_INT_VALUE = 255;
     private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
     private final JSONObject resultJsonObj = new JSONObject();
@@ -104,7 +103,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false) && resultImage != null) {
 
                         // store image on sd card
-                        path = FileStorage.writeBitmapToExternalStorage(
+                        path = FileUtil.writeBitmapToExternalStorage(
                                 ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
                         intent.putExtra(SensorConstants.IMAGE, path);
 
@@ -219,7 +218,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         // get the JSON describing the images of the patches that were stored before
         JSONArray imagePatchArray = null;
         try {
-            String json = FileStorage.readFromInternalStorage(this, Constant.IMAGE_PATCH);
+            String json = FileUtil.readFromInternalStorage(this, Constant.IMAGE_PATCH);
             if (json != null) {
                 imagePatchArray = new JSONArray(json);
             }
@@ -241,7 +240,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     array = imagePatchArray.getJSONArray(0);
                     int imageNo = array.getInt(0);
 
-                    boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
+                    boolean isInvalidStrip = FileUtil.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
                     strip = ResultUtil.getMatFromFile(this, imageNo);
                     if (strip != null) {
                         // create empty mat to serve as a template
@@ -261,7 +260,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
                         // get the image number from the json array
                         int imageNo = array.getInt(0);
-                        boolean isInvalidStrip = FileStorage.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
+                        boolean isInvalidStrip = FileUtil.fileExists(this, Constant.STRIP + imageNo + Constant.ERROR);
 
                         // read strip from file
                         strip = ResultUtil.getMatFromFile(this, imageNo);
@@ -296,10 +295,10 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
-                FileStorage.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.INFO);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.DATA);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
+                FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
             } catch (IOException e) {
                 showError(e.getMessage());
             }
@@ -429,8 +428,14 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
                             CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
-                    patchArea = ResultUtil.getPatch(mat, patchCenter, (strip.height() / 2) + 4);
-                    Imgproc.cvtColor(patchArea, patchArea, Imgproc.COLOR_Lab2RGB);
+                    Mat clonedMat = mat.clone();
+                    Imgproc.cvtColor(clonedMat, clonedMat, Imgproc.COLOR_Lab2RGB);
+                    Imgproc.rectangle(clonedMat,
+                            new Point(patchCenter.x - subMatSize - 1, patchCenter.y - subMatSize - 1),
+                            new Point(patchCenter.x + subMatSize, patchCenter.y + subMatSize),
+                            GREEN_COLOR, 1, Imgproc.LINE_AA, 0);
+
+                    patchArea = ResultUtil.getPatch(clonedMat, patchCenter, (strip.height() / 2) + 4);
 
                     Imgproc.resize(patchArea, patchArea,
                             new Size(Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE) + MAT_SIZE_MULTIPLIER,
@@ -541,8 +546,8 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     resultJsonObj.put(SensorConstants.RESULT, resultJsonArr);
 
                     //TESTING write image string to external storage
-                    //FileStorage.writeLogToSDFile("base64.txt", img, false);
-//                    FileStorage.writeLogToSDFile("json.txt", resultJsonObj.toString(), false);
+                    //FileUtil.writeLogToSDFile("base64.txt", img, false);
+//                    FileUtil.writeLogToSDFile("json.txt", resultJsonObj.toString(), false);
 
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage(), e);
@@ -606,23 +611,18 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                         String diagnosticInfo = PreferencesUtil.getString(
                                 CaddisflyApp.getApp().getApplicationContext(), Constant.DIAGNOSTIC_INFO, "");
 
-                        String resultJson = "\"type\" : \"" + String.format(Locale.getDefault(),
-                                "%s", patchDescription) + "\",";
+                        String resultJson = String.format(Locale.getDefault(), "\"type\" : \"%s\",", patchDescription);
 
-                        resultJson += "\"color\" : \"" + String.format(Locale.getDefault(),
-                                "%s", colorDetected.getLab()) + "\",";
+                        resultJson += String.format(Locale.getDefault(), "\"color\" : \"%s\",", colorDetected.getLab());
 
-                        resultJson += "\"result\" : \"" + String.format(Locale.getDefault(),
-                                "%.2f", resultValue) + "\",";
+                        resultJson += String.format(Locale.getDefault(), "\"result\" : \"%.2f\",", resultValue);
 
-                        resultJson += "\"version\" : \"" + String.format(Locale.getDefault(),
-                                "%s", CaddisflyApp.getAppVersion()) + "\",";
+                        resultJson += String.format(Locale.getDefault(), "\"version\" : \"%s\",", CaddisflyApp.getAppVersion());
 
-                        resultJson += "\"phone\" : \"" + String.format(Locale.getDefault(),
-                                "%s", Build.MODEL.replace("_", "-")) + "\",";
+                        resultJson += String.format(Locale.getDefault(), "\"phone\" : \"%s\",", Build.MODEL);
 
-                        resultJson += "\"colorCard\" : \"" + String.format(Locale.getDefault(),
-                                "%s", String.valueOf(CalibrationCard.getMostFrequentVersionNumber())) + "\",";
+                        resultJson += String.format(Locale.getDefault(), "\"colorCard\" : \"%s\"",
+                                String.valueOf(CalibrationCard.getMostFrequentVersionNumber()));
 
                         diagnosticInfo = diagnosticInfo.replace("{Result}", resultJson);
 

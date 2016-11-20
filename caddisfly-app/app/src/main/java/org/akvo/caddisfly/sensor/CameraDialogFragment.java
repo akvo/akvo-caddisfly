@@ -380,10 +380,15 @@ public class CameraDialogFragment extends CameraDialog {
 
             // set preview size and make any resize, rotate or reformatting changes here
             // start preview with new settings
-            Camera.Parameters parameters = mCamera.getParameters();
-            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-            mCamera.setParameters(parameters);
-            mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
+            try {
+                Camera.Parameters parameters = mCamera.getParameters();
+                parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+                mCamera.setParameters(parameters);
+                mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+
             try {
                 mCamera.setPreviewDisplay(mHolder);
             } catch (IOException e) {

@@ -249,7 +249,6 @@ public class CalibrateListActivity extends BaseActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivityForResult(intent, REQUEST_CALIBRATE);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 

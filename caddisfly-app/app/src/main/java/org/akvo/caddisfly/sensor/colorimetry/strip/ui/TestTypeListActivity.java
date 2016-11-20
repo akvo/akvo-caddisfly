@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.json.JSONException;
 
 import java.util.Collections;
@@ -67,7 +69,7 @@ public class TestTypeListActivity extends BaseActivity {
             //order alpha-numeric on brand
             Collections.sort(brands, new Comparator<StripTest.Brand>() {
                 @Override
-                public int compare(final StripTest.Brand object1, final StripTest.Brand object2) {
+                public int compare(@NonNull final StripTest.Brand object1, @NonNull final StripTest.Brand object2) {
                     return object1.getName().compareToIgnoreCase(object2.getName());
                 }
             });
@@ -99,12 +101,18 @@ public class TestTypeListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) {
+
             Intent intent = new Intent(getIntent());
             setResult(resultCode, intent);
 
             if (resultCode == RESULT_OK) {
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
                 intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
+            } else {
+                if (data != null && data.hasExtra(SensorConstants.ERROR)) {
+                    AlertUtil.showAlert(this, data.getIntExtra(SensorConstants.ERROR, R.string.qualityCheckFailed),
+                            R.string.tryTestingInAWellLitArea, R.string.ok, null, null, null);
+                }
             }
 
             // If an external activity is expecting the result then finish
@@ -115,7 +123,7 @@ public class TestTypeListActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -131,17 +139,16 @@ public class TestTypeListActivity extends BaseActivity {
 
         private final List<StripTest.Brand> brandList;
         private final int resource;
+        @NonNull
         private final Context context;
-        private final StripTest stripTest;
 
         @SuppressWarnings("SameParameterValue")
-        StripAdapter(Context context, int resource, List<StripTest.Brand> brandNames) {
+        StripAdapter(@NonNull Context context, int resource, List<StripTest.Brand> brandNames) {
             super(context, resource);
 
             this.context = context;
             this.resource = resource;
             this.brandList = brandNames;
-            this.stripTest = new StripTest();
         }
 
         @Override
@@ -151,7 +158,7 @@ public class TestTypeListActivity extends BaseActivity {
 
         @NonNull
         @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
             View view = convertView;
             ViewHolder holder;
@@ -167,40 +174,35 @@ public class TestTypeListActivity extends BaseActivity {
 
             StripTest.Brand brand = brandList.get(position);
 
-            if (stripTest != null) {
+            if (brand != null) {
 
-                if (brand != null) {
+                // for display purposes sort patches by position on the strip
+                List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
 
-                    // for display purposes sort patches by position on the strip
-                    List<StripTest.Brand.Patch> patches = brand.getPatchesSortedByPosition();
-
-                    // display the range in the description
-                    if (patches != null && patches.size() > 0) {
-                        StringBuilder ranges = new StringBuilder();
-                        for (StripTest.Brand.Patch patch : patches) {
-                            try {
-                                int valueCount = patch.getColors().length();
-                                if (ranges.length() > 0) {
-                                    ranges.append(", ");
-                                }
-                                ranges.append(String.format(Locale.US, "%.0f - %.0f",
-                                        patch.getColors().getJSONObject(0).getDouble(SensorConstants.VALUE),
-                                        patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
-
-                            } catch (JSONException e) {
-                                Log.e(TAG, e.getMessage(), e);
+                // display the range in the description
+                if (patches != null && patches.size() > 0) {
+                    StringBuilder ranges = new StringBuilder();
+                    for (StripTest.Brand.Patch patch : patches) {
+                        try {
+                            int valueCount = patch.getColors().length();
+                            if (ranges.length() > 0) {
+                                ranges.append(", ");
                             }
-                            if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
-                                break;
-                            }
+                            ranges.append(String.format(Locale.US, "%.0f - %.0f",
+                                    patch.getColors().getJSONObject(0).getDouble(SensorConstants.VALUE),
+                                    patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
+
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage(), e);
                         }
-
-                        holder.textView.setText(brand.getName());
-                        holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
+                        if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
+                            break;
+                        }
                     }
+
+                    holder.textView.setText(brand.getName());
+                    holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
                 }
-            } else {
-                holder.textView.setText(brand.getName());
             }
             return view;
 
@@ -208,10 +210,12 @@ public class TestTypeListActivity extends BaseActivity {
 
         private static class ViewHolder {
 
+            @NonNull
             private final TextView textView;
+            @NonNull
             private final TextView textSubtitle;
 
-            ViewHolder(View v) {
+            ViewHolder(@NonNull View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
                 textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);

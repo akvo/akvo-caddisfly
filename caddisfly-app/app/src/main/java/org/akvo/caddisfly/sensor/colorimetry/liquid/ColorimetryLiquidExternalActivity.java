@@ -63,7 +63,6 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
@@ -71,6 +70,7 @@ import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONObject;
@@ -800,7 +800,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
             // Save photo taken during the test
             String resultImageUrl = UUID.randomUUID().toString() + ".png";
-            String path = FileStorage.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
+            String path = FileUtil.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
 
             ArrayList<String> results = new ArrayList<>();
             results.add(resultText);

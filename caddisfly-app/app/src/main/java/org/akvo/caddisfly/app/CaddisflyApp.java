@@ -212,10 +212,11 @@ public class CaddisflyApp extends Application {
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
 
-        locale = new Locale(languageCode);
+        locale = new Locale(languageCode, Locale.getDefault().getCountry());
 
         //if the app language is not already set to languageCode then set it now
-        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
+        if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(languageCode)
+                || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
             config.locale = locale;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

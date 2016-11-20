@@ -93,6 +93,7 @@ public class StripTest {
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
         private final String uuid;
+//        private String background;
         private String name;
         private String brandDescription;
         private String image;
@@ -127,6 +128,7 @@ public class StripTest {
                                     brandDescription = strip.getString("brand");
                                     image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ", "-");
                                     imageScale = strip.has("imageScale") ? strip.getString("imageScale") : "";
+//                                    background = strip.has("background") ? strip.getString("background") : "#00000000";
 
                                     JSONArray patchesArray = strip.getJSONArray("patches");
                                     for (int ii = 0; ii < patchesArray.length(); ii++) {
@@ -246,6 +248,10 @@ public class StripTest {
         public String getImageScale() {
             return imageScale;
         }
+
+//        public String getBackground() {
+//            return background;
+//        }
 
         public class Patch {
             private final int id;

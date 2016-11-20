@@ -20,7 +20,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.akvo.caddisfly.util.detector.FinderPatternInfoToJson;
 
@@ -49,9 +49,9 @@ class StoreDataTask extends AsyncTask<Void, Void, Boolean> {
     // The data here is still in the original YUV preview format.
     @Override
     protected Boolean doInBackground(Void... params) {
-        FileStorage.writeByteArray(context, data, Constant.DATA + imageCount);
+        FileUtil.writeByteArray(context, data, Constant.DATA + imageCount);
         String json = FinderPatternInfoToJson.toJson(info);
-        FileStorage.writeToInternalStorage(context, Constant.INFO + imageCount, json);
+        FileUtil.writeToInternalStorage(context, Constant.INFO + imageCount, json);
         return true;
     }
 

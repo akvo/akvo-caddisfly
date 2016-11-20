@@ -39,6 +39,7 @@ public final class SensorConstants {
     public static final int DEGREES_180 = 180;
     public static final String LANGUAGE = "language";
     public static final String QUESTION_TITLE = "questionTitle";
+    public static final String ERROR = "error";
 
     private SensorConstants() {
     }

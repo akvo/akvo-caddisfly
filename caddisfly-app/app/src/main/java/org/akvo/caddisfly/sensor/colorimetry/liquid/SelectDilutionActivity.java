@@ -86,7 +86,6 @@ public class SelectDilutionActivity extends BaseActivity {
         }
         intent.putExtra("dilution", dilution);
         startActivityForResult(intent, REQUEST_TEST);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override

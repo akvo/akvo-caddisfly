@@ -31,8 +31,8 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.CalibrationResultData;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.FileStorage;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.OpenCVUtil;
+import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,7 +110,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
         Mat labStrip; // Mat for detected strip
 
         try {
-            String json = FileStorage.readFromInternalStorage(context, Constant.IMAGE_PATCH);
+            String json = FileUtil.readFromInternalStorage(context, Constant.IMAGE_PATCH);
             imagePatchArray = new JSONArray(json);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -132,7 +132,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
                         listener.showMessage();
 
-                        byte[] data = FileStorage.readByteArray(context, Constant.DATA + imageNo);
+                        byte[] data = FileUtil.readByteArray(context, Constant.DATA + imageNo);
                         if (data == null) {
                             throw new IOException();
                         }
@@ -176,8 +176,8 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                        Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
 //                        Utils.matToBitmap(rgb, bitmap);
 //
-//                        //if (FileStorage.isExternalStorageWritable()) {
-//                        FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
+//                        //if (FileUtil.isExternalStorageWritable()) {
+//                        FileUtil.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + ".png");
                         //}
 //                            //Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
 //                        }
@@ -213,8 +213,8 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                            Imgproc.cvtColor(calibrationMat, rgb, Imgproc.COLOR_Lab2RGB);
 //                            Bitmap bitmap = Bitmap.createBitmap(rgb.width(), rgb.height(), Bitmap.Config.ARGB_8888);
 //                            Utils.matToBitmap(rgb, bitmap);
-//                            if (FileStorage.isExternalStorageWritable()) {
-//                                FileStorage.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + "_cal.png");
+//                            if (FileUtil.isExternalStorageWritable()) {
+//                                FileUtil.writeBitmapToExternalStorage(bitmap, "/warp", UUID.randomUUID().toString() + "_cal.png");
 //                            }
 //                            //Bitmap.createScaledBitmap(bitmap, BITMAP_SCALED_WIDTH, BITMAP_SCALED_HEIGHT, false);
 //                        }
@@ -265,14 +265,14 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 labStrip.get(0, 0, matByteArray);
 
                                 // pack cols and rows into byte arrays
-                                byte[] rows = FileStorage.leIntToByteArray(labStrip.rows());
-                                byte[] cols = FileStorage.leIntToByteArray(labStrip.cols());
+                                byte[] rows = FileUtil.leIntToByteArray(labStrip.rows());
+                                byte[] cols = FileUtil.leIntToByteArray(labStrip.cols());
 
                                 // append them to the end of the array, in order rows, cols
                                 System.arraycopy(matByteArray, 0, payload, 0, dataSize);
                                 System.arraycopy(rows, 0, payload, dataSize, 4);
                                 System.arraycopy(cols, 0, payload, dataSize + 4, 4);
-                                FileStorage.writeByteArray(context, payload, Constant.STRIP + i + error);
+                                FileUtil.writeByteArray(context, payload, Constant.STRIP + i + error);
                             } catch (Exception e) {
                                 Log.e(TAG, e.getMessage(), e);
                             }
@@ -316,7 +316,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 
     private void warp(@NonNull Mat labImg, int i) throws IOException, JSONException {
 
-        String jsonInfo = FileStorage.readFromInternalStorage(context, Constant.INFO + i);
+        String jsonInfo = FileUtil.readFromInternalStorage(context, Constant.INFO + i);
         if (jsonInfo == null) {
             throw new IOException("no finder pattern info");
         }

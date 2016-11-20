@@ -45,7 +45,6 @@ public final class ApiUtil {
     private static final String TAG = "ApiUtil";
 
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
-    private static final float ONE_MILLION = 1000000f;
     @Nullable
     private static String uniqueID = null;
 
@@ -174,25 +173,5 @@ public final class ApiUtil {
             }
         }
         return true;
-    }
-
-    public static double getMaxSupportedMegaPixelsByCamera(Camera camera) {
-        double maxPixels = 0;
-
-        try {
-            // make sure the camera is not in use
-            if (camera != null) {
-                Camera.Parameters allParams = camera.getParameters();
-                for (Camera.Size pictureSize : allParams.getSupportedPictureSizes()) {
-                    double sizeInMegaPixel = Math.ceil((pictureSize.width * pictureSize.height) / ONE_MILLION);
-                    if (sizeInMegaPixel > maxPixels) {
-                        maxPixels = sizeInMegaPixel;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-        return maxPixels;
     }
 }

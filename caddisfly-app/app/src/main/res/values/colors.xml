@@ -50,7 +50,6 @@
     <color name="akvo_dark_blue_dark">#252363</color>
 
     <color name="error_background">#2afac900</color>
-    <color name="error">#ff0000</color>
     <color name="destructive">#ff0000</color>
     <color name="diagnostic">#ff0000</color>
     <color name="diagnostic_status">#e20101</color>

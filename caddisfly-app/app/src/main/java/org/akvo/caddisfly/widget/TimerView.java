@@ -17,33 +17,35 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 /**
  * Countdown timer view.
- *
+ * <p>
  * based on: https://github.com/maxwellforest/blog_android_timer
  */
 public class TimerView extends View {
 
+    private static final int BACKGROUND_COLOR = Color.argb(120, 180, 180, 200);
     private static final int ERASES_COLOR = Color.argb(180, 40, 40, 40);
     private static final int FINISH_ARC_COLOR = Color.argb(255, 0, 245, 120);
     private static final int ARC_START_ANGLE = 270; // 12 o'clock
     private static final float THICKNESS_SCALE = 0.1f;
-    private static final int TEXT_SIZE = 80;
-    private static final int GET_READY_SECONDS = 15;
     @NonNull
     private final Paint mCirclePaint;
     @NonNull
     private final Paint mArcPaint;
     private final Rect rectangle = new Rect();
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    private RectF mCircleOuterBounds;
-    private RectF mCircleInnerBounds;
     @NonNull
     private final Paint mEraserPaint;
     @NonNull
     private final Paint mTextPaint;
+    private final Paint mCircleBackgroundPaint;
+    private final Paint mSubTextPaint;
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
+    private RectF mCircleOuterBounds;
+    private RectF mCircleInnerBounds;
     private float mCircleSweepAngle = -1;
     private float mCircleFinishAngle = -1;
     private float mProgress;
@@ -74,7 +76,18 @@ public class TimerView extends View {
         mTextPaint.setColor(Color.WHITE);
         Typeface typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
         mTextPaint.setTypeface(typeface);
-        mTextPaint.setTextSize(TEXT_SIZE);
+        mTextPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.progressTextSize));
+
+        mSubTextPaint = new Paint();
+        mSubTextPaint.setAntiAlias(true);
+        mSubTextPaint.setColor(Color.LTGRAY);
+        Typeface subTypeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+        mSubTextPaint.setTypeface(subTypeface);
+        mSubTextPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.progressSubTextSize));
+
+        mCircleBackgroundPaint = new Paint();
+        mCircleBackgroundPaint.setAntiAlias(true);
+        mCircleBackgroundPaint.setColor(BACKGROUND_COLOR);
 
         mCirclePaint = new Paint();
         mCirclePaint.setAntiAlias(true);
@@ -115,6 +128,9 @@ public class TimerView extends View {
 
             String text = String.valueOf((int) mProgress);
             mTextPaint.getTextBounds(text, 0, text.length(), rectangle);
+            float width = mTextPaint.measureText(text);
+
+            mCanvas.drawArc(mCircleOuterBounds, ARC_START_ANGLE, 360, true, mCircleBackgroundPaint);
 
             if (mCircleSweepAngle > mCircleFinishAngle) {
                 mCanvas.drawArc(mCircleOuterBounds, ARC_START_ANGLE, mCircleSweepAngle, true, mCirclePaint);
@@ -124,8 +140,16 @@ public class TimerView extends View {
             }
 
             mCanvas.drawOval(mCircleInnerBounds, mEraserPaint);
-            mCanvas.drawText(text, (canvas.getWidth() - Math.abs(rectangle.width())) / 2F,
-                    (canvas.getHeight() + Math.abs(rectangle.height())) / 2F, mTextPaint);
+            mCanvas.drawText(text, (canvas.getWidth() - width) / 2f,
+                    ((canvas.getHeight() + Math.abs(rectangle.height())) / 2f) - 10, mTextPaint);
+
+            int mainTextHeight = rectangle.height();
+
+            String subText = getContext().getString(R.string.seconds);
+            width = mSubTextPaint.measureText(subText);
+            mSubTextPaint.getTextBounds(subText, 0, subText.length(), rectangle);
+            mCanvas.drawText(subText, (canvas.getWidth() - width) / 2f,
+                    ((canvas.getHeight() + Math.abs(rectangle.height())) / 2f) + mainTextHeight - 10, mSubTextPaint);
         }
 
         canvas.drawBitmap(mBitmap, 0, 0, null);
@@ -138,7 +162,7 @@ public class TimerView extends View {
 
     private void drawProgress(float progress, float max) {
         mCircleSweepAngle = (progress * 360) / max;
-        mCircleFinishAngle = (GET_READY_SECONDS * 360) / max;
+        mCircleFinishAngle = (Constant.GET_READY_SECONDS * 360) / max;
         invalidate();
     }
 

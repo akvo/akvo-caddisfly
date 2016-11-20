@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -13,6 +14,9 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 public final class CameraHelper {
 
+    private static final String TAG = "CameraHelper";
+
+    private static final float ONE_MILLION = 1000000f;
     private static boolean hasCameraFlash;
 
     private CameraHelper() {
@@ -94,4 +98,40 @@ public final class CameraHelper {
         }
         return hasCameraFlash;
     }
+
+    public static int getMaxSupportedMegaPixelsByCamera(Context context) {
+
+        int cameraMegaPixels = 0;
+
+        if (PreferencesUtil.containsKey(context, R.string.cameraMegaPixelsKey)) {
+            cameraMegaPixels = PreferencesUtil.getInt(context, R.string.cameraMegaPixelsKey, 0);
+        } else {
+
+            Camera camera = ApiUtil.getCameraInstance();
+            try {
+
+                // make sure the camera is not in use
+                if (camera != null) {
+                    Camera.Parameters allParams = camera.getParameters();
+                    for (Camera.Size pictureSize : allParams.getSupportedPictureSizes()) {
+                        int sizeInMegaPixel = (int) Math.ceil((pictureSize.width * pictureSize.height) / ONE_MILLION);
+                        if (sizeInMegaPixel > cameraMegaPixels) {
+                            cameraMegaPixels = sizeInMegaPixel;
+                        }
+                    }
+                }
+
+                PreferencesUtil.setInt(context, R.string.cameraMegaPixelsKey, cameraMegaPixels);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+            } finally {
+                if (camera != null) {
+                    camera.release();
+                }
+            }
+        }
+        return cameraMegaPixels;
+    }
+
 }

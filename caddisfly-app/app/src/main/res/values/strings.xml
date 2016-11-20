@@ -85,7 +85,7 @@
     <!--Test Progress Screen-->
     <string name="placeDevice">Place device face down on a flat surface</string>
     <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
-    <string name="errorTestFailed">Color does not match any calibrated colors. Check chamber placement</string>
+    <string name="errorTestFailed">Colour does not match any calibrated colours. Check chamber placement</string>
 
     <!--Result Screen-->
     <string name="result">Result</string>
@@ -175,20 +175,29 @@
     <string name="instructions">Instructions</string>
     <string name="contrast">Shadows</string>
     <string name="prepare_test">Prepare for test</string>
-    <string name="prepare_camera_instruction">Don\'t take a sample yet. Hold camera above color card and adjust position until check succeeds.</string>
-    <string name="ready_for_picture">Ready for picture</string>
-    <string name="get_ready">Get ready</string>
-    <string name="waiting">Waiting…</string>
-    <string name="success_quality_checks">Success! Quality checks passed</string>
+    <string name="start_camera_instruction">Place the strip in the black area on the colour card and hold camera above the card to analyse.</string>
+    <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above colour card and adjust position until check succeeds.</string>
+    <string name="taking_photo">Taking photo</string>
+    <string name="waiting_for">Waiting for %s</string>
+    <string name="success_quality_checks">Success! Quality check passed</string>
     <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="stripTest">Strip Test</string>
     <string name="no_result">No result</string>
-    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nAt least 5 megapixel camera required.</string>
+    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="just_a_moment">Just a moment…</string>
     <string name="qualityCheckFailed">Quality check failed</string>
-    <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
-    <string name="checking_quality">Checking quality</string>
+    <string name="tryTestingInAWellLitArea">Place the colour card in an area with good light and no shadows and try again.</string>
+    <string name="checking_quality">Checking light quality</string>
+    <string name="seconds">Sec.</string>
+    <string name="detecting_color_card">Looking for colour card</string>
+    <string name="ready_for_photo">Ready for photo</string>
+    <string name="color_card_not_found">Colour card not found</string>
+    <string name="shadows_detected">Shadows/reflections detected</string>
+    <string name="better_light_required">Better light required</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="stop_test">Stop test</string>
+
 </resources>

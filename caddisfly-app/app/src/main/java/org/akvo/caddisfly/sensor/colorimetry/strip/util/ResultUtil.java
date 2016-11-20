@@ -28,6 +28,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.ColorDetected;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +58,7 @@ public final class ResultUtil {
     private static final String TAG = "ResultUtil";
 
     private static final int BORDER_SIZE = 10;
-    private static final int MEASURE_LINE_HEIGHT = 60;
+    private static final int MEASURE_LINE_HEIGHT = 55;
     private static final int MIN_COLOR_LABEL_WIDTH = 50;
     private static final int COLOR_INDICATOR_SIZE = 40;
     private static final double TITLE_FONT_SIZE = 0.8d;
@@ -90,14 +91,14 @@ public final class ResultUtil {
         String fileName = Constant.STRIP + imageNo;
 
         //if in DetectStripTask, no strip was found, an image was saved with the String Constant.ERROR
-        if (FileStorage.fileExists(context, fileName + Constant.ERROR)) {
+        if (FileUtil.fileExists(context, fileName + Constant.ERROR)) {
             fileName += Constant.ERROR;
         }
 
         // read the Mat object from internal storage
         byte[] data;
         try {
-            data = FileStorage.readByteArray(context, fileName);
+            data = FileUtil.readByteArray(context, fileName);
 
             if (data != null) {
                 // determine cols and rows dimensions
@@ -108,8 +109,8 @@ public final class ResultUtil {
                 System.arraycopy(data, length - 8, rows, 0, 4);
                 System.arraycopy(data, length - 4, cols, 0, 4);
 
-                int rowsNum = FileStorage.byteArrayToLeInt(rows);
-                int colsNum = FileStorage.byteArrayToLeInt(cols);
+                int rowsNum = FileUtil.byteArrayToLeInt(rows);
+                int colsNum = FileUtil.byteArrayToLeInt(cols);
 
                 // remove last part
                 byte[] imgData = Arrays.copyOfRange(data, 0, data.length - 8);
@@ -354,10 +355,10 @@ public final class ResultUtil {
                             SINGLE_MEASURE_LINE_TOP_MARGIN);
 
                     MatOfPoint matOfPoint = new MatOfPoint(
-                            new Point((circleCenter.x - ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH),
-                            new Point((circleCenter.x + ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH),
-                            new Point(circleCenter.x, circleCenter.y + ARROW_TRIANGLE_LENGTH * 2),
-                            new Point((circleCenter.x - ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH));
+                            new Point((circleCenter.x - ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH - 2),
+                            new Point((circleCenter.x + ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH - 2),
+                            new Point(circleCenter.x, (circleCenter.y + ARROW_TRIANGLE_LENGTH * 2) - 2),
+                            new Point((circleCenter.x - ARROW_TRIANGLE_LENGTH), circleCenter.y + ARROW_TRIANGLE_LENGTH - 2));
 
                     Imgproc.fillConvexPoly(mat, matOfPoint, resultColor);
 
