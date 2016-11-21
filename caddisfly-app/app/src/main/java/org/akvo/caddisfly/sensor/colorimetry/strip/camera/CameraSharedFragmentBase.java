@@ -49,7 +49,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
     private static final int PROGRESS_FADE_DURATION_MILLIS = 3000;
     private static final long INITIAL_DELAY_MILLIS = 200;
-    private TestStatus status = TestStatus.CHECKING_QUALITY;
+    private TestStatus status = TestStatus.DETECTING_COLOR_CARD;
     private TextSwitcher textSwitcher;
     private ProgressBar progressBar;
     private int previousQualityCount = 0;

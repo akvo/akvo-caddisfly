@@ -621,7 +621,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
                         resultJson += String.format(Locale.getDefault(), "\"phone\" : \"%s\",", Build.MODEL);
 
-                        resultJson += String.format(Locale.getDefault(), "\"colorCard\" : \"%s\"",
+                        resultJson += String.format(Locale.getDefault(), "\"colorCard\" : \"%s\",",
                                 String.valueOf(CalibrationCard.getMostFrequentVersionNumber()));
 
                         diagnosticInfo = diagnosticInfo.replace("{Result}", resultJson);

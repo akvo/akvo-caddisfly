@@ -493,10 +493,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         int title;
         switch (status) {
-            case CHECKING_QUALITY:
+            case DETECTING_COLOR_CARD:
                 title = R.string.color_card_not_found;
                 break;
-            case QUALITY_CHECK_DONE:
+            case CHECKING_QUALITY:
                 if (qualityCountMap.get("B") < 5) {
                     title = R.string.better_light_required;
                 } else {
