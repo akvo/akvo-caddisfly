@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.util;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +28,8 @@ import java.util.Locale;
  * Utility functions for date and time
  */
 public final class DateUtil {
+
+    private static final String TAG = "DateUtil";
 
     private DateUtil() {
     }
@@ -42,8 +46,8 @@ public final class DateUtil {
             return 0;
         }
 
-        return (int) ((calendar2.getTimeInMillis() -
-                calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
+        return (int) ((calendar2.getTimeInMillis()
+                - calendar1.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
 
     /**
@@ -58,8 +62,8 @@ public final class DateUtil {
             return 0;
         }
 
-        return (int) ((calendar2.getTimeInMillis() -
-                calendar1.getTimeInMillis()) / (1000 * 60 * 60));
+        return (int) ((calendar2.getTimeInMillis()
+                - calendar1.getTimeInMillis()) / (1000 * 60 * 60));
     }
 
 
@@ -73,7 +77,7 @@ public final class DateUtil {
         try {
             return simpleDateFormat.parse(dateString.trim());
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return null;
     }

@@ -28,7 +28,10 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
+
+import java.util.Locale;
 
 public class SelectDilutionActivity extends BaseActivity {
     private static final int REQUEST_TEST = 1;
@@ -45,8 +48,8 @@ public class SelectDilutionActivity extends BaseActivity {
         Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
 
         //todo: remove hardcoding of dilution times
-        percentButton1.setText(String.format(getString(R.string.timesDilution), 2));
-        percentButton2.setText(String.format(getString(R.string.timesDilution), 5));
+        percentButton1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
+        percentButton2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
 
         noDilutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,15 +75,17 @@ public class SelectDilutionActivity extends BaseActivity {
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         Configuration conf = getResources().getConfiguration();
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
-
     }
 
     private void startTest(int dilution) {
         final Intent intent = new Intent(getIntent());
-        intent.setClass(getBaseContext(), AlignmentActivity.class);
+        if (AppPreferences.useExternalCamera()) {
+            intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+        } else {
+            intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+        }
         intent.putExtra("dilution", dilution);
         startActivityForResult(intent, REQUEST_TEST);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override
@@ -92,8 +97,10 @@ public class SelectDilutionActivity extends BaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Intent intent = new Intent(data);
                     this.setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    finish();
                 }
-                finish();
                 break;
             default:
         }

@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -35,34 +36,38 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * The calibrated swatches and values for each test type
  */
 class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
+    private static final float SMALL_FONT_SIZE = .6f;
+    @NonNull
     private final Activity activity;
     private final boolean mDisplayDecimal;
 
-    public CalibrationsAdapter(Activity activity, Swatch[] rangeArray, boolean displayDecimal) {
+    CalibrationsAdapter(@NonNull Activity activity, @NonNull Swatch[] rangeArray, boolean displayDecimal) {
         super(activity, R.layout.row_calibrate, rangeArray);
         this.activity = activity;
         mDisplayDecimal = displayDecimal;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         @SuppressLint("ViewHolder")
         View rowView = inflater.inflate(R.layout.row_calibrate, parent, false);
 
-        ArrayList<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
+        List<Swatch> swatches = CaddisflyApp.getApp().getCurrentTestInfo().getSwatches();
         Swatch swatch = swatches.get(position);
 
-        TextView textUnit = (TextView) rowView.findViewById(R.id.textUnit);
+        TextView textName = (TextView) rowView.findViewById(R.id.textName);
         TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
 
         int color = swatch.getColor();
@@ -70,25 +75,25 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         //display unit value
         Spannable word;
         if (mDisplayDecimal) {
-            word = new SpannableString(String.format("%.2f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%.2f ", swatch.getValue()));
         } else {
-            word = new SpannableString(String.format("%.0f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%.0f ", swatch.getValue()));
         }
-        textUnit.setText(word);
+        textName.setText(word);
 
         //append the unit
         Spannable wordTwo = new SpannableString(CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
 
-        wordTwo.setSpan(new ForegroundColorSpan(Color.argb(255, 80, 80, 80)), 0, wordTwo.length(),
+        wordTwo.setSpan(new ForegroundColorSpan(Color.GRAY), 0, wordTwo.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        wordTwo.setSpan(new RelativeSizeSpan(.6f), 0, wordTwo.length(), 0);
+        wordTwo.setSpan(new RelativeSizeSpan(SMALL_FONT_SIZE), 0, wordTwo.length(), 0);
 
-        textUnit.append(wordTwo);
+        textName.append(wordTwo);
 
         if (color == Color.TRANSPARENT || color == Color.BLACK) {
             //not calibrated so just show a '?' instead of color
-            textSwatch.setBackgroundColor(Color.argb(0, 10, 10, 10));
+            textSwatch.setBackgroundColor(Color.TRANSPARENT);
             textSwatch.setText("?");
         } else {
             //show the calibrated color
@@ -110,8 +115,8 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
                 float[] colorHSV = new float[3];
                 Color.colorToHSV(color, colorHSV);
-                textHsv.setText(String.format("h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[1]));
-                textBrightness.setText(String.format("d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
+                textHsv.setText(String.format(Locale.getDefault(), "h: %.0f  %.2f  %.2f", colorHSV[0], colorHSV[1], colorHSV[2]));
+                textBrightness.setText(String.format(Locale.getDefault(), "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
                 textRgb.setVisibility(View.VISIBLE);
                 textHsv.setVisibility(View.VISIBLE);
                 textBrightness.setVisibility(View.VISIBLE);

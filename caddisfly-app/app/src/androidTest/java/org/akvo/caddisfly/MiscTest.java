@@ -18,13 +18,14 @@ package org.akvo.caddisfly;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -51,28 +52,27 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.enterDiagnosticMode;
+import static org.akvo.caddisfly.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.getActivityInstance;
-import static org.akvo.caddisfly.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.TestUtil.sleep;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MiscTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
-    //private UiDevice mDevice;
 
     @BeforeClass
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            loadData(mCurrentLanguage);
 
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
@@ -82,6 +82,9 @@ public class MiscTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
+
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
@@ -180,7 +183,6 @@ public class MiscTest {
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-//        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -198,7 +200,7 @@ public class MiscTest {
 
         onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
 
-        onView(withId(R.id.buttonStart)).perform(click());
+        //onView(withId(R.id.buttonStart)).perform(click());
 
         final Activity activity = getActivityInstance();
         activity.runOnUiThread(new Runnable() {
@@ -217,6 +219,57 @@ public class MiscTest {
         onView(withId(android.R.id.button1)).perform(click());
 
         goToMainScreen();
+
+    }
+
+    @Test
+    public void testRestartAppDuringAnalysis() {
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("TEST 123#*@!"), closeSoftKeyboard());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(2025, 8, 25));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+
+        //onView(withId(R.id.buttonStart)).perform(click());
+
+        mDevice.pressHome();
+
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        sleep(2000);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.click(mDevice.getDisplayWidth() / 2, (mDevice.getDisplayHeight() / 2) + 300);
+
+        mDevice.waitForWindowUpdate("", 1000);
+
+        //clickListViewItem("Automated Tests");
+
+        clickListViewItem("test caddisfly");
 
     }
 }

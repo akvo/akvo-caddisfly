@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,55 +35,58 @@ import org.akvo.caddisfly.R;
 /**
  * Utility functions to show alert messages
  */
-public class AlertUtil {
+@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
+public final class AlertUtil {
 
-    public static void showMessage(Context context, @StringRes int title, @StringRes int message) {
+    private AlertUtil() {
+    }
+
+    public static void showMessage(@NonNull Context context, @StringRes int title, @StringRes int message) {
         showAlert(context, title, message, null, null, null);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static void showMessage(Context context, @StringRes int title, String message) {
+    public static void showMessage(@NonNull Context context, @StringRes int title, String message) {
         showAlert(context, title, message, null, null, null);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static void askQuestion(Context context, @StringRes int title, @StringRes int message,
+    public static void askQuestion(@NonNull Context context, @StringRes int title, @StringRes int message,
                                    @StringRes int okButtonText, @StringRes int cancelButtonText,
                                    boolean isDestructive,
                                    DialogInterface.OnClickListener positiveListener,
-                                   DialogInterface.OnCancelListener cancelListener) {
+                                   @Nullable DialogInterface.OnClickListener cancelListener) {
+
+        if (cancelListener == null) {
+            cancelListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            };
+        }
+
         showAlert(context, context.getString(title), context.getString(message), okButtonText,
-                cancelButtonText, true, isDestructive, positiveListener,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }, cancelListener);
+                cancelButtonText, true, isDestructive, positiveListener, cancelListener, null);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, @StringRes int title, String message,
-                                 @StringRes int okButtonText,
-                                 DialogInterface.OnClickListener positiveListener,
-                                 DialogInterface.OnClickListener negativeListener,
-                                 DialogInterface.OnCancelListener cancelListener) {
-        showAlert(context, context.getString(title), message, okButtonText, R.string.cancel,
+    public static AlertDialog showAlert(@NonNull Context context, @StringRes int title, String message,
+                                        @StringRes int okButtonText,
+                                        DialogInterface.OnClickListener positiveListener,
+                                        DialogInterface.OnClickListener negativeListener,
+                                        DialogInterface.OnCancelListener cancelListener) {
+        return showAlert(context, context.getString(title), message, okButtonText, R.string.cancel,
                 true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, @StringRes int title, @StringRes int message,
-                                 @StringRes int okButtonText,
-                                 DialogInterface.OnClickListener positiveListener,
-                                 DialogInterface.OnClickListener negativeListener,
-                                 DialogInterface.OnCancelListener cancelListener) {
-        showAlert(context, context.getString(title), context.getString(message), okButtonText,
+    public static AlertDialog showAlert(@NonNull Context context, @StringRes int title, @StringRes int message,
+                                                               @StringRes int okButtonText,
+                                                               DialogInterface.OnClickListener positiveListener,
+                                                               DialogInterface.OnClickListener negativeListener,
+                                                               DialogInterface.OnCancelListener cancelListener) {
+        return showAlert(context, context.getString(title), context.getString(message), okButtonText,
                 R.string.cancel, true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static void showAlert(Context context, @StringRes int title, @StringRes int message,
+    public static void showAlert(@NonNull Context context, @StringRes int title, @StringRes int message,
                                  DialogInterface.OnClickListener positiveListener,
                                  DialogInterface.OnClickListener negativeListener,
                                  DialogInterface.OnCancelListener cancelListener) {
@@ -90,8 +95,7 @@ public class AlertUtil {
                 true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private static void showAlert(Context context, @StringRes int title, String message,
+    private static void showAlert(@NonNull Context context, @StringRes int title, String message,
                                   DialogInterface.OnClickListener positiveListener,
                                   DialogInterface.OnClickListener negativeListener,
                                   DialogInterface.OnCancelListener cancelListener) {
@@ -111,12 +115,11 @@ public class AlertUtil {
      * @param negativeListener cancel button listener
      * @return the alert dialog
      */
-    @SuppressWarnings("SameParameterValue")
-    private static AlertDialog showAlert(final Context context, String title, String message,
+    private static AlertDialog showAlert(@NonNull final Context context, String title, String message,
                                          @StringRes int okButtonText, @StringRes int cancelButtonText,
                                          boolean cancelable, boolean isDestructive,
-                                         DialogInterface.OnClickListener positiveListener,
-                                         DialogInterface.OnClickListener negativeListener,
+                                         @Nullable DialogInterface.OnClickListener positiveListener,
+                                         @Nullable DialogInterface.OnClickListener negativeListener,
                                          DialogInterface.OnCancelListener cancelListener) {
 
         AlertDialog.Builder builder;
@@ -140,7 +143,7 @@ public class AlertUtil {
         } else if (negativeListener == null) {
             builder.setNegativeButton(okButtonText, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
                 }
             });
@@ -170,11 +173,10 @@ public class AlertUtil {
      * @param negativeListener cancel button listener
      * @return the alert dialog
      */
-    @SuppressWarnings("SameParameterValue")
     @SuppressLint("InflateParams")
-    public static AlertDialog showError(Context context, @StringRes int title, String message, Bitmap bitmap,
-                                        @StringRes int okButtonText, DialogInterface.OnClickListener positiveListener,
-                                        DialogInterface.OnClickListener negativeListener,
+    public static AlertDialog showError(@NonNull Context context, @StringRes int title, String message, @Nullable Bitmap bitmap,
+                                        @StringRes int okButtonText, @Nullable DialogInterface.OnClickListener positiveListener,
+                                        @Nullable DialogInterface.OnClickListener negativeListener,
                                         DialogInterface.OnCancelListener cancelListener) {
 
         if (bitmap == null) {

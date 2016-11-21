@@ -16,7 +16,7 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
-public class ColorimetryLiquidConfig {
+public final class ColorimetryLiquidConfig {
 
     /**
      * Width and height of cropped image
@@ -34,5 +34,9 @@ public class ColorimetryLiquidConfig {
      * Tolerance at which a calibrated color is valid when compared to expected color
      */
     public static final int MAX_VALID_CALIBRATION_TOLERANCE = 250;
+    public static final int MAX_COLOR_DISTANCE_RGB = 40;
+
+    private ColorimetryLiquidConfig() {
+    }
 
 }

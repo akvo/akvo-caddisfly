@@ -19,13 +19,15 @@ package org.akvo.caddisfly.preference;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
-import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * Static functions to get or set values of various preferences
  */
-public class AppPreferences {
+public final class AppPreferences {
+
+    private AppPreferences() {
+    }
 
     public static boolean isDiagnosticMode() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
@@ -54,20 +56,20 @@ public class AppPreferences {
     public static int getColorDistanceTolerance() {
         if (isDiagnosticMode()) {
             return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    R.string.colorDistanceToleranceKey, String.valueOf(ColorUtil.MAX_COLOR_DISTANCE_RGB)));
+                    R.string.colorDistanceToleranceKey, String.valueOf(ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB)));
         } else {
-            return ColorUtil.MAX_COLOR_DISTANCE_RGB;
+            return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
         }
     }
 
     public static boolean isSoundOff() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
     }
 
     public static boolean getShowDebugMessages() {
-        return isDiagnosticMode() &&
-                PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
 
     //Diagnostic in user mode
@@ -76,8 +78,28 @@ public class AppPreferences {
     }
 
     //Diagnostic in user mode
+    public static boolean getExternalCameraMultiDeviceMode() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.externalCameraMultiDeviceModeKey, false);
+    }
+
+    //Diagnostic in user mode
     public static boolean isSaveImagesOn() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
+    }
+
+    public static boolean useExternalCamera() {
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useExternalCameraKey, false);
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean useFlashMode() {
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
+    }
+
+    public static boolean ignoreStripTestDelay() {
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreStripTestDelayKey, false);
     }
 
 }

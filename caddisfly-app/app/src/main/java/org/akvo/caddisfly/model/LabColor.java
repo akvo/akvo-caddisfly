@@ -17,12 +17,12 @@
 package org.akvo.caddisfly.model;
 
 public class LabColor {
-    public final double L;
+    public final double l;
     public final double a;
     public final double b;
 
     public LabColor(double l, double a, double b) {
-        this.L = l;
+        this.l = l;
         this.a = a;
         this.b = b;
     }

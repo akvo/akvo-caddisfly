@@ -28,6 +28,9 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 public class AboutActivity extends BaseActivity {
 
+    private static final int CHANGE_MODE_MIN_CLICKS = 10;
+    private int clickCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +60,9 @@ public class AboutActivity extends BaseActivity {
         });
 
         TextView textVersion = (TextView) findViewById(R.id.textVersion);
-        textVersion.setText(CaddisflyApp.getAppVersion(this));
+        textVersion.setText(CaddisflyApp.getAppVersion());
 
         textVersion.setOnClickListener(new View.OnClickListener() {
-            int clickCount = 0;
 
             @Override
             public void onClick(View view) {
@@ -68,7 +70,7 @@ public class AboutActivity extends BaseActivity {
                     clickCount++;
 
                     //Turn on diagnostic mode if the user clicks on the version text 10 times
-                    if (clickCount > 9) {
+                    if (clickCount >= CHANGE_MODE_MIN_CLICKS) {
                         clickCount = 0;
                         Toast.makeText(getBaseContext(), getString(
                                 R.string.diagnosticModeEnabled), Toast.LENGTH_SHORT).show();

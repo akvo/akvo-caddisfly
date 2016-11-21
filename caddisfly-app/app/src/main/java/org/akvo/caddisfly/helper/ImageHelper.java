@@ -17,290 +17,98 @@
 package org.akvo.caddisfly.helper;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 
-import org.akvo.caddisfly.util.ColorUtil;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
+public final class ImageHelper {
 
-public class ImageHelper {
+    private static final Scalar COLOR_GREEN = new Scalar(0, 255, 0);
+    private static final int MAX_RADIUS = 70;
+    private static final int MIN_CIRCLE_CENTER_DISTANCE = 70;
+    private static final int MIN_RADIUS = 30;
+    private static final double RESOLUTION_INVERSE_RATIO = 1.2d;
 
-    @SuppressWarnings("SameParameterValue")
-    public static Point getCenter(int x, int y, int radius, @NonNull Bitmap image, boolean drawPath) {
-
-        ArrayList<EdgePoint> edgePoints = new ArrayList<>();
-
-        Point center = null;
-        int sampleCount = 5;
-        for (int sample = 0; sample < sampleCount; sample++) {
-            edgePoints.clear();
-
-            if (x < 0 || y < 0) {
-                return null;
-            }
-
-            edgePoints.add(getEdgePoint(0, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(45, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(90, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(135, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(180, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(225, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(270, x, y, radius, image, drawPath));
-            edgePoints.add(getEdgePoint(315, x, y, radius, image, drawPath));
-
-            int longestIndex = -1;
-            int length = 0;
-            for (int i = 0; i < 4; i++) {
-                int diameter = edgePoints.get(i).length + edgePoints.get(i + 4).length;
-                if (diameter > length) {
-                    length = diameter;
-                    longestIndex = i;
-                }
-            }
-
-            if (edgePoints.get(longestIndex).length < edgePoints.get(longestIndex + 4).length) {
-                longestIndex = longestIndex + 4;
-            }
-
-            edgePoints.get(longestIndex).setLength(0);
-
-            length = 0;
-            for (int i = 0; i < 4; i++) {
-                int diameter = edgePoints.get(i).length + edgePoints.get(i + 4).length;
-                if (diameter > length) {
-                    length = diameter;
-                    longestIndex = i;
-                }
-            }
-
-            if (edgePoints.get(longestIndex).length < edgePoints.get(longestIndex + 4).length) {
-                longestIndex = longestIndex + 4;
-            }
-
-            edgePoints.get(longestIndex).setLength(0);
-
-            for (int i = edgePoints.size() - 1; i >= 0; i--) {
-                if (edgePoints.get(i).length == 0) {
-                    edgePoints.remove(i);
-                }
-            }
-
-            for (int i = 0; i < edgePoints.size(); i++) {
-                if (edgePoints.get(i).length > radius) {
-                    return null;
-                }
-            }
-
-            if (edgePoints.size() > 4) {
-                center = circleCenter(edgePoints.get(0).getPoint(),
-                        edgePoints.get(2).getPoint(),
-                        edgePoints.get(4).getPoint());
-                x = center.x;
-                y = center.y;
-            }
-        }
-
-        return center;
+    private ImageHelper() {
     }
 
-    private static EdgePoint getEdgePoint(int angle, int x, int y, int radius, @NonNull Bitmap image, boolean drawPath) {
+    // http://stackoverflow.com/questions/28401343/detect-circle-in-image-using-opencv-in-android
+    /**
+     * Gets the center of the backdrop in the test chamber
+     *
+     * @param bitmap the photo to analyse
+     * @return the center point of the found circle
+     */
+    public static Point getCenter(@NonNull Bitmap bitmap) {
 
-        int counter;
-        if (x >= 0 && y >= 0) {
-            switch (angle) {
-                case 0:
-                    counter = y;
-                    for (int i = y - 1; i >= Math.max(0, y - radius); i--) {
-                        if (!isEdgePixel(image.getPixel(x, i))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(x, i, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
-                case 45:
-                    counter = x;
-                    int tempY = y;
-                    for (int i = x; i < x + radius; i++) {
-                        if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, Math.max(0, tempY), Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-                case 90:
-                    counter = x;
-                    for (int i = x; i < x + radius; i++) {
-                        if (!isEdgePixel(image.getPixel(i, y))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, y, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
-                case 135:
-                    counter = x;
-                    tempY = y;
-                    for (int i = x; i < x + radius; i++) {
-                        if (!isEdgePixel(image.getPixel(i, tempY++))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, tempY, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-                case 180:
-                    counter = y;
-                    for (int i = y; i < y + radius; i++) {
-                        if (!isEdgePixel(image.getPixel(x, i))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(x, i, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(x, counter), distance(new Point(x, y), new Point(x, counter)));
-                case 225:
-                    counter = x;
-                    tempY = y;
-                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                        if (!isEdgePixel(image.getPixel(i, tempY++))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, tempY, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-                case 270:
-                    counter = x;
-                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                        if (!isEdgePixel(image.getPixel(i, y))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, y, Color.WHITE);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, y), distance(new Point(x, y), new Point(counter, y)));
-                case 315:
-                    counter = x;
-                    tempY = y;
-                    for (int i = x - 1; i >= Math.max(0, x - radius); i--) {
-                        if (!isEdgePixel(image.getPixel(i, Math.max(0, tempY--)))) {
-                            counter = i;
-                            if (drawPath) {
-                                image.setPixel(i, Math.max(0, tempY), Color.RED);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    return new EdgePoint(new Point(counter, tempY), distance(new Point(x, y), new Point(counter, tempY)));
-            }
+        // convert bitmap to mat
+        Mat mat = new Mat(bitmap.getWidth(), bitmap.getHeight(),
+                CvType.CV_8UC1);
+        Mat grayMat = new Mat(bitmap.getWidth(), bitmap.getHeight(),
+                CvType.CV_8UC1);
+
+        Utils.bitmapToMat(bitmap, mat);
+
+        // convert to grayScale
+        int colorChannels = (mat.channels() == 3) ? Imgproc.COLOR_BGR2GRAY
+                : ((mat.channels() == 4) ? Imgproc.COLOR_BGRA2GRAY : 1);
+
+        Imgproc.cvtColor(mat, grayMat, colorChannels);
+
+        // reduce the noise so we avoid false circle detection
+        //Imgproc.GaussianBlur(grayMat, grayMat, new Size(9, 9), 2, 2);
+
+        // accumulator value
+        double dp = RESOLUTION_INVERSE_RATIO;
+        // minimum distance between the center coordinates of detected circles in pixels
+        double minDist = MIN_CIRCLE_CENTER_DISTANCE;
+
+        // min and max radii (set these values as you desire)
+        int minRadius = MIN_RADIUS, maxRadius = MAX_RADIUS;
+
+        // param1 = gradient value used to handle edge detection
+        // param2 = Accumulator threshold value for the
+        // cv2.CV_HOUGH_GRADIENT method.
+        // The smaller the threshold is, the more circles will be
+        // detected (including false circles).
+        // The larger the threshold is, the more circles will
+        // potentially be returned.
+        double param1 = 10, param2 = 100;
+
+        // create a Mat object to store the circles detected
+        Mat circles = new Mat(bitmap.getWidth(),
+                bitmap.getHeight(), CvType.CV_8UC1);
+
+        // find the circle in the image
+        Imgproc.HoughCircles(grayMat, circles,
+                Imgproc.CV_HOUGH_GRADIENT, dp, minDist, param1,
+                param2, minRadius, maxRadius);
+
+        int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
+
+        // draw the circles found on the image
+        if (numberOfCircles > 0) {
+
+            double[] circleCoordinates = circles.get(0, 0);
+
+            int x = (int) circleCoordinates[0], y = (int) circleCoordinates[1];
+
+            org.opencv.core.Point center = new org.opencv.core.Point(x, y);
+            int foundRadius = (int) circleCoordinates[2];
+
+            // circle outline
+            Imgproc.circle(mat, center, foundRadius, COLOR_GREEN, 4);
+
+            Utils.matToBitmap(mat, bitmap);
+
+            return new Point((int) center.x, (int) center.y);
         }
 
-        return new EdgePoint(null, 0);
-    }
-
-    private static int distance(Point a, Point b) {
-        double dx = a.x - b.x;
-        double dy = a.y - b.y;
-        return (int) Math.sqrt(dx * dx + dy * dy);
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean isEdgePixel(int color) {
-        return ColorUtil.getBrightness(color) < 120;
-        //return (int) ColorUtil.getColorDistanceLab(color, Color.rgb(0, 0, 0)) < 30;
-    }
-
-    //http://stackoverflow.com/questions/4103405/what-is-the-algorithm-for-finding-the-center-of-a-circle-from-three-points
-    private static Point circleCenter(Point A, Point B, Point C) {
-
-        float yDelta_a = B.y - A.y;
-        float xDelta_a = B.x - A.x;
-        float yDelta_b = C.y - B.y;
-        float xDelta_b = C.x - B.x;
-        Point center = new Point(0, 0);
-
-        float aSlope = yDelta_a / xDelta_a;
-        float bSlope = yDelta_b / xDelta_b;
-
-        Point AB_Mid = new Point((A.x + B.x) / 2, (A.y + B.y) / 2);
-        Point BC_Mid = new Point((B.x + C.x) / 2, (B.y + C.y) / 2);
-
-        if (yDelta_a == 0)         //aSlope == 0
-        {
-            center.x = AB_Mid.x;
-            if (xDelta_b == 0)         //bSlope == INFINITY
-            {
-                center.y = BC_Mid.y;
-            } else {
-                center.y = (int) (BC_Mid.y + (BC_Mid.x - center.x) / bSlope);
-            }
-        } else if (yDelta_b == 0)               //bSlope == 0
-        {
-            center.x = BC_Mid.x;
-            if (xDelta_a == 0)             //aSlope == INFINITY
-            {
-                center.y = AB_Mid.y;
-            } else {
-                center.y = (int) (AB_Mid.y + (AB_Mid.x - center.x) / aSlope);
-            }
-        } else if (xDelta_a == 0)        //aSlope == INFINITY
-        {
-            center.y = AB_Mid.y;
-            center.x = (int) (bSlope * (BC_Mid.y - center.y) + BC_Mid.x);
-        } else if (xDelta_b == 0)        //bSlope == INFINITY
-        {
-            center.y = BC_Mid.y;
-            center.x = (int) (aSlope * (AB_Mid.y - center.y) + AB_Mid.x);
-        } else {
-            center.x = (int) ((aSlope * bSlope * (AB_Mid.y - BC_Mid.y) - aSlope * BC_Mid.x + bSlope * AB_Mid.x) / (bSlope - aSlope));
-            center.y = (int) (AB_Mid.y - (center.x - AB_Mid.x) / aSlope);
-        }
-
-        return center;
-    }
-
-    private static class EdgePoint {
-        private final Point point;
-        private int length;
-
-        public EdgePoint(Point point, int length) {
-            this.point = point;
-            this.length = length;
-        }
-
-        public Point getPoint() {
-            return point;
-        }
-
-        @SuppressWarnings("SameParameterValue")
-        public void setLength(int length) {
-            this.length = length;
-        }
+        return null;
     }
 }

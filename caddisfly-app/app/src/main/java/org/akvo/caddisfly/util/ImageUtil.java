@@ -20,11 +20,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ImageHelper;
@@ -32,11 +35,24 @@ import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Set of utility functions to manipulate images
  */
-public class ImageUtil {
+public final class ImageUtil {
+
+    private static final String TAG = "ImageUtil";
+
+    private static final int FOUND_CIRCLE_RADIUS = 50;
+    private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
+    //Custom color matrix to convert to GrayScale
+    private static final float[] MATRIX = new float[]{
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0, 0, 0, 1, 0};
+
 
     private ImageUtil() {
     }
@@ -47,7 +63,7 @@ public class ImageUtil {
      * @param bytes the byte array
      * @return the bitmap
      */
-    public static Bitmap getBitmap(byte[] bytes) {
+    public static Bitmap getBitmap(@NonNull byte[] bytes) {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
@@ -59,19 +75,18 @@ public class ImageUtil {
      * @return the cropped bitmap
      */
     @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(Bitmap bitmap, int length) {
+    public static Bitmap getCroppedBitmap(@NonNull Bitmap bitmap, int length, boolean detectBackdrop) {
 
         int[] pixels = new int[length * length];
 
         int centerX = bitmap.getWidth() / 2;
         int centerY = bitmap.getHeight() / 2;
-        int radius = 140;
         Point point;
 
-        if (AppPreferences.getNoBackdropDetection()) {
+        if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
             point = new Point(centerX, centerY);
         } else {
-            point = ImageHelper.getCenter(centerX, centerY, radius, bitmap, false);
+            point = ImageHelper.getCenter(bitmap);
             if (point == null) {
                 return null;
             }
@@ -98,13 +113,30 @@ public class ImageUtil {
         paint.setStrokeWidth(3);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawBitmap(bitmap, new Matrix(), null);
-        canvas.drawCircle(point.x, point.y, 50, paint);
+        canvas.drawCircle(point.x, point.y, FOUND_CIRCLE_RADIUS, paint);
 
         paint.setColor(Color.YELLOW);
         paint.setStrokeWidth(2);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, 20, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2f, bitmap.getHeight() / 2f, IMAGE_CENTER_CIRCLE_RADIUS, paint);
 
         return croppedBitmap;
+    }
+
+
+    public static Bitmap getGrayscale(@NonNull Bitmap src) {
+
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(),
+                src.getHeight(),
+                src.getConfig());
+
+        Canvas canvas = new Canvas(dest);
+        Paint paint = new Paint();
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
+        paint.setColorFilter(filter);
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        return dest;
     }
 
     /**
@@ -114,7 +146,7 @@ public class ImageUtil {
      * @param diameter the diameter of the resulting image
      * @return the rounded bitmap
      */
-    private static Bitmap getRoundedShape(Bitmap bitmap, int diameter) {
+    private static Bitmap getRoundedShape(@NonNull Bitmap bitmap, int diameter) {
 
         Bitmap resultBitmap = Bitmap.createBitmap(diameter,
                 diameter, Bitmap.Config.ARGB_8888);
@@ -135,23 +167,30 @@ public class ImageUtil {
         return resultBitmap;
     }
 
-    public static void saveImage(byte[] data, String subfolder, String fileName) {
+    public static void saveImage(@NonNull byte[] data, String subfolder, String fileName) {
 
         File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, subfolder);
 
         File photo = new File(path, fileName + ".jpg");
 
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream(photo.getPath());
-
+            fos = new FileOutputStream(photo.getPath());
             fos.write(data);
-            fos.close();
         } catch (Exception ignored) {
 
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            }
         }
     }
 
-    public static Bitmap rotateImage(Bitmap in, int angle) {
+    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
         Matrix mat = new Matrix();
         mat.postRotate(angle);
         return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);

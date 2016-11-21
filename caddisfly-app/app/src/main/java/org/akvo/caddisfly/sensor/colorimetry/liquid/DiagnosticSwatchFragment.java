@@ -24,14 +24,17 @@ import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public class DiagnosticSwatchFragment extends ListFragment {
+
+    public static final double DEFAULT_INCREMENT = 0.05;
 
     public DiagnosticSwatchFragment() {
     }
@@ -52,8 +55,8 @@ public class DiagnosticSwatchFragment extends ListFragment {
 
         if (testInfo.getSwatches().size() > 0) {
 
-            ArrayList<Swatch> swatchList = ColorUtil.generateGradient(testInfo.getSwatches(),
-                    ColorUtil.DEFAULT_COLOR_MODEL, 0.05);
+            List<Swatch> swatchList = SwatchHelper.generateGradient(testInfo.getSwatches(),
+                    ColorUtil.DEFAULT_COLOR_MODEL, DEFAULT_INCREMENT);
 
             DiagnosticSwatchesAdapter diagnosticSwatchesAdapter = new DiagnosticSwatchesAdapter(getActivity(), swatchList);
             setListAdapter(diagnosticSwatchesAdapter);

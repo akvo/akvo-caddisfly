@@ -12,7 +12,7 @@
   ~ See the GNU Affero General Public License included below for more details.
   ~
   ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
@@ -21,9 +21,6 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -51,7 +48,7 @@
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.Orange.Main">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,6 +58,13 @@
         <activity android:name=".ui.ExternalActionActivity">
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.akvo.flow.action.caddisfly" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -85,6 +89,11 @@
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
+            android:name=".sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
@@ -102,16 +111,11 @@
             android:name=".sensor.colorimetry.liquid.SelectDilutionActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.AlignmentActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:noHistory="true"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".ui.TypeListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.ColorimetryStripActivity"
+            android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.UsbConnectionActivity"
@@ -127,31 +131,43 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".updater.UpdateActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Translucent" />
-        <activity
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.turbidity.TimeLapseActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.turbidity.ExternalCameraActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="nosensor" />
 
-        <service
-            android:name=".sensor.ec.UsbService"
-            android:enabled="true" />
-        <service android:name=".updater.UpdateIntentService" />
-
-        <receiver
-            android:name=".updater.DownloadReceiver"
-            android:enabled="true"
-            android:exported="true">
+        <!-- StripTest -->
+        <activity
+            android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.strip.instructions.InstructionActivity"
+            android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.strip.camera.CameraActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".sensor.colorimetry.strip.ui.ResultActivity"
+            android:screenOrientation="nosensor" />
+        <activity android:name=".sensor.colorimetry.strip.ui.UncaughtExceptionActivity">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="org.akvo.SEND_LOG" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </receiver>
+        </activity>
+        <!-- end StripTest -->
+        <service
+            android:name=".usb.UsbService"
+            android:enabled="true" />
 
         <receiver
             android:name=".sensor.turbidity.TurbidityStartReceiver"

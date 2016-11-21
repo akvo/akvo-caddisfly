@@ -20,11 +20,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class CircleView extends View {
 
+    private static final int RADIUS = 40;
+    @NonNull
     private final Paint circlePaint;
 
     public CircleView(Context context) {
@@ -45,12 +48,12 @@ public class CircleView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
 
         int w = getWidth();
         int h = getHeight();
 
-        canvas.drawCircle(w / 2, h / 2, 40, circlePaint);
+        canvas.drawCircle(w / 2f, h / 2f, RADIUS, circlePaint);
         super.onDraw(canvas);
     }
 }

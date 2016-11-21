@@ -17,27 +17,39 @@
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Environment;
-import android.support.annotation.RawRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.FileHelper;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.MessageDigest;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility functions to file and folder manipulation
  */
 public final class FileUtil {
+
+    private static final String TAG = "FileUtil";
 
     private FileUtil() {
     }
@@ -48,10 +60,10 @@ public final class FileUtil {
      * @param path     the path to the file
      * @param fileName the name of the file to delete
      */
-    public static void deleteFile(File path, String fileName) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static boolean deleteFile(File path, String fileName) {
         File file = new File(path, fileName);
-        //noinspection ResultOfMethodCallIgnored
-        file.delete();
+        return file.delete();
     }
 
     /**
@@ -72,39 +84,29 @@ public final class FileUtil {
                 } else {
                     return path.getAbsolutePath();
                 }
-            } else
+            } else {
                 return CaddisflyApp.getApp().getFilesDir().getAbsolutePath();
+            }
         }
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
     public static void saveToFile(File folder, String name, String data) {
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
 
         File file = new File(folder, name);
 
+        PrintWriter pw = null;
         try {
-            if (!file.exists()) {
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            FileWriter filewriter = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(filewriter);
-
-            out.write(data);
-
-            out.close();
-            filewriter.close();
+            Writer w = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            pw = new PrintWriter(w);
+            pw.write(data);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
         }
     }
 
@@ -116,19 +118,40 @@ public final class FileUtil {
      */
     public static String loadTextFromFile(File file) {
 
-        StringBuilder text = new StringBuilder();
+        if (file.exists()) {
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
+            InputStreamReader isr = null;
+            FileInputStream fis = null;
+            try {
 
-            while ((line = br.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                int i;
+                while ((i = isr.read()) != -1) {
+                    stringBuilder.append((char) i);
+                }
+                return stringBuilder.toString();
+
+            } catch (IOException ignored) {
+            } finally {
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
             }
-            return text.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -141,90 +164,240 @@ public final class FileUtil {
      * @param fileName the file name
      * @return an list of string lines
      */
-    public static ArrayList<String> loadFromFile(File path, String fileName) {
+    public static List<String> loadFromFile(File path, String fileName) {
 
-        try {
-            ArrayList<String> arrayList = new ArrayList<>();
-            if (path.exists()) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        if (path.exists()) {
 
-                File file = new File(path, fileName);
+            File file = new File(path, fileName);
 
-                FileReader filereader = new FileReader(file);
+            BufferedReader bufferedReader = null;
+            InputStreamReader isr = null;
+            FileInputStream fis = null;
+            try {
 
-                BufferedReader in = new BufferedReader(filereader);
+                fis = new FileInputStream(file);
+                isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+                bufferedReader = new BufferedReader(isr);
+
                 String line;
-                while ((line = in.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null) {
                     arrayList.add(line);
                 }
-                in.close();
-                filereader.close();
+
+                return arrayList;
+
+            } catch (IOException ignored) {
+            } finally {
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
             }
-            return arrayList;
-        } catch (Exception ignored) {
         }
 
         return null;
     }
 
-    /**
-     * Read a text file from the raw resources folder
-     *
-     * @param context    the context
-     * @param resourceId the resource Id
-     * @return the read text
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static String readRawTextFile(Context context, @RawRes int resourceId) {
-        InputStream inputStream = context.getResources().openRawResource(resourceId);
 
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String line;
-        StringBuilder text = new StringBuilder();
-
-        try {
-            while ((line = bufferedReader.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
+    public static void deleteRecursive(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File child : files) {
+                    deleteRecursive(child);
+                }
             }
-        } catch (IOException e) {
-            return null;
         }
-        return text.toString();
+
+        //noinspection ResultOfMethodCallIgnored
+        file.delete();
     }
 
+    /**
+     * Method to write characters to file on SD card. Note that you must add a
+     * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
+     * a FileNotFound Exception because you won't have write permission.
+     *
+     * @return absolute path name of saved file, or empty string on failure.
+     */
+    @SuppressWarnings("SameParameterValue")
+    public static String writeBitmapToExternalStorage(Bitmap bitmap, String dirPath, String fileName) {
+        // Find the root of the external storage
+        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
+        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-    //http://stackoverflow.com/questions/13152736/how-to-generate-an-md5-checksum-for-a-file-in-android
-    public static String getMD5Checksum(String filePath) {
-        String returnVal = "";
-        InputStream input = null;
-        try {
-            input = new FileInputStream(filePath);
-            byte[] buffer = new byte[1024];
-            MessageDigest md5Hash = MessageDigest.getInstance("MD5");
-            int numRead = 0;
-            while (numRead != -1) {
-                numRead = input.read(buffer);
-                if (numRead > 0) {
-                    md5Hash.update(buffer, 0, numRead);
+        File root = android.os.Environment.getExternalStorageDirectory();
+        File dir = new File(root.getAbsolutePath() + FileHelper.ROOT_DIRECTORY + dirPath);
+        File file = new File(dir, fileName);
+
+        // check if directory exists and if not, create it
+        boolean success = true;
+        if (!dir.exists()) {
+            success = dir.mkdirs();
+        }
+
+        if (success && bitmap != null) {
+            try {
+                FileOutputStream f = new FileOutputStream(file);
+                BufferedOutputStream bos = new BufferedOutputStream(f);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+
+                for (byte s : byteArrayOutputStream.toByteArray()) {
+                    bos.write(s);
                 }
+                bos.close();
+                byteArrayOutputStream.close();
+                f.close();
+                return file.getAbsolutePath();
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage(), e);
             }
-            input.close();
+        }
+        // on failure, return empty string
+        return "";
+    }
 
-            byte[] md5Bytes = md5Hash.digest();
-            for (byte md5Byte : md5Bytes) {
-                returnVal += Integer.toString((md5Byte & 0xff) + 0x100, 16).substring(1);
+    public static void writeByteArray(Context context, byte[] data, String fileName) {
+
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            BufferedOutputStream bos = new BufferedOutputStream(outputStream);
+            for (byte s : data) {
+                bos.write(s);
+            }
+            bos.close();
+            outputStream.close();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    public static byte[] readByteArray(Context context, String fileName) throws IOException {
+
+        byte[] data;
+        int c;
+
+        FileInputStream fis = context.openFileInput(fileName);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        BufferedInputStream bos = new BufferedInputStream(fis);
+
+        while ((c = bos.read()) != -1) {
+            byteArrayOutputStream.write(c);
+        }
+
+        data = byteArrayOutputStream.toByteArray();
+
+        bos.close();
+        byteArrayOutputStream.close();
+        fis.close();
+
+        return data;
+    }
+
+    public static void writeToInternalStorage(Context context, String fileName, String json) {
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            for (byte s : json.getBytes(StandardCharsets.UTF_8)) {
+                outputStream.write(s);
             }
         } catch (Exception e) {
-            return null;
+            Log.e(TAG, e.getMessage(), e);
         } finally {
-            if (input != null) {
+            if (outputStream != null) {
                 try {
-                    input.close();
-                } catch (Exception ignored) {
+                    outputStream.close();
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
         }
-        return returnVal.toUpperCase();
+    }
+
+    public static String readFromInternalStorage(Context context, String fileName) {
+
+        File file = new File(context.getFilesDir(), fileName);
+
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            DataInputStream in = new DataInputStream(fis);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String line;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            String json = stringBuilder.toString();
+
+            br.close();
+            in.close();
+            fis.close();
+
+            return json;
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+
+        return null;
+    }
+
+    public static void deleteFromInternalStorage(Context context, final String contains) throws IOException {
+        File file = context.getFilesDir();
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.contains(contains);
+            }
+        };
+        File[] files = file.listFiles(filter);
+        if (files != null) {
+            for (File f : files) {
+                //noinspection ResultOfMethodCallIgnored
+                if (!f.delete()) {
+                    throw new IOException("Error while deleting files");
+                }
+            }
+        }
+    }
+
+    public static boolean fileExists(Context context, String fileName) {
+        return new File(context.getFilesDir() + File.separator + fileName).exists();
+    }
+
+    public static int byteArrayToLeInt(byte[] b) {
+        final ByteBuffer bb = ByteBuffer.wrap(b);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        return bb.getInt();
+    }
+
+    public static byte[] leIntToByteArray(int i) {
+        final ByteBuffer bb = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putInt(i);
+        return bb.array();
     }
 }

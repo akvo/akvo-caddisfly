@@ -24,4 +24,15 @@
 
     <dimen name="flow_toolbar_height">52dp</dimen>
     <dimen name="flow_toolbar_margin">-5dp</dimen>
+
+    <!-- StripTest -->
+    <dimen name="quality_check_view_height">36dp</dimen>
+    <dimen name="titleTextSize">19sp</dimen>
+    <dimen name="mediumTextSize">16sp</dimen>
+
+    <dimen name="snackBarHeight">100dp</dimen>
+
+    <dimen name="progressTextSize">43sp</dimen>
+    <dimen name="progressSubTextSize">13sp</dimen>
+
 </resources>

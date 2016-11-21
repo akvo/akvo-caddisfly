@@ -30,18 +30,22 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 public class MainActivity extends BaseActivity {
 
+    private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    //private UpdateCheckReceiver updateCheckReceiver;
     private boolean mShouldClose = false;
 
     @Override
@@ -68,7 +72,6 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 
@@ -78,11 +81,10 @@ public class MainActivity extends BaseActivity {
 
                 boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
-                    CaddisflyApp.getApp().loadTestConfiguration("ECOND");
+                    CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.ELECTRICAL_CONDUCTIVITY_ID);
                     final Intent intent = new Intent(getBaseContext(), SensorActivity.class);
                     intent.putExtra("internal", true);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 } else {
                     alertFeatureNotSupported();
                 }
@@ -95,22 +97,52 @@ public class MainActivity extends BaseActivity {
                 startSurvey();
             }
         });
-    }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        updateCheckReceiver = UpdateHelper.checkUpdate(this, true);
-//    }
+        findViewById(R.id.buttonStripTest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
+                intent.putExtra("internal", true);
+                startActivity(intent);
+            }
+        });
+
+        // TODO: remove upgrade code when obsolete
+        upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
+        upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
+    }
 
     /**
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+        String message = String.format("%s%n%n%s", getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notSupported, message);
+    }
+
+    // TODO: remove upgrade code when obsolete
+    private void upgradeFolder(String code, String uuid) {
+
+        final File sourcePath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, code);
+        final File destinationPath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, uuid);
+        if (sourcePath.exists() && sourcePath.isDirectory()) {
+            File[] sourceFiles = sourcePath.listFiles();
+            if (sourceFiles != null) {
+                for (File file : sourceFiles) {
+                    File destinationFile = new File(destinationPath + File.separator + file.getName());
+                    //noinspection ResultOfMethodCallIgnored
+                    file.renameTo(destinationFile);
+                }
+
+                sourceFiles = sourcePath.listFiles();
+                if (sourceFiles != null && sourceFiles.length == 0) {
+                    //noinspection ResultOfMethodCallIgnored
+                    sourcePath.delete();
+                }
+            }
+        }
     }
 
     @Override
@@ -185,29 +217,17 @@ public class MainActivity extends BaseActivity {
                         finish();
                     }
                 }
-            }, 4000);
+            }, AUTO_FINISH_DELAY_MILLIS);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 
     private void alertDependantAppNotFound() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorAkvoFlowRequired),
+        String message = String.format("%s%n%n%s", getString(R.string.errorAkvoFlowRequired),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showMessage(this, R.string.notFound, message);
-    }
-
-    @Override
-    public void onDestroy() {
-//        try {
-//            if (updateCheckReceiver != null) {
-//                unregisterReceiver(updateCheckReceiver);
-//            }
-//        } catch (Exception ignored) {
-//        }
-        super.onDestroy();
     }
 
     /**
@@ -216,14 +236,16 @@ public class MainActivity extends BaseActivity {
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;
 
-        public WeakRefHandler(Activity ref) {
+        WeakRefHandler(Activity ref) {
             this.ref = new WeakReference<>(ref);
         }
 
         @Override
         public void handleMessage(Message msg) {
             Activity f = ref.get();
-            f.recreate();
+            if (f != null) {
+                f.recreate();
+            }
         }
     }
 

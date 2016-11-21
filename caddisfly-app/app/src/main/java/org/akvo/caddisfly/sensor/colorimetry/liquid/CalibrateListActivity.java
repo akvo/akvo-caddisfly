@@ -27,6 +27,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -53,7 +55,7 @@ import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -71,7 +73,8 @@ public class CalibrateListActivity extends BaseActivity
         implements CalibrateListFragment.Callbacks,
         SaveCalibrationDialogFragment.CalibrationDetailsSavedListener {
 
-    private final int REQUEST_CALIBRATE = 100;
+    private static final int REQUEST_CALIBRATE = 100;
+    private static final int FREEZE_BUTTON_DELAY_MILLIS = 500;
     private FloatingActionButton fabEditCalibration;
     private TextView textSubtitle;
     private TextView textSubtitle1;
@@ -87,7 +90,7 @@ public class CalibrateListActivity extends BaseActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionSwatches:
                 final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
@@ -167,22 +170,25 @@ public class CalibrateListActivity extends BaseActivity
 
     private void loadDetails() {
 
-        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        long calibrationDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey);
+        testInfo.setCalibrationDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationDateKey));
 
-        if (calibrationDate >= 0) {
-            textSubtitle1.setText(new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US).format(new Date(calibrationDate)));
+        if (testInfo.getCalibrationDate() >= 0) {
+            textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM)
+                    .format(new Date(testInfo.getCalibrationDate())));
         }
 
-        Long expiryDate = PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey);
+        testInfo.setExpiryDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationExpiryDateKey));
 
-        if (expiryDate >= 0) {
+        if (testInfo.getExpiryDate() >= 0) {
             textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
-                    new SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(new Date(expiryDate))));
+                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(testInfo.getExpiryDate()))));
         }
 
-        textSubtitle.setText(PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""));
+        testInfo.setBatchNumber(PreferencesUtil.getString(this, testInfo.getCode(), R.string.batchNumberKey, ""));
+
+        textSubtitle.setText(testInfo.getBatchNumber());
 
         CalibrateListFragment calibrateListFragment = (CalibrateListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentCalibrateList);
@@ -190,12 +196,6 @@ public class CalibrateListActivity extends BaseActivity
         if (calibrateListFragment != null) {
             calibrateListFragment.refresh();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     /**
@@ -225,7 +225,7 @@ public class CalibrateListActivity extends BaseActivity
             public void run() {
                 fabEditCalibration.setEnabled(true);
             }
-        }, 500);
+        }, FREEZE_BUTTON_DELAY_MILLIS);
 
         //Show edit calibration details dialog if required
         Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
@@ -237,20 +237,23 @@ public class CalibrateListActivity extends BaseActivity
         mPosition = id;
         Swatch swatch = currentTestInfo.getSwatch(mPosition);
 
-        if (!ApiUtil.isCameraInUse(this, null)) {
+        if (AppPreferences.useExternalCamera() || !ApiUtil.isCameraInUse(this, null)) {
             final Intent intent = new Intent(getIntent());
-            intent.setClass(getBaseContext(), AlignmentActivity.class);
+            if (AppPreferences.useExternalCamera()) {
+                intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+            } else {
+                intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+            }
             intent.putExtra("isCalibration", true);
             intent.putExtra("swatchValue", swatch.getValue());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivityForResult(intent, REQUEST_CALIBRATE);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CALIBRATE:
@@ -277,6 +280,8 @@ public class CalibrateListActivity extends BaseActivity
                 }
 
                 break;
+            default:
+                break;
         }
     }
 
@@ -286,7 +291,7 @@ public class CalibrateListActivity extends BaseActivity
      * @param swatch      The swatch object
      * @param resultColor The color value
      */
-    private void saveCalibratedData(Swatch swatch, final int resultColor) {
+    private void saveCalibratedData(@NonNull Swatch swatch, final int resultColor) {
         String colorKey = String.format(Locale.US, "%s-%.2f",
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(), swatch.getValue());
 
@@ -304,7 +309,9 @@ public class CalibrateListActivity extends BaseActivity
                 testCode,
                 PreferencesUtil.getString(this, testCode, R.string.batchNumberKey, ""),
                 PreferencesUtil.getLong(this, testCode, R.string.calibrationDateKey),
-                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey));
+                PreferencesUtil.getLong(this, testCode, R.string.calibrationExpiryDateKey),
+                PreferencesUtil.getString(this, testCode, R.string.ledRgbKey, "255 255 255"),
+                !PreferencesUtil.getBoolean(this, R.string.noBackdropDetectionKey, false));
 
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testCode);
 
@@ -318,7 +325,7 @@ public class CalibrateListActivity extends BaseActivity
      *
      * @param callback callback to be initiated once the loading is complete
      */
-    private void loadCalibration(final Context context, final Handler.Callback callback) {
+    private void loadCalibration(@NonNull final Context context, @NonNull final Handler.Callback callback) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.loadCalibration);
@@ -345,7 +352,7 @@ public class CalibrateListActivity extends BaseActivity
                 builder.setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(@NonNull DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         }
@@ -360,6 +367,7 @@ public class CalibrateListActivity extends BaseActivity
                                     final ArrayList<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
 
                                     (new AsyncTask<Void, Void, Void>() {
+                                        @Nullable
                                         @Override
                                         protected Void doInBackground(Void... params) {
                                             SwatchHelper.saveCalibratedSwatches(context, swatchList);
@@ -379,7 +387,7 @@ public class CalibrateListActivity extends BaseActivity
                                             null, R.string.ok,
                                             new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(@NonNull DialogInterface dialog, int which) {
                                                     dialog.dismiss();
                                                 }
                                             }, null, null);

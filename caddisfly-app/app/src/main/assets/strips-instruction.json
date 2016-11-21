@@ -1,0 +1,266 @@
+{
+  "strips": [
+    {
+      "name": "Total Chlorine & Free Chlorine",
+      "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip the strip and move back and forth for 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Nitrate - N & Nitrite - N",
+      "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
+      "instructions": [
+        {
+          "text": "Dip strip into water for 1 second.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "<!>Do not shake excess water from the test strip.<!>",
+          "png": ""
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Total Iron",
+      "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
+      "instructions": [
+        {
+          "text": "Fill HALF of the vial with sample water.",
+          "png": ""
+        },
+        {
+          "text": "Open one foil packet and add powder contents to vial.",
+          "png": ""
+        },
+        {
+          "text": "Cap vial and shake rapidly for 5 seconds. Remove cap.",
+          "png": ""
+        },
+        {
+          "text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Start test immediately.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water and remove immediately. Do not shake excess water from strip",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Phosphate",
+      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Phosphate",
+      "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip into water for 1 second and remove.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Potassium",
+      "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Immerse the reaction zone of the test strip in the pretreated sample (15 - 30 °C) for 1 sec",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel."
+        },
+        {
+          "text": "Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min."
+        },
+        {
+          "text": "Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel."
+        },
+        {
+          "text": "Place strip onto black area.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Ammonia",
+      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
+      "instructions": [
+        {
+          "text": "Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+        }
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range (0 - 500)",
+      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
+      "instructions": [
+        {
+          "text": "Collect 50 ml water sample using the provided bottle. <!>This sample size is for the range 0 - 500 ppb<!>",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Follow the instructions that came with the testing kit for adding reagents"
+        },
+        {
+          "text": "Wait 20 minutes. Swirl twice during the reaction period"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range (0 - 4000)",
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
+      "instructions": [
+        {
+          "text": "Collect 9.6 ml water sample using the small square container. <!>This sample size is for the range 0 - 4000 ppb<!>",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Follow the instructions that came with the testing kit for adding reagents"
+        },
+        {
+          "text": "Wait 20 minutes. Swirl twice during the reaction period"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Arsenic",
+      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
+      "instructions": [
+        {
+          "text": "Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+        }
+      ]
+    },
+    {
+      "name": "pH colorpHast",
+      "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
+      "instructions": [
+        {
+          "text": "Collect water sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Dip a strip in the water for at least 2 seconds and remove.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Shake excess water from the strip"
+        },
+        {
+          "text": "Place strip onto black area. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Press 'Start' button.",
+          "png": ""
+        }
+      ]
+    }
+  ]
+}

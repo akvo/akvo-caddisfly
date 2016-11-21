@@ -19,18 +19,22 @@ package org.akvo.caddisfly.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.telephony.TelephonyManager;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.view.Surface;
-import android.view.WindowManager;
+import android.util.Log;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
+
+import java.util.UUID;
 
 /**
  * Utility functions for api related actions
@@ -38,15 +42,22 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 @SuppressWarnings("deprecation")
 public final class ApiUtil {
 
+    private static final String TAG = "ApiUtil";
+
+    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    @Nullable
+    private static String uniqueID = null;
+
     private ApiUtil() {
     }
 
+    @Nullable
     public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return c;
     }
@@ -57,7 +68,7 @@ public final class ApiUtil {
      * @param context the context
      * @return true if camera flash is available
      */
-    public static boolean hasCameraFlash(Context context, @NonNull Camera camera) {
+    public static boolean hasCameraFlash(@NonNull Context context, @NonNull Camera camera) {
         boolean hasFlash = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         try {
             Camera.Parameters p;
@@ -67,10 +78,8 @@ public final class ApiUtil {
                 if (p.getSupportedFlashModes() == null) {
                     hasFlash = false;
                 } else {
-                    if (p.getSupportedFlashModes().size() == 1) {
-                        if (p.getSupportedFlashModes().get(0).equals("off")) {
-                            hasFlash = false;
-                        }
+                    if (p.getSupportedFlashModes().size() == 1 && p.getSupportedFlashModes().get(0).equals("off")) {
+                        hasFlash = false;
                     }
                 }
             }
@@ -81,63 +90,34 @@ public final class ApiUtil {
     }
 
     /**
-     * Lock the screen orientation based on the natural position of the device
+     * Gets an unique id for installation
      *
-     * @param activity the activity
+     * @return the unique id
      */
-    public static void lockScreenOrientation(Activity activity) {
-        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-        int rotation = windowManager.getDefaultDisplay().getRotation();
+    @Nullable
+    public static synchronized String getInstallationId(@NonNull Context context) {
+        if (uniqueID == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(
+                    PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
 
-        Point point = new Point();
-        windowManager.getDefaultDisplay().getSize(point);
-        boolean isTablet = activity.getResources().getBoolean(R.bool.isTablet);
-
-        // Search for the natural position of the device
-        if (isTablet) {
-            // Natural position is Landscape
-            switch (rotation) {
-                case Surface.ROTATION_0:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    break;
-                case Surface.ROTATION_90:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
-                    break;
-                case Surface.ROTATION_180:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-                    break;
-                case Surface.ROTATION_270:
-                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    break;
+            if (uniqueID == null) {
+                uniqueID = UUID.randomUUID().toString();
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(PREF_UNIQUE_ID, uniqueID);
+                editor.apply();
             }
         }
+
+        return uniqueID;
     }
 
-    /**
-     * Gets the device's Equipment Id
-     *
-     * @return the international mobile equipment id
-     */
-    public static String getEquipmentId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        String number = null;
-        if (telephonyManager != null) {
-            number = telephonyManager.getDeviceId();
-        }
-        if (number == null) {
-            number = "No equipment Id";
-        }
-        return number;
-    }
-
-
-    public static boolean isCameraInUse(Context context, final Activity activity) {
+    public static boolean isCameraInUse(Context context, @Nullable final Activity activity) {
         Camera camera = null;
         try {
-            camera = CaddisflyApp.getCamera(context, new DialogInterface.OnClickListener() {
+            camera = CameraHelper.getCamera(context, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
                     if (activity != null) {
                         activity.finish();
@@ -156,26 +136,42 @@ public final class ApiUtil {
         return true;
     }
 
-    public static int getAppVersionCode(Context context) {
-        int versionCode = 0;
-        try {
-            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionCode;
-    }
-
-    public static boolean isStoreVersion(Context context) {
+    public static boolean isStoreVersion(@NonNull Context context) {
         boolean result = false;
 
         try {
             String installer = context.getPackageManager()
                     .getInstallerPackageName(context.getPackageName());
             result = !TextUtils.isEmpty(installer);
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
         }
 
         return result;
+    }
+
+    public static void startInstalledAppDetailsActivity(@Nullable final Activity context) {
+        if (context == null) {
+            return;
+        }
+        final Intent i = new Intent();
+        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.setData(Uri.parse("package:" + context.getPackageName()));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        context.startActivity(i);
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean hasPermissions(@Nullable Context context, @Nullable String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

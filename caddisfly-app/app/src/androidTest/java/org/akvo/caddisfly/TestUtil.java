@@ -40,7 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 /**
  * Utility functions for automated testing
  */
-class TestUtil {
+final class TestUtil {
 
     private TestUtil() {
     }
@@ -121,6 +121,7 @@ class TestUtil {
         return activity[0];
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void findButtonInScrollable(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector().className(ScrollView.class.getName()));
         listView.setMaxSearchSwipes(10);
@@ -130,7 +131,6 @@ class TestUtil {
         } catch (Exception ignored) {
         }
     }
-
 
     public static boolean clickListViewItem(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector());

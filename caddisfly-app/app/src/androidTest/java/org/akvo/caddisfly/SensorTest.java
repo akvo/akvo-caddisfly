@@ -19,10 +19,10 @@ package org.akvo.caddisfly;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
@@ -39,9 +39,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.TestHelper.loadData;
 import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
@@ -58,8 +58,6 @@ public class SensorTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            loadData(mCurrentLanguage);
-
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
             }
@@ -68,6 +66,8 @@ public class SensorTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());

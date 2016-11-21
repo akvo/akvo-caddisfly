@@ -22,6 +22,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.preference.AppPreferences;
+
+import java.util.Locale;
+
 public class TurbidityStartReceiver extends BroadcastReceiver {
 
     public TurbidityStartReceiver() {
@@ -29,18 +34,26 @@ public class TurbidityStartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (intent != null) {
-            if (TurbidityConfig.ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
+        if (intent != null && TurbidityConfig.ACTION_ALARM_RECEIVER.equals(intent.getAction())) {
 
-                String testCode = intent.getStringExtra("testCode");
+            String uuid = intent.getStringExtra("uuid");
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TurbidityConfig.setRepeatingAlarm(context, -1, testCode);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                TurbidityConfig.setRepeatingAlarm(context, -1, uuid);
+            }
 
-                String folderName = intent.getStringExtra("savePath");
+            String folderName = intent.getStringExtra("savePath");
 
-                CameraHandler cameraHandler = new CameraHandler(context, testCode);
+            if (AppPreferences.useExternalCamera()) {
+                final Intent cameraIntent = new Intent();
+                cameraIntent.setClass(context, ExternalCameraActivity.class);
+                cameraIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                cameraIntent.putExtra("uuid", uuid.trim().toLowerCase(Locale.US));
+                cameraIntent.putExtra("savePath", folderName);
+                context.startActivity(cameraIntent);
+            } else {
+                CameraHandler cameraHandler = new CameraHandler(context);
                 cameraHandler.takePicture(folderName);
             }
         }

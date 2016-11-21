@@ -17,13 +17,14 @@
 package org.akvo.caddisfly;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,6 +50,7 @@ import static org.hamcrest.object.HasToString.hasToString;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LanguageTest {
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -56,8 +58,6 @@ public class LanguageTest {
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            loadData(mCurrentLanguage);
 
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
@@ -68,9 +68,10 @@ public class LanguageTest {
     @Before
     public void setUp() {
 
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, "FLUOR", "ppm",
-                CaddisflyApp.TestType.COLORIMETRIC_LIQUID, true, new String[]{}, new String[]{}, new String[]{}, true, 12));
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
+        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, TestType.COLORIMETRIC_LIQUID,
+                new String[]{}, new String[]{}, new String[]{}, null, null));
     }
 
     @Test
@@ -80,7 +81,7 @@ public class LanguageTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(mActivityRule.getActivity());
+        String version = CaddisflyApp.getAppVersion();
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -108,7 +109,7 @@ public class LanguageTest {
     private void languageTest(String language) {
         onView(withId(R.id.actionSettings)).perform(click());
 
-        loadData(language);
+        loadData(mActivityRule.getActivity(), language);
 
         try {
             onView(withText(currentHashMap.get("language"))).perform(click());
@@ -127,7 +128,9 @@ public class LanguageTest {
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
-        mDevice.pressBack();
+        Espresso.pressBack();
+
+        //mDevice.pressBack();
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -141,5 +144,4 @@ public class LanguageTest {
         onView(withText(currentHashMap.get("language"))).perform(click());
         onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
     }
-
 }

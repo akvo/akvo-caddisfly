@@ -1,0 +1,213 @@
+{
+  "strips": [
+    {
+      "name": "Total Chlorine & Free Chlorine",
+      "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Déplacez la bande d'avant en arrière pendant 30 secondes dans de l'eau. Ensuite, séchez l'excès d'eau. (placer sur une serviette)",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Nitrate - N & Nitrite - N",
+      "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
+      "instructions": [
+        {
+          "text": "Plongez la bande dans l'eau pendant 1 seconde.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "<!>Ne pas secouer l'excès d'eau de la bande test.<!",
+          "png": ""
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Total Iron",
+      "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
+      "instructions": [
+        {
+          "text": "Remplissez le flacon échantillon à moitié avec de l'eau de l'échantillon.",
+          "png": ""
+        },
+        {
+          "text": "Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.",
+          "png": ""
+        },
+        {
+          "text": "Rebouchez le flacon et agitez rapidement pendant 5 secondes. Enlever le bouchon.",
+          "png": ""
+        },
+        {
+          "text": "Trempez une bande de test dans le flacon échantillon et remuez le rapidement d'avant en arrière sous l'eau pendant 15 secondes. Retirez la bande et secouez l'excès d'eau.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Après ceci: <!>Appuyez sur 'Démarrez' immédiatement<!",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau et retirez immédiatement. Ne sécher pas l'excès d'eau de la bande",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Phosphorus",
+      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau pendant 5 secondes et retirez la. Ne sécher pas l'excès d'eau de la bande",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Potassium",
+      "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
+      "instructions": [
+      ]
+    },
+    {
+      "name": "Ammonia",
+      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
+      "instructions": [
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range",
+      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau de 50 ml dans le récipient. . <!>Cette taille d'échantillon est pour une gamme de 0 - 500 ppb<!",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"
+        },
+        {
+          "text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range",
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau de 9.6 ml dans le petit récipient carré. . <!>Cette taille d'échantillon est pour une gamme de 0 - 4000 ppb<!",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Suivez les instructions fournies avec le kit de test pour l'ajout des réactifs"
+        },
+        {
+          "text": "Attendez 20 minutes. Remuez deux fois durant la période de réaction"
+        },
+        {
+          "text": "Placez la bande sur la zone noire. ",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Arsenic",
+      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
+      "instructions": [
+      ]
+    },
+    {
+      "name": "pH colorpHast",
+      "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
+      "instructions": [
+        {
+          "text": "Collectez un échantillon d'eau",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "Plongez la bande dans l'eau pendant 2 secondes et retirez la.",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "Séchez l'excès d'eau."
+        },
+        {
+          "text": "Placez la bande sur la zone noire.",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "Appuyez sur 'Démarrez'",
+          "png": ""
+        }
+      ]
+    }
+  ]
+}

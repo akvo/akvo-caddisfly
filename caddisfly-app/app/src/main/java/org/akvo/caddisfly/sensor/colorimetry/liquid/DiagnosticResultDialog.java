@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +35,11 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A Dialog to display detailed result information of the analysis
@@ -45,7 +48,8 @@ import java.util.ArrayList;
  */
 public class DiagnosticResultDialog extends DialogFragment {
 
-    private ArrayList<Result> mResults;
+    private static final int TEXT_SIZE = 14;
+    private List<Result> mResults;
     private boolean mIsCalibration;
 
     public DiagnosticResultDialog() {
@@ -62,12 +66,12 @@ public class DiagnosticResultDialog extends DialogFragment {
      * @param isCalibration is this a calibration result
      * @return the dialog
      */
-    public static DiagnosticResultDialog newInstance(ArrayList<Result> results, boolean allowRetry,
-                                                     double result, int color, boolean isCalibration) {
+    public static DiagnosticResultDialog newInstance(List<Result> results, boolean allowRetry,
+                                                     String result, int color, boolean isCalibration) {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
         args.putBoolean("retry", allowRetry);
-        args.putDouble("result", result);
+        args.putString(SensorConstants.RESULT, result);
         args.putInt("color", color);
         args.putBoolean("calibration", isCalibration);
         fragment.mResults = results;
@@ -104,7 +108,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, true, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(false, true, "", mIsCalibration);
 
                 }
             });
@@ -114,16 +118,16 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(true, false, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(true, false, "", mIsCalibration);
 
                 }
             });
         } else {
-            double result = getArguments().getDouble("result");
+            final String result = getArguments().getString(SensorConstants.RESULT);
             if (mIsCalibration) {
                 getDialog().setTitle(String.format("%s: %s", getString(R.string.result), ColorUtil.getColorRgbString(mColor)));
             } else {
-                getDialog().setTitle(String.format("%s: %.2f", getString(R.string.result), result));
+                getDialog().setTitle(result);
             }
 
             buttonCancel.setVisibility(View.GONE);
@@ -135,7 +139,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 public void onClick(View view) {
 
                     DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, false, mIsCalibration);
+                    listener.onFinishDiagnosticResultDialog(false, false, result, mIsCalibration);
 
                 }
             });
@@ -144,7 +148,7 @@ public class DiagnosticResultDialog extends DialogFragment {
     }
 
     public interface DiagnosticResultDialogListener {
-        void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, boolean isCalibration);
+        void onFinishDiagnosticResultDialog(boolean retry, boolean cancelled, String result, boolean isCalibration);
     }
 
     private class ResultListAdapter extends BaseAdapter {
@@ -189,7 +193,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 int g = Color.green(color);
                 int b = Color.blue(color);
 
-                textRgb.setText(String.format("%d  %d  %d", r, g, b));
+                textRgb.setText(String.format(Locale.getDefault(), "%d  %d  %d", r, g, b));
 
                 ListView listResults = (ListView) rowView.findViewById(R.id.listResults);
 
@@ -208,9 +212,9 @@ public class DiagnosticResultDialog extends DialogFragment {
 
     public class ResultsDetailsAdapter extends BaseAdapter {
 
-        final ArrayList<ResultDetail> mResults;
+        final List<ResultDetail> mResults;
 
-        public ResultsDetailsAdapter(ArrayList<ResultDetail> results) {
+        ResultsDetailsAdapter(List<ResultDetail> results) {
             mResults = results;
         }
 
@@ -232,7 +236,7 @@ public class DiagnosticResultDialog extends DialogFragment {
             @SuppressLint("ViewHolder")
             View rowView = inflater.inflate(R.layout.row_result, parent, false);
 
-            int calibrationSteps = 2;
+            int calibrationSteps;
             switch (position) {
                 case 0:
                     calibrationSteps = 1;
@@ -243,7 +247,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 case 2:
                     calibrationSteps = 3;
                     break;
-                case 3:
+                default:
                     calibrationSteps = 5;
                     break;
             }
@@ -260,22 +264,22 @@ public class DiagnosticResultDialog extends DialogFragment {
                         case LAB:
                             textResult = (TextView) rowView.findViewById(R.id.textLabResult);
                             if (resultDetail.getResult() > -1) {
-                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                                textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
-                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
+                                textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
 
-                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
-                                textResult.setTextSize(14);
+                                textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
+                                textResult.setTextSize(TEXT_SIZE);
                             }
                             break;
                         case RGB:
                             textResult = (TextView) rowView.findViewById(R.id.textRgbResult);
                             if (resultDetail.getResult() > -1) {
-                                textResult.setText(String.format("%.2f", resultDetail.getResult()));
+                                textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
-                                textResult.setText(String.format("(%.2f)", resultDetail.getDistance()));
-                                textResult.setTextColor(getResources().getColor(R.color.diagnostic));
-                                textResult.setTextSize(14);
+                                textResult.setText(String.format(Locale.getDefault(), "(%.2f)", resultDetail.getDistance()));
+                                textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
+                                textResult.setTextSize(TEXT_SIZE);
                             }
                             break;
                     }

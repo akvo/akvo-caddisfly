@@ -16,6 +16,10 @@
 
 package org.akvo.caddisfly;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.support.test.espresso.Espresso;
@@ -25,15 +29,18 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
-import android.widget.TextView;
+import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.FileUtil;
+import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -42,49 +49,63 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.object.HasToString.hasToString;
+import static org.akvo.caddisfly.TestUtil.sleep;
 
-class TestHelper {
+final class TestHelper {
 
-    private static final HashMap<String, String> stringHashMapEN = new HashMap<>();
-    private static final HashMap<String, String> stringHashMapFR = new HashMap<>();
-    private static final HashMap<String, String> calibrationHashMap = new HashMap<>();
-    private static final boolean mTakeScreenshots = false;
+    private static final HashMap<String, String> STRING_HASH_MAP_EN = new HashMap<>();
+    private static final HashMap<String, String> STRING_HASH_MAP_FR = new HashMap<>();
+    private static final HashMap<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
+    private static final boolean TAKE_SCREENSHOTS = false;
     public static HashMap<String, String> currentHashMap;
     public static UiDevice mDevice;
     public static String mCurrentLanguage = "en";
     private static int mCounter;
 
+    private TestHelper() {
+    }
+
     private static void addString(String key, String englishText, String frenchText) {
-        stringHashMapEN.put(key, englishText);
-        stringHashMapFR.put(key, frenchText);
+        STRING_HASH_MAP_EN.put(key, englishText);
+        STRING_HASH_MAP_FR.put(key, frenchText);
     }
 
     private static void addCalibration(String key, String colors) {
-        calibrationHashMap.put(key, colors);
+        CALIBRATION_HASH_MAP.put(key, colors);
     }
 
-    public static void loadData(String languageCode) {
+    @SuppressWarnings("deprecation")
+    public static void loadData(Activity activity, String languageCode) {
         mCurrentLanguage = languageCode;
 
-        stringHashMapEN.clear();
-        stringHashMapFR.clear();
-        calibrationHashMap.clear();
+        String testLanguage = "fr";
+
+        STRING_HASH_MAP_EN.clear();
+        STRING_HASH_MAP_FR.clear();
+        CALIBRATION_HASH_MAP.clear();
+
+        Resources currentResources = activity.getResources();
+        AssetManager assets = currentResources.getAssets();
+        DisplayMetrics metrics = currentResources.getDisplayMetrics();
+        Configuration config = new Configuration(currentResources.getConfiguration());
+        config.locale = new Locale(testLanguage);
+        Resources res = new Resources(assets, metrics, config);
 
         addString("language", "English", "Français");
         addString("otherLanguage", "Français", "English");
-        addString("fluoride", "Fluoride", "Fluorure");
-        addString("chlorine", "Free Chlorine", "Chlore libre");
-        addString("survey", "Survey", "Enquête");
-        addString("electricalConductivity", "Electrical Conductivity", "Conductivité Electrique");
-        addString("unnamedDataPoint", "Unnamed data point", "Donnée non nommée");
-        addString("createNewDataPoint", "Add Data Point", "CRÉER UN NOUVEAU POINT");
-        addString("useExternalSource", "Use External Source", "Utiliser source externe");
-        addString("next", "Next", "Suivant");
+        addString("fluoride", "Fluoride", res.getString(R.string.fluoride));
+        addString("chlorine", "Free Chlorine", res.getString(R.string.freeChlorine));
+        addString("survey", "Survey", res.getString(R.string.survey));
+        addString("electricalConductivity", "Electrical Conductivity", res.getString(R.string.electricalConductivity));
+        addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
+        addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
+        addString("useExternalSource", "Go to test", res.getString(R.string.goToText));
+        addString("next", "Next", res.getString(R.string.next));
+
+        // Restore device-specific locale
+        new Resources(assets, metrics, currentResources.getConfiguration());
 
         addCalibration("TestValid", "0.0=255  38  186\n"
                 + "0.5=255  51  129\n"
@@ -125,17 +146,17 @@ class TestHelper {
                 + "2.0=224  0  0\n");
 
         if (languageCode.equals("en")) {
-            currentHashMap = stringHashMapEN;
+            currentHashMap = STRING_HASH_MAP_EN;
         } else {
-            currentHashMap = stringHashMapFR;
+            currentHashMap = STRING_HASH_MAP_FR;
         }
     }
 
     public static void takeScreenshot() {
-        if (mTakeScreenshots) {
+        if (TAKE_SCREENSHOTS) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                File path = new File(Environment.getExternalStorageDirectory().getPath() +
-                        "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
+                File path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
                 mDevice.takeScreenshot(path, 0.5f, 60);
             }
         }
@@ -154,72 +175,29 @@ class TestHelper {
         }
     }
 
+    public static void clickExternalSourceButton(int index) {
 
-//    public static void clickViewInScrollView(String buttonText) {
-//        try {
-//
-//            UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-//            appViews.setAsVerticalList();
-//            appViews.flingToEnd(3);
-//            appViews.getChildByText(
-//                    new UiSelector().className(android.widget.Button.class.getName()), buttonText).click();
-//
-//            mDevice.waitForWindowUpdate("", 2000);
-//
-//        } catch (UiObjectNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+        findButtonInScrollable("useExternalSource");
 
-    public static void clickExternalSourceButton(String buttonText) {
-        try {
+        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get("useExternalSource")));
+        buttons.get(index).click();
 
-            findButtonInScrollable(buttonText);
-
-            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
-
-            mDevice.waitForWindowUpdate("", 2000);
-
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void startApp() {
-        // Start from the home screen
-        mDevice.pressHome();
-        mDevice.waitForWindowUpdate("", 2000);
-        UiObject2 allAppsButton = mDevice.findObject(By.desc("Apps"));
-        allAppsButton.click();
-        mDevice.waitForWindowUpdate("", 2000);
-
-        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-        appViews.setAsHorizontalList();
-
-        UiObject settingsApp = null;
-        try {
-            String appName = "Akvo Caddisfly";
-            settingsApp = appViews.getChildByText(new UiSelector().className(TextView.class.getName()), appName);
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (settingsApp != null) {
-                settingsApp.clickAndWaitForNewWindow();
-            }
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
+        // New Android OS seems to popup a button for external app
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            sleep(1000);
+            mDevice.findObject(By.text("Akvo Caddisfly")).click();
+            sleep(1000);
         }
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        assertTrue("Unable to detect app", settingsApp != null);
+        sleep(4000);
     }
 
     public static void saveCalibration(String name) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, "FLUOR");
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
 
-        FileUtil.saveToFile(path, name, calibrationHashMap.get(name));
+        FileUtil.saveToFile(path, name, CALIBRATION_HASH_MAP.get(name));
     }
 
     public static void gotoSurveyForm() {
@@ -236,6 +214,8 @@ class TestHelper {
                 e.printStackTrace();
             }
         }
+
+       // mDevice.findObject(By.text("Caddisfly Tests")).click();
     }
 
     public static void enterDiagnosticMode() {
@@ -257,7 +237,7 @@ class TestHelper {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
 
         mDevice.waitForIdle();
 
@@ -267,11 +247,12 @@ class TestHelper {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
 
         mDevice.waitForIdle();
 
         goToMainScreen();
 
     }
+
 }

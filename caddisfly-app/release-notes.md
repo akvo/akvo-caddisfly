@@ -1,3 +1,57 @@
+v0.110 beta
+----------
+1. Fix redo return to flow after strip test
+2. Remove app update feature
+3. Change min os version to KitKat
+
+v0.109 beta
+----------
+1. JSON result format changed
+
+v0.108 beta
+----------
+1. Test type list grouping
+2. Separate Experimental test types to another file
+
+v0.107 beta
+----------
+1. Strip test added to diagnostic menu
+
+v0.106 beta
+----------
+1. JSON result format changed
+2. JSON config file format changed
+
+v0.105 beta
+----------
+1. Remove rounding off of result
+2. FLOW renamed to Flow
+
+v0.104 beta
+----------
+1. Fix temperature reading
+
+v0.103 beta
+----------
+1. 6 step calibration for EC
+
+v0.102 beta
+----------
+1. Fix for external 720 pix camera
+
+v0.101 beta
+----------
+1. Third party notices
+
+v0.100 beta
+----------
+1. Fix carriage return issue with EC Sensor
+
+v0.99 beta
+----------
+1. External Camera
+2. Tolerance Changes
+
 v0.93 beta
 ----------
 1. Added default colors for swatches in json config
@@ -24,7 +78,7 @@ v0.91 beta
 ----------
 1. Release for Beta
 2. Added software licences dialog
-3. Fix: Expect 2 letter language code from FLOW
+3. Fix: Expect 2 letter language code from Flow
 
 v0.90 beta
 ----------
@@ -49,7 +103,7 @@ v0.87 beta
 
 v0.86 beta
 ----------
-1. Added shared id, process and task affinity to launch in same process as FLOW
+1. Added shared id, process and task affinity to launch in same process as Flow
 2. Changed protocol for EC Sensor as per new specifications
         R - Will return the current temperature and Compensated EC
 3. Fix calibration batch expiry save per test type (WIP)
@@ -309,7 +363,7 @@ v0.50 alpha
 
 v0.49 alpha
 -----------
-1. 'developer mode' for installing cartridge, extracting images
+1. 'developer mode' for installing test chamber, extracting images
 
 v0.48 alpha
 -----------
@@ -325,7 +379,7 @@ example:
     2.0 = 244  180  86
     2.5 = 236  172  81
     3.0 = 254  169  61
-5. small circle on camera preview screen for aligning cartridge
+5. small circle on camera preview screen for aligning test chamber
 6. longer delay before starting test and in between camera shots to allow for flash to cool down.
 7. swatch validation disabled
 8. removed reliance on separate developer app for enabling controls 
@@ -344,7 +398,7 @@ v0.43 alpha
 -----------
 1. moved test properties to json file
 2. test type selection dropdown added on calibration screen
-3. integration with new flow app 2+
+3. integration with new Flow app 2+
 4. removed one step calibration
 5. test name added on test progress screen
 6. added save original photo preference
@@ -460,7 +514,7 @@ v0.27 alpha
 v0.26 alpha
 -----------
 1. multiple sampling for calibration (result will be an average color)
-2. cropping photo to circle before analysis (to match the cartridge shape)
+2. cropping photo to circle before analysis (to match the test chamber shape)
 3. setting : photo sample dimension, default: 200
 4. setting : save original photo, default: false (to avoid running out of space)
 5. some ui changes on calibration and result screens

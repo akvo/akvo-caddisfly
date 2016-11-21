@@ -19,6 +19,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.util.ColorUtil;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * List of swatches including the generated gradient swatches
@@ -37,16 +39,17 @@ import java.util.ArrayList;
 class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
 
     private final Activity activity;
-    private final ArrayList<Swatch> colorArray;
+    private final List<Swatch> colorArray;
 
-    public DiagnosticSwatchesAdapter(Activity activity, ArrayList<Swatch> colorArray) {
+    DiagnosticSwatchesAdapter(Activity activity, List<Swatch> colorArray) {
         super(activity, R.layout.row_swatch, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -60,8 +63,8 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             rowView.findViewById(R.id.textSwatch).setBackgroundColor(color);
 
             //display unit value
-            ((TextView) rowView.findViewById(R.id.textUnit)).setText(
-                    String.format("%.2f", colorArray.get(position).getValue()));
+            ((TextView) rowView.findViewById(R.id.textName)).setText(
+                    String.format(Locale.getDefault(), "%.2f", colorArray.get(position).getValue()));
 
             double distance = 0;
             double distanceRgb = 0;
@@ -76,11 +79,13 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             Color.colorToHSV(color, colorHSV);
 
             ((TextView) rowView.findViewById(R.id.textRgb)).setText(
-                    String.format("d:%.2f  %s: %s",
+                    String.format(Locale.getDefault(), "d:%.2f  %s: %s",
                             distanceRgb, "rgb", ColorUtil.getColorRgbString(color)));
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
-                    String.format("d:%.2f  %s: %.0f  %.2f  %.2f",
+                    String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
                             distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
+        } else {
+            return view;
         }
         return rowView;
     }

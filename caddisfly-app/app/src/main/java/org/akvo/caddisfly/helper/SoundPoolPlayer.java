@@ -55,6 +55,9 @@ public class SoundPoolPlayer {
         //error sound when the test fails
         mSounds.put(R.raw.err, this.mPlayer.load(context, R.raw.err, 1));
 
+        //low beep sound
+        mSounds.put(R.raw.futurebeep2, this.mPlayer.load(context, R.raw.futurebeep2, 1));
+
     }
     /**
      * Play a short sound effect

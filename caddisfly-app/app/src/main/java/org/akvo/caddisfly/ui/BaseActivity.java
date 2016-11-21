@@ -36,10 +36,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private final static String THEME_BLUE = "Blue";
-    private final static String THEME_BLUE_ORANGE = "BlueOrange";
-    private final static String THEME_ORANGE_BLUE = "OrangeBlue";
-    private final static String THEME_FLOW = "Flow";
+    private static final String THEME_BLUE = "Blue";
+    private static final String THEME_BLUE_ORANGE = "BlueOrange";
+    private static final String THEME_ORANGE_BLUE = "OrangeBlue";
+    private static final String THEME_FLOW = "Flow";
     private String mTitle;
 
     @Override
@@ -47,12 +47,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         updateTheme();
         changeActionBarStyleBasedOnCurrentMode();
-        //ApiUtil.lockScreenOrientation(this);
+        //listener = (ResultListener) this;
     }
 
     private void updateTheme() {
 
-        String theme = PreferencesUtil.getString(this, "theme", "Orange");
+        String theme = PreferencesUtil.getString(this, getString(R.string.selectedThemeKey), "Orange");
 
         switch (theme) {
             case THEME_BLUE:
@@ -90,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             try {
                 setSupportActionBar(toolbar);
-            } catch (Throwable t) {
+            } catch (Exception ignored) {
                 //Ignore crash in Samsung
             }
         }
@@ -172,3 +172,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 }
+
+

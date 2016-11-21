@@ -18,6 +18,7 @@ package org.akvo.caddisfly.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +37,16 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
 
     private final TestInfo[] mTestInfoArray;
 
-    public TestTypesAdapter(Activity activity, TestInfo[] testInfoArray) {
+    TestTypesAdapter(Activity activity, TestInfo[] testInfoArray) {
         super(activity, R.layout.row_calibrate, testInfoArray);
         mActivity = activity;
-        mTestInfoArray = testInfoArray;
+        mTestInfoArray = testInfoArray.clone();
     }
 
+    @NonNull
     @SuppressLint("ViewHolder")
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = mActivity.getLayoutInflater();
 
@@ -53,8 +55,16 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
         View rowView;
 
         rowView = inflater.inflate(R.layout.row_type, parent, false);
-        ((TextView) rowView.findViewById(R.id.textUnit)).setText(
-                testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
+
+        if (testInfo.isGroup()) {
+            rowView.findViewById(R.id.textGroup).setVisibility(View.VISIBLE);
+            ((TextView) rowView.findViewById(R.id.textGroup)).setText(mActivity.getString(testInfo.getGroupName()));
+            rowView.findViewById(R.id.typeLayout).setVisibility(View.GONE);
+        } else {
+            rowView.findViewById(R.id.textGroup).setVisibility(View.GONE);
+            ((TextView) rowView.findViewById(R.id.textName)).setText(
+                    testInfo.getName(mActivity.getResources().getConfiguration().locale.getLanguage()));
+        }
 
         return rowView;
     }

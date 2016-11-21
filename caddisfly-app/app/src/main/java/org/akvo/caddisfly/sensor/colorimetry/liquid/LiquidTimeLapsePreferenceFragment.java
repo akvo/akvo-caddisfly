@@ -28,13 +28,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ListViewUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
 
+    private static final int MAX_SAMPLE_NUMBER = 50;
     private ListView list;
 
     public LiquidTimeLapsePreferenceFragment() {
@@ -51,10 +54,9 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
-        //String testCode = getArguments().getString("testCode");
-
         final EditTextPreference sampleIntervalPreference =
                 (EditTextPreference) findPreference(getString(R.string.fluor_IntervalMinutesKey));
+
         if (sampleIntervalPreference != null) {
 
             sampleIntervalPreference.setSummary(String.format("Every %s minutes", sampleIntervalPreference.getText()));
@@ -62,12 +64,17 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
             sampleIntervalPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 360) {
-                        newValue = 360;
-                    }
+                    try {
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                        newValue = 1;
+                        if (Integer.parseInt(String.valueOf(newValue)) > 360) {
+                            newValue = 360;
+                        }
+
+                        if (Integer.parseInt(String.valueOf(newValue)) < 2) {
+                            newValue = 2;
+                        }
+                    } catch (Exception e) {
+                        newValue = 2;
                     }
 
                     sampleIntervalPreference.setText(String.valueOf(newValue));
@@ -85,11 +92,15 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
             samplesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (Integer.parseInt(String.valueOf(newValue)) > 50) {
-                        newValue = 50;
-                    }
+                    try {
+                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_SAMPLE_NUMBER) {
+                            newValue = MAX_SAMPLE_NUMBER;
+                        }
 
-                    if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                            newValue = 1;
+                        }
+                    } catch (NumberFormatException e) {
                         newValue = 1;
                     }
 
@@ -98,6 +109,16 @@ public class LiquidTimeLapsePreferenceFragment extends PreferenceFragment {
                     return false;
                 }
             });
+        }
+
+        final Preference rgbPreference =
+                findPreference(getString(R.string.ledRgbKey));
+        if (rgbPreference != null) {
+            String rgb = PreferencesUtil.getString(getActivity(),
+                    CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                    R.string.ledRgbKey, "15,15,15");
+
+            rgbPreference.setSummary(rgb);
         }
 
         return rootView;

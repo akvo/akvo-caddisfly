@@ -16,26 +16,38 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.AlignmentActivity;
+import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ColorimetryStripActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -45,21 +57,33 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class ExternalActionActivity extends BaseActivity {
 
+    private static final int CODE_LENGTH = 7;
     private static final int REQUEST_TEST = 1;
+    private static final int PERMISSION_ALL = 1;
+    private static final String MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s";
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    private Boolean mIsExternalAppCall = false;
-    //the language requested by the external app
+
+    // track if the call was made internally or from an external app
+    private boolean mIsExternalAppCall = false;
+
+    // old versions of the survey app does not expect image in result
+    private boolean mCallerExpectsImageInResult = true;
+
+    // the test type requested
+    @Nullable
+    private String mTestTypeUuid;
+
+    // the language requested by the external app
     private String mExternalAppLanguageCode;
-    //private UpdateCheckReceiver updateCheckReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_action);
-
-        //updateCheckReceiver = UpdateHelper.checkUpdate(this, false);
     }
 
     @Override
@@ -77,49 +101,103 @@ public class ExternalActionActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String type = intent.getType();
-        String mQuestionTitle;
 
-        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction()) && type != null) {
-            if ("text/plain".equals(type)) { //NON-NLS
-                mIsExternalAppCall = true;
-                mQuestionTitle = intent.getStringExtra("questionTitle");
+        if (type != null && "text/plain".equals(type)
+                && AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
+                || AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
 
-                mExternalAppLanguageCode = intent.getStringExtra("language");
+            mTestTypeUuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
 
-                CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+            mIsExternalAppCall = true;
+            mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
+            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+            String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
-                //Extract the 5 letter code in the question and load the test config
-                CaddisflyApp.getApp().loadTestConfiguration(
-                        mQuestionTitle.substring(Math.max(0, mQuestionTitle.length() - 5))
-                );
+            if (mTestTypeUuid == null) {
 
-                if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
-                    ((TextView) findViewById(R.id.textTitle)).setText(getTestName(mQuestionTitle));
-                    alertTestTypeNotSupported(mQuestionTitle);
-                } else {
-                    Configuration config = getResources().getConfiguration();
-                    ((TextView) findViewById(R.id.textTitle)).setText(
-                            CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
-                    if (!CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash() ||
-                            CaddisflyApp.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                                    R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
-                                        }
-                                    }
-                            )) {
-                        startTest();
+                //todo: remove when obsolete
+                //UUID was not found so it must be old version survey, look for 5 letter code
+                String code = questionTitle.trim().substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
+
+                if (code.equalsIgnoreCase("strip")) {
+                    final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
+                    startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
+                    return;
+                }
+
+                //Switch temperature to ec, since temperature is returned along with ec in json result
+                if (code.equalsIgnoreCase("tempe") && AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
+                    code = "econd";
+                }
+
+                mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
+
+                // old version of survey does not expect image in result
+                mCallerExpectsImageInResult = false;
+            }
+
+            //Get the test config by uuid
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(mTestTypeUuid);
+
+            if (CaddisflyApp.getApp().getCurrentTestInfo() == null) {
+                ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
+                alertTestTypeNotSupported();
+            } else {
+                Configuration config = getResources().getConfiguration();
+                ((TextView) findViewById(R.id.textTitle)).setText(
+                        CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
+
+                String[] permissions = {};
+                if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
+                    if (AppPreferences.useExternalCamera()) {
+                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    } else {
+                        permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     }
+                }
+
+                if (!ApiUtil.hasPermissions(this, permissions)) {
+                    ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
+                } else {
+                    startTest(mTestTypeUuid);
                 }
             }
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
+                } else {
+                    granted = true;
+                }
+            }
+            if (granted) {
+                startTest(mTestTypeUuid);
+            } else {
+                String message = getString(R.string.cameraAndStoragePermissions);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                ApiUtil.startInstalledAppDetailsActivity(this);
+                finish();
+            }
+        }
+
+    }
+
     private void alertCalibrationExpired() {
 
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.errorCalibrationExpired),
+        String message = String.format(MESSAGE_TWO_LINE_FORMAT, getString(R.string.errorCalibrationExpired),
                 getString(R.string.orderFreshBatch));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest,
@@ -149,7 +227,7 @@ public class ExternalActionActivity extends BaseActivity {
         String message = getString(R.string.errorCalibrationIncomplete,
                 CaddisflyApp.getApp().getCurrentTestInfo().getName(
                         getResources().getConfiguration().locale.getLanguage()));
-        message = String.format("%s\r\n\r\n%s", message,
+        message = String.format(MESSAGE_TWO_LINE_FORMAT, message,
                 getString(R.string.doYouWantToCalibrate));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message, R.string.calibrate,
@@ -189,17 +267,30 @@ public class ExternalActionActivity extends BaseActivity {
     /**
      * Start the appropriate test based on the current test type
      */
-    private void startTest() {
+    private void startTest(String uuid) {
         Context context = this;
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
+
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case COLORIMETRIC_LIQUID:
 
-                if (ApiUtil.isCameraInUse(this, this)) {
+                if (!AppPreferences.useExternalCamera()
+                        && !CameraHelper.hasFeatureCameraFlash(this, R.string.cannotStartTest,
+                        R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        }
+                )) {
                     return;
                 }
 
-                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo().getSwatches())) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && ApiUtil.isCameraInUse(this, this)) {
+                    return;
+                }
+
+                if (!SwatchHelper.isSwatchListValid(caddisflyApp.getCurrentTestInfo())) {
                     alertCalibrationIncomplete();
                     return;
                 }
@@ -213,18 +304,27 @@ public class ExternalActionActivity extends BaseActivity {
                 }
 
                 final Intent intent = new Intent();
-                intent.putExtra("isExternal", mIsExternalAppCall);
+                intent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    intent.setClass(context, AlignmentActivity.class);
+                    if (AppPreferences.useExternalCamera()) {
+                        intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
+                    } else {
+                        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+                    }
                 }
+
+                intent.putExtra(Constant.UUID, uuid);
+                intent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(intent, REQUEST_TEST);
 
                 break;
             case COLORIMETRIC_STRIP:
 
-                final Intent colorimetricStripIntent = new Intent(context, ColorimetryStripActivity.class);
+                final Intent colorimetricStripIntent = new Intent(context, BrandInfoActivity.class);
+                colorimetricStripIntent.putExtra(Constant.UUID, uuid);
+                colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;
@@ -234,6 +334,7 @@ public class ExternalActionActivity extends BaseActivity {
                 boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     final Intent sensorIntent = new Intent(context, SensorActivity.class);
+                    sensorIntent.putExtra(Constant.UUID, uuid);
                     startActivityForResult(sensorIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();
@@ -252,7 +353,7 @@ public class ExternalActionActivity extends BaseActivity {
      * Alert shown when a feature is not supported by the device
      */
     private void alertFeatureNotSupported() {
-        String message = String.format("%s\r\n\r\n%s", getString(R.string.phoneDoesNotSupport),
+        String message = String.format(ExternalActionActivity.MESSAGE_TWO_LINE_FORMAT, getString(R.string.phoneDoesNotSupport),
                 getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.notSupported, message,
@@ -273,7 +374,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
@@ -281,7 +382,19 @@ public class ExternalActionActivity extends BaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     //return the test result to the external app
                     Intent intent = new Intent(getIntent());
-                    intent.putExtra("response", data.getStringExtra("response"));
+
+                    //todo: remove when obsolete
+                    if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
+                            && data.hasExtra(SensorConstants.RESPONSE_COMPAT)) {
+                        //if survey from old version server then don't send json response
+                        intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
+                    } else {
+                        intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
+                        if (mCallerExpectsImageInResult) {
+                            intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
+                        }
+                    }
+
                     this.setResult(Activity.RESULT_OK, intent);
                 }
                 finish();
@@ -292,13 +405,11 @@ public class ExternalActionActivity extends BaseActivity {
 
     /**
      * Alert displayed when an unsupported contaminant test type was requested
-     *
-     * @param title the name of the test contaminant
      */
-    private void alertTestTypeNotSupported(String title) {
+    private void alertTestTypeNotSupported() {
 
-        String message = getString(R.string.errorTestNotAvailable, getTestName(title));
-        message = String.format("%s\r\n\r\n%s", message, getString(R.string.pleaseContactSupport));
+        String message = getString(R.string.errorTestNotAvailable);
+        message = String.format(ExternalActionActivity.MESSAGE_TWO_LINE_FORMAT, message, getString(R.string.pleaseContactSupport));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message,
                 R.string.ok,
@@ -318,45 +429,38 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     @NonNull
-    private String getTestName(String title) {
+    @Deprecated
+    private String getTestName(@NonNull String title) {
         //ensure we have short name to display as title
         String itemName;
         if (title.length() > 0) {
             if (title.length() > 30) {
                 title = title.substring(0, 30);
             }
-            itemName = title.substring(0, Math.max(0, title.length() - 7)).trim();
+            itemName = title.substring(0, Math.max(0, title.length() - CODE_LENGTH)).trim();
         } else {
             itemName = getString(R.string.error);
         }
         return itemName;
     }
 
-    @Override
-    public void onDestroy() {
-//        try {
-//            if (updateCheckReceiver != null) {
-//                unregisterReceiver(updateCheckReceiver);
-//            }
-//        } catch (Exception ignored) {
-//        }
-        super.onDestroy();
-    }
-
     /**
      * Handler to restart the app after language has been changed
      */
     private static class WeakRefHandler extends Handler {
+        @NonNull
         private final WeakReference<Activity> ref;
 
-        public WeakRefHandler(Activity ref) {
+        WeakRefHandler(Activity ref) {
             this.ref = new WeakReference<>(ref);
         }
 
         @Override
         public void handleMessage(Message msg) {
             Activity f = ref.get();
-            f.recreate();
+            if (f != null) {
+                f.recreate();
+            }
         }
     }
 }

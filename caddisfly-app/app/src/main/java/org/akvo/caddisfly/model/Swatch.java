@@ -38,27 +38,23 @@ public class Swatch implements Cloneable {
         return color;
     }
 
-    public void setColor(int value) {
-        color = value;
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getDefaultColor() {
         return defaultColor;
     }
 
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public int getRedDifference() {
         return redDifference;
     }
 
-    public void setRedDifference(int redDifference) {
+    void setRedDifference(int redDifference) {
         this.redDifference = redDifference;
     }
 
@@ -66,7 +62,7 @@ public class Swatch implements Cloneable {
         return greenDifference;
     }
 
-    public void setGreenDifference(int greenDifference) {
+    void setGreenDifference(int greenDifference) {
         this.greenDifference = greenDifference;
     }
 
@@ -74,7 +70,7 @@ public class Swatch implements Cloneable {
         return blueDifference;
     }
 
-    public void setBlueDifference(int blueDifference) {
+    void setBlueDifference(int blueDifference) {
         this.blueDifference = blueDifference;
     }
 }

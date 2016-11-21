@@ -16,15 +16,16 @@
 
 package org.akvo.caddisfly;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.ui.MainActivity;
@@ -60,7 +61,6 @@ import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.TestHelper.mDevice;
 import static org.akvo.caddisfly.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.TestHelper.startApp;
 import static org.akvo.caddisfly.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
@@ -70,9 +70,6 @@ import static org.hamcrest.object.HasToString.hasToString;
 @LargeTest
 public class CalibrationTest {
 
-    //    public void testStartCalibrate() {
-//        startCalibrate(2, 4);
-//    }
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -80,8 +77,6 @@ public class CalibrationTest {
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            loadData(mCurrentLanguage);
 
             for (int i = 0; i < 5; i++) {
                 mDevice.pressBack();
@@ -91,6 +86,8 @@ public class CalibrationTest {
 
     @Before
     public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
@@ -217,7 +214,9 @@ public class CalibrationTest {
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
-        onView(withText(R.string.cancel)).perform(click());
+        mDevice.pressBack();
+
+        onView(withId(android.R.id.button2)).perform(click());
 
         goToMainScreen();
 
@@ -225,19 +224,19 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton(0);
 
         sleep(2000);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            String message = String.format("%s\r\n\r\n%s",
+            String message = String.format("%s%n%n%s",
                     mActivityRule.getActivity().getString(R.string.errorCalibrationExpired),
                     mActivityRule.getActivity().getString(R.string.orderFreshBatch));
             onView(withText(message)).check(matches(isDisplayed()));
             onView(withText(R.string.ok)).perform(click());
         }
 
-        startApp();
+        mActivityRule.launchActivity(new Intent());
 
         onView(withText(R.string.calibrate)).perform(click());
 
@@ -267,7 +266,7 @@ public class CalibrationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton(0);
 
         sleep(2000);
 
@@ -275,16 +274,14 @@ public class CalibrationTest {
 
     }
 
-    @Test
+    //@Test
     public void testIncompleteCalibration() {
 
         onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("next");
-
-        clickExternalSourceButton("useExternalSource");
+        clickExternalSourceButton(0);
 
         mDevice.waitForWindowUpdate("", 2000);
 
@@ -292,7 +289,7 @@ public class CalibrationTest {
 
         String message = mActivityRule.getActivity().getString(R.string.errorCalibrationIncomplete,
                 currentHashMap.get("chlorine"));
-        message = String.format("%s\r\n\r\n%s", message,
+        message = String.format("%s%n%n%s", message,
                 mActivityRule.getActivity().getString(R.string.doYouWantToCalibrate));
 
         onView(withText(message)).check(matches(isDisplayed()));

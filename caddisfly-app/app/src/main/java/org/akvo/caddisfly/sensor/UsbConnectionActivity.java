@@ -25,10 +25,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.ApiUtil;
 
 /**
- * A progress dialog to the show that the usb external device is connected
+ * A partial_progress dialog to the show that the usb external device is connected
  */
 public class UsbConnectionActivity extends Activity {
 
@@ -36,8 +35,6 @@ public class UsbConnectionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usb_connection);
-
-        ApiUtil.lockScreenOrientation(this);
     }
 
     @Override
@@ -52,7 +49,7 @@ public class UsbConnectionActivity extends Activity {
         progressDialog.setMessage(getString(R.string.deviceConnecting));
         progressDialog.setCancelable(false);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && progressDialog.getWindow() != null) {
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         progressDialog.show();
@@ -66,6 +63,9 @@ public class UsbConnectionActivity extends Activity {
                     public void run() {
                         try {
                             progressDialog.dismiss();
+//                            Intent intent = new Intent("my-event");
+//                            intent.putExtra("message", "data");
+//                            LocalBroadcastManager.getInstance(CaddisflyApp.getApp()).sendBroadcast(intent);
                         } catch (Exception ignored) {
 
                         }

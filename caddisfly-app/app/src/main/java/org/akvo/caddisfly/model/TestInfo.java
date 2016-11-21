@@ -17,42 +17,61 @@
 package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
+import android.support.annotation.StringRes;
+import android.util.Log;
 
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Model to hold test configuration information
  */
 public class TestInfo {
-    private final Hashtable names;
-    private final String code;
-    private final String unit;
-    private final ArrayList<Swatch> swatches;
-    private final CaddisflyApp.TestType testType;
-    private final ArrayList<Integer> dilutions;
-    private final boolean requiresCalibration;
+
+    private static final String TAG = "TestInfo";
+
+    private static final double RESULT_ERROR_MARGIN = 0.2;
+    private final HashMap names;
+    private final List<String> uuid;
+    private final List<Swatch> swatches;
+    private final TestType testType;
+    private final List<Integer> dilutions;
+    private final List<SubTest> subTests = new ArrayList<>();
+    private String unit;
+    private boolean requiresCalibration;
     private boolean allInteger = true;
     private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
+    private boolean isGroup;
+    @StringRes
+    private int groupName;
+    private String batchNumber;
+    private long calibrationDate;
+    private long expiryDate;
+    private boolean useGrayScale;
+    private String shortCode;
+    private int hueTrend;
 
-    public TestInfo(Hashtable names, String code, String unit, CaddisflyApp.TestType testType,
-                    boolean requiresCalibration, String[] swatchArray, String[] defaultColorsArray,
-                    String[] dilutionsArray, boolean isDiagnostic, int monthsValid) {
-        this.names = names;
+    public TestInfo(HashMap names, TestType testType, String[] swatchArray,
+                    String[] defaultColorsArray, String[] dilutionsArray,
+                    List<String> uuids, JSONArray resultsArray) {
+        this.names = names == null ? null : (HashMap) names.clone();
         this.testType = testType;
-        this.code = code;
-        this.unit = unit;
+        this.uuid = uuids;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
-        this.requiresCalibration = requiresCalibration;
-        this.isDiagnostic = isDiagnostic;
-        this.monthsValid = monthsValid;
 
         for (int i = 0; i < swatchArray.length; i++) {
 
@@ -96,12 +115,27 @@ public class TestInfo {
         for (String dilution : dilutionsArray) {
             addDilution(Integer.parseInt(dilution));
         }
+
+        if (resultsArray != null) {
+            for (int ii = 0; ii < resultsArray.length(); ii++) {
+                try {
+                    JSONObject patchObj = resultsArray.getJSONObject(ii);
+                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
+                } catch (JSONException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            }
+        }
+
+        if (subTests.size() > 0) {
+            this.unit = subTests.get(0).getUnit();
+        }
     }
 
     public TestInfo() {
         names = null;
-        testType = CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
-        this.code = "";
+        testType = TestType.COLORIMETRIC_LIQUID;
+        this.uuid = new ArrayList<>();
         this.unit = "";
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
@@ -119,6 +153,10 @@ public class TestInfo {
         });
     }
 
+    public String getName() {
+        return getName("en");
+    }
+
     public String getName(String languageCode) {
         if (names != null) {
             if (names.containsKey(languageCode)) {
@@ -130,19 +168,23 @@ public class TestInfo {
         return "";
     }
 
-    public CaddisflyApp.TestType getType() {
+    public TestType getType() {
         return testType;
     }
 
     public String getCode() {
-        return code;
+        return uuid.size() > 0 ? uuid.get(0) : "";
+    }
+
+    public List<String> getUuid() {
+        return uuid;
     }
 
     public String getUnit() {
         return unit;
     }
 
-    public ArrayList<Swatch> getSwatches() {
+    public List<Swatch> getSwatches() {
         //ensure that swatches is always sorted
         if (mIsDirty) {
             mIsDirty = false;
@@ -153,7 +195,7 @@ public class TestInfo {
 
     public double getDilutionRequiredLevel() {
         Swatch swatch = swatches.get(swatches.size() - 1);
-        return swatch.getValue() - 0.2;
+        return swatch.getValue() - RESULT_ERROR_MARGIN;
     }
 
     public void addSwatch(Swatch value) {
@@ -177,6 +219,11 @@ public class TestInfo {
         return isDiagnostic;
     }
 
+    @SuppressWarnings("SameParameterValue")
+    public void setIsDiagnostic(boolean value) {
+        isDiagnostic = value;
+    }
+
     /**
      * Gets if this test type requires calibration
      *
@@ -186,8 +233,14 @@ public class TestInfo {
         return requiresCalibration;
     }
 
+    @SuppressWarnings("SameParameterValue")
+    public void setRequiresCalibration(boolean value) {
+        requiresCalibration = value;
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean requiresCameraFlash() {
-        return testType == CaddisflyApp.TestType.COLORIMETRIC_LIQUID;
+        return testType == TestType.COLORIMETRIC_LIQUID;
     }
 
     public int getMonthsValid() {
@@ -196,5 +249,112 @@ public class TestInfo {
 
     public boolean hasDecimalPlace() {
         return !allInteger;
+    }
+
+    public List<SubTest> getSubTests() {
+        return subTests;
+    }
+
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    public void setGroup(boolean group) {
+        isGroup = group;
+    }
+
+    public int getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(@StringRes int groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+    public long getCalibrationDate() {
+        return calibrationDate;
+    }
+
+    public void setCalibrationDate(long calibrationDate) {
+        this.calibrationDate = calibrationDate;
+    }
+
+    public long getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(long expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getCalibrationDateString() {
+        return new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US).format(calibrationDate);
+    }
+
+    public String getExpiryDateString() {
+        return new SimpleDateFormat(SensorConstants.DATE_FORMAT, Locale.US)
+                .format(Calendar.getInstance().getTime());
+    }
+
+    public boolean isUseGrayScale() {
+        return useGrayScale;
+    }
+
+    public void setUseGrayScale(boolean useGrayScale) {
+        this.useGrayScale = useGrayScale;
+    }
+
+    public String getShortCode() {
+        return shortCode;
+    }
+
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
+    }
+
+    public void setMonthsValid(int monthsValid) {
+        this.monthsValid = monthsValid;
+    }
+
+    public void setHueTrend(int hueTrend) {
+        this.hueTrend = hueTrend;
+    }
+
+    public int getHueTrend() {
+        return hueTrend;
+    }
+
+    public static class SubTest {
+        private final int id;
+        private final String desc;
+        private final String unit;
+
+        SubTest(int id, String desc, String unit) {
+            this.id = id;
+            this.desc = desc;
+            this.unit = unit;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
     }
 }

@@ -15,20 +15,22 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:key="preferenceCategoryDiagnostics">
-        <EditTextPreference
-            android:defaultValue="240"
-            android:dialogMessage="Interval in minutes (max 360)"
-            android:key="@string/fluor_IntervalMinutesKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Sampling interval" />
-        <EditTextPreference
-            android:defaultValue="10"
-            android:dialogMessage="Number of samples (max 50)"
-            android:key="@string/fluor_NumberOfSamplesKey"
-            android:maxLength="2"
-            android:numeric="integer"
-            android:title="Number of samples" />
-    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
+    <EditTextPreference
+        android:defaultValue="240"
+        android:dialogMessage="Interval in minutes (max 360)"
+        android:key="@string/fluor_IntervalMinutesKey"
+        android:maxLength="3"
+        android:numeric="integer"
+        android:title="Sampling interval" />
+    <EditTextPreference
+        android:defaultValue="10"
+        android:dialogMessage="Number of samples (max 50)"
+        android:key="@string/fluor_NumberOfSamplesKey"
+        android:maxLength="2"
+        android:numeric="integer"
+        android:title="Number of samples" />
+    <Preference
+        android:enabled="false"
+        android:key="@string/ledRgbKey"
+        android:title="LED RGB" />
 </PreferenceScreen>

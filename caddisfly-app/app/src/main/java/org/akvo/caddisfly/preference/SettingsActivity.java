@@ -25,10 +25,25 @@ import android.widget.ScrollView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
     private ScrollView mScrollView;
     private int mScrollPosition;
 
@@ -42,6 +57,18 @@ public class SettingsActivity extends BaseActivity
     public void onRestart() {
         super.onRestart();
         setupActivity();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
+                .registerOnSharedPreferenceChangeListener(this);
+
+        if (AppPreferences.isDiagnosticMode()) {
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        }
     }
 
     private void setupActivity() {
@@ -75,7 +102,7 @@ public class SettingsActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         try {
             setSupportActionBar(toolbar);
-        } catch (Throwable t) {
+        } catch (Exception ignored) {
             //Ignore crash in Samsung
         }
 
@@ -98,7 +125,7 @@ public class SettingsActivity extends BaseActivity
             finish();
         }
 
-        if ("theme".equals(s)) {
+        if (getApplicationContext().getString(R.string.selectedThemeKey).equals(s)) {
             finish();
         }
 
@@ -127,12 +154,5 @@ public class SettingsActivity extends BaseActivity
                 mScrollView.scrollTo(0, mScrollPosition);
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
-                .registerOnSharedPreferenceChangeListener(this);
     }
 }

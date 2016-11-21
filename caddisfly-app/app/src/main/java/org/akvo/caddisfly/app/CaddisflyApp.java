@@ -18,25 +18,22 @@ package org.akvo.caddisfly.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.hardware.Camera;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.StringRes;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.AlertUtil;
-import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
@@ -45,8 +42,7 @@ import java.util.Locale;
 
 public class CaddisflyApp extends Application {
 
-    private static boolean hasCameraFlash;
-    private static CaddisflyApp app;// Singleton
+    private static CaddisflyApp app; // Singleton
     private TestInfo mCurrentTestInfo = new TestInfo();
 
     /**
@@ -58,114 +54,33 @@ public class CaddisflyApp extends Application {
         return app;
     }
 
-    /**
-     * Check if the camera is available
-     *
-     * @param context         the context
-     * @param onClickListener positive button listener
-     * @return true if camera flash exists otherwise false
-     */
-    @SuppressWarnings("deprecation")
-    public static Camera getCamera(Context context,
-                                   DialogInterface.OnClickListener onClickListener) {
-
-        Camera camera = ApiUtil.getCameraInstance();
-        if (hasFeatureBackCamera(context, onClickListener) && camera == null) {
-            String message = String.format("%s\r\n\r\n%s",
-                    context.getString(R.string.cannotUseCamera),
-                    context.getString(R.string.tryRestarting));
-
-            AlertUtil.showError(context, R.string.cameraBusy,
-                    message, null, R.string.ok, onClickListener, null, null);
-            return null;
-        }
-
-        return camera;
-    }
-
-    private static boolean hasFeatureBackCamera(Context context,
-                                                DialogInterface.OnClickListener onClickListener) {
-        PackageManager packageManager = context.getPackageManager();
-        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            AlertUtil.showAlert(context, R.string.cameraNotAvailable,
-                    R.string.cameraRequired,
-                    R.string.ok, onClickListener, null, null);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if the device has a camera flash
-     *
-     * @param context         the context
-     * @param onClickListener positive button listener
-     * @return true if camera flash exists otherwise false
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static boolean hasFeatureCameraFlash(Context context, @StringRes int errorTitle,
-                                                @StringRes int buttonText,
-                                                DialogInterface.OnClickListener onClickListener) {
-        if (PreferencesUtil.containsKey(context, R.string.hasCameraFlashKey)) {
-            hasCameraFlash = PreferencesUtil.getBoolean(context, R.string.hasCameraFlashKey, false);
-        } else {
-
-            @SuppressWarnings("deprecation")
-            Camera camera = getCamera(context, onClickListener);
-            try {
-                if (camera != null) {
-                    hasCameraFlash = ApiUtil.hasCameraFlash(context, camera);
-                    PreferencesUtil.setBoolean(context, R.string.hasCameraFlashKey, hasCameraFlash);
-                }
-            } finally {
-                if (camera != null) {
-                    camera.release();
-                }
-
-            }
-        }
-
-        if (!hasCameraFlash) {
-            AlertUtil.showAlert(context, errorTitle,
-                    R.string.errorCameraFlashRequired,
-                    buttonText, onClickListener, null, null);
-
-        }
-        return hasCameraFlash;
+    public static String getAppLanguage() {
+        Configuration config = getApp().getResources().getConfiguration();
+        return config.locale.getLanguage().substring(0, 2);
     }
 
     /**
      * Gets the app version
      *
-     * @param context The context
      * @return The version name and number
      */
-    public static String getAppVersion(Context context) {
+    public static String getAppVersion() {
+        String version = "";
         try {
-            String version = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0).versionName;
-            String[] words = version.split("\\s");
-            String versionString = "";
-            for (String word : words) {
-                try {
-                    Double versionNumber = Double.parseDouble(word);
-                    versionString += String.format(Locale.US, "%.3f", versionNumber);
-                } catch (NumberFormatException e) {
-                    int id = context.getResources()
-                            .getIdentifier(word.toLowerCase(), "string", context.getPackageName());
-                    if (id > 0) {
-                        versionString += context.getString(id);
-                    } else {
-                        versionString += word;
-                    }
-                }
-                versionString += " ";
-            }
-            return versionString.trim();
+            Context context = getApp();
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
-        } catch (PackageManager.NameNotFoundException e) {
-            return "";
+            if (AppPreferences.isDiagnosticMode()) {
+                version = String.format("%s %s (Build %s)", context.getString(R.string.version),
+                        packageInfo.versionName, packageInfo.versionCode);
+            } else {
+                version = String.format("%s %s", context.getString(R.string.version),
+                        packageInfo.versionName);
+            }
+
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
+        return version;
     }
 
     /**
@@ -191,10 +106,10 @@ public class CaddisflyApp extends Application {
      * Initialize the current test by loading the configuration and calibration information
      */
     public void initializeCurrentTest() {
-        if (mCurrentTestInfo == null || mCurrentTestInfo.getCode().isEmpty()) {
+        if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfiguration(mCurrentTestInfo.getCode());
+            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid().get(0));
         }
     }
 
@@ -204,7 +119,7 @@ public class CaddisflyApp extends Application {
     public void setDefaultTest() {
 
         ArrayList<TestInfo> tests;
-        tests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+        tests = TestConfigHelper.loadTestsList();
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);
             if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
@@ -214,24 +129,21 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Load the test configuration for the given test code
+     * Load the test configuration for the given uuid
      *
-     * @param testCode the test code
+     * @param uuid the uuid of the test
      */
-    public void loadTestConfiguration(String testCode) {
+    public void loadTestConfigurationByUuid(String uuid) {
 
-        mCurrentTestInfo = TestConfigHelper.loadTestConfigurationByCode(
-                FileHelper.getConfigJson(), testCode.toUpperCase());
+        mCurrentTestInfo = TestConfigHelper.loadTestByUuid(uuid);
 
-        if (mCurrentTestInfo != null) {
-            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(mCurrentTestInfo);
+        if (mCurrentTestInfo != null && mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
+            loadCalibratedSwatches(mCurrentTestInfo);
 
-                if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
-                    try {
-                        SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
-                    } catch (Exception ignored) {
-                    }
+            if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
+                try {
+                    SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
+                } catch (Exception ignored) {
                 }
             }
         }
@@ -300,10 +212,11 @@ public class CaddisflyApp extends Application {
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
 
-        locale = new Locale(languageCode);
+        locale = new Locale(languageCode, Locale.getDefault().getCountry());
 
         //if the app language is not already set to languageCode then set it now
-        if (!config.locale.getLanguage().substring(0, 2).equals(languageCode)) {
+        if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(languageCode)
+                || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
             config.locale = locale;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -318,32 +231,4 @@ public class CaddisflyApp extends Application {
             }
         }
     }
-
-    /**
-     * The different types of testing methods
-     */
-    public enum TestType {
-        /**
-         * Liquid reagent is mixed with sample and color is analysed from the resulting
-         * color change in the solution
-         */
-        COLORIMETRIC_LIQUID,
-
-        /**
-         * Strip paper is dipped into the sample and color is analysed from the resulting
-         * color change on the strip paper
-         */
-        COLORIMETRIC_STRIP,
-
-        /**
-         * External sensors connected to the phone/device
-         */
-        SENSOR,
-
-        /**
-         * Measure of turbidity in the liquid
-         */
-        TURBIDITY_COLIFORMS
-    }
-
 }

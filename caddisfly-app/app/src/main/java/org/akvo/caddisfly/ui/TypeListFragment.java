@@ -22,12 +22,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -38,7 +37,7 @@ import java.util.ArrayList;
  */
 public class TypeListFragment extends ListFragment {
 
-    private ArrayList<TestInfo> mTests;
+    private List<TestInfo> mTests;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,7 +53,7 @@ public class TypeListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTests = TestConfigHelper.loadConfigurationsForAllTests(FileHelper.getConfigJson());
+        mTests = TestConfigHelper.loadTestsList();
 
         //Only items that require calibration to be displayed in the list
         for (int i = mTests.size() - 1; i >= 0; i--) {
@@ -78,7 +77,7 @@ public class TypeListFragment extends ListFragment {
         setListAdapter(testTypesAdapter);
     }
 
-    //todo: check deprecation of onAttach. Currently using Context instead of Activity fails on Samsung device
+    //todo: Using deprecated onAttach because the replacement does not work correctly for non support Fragment
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity context) {
@@ -87,8 +86,8 @@ public class TypeListFragment extends ListFragment {
         try {
             mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new IllegalArgumentException(context.toString()
+                    + " must implement OnFragmentInteractionListener", e);
         }
     }
 

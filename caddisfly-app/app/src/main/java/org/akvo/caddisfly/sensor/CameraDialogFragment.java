@@ -27,6 +27,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,9 +37,11 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,14 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public class CameraDialogFragment extends CameraDialog {
+
+    private static final int METERING_AREA_SIZE = 100;
+    private static final int EXPOSURE_COMPENSATION = -2;
+    private static final int MIN_PICTURE_WIDTH = 640;
+    private static final int MIN_PICTURE_HEIGHT = 480;
+    private static final int MIN_SUPPORTED_WIDTH = 400;
+    private static final int RADIUS = 40;
+
     private int mNumberOfPhotosToTake;
     private int mPhotoCurrentCount = 0;
     private long mSamplingDelay;
@@ -90,7 +101,9 @@ public class CameraDialogFragment extends CameraDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         return dialog;
     }
 
@@ -100,7 +113,7 @@ public class CameraDialogFragment extends CameraDialog {
         if (mCamera != null && mCameraPreview != null) {
             mCameraPreview.setCamera(mCamera);
         } else {
-            String message = String.format("%s\r\n\r\n%s",
+            String message = String.format("%s%n%n%s",
                     getString(R.string.cannotUseCamera),
                     getString(R.string.tryRestarting));
 
@@ -187,7 +200,7 @@ public class CameraDialogFragment extends CameraDialog {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        if (getActivity() != null && getActivity() instanceof Cancelled) {
+        if (getActivity() instanceof Cancelled) {
             ((Cancelled) getActivity()).dialogCancelled();
         }
         super.onCancel(dialog);
@@ -208,21 +221,22 @@ public class CameraDialogFragment extends CameraDialog {
 
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
+        static final double ASPECT_TOLERANCE = 0.1;
+        private static final String TAG = "CameraPreview";
         private final SurfaceHolder mHolder;
         private Paint circleStroke;
         private List<Camera.Size> mSupportedPreviewSizes;
         private Camera mCamera;
-
         @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
         private Camera.Size mPreviewSize;
 
-        public CameraPreview(Context context) {
+        CameraPreview(Context context) {
             super(context);
             mHolder = getHolder();
         }
 
-        public CameraPreview(Context context, Camera camera) {
+        CameraPreview(Context context, Camera camera) {
             super(context);
             //setCamera(camera);
             mCamera = camera;
@@ -251,7 +265,7 @@ public class CameraDialogFragment extends CameraDialog {
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
 
@@ -296,24 +310,28 @@ public class CameraDialogFragment extends CameraDialog {
 
             if (parameters.getMaxNumMeteringAreas() > 0) {
                 List<Camera.Area> meteringAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-100, -100, 100, 100);
+                Rect areaRect1 = new Rect(-METERING_AREA_SIZE, -METERING_AREA_SIZE,
+                        METERING_AREA_SIZE, METERING_AREA_SIZE);
                 meteringAreas.add(new Camera.Area(areaRect1, 1000));
                 parameters.setMeteringAreas(meteringAreas);
             }
 
             if (mSupportedFlashModes != null) {
-                if (mSupportedFlashModes.contains((Camera.Parameters.FLASH_MODE_TORCH))) {
+                if (!AppPreferences.useFlashMode()
+                        && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                } else if (mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
                 }
             }
 
-            parameters.setExposureCompensation(-2);
+            parameters.setExposureCompensation(EXPOSURE_COMPENSATION);
 
             parameters.setZoom(0);
 
-            mCamera.setDisplayOrientation(90);
+            mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
 
-            parameters.setPictureSize(640, 480);
+            parameters.setPictureSize(MIN_PICTURE_WIDTH, MIN_PICTURE_HEIGHT);
 
             try {
                 mCamera.setParameters(parameters);
@@ -325,7 +343,7 @@ public class CameraDialogFragment extends CameraDialog {
                         supportedPictureSizes.get(supportedPictureSizes.size() - 1).height);
 
                 for (Camera.Size size : supportedPictureSizes) {
-                    if (size.width > 400 && size.width < 1000) {
+                    if (size.width > MIN_SUPPORTED_WIDTH && size.width < 1000) {
                         parameters.setPictureSize(size.width, size.height);
                         break;
                     }
@@ -338,7 +356,6 @@ public class CameraDialogFragment extends CameraDialog {
         public void surfaceCreated(SurfaceHolder holder) {
             // empty. surfaceChanged will take care of stuff
         }
-
 
         public void surfaceDestroyed(SurfaceHolder holder) {
             if (mCamera != null) {
@@ -367,29 +384,34 @@ public class CameraDialogFragment extends CameraDialog {
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
                 mCamera.setParameters(parameters);
-                mCamera.setDisplayOrientation(90);
-                mCamera.setPreviewDisplay(mHolder);
-                mCamera.startPreview();
-
-            } catch (Exception ignored) {
-
+                mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
             }
+
+            try {
+                mCamera.setPreviewDisplay(mHolder);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+            mCamera.startPreview();
         }
 
         private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
-            final double ASPECT_TOLERANCE = 0.1;
             double targetRatio = (double) h / w;
 
-            if (sizes == null)
+            if (sizes == null) {
                 return null;
+            }
 
             Camera.Size optimalSize = null;
             double minDiff = Double.MAX_VALUE;
 
             for (Camera.Size size : sizes) {
                 double ratio = (double) size.height / size.width;
-                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) {
                     continue;
+                }
 
                 if (Math.abs(size.height - h) < minDiff) {
                     optimalSize = size;
@@ -415,7 +437,7 @@ public class CameraDialogFragment extends CameraDialog {
             int w = getWidth();
             int h = getHeight();
 
-            canvas.drawCircle(w / 2, h / 2, 40, circleStroke);
+            canvas.drawCircle(w / 2f, h / 2f, RADIUS, circleStroke);
 
             super.onDraw(canvas);
         }
@@ -430,10 +452,11 @@ public class CameraDialogFragment extends CameraDialog {
             }
 
             float ratio;
-            if (mPreviewSize.height >= mPreviewSize.width)
+            if (mPreviewSize.height >= mPreviewSize.width) {
                 ratio = (float) mPreviewSize.height / (float) mPreviewSize.width;
-            else
+            } else {
                 ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
+            }
 
             setMeasuredDimension(width, (int) (width * ratio));
         }

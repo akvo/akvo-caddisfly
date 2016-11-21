@@ -60,6 +60,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
+    private EditText editRgb;
     private boolean isEditing = false;
 
     public SaveCalibrationDialogFragment() {
@@ -107,6 +108,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
 
+        editRgb = (EditText) view.findViewById(R.id.editRgb);
+
         long milliseconds = PreferencesUtil.getLong(getActivity(),
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
                 R.string.calibrationExpiryDateKey);
@@ -121,6 +124,13 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 editExpiryDate.setText(new SimpleDateFormat("dd-MMM-yyyy", Locale.US)
                         .format(new Date(expiryDate)));
             }
+        }
+
+        editRgb.setText(PreferencesUtil.getString(context, testCode, R.string.ledRgbKey, "").trim());
+
+        if (!AppPreferences.useExternalCamera()) {
+            editRgb.setVisibility(View.GONE);
+            view.findViewById(R.id.textRgb).setVisibility(View.GONE);
         }
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener,
@@ -243,20 +253,23 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     }
                 }
 
-                public void saveDetails(String testCode) {
+                void saveDetails(String testCode) {
                     PreferencesUtil.setLong(context, testCode,
                             R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
 
                     PreferencesUtil.setString(context, testCode,
                             R.string.batchNumberKey, editBatchCode.getText().toString().trim());
 
+                    PreferencesUtil.setString(context, testCode,
+                            R.string.ledRgbKey, editRgb.getText().toString().trim());
+
                     ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
                 }
 
                 private boolean formEntryValid() {
 
-                    if (!isEditing && AppPreferences.isDiagnosticMode() &&
-                            editName.getText().toString().trim().isEmpty()) {
+                    if (!isEditing && AppPreferences.isDiagnosticMode()
+                            && editName.getText().toString().trim().isEmpty()) {
                         editName.setError(getString(R.string.saveInvalidFileName));
                         return false;
                     }
@@ -284,7 +297,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
                 testCode, editBatchCode.getText().toString().trim(),
                 Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis());
+                calendar.getTimeInMillis(), editRgb.getText().toString(),
+                !PreferencesUtil.getBoolean(context, R.string.noBackdropDetectionKey, false));
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
@@ -301,6 +315,17 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        closeKeyboard(getActivity(), editBatchCode);
     }
 
     @Override

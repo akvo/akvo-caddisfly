@@ -16,28 +16,25 @@
 
 package org.akvo.caddisfly.helper;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class FileHelper {
+public final class FileHelper {
 
     /**
      * The user created configuration file name
      */
-    // Files
-    private static final String CONFIG_FILE = "tests.json";
     // Folders
-    private static final String DIR_CALIBRATION = "Akvo Caddisfly/calibration"; // Calibration files
-    private static final String DIR_CONFIG = "Akvo Caddisfly/config"; // Calibration files
-    private static final String DIR_DOWNLOAD = "Download/Install"; // Calibration files
-    private static final String DIR_IMAGE = "Akvo Caddisfly/image"; // Calibration files
-    private static final String FLUORIDE_IMAGE = "Akvo Caddisfly/Fluoride"; // Calibration files
-    private static final String TURBIDITY_IMAGE = "Akvo Caddisfly/Turbidity"; // Calibration files
+    public static final String ROOT_DIRECTORY = File.separator + "Akvo Caddisfly";
+    private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
+    private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "config"; // Calibration files
+    private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
+    private static final String DIR_CARD = ROOT_DIRECTORY + File.separator + "color-card"; // Calibration files
+
+    private FileHelper() {
+    }
 
     /**
      * Get the appropriate files directory for the given FileType. The directory may or may
@@ -48,7 +45,7 @@ public class FileHelper {
      * @return File representing the root directory for the given FileType.
      */
     @SuppressWarnings("SameParameterValue")
-    private static File getFilesDir(FileType type) {
+    public static File getFilesDir(FileType type) {
         return getFilesDir(type, "");
     }
 
@@ -62,26 +59,22 @@ public class FileHelper {
      * @return File representing the root directory for the given FileType.
      */
     public static File getFilesDir(FileType type, String subPath) {
-        String path = null;
+        String path;
         switch (type) {
             case CALIBRATION:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CALIBRATION;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CALIBRATION;
                 break;
             case CONFIG:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_CONFIG;
-                break;
-            case DOWNLOAD:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true) + File.separator + DIR_DOWNLOAD;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CONFIG;
                 break;
             case IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + DIR_IMAGE;
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_IMAGE;
                 break;
-            case FLUORIDE_IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + FLUORIDE_IMAGE;
+            case CARD:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CARD;
                 break;
-            case TURBIDITY_IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + File.separator + TURBIDITY_IMAGE;
-                break;
+            default:
+                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true);
         }
         File dir = new File(path);
         if (!subPath.isEmpty()) {
@@ -95,69 +88,10 @@ public class FileHelper {
     }
 
     /**
-     * Loads the tests from the json config file.
-     * <p/>
-     * Looks for the user created json file. If not found loads the internal json config file
-     *
-     * @return json configuration text
-     */
-    public static String getConfigJson() {
-
-        File file = new File(getFilesDir(FileType.CONFIG), CONFIG_FILE);
-        String text;
-
-        //Look for external json config file otherwise use the internal default one
-        if (file.exists()) {
-            text = FileUtil.loadTextFromFile(file);
-        } else {
-            text = FileUtil.readRawTextFile(CaddisflyApp.getApp(), R.raw.tests_config);
-        }
-
-        return text;
-    }
-
-    public static void cleanInstallFolder(boolean keepLatest) {
-        File directory = FileHelper.getFilesDir(FileHelper.FileType.DOWNLOAD, "");
-        File[] files = directory.listFiles();
-
-        if (keepLatest) {
-            int latestVersion = 0;
-            int fileVersion;
-            File currentFile = null;
-            for (File file : files) {
-                Pattern pattern = Pattern.compile("(\\d+).apk");
-                Matcher matcher = pattern.matcher(file.getName());
-                if (matcher.find()) {
-                    fileVersion = Integer.parseInt(matcher.group(1));
-                    if (fileVersion > latestVersion) {
-                        latestVersion = fileVersion;
-                        if (currentFile != null) {
-                            //noinspection ResultOfMethodCallIgnored
-                            currentFile.delete();
-                        }
-                        currentFile = file;
-                    } else {
-                        //noinspection ResultOfMethodCallIgnored
-                        file.delete();
-                    }
-                } else {
-                    //noinspection ResultOfMethodCallIgnored
-                    file.delete();
-                }
-            }
-        } else {
-            for (File file : files) {
-                //noinspection ResultOfMethodCallIgnored
-                file.delete();
-            }
-        }
-    }
-
-    /**
      * The different types of files
      */
     public enum FileType {
-        CALIBRATION, CONFIG, DOWNLOAD, IMAGE, FLUORIDE_IMAGE, TURBIDITY_IMAGE
+        CALIBRATION, CONFIG, IMAGE, CARD
     }
 
 }

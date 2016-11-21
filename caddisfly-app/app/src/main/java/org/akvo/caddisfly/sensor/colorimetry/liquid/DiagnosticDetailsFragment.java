@@ -34,10 +34,15 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.util.ColorUtil;
+
+import java.util.Locale;
 
 public class DiagnosticDetailsFragment extends DialogFragment {
 
+    private static final double WIDTH_PERCENTAGE = 0.98;
+    private static final double HEIGHT_PERCENTAGE = 0.9;
     private Bitmap mExtractBitmap;
     private Bitmap mPhotoBitmap;
     private String mDimension;
@@ -77,37 +82,40 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
-        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty() ||
-                currentTestInfo.getType() != CaddisflyApp.TestType.COLORIMETRIC_LIQUID) {
+        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty()
+                || currentTestInfo.getType() != TestType.COLORIMETRIC_LIQUID) {
             CaddisflyApp.getApp().setDefaultTest();
         }
 
-        ColorInfo photoColor = ColorUtil.getColorFromBitmap(mExtractBitmap,
-                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+        if (mExtractBitmap != null) {
+            ColorInfo photoColor = ColorUtil.getColorFromBitmap(mExtractBitmap,
+                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
-        if (currentTestInfo != null) {
-            ResultDetail resultDetail = SwatchHelper.analyzeColor(currentTestInfo.getSwatches().size(),
-                    photoColor, currentTestInfo.getSwatches(), ColorUtil.ColorModel.RGB);
 
-            double result = resultDetail.getResult();
-            int color = resultDetail.getColor();
-            int swatchColor = resultDetail.getMatchedColor();
-            textDistance.setText(String.format("D: %.2f", resultDetail.getDistance()));
-            buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
-            textSwatchRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
+            if (currentTestInfo != null) {
+                ResultDetail resultDetail = SwatchHelper.analyzeColor(currentTestInfo.getSwatches().size(),
+                        photoColor, currentTestInfo.getSwatches(), ColorUtil.ColorModel.RGB);
 
-            textQuality.setText(String.format("Q: %.0f%%", photoColor.getQuality()));
+                double result = resultDetail.getResult();
+                int color = resultDetail.getColor();
+                int swatchColor = resultDetail.getMatchedColor();
+                textDistance.setText(String.format(Locale.getDefault(), "D: %.2f", resultDetail.getDistance()));
+                buttonSwatchColor.setBackgroundColor(resultDetail.getMatchedColor());
+                textSwatchRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(swatchColor)));
 
-            if (result > -1) {
-                textResult.setText(String.format("%s : %.2f %s", currentTestInfo.getName("en"),
-                        result, currentTestInfo.getUnit()));
-            } else {
-                textResult.setText(String.format("%s", currentTestInfo.getName("en")));
+                textQuality.setText(String.format(Locale.getDefault(), "Q: %.0f%%", photoColor.getQuality()));
+
+                if (result > -1) {
+                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getName("en"),
+                            result, currentTestInfo.getUnit()));
+                } else {
+                    textResult.setText(String.format("%s", currentTestInfo.getName("en")));
+                }
+
+                buttonColorExtract.setBackgroundColor(color);
+
+                textExtractedRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
             }
-
-            buttonColorExtract.setBackgroundColor(color);
-
-            textExtractedRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
         }
 
         return view;
@@ -118,7 +126,9 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         // request a window without the title
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         return dialog;
     }
 
@@ -126,13 +136,16 @@ public class DiagnosticDetailsFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        if (getDialog() == null)
+        if (getDialog() == null) {
             return;
+        }
 
-        int dialogWidth = (int) (0.98 * getResources().getDisplayMetrics().widthPixels);
-        int dialogHeight = (int) (0.9 * getResources().getDisplayMetrics().heightPixels);
+        int dialogWidth = (int) (WIDTH_PERCENTAGE * getResources().getDisplayMetrics().widthPixels);
+        int dialogHeight = (int) (HEIGHT_PERCENTAGE * getResources().getDisplayMetrics().heightPixels);
 
-        getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        }
 
     }
 

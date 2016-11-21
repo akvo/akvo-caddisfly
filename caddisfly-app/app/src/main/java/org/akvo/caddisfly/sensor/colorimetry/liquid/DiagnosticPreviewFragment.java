@@ -27,6 +27,7 @@ import android.hardware.SensorManager;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -34,31 +35,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.usb.DeviceFilter;
 import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.ImageUtil;
 
 import java.util.List;
 
-public class DiagnosticPreviewFragment extends DialogFragment {
+public class DiagnosticPreviewFragment extends DialogFragment implements CameraDialog.Cancelled {
 
+    private static final int MAX_SHAKE_DURATION = 2000;
     private SensorManager mSensorManager;
     private ShakeDetector mShakeDetector;
     private SoundPoolPlayer sound;
     private CameraDialog mCameraDialog;
 
+    @NonNull
     public static DiagnosticPreviewFragment newInstance() {
         return new DiagnosticPreviewFragment();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnostic_preview, container, false);
 
@@ -68,7 +75,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
         List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0) {
+        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
             mCameraDialog = ExternalCameraFragment.newInstance();
         } else {
             mCameraDialog = CameraDialogFragment.newInstance();
@@ -78,7 +85,7 @@ public class DiagnosticPreviewFragment extends DialogFragment {
 
         mCameraDialog.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
             @Override
-            public void onPictureTaken(byte[] bytes, boolean completed) {
+            public void onPictureTaken(@NonNull byte[] bytes, boolean completed) {
 
                 sound.playShortResource(R.raw.beep);
 
@@ -87,28 +94,44 @@ public class DiagnosticPreviewFragment extends DialogFragment {
                 Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
                 Display display = getActivity().getWindowManager().getDefaultDisplay();
-                int rotation = 0;
+                int rotation;
                 switch (display.getRotation()) {
                     case Surface.ROTATION_0:
-                        rotation = 90;
-                        break;
-                    case Surface.ROTATION_90:
-                        rotation = 0;
+                        rotation = SensorConstants.DEGREES_90;
                         break;
                     case Surface.ROTATION_180:
-                        rotation = 270;
+                        rotation = SensorConstants.DEGREES_270;
                         break;
                     case Surface.ROTATION_270:
                         rotation = 180;
+                        break;
+                    case Surface.ROTATION_90:
+                    default:
+                        rotation = 0;
                         break;
                 }
 
                 bitmap = ImageUtil.rotateImage(bitmap, rotation);
 
+                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+                Bitmap croppedBitmap;
+
+                if (testInfo.isUseGrayScale()) {
+                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
+
+                    if (croppedBitmap != null) {
+                        croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                    }
+                } else {
+                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+                }
+
                 DiagnosticDetailsFragment diagnosticDetailsFragment =
                         DiagnosticDetailsFragment.newInstance(
-                                ImageUtil.getCroppedBitmap(bitmap,
-                                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT),
+                                croppedBitmap,
                                 bitmap, bitmap.getWidth() + " x " + bitmap.getHeight());
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -158,8 +181,8 @@ public class DiagnosticPreviewFragment extends DialogFragment {
             }
         });
 
-        mShakeDetector.minShakeAcceleration = 5;
-        mShakeDetector.maxShakeDuration = 2000;
+        mShakeDetector.setMinShakeAcceleration(5);
+        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
         mSensorManager.registerListener(mShakeDetector, accelerometer,
                 SensorManager.SENSOR_DELAY_UI);
@@ -179,7 +202,9 @@ public class DiagnosticPreviewFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         return dialog;
     }
 
@@ -194,5 +219,14 @@ public class DiagnosticPreviewFragment extends DialogFragment {
         super.onDestroy();
         unregisterShakeDetector();
 
+    }
+
+    @Override
+    public void dialogCancelled() {
+        try {
+            this.dismiss();
+        } catch (Exception ignored) {
+
+        }
     }
 }
