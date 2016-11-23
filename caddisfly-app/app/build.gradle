@@ -19,7 +19,7 @@ apply plugin: 'de.mobilej.unmock'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.1'
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
@@ -83,7 +83,7 @@ unMock {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':opencv300')
+    compile project(':openCVLibrary310')
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'

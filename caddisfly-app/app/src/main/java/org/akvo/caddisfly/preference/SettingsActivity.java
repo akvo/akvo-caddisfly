@@ -67,7 +67,7 @@ public class SettingsActivity extends BaseActivity
                 .registerOnSharedPreferenceChangeListener(this);
 
         if (AppPreferences.isDiagnosticMode()) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
         }
     }
 

@@ -345,7 +345,7 @@ public class ColorimetryLiquidExternalActivity extends BaseActivity
 
         acquireWakeLock();
 
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
 
         setFilters();  // Start listening notifications from UsbService
 
