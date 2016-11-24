@@ -16,15 +16,22 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.AppConfig;
@@ -37,22 +44,31 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class MainActivity extends BaseActivity {
 
     private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
+    private static final int PERMISSION_ALL = 1;
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private boolean mShouldClose = false;
+    private View coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,18 +115,84 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        final Activity activity = this;
+
         findViewById(R.id.buttonStripTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
-                intent.putExtra("internal", true);
-                startActivity(intent);
+
+                File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
+                if (file.exists()) {
+
+                    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+                    if (!ApiUtil.hasPermissions(getBaseContext(), permissions)) {
+                        ActivityCompat.requestPermissions(activity, permissions, PERMISSION_ALL);
+                    } else {
+                        startStripTest();
+                    }
+                } else {
+                    startStripTest();
+                }
+
             }
         });
 
         // TODO: remove upgrade code when obsolete
         upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
         upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        final Activity activity = this;
+        if (requestCode == PERMISSION_ALL) {
+            // If request is cancelled, the result arrays are empty.
+            boolean granted = false;
+            for (int grantResult : grantResults) {
+                if (grantResult != PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
+                } else {
+                    granted = true;
+                }
+            }
+            if (granted) {
+                startStripTest();
+            } else {
+                String message = getString(R.string.storagePermission);
+                if (AppPreferences.useExternalCamera()) {
+                    message = getString(R.string.storagePermission);
+                }
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ApiUtil.startInstalledAppDetailsActivity(activity);
+                            }
+                        });
+
+                TypedValue typedValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                snackbar.setActionTextColor(typedValue.data);
+                View snackView = snackbar.getView();
+                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+                textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+            }
+        }
+    }
+
+    private void startStripTest() {
+        final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
+        intent.putExtra("internal", true);
+        startActivity(intent);
     }
 
     /**

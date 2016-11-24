@@ -51,51 +51,56 @@ public class StripTest {
     }
 
     private JSONArray getTestsFromJson(Context context) {
-        if (stripTests == null) {
+        if (stripTests == null || stripTests.length() == 0) {
 
             try {
                 JSONObject object = getJsonFromAssets(context, R.string.strips_json);
                 if (!object.isNull(STRIPS)) {
                     stripTests = object.getJSONArray(STRIPS);
 
-                    File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
-                    if (file.exists()) {
-                        String jsonText = FileUtil.loadTextFromFile(file);
-                        JSONObject customTests = new JSONObject(jsonText);
-                        JSONArray customTestsArray = customTests.getJSONArray(STRIPS);
+                    try {
+                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
+                        if (file.exists()) {
+                            String jsonText = FileUtil.loadTextFromFile(file);
+                            JSONObject customTests = new JSONObject(jsonText);
+                            JSONArray customTestsArray = customTests.getJSONArray(STRIPS);
 
-                        boolean isUnique = true;
-                        for (int i = 0; i < customTestsArray.length(); i++) {
+                            boolean isUnique = true;
+                            for (int i = 0; i < customTestsArray.length(); i++) {
 
-                            String uuid = customTestsArray.getJSONObject(i).getString(SensorConstants.UUID);
-                            for (int j = 0; j < stripTests.length(); j++) {
-                                if (stripTests.getJSONObject(j).getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
-                                    isUnique = false;
-                                    break;
+                                String uuid = customTestsArray.getJSONObject(i).getString(SensorConstants.UUID);
+                                for (int j = 0; j < stripTests.length(); j++) {
+                                    if (stripTests.getJSONObject(j).getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
+                                        isUnique = false;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            // only add the custom test if it has an unique uuid and not a duplicate
-                            if (isUnique) {
-                                JSONObject test = new JSONObject(customTestsArray.getJSONObject(i).toString());
-                                String brandDescription = test.getString("brand");
-                                String image = test.has(SensorConstants.IMAGE)
-                                        ? test.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
-                                if (image.isEmpty()) {
-                                    image = brandDescription.replace(" ", "-");
+                                // only add the custom test if it has an unique uuid and not a duplicate
+                                if (isUnique) {
+                                    JSONObject test = new JSONObject(customTestsArray.getJSONObject(i).toString());
+                                    String brandDescription = test.getString("brand");
+                                    String image = test.has(SensorConstants.IMAGE)
+                                            ? test.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
+                                    if (image.isEmpty()) {
+                                        image = brandDescription.replace(" ", "-");
+                                    }
+                                    File imageFile = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "image/" + image);
+                                    if (imageFile.exists()) {
+                                        test.put(SensorConstants.IMAGE, imageFile.getPath());
+                                    }
+                                    stripTests.put(test);
                                 }
-                                File imageFile = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "image/" + image);
-                                if (imageFile.exists()) {
-                                    test.put(SensorConstants.IMAGE, imageFile.getPath());
-                                }
-                                stripTests.put(test);
                             }
                         }
+                    } catch (JSONException ignored) {
+                        // skip trying to load custom tests
                     }
 
                     return stripTests;
                 }
-            } catch (JSONException ignored) {
+            } catch (JSONException e) {
+                Log.e(TAG, e.getMessage());
             }
         } else {
             return stripTests;

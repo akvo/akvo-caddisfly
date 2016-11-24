@@ -113,7 +113,6 @@
     <string name="contrast">Ombres</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
-    <string name="waiting">Attendez</string>
     <string name="next">Suivant</string>
 
     <!--end Strip Test-->

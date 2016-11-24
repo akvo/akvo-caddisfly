@@ -21,9 +21,5 @@ public enum TestType {
      */
     SENSOR,
 
-    /**
-     * Measure of turbidity in the liquid
-     */
-    TURBIDITY_COLIFORMS
 }
 

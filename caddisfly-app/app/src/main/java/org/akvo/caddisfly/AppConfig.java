@@ -37,14 +37,6 @@ public final class AppConfig {
      */
     public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
     /**
-     * Vendor Id for Sensor devices
-     */
-    public static final int ARDUINO_VENDOR_ID = 9025;
-    /**
-     * Vendor Id for Sensor devices
-     */
-    public static final int CAMERA_VENDOR_ID = 1443;
-    /**
      * The sound volume for the beeps and other sound effects
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;

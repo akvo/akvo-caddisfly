@@ -43,13 +43,11 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -113,6 +111,12 @@ public class ExternalActionActivity extends BaseActivity {
             CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
             String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
+            if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
+
+                // old version of survey does not expect image in result
+                mCallerExpectsImageInResult = false;
+            }
+
             if (mTestTypeUuid == null) {
 
                 //todo: remove when obsolete
@@ -121,6 +125,7 @@ public class ExternalActionActivity extends BaseActivity {
 
                 if (code.equalsIgnoreCase("strip")) {
                     final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
+                    colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                     return;
                 }
@@ -132,8 +137,6 @@ public class ExternalActionActivity extends BaseActivity {
 
                 mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
 
-                // old version of survey does not expect image in result
-                mCallerExpectsImageInResult = false;
             }
 
             //Get the test config by uuid
@@ -308,11 +311,7 @@ public class ExternalActionActivity extends BaseActivity {
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    if (AppPreferences.useExternalCamera()) {
-                        intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
-                    } else {
-                        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                    }
+                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 }
 
                 intent.putExtra(Constant.UUID, uuid);
@@ -339,12 +338,6 @@ public class ExternalActionActivity extends BaseActivity {
                 } else {
                     alertFeatureNotSupported();
                 }
-                break;
-            case TURBIDITY_COLIFORMS:
-
-                final Intent turbidityIntent = new Intent(context, TimeLapseActivity.class);
-                startActivityForResult(turbidityIntent, REQUEST_TEST);
-
                 break;
         }
     }

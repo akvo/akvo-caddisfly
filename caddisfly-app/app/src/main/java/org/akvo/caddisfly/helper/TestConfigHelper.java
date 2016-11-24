@@ -64,7 +64,7 @@ public final class TestConfigHelper {
 
         if (uuid != null && !uuid.isEmpty()) {
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 String jsonText;
                 switch (i) {
@@ -72,10 +72,6 @@ public final class TestConfigHelper {
                         // Load any custom tests from the custom test config file
                         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
                         jsonText = FileUtil.loadTextFromFile(file);
-                        break;
-                    case 2:
-                        // Load any experimental tests if app is in diagnostic mode
-                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json");
                         break;
                     default:
                         // Load the pre-configured tests from the app
@@ -119,12 +115,6 @@ public final class TestConfigHelper {
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
         if (file.exists()) {
             loadTests(tests, FileUtil.loadTextFromFile(file), false, R.string.customTests);
-        }
-
-        // Load any experimental tests if app is in diagnostic mode
-        if (AppPreferences.isDiagnosticMode()) {
-            loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json"),
-                    true, R.string.experimental);
         }
 
         return tests;
@@ -218,10 +208,6 @@ public final class TestConfigHelper {
                         break;
                     case "sensor":
                         type = TestType.SENSOR;
-                        break;
-                    case "coliform":
-                    case "coliforms":
-                        type = TestType.TURBIDITY_COLIFORMS;
                         break;
                     default:
                         return null;

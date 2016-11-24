@@ -38,7 +38,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -114,11 +113,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
             final Intent intent;
             if (getIntent().getBooleanExtra("runTest", false)) {
-                if (AppPreferences.useExternalCamera()) {
-                    intent = new Intent(this, ColorimetryLiquidExternalActivity.class);
-                } else {
-                    intent = new Intent(this, ColorimetryLiquidActivity.class);
-                }
+                intent = new Intent(this, ColorimetryLiquidActivity.class);
             } else {
                 intent = new Intent(this, CalibrateListActivity.class);
             }

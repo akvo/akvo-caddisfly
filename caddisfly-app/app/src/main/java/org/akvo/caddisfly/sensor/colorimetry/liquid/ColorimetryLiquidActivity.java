@@ -29,7 +29,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -42,11 +41,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
@@ -64,8 +61,6 @@ import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.usb.DeviceFilter;
-import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
@@ -137,8 +132,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     //reference to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
     private boolean mIsFirstResult;
-    @Nullable
-    private USBMonitor mUSBMonitor;
 
     @Override
     protected void onResume() {
@@ -205,8 +198,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mShakeDetector.setMinShakeAcceleration(5);
         mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
-        mUSBMonitor = new USBMonitor(this, null);
-
         mSensorManager.unregisterListener(mShakeDetector);
 
         textSubtitle.setText(R.string.placeDevice);
@@ -228,18 +219,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             finish();
         }
 
-        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
-        if (mUSBMonitor != null) {
-            List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-            if (usbDeviceList != null) {
-                if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
-                    startExternalTest();
-                } else {
-                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                            SensorManager.SENSOR_DELAY_UI);
-                }
-            }
-        }
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                SensorManager.SENSOR_DELAY_UI);
     }
 
     /**
@@ -263,17 +244,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private void dismissShakeAndStartTest() {
         mSensorManager.unregisterListener(mShakeDetector);
 
-        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(this, R.xml.camera_device_filter);
-        if (mUSBMonitor != null) {
-            List<UsbDevice> usbDeviceList = mUSBMonitor.getDeviceList(filter.get(0));
-            if (usbDeviceList != null) {
-                if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
-                    startExternalTest();
-                } else {
-                    startTest();
-                }
-            }
-        }
+        startTest();
     }
 
     /**
@@ -463,118 +434,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mResults.add(result);
     }
 
-    private void startExternalTest() {
-
-        findViewById(R.id.layoutWait).setVisibility(View.INVISIBLE);
-
-        mResults = new ArrayList<>();
-        (new AsyncTask<Void, Void, Void>() {
-
-            @Nullable
-            @Override
-            protected Void doInBackground(Void... params) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-
-                mCameraFragment = ExternalCameraFragment.newInstance();
-                mCameraFragment.setCancelable(true);
-
-                mCameraFragment.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
-                    @Override
-                    public void onPictureTaken(@NonNull byte[] bytes, boolean completed) {
-
-                        Bitmap bitmap = ImageUtil.getBitmap(bytes);
-
-                        Display display = getWindowManager().getDefaultDisplay();
-                        int rotation;
-                        switch (display.getRotation()) {
-                            case Surface.ROTATION_0:
-                                rotation = DEGREES_90;
-                                break;
-                            case Surface.ROTATION_180:
-                                rotation = DEGREES_270;
-                                break;
-                            case Surface.ROTATION_270:
-                                rotation = DEGREES_180;
-                                break;
-                            case Surface.ROTATION_90:
-                            default:
-                                rotation = 0;
-                                break;
-                        }
-
-                        bitmap = ImageUtil.rotateImage(bitmap, rotation);
-
-                        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-                        Bitmap croppedBitmap;
-
-                        if (testInfo.isUseGrayScale()) {
-                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
-
-                            if (croppedBitmap != null) {
-                                croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
-                            }
-                        } else {
-                            croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-                        }
-
-                        //Ignore the first result as camera may not have focused correctly
-                        if (!mIsFirstResult) {
-                            if (croppedBitmap != null) {
-                                getAnalyzedResult(croppedBitmap);
-                            } else {
-                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
-                                mCameraFragment.stopCamera();
-                                mCameraFragment.dismiss();
-                                return;
-                            }
-                        }
-                        mIsFirstResult = false;
-
-                        if (completed) {
-                            analyzeFinalResult(bytes, croppedBitmap);
-                            mCameraFragment.dismiss();
-                        } else {
-                            sound.playShortResource(R.raw.beep);
-                        }
-
-                    }
-                });
-
-                acquireWakeLock();
-
-                delayRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        Fragment prev = getFragmentManager().findFragmentByTag("externalCameraDialog");
-                        if (prev != null) {
-                            ft.remove(prev);
-                        }
-                        ft.addToBackStack(null);
-                        try {
-                            mCameraFragment.show(ft, "externalCameraDialog");
-                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
-                                    ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getMessage(), e);
-                            finish();
-                        }
-                    }
-                };
-
-                delayHandler.postDelayed(delayRunnable, 0);
-            }
-        }).execute();
-    }
-
     private void startTest() {
 
         mResults = new ArrayList<>();
@@ -582,7 +441,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mWaitingForStillness = false;
         mIsFirstResult = true;
 
-        //sound.playShortResource(R.raw.beep);
         mShakeDetector.setMinShakeAcceleration(1);
         mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION_2);
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,

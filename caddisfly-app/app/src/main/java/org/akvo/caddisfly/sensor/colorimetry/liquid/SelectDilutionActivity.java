@@ -28,7 +28,6 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.util.Locale;
@@ -79,11 +78,7 @@ public class SelectDilutionActivity extends BaseActivity {
 
     private void startTest(int dilution) {
         final Intent intent = new Intent(getIntent());
-        if (AppPreferences.useExternalCamera()) {
-            intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
-        } else {
-            intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-        }
+        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
         intent.putExtra("dilution", dilution);
         startActivityForResult(intent, REQUEST_TEST);
     }

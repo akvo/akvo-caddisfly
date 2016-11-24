@@ -78,11 +78,6 @@ public final class AppPreferences {
     }
 
     //Diagnostic in user mode
-    public static boolean getExternalCameraMultiDeviceMode() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.externalCameraMultiDeviceModeKey, false);
-    }
-
-    //Diagnostic in user mode
     public static boolean isSaveImagesOn() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
     }

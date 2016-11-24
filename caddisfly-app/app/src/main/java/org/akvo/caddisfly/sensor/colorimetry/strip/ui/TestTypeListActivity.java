@@ -89,10 +89,10 @@ public class TestTypeListActivity extends BaseActivity {
     }
 
     private void startDetailActivity(String uuid) {
-        Intent detailIntent = new Intent(getBaseContext(), BrandInfoActivity.class);
-        detailIntent.putExtra(Constant.UUID, uuid);
-        detailIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
-        startActivityForResult(detailIntent, 100);
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, BrandInfoActivity.class);
+        intent.putExtra(Constant.UUID, uuid);
+        startActivityForResult(intent, 100);
     }
 
     @Override
@@ -100,13 +100,9 @@ public class TestTypeListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) {
-
-            Intent intent = new Intent(getIntent());
-            setResult(resultCode, intent);
-
-            if (resultCode == RESULT_OK) {
-                intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-                intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
+            if (data != null) {
+                Intent intent = new Intent(data);
+                setResult(resultCode, intent);
             }
 
             // If an external activity is expecting the result then finish

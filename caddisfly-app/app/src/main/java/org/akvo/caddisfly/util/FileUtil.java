@@ -216,21 +216,6 @@ public final class FileUtil {
         return null;
     }
 
-
-    public static void deleteRecursive(File file) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File child : files) {
-                    deleteRecursive(child);
-                }
-            }
-        }
-
-        //noinspection ResultOfMethodCallIgnored
-        file.delete();
-    }
-
     /**
      * Method to write characters to file on SD card. Note that you must add a
      * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw

@@ -32,22 +32,6 @@
     <string name="hsv">HSV</string>
     <string name="saveImages">Save images and data</string>
 
-    <string-array name="themes">
-        <item>Orange \'n Blue</item>
-        <item>Akvo Orange \'n Blue</item>
-        <item>Blue \'n Orange</item>
-        <item>Akvo Blue \'n Orange</item>
-        <item>Akvo Flow</item>
-    </string-array>
-
-    <string-array name="theme_codes">
-        <item>Orange</item>
-        <item>OrangeBlue</item>
-        <item>Blue</item>
-        <item>BlueOrange</item>
-        <item>Flow</item>
-    </string-array>
-
     <!--Keys-->
     <string name="languageKey">language</string>
     <string name="systemLanguageKey">systemLanguage</string>
@@ -68,25 +52,11 @@
     <string name="totalFailedCalibrationsKey">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey">totalFailedTests</string>
-    <string name="turbiditySavePathKey">turbiditySavePath</string>
 
     <string name="ledRgbKey">ledRgb</string>
-    <string name="externalCameraMultiDeviceModeKey">externalCameraMultiDeviceMode</string>
-    <string name="turbidityLedRgbKey">turbidityLedRgb</string>
     <string name="useExternalCameraKey">useExternalCamera</string>
     <string name="useFlashModeKey">useFlashMode</string>
 
-    <string name="fluor_IntervalMinutesKey">fluor_IntervalMinutes</string>
-    <string name="fluor_NumberOfSamplesKey">fluor_NumberOfSamples</string>
-
-    <string name="colif_IntervalMinutesKey">colif_IntervalMinutes</string>
-    <string name="colif_NumberOfSamplesKey">colif_NumberOfSamples</string>
-    <string name="colif_TestIdKey">colif_TestIdKey</string>
-    <string name="colif_PhoneIdKey">colif_PhoneId</string>
-    <string name="colif_chamberVersionKey">colif_chamberVersion</string>
-    <string name="colif_brothMediumKey">colif_brothMedium</string>
-    <string name="colif_volumeKey">colif_volume</string>
-    <string name="colif_testDescriptionKey">colif_testDescription</string>
     <string name="ignoreStripTestDelayKey">ignoreStripTestDelay</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
@@ -95,9 +65,7 @@
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
-    <string name="useFlashMode">Use flash mode</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="ignoreStripTestDelay">Ignore strip test delay</string>
-    <string name="experimental">Experimental</string>
 </resources>

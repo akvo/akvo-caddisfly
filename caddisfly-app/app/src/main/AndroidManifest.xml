@@ -89,11 +89,6 @@
             android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
@@ -134,13 +129,6 @@
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.turbidity.TimeLapseActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.turbidity.ExternalCameraActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="nosensor" />
 
         <!-- StripTest -->
         <activity
@@ -168,11 +156,6 @@
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
-
-        <receiver
-            android:name=".sensor.turbidity.TurbidityStartReceiver"
-            android:enabled="true"
-            android:exported="false" />
 
     </application>
 

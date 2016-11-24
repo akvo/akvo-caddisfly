@@ -178,7 +178,9 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     }
 
     private void clearProgress() {
-        progressBar.setProgress(0);
+        if (progressBar != null) {
+            progressBar.setProgress(0);
+        }
     }
 
     private void hideProgressBar() {
