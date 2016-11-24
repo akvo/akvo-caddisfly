@@ -50,6 +50,7 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -116,10 +117,20 @@ public class BrandInfoActivity extends BaseActivity {
             // Display the brand photo
             InputStream ims = null;
             try {
-                String path = getResources().getString(R.string.striptest_images);
-                ims = getAssets().open(path + "/" + stripTest.getBrand(this, mUuid).getImage() + ".png");
+                Drawable drawable;
+                String image = stripTest.getBrand(this, mUuid).getImage();
 
-                Drawable drawable = Drawable.createFromStream(ims, null);
+                if (image.contains(File.separator)) {
+                    if (!image.contains(".")) {
+                        image = image + ".png";
+                    }
+                    drawable = Drawable.createFromPath(image);
+                } else {
+                    String path = getResources().getString(R.string.striptest_images);
+                    ims = getAssets().open(path + File.separator + image + ".png");
+                    drawable = Drawable.createFromStream(ims, null);
+                }
+
                 imageBrandLabel.setImageDrawable(drawable);
                 imageBrandLabel.setScaleType(stripTest.getBrand(this, mUuid).getImageScale().equals("centerCrop")
                         ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);

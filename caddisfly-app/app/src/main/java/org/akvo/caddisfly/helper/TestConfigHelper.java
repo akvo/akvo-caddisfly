@@ -153,7 +153,11 @@ public final class TestConfigHelper {
                             for (String uuid : test.getUuid()) {
                                 if (uuid.equalsIgnoreCase(newUuid)) {
                                     found = true;
+                                    break;
                                 }
+                            }
+                            if (found) {
+                                break;
                             }
                         }
                         if (!found) {

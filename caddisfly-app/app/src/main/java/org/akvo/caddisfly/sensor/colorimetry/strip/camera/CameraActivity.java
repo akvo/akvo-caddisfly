@@ -16,6 +16,8 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -35,7 +37,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.TestStatus;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
@@ -43,6 +44,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.LevelView;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -507,10 +509,22 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 title = R.string.qualityCheckFailed;
         }
 
-        Intent intent = new Intent(getIntent());
-        intent.putExtra(SensorConstants.ERROR, title);
-        setResult(100, intent);
-        finish();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        AlertDialog alertDialog = AlertUtil.showAlert(this, title,
+                R.string.tryTestingInAWellLitArea, R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null, null);
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     @Override

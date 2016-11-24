@@ -37,6 +37,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
@@ -125,6 +126,7 @@ public class MainActivity extends BaseActivity {
     // TODO: remove upgrade code when obsolete
     private void upgradeFolder(String code, String uuid) {
 
+        // change calibration folder names to have uuid instead of the old 5 letter codes
         final File sourcePath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, code);
         final File destinationPath = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, uuid);
         if (sourcePath.exists() && sourcePath.isDirectory()) {
@@ -142,6 +144,17 @@ public class MainActivity extends BaseActivity {
                     sourcePath.delete();
                 }
             }
+        }
+
+        // change the old name of custom config folder from config to custom-config
+        final File oldFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "config");
+        final File newFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "custom-config");
+
+        if (oldFolder.exists() && oldFolder.isDirectory()) {
+            //noinspection ResultOfMethodCallIgnored
+            oldFolder.renameTo(newFolder);
         }
     }
 

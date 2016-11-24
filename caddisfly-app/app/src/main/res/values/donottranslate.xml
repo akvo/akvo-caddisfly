@@ -100,5 +100,4 @@
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="ignoreStripTestDelay">Ignore strip test delay</string>
     <string name="experimental">Experimental</string>
-    <string name="toggleTorchForStripTest">Torch mode for strip tests</string>
 </resources>

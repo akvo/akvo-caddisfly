@@ -53,12 +53,6 @@ import java.util.List;
  * Then we update the UI:
  * First it shows if quality checks are OK
  * <p/>
- * It uses an instance of
- * ProgressIndicatorView to indicate if
- * a. it is time to take a picture
- * b. the picture is taken
- * <p/>
- * If all pictures are taken it shows an animation of a spinning circle while doing a DetectStripTask
  */
 public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
@@ -76,7 +70,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
     /*
-     * Update the ProgressIndicatorView every second
+     * Update the progress every second
     */
     @Nullable
     private final Runnable countdownRunnable = new Runnable() {
@@ -279,8 +273,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //initialise the global initial time
         initTimeMillis = System.currentTimeMillis();
 
-        //post the runnable responsible for updating the
-        // ProgressIndicatorView
+        //post the runnable responsible for updating progress
         if (handler != null) {
             handler.post(countdownRunnable);
         }

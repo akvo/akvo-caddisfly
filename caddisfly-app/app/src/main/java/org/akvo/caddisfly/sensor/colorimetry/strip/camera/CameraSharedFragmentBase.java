@@ -200,5 +200,6 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
             }
         });
+        progressBar.startAnimation(animation);
     }
 }

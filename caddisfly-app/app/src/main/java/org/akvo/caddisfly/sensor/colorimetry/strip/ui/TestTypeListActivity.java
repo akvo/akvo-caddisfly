@@ -36,7 +36,6 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.AlertUtil;
 import org.json.JSONException;
 
 import java.util.Collections;
@@ -108,11 +107,6 @@ public class TestTypeListActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
                 intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
-            } else {
-                if (data != null && data.hasExtra(SensorConstants.ERROR)) {
-                    AlertUtil.showAlert(this, data.getIntExtra(SensorConstants.ERROR, R.string.qualityCheckFailed),
-                            R.string.tryTestingInAWellLitArea, R.string.ok, null, null, null);
-                }
             }
 
             // If an external activity is expecting the result then finish

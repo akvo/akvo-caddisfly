@@ -21,12 +21,16 @@ import android.support.annotation.StringRes;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
+import org.akvo.caddisfly.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,28 +48,77 @@ public class StripTest {
     public StripTest() {
     }
 
-    public List<Brand> getBrandsAsList(Context context) {
-        List<Brand> brandNames = new ArrayList<>();
+    private JSONArray getTestsFromJson(Context context) {
 
         try {
             JSONObject object = getJsonFromAssets(context, R.string.strips_json);
             if (!object.isNull(STRIPS)) {
                 JSONArray stripsJson = object.getJSONArray(STRIPS);
-                JSONObject strip;
-                if (stripsJson != null) {
-                    for (int i = 0; i < stripsJson.length(); i++) {
-                        strip = stripsJson.getJSONObject(i);
 
-                        //Only show experimental tests if in diagnostic mode
-                        if (!AppPreferences.isDiagnosticMode()
-                                && (strip.has("experimental") && strip.getBoolean("experimental"))) {
-                            continue;
+                File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strips.json");
+                if (file.exists()) {
+                    String jsonText = FileUtil.loadTextFromFile(file);
+                    JSONObject customTests = new JSONObject(jsonText);
+                    JSONArray customTestsArray = customTests.getJSONArray(STRIPS);
+
+                    boolean isUnique = true;
+                    for (int i = 0; i < customTestsArray.length(); i++) {
+
+                        String uuid = customTestsArray.getJSONObject(i).getString(SensorConstants.UUID);
+                        for (int j = 0; j < stripsJson.length(); j++) {
+                            if (stripsJson.getJSONObject(j).getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
+                                isUnique = false;
+                                break;
+                            }
                         }
 
-                        brandNames.add(getBrand(context, strip.getString("uuid")));
+                        // only add the custom test if it has an unique uuid and not a duplicate
+                        if (isUnique) {
+                            JSONObject test = new JSONObject(customTestsArray.getJSONObject(i).toString());
+                            String brandDescription = test.getString("brand");
+                            String image = test.has(SensorConstants.IMAGE)
+                                    ? test.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
+                            if (image.isEmpty()) {
+                                image = brandDescription.replace(" ", "-");
+                            }
+                            File imageFile = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "image/" + image);
+                            if (imageFile.exists()) {
+                                test.put(SensorConstants.IMAGE, imageFile.getPath());
+                            }
+                            stripsJson.put(test);
+                        }
                     }
                 }
+
+                return stripsJson;
             }
+        } catch (JSONException ignored) {
+        }
+
+        return null;
+    }
+
+    public List<Brand> getBrandsAsList(Context context) {
+        List<Brand> brandNames = new ArrayList<>();
+
+        try {
+            JSONArray stripsJson = getTestsFromJson(context);
+
+            JSONObject strip;
+            if (stripsJson != null) {
+                for (int i = 0; i < stripsJson.length(); i++) {
+                    strip = stripsJson.getJSONObject(i);
+
+                    //Only show experimental tests if in diagnostic mode
+                    if (!AppPreferences.isDiagnosticMode()
+                            && (strip.has("experimental") && strip.getBoolean("experimental"))) {
+                        continue;
+                    }
+
+                    brandNames.add(getBrand(context, strip.getString(SensorConstants.UUID)));
+                }
+            }
+
         } catch (Exception e) {
             return null;
         }
@@ -93,7 +146,7 @@ public class StripTest {
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
         private final String uuid;
-//        private String background;
+        //        private String background;
         private String name;
         private String brandDescription;
         private String image;
@@ -107,90 +160,96 @@ public class StripTest {
 
             this.uuid = uuid;
             try {
-                // read the json file with strip information from assets
-                JSONObject object = getJsonFromAssets(context, R.string.strips_json);
-
-                if (!object.isNull(STRIPS)) {
-                    JSONArray stripsJson = object.getJSONArray(STRIPS);
-                    JSONObject strip;
-
-                    if (stripsJson != null) {
-                        for (int i = 0; i < stripsJson.length(); i++) {
-                            strip = stripsJson.getJSONObject(i);
-
-                            if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
-                                try {
-                                    stripLength = strip.getDouble("length");
-                                    //stripHeight = strip.getDouble("height");
-                                    groupingType = strip.getString("groupingType")
-                                            .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
-                                    name = strip.getString("name");
-                                    brandDescription = strip.getString("brand");
-                                    image = strip.has("image") ? strip.getString("image") : brandDescription.replace(" ", "-");
-                                    imageScale = strip.has("imageScale") ? strip.getString("imageScale") : "";
-//                                    background = strip.has("background") ? strip.getString("background") : "#00000000";
-
-                                    JSONArray patchesArray = strip.getJSONArray("patches");
-                                    for (int ii = 0; ii < patchesArray.length(); ii++) {
-
-                                        JSONObject patchObj = patchesArray.getJSONObject(ii);
-
-                                        String patchDesc = patchObj.getString("patchDesc");
-                                        double patchPos = patchObj.getDouble("patchPos");
-                                        int id = patchObj.getInt("id");
-                                        int patchWidth = patchObj.getInt("patchWidth");
-                                        double timeLapse = patchObj.getDouble("timeLapse");
-                                        String unit = patchObj.getString("unit");
-                                        JSONArray colors = patchObj.getJSONArray("colours");
-
-                                        patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colors));
-                                    }
-
-                                    switch (groupingType) {
-
-                                        case GROUP:
-                                            // sort by position of the patches on the strip
-                                            Collections.sort(patches, new Comparator<Patch>() {
-                                                @Override
-                                                public int compare(Patch lhs, Patch rhs) {
-                                                    return Double.compare(lhs.getPosition(), rhs.getPosition());
-                                                }
-                                            });
-                                            break;
-                                        case INDIVIDUAL:
-                                            // sort by time delay for analyzing each patch
-                                            Collections.sort(patches, new Comparator<Patch>() {
-                                                @Override
-                                                public int compare(final Patch lhs, final Patch rhs) {
-                                                    return Double.compare(lhs.timeLapse, rhs.timeLapse);
-                                                }
-                                            });
-                                            break;
-                                    }
-
-                                } catch (JSONException e) {
-                                    Log.e(TAG, e.getMessage(), e);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
 
                 //add instructions
-                JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
-                JSONArray stripsJson = instructionObj.getJSONArray(STRIPS);
-                JSONObject strip;
-
+                JSONArray stripsJson = getTestsFromJson(context);
                 if (stripsJson != null) {
+
+                    JSONObject strip;
+
+                    JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
+                    JSONArray instructionsJson = instructionObj.getJSONArray(STRIPS);
+
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
-                        if (strip.getString("uuid").equalsIgnoreCase(uuid)) {
-                            this.instructions = strip.getJSONArray("instructions");
+
+                        if (strip.getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
+                            try {
+                                stripLength = strip.getDouble("length");
+                                //stripHeight = strip.getDouble("height");
+                                groupingType = strip.getString("groupingType")
+                                        .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
+                                name = strip.getString("name");
+                                brandDescription = strip.getString("brand");
+                                image = strip.has(SensorConstants.IMAGE)
+                                        ? strip.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
+                                imageScale = strip.has("imageScale") ? strip.getString("imageScale") : "";
+
+                                if (strip.has("instructions")) {
+                                    instructions = strip.getJSONArray("instructions");
+                                } else {
+                                    if (instructionsJson != null) {
+                                        for (int j = 0; j < instructionsJson.length(); j++) {
+                                            JSONObject instructionObject = instructionsJson.getJSONObject(j);
+                                            if (instructionObject.getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
+                                                instructions = instructionObject.getJSONArray("instructions");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                JSONArray patchesArray = strip.getJSONArray("patches");
+                                for (int ii = 0; ii < patchesArray.length(); ii++) {
+
+                                    JSONObject patchObj = patchesArray.getJSONObject(ii);
+
+                                    String patchDesc = patchObj.getString("patchDesc");
+                                    double patchPos = patchObj.getDouble("patchPos");
+                                    int id = patchObj.getInt("id");
+                                    int patchWidth = patchObj.getInt("patchWidth");
+                                    double timeLapse = patchObj.getDouble("timeLapse");
+                                    String unit = patchObj.getString("unit");
+                                    JSONArray colors;
+                                    if (patchObj.has("colours")) {
+                                        colors = patchObj.getJSONArray("colours");
+                                    } else {
+                                        colors = patchObj.getJSONArray("colors");
+                                    }
+
+                                    patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colors));
+                                }
+
+                                switch (groupingType) {
+
+                                    case GROUP:
+                                        // sort by position of the patches on the strip
+                                        Collections.sort(patches, new Comparator<Patch>() {
+                                            @Override
+                                            public int compare(Patch lhs, Patch rhs) {
+                                                return Double.compare(lhs.getPosition(), rhs.getPosition());
+                                            }
+                                        });
+                                        break;
+                                    case INDIVIDUAL:
+                                        // sort by time delay for analyzing each patch
+                                        Collections.sort(patches, new Comparator<Patch>() {
+                                            @Override
+                                            public int compare(final Patch lhs, final Patch rhs) {
+                                                return Double.compare(lhs.timeLapse, rhs.timeLapse);
+                                            }
+                                        });
+                                        break;
+                                }
+
+                            } catch (JSONException e) {
+                                Log.e(TAG, e.getMessage(), e);
+                            }
                             break;
                         }
                     }
                 }
+
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
