@@ -29,9 +29,10 @@ import org.opencv.imgproc.Imgproc;
 public final class ImageHelper {
 
     private static final Scalar COLOR_GREEN = new Scalar(0, 255, 0);
-    private static final int MAX_RADIUS = 70;
-    private static final int MIN_CIRCLE_CENTER_DISTANCE = 70;
     private static final int MIN_RADIUS = 30;
+    private static final int MAX_RADIUS = 70;
+    // minimum distance between the center coordinates of detected circles in pixels
+    private static final int MIN_CIRCLE_CENTER_DISTANCE = 70;
     private static final double RESOLUTION_INVERSE_RATIO = 1.2d;
 
     private ImageHelper() {
@@ -63,14 +64,6 @@ public final class ImageHelper {
         // reduce the noise so we avoid false circle detection
         //Imgproc.GaussianBlur(grayMat, grayMat, new Size(9, 9), 2, 2);
 
-        // accumulator value
-        double dp = RESOLUTION_INVERSE_RATIO;
-        // minimum distance between the center coordinates of detected circles in pixels
-        double minDist = MIN_CIRCLE_CENTER_DISTANCE;
-
-        // min and max radii (set these values as you desire)
-        int minRadius = MIN_RADIUS, maxRadius = MAX_RADIUS;
-
         // param1 = gradient value used to handle edge detection
         // param2 = Accumulator threshold value for the
         // cv2.CV_HOUGH_GRADIENT method.
@@ -86,8 +79,8 @@ public final class ImageHelper {
 
         // find the circle in the image
         Imgproc.HoughCircles(grayMat, circles,
-                Imgproc.CV_HOUGH_GRADIENT, dp, minDist, param1,
-                param2, minRadius, maxRadius);
+                Imgproc.CV_HOUGH_GRADIENT, RESOLUTION_INVERSE_RATIO, (double) MIN_CIRCLE_CENTER_DISTANCE, param1,
+                param2, MIN_RADIUS, MAX_RADIUS);
 
         int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
 

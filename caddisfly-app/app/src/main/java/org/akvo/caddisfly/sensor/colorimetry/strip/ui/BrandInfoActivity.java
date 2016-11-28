@@ -122,12 +122,12 @@ public class BrandInfoActivity extends BaseActivity {
 
                 if (image.contains(File.separator)) {
                     if (!image.contains(".")) {
-                        image = image + ".png";
+                        image = image + ".webp";
                     }
                     drawable = Drawable.createFromPath(image);
                 } else {
                     String path = getResources().getString(R.string.striptest_images);
-                    ims = getAssets().open(path + File.separator + image + ".png");
+                    ims = getAssets().open(path + File.separator + image + ".webp");
                     drawable = Drawable.createFromStream(ims, null);
                 }
 

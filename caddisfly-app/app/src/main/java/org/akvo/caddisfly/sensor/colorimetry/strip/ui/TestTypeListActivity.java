@@ -192,6 +192,11 @@ public class TestTypeListActivity extends BaseActivity {
 
                     holder.textView.setText(brand.getName());
                     holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
+//                    if (brand.isCustomTest()) {
+//                        holder.imageIcon.setVisibility(View.VISIBLE);
+//                    } else {
+//                        holder.imageIcon.setVisibility(View.INVISIBLE);
+//                    }
                 }
             }
             return view;
@@ -204,11 +209,14 @@ public class TestTypeListActivity extends BaseActivity {
             private final TextView textView;
             @NonNull
             private final TextView textSubtitle;
+//            @NonNull
+//            private final ImageView imageIcon;
 
             ViewHolder(@NonNull View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
                 textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);
+//                imageIcon = (ImageView) v.findViewById(R.id.imageIcon);
             }
         }
     }

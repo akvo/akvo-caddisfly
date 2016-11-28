@@ -31,7 +31,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -178,7 +177,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     return;
                 }
 
-                if (isDestroyed() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (isDestroyed()) {
                     return;
                 }
 

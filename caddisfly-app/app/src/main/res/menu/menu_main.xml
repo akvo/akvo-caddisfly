@@ -20,7 +20,7 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/actionSettings"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/settings"
         app:showAsAction="always" />
 </menu>

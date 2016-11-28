@@ -132,7 +132,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     public void onPause() {
         super.onPause();
         unregisterReceiver(mUsbReceiver);
-        unbindService(usbConnection);
+        if (usbConnection != null) {
+            unbindService(usbConnection);
+        }
     }
 
     private void setFilters() {

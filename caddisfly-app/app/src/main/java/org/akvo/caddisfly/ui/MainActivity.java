@@ -141,6 +141,18 @@ public class MainActivity extends BaseActivity {
         // TODO: remove upgrade code when obsolete
         upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
         upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
+
+        // change the old name of custom config folder from config to custom-config
+        final File oldFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "config");
+        final File newFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "custom-config");
+
+        if (oldFolder.exists() && oldFolder.isDirectory()) {
+            //noinspection ResultOfMethodCallIgnored
+            oldFolder.renameTo(newFolder);
+        }
+
     }
 
     @Override
@@ -226,17 +238,6 @@ public class MainActivity extends BaseActivity {
                     sourcePath.delete();
                 }
             }
-        }
-
-        // change the old name of custom config folder from config to custom-config
-        final File oldFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
-                + FileHelper.ROOT_DIRECTORY + File.separator + "config");
-        final File newFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
-                + FileHelper.ROOT_DIRECTORY + File.separator + "custom-config");
-
-        if (oldFolder.exists() && oldFolder.isDirectory()) {
-            //noinspection ResultOfMethodCallIgnored
-            oldFolder.renameTo(newFolder);
         }
     }
 

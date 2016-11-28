@@ -22,7 +22,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -219,9 +218,7 @@ public class CaddisflyApp extends Application {
                 || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
             config.locale = locale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                config.setLayoutDirection(locale);
-            }
+            config.setLayoutDirection(locale);
             res.updateConfiguration(config, dm);
 
             //if this session was launched from an external app then do not restart this app

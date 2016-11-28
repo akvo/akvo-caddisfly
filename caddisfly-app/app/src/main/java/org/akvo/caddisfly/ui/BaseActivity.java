@@ -91,7 +91,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             try {
                 setSupportActionBar(toolbar);
             } catch (Exception ignored) {
-                //Ignore crash in Samsung
             }
         }
         if (getSupportActionBar() != null) {

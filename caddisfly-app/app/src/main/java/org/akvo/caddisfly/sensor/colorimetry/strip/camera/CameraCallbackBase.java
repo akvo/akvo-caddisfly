@@ -104,7 +104,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         int titleLevel = 0;
 
         try {
-            if (possibleCenters != null && possibleCenters.size() == 4) {
+            if (possibleCenters != null) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -342,8 +342,12 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 if (listener != null) {
                     listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
                 }
-                int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
-                CalibrationCard.addVersionNumber(versionNumber);
+
+                // if card version has been read and established then no need to decode again
+                if (!CalibrationCard.isCardVersionEstablished()) {
+                    int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
+                    CalibrationCard.addVersionNumber(versionNumber);
+                }
                 calibrationData = CalibrationCard.readCalibrationFile();
             } else {
                 listener.showFinderPatterns(null, null, 1);
