@@ -66,6 +66,7 @@
       "uuid": [
         "f88237b7-be3d-4fac-bbee-ab328eefcd14"
       ],
+      "deviceId": "WaterEC",
       "shortCode": "econd",
       "calibrate": "true",
       "ranges": "0",
@@ -92,6 +93,7 @@
         }
       ],
       "subtype": "sensor",
+      "deviceId": "WaterEC",
       "uuid": [
         "07302aa0-21eb-4570-8264-62b77659101c"
       ],

@@ -63,6 +63,7 @@ public class TestInfo {
     private boolean useGrayScale;
     private String shortCode;
     private int hueTrend;
+    private String deviceId;
 
     public TestInfo(HashMap names, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -331,6 +332,14 @@ public class TestInfo {
 
     public int getHueTrend() {
         return hueTrend;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
     }
 
     public static class SubTest {

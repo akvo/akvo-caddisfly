@@ -279,6 +279,8 @@ public final class TestConfigHelper {
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
+            testInfo.setDeviceId(item.has("deviceId") ? item.getString("deviceId") : "Unknown");
+
             testInfo.setUseGrayScale(item.has("grayScale") && item.getBoolean("grayScale"));
 
             testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);

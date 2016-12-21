@@ -120,6 +120,33 @@ public class SensorActivity extends BaseActivity {
             handler.postDelayed(this, REQUEST_DELAY_MILLIS);
         }
     };
+    private int deviceStatus = 0;
+    private final Runnable validateDeviceRunnable = new Runnable() {
+        @Override
+        public void run() {
+            String data = "device\r\n";
+            if (usbService != null && usbService.isUsbConnected()) {
+                // if UsbService was correctly bound, Send data
+                usbService.write(data.getBytes(StandardCharsets.UTF_8));
+            } else {
+                displayNotConnectedView();
+            }
+
+            switch (deviceStatus) {
+
+                case 0:
+                    handler.postDelayed(this, 500);
+                    break;
+                case 1:
+                    handler.postDelayed(runnable, 100);
+                    break;
+                case 2:
+                    Toast.makeText(getBaseContext(), "Invalid sensor device", Toast.LENGTH_LONG).show();
+                    finish();
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onResume() {
@@ -141,6 +168,7 @@ public class SensorActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(runnable);
+        handler.removeCallbacks(validateDeviceRunnable);
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
     }
@@ -162,7 +190,9 @@ public class SensorActivity extends BaseActivity {
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        handler.postDelayed(runnable, 100);
+        deviceStatus = 0;
+
+        handler.postDelayed(validateDeviceRunnable, 100);
     }
 
     private void requestResult() {
@@ -299,8 +329,19 @@ public class SensorActivity extends BaseActivity {
             }
         }
 
-        final String result = value;
+        final String result = value.trim();
         if (!result.isEmpty()) {
+            if (deviceStatus == 0) {
+                if (result.contains(" ")) {
+                    Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
+                    if (result.startsWith(mCurrentTestInfo.getDeviceId())) {
+                        deviceStatus = 1;
+                    } else {
+                        deviceStatus = 2;
+                    }
+                }
+                return;
+            }
 
             String[] resultArray = result.split(",");
 
@@ -308,9 +349,9 @@ public class SensorActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (debugToast == null) {
-                            debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
+                            debugToast = Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG);
                         }
-                        debugToast.setText(result.trim());
+                        debugToast.setText(result);
                         debugToast.show();
                     }
                 });
