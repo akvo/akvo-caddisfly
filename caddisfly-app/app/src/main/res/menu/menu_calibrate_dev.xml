@@ -21,7 +21,7 @@
     <item
         android:id="@+id/menuSave"
         android:enabled="true"
-        android:icon="@drawable/ic_action_save_dark"
+        android:icon="@drawable/ic_save_black_24dp"
         android:orderInCategory="0"
         android:title="@string/save"
         app:showAsAction="always"
@@ -30,7 +30,7 @@
     <item
         android:id="@+id/menuLoad"
         android:enabled="true"
-        android:icon="@drawable/ic_action_load_dark"
+        android:icon="@drawable/ic_file_upload_black_24dp"
         android:orderInCategory="0"
         android:title="@string/load"
         app:showAsAction="always"
@@ -38,7 +38,7 @@
 
     <item
         android:id="@+id/actionSwatches"
-        android:icon="@drawable/ic_menu_swatch_dark"
+        android:icon="@drawable/ic_style_black_24dp"
         android:orderInCategory="100"
         android:title="@string/swatches"
         app:showAsAction="always" />

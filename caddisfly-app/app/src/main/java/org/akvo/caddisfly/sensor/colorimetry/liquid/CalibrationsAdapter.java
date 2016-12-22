@@ -120,8 +120,6 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
                 textRgb.setVisibility(View.VISIBLE);
                 textHsv.setVisibility(View.VISIBLE);
                 textBrightness.setVisibility(View.VISIBLE);
-                //hide the arrow to make space for diagnostics
-                rowView.findViewById(R.id.imageArrow).setVisibility(View.GONE);
             }
         }
 

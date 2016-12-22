@@ -56,6 +56,7 @@ import java.util.Set;
 public class SensorActivity extends BaseActivity {
 
     private static final int REQUEST_DELAY_MILLIS = 2000;
+    private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
     private static final int FINISH_DELAY_MILLIS = 3000;
@@ -135,12 +136,12 @@ public class SensorActivity extends BaseActivity {
             switch (deviceStatus) {
 
                 case 0:
-                    handler.postDelayed(this, 500);
+                    handler.postDelayed(this, IDENTIFY_DELAY_MILLIS);
                     break;
                 case 1:
                     handler.postDelayed(runnable, 100);
                     break;
-                case 2:
+                default:
                     Toast.makeText(getBaseContext(), "Invalid sensor device", Toast.LENGTH_LONG).show();
                     finish();
                     break;
