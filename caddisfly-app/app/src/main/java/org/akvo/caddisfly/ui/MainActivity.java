@@ -42,7 +42,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.FileUtil;
@@ -98,8 +98,7 @@ public class MainActivity extends BaseActivity {
 
                 boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
-                    CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.ELECTRICAL_CONDUCTIVITY_ID);
-                    final Intent intent = new Intent(getBaseContext(), SensorActivity.class);
+                    final Intent intent = new Intent(getBaseContext(), SensorTypeListActivity.class);
                     intent.putExtra("internal", true);
                     startActivity(intent);
                 } else {

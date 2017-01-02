@@ -77,7 +77,7 @@
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:text="@string/electricalConductivity"
+                android:text="@string/sensors"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />

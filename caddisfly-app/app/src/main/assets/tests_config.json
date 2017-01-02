@@ -94,6 +94,7 @@
       "uuid": [
         "80697cd1-acc9-4a15-8358-f32b4257dfaf"
       ],
+      "ranges": "141, 235, 470, 1413, 3000, 12880",
       "results": [
         {
           "description": "Soil Electrical Conductivity",

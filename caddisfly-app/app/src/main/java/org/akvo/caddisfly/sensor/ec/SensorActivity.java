@@ -43,6 +43,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.json.JSONObject;
@@ -142,7 +143,10 @@ public class SensorActivity extends BaseActivity {
                     handler.postDelayed(runnable, 100);
                     break;
                 default:
-                    Toast.makeText(getBaseContext(), "Invalid sensor device", Toast.LENGTH_LONG).show();
+                    Configuration config = getResources().getConfiguration();
+                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+                            mCurrentTestInfo.getName(config.locale.getLanguage())),
+                            Toast.LENGTH_LONG).show();
                     finish();
                     break;
             }
@@ -223,6 +227,10 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
+
+        String mUuid = intent.getStringExtra(Constant.UUID);
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 

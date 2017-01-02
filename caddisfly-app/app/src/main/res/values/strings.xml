@@ -45,7 +45,9 @@
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
     <!--External-->
+    <string name="sensors">Sensors</string>
     <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
+    <string name="connectCorrectSensor">Connect %s sensor</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
@@ -105,7 +107,7 @@
     <string name="warning">Warning</string>
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
-    <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
+    <string name="deviceConnectSensor">Connect sensor</string>
     <string name="calibratePoint">Calibrate %.0f μS/cm</string>
     <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
     <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
@@ -116,7 +118,7 @@
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
-    <string name="dipSensorInSample">Dip sensor in sample liquid</string>
+    <string name="dipSensorInSample">Dip sensor in sample</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>

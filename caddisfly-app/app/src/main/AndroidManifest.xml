@@ -81,6 +81,9 @@
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
+            android:name=".sensor.ec.SensorTypeListActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".sensor.ec.SensorActivity"
             android:screenOrientation="nosensor" />
         <activity
