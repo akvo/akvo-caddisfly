@@ -16,7 +16,7 @@ import static junit.framework.Assert.assertEquals;
 
 @SuppressWarnings("unused")
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 23)
 public class ResultsTest {
 
     @Test
@@ -34,7 +34,7 @@ public class ResultsTest {
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
         json = json.replaceAll("(\"appVersion\":\").*?\"", "$1version\"");
 
-        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Fluoride\",\"uuid\":\"[f0f3c1dd-89af-49f1-83e7-bcc31c3006cf]\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"ppm\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 5.0.0_r2 (21)\",\"country\":\"US\",\"language\":\"en\"}}";
+        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Fluoride\",\"uuid\":\"[f0f3c1dd-89af-49f1-83e7-bcc31c3006cf]\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"ppm\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.0_r1 (23)\",\"country\":\"US\",\"language\":\"en\"}}";
 
         assertEquals(expectedJson, json);
     }
@@ -55,7 +55,7 @@ public class ResultsTest {
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
         json = json.replaceAll("(\"appVersion\":\").*?\"", "$1version\"");
 
-        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Electrical Conductivity\",\"uuid\":\"[f88237b7-be3d-4fac-bbee-ab328eefcd14]\",\"result\":[{\"name\":\"Electrical Conductivity\",\"unit\":\"μS\\/cm\",\"id\":1,\"value\":\"32432\"},{\"name\":\"Temperature\",\"unit\":\"°Celsius\",\"id\":2,\"value\":\"29.5\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 5.0.0_r2 (21)\",\"country\":\"US\",\"language\":\"en\"}}";
+        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Electrical Conductivity\",\"uuid\":\"[f88237b7-be3d-4fac-bbee-ab328eefcd14]\",\"result\":[{\"name\":\"Electrical Conductivity\",\"unit\":\"μS\\/cm\",\"id\":1,\"value\":\"32432\"},{\"name\":\"Temperature\",\"unit\":\"°Celsius\",\"id\":2,\"value\":\"29.5\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.0_r1 (23)\",\"country\":\"US\",\"language\":\"en\"}}";
 
         assertEquals(expectedJson, json);
     }

@@ -29,6 +29,11 @@ android {
         versionName "1.0.0 Beta 7.1"
         resConfigs "en", "en_US", "fr"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationVariants.all { variant ->
+            def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
+            def buildType = "${variant.buildType.name.capitalize()}"
+            tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
+        }
     }
 
 //    signingConfigs {
@@ -98,6 +103,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.6.1'
     testCompile 'org.robolectric:robolectric:3.1.4'
+    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:25.1.0'

@@ -34,7 +34,7 @@ import static junit.framework.Assert.assertEquals;
 
 @SuppressWarnings("unused")
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 23)
 public class AppPreferencesTest {
 
     @Test
