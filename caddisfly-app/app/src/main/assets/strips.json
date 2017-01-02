@@ -227,45 +227,45 @@
     {
       "name": "pH",
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
-      "calibration": "measured on 23-08-2016 using X-Rite iPro2",
+      "calibration": "measured on 16-12-2016 using X-Rite iPro2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
       "brand": "HACH 27456",
       "numPatch": 1,
       "groupingType":"INDIVIDUAL",
       "illuminant":"D65-2deg",
-      "length": 82.6,
-      "height": 5.2,
+      "length": 82.7,
+      "height": 5,
       "unit": "mm",
       "background": "#60bbc2",
       "patches": [
         {
           "patchDesc":"pH",
-          "patchPos":3.3,
+          "patchPos":3.6,
           "patchWidth":6,
           "id":1,
           "colours":[
             {
               "value": 4,
-              "lab":[64.88,-7.18,41.55]
+              "lab":[65.86,-6.20,38.88]
             },
             {
               "value": 5,
-              "lab":[55.35,-17.85,20.86]
+              "lab":[58.43,-16.68,20.57]
             },
             {
               "value": 6,
-              "lab":[48.23,-19.95,-0.20]
+              "lab":[51.42,-18.74,1.80]
             },
             {
               "value": 7,
-              "lab":[43.87,-13.70,-10.12]
+              "lab":[45.94,-13.70,-8.27]
             },
             {
               "value": 8,
-              "lab":[38.71,5.99,-26.43]
+              "lab":[42.09,4.38,-23.57]
             },
             {
               "value": 9,
-              "lab":[35.62,17.78,-36.01]
+              "lab":[39.86,14.81,-32.57]
             }
           ],
           "timeLapse":15,
@@ -450,55 +450,6 @@
             {
               "value": 1000,
               "lab":[53.77,58.94,52.64]
-            }
-          ],
-          "timeLapse":0,
-          "unit": "ppm"
-        }
-      ]
-    },
-    {
-      "name": "Ammonia",
-      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
-      "calibration": "measured on __-__-2016 using X-Rite iPro2",
-      "brand": "HACH 2755325",
-      "numPatch": 1,
-      "groupingType":"INDIVIDUAL",
-      "illuminant":"D65-2deg",
-      "length": 82.6,
-      "height": 5.2,
-      "unit": "mm",
-      "experimental": "true",
-      "patches": [
-        {
-          "patchDesc":"Ammonia",
-          "patchPos":3.3,
-          "patchWidth":6,
-          "id":1,
-          "colours":[
-            {
-              "value": 0,
-              "lab":[85.33,-1.37,67.40]
-            },
-            {
-              "value": 0.25,
-              "lab":[85.38,-15.02,70.58]
-            },
-            {
-              "value": 0.5,
-              "lab":[74.27,-20.22,60.02]
-            },
-            {
-              "value": 1,
-              "lab":[65.75,-28.92,48.58]
-            },
-            {
-              "value": 3,
-              "lab":[52.56,-36.84,42.93]
-            },
-            {
-              "value": 6,
-              "lab":[40.50,-36.91,28.32]
             }
           ],
           "timeLapse":0,
