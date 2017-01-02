@@ -16,9 +16,6 @@
 
 <resources>
 
-    <!--EC Sensor pid = 6001 vid = 0403-->
-    <usb-device vendor-id="1027" />
-
     <!-- 0x2341 / Arduino -->
     <usb-device vendor-id="9025" />
 
