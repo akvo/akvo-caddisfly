@@ -227,9 +227,9 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
-
         String mUuid = intent.getStringExtra(Constant.UUID);
         CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
@@ -243,8 +243,6 @@ public class SensorActivity extends BaseActivity {
         imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);
 
         textSubtitle.setText(R.string.deviceConnectSensor);
-
-        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
