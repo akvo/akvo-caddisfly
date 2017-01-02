@@ -86,6 +86,49 @@
     {
       "name": [
         {
+          "en": "Soil Electrical Conductivity"
+        }
+      ],
+      "subtype": "sensor",
+      "deviceId": "SoilEC",
+      "uuid": [
+        "80697cd1-acc9-4a15-8358-f32b4257dfaf"
+      ],
+      "results": [
+        {
+          "description": "Soil Electrical Conductivity",
+          "id": 1,
+          "unit": "μS/cm"
+        },
+        {
+          "description": "Temperature",
+          "id": 2,
+          "unit": "°Celsius"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
+          "en": "Soil Moisture"
+        }
+      ],
+      "subtype": "sensor",
+      "deviceId": "SoilMoisture",
+      "uuid": [
+        "0b4a0aaa-f556-4c11-a539-c4626582cca6"
+      ],
+      "results": [
+        {
+          "description": "Soil Moisture",
+          "id": 1,
+          "unit": "% VWC"
+        }
+      ]
+    },
+    {
+      "name": [
+        {
           "en": "Temperature"
         },
         {
