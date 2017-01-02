@@ -29,8 +29,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:paddingBottom="5sp"
-        android:paddingEnd="0sp"
-        android:paddingStart="5sp"
         android:paddingTop="10sp"
         android:textSize="18sp"
         tools:text="Total Chlorine &amp; Free Chlorine 1 - 10" />
@@ -42,8 +40,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:paddingBottom="7dp"
-        android:paddingEnd="0sp"
-        android:paddingStart="5sp"
         android:textColor="#797979"
         android:textSize="14sp"
         tools:text="BRAND 23426435" />

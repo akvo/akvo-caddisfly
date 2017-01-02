@@ -69,7 +69,7 @@
       "deviceId": "WaterEC",
       "shortCode": "econd",
       "calibrate": "true",
-      "ranges": "0",
+      "ranges": "141, 235, 470, 1413, 3000, 12880",
       "results": [
         {
           "description": "Electrical Conductivity",

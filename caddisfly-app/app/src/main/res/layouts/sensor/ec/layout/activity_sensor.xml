@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutTitleBar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="70dp"
         android:indeterminate="true"
         android:indeterminateTint="?progressTint"
         android:indeterminateTintMode="src_in"
@@ -123,7 +123,8 @@
             android:layout_marginTop="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:textColorSecondaryInverse"
-            android:textSize="66sp"
+            android:alpha="0.7"
+            android:textSize="60sp"
             android:visibility="visible"
             tools:text="24" />
 
@@ -133,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
             android:alpha="0.4"
-            android:shadowColor="#cccccc"
+            android:shadowColor="#3c4a5b"
             android:shadowRadius="1"
             android:text="@string/celsius"
             android:textAppearance="?android:attr/textAppearanceMedium"

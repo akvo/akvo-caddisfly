@@ -63,6 +63,7 @@ public class TestInfo {
     private boolean useGrayScale;
     private String shortCode;
     private int hueTrend;
+    private double[] rangeValues;
     private String deviceId;
 
     public TestInfo(HashMap names, TestType testType, String[] swatchArray,
@@ -73,6 +74,8 @@ public class TestInfo {
         this.uuid = uuids;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
+
+        rangeValues = new double[swatchArray.length];
 
         for (int i = 0; i < swatchArray.length; i++) {
 
@@ -94,6 +97,7 @@ public class TestInfo {
             }
             addSwatch(swatch);
 
+            rangeValues[i] = Double.valueOf(range);
         }
 
         if (swatches.size() > 0) {
@@ -248,6 +252,10 @@ public class TestInfo {
         return monthsValid;
     }
 
+    public void setMonthsValid(int monthsValid) {
+        this.monthsValid = monthsValid;
+    }
+
     public boolean hasDecimalPlace() {
         return !allInteger;
     }
@@ -322,24 +330,28 @@ public class TestInfo {
         this.shortCode = shortCode;
     }
 
-    public void setMonthsValid(int monthsValid) {
-        this.monthsValid = monthsValid;
+    public int getHueTrend() {
+        return hueTrend;
     }
 
     public void setHueTrend(int hueTrend) {
         this.hueTrend = hueTrend;
     }
 
-    public int getHueTrend() {
-        return hueTrend;
+    public String getDeviceId() {
+        return deviceId;
     }
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public double[] getRangeValues() {
+        return rangeValues;
+    }
+
+    public void setRangeValues(double[] rangeValues) {
+        this.rangeValues = rangeValues;
     }
 
     public static class SubTest {

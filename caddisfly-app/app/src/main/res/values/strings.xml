@@ -106,9 +106,9 @@
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
     <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
-    <string name="calibratePoint">Calibrate %d μS/cm</string>
+    <string name="calibratePoint">Calibrate %.0f μS/cm</string>
     <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
-    <string name="getEcSolutionReady">Get ready the fluid with EC of %d μS/cm</string>
+    <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
     <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>

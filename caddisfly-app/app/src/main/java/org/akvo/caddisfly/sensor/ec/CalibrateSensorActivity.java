@@ -33,7 +33,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +42,7 @@ import android.widget.ViewAnimator;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -58,10 +58,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     private static final String LINE_FEED = "\r\n";
     private static final int INITIAL_DELAY_MILLIS = 2000;
-    private static final int PROGRESS_MAX = 15;
-    private static final int CALIBRATION_DELAY_MILLIS = 15000;
+    private static final int PROGRESS_MAX = 10;
+    private static final int CALIBRATION_DELAY_MILLIS = 8000;
     private static final int SAVING_DELAY_MILLIS = 4000;
-    private final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -85,6 +84,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
     };
     private final WeakRefHandler progressHandler = new WeakRefHandler(this);
+    private double[] calibrationPoints;
     private ProgressDialog progressDialog;
     private ViewAnimator viewAnimator;
     private boolean deviceHasId = false;
@@ -185,11 +185,14 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
 
         Configuration conf = getResources().getConfiguration();
-        if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        if (!testInfo.getName(conf.locale.getLanguage()).isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
+                    testInfo.getName(conf.locale.getLanguage()));
         }
 
+
+        calibrationPoints = testInfo.getRangeValues();
         textHeading = (TextView) findViewById(R.id.textHeading);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         textInformation = (TextView) findViewById(R.id.textInformation);
@@ -286,7 +289,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
     }
 
-    private void calibratePoint(final int[] calibrations, final int index) {
+    private void calibratePoint(final double[] calibrations, final int index) {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(R.string.pleaseWait);
@@ -297,24 +300,20 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
-        new Thread(new Runnable() {
-            @Override
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             public void run() {
-                try {
-                    while (progressDialog.getProgress() <= progressDialog
-                            .getMax()) {
-                        Thread.sleep(1000);
-                        progressHandler.sendMessage(progressHandler.obtainMessage());
-                        if (progressDialog.getProgress() == progressDialog
-                                .getMax()) {
-                            progressDialog.dismiss();
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
+                progressDialog.incrementProgressBy(1);
+                //progressHandler.sendMessage(progressHandler.obtainMessage());
+                if (progressDialog.getProgress() == progressDialog.getMax()) {
+                    progressDialog.dismiss();
+                } else {
+                    handler.postDelayed(this, 1000);
                 }
             }
-        }).start();
+        };
+
+        handler.postDelayed(runnable, 100);
 
         new Handler().postDelayed(new Runnable() {
 
@@ -327,8 +326,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
-
-                        progressDialog.dismiss();
 
                         if (calibrationIndex > 5) {
 
@@ -394,13 +391,12 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 String getIdRequest = "GET ID" + LINE_FEED;
                 usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
 
-                savingProgressDialog.dismiss();
-
                 displayInformation(calibrationIndex);
 
                 if (viewAnimator.getDisplayedChild() == 0) {
                     viewAnimator.showNext();
                     fabEdit.setVisibility(View.VISIBLE);
+                    savingProgressDialog.dismiss();
                 }
             }
         }, SAVING_DELAY_MILLIS);
