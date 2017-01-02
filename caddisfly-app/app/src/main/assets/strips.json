@@ -275,6 +275,54 @@
     },
     {
       "name": "Phosphate",
+      "uuid": "39e7ea7e-9884-407d-a99a-ac3b4d9c9599",
+      "calibration": "measured on 07-12-2016 using X-Rite iPro2",
+      "brand": "Quantofix 91320",
+      "numPatch": 1,
+      "groupingType":"INDIVIDUAL",
+      "illuminant":"D65-2deg",
+      "length": 95.2,
+      "height": 5.5,
+      "unit": "mm",
+      "patches": [
+        {
+          "patchDesc":"Phosphate",
+          "patchPos":5,
+          "patchWidth":6,
+          "id":1,
+          "colours":[
+            {
+              "value": 0,
+              "lab":[89.28,-4.67,1.61]
+            },
+            {
+              "value": 3,
+              "lab":[84.82,-11.54,-0.02]
+            },
+            {
+              "value": 10,
+              "lab":[79.03,-18.32,-4.59]
+            },
+            {
+              "value": 25,
+              "lab":[68.00,-25.37,-8.72]
+            },
+            {
+              "value": 50,
+              "lab":[59.41,-26.55,-10.43]
+            },
+            {
+              "value": 100,
+              "lab":[47.95,-26.89,-11.32]
+            }
+          ],
+          "timeLapse":0,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Phosphate",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "calibration": "measured on 23-08-2016 using X-Rite iPro2",
       "brand": "HACH 27571",

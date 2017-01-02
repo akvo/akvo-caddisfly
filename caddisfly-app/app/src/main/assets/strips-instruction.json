@@ -98,6 +98,15 @@
     },
     {
       "name": "Phosphate",
+      "uuid": "39e7ea7e-9884-407d-a99a-ac3b4d9c9599",
+      "instructions": [
+        {
+          "text": "Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+        }
+      ]
+    },
+    {
+      "name": "Phosphate",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "instructions": [
         {
@@ -119,7 +128,7 @@
       ]
     },
     {
-      "name": "Phosphate",
+      "name": "Phosphorous",
       "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
       "instructions": [
         {
