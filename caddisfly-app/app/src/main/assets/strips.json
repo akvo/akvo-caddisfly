@@ -378,7 +378,6 @@
       "length": 74,
       "height": 6,
       "unit": "mm",
-      "experimental": "true",
       "patches": [
         {
           "patchDesc":"Potassium",
