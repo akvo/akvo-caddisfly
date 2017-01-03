@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.buttonEcSensor).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonSensors).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

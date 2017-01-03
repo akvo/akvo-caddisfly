@@ -68,7 +68,7 @@
                 android:theme="?longButtonStyle" />
 
             <Button
-                android:id="@+id/buttonEcSensor"
+                android:id="@+id/buttonSensors"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
