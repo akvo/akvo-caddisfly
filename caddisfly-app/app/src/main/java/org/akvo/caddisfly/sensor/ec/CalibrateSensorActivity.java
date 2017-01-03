@@ -444,7 +444,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         if (deviceStatus == 0) {
             if (result.contains(" ")) {
-                Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
                 if (result.startsWith(mCurrentTestInfo.getDeviceId())) {
                     deviceStatus = 1;
                 } else {

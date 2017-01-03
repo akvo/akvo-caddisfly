@@ -123,7 +123,7 @@
             android:layout_marginTop="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:textColorSecondaryInverse"
-            android:alpha="0.7"
+            android:alpha="0.9"
             android:textSize="60sp"
             android:visibility="visible"
             tools:text="24" />

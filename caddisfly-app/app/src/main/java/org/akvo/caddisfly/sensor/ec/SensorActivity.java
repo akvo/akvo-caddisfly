@@ -340,7 +340,6 @@ public class SensorActivity extends BaseActivity {
         if (!result.isEmpty()) {
             if (deviceStatus == 0) {
                 if (result.contains(" ")) {
-                    Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
                     if (result.startsWith(mCurrentTestInfo.getDeviceId())) {
                         deviceStatus = 1;
                     } else {
@@ -392,12 +391,10 @@ public class SensorActivity extends BaseActivity {
                     mEc25Value = "";
                 }
 
-                if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
+                if (mCurrentTestInfo != null && mCurrentTestInfo.getShortCode().equalsIgnoreCase("TEMPE")) {
                     textSubtitle.setText(R.string.sensorConnected);
-                    textResult.setText(mTemperature);
-                    if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
-                        textUnit.setText(mCurrentTestInfo.getUnit());
-                    }
+                    textResult.setVisibility(View.GONE);
+                    textUnit.setVisibility(View.GONE);
                     buttonAcceptResult.setVisibility(View.VISIBLE);
                     progressWait.setVisibility(View.GONE);
                 } else {

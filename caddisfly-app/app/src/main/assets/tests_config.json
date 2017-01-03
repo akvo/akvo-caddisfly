@@ -115,7 +115,7 @@
         }
       ],
       "subtype": "sensor",
-      "deviceId": "SoilMoisture",
+      "deviceId": "Soil Moisture",
       "uuid": [
         "0b4a0aaa-f556-4c11-a539-c4626582cca6"
       ],
