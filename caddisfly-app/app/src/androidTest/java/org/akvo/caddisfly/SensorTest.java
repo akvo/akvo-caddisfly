@@ -83,7 +83,9 @@ public class SensorTest {
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withText(R.string.electricalConductivity)).perform(click());
+        onView(withText(R.string.sensors)).perform(click());
+
+        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 
         onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
 
@@ -95,6 +97,8 @@ public class SensorTest {
 
         onView(withContentDescription(mActivityRule.getActivity()
                 .getString(R.string.deviceConnectSensor))).check(matches(isDisplayed()));
+
+        Espresso.pressBack();
 
         Espresso.pressBack();
 

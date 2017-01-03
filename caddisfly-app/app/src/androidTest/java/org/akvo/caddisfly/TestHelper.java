@@ -98,6 +98,7 @@ final class TestHelper {
         addString("fluoride", "Fluoride", res.getString(R.string.fluoride));
         addString("chlorine", "Free Chlorine", res.getString(R.string.freeChlorine));
         addString("survey", "Survey", res.getString(R.string.survey));
+        addString("sensors", "Sensors", res.getString(R.string.sensors));
         addString("electricalConductivity", "Electrical Conductivity", res.getString(R.string.electricalConductivity));
         addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));

@@ -160,8 +160,6 @@ public class StripTest {
     public class Brand {
         private final List<Patch> patches = new ArrayList<>();
         private final String uuid;
-        private boolean customTest;
-        //        private String background;
         private String name;
         private String brandDescription;
         private String image;
@@ -199,7 +197,6 @@ public class StripTest {
                                 image = strip.has(SensorConstants.IMAGE)
                                         ? strip.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
                                 imageScale = strip.has("imageScale") ? strip.getString("imageScale") : "";
-                                customTest = strip.has("customTest") && strip.getBoolean("customTest");
 
                                 if (strip.has("instructions")) {
                                     instructions = strip.getJSONArray("instructions");
@@ -323,14 +320,6 @@ public class StripTest {
         public String getImageScale() {
             return imageScale;
         }
-
-        public boolean isCustomTest() {
-            return customTest;
-        }
-
-//        public String getBackground() {
-//            return background;
-//        }
 
         public class Patch {
             private final int id;

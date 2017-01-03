@@ -46,7 +46,6 @@
 
     <!--External-->
     <string name="sensors">Sensors</string>
-    <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
     <string name="connectCorrectSensor">Connect %s sensor</string>
 
     <!--Messages-->

@@ -37,8 +37,7 @@
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
     <string name="survey">Enquête</string>
-    <!--External-->
-    <string name="electricalConductivity" tools:ignore="UnusedResources">Conductivité Electrique</string>
+
     <!--Messages-->
     <string name="pleaseWait">Veuillez attendre…</string>
     <string name="notSupported">Non pris en charge</string>

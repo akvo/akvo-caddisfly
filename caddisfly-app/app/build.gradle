@@ -26,7 +26,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 162
-        versionName "1.0.0 Beta 7.1"
+        versionName "1.0.0 Alpha 7.1"
         resConfigs "en", "en_US", "fr"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->

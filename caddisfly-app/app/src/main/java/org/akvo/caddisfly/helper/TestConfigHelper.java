@@ -109,19 +109,19 @@ public final class TestConfigHelper {
         ArrayList<TestInfo> tests = new ArrayList<>();
 
         // Load the pre-configured tests from the app
-        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), false, -1);
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), -1);
 
         // Load any custom tests from the custom test config file
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
         if (file.exists()) {
-            loadTests(tests, FileUtil.loadTextFromFile(file), false, R.string.customTests);
+            loadTests(tests, FileUtil.loadTextFromFile(file), R.string.customTests);
         }
 
         return tests;
     }
 
     private static void loadTests(ArrayList<TestInfo> tests, String jsonText,
-                                  boolean isDiagnostic, @StringRes int groupName) {
+                                  @StringRes int groupName) {
 
         int groupIndex = tests.size();
 
@@ -160,9 +160,6 @@ public final class TestConfigHelper {
                     }
 
                     TestInfo testInfo = loadTest(item);
-                    if (testInfo != null) {
-                        testInfo.setIsDiagnostic(isDiagnostic);
-                    }
 
                     //Create TestInfo object
                     tests.add(testInfo);
@@ -178,9 +175,6 @@ public final class TestConfigHelper {
                 testGroup.setGroup(true);
                 testGroup.setRequiresCalibration(true);
                 testGroup.setGroupName(groupName);
-                if (isDiagnostic) {
-                    testGroup.setIsDiagnostic(true);
-                }
                 tests.add(groupIndex, testGroup);
             }
 

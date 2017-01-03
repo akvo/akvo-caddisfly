@@ -30,7 +30,6 @@ public final class SensorConstants {
     public static final String UUID = "uuid";
     public static final String COLOR = "color";
     public static final String USER = "user";
-    public static final String ELECTRICAL_CONDUCTIVITY_ID = "f88237b7-be3d-4fac-bbee-ab328eefcd14";
     public static final String FREE_CHLORINE_ID = "c3535e72-ff77-4225-9f4a-41d3288780c6";
     public static final String FLUORIDE_ID = "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf";
 

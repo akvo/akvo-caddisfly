@@ -23,6 +23,7 @@
     <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
     <string name="freeChlorine" tools:ignore="UnusedResources">Free Chlorine</string>
     <string name="iron" tools:ignore="UnusedResources">Iron</string>
+    <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
 
     <!--Akvo Flow -->
     <string name="unnamedDataPoint">Unnamed data point</string>

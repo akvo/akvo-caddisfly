@@ -126,7 +126,7 @@ public class LanguageTest {
 
         mDevice.pressBack();
 
-        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+        onView(withText(currentHashMap.get("sensors"))).perform(click());
 
         Espresso.pressBack();
 

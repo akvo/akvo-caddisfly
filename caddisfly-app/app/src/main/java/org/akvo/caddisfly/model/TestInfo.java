@@ -347,11 +347,7 @@ public class TestInfo {
     }
 
     public double[] getRangeValues() {
-        return rangeValues;
-    }
-
-    public void setRangeValues(double[] rangeValues) {
-        this.rangeValues = rangeValues;
+        return rangeValues.clone();
     }
 
     public static class SubTest {

@@ -54,8 +54,6 @@ import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity implements EditSensorIdentity.OnFragmentInteractionListener {
 
-    private static final String TAG = "CalibrateSensorActivity";
-
     private static final String LINE_FEED = "\r\n";
     private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int INITIAL_DELAY_MILLIS = 2000;
@@ -86,7 +84,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         }
     };
-    private final WeakRefHandler progressHandler = new WeakRefHandler(this);
     private TestInfo mCurrentTestInfo;
     private double[] calibrationPoints;
     private ProgressDialog progressDialog;
@@ -133,13 +130,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 // if UsbService was correctly bound, Send data
                 usbService.write(data.getBytes(StandardCharsets.UTF_8));
             } else {
-                Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                        mCurrentTestInfo.getName(config.locale.getLanguage())),
-                        Toast.LENGTH_LONG).show();
-
-                finish();
                 return;
-                //AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
             }
 
             switch (deviceStatus) {
@@ -347,20 +338,19 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+        final Handler progressHandler = new Handler();
+        Runnable progressRunnable = new Runnable() {
             public void run() {
                 progressDialog.incrementProgressBy(1);
-                //progressHandler.sendMessage(progressHandler.obtainMessage());
                 if (progressDialog.getProgress() == progressDialog.getMax()) {
                     progressDialog.dismiss();
                 } else {
-                    handler.postDelayed(this, 1000);
+                    progressHandler.postDelayed(this, 1000);
                 }
             }
         };
 
-        handler.postDelayed(runnable, 100);
+        progressHandler.postDelayed(progressRunnable, 100);
 
         new Handler().postDelayed(new Runnable() {
 
@@ -466,26 +456,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         if (!result.contains("OK")) {
             displayId(result);
-        }
-    }
-
-    /**
-     * Handler to restart the app after language has been changed
-     */
-    private static class WeakRefHandler extends Handler {
-        @NonNull
-        private final WeakReference<CalibrateSensorActivity> ref;
-
-        WeakRefHandler(CalibrateSensorActivity ref) {
-            this.ref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            CalibrateSensorActivity f = ref.get();
-            if (f != null) {
-                f.progressDialog.incrementProgressBy(1);
-            }
         }
     }
 
