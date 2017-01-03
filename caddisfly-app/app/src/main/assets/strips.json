@@ -322,51 +322,6 @@
       ]
     },
     {
-      "name": "Phosphate",
-      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
-      "calibration": "measured on 23-08-2016 using X-Rite iPro2",
-      "brand": "HACH 27571",
-      "numPatch": 1,
-      "groupingType":"INDIVIDUAL",
-      "illuminant":"D65-2deg",
-      "length": 82.6,
-      "height": 5.2,
-      "unit": "mm",
-      "background": "#60bbc2",
-      "patches": [
-        {
-          "patchDesc":"Phosphate",
-          "patchPos":3.3,
-          "patchWidth":6,
-          "id":1,
-          "colours":[
-            {
-              "value": 0,
-              "lab":[67.72,7.05,-2.12]
-            },
-            {
-              "value": 5,
-              "lab":[66.11,3.91,-2.43]
-            },
-            {
-              "value": 15,
-              "lab":[65.48,0.48,-2.47]
-            },
-            {
-              "value": 30,
-              "lab":[64.47,-2.77,-1.95]
-            },
-            {
-              "value": 50,
-              "lab":[63.19,-5.04,-1.12]
-            }
-          ],
-          "timeLapse":45,
-          "unit": "ppm"
-        }
-      ]
-    },
-    {
       "name": "Phosphorous",
       "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
       "calibration": "measured on 07-11-2016 using X-Rite iPro2",
