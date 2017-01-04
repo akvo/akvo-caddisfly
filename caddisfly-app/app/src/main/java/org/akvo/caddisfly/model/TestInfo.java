@@ -51,7 +51,6 @@ public class TestInfo {
     private String unit;
     private boolean requiresCalibration;
     private boolean allInteger = true;
-    private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
     private boolean isGroup;
@@ -218,15 +217,6 @@ public class TestInfo {
 
     public boolean getCanUseDilution() {
         return dilutions.size() > 1;
-    }
-
-    public boolean getIsDiagnostic() {
-        return isDiagnostic;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public void setIsDiagnostic(boolean value) {
-        isDiagnostic = value;
     }
 
     /**

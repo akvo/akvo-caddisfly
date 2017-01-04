@@ -18,6 +18,7 @@ package org.akvo.caddisfly.helper;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -37,6 +38,7 @@ import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -51,6 +53,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public final class SwatchHelper {
+
+    private static final String TAG = "SwatchHelper";
 
     private static final int MAX_DISTANCE = 999;
     private static final int MAX_DIFFERENCE = 150;
@@ -214,7 +218,7 @@ public final class SwatchHelper {
                 break;
             }
             for (Swatch swatch2 : swatches) {
-                if (swatch1 != swatch2 && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
+                if (swatch1.equals(swatch2) && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
                     result = false;
                     break;
@@ -449,7 +453,7 @@ public final class SwatchHelper {
                     swatches.add(clonedSwatch);
                 }
             } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
 
         }
@@ -519,8 +523,8 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
-    public static ArrayList<Swatch> loadCalibrationFromFile(Context context, String fileName) throws Exception {
-        final ArrayList<Swatch> swatchList = new ArrayList<>();
+    public static List<Swatch> loadCalibrationFromFile(Context context, String fileName) throws IOException {
+        final List<Swatch> swatchList = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
                 CaddisflyApp.getApp().getCurrentTestInfo().getCode());
 
@@ -536,7 +540,7 @@ public final class SwatchHelper {
                     String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
                     if (line.contains("Calibrated:")) {
                         Calendar calendar = Calendar.getInstance();
-                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd HH:mm");
                         if (date != null) {
                             calendar.setTime(date);
@@ -546,7 +550,7 @@ public final class SwatchHelper {
                     }
                     if (line.contains("ReagentExpiry:")) {
                         Calendar calendar = Calendar.getInstance();
-                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd");
                         if (date != null) {
                             calendar.setTime(date);
@@ -556,19 +560,19 @@ public final class SwatchHelper {
                     }
 
                     if (line.contains("ReagentBatch:")) {
-                        String batch = line.substring(line.indexOf(":") + 1).trim();
+                        String batch = line.substring(line.indexOf(':') + 1).trim();
                         PreferencesUtil.setString(context, testCode,
                                 R.string.batchNumberKey, batch);
                     }
 
                     if (line.contains("LED RGB:")) {
-                        String rgb = line.substring(line.indexOf(":") + 1).trim();
+                        String rgb = line.substring(line.indexOf(':') + 1).trim();
                         PreferencesUtil.setString(context, testCode,
                                 R.string.ledRgbKey, rgb);
                     }
 
                     if (line.contains("DetectBackdrop:")) {
-                        Boolean detect = !Boolean.valueOf(line.substring(line.indexOf(":") + 1).trim());
+                        Boolean detect = !Boolean.valueOf(line.substring(line.indexOf(':') + 1).trim());
                         PreferencesUtil.setBoolean(context, R.string.noBackdropDetectionKey, detect);
                     }
 
@@ -593,7 +597,7 @@ public final class SwatchHelper {
                 }
 
             } else {
-                throw new Exception();
+                throw new IOException();
             }
         }
         return swatchList;
@@ -604,7 +608,7 @@ public final class SwatchHelper {
      *
      * @param swatches List of swatch colors to be saved
      */
-    public static void saveCalibratedSwatches(Context context, ArrayList<Swatch> swatches) {
+    public static void saveCalibratedSwatches(Context context, List<Swatch> swatches) {
 
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         for (Swatch swatch : swatches) {
@@ -685,7 +689,7 @@ public final class SwatchHelper {
         try {
             return nf.parse(text).doubleValue();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             return 0.0;
         }
     }

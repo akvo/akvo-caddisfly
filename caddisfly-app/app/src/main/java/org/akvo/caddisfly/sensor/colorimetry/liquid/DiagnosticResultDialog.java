@@ -212,7 +212,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
     public class ResultsDetailsAdapter extends BaseAdapter {
 
-        final List<ResultDetail> mResults;
+        private final List<ResultDetail> mResults;
 
         ResultsDetailsAdapter(List<ResultDetail> results) {
             mResults = results;

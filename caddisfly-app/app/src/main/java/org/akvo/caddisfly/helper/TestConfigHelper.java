@@ -18,6 +18,7 @@ package org.akvo.caddisfly.helper;
 
 import android.os.Build;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -39,12 +40,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Utility functions to parse a text config json text
  */
 public final class TestConfigHelper {
+
+    public static final String TAG = "TestConfigHelper";
 
     // Files
     private static final String CONFIG_FILE = "tests.json";
@@ -82,7 +86,7 @@ public final class TestConfigHelper {
                     for (int j = 0; j < array.length(); j++) {
                         JSONObject item = array.getJSONObject(j);
 
-                        JSONArray uuidArray = item.getJSONArray("uuid");
+                        JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
                         for (int k = 0; k < uuidArray.length(); k++) {
                             if (uuid.equalsIgnoreCase(uuidArray.getString(k))) {
                                 return loadTest(item);
@@ -91,7 +95,7 @@ public final class TestConfigHelper {
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
 
             }
@@ -104,9 +108,9 @@ public final class TestConfigHelper {
      *
      * @return ArrayList of TestInfo instances filled with config
      */
-    public static ArrayList<TestInfo> loadTestsList() {
+    public static List<TestInfo> loadTestsList() {
 
-        ArrayList<TestInfo> tests = new ArrayList<>();
+        List<TestInfo> tests = new ArrayList<>();
 
         // Load the pre-configured tests from the app
         loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), -1);
@@ -120,7 +124,7 @@ public final class TestConfigHelper {
         return tests;
     }
 
-    private static void loadTests(ArrayList<TestInfo> tests, String jsonText,
+    private static void loadTests(List<TestInfo> tests, String jsonText,
                                   @StringRes int groupName) {
 
         int groupIndex = tests.size();
@@ -133,7 +137,7 @@ public final class TestConfigHelper {
                     JSONObject item = array.getJSONObject(i);
 
                     // get uuids
-                    JSONArray uuidArray = item.getJSONArray("uuid");
+                    JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
                     ArrayList<String> uuids = new ArrayList<>();
                     for (int ii = 0; ii < uuidArray.length(); ii++) {
 
@@ -165,7 +169,7 @@ public final class TestConfigHelper {
                     tests.add(testInfo);
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
 
@@ -179,7 +183,7 @@ public final class TestConfigHelper {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }
@@ -257,7 +261,7 @@ public final class TestConfigHelper {
             }
 
             // get uuids
-            JSONArray uuidArray = item.getJSONArray("uuid");
+            JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
             ArrayList<String> uuids = new ArrayList<>();
             for (int ii = 0; ii < uuidArray.length(); ii++) {
                 String newUuid = uuidArray.getString(ii);
@@ -269,7 +273,7 @@ public final class TestConfigHelper {
             testInfo = new TestInfo(namesHashTable, type, rangesArray,
                     defaultColorsArray, dilutionsArray, uuids, resultsArray);
 
-            testInfo.setShortCode(item.has("shortCode") ? item.getString("shortCode") : "");
+            testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
@@ -283,13 +287,13 @@ public final class TestConfigHelper {
             testInfo.setRequiresCalibration(item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return testInfo;
     }
 
-    public static JSONObject getJsonResult(TestInfo testInfo, ArrayList<String> results, int color,
+    public static JSONObject getJsonResult(TestInfo testInfo, List<String> results, int color,
                                            String resultImageUrl) {
 
         JSONObject resultJson = new JSONObject();
@@ -351,7 +355,7 @@ public final class TestConfigHelper {
             resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return resultJson;
     }
@@ -400,13 +404,14 @@ public final class TestConfigHelper {
                 JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = array.getJSONObject(i);
-                    if (item.has("shortCode") && shortCode.equalsIgnoreCase(item.getString("shortCode"))) {
-                        return item.getJSONArray("uuid").getString(0);
+                    if (item.has(SensorConstants.SHORT_CODE)
+                            && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
+                        return item.getJSONArray(SensorConstants.UUID).getString(0);
                     }
                 }
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return null;

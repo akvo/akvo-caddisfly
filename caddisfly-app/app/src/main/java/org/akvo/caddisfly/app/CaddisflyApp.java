@@ -35,8 +35,8 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class CaddisflyApp extends Application {
@@ -117,7 +117,7 @@ public class CaddisflyApp extends Application {
      */
     public void setDefaultTest() {
 
-        ArrayList<TestInfo> tests;
+        List<TestInfo> tests;
         tests = TestConfigHelper.loadTestsList();
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);

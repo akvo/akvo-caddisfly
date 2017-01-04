@@ -24,7 +24,6 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.List;
 
@@ -59,15 +58,6 @@ public class TypeListFragment extends ListFragment {
         for (int i = mTests.size() - 1; i >= 0; i--) {
             if (!mTests.get(i).getRequiresCalibration()) {
                 mTests.remove(i);
-            }
-        }
-
-        //Remove diagnostic test types if we are not in diagnostic mode
-        if (!AppPreferences.isDiagnosticMode()) {
-            for (int i = mTests.size() - 1; i >= 0; i--) {
-                if (mTests.get(i).getIsDiagnostic()) {
-                    mTests.remove(i);
-                }
             }
         }
 

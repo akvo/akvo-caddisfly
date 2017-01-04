@@ -56,10 +56,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -207,19 +207,6 @@ public class CalibrateListActivity extends BaseActivity
 
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-//        String key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationDateKey));
-//        long calibrationDate = PreferencesUtil.getLong(this, key);
-        //Show calibration details dialog if this is an incomplete calibration from more than an hour ago
-//        Calendar currentDate = Calendar.getInstance();
-//        if (currentDate.getTimeInMillis() - calibrationDate > 1000 * 60 * 1) {
-//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.batchNumberKey));
-//            PreferencesUtil.removeKey(this, key);
-//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationExpiryDateKey));
-//            PreferencesUtil.removeKey(this, key);
-//            showEditCalibrationDetailsDialog();
-//            return;
-//        }
-
         fabEditCalibration.setEnabled(false);
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
@@ -360,7 +347,7 @@ public class CalibrateListActivity extends BaseActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 String fileName = listFiles[which].getName();
                                 try {
-                                    final ArrayList<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
+                                    final List<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
 
                                     (new AsyncTask<Void, Void, Void>() {
                                         @Nullable
