@@ -42,7 +42,6 @@
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
         <item name="progressTintInverse">@color/yellow</item>
-        <item name="listArrowRight">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
     <style name="AppTheme.OrangeBlue" parent="Theme.AppCompat.Light.NoActionBar">
@@ -65,7 +64,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.NoActionBar">
@@ -88,7 +86,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
     <style name="AppTheme.BlueOrange" parent="Theme.AppCompat.Light.NoActionBar">
@@ -111,7 +108,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
     <style name="AppTheme.Flow" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -134,6 +130,5 @@
         <item name="toolbarHeight">@dimen/flow_toolbar_height</item>
         <item name="toolbarMargin">@dimen/flow_toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 </resources>

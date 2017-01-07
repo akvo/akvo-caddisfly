@@ -28,7 +28,6 @@
         <attr name="toolbarMargin" format="dimension" />
         <attr name="progressTint" format="color" />
         <attr name="progressTintInverse" format="color" />
-        <attr name="listArrowRight" format="reference" />
     </declare-styleable>
     <declare-styleable name="TimerView">
         <attr name="circleColor" format="color" />

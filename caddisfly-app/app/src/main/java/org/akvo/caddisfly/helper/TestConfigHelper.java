@@ -48,7 +48,7 @@ import java.util.Locale;
  */
 public final class TestConfigHelper {
 
-    public static final String TAG = "TestConfigHelper";
+    private static final String TAG = "TestConfigHelper";
 
     // Files
     private static final String CONFIG_FILE = "tests.json";

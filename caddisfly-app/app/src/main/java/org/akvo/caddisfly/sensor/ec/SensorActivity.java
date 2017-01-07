@@ -122,7 +122,9 @@ public class SensorActivity extends BaseActivity {
             handler.postDelayed(this, REQUEST_DELAY_MILLIS);
         }
     };
+
     private int deviceStatus = 0;
+
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {

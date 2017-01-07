@@ -218,7 +218,7 @@ public final class SwatchHelper {
                 break;
             }
             for (Swatch swatch2 : swatches) {
-                if (swatch1.equals(swatch2) && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
+                if (!swatch1.equals(swatch2) && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
                     result = false;
                     break;
