@@ -105,7 +105,7 @@
             tools:text="20000" />
 
         <TextView
-            android:id="@+id/textName"
+            android:id="@+id/textUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
@@ -114,7 +114,7 @@
             android:shadowRadius="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:textColorSecondaryInverse"
-            tools:text="Celsius" />
+            tools:text="μS/cm" />
 
         <TextView
             android:id="@+id/textTemperature"

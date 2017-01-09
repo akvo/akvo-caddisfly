@@ -45,6 +45,7 @@
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
     <!--External-->
+    <string name="sensor">Sensor</string>
     <string name="sensors">Sensors</string>
     <string name="connectCorrectSensor">Connect %s sensor</string>
 

@@ -832,7 +832,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     public void onBackPressed() {
         super.onBackPressed();
         releaseResources();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
     }
 
     @Override

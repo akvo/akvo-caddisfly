@@ -102,7 +102,7 @@ final class TestHelper {
         addString("electricalConductivity", "Electrical Conductivity", res.getString(R.string.electricalConductivity));
         addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
-        addString("useExternalSource", "Go to test", res.getString(R.string.goToText));
+        addString("useExternalSource", "Use External Source", res.getString(R.string.useExternalSource));
         addString("next", "Next", res.getString(R.string.next));
 
         // Restore device-specific locale
@@ -193,6 +193,27 @@ final class TestHelper {
         mDevice.waitForWindowUpdate("", 2000);
 
         sleep(4000);
+    }
+
+    public static void clickExternalSourceButton(String buttonText) {
+        try {
+
+            findButtonInScrollable(buttonText);
+
+            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+
+            // New Android OS seems to popup a button for external app
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && buttonText.equals("useExternalSource")) {
+                sleep(1000);
+                mDevice.findObject(By.text("Akvo Caddisfly")).click();
+                sleep(1000);
+            }
+
+            mDevice.waitForWindowUpdate("", 2000);
+
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void saveCalibration(String name) {

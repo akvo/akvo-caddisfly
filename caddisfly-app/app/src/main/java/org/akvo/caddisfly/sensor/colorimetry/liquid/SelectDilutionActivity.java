@@ -110,12 +110,4 @@ public class SelectDilutionActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
-    }
-
-
 }

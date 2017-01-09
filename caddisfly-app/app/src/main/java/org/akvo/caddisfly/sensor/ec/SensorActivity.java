@@ -168,7 +168,7 @@ public class SensorActivity extends BaseActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        setTitle("Sensor");
+        setTitle(R.string.sensor);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class SensorActivity extends BaseActivity {
         textResult = (TextView) findViewById(R.id.textResult);
         textTemperature = (TextView) findViewById(R.id.textTemperature);
         progressWait = (ProgressBar) findViewById(R.id.progressWait);
-        textUnit = (TextView) findViewById(R.id.textName);
+        textUnit = (TextView) findViewById(R.id.textUnit);
         TextView textUnit2 = (TextView) findViewById(R.id.textUnit2);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);

@@ -29,5 +29,6 @@
     <string name="unnamedDataPoint">Unnamed data point</string>
     <string name="addDataPoint">Add Data Point</string>
     <string name="goToText">Go to test</string>
+    <string name="useExternalSource">Use External Source</string>
 
 </resources>
