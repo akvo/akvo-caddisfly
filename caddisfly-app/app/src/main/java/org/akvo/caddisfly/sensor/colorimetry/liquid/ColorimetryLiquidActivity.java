@@ -341,7 +341,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         //set the title to the test contaminant name
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
 
-        if (testInfo.getUuid().get(0).isEmpty()) {
+        if (testInfo.getUuid().isEmpty()) {
             alertCouldNotLoadConfig();
         } else if (!mTestCompleted) {
             initializeTest();

@@ -47,7 +47,7 @@ import static android.graphics.Typeface.BOLD;
  * Use the {@link InstructionFragment#newInstance} factory method to
  * create an instance of this fragment.
  * <p/>
- * This fragment shows instructions for a particular strip test. They are read from strips.json in assets
+ * This fragment shows instructions for a particular strip test.
  */
 public class InstructionFragment extends CameraSharedFragmentBase {
 

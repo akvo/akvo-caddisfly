@@ -38,8 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-This class assumes that there are .png images in res/drawable that have the same name
-as the String 'brand' in the JsonObject 'strip' in strips.json from assets
+This class assumes that there are .png images in res/drawable that have the same name as the brand
 */
 public class InstructionActivity extends BaseActivity {
 

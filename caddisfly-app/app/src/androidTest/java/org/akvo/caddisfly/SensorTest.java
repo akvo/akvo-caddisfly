@@ -115,7 +115,10 @@ public class SensorTest {
 
             onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
 
-            onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+            String message = mActivityRule.getActivity().getString(R.string.connectCorrectSensor,
+                    mActivityRule.getActivity().getString(R.string.electricalConductivity));
+
+            onView(withText(message)).check(matches(isDisplayed()));
 
             onView(withId(android.R.id.button2)).perform(click());
 
@@ -147,7 +150,11 @@ public class SensorTest {
             onView(withId(R.id.buttonStartCalibrate)).perform(click());
 
             onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
-            onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+
+            String message = mActivityRule.getActivity().getString(R.string.connectCorrectSensor,
+                    mActivityRule.getActivity().getString(R.string.electricalConductivity));
+
+            onView(withText(message)).check(matches(isDisplayed()));
 
             onView(withId(android.R.id.button2)).perform(click());
 

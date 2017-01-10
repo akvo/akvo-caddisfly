@@ -86,11 +86,9 @@ public final class TestConfigHelper {
                     for (int j = 0; j < array.length(); j++) {
                         JSONObject item = array.getJSONObject(j);
 
-                        JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
-                        for (int k = 0; k < uuidArray.length(); k++) {
-                            if (uuid.equalsIgnoreCase(uuidArray.getString(k))) {
-                                return loadTest(item);
-                            }
+                        String newUuid = item.getString(SensorConstants.UUID);
+                        if (uuid.equalsIgnoreCase(newUuid)) {
+                            return loadTest(item);
                         }
                     }
 
@@ -135,31 +133,17 @@ public final class TestConfigHelper {
             for (int i = 0; i < array.length(); i++) {
                 try {
                     JSONObject item = array.getJSONObject(i);
+                    String uuid = item.getString(SensorConstants.UUID);
 
                     // get uuids
-                    JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
-                    ArrayList<String> uuids = new ArrayList<>();
-                    for (int ii = 0; ii < uuidArray.length(); ii++) {
-
-                        String newUuid = uuidArray.getString(ii);
-                        boolean found = false;
-                        for (TestInfo test : tests) {
-                            for (String uuid : test.getUuid()) {
-                                if (uuid.equalsIgnoreCase(newUuid)) {
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (found) {
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            uuids.add(newUuid);
+                    boolean found = false;
+                    for (TestInfo test : tests) {
+                        if (uuid.equalsIgnoreCase(test.getUuid())) {
+                            found = true;
+                            break;
                         }
                     }
-
-                    if (uuids.isEmpty()) {
+                    if (found) {
                         continue;
                     }
 
@@ -261,17 +245,10 @@ public final class TestConfigHelper {
             }
 
             // get uuids
-            JSONArray uuidArray = item.getJSONArray(SensorConstants.UUID);
-            ArrayList<String> uuids = new ArrayList<>();
-            for (int ii = 0; ii < uuidArray.length(); ii++) {
-                String newUuid = uuidArray.getString(ii);
-                if (!uuids.contains(newUuid)) {
-                    uuids.add(newUuid);
-                }
-            }
+            String uuid = item.getString(SensorConstants.UUID);
 
             testInfo = new TestInfo(namesHashTable, type, rangesArray,
-                    defaultColorsArray, dilutionsArray, uuids, resultsArray);
+                    defaultColorsArray, dilutionsArray, uuid, resultsArray);
 
             testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
 
@@ -284,7 +261,7 @@ public final class TestConfigHelper {
             testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);
 
             //if calibrate not specified then default to false otherwise use specified value
-            testInfo.setRequiresCalibration(item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"));
+            testInfo.setRequiresCalibration(item.has("calibrate") && item.getBoolean("calibrate"));
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -406,7 +383,7 @@ public final class TestConfigHelper {
                     JSONObject item = array.getJSONObject(i);
                     if (item.has(SensorConstants.SHORT_CODE)
                             && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
-                        return item.getJSONArray(SensorConstants.UUID).getString(0);
+                        return item.getString(SensorConstants.UUID);
                     }
                 }
 

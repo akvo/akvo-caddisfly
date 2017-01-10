@@ -298,10 +298,10 @@ public class NavigationTest {
 //        onView(withId(android.R.id.button2)).perform(click());
 
         //EC
-        clickExternalSourceButton(1);
+        //clickExternalSourceButton(1);
 
         //Connect EC Sensor Screen
-        takeScreenshot();
+        //takeScreenshot();
 
         //mDevice.pressBack();
 

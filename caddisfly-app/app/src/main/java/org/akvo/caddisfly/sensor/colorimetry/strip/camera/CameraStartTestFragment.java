@@ -257,7 +257,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     /*
    * Keep track of the time.
    * We start a runnable (countdownRunnable) that update the partial_progress view (afterwards that takes care of itself)
-   * We know beforehand at what intervals the patches are due from the values in strips.json
+   * We know beforehand at what intervals the patches are due from the values in tests config json
    * so we can use a handler and runnable to post them at exactly that interval from start countdown
     */
     private void startCountdown() {

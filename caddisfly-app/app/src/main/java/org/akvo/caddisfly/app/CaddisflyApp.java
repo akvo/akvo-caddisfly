@@ -108,7 +108,7 @@ public class CaddisflyApp extends Application {
         if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid().get(0));
+            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid());
         }
     }
 

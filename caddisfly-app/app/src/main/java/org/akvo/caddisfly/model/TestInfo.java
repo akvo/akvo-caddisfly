@@ -43,7 +43,7 @@ public class TestInfo {
 
     private static final double RESULT_ERROR_MARGIN = 0.2;
     private final HashMap names;
-    private final List<String> uuid;
+    private final String uuid;
     private final List<Swatch> swatches;
     private final TestType testType;
     private final List<Integer> dilutions;
@@ -67,10 +67,10 @@ public class TestInfo {
 
     public TestInfo(HashMap names, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
-                    List<String> uuids, JSONArray resultsArray) {
+                    String uuid, JSONArray resultsArray) {
         this.names = names == null ? null : (HashMap) names.clone();
         this.testType = testType;
-        this.uuid = uuids;
+        this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
 
@@ -124,7 +124,7 @@ public class TestInfo {
             for (int ii = 0; ii < resultsArray.length(); ii++) {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
-                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
+                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"), patchObj.getString("unit")));
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
@@ -139,7 +139,7 @@ public class TestInfo {
     public TestInfo() {
         names = null;
         testType = TestType.COLORIMETRIC_LIQUID;
-        this.uuid = new ArrayList<>();
+        this.uuid = "";
         this.unit = "";
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
@@ -177,10 +177,10 @@ public class TestInfo {
     }
 
     public String getCode() {
-        return uuid.size() > 0 ? uuid.get(0) : "";
+        return uuid;
     }
 
-    public List<String> getUuid() {
+    public String getUuid() {
         return uuid;
     }
 

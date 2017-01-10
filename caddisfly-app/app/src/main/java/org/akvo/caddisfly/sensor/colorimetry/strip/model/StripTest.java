@@ -43,7 +43,7 @@ public class StripTest {
 
     private static final String TAG = "StripTest";
 
-    private static final String STRIPS = "strips";
+    private static final String TESTS = "tests";
 
     private static JSONArray stripTests = null;
 
@@ -54,16 +54,17 @@ public class StripTest {
         if (stripTests == null || stripTests.length() == 0) {
 
             try {
-                JSONObject object = getJsonFromAssets(context, R.string.strips_json);
-                if (!object.isNull(STRIPS)) {
-                    stripTests = object.getJSONArray(STRIPS);
+                JSONObject object = new JSONObject(AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"));
+                //JSONObject object = getJsonFromAssets(context, "tests_config.json");
+                if (!object.isNull(TESTS)) {
+                    stripTests = object.getJSONArray(TESTS);
 
                     try {
                         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
                         if (file.exists()) {
                             String jsonText = FileUtil.loadTextFromFile(file);
                             JSONObject customTests = new JSONObject(jsonText);
-                            JSONArray customTestsArray = customTests.getJSONArray(STRIPS);
+                            JSONArray customTestsArray = customTests.getJSONArray(TESTS);
 
                             boolean isUnique = true;
                             for (int i = 0; i < customTestsArray.length(); i++) {
@@ -96,6 +97,14 @@ public class StripTest {
                         }
                     } catch (JSONException ignored) {
                         // skip trying to load custom tests
+                    }
+
+                    for (int i = stripTests.length() - 1; i >= 0; i--) {
+                        JSONObject strip = stripTests.getJSONObject(i);
+                        String subtype = strip.getString("subtype");
+                        if (!subtype.equals("striptest")) {
+                            stripTests.remove(i);
+                        }
                     }
 
                     return stripTests;
@@ -181,18 +190,22 @@ public class StripTest {
                     JSONObject strip;
 
                     JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
-                    JSONArray instructionsJson = instructionObj.getJSONArray(STRIPS);
+                    JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
 
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
-
                         if (strip.getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
                             try {
                                 stripLength = strip.getDouble("length");
                                 //stripHeight = strip.getDouble("height");
                                 groupingType = strip.getString("groupingType")
                                         .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
-                                name = strip.getString("name");
+
+                                //Get the name for this test
+                                JSONArray nameArray = strip.getJSONArray("name");
+
+                                name = nameArray.getJSONObject(0).getString("en");
+
                                 brandDescription = strip.getString("brand");
                                 image = strip.has(SensorConstants.IMAGE)
                                         ? strip.getString(SensorConstants.IMAGE) : brandDescription.replace(" ", "-");
@@ -212,12 +225,12 @@ public class StripTest {
                                     }
                                 }
 
-                                JSONArray patchesArray = strip.getJSONArray("patches");
+                                JSONArray patchesArray = strip.getJSONArray("results");
                                 for (int ii = 0; ii < patchesArray.length(); ii++) {
 
                                     JSONObject patchObj = patchesArray.getJSONObject(ii);
 
-                                    String patchDesc = patchObj.getString("patchDesc");
+                                    String patchName = patchObj.getString("name");
                                     double patchPos = patchObj.getDouble("patchPos");
                                     int id = patchObj.getInt("id");
                                     int patchWidth = patchObj.getInt("patchWidth");
@@ -230,7 +243,7 @@ public class StripTest {
                                         colors = patchObj.getJSONArray("colors");
                                     }
 
-                                    patches.add(new Patch(id, patchDesc, patchWidth, 0, patchPos, timeLapse, unit, colors));
+                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos, timeLapse, unit, colors));
                                 }
 
                                 switch (groupingType) {
