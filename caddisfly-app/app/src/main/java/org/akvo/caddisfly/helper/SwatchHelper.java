@@ -151,50 +151,6 @@ public final class SwatchHelper {
     }
 
     /**
-     * Calculate the slope of the linear trend for a range of colors
-     *
-     * @param swatches the range of colors
-     * @return The slope value
-     */
-    public static double calculateSlope(List<Swatch> swatches) {
-
-        double a = 0, b, c, d;
-        double xSum = 0, xSquaredSum = 0, ySum = 0;
-        double slope;
-
-        float[] colorHSV = new float[3];
-
-        float[] hValue = new float[swatches.size()];
-
-        for (int i = 0; i < swatches.size(); i++) {
-            //noinspection ResourceType
-            Color.colorToHSV(swatches.get(i).getColor(), colorHSV);
-            hValue[i] = colorHSV[0];
-            if (hValue[i] < 100) {
-                hValue[i] += 360;
-            }
-            a += swatches.get(i).getValue() * hValue[i];
-            xSum += swatches.get(i).getValue();
-            xSquaredSum += Math.pow(swatches.get(i).getValue(), 2);
-
-            ySum += hValue[i];
-        }
-
-        //Calculate the slope
-        a *= swatches.size();
-        b = xSum * ySum;
-        c = xSquaredSum * swatches.size();
-        d = Math.pow(xSum, 2);
-        slope = (a - b) / (c - d);
-
-        if (Double.isNaN(slope)) {
-            slope = 32;
-        }
-
-        return slope;
-    }
-
-    /**
      * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
      *
      * @param testInfo the test Information
@@ -526,7 +482,7 @@ public final class SwatchHelper {
     public static List<Swatch> loadCalibrationFromFile(Context context, String fileName) throws IOException {
         final List<Swatch> swatchList = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+                CaddisflyApp.getApp().getCurrentTestInfo().getId());
 
         List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
 
@@ -537,7 +493,7 @@ public final class SwatchHelper {
             for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
                 String line = calibrationDetails.get(i);
                 if (!line.contains("=")) {
-                    String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                    String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
                     if (line.contains("Calibrated:")) {
                         Calendar calendar = Calendar.getInstance();
                         Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
@@ -613,7 +569,7 @@ public final class SwatchHelper {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         for (Swatch swatch : swatches) {
             String key = String.format(Locale.US, "%s-%.2f",
-                    currentTestInfo.getCode(), swatch.getValue());
+                    currentTestInfo.getId(), swatch.getValue());
 
             PreferencesUtil.setInt(context, key, swatch.getColor());
         }

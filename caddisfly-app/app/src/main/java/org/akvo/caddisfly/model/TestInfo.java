@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,7 +41,7 @@ public class TestInfo {
     private static final String TAG = "TestInfo";
 
     private static final double RESULT_ERROR_MARGIN = 0.2;
-    private final HashMap names;
+    private final String name;
     private final String uuid;
     private final List<Swatch> swatches;
     private final TestType testType;
@@ -65,10 +64,10 @@ public class TestInfo {
     private double[] rangeValues;
     private String deviceId;
 
-    public TestInfo(HashMap names, TestType testType, String[] swatchArray,
+    public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
                     String uuid, JSONArray resultsArray) {
-        this.names = names == null ? null : (HashMap) names.clone();
+        this.name = name;
         this.testType = testType;
         this.uuid = uuid;
         swatches = new ArrayList<>();
@@ -137,7 +136,7 @@ public class TestInfo {
     }
 
     public TestInfo() {
-        names = null;
+        name = null;
         testType = TestType.COLORIMETRIC_LIQUID;
         this.uuid = "";
         this.unit = "";
@@ -158,29 +157,14 @@ public class TestInfo {
     }
 
     public String getName() {
-        return getName("en");
-    }
-
-    public String getName(String languageCode) {
-        if (names != null) {
-            if (names.containsKey(languageCode)) {
-                return names.get(languageCode).toString();
-            } else if (names.containsKey("en")) {
-                return names.get("en").toString();
-            }
-        }
-        return "";
+        return name;
     }
 
     public TestType getType() {
         return testType;
     }
 
-    public String getCode() {
-        return uuid;
-    }
-
-    public String getUuid() {
+    public String getId() {
         return uuid;
     }
 

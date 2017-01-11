@@ -76,7 +76,7 @@ public class CalibrateListFragment extends ListFragment {
 
     private void validateCalibration() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        long milliseconds = PreferencesUtil.getLong(getActivity(), currentTestInfo.getCode(),
+        long milliseconds = PreferencesUtil.getLong(getActivity(), currentTestInfo.getId(),
                 R.string.calibrationExpiryDateKey);
         if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
             textCalibrationError.setText(String.format("%s. %s", getString(R.string.expired),

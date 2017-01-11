@@ -17,7 +17,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
@@ -50,12 +49,15 @@ public class StripTest {
     public StripTest() {
     }
 
-    private JSONArray getTestsFromJson(Context context) {
+    private static void clearStripTests() {
+        StripTest.stripTests = null;
+    }
+
+    private JSONArray getTestsFromJson() {
         if (stripTests == null || stripTests.length() == 0) {
 
             try {
-                JSONObject object = new JSONObject(AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"));
-                //JSONObject object = getJsonFromAssets(context, "tests_config.json");
+                JSONObject object = new JSONObject(AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME));
                 if (!object.isNull(TESTS)) {
                     stripTests = object.getJSONArray(TESTS);
 
@@ -121,11 +123,11 @@ public class StripTest {
 
     public List<Brand> getBrandsAsList(Context context) {
 
-        stripTests = null;
+        StripTest.clearStripTests();
         List<Brand> brandNames = new ArrayList<>();
 
         try {
-            JSONArray stripsJson = getTestsFromJson(context);
+            JSONArray stripsJson = getTestsFromJson();
 
             JSONObject strip;
             if (stripsJson != null) {
@@ -150,12 +152,6 @@ public class StripTest {
 
     public Brand getBrand(Context context, String uuid) {
         return new Brand(context, uuid);
-    }
-
-    private JSONObject getJsonFromAssets(Context context, @StringRes int id) throws JSONException {
-        String filename = context.getString(id);
-        String jsonString = AssetsManager.getInstance().loadJSONFromAsset(filename);
-        return new JSONObject(jsonString);
     }
 
     public int getPatchCount(Context context, String uuid) {
@@ -184,12 +180,13 @@ public class StripTest {
             try {
 
                 //add instructions
-                JSONArray stripsJson = getTestsFromJson(context);
+                JSONArray stripsJson = getTestsFromJson();
                 if (stripsJson != null) {
 
                     JSONObject strip;
 
-                    JSONObject instructionObj = getJsonFromAssets(context, R.string.strips_instruction_json);
+                    JSONObject instructionObj = new JSONObject(AssetsManager.getInstance()
+                            .loadJSONFromAsset(context.getString(R.string.strips_instruction_json)));
                     JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
 
                     for (int i = 0; i < stripsJson.length(); i++) {
@@ -201,10 +198,7 @@ public class StripTest {
                                 groupingType = strip.getString("groupingType")
                                         .equals(GroupType.GROUP.toString()) ? GroupType.GROUP : GroupType.INDIVIDUAL;
 
-                                //Get the name for this test
-                                JSONArray nameArray = strip.getJSONArray("name");
-
-                                name = nameArray.getJSONObject(0).getString("en");
+                                name = strip.getString("name");
 
                                 brandDescription = strip.getString("brand");
                                 image = strip.has(SensorConstants.IMAGE)

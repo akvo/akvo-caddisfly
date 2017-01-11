@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -145,9 +144,8 @@ public class SensorActivity extends BaseActivity {
                     handler.postDelayed(runnable, 100);
                     break;
                 default:
-                    Configuration config = getResources().getConfiguration();
                     Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                            mCurrentTestInfo.getName(config.locale.getLanguage())),
+                            mCurrentTestInfo.getName()),
                             Toast.LENGTH_LONG).show();
                     finish();
                     break;
@@ -279,10 +277,9 @@ public class SensorActivity extends BaseActivity {
 
         layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
-        Configuration config = getResources().getConfiguration();
-        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getName(config.locale.getLanguage()));
+                    mCurrentTestInfo.getName());
         }
 
         if (mIsInternal) {
@@ -327,8 +324,6 @@ public class SensorActivity extends BaseActivity {
         if (value.startsWith(".") || value.startsWith(",")) {
             return;
         }
-
-        Configuration config = getResources().getConfiguration();
 
         value = value.trim();
         if (value.contains("\r\n")) {
@@ -403,7 +398,7 @@ public class SensorActivity extends BaseActivity {
                     if (mEc25Value.isEmpty()) {
                         textResult.setText("");
                         progressWait.setVisibility(View.VISIBLE);
-                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
                             textUnit.setText(mCurrentTestInfo.getUnit());
                         }
                         buttonAcceptResult.setVisibility(View.GONE);
@@ -413,7 +408,7 @@ public class SensorActivity extends BaseActivity {
                         progressWait.setVisibility(View.GONE);
                         buttonAcceptResult.setVisibility(View.VISIBLE);
                         textSubtitle.setText(R.string.sensorConnected);
-                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
                             textUnit.setText(mCurrentTestInfo.getUnit());
                         }
                     }

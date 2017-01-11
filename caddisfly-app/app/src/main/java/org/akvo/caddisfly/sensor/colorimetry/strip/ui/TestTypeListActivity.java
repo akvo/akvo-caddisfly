@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -89,6 +90,7 @@ public class TestTypeListActivity extends BaseActivity {
     }
 
     private void startDetailActivity(String uuid) {
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
         Intent intent = new Intent(getIntent());
         intent.setClass(this, BrandInfoActivity.class);
         intent.putExtra(Constant.UUID, uuid);

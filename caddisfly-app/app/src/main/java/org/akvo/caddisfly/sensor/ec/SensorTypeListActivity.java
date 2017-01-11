@@ -76,7 +76,7 @@ public class SensorTypeListActivity extends BaseActivity {
         listTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startDetailActivity(mTests.get(i).getCode());
+                startDetailActivity(mTests.get(i).getId());
             }
         });
     }
@@ -153,7 +153,7 @@ public class SensorTypeListActivity extends BaseActivity {
             TestInfo testInfo = mTestInfoArray[position];
 
             if (testInfo != null) {
-                holder.textView.setText(testInfo.getName(context.getResources().getConfiguration().locale.getLanguage()));
+                holder.textView.setText(testInfo.getName());
             }
 
             return view;

@@ -287,7 +287,7 @@ public class MainActivityTest {
                 "}\n";
         TestInfo testInfo = TestConfigHelper.loadTestByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
         assert testInfo != null;
-        assertEquals(SensorConstants.FLUORIDE_ID, testInfo.getCode());
+        assertEquals(SensorConstants.FLUORIDE_ID, testInfo.getId());
     }
 
     @Test
@@ -323,7 +323,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 113), Color.TRANSPARENT));
 
-        assertEquals(31.82420654296875, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -336,7 +335,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 175, 123), Color.TRANSPARENT));
 
-        assertEquals(22.2095458984375, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -349,7 +347,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122), Color.TRANSPARENT));
 
-        assertEquals(21.658697509765624, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -362,7 +359,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86), Color.TRANSPARENT));
 
-        assertEquals(29.022808837890626, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -375,7 +371,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 174, 74), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(244, 180, 86), Color.TRANSPARENT));
 
-        assertEquals(17.87760009765625, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -388,7 +383,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 128, 119), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 142, 99), Color.TRANSPARENT));
 
-        assertEquals(24.640643310546874, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -401,7 +395,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(254, 84, 110), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 112, 93), Color.TRANSPARENT));
 
-        assertEquals(22.0148193359375, SwatchHelper.calculateSlope(testInfo.getSwatches()));
         assertEquals(true, SwatchHelper.isSwatchListValid(testInfo));
     }
 
@@ -413,8 +406,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1, Color.rgb(225, 0, 0), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(210, 0, 0), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(195, 0, 0), Color.TRANSPARENT));
-
-        assertEquals(0.0, SwatchHelper.calculateSlope(testInfo.getSwatches()));
 
         testInfo.setHueTrend(1);
 
@@ -436,8 +427,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(1.5, Color.rgb(253, 17, 17), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(2, Color.rgb(254, 0, 0), Color.TRANSPARENT));
 
-        assertEquals(-5.996826171875, SwatchHelper.calculateSlope(testInfo.getSwatches()));
-
         testInfo.setHueTrend(1);
 
         assertEquals(false, SwatchHelper.isSwatchListValid(testInfo));
@@ -457,8 +446,6 @@ public class MainActivityTest {
         testInfo.addSwatch(new Swatch(0.5, Color.rgb(219, 152, 125), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(0.75, Color.rgb(248, 105, 123), Color.TRANSPARENT));
         testInfo.addSwatch(new Swatch(1, Color.rgb(255, 62, 108), Color.TRANSPARENT));
-
-        assertEquals(-62.31651611328125, SwatchHelper.calculateSlope(testInfo.getSwatches()));
 
         testInfo.setHueTrend(1);
 

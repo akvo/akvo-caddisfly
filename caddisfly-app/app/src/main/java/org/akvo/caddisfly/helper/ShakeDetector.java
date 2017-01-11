@@ -188,11 +188,15 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     public void setMinShakeAcceleration(int minShakeAcceleration) {
-        this.minShakeAcceleration = minShakeAcceleration;
+        synchronized (this) {
+            this.minShakeAcceleration = minShakeAcceleration;
+        }
     }
 
     public void setMaxShakeDuration(int maxShakeDuration) {
-        this.maxShakeDuration = maxShakeDuration;
+        synchronized (this) {
+            this.maxShakeDuration = maxShakeDuration;
+        }
     }
 
     /**

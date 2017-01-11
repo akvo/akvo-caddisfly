@@ -18,7 +18,6 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,8 +71,7 @@ public class SelectDilutionActivity extends BaseActivity {
         });
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        Configuration conf = getResources().getConfiguration();
-        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName());
     }
 
     private void startTest(int dilution) {

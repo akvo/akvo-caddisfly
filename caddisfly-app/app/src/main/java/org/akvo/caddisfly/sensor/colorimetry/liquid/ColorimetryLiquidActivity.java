@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -194,10 +193,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 }
             }
         });
-        mShakeDetector.setMinShakeAcceleration(5);
-        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
         mSensorManager.unregisterListener(mShakeDetector);
+
+        mShakeDetector.setMinShakeAcceleration(5);
+        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
         textSubtitle.setText(R.string.placeDevice);
 
@@ -336,12 +336,10 @@ public class ColorimetryLiquidActivity extends BaseActivity
             );
         }
 
-        Configuration conf = getResources().getConfiguration();
-
         //set the title to the test contaminant name
-        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName(conf.locale.getLanguage()));
+        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName());
 
-        if (testInfo.getUuid().isEmpty()) {
+        if (testInfo.getId().isEmpty()) {
             alertCouldNotLoadConfig();
         } else if (!mTestCompleted) {
             initializeTest();
@@ -674,8 +672,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
 
                 } else {
-                    String title = CaddisflyApp.getApp().getCurrentTestInfo().
-                            getName(getResources().getConfiguration().locale.getLanguage());
+                    String title = CaddisflyApp.getApp().getCurrentTestInfo().getName();
 
                     String message = EMPTY_STRING;
                     if (mHighLevelsFound && mDilutionLevel < 2) {
@@ -730,7 +727,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         ImageUtil.saveImage(data,
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                 String.format(Locale.US, "%s_%s_%s_%d_%s", date, (mIsCalibration ? "C" : "T"),
                         result, batteryPercent, ApiUtil.getInstallationId(this)));
     }
@@ -840,7 +837,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);
-            String title = CaddisflyApp.getApp().getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage());
+            String title = CaddisflyApp.getApp().getCurrentTestInfo().getName();
 
             String message;
             //todo: remove hard coding of dilution levels

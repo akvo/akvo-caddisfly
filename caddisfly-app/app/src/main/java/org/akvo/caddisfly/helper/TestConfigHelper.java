@@ -38,8 +38,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,7 +77,7 @@ public final class TestConfigHelper {
                         break;
                     default:
                         // Load the pre-configured tests from the app
-                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+                        jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
                 }
                 try {
                     JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
@@ -111,7 +109,7 @@ public final class TestConfigHelper {
         List<TestInfo> tests = new ArrayList<>();
 
         // Load the pre-configured tests from the app
-        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), -1);
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME), -1);
 
         // Load any custom tests from the custom test config file
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
@@ -138,7 +136,7 @@ public final class TestConfigHelper {
                     // get uuids
                     boolean found = false;
                     for (TestInfo test : tests) {
-                        if (uuid.equalsIgnoreCase(test.getUuid())) {
+                        if (uuid.equalsIgnoreCase(test.getId())) {
                             found = true;
                             break;
                         }
@@ -199,20 +197,7 @@ public final class TestConfigHelper {
             }
 
             //Get the name for this test
-            JSONArray nameArray = item.getJSONArray("name");
-
-            HashMap<String, String> namesHashTable =
-                    new HashMap<>(nameArray.length(), nameArray.length());
-
-            //Load test names in different languages
-            for (int j = 0; j < nameArray.length(); j++) {
-                if (!nameArray.isNull(j)) {
-                    Iterator iterator = nameArray.getJSONObject(j).keys();
-                    String key = (String) iterator.next();
-                    String name = nameArray.getJSONObject(j).getString(key);
-                    namesHashTable.put(key, name);
-                }
-            }
+            String name = item.getString("name");
 
             //Load results
             JSONArray resultsArray = null;
@@ -247,7 +232,7 @@ public final class TestConfigHelper {
             // get uuids
             String uuid = item.getString(SensorConstants.UUID);
 
-            testInfo = new TestInfo(namesHashTable, type, rangesArray,
+            testInfo = new TestInfo(name, type, rangesArray,
                     defaultColorsArray, dilutionsArray, uuid, resultsArray);
 
             testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
@@ -279,7 +264,7 @@ public final class TestConfigHelper {
 
             resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
             resultJson.put(SensorConstants.NAME, testInfo.getName());
-            resultJson.put(SensorConstants.UUID, testInfo.getUuid());
+            resultJson.put(SensorConstants.UUID, testInfo.getId());
 
 
             JSONArray resultsJsonArray = new JSONArray();
@@ -376,7 +361,7 @@ public final class TestConfigHelper {
         if (!shortCode.isEmpty()) {
 
             // Load the pre-configured tests from the app
-            String jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+            String jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
             try {
                 JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
                 for (int i = 0; i < array.length(); i++) {

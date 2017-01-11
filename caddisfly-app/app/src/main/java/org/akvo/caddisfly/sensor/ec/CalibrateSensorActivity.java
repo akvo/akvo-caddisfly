@@ -24,7 +24,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -123,7 +122,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
-            Configuration config = getResources().getConfiguration();
 
             String data = "device\r\n";
             if (usbService != null && usbService.isUsbConnected()) {
@@ -143,7 +141,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     break;
                 default:
                     Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                            mCurrentTestInfo.getName(config.locale.getLanguage())),
+                            mCurrentTestInfo.getName()),
                             Toast.LENGTH_LONG).show();
                     finish();
                     break;
@@ -224,10 +222,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
 
-        Configuration conf = getResources().getConfiguration();
-        if (!mCurrentTestInfo.getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getName(conf.locale.getLanguage()));
+                    mCurrentTestInfo.getName());
         }
 
         calibrationPoints = mCurrentTestInfo.getRangeValues();
@@ -269,10 +266,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     }, INITIAL_DELAY_MILLIS);
 
                 } else {
-                    Configuration config = getResources().getConfiguration();
                     AlertUtil.showMessage(mContext, R.string.sensorNotFound,
                             getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName(config.locale.getLanguage())));
+                                    mCurrentTestInfo.getName()));
                 }
             }
         });
@@ -299,10 +295,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     calibratePoint(calibrationPoints, calibrationIndex);
                     calibrationIndex++;
                 } else {
-                    Configuration config = getResources().getConfiguration();
                     AlertUtil.showMessage(mContext, R.string.sensorNotFound,
                             getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName(config.locale.getLanguage())));
+                                    mCurrentTestInfo.getName()));
 
                 }
             }

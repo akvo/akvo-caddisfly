@@ -83,7 +83,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
         final Context context = getActivity();
 
         LayoutInflater i = getActivity().getLayoutInflater();
@@ -111,7 +111,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         editRgb = (EditText) view.findViewById(R.id.editRgb);
 
         long milliseconds = PreferencesUtil.getLong(getActivity(),
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                 R.string.calibrationExpiryDateKey);
         if (milliseconds > new Date().getTime()) {
 
@@ -218,7 +218,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 public void onClick(View v) {
                     if (formEntryValid()) {
 
-                        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
 
                         if (!editName.getText().toString().trim().isEmpty()) {
 
@@ -292,7 +292,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private void saveCalibrationDetails(File path) {
         final Context context = getContext();
 
-        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
 
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
                 testCode, editBatchCode.getText().toString().trim(),

@@ -53,6 +53,10 @@ public class CaddisflyApp extends Application {
         return app;
     }
 
+    private static void setApp(CaddisflyApp value) {
+        app = value;
+    }
+
     public static String getAppLanguage() {
         Configuration config = getApp().getResources().getConfiguration();
         return config.locale.getLanguage().substring(0, 2);
@@ -98,7 +102,7 @@ public class CaddisflyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
+        setApp(this);
     }
 
     /**
@@ -108,7 +112,7 @@ public class CaddisflyApp extends Application {
         if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid());
+            loadTestConfigurationByUuid(mCurrentTestInfo.getId());
         }
     }
 
@@ -157,7 +161,7 @@ public class CaddisflyApp extends Application {
 
         final Context context = getApplicationContext();
         for (Swatch swatch : testInfo.getSwatches()) {
-            String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
+            String key = String.format(Locale.US, "%s-%.2f", testInfo.getId(), swatch.getValue());
             swatch.setColor(PreferencesUtil.getInt(context, key, 0));
         }
     }

@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -146,9 +145,8 @@ public class ExternalActionActivity extends BaseActivity {
                 ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
                 alertTestTypeNotSupported();
             } else {
-                Configuration config = getResources().getConfiguration();
                 ((TextView) findViewById(R.id.textTitle)).setText(
-                        CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
+                        CaddisflyApp.getApp().getCurrentTestInfo().getName());
 
                 String[] permissions = {};
                 if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
@@ -228,8 +226,7 @@ public class ExternalActionActivity extends BaseActivity {
         final Activity activity = this;
 
         String message = getString(R.string.errorCalibrationIncomplete,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                        getResources().getConfiguration().locale.getLanguage()));
+                CaddisflyApp.getApp().getCurrentTestInfo().getName());
         message = String.format(MESSAGE_TWO_LINE_FORMAT, message,
                 getString(R.string.doYouWantToCalibrate));
 
@@ -299,7 +296,7 @@ public class ExternalActionActivity extends BaseActivity {
                 }
 
                 long milliseconds = PreferencesUtil.getLong(this,
-                        CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                        CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                         R.string.calibrationExpiryDateKey);
                 if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
                     alertCalibrationExpired();

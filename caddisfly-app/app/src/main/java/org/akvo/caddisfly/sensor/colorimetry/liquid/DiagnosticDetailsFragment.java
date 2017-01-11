@@ -82,7 +82,7 @@ public class DiagnosticDetailsFragment extends DialogFragment {
         imagePhoto.setImageBitmap(mPhotoBitmap);
         textDimension.setText(mDimension);
 
-        if (currentTestInfo == null || currentTestInfo.getCode().isEmpty()
+        if (currentTestInfo == null || currentTestInfo.getId().isEmpty()
                 || currentTestInfo.getType() != TestType.COLORIMETRIC_LIQUID) {
             CaddisflyApp.getApp().setDefaultTest();
         }
@@ -106,10 +106,10 @@ public class DiagnosticDetailsFragment extends DialogFragment {
                 textQuality.setText(String.format(Locale.getDefault(), "Q: %.0f%%", photoColor.getQuality()));
 
                 if (result > -1) {
-                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getName("en"),
+                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getName(),
                             result, currentTestInfo.getUnit()));
                 } else {
-                    textResult.setText(String.format("%s", currentTestInfo.getName("en")));
+                    textResult.setText(String.format("%s", currentTestInfo.getName()));
                 }
 
                 buttonColorExtract.setBackgroundColor(color);
