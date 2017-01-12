@@ -28,7 +28,7 @@ public class ResultsTest {
         ArrayList<String> results = new ArrayList<>();
         results.add("> 2.0");
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
 
         // Replace items that cannot be tested (e.g. currentTime)
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
@@ -49,7 +49,7 @@ public class ResultsTest {
         results.add("32432");
         results.add("29.5");
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
 
         // Replace items that cannot be tested (e.g. currentTime)
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");

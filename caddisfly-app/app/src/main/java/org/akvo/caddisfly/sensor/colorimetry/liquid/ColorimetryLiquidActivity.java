@@ -775,7 +775,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
             results.add(resultText);
 
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color, resultImageUrl);
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color,
+                    resultImageUrl, null);
 
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 

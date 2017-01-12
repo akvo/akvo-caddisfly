@@ -259,7 +259,7 @@ public class SensorActivity extends BaseActivity {
                 results.add(mEc25Value);
                 results.add(mTemperature);
 
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
                 // TODO: Remove this when obsolete

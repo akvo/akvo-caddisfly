@@ -27,6 +27,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -255,7 +256,7 @@ public final class TestConfigHelper {
     }
 
     public static JSONObject getJsonResult(TestInfo testInfo, List<String> results, int color,
-                                           String resultImageUrl) {
+                                           String resultImageUrl, StripTest.GroupType groupingType) {
 
         JSONObject resultJson = new JSONObject();
 
@@ -294,6 +295,10 @@ public final class TestConfigHelper {
                 }
 
                 resultsJsonArray.put(subTestJson);
+
+                if (groupingType == StripTest.GroupType.GROUP) {
+                    break;
+                }
             }
 
             resultJson.put(SensorConstants.RESULT, resultsJsonArray);

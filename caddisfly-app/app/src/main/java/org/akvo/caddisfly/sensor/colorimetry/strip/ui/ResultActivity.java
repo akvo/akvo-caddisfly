@@ -114,8 +114,15 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     resultImageUrl = "";
                 }
 
+
                 TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-                JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, -1, resultImageUrl);
+
+                StripTest stripTest = new StripTest();
+                // get information on the strip test from JSON
+                StripTest.Brand brand = stripTest.getBrand(getBaseContext(), testInfo.getId());
+
+                JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, -1,
+                        resultImageUrl, brand.getGroupingType());
 
                 intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
                 setResult(RESULT_OK, intent);
@@ -594,8 +601,17 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 invalid = true;
             }
 
+            // check if at least one result was returned
+            boolean resultAvailable = false;
             boolean isInternal = getIntent().getBooleanExtra("internal", false);
-            buttonSave.setVisibility(isInternal || invalid ? View.GONE : View.VISIBLE);
+            for (String value : results) {
+                if (!value.isEmpty()) {
+                    resultAvailable = true;
+                    break;
+                }
+            }
+            // show the save button only if at least one result is available
+            buttonSave.setVisibility(isInternal || !resultAvailable ? View.GONE : View.VISIBLE);
             buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);

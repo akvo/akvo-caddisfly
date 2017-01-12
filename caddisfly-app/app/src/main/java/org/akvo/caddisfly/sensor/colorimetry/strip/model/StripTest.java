@@ -62,7 +62,8 @@ public class StripTest {
                     stripTests = object.getJSONArray(TESTS);
 
                     try {
-                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
+                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                                SensorConstants.TESTS_META_FILENAME);
                         if (file.exists()) {
                             String jsonText = FileUtil.loadTextFromFile(file);
                             JSONObject customTests = new JSONObject(jsonText);

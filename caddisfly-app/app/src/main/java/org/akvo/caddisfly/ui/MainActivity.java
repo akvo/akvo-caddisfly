@@ -120,7 +120,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), "strip-tests.json");
+                File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                        SensorConstants.TESTS_META_FILENAME);
                 if (file.exists()) {
 
                     String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};

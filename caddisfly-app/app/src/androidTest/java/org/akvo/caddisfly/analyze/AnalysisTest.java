@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.analyze;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,6 +31,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
