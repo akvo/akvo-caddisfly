@@ -79,12 +79,12 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
     private static final String TAG = "ResultActivity";
     private static final int MAX_RGB_INT_VALUE = 255;
     private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
+    private final List<String> results = new ArrayList<>();
     private Button buttonSave;
     private Button buttonCancel;
     @Nullable
     private Mat resultImage = null;
     private String resultImageUrl;
-    private final List<String> results = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -189,16 +189,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
     }
 
     @Override
-    public void showMessage() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
     public void showResults() {
         resultImageUrl = UUID.randomUUID().toString() + ".png";
         Intent intent = getIntent();
@@ -298,7 +288,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.STRIP);
                 FileUtil.deleteFromInternalStorage(getBaseContext(), Constant.IMAGE_PATCH);
             } catch (IOException e) {
-                showError(e.getMessage());
+                Log.e(TAG, e.getMessage(), e);
             }
 
             return null;

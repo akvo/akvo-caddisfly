@@ -178,8 +178,7 @@ public final class TestConfigHelper {
             TestType type;
             if (item.has("subtype")) {
                 switch (item.getString("subtype")) {
-                    case "color":
-                    case "colour":
+                    case "liquid-chamber":
                         type = TestType.COLORIMETRIC_LIQUID;
                         break;
                     case "strip":

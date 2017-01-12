@@ -51,7 +51,9 @@ public class InstructionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruction);
 
-        final PageIndicatorView footerView = (PageIndicatorView) findViewById(R.id.pager_indicator);
+        final PageIndicatorView pageIndicatorView = (PageIndicatorView) findViewById(R.id.pager_indicator);
+        final ImageView imagePageLeft = (ImageView) findViewById(R.id.image_pageLeft);
+        final ImageView imagePageRight = (ImageView) findViewById(R.id.image_pageRight);
 
         StripTest.Brand brand = (new StripTest()).getBrand(this, getIntent().getStringExtra(Constant.UUID));
 
@@ -70,12 +72,12 @@ public class InstructionActivity extends BaseActivity {
                 }
             }
 
-            footerView.setPageCount(instructions.length());
+            pageIndicatorView.setPageCount(instructions.length());
         }
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -86,7 +88,17 @@ public class InstructionActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                footerView.setActiveIndex(position);
+                pageIndicatorView.setActiveIndex(position);
+                if (position < 1) {
+                    imagePageLeft.setVisibility(View.INVISIBLE);
+                } else {
+                    imagePageLeft.setVisibility(View.VISIBLE);
+                }
+                if (position > pagerAdapter.getCount() - 2) {
+                    imagePageRight.setVisibility(View.INVISIBLE);
+                } else {
+                    imagePageRight.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -94,9 +106,6 @@ public class InstructionActivity extends BaseActivity {
 
             }
         });
-
-        ImageView imagePageLeft = (ImageView) findViewById(R.id.image_pageLeft);
-        ImageView imagePageRight = (ImageView) findViewById(R.id.image_pageRight);
 
         imagePageLeft.setOnClickListener(new View.OnClickListener() {
             @Override

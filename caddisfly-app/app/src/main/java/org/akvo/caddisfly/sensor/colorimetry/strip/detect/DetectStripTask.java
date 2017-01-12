@@ -130,8 +130,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         // Set imageCount to current number
                         imageCount = imageNo;
 
-                        listener.showMessage();
-
                         byte[] data = FileUtil.readByteArray(context, Constant.DATA + imageNo);
                         if (data == null) {
                             throw new IOException();
@@ -142,7 +140,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             labImg = makeLab(data);
                         } catch (Exception e) {
                             if (context != null) {
-                                listener.showError(context.getString(R.string.error_conversion));
+                                Log.e(TAG, context.getString(R.string.error_conversion), e);
                             }
                             continue;
                         }
@@ -154,7 +152,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             }
                         } catch (Exception e) {
                             if (context != null) {
-                                listener.showError(context.getString(R.string.error_no_finder_pattern_info));
+                                Log.e(TAG, context.getString(R.string.error_no_finder_pattern_info), e);
                             }
                             continue;
                         }
@@ -165,7 +163,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 divideIntoCalibrationAndStripArea();
                             }
                         } catch (Exception e) {
-                            listener.showError(e.getMessage());
+                            Log.e(TAG, e.getMessage(), e);
                             continue;
                         }
 
@@ -185,7 +183,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         //calibrate
                         Mat calibrationMat;
                         try {
-                            listener.showMessage();
                             CalibrationResultData calResult = getCalibratedImage(warpMat);
                             if (calResult == null) {
                                 return null;
@@ -203,7 +200,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 //                            }
                         } catch (Exception e) {
-                            listener.showError(e.getMessage());
+                            Log.e(TAG, e.getMessage(), e);
                             return null;
                         }
 
@@ -226,7 +223,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
 
                         if (stripArea != null) {
-                            listener.showMessage();
                             Mat strip = null;
                             try {
                                 StripTest.Brand brand = stripTest.getBrand(context, uuid);
@@ -240,7 +236,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 labStrip = strip.clone();
                             } else {
                                 if (context != null) {
-                                    listener.showError(context.getString(R.string.error_calibrating));
+                                    Log.e(TAG, context.getString(R.string.error_calibrating));
                                 }
                                 labStrip = stripArea.clone();
 
@@ -282,11 +278,10 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
             } catch (@NonNull JSONException | IOException e) {
 
                 if (context != null) {
-                    listener.showError(context.getString(R.string.error_cut_out_strip));
+                    Log.e(TAG, context.getString(R.string.error_cut_out_strip));
                 }
             }
         }
-        listener.showMessage();
         return null;
     }
 

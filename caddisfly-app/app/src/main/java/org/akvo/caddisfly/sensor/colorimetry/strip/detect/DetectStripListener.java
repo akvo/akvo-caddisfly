@@ -23,10 +23,6 @@ public interface DetectStripListener {
 
     void showSpinner();
 
-    void showMessage();
-
-    void showError(String message);
-
     void showResults();
 
 }

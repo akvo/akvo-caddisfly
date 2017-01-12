@@ -108,7 +108,7 @@
                 android:layout_width="50dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="#e4e4e4" />
+                android:background="#f1f1f1" />
 
         </LinearLayout>
     </LinearLayout>
