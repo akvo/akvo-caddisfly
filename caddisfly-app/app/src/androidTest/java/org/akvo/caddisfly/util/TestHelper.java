@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly;
+package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -32,9 +32,9 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.util.FileUtil;
 import org.hamcrest.Matchers;
 
 import java.io.File;
@@ -49,11 +49,11 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.TestUtil.clickListViewItem;
-import static org.akvo.caddisfly.TestUtil.findButtonInScrollable;
-import static org.akvo.caddisfly.TestUtil.sleep;
+import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
+import static org.akvo.caddisfly.util.TestUtil.findButtonInScrollable;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 
-final class TestHelper {
+public final class TestHelper {
 
     private static final HashMap<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final HashMap<String, String> STRING_HASH_MAP_FR = new HashMap<>();

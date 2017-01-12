@@ -146,7 +146,7 @@ public class SensorActivity extends BaseActivity {
                 default:
                     Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
                             mCurrentTestInfo.getName()),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }
@@ -299,19 +299,28 @@ public class SensorActivity extends BaseActivity {
     }
 
     private void displayNotConnectedView() {
-        mReadData.setLength(0);
-        progressWait.setVisibility(View.GONE);
-        layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
-        imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
-        buttonAcceptResult.setVisibility(View.GONE);
-        textSubtitle.setText(R.string.deviceConnectSensor);
+        if (!isFinishing()) {
+            mReadData.setLength(0);
+            progressWait.setVisibility(View.GONE);
+            layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+            imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
+            buttonAcceptResult.setVisibility(View.GONE);
+            textSubtitle.setText(R.string.deviceConnectSensor);
 
-        if (!mIsInternal) {
-            (new Handler()).postDelayed(new Runnable() {
-                public void run() {
-                    finish();
-                }
-            }, FINISH_DELAY_MILLIS);
+            if (!mIsInternal) {
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+                        if (!isFinishing()) {
+                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+                                    mCurrentTestInfo.getName()),
+                                    Toast.LENGTH_SHORT).show();
+
+                            finish();
+                        }
+
+                    }
+                }, FINISH_DELAY_MILLIS);
+            }
         }
     }
 

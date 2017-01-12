@@ -26,6 +26,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("unused")
 public class ColorUtilTest extends TestCase {
@@ -58,7 +59,8 @@ public class ColorUtilTest extends TestCase {
         assertEquals(401, list.size());
 
         for (int i = 0; i < list.size(); i++) {
-            assertEquals(String.format("%.2f", i * 0.01), String.format("%.2f", list.get(i).getValue()));
+            assertEquals(String.format(Locale.US, "%.2f", i * 0.01),
+                    String.format(Locale.US, "%.2f", list.get(i).getValue()));
             assertEquals(true, list.get(i).getColor() == Color.BLACK ||
                     list.get(i).getColor() == Color.TRANSPARENT);
         }

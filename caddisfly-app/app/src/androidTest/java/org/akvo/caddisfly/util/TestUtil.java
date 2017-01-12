@@ -14,7 +14,7 @@
  * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
  */
 
-package org.akvo.caddisfly;
+package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.support.test.espresso.UiController;
@@ -40,7 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 /**
  * Utility functions for automated testing
  */
-final class TestUtil {
+public final class TestUtil {
 
     private TestUtil() {
     }

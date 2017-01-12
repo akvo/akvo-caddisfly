@@ -1,10 +1,11 @@
-package org.akvo.caddisfly;
+package org.akvo.caddisfly.sensors;
 
 
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.ToastMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -35,12 +38,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.TestHelper.gotoSurveyForm;
-import static org.akvo.caddisfly.TestHelper.loadData;
-import static org.akvo.caddisfly.TestHelper.mCurrentLanguage;
-import static org.akvo.caddisfly.TestHelper.mDevice;
-import static org.akvo.caddisfly.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
+import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -99,7 +102,7 @@ public class ECTest {
     public void eCTest() {
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.buttonSensors), withText("Sensors"),
+                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
                         withParent(withId(R.id.mainLayout)),
                         isDisplayed()));
         appCompatButton2.perform(click());

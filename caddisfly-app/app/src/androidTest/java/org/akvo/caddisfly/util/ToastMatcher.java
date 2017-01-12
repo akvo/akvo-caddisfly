@@ -1,4 +1,4 @@
-package org.akvo.caddisfly;
+package org.akvo.caddisfly.util;
 
 import android.os.IBinder;
 import android.support.test.espresso.Root;
@@ -7,7 +7,7 @@ import android.view.WindowManager;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-class ToastMatcher extends TypeSafeMatcher<Root> {
+public class ToastMatcher extends TypeSafeMatcher<Root> {
 
     @Override
     public void describeTo(Description description) {

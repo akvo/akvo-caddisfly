@@ -481,8 +481,8 @@ public class CameraDialogFragment extends CameraDialog {
                                 takePicture();
                             }
                         }, mSamplingDelay);
-                    } catch (Exception ignored) {
-
+                    } catch (Exception e) {
+                        Log.e(CameraPreview.TAG, e.getMessage(), e);
                     }
                 }
             }
