@@ -63,6 +63,7 @@ public class TestInfo {
     private int hueTrend;
     private double[] rangeValues;
     private String deviceId;
+    private String responseFormat;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -322,6 +323,14 @@ public class TestInfo {
 
     public double[] getRangeValues() {
         return rangeValues.clone();
+    }
+
+    public String getResponseFormat() {
+        return responseFormat;
+    }
+
+    public void setResponseFormat(String responseFormat) {
+        this.responseFormat = responseFormat;
     }
 
     public static class SubTest {

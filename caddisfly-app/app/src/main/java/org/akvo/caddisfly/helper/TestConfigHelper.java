@@ -241,6 +241,8 @@ public final class TestConfigHelper {
 
             testInfo.setDeviceId(item.has("deviceId") ? item.getString("deviceId") : "Unknown");
 
+            testInfo.setResponseFormat(item.has("responseFormat") ? item.getString("responseFormat") : "");
+
             testInfo.setUseGrayScale(item.has("grayScale") && item.getBoolean("grayScale"));
 
             testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);

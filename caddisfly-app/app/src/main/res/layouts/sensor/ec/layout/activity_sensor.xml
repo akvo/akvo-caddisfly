@@ -117,13 +117,13 @@
             tools:text="μS/cm" />
 
         <TextView
-            android:id="@+id/textTemperature"
+            android:id="@+id/textResult2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:alpha="0.9"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:textColorSecondaryInverse"
-            android:alpha="0.9"
             android:textSize="60sp"
             android:visibility="visible"
             tools:text="24" />
