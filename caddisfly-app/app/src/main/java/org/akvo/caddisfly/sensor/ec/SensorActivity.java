@@ -200,7 +200,7 @@ public class SensorActivity extends BaseActivity {
 
         deviceStatus = 0;
 
-        handler.postDelayed(validateDeviceRunnable, 100);
+        handler.postDelayed(validateDeviceRunnable, 1000);
     }
 
     private void requestResult() {
@@ -320,10 +320,12 @@ public class SensorActivity extends BaseActivity {
             Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
         }
 
+        // reject value if corrupt
         if (value.startsWith(".") || value.startsWith(",")) {
             return;
         }
 
+        // clean up data
         value = value.trim();
         if (value.contains("\r\n")) {
             String[] values = value.split("\r\n");
@@ -334,6 +336,8 @@ public class SensorActivity extends BaseActivity {
 
         value = value.trim();
         if (!value.isEmpty()) {
+
+            // if device not yet validated then check if device id is ok
             if (deviceStatus == 0) {
                 if (value.contains(" ")) {
                     if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
@@ -342,10 +346,6 @@ public class SensorActivity extends BaseActivity {
                         deviceStatus = 2;
                     }
                 }
-                return;
-            }
-
-            if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
                 return;
             }
 
@@ -366,6 +366,7 @@ public class SensorActivity extends BaseActivity {
 
             if (resultArray.length == mCurrentTestInfo.getResponseFormat().split(",").length) {
 
+                // use the response format to display the results in test id order
                 String responseFormat = mCurrentTestInfo.getResponseFormat().replace("$", EMPTY_STRING)
                         .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
                 results.clear();
@@ -379,7 +380,7 @@ public class SensorActivity extends BaseActivity {
                     try {
                         if (resultArray[i].equalsIgnoreCase("nan")) {
                             tempString[index] = EMPTY_STRING;
-                        } else {
+                        } else if (index > -1) {
                             double result = Double.parseDouble(resultArray[i]);
                             tempString[index] = String.format(Locale.US, "%.1f", result);
                         }
@@ -391,7 +392,9 @@ public class SensorActivity extends BaseActivity {
 
                 Collections.addAll(results, tempString);
 
-                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0 && !results.get(0).equals(EMPTY_STRING)) {
+                // display the results
+                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0
+                        && !results.get(0).equals(EMPTY_STRING)) {
                     textResult.setText(results.get(0));
                     textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
                     textResult.setVisibility(View.VISIBLE);
@@ -417,6 +420,7 @@ public class SensorActivity extends BaseActivity {
                     textUnit2.setVisibility(View.GONE);
                 }
 
+                // if test is not via survey then do not show the accept button
                 if (mIsInternal) {
                     buttonAcceptResult.setVisibility(View.GONE);
                 }

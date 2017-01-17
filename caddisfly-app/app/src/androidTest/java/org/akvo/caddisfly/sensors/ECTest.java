@@ -64,21 +64,6 @@ public class ECTest {
         }
     }
 
-    @Before
-    public void setUp() {
-
-        loadData(mActivityRule.getActivity(), mCurrentLanguage);
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
-
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
-                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null));
-
-        resetLanguage();
-    }
-
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
@@ -96,6 +81,21 @@ public class ECTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    @Before
+    public void setUp() {
+
+        loadData(mActivityRule.getActivity(), mCurrentLanguage);
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
+        prefs.edit().clear().apply();
+
+        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
+                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null));
+
+        resetLanguage();
     }
 
     @Test
@@ -123,8 +123,6 @@ public class ECTest {
                         isDisplayed()));
         relativeLayout6.perform(click());
 
-        SystemClock.sleep(2000);
-
         onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest)));
 
         SystemClock.sleep(1000);
@@ -139,7 +137,7 @@ public class ECTest {
                         isDisplayed()));
         relativeLayout2.perform(click());
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(1000);
 
         onView(withText("Connect Soil Electrical Conductivity sensor"))
                 .inRoot(new ToastMatcher()).check(matches(isDisplayed()));
