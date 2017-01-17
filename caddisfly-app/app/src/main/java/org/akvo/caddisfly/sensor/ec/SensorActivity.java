@@ -51,12 +51,15 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
     private static final String TAG = "SensorActivity";
+    private static final String EMPTY_STRING = "";
     private static final int REQUEST_DELAY_MILLIS = 2000;
     private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int ANIMATION_DURATION = 500;
@@ -64,6 +67,7 @@ public class SensorActivity extends BaseActivity {
     private static final int FINISH_DELAY_MILLIS = 3000;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
+    private final List<String> results = new ArrayList<>();
     private TestInfo mCurrentTestInfo;
     private Toast debugToast;
     private boolean mIsInternal = false;
@@ -75,7 +79,7 @@ public class SensorActivity extends BaseActivity {
     private TextView textUnit2;
     private Button buttonAcceptResult;
     private TextView textSubtitle;
-    private String mReceivedData = "";
+    private String mReceivedData = EMPTY_STRING;
     private UsbService usbService;
     private MyHandler mHandler;
     private ImageView imageUsbConnection;
@@ -121,7 +125,6 @@ public class SensorActivity extends BaseActivity {
             handler.postDelayed(this, REQUEST_DELAY_MILLIS);
         }
     };
-    private ArrayList<String> results = new ArrayList<>();
     private int deviceStatus = 0;
 
     private final Runnable validateDeviceRunnable = new Runnable() {
@@ -255,7 +258,7 @@ public class SensorActivity extends BaseActivity {
 
                 Intent resultIntent = new Intent(intent);
 
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, EMPTY_STRING, null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
                 // TODO: Remove this when obsolete
@@ -361,9 +364,10 @@ public class SensorActivity extends BaseActivity {
                 });
             }
 
-            if (resultArray.length == mCurrentTestInfo.getSubTests().size()) {
+            if (resultArray.length == mCurrentTestInfo.getResponseFormat().split(",").length) {
 
-                String responseFormat = mCurrentTestInfo.getResponseFormat().replace("$", "").replace(" ", "").replace(",", "").trim();
+                String responseFormat = mCurrentTestInfo.getResponseFormat().replace("$", EMPTY_STRING)
+                        .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
                 results.clear();
 
                 String[] tempString = new String[mCurrentTestInfo.getSubTests().size()];
@@ -371,19 +375,23 @@ public class SensorActivity extends BaseActivity {
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
 
+                    int index = responseFormat.indexOf(String.valueOf(i + 1));
                     try {
-                        double result = Double.parseDouble(resultArray[i]);
-                        tempString[responseFormat.indexOf(String.valueOf(i + 1))] = String.format(Locale.US, "%.1f", result);
+                        if (resultArray[i].equalsIgnoreCase("nan")) {
+                            tempString[index] = EMPTY_STRING;
+                        } else {
+                            double result = Double.parseDouble(resultArray[i]);
+                            tempString[index] = String.format(Locale.US, "%.1f", result);
+                        }
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
+                        return;
                     }
                 }
 
-                for (String aTempString : tempString) {
-                    results.add(aTempString);
-                }
+                Collections.addAll(results, tempString);
 
-                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0) {
+                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0 && !results.get(0).equals(EMPTY_STRING)) {
                     textResult.setText(results.get(0));
                     textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
                     textResult.setVisibility(View.VISIBLE);
@@ -392,8 +400,9 @@ public class SensorActivity extends BaseActivity {
                     buttonAcceptResult.setVisibility(View.VISIBLE);
                     textSubtitle.setText(R.string.sensorConnected);
                 } else {
-                    textResult.setVisibility(View.GONE);
-                    textUnit.setVisibility(View.GONE);
+                    textResult.setVisibility(View.INVISIBLE);
+                    textUnit.setVisibility(View.INVISIBLE);
+                    progressWait.setVisibility(View.VISIBLE);
                     buttonAcceptResult.setVisibility(View.GONE);
                     textSubtitle.setText(R.string.dipSensorInSample);
                 }
@@ -438,7 +447,7 @@ public class SensorActivity extends BaseActivity {
                     sensorActivity.mReceivedData += data;
                     if (sensorActivity.mReceivedData.contains("\r\n")) {
                         sensorActivity.displayResult(sensorActivity.mReceivedData);
-                        sensorActivity.mReceivedData = "";
+                        sensorActivity.mReceivedData = EMPTY_STRING;
                     }
                 }
             }

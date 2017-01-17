@@ -78,6 +78,7 @@
       "deviceId": "SoilEC",
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
       "brand": "Akvo Caddisfly",
+      "calibrate": true,
       "ranges": "141, 235, 470, 1413, 3000, 12880",
       "hasImage": false,
       "responseFormat": "$2,$1",
@@ -86,7 +87,6 @@
           "name": "Soil Electrical Conductivity",
           "id": 1,
           "unit": "μS/cm"
-          "ignoreDecimals":
         },
         {
           "name": "Temperature",
@@ -101,9 +101,8 @@
       "subtype": "sensor",
       "tags": ["soil quality"],
       "deviceId": "Soil Moisture",
-      "uuid": "07302aa0-21eb-4570-8264-62b77659101c",
+      "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
       "brand": "Akvo Caddisfly",
-      "shortCode": "tempe",
       "hasImage": false,
       "responseFormat": "$1",
       "results": [
@@ -119,11 +118,12 @@
       "description": "This test is deprecated and will be removed in future versions",
       "subtype": "sensor",
       "deviceId": "WaterEC",
-      "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
+      "uuid": "07302aa0-21eb-4570-8264-62b77659101c",
       "brand": "Akvo Caddisfly",
+      "shortCode": "tempe",
       "ranges": "0",
       "hasImage": false,
-      "responseFormat": "$0,$1",
+      "responseFormat": "$1,$0",
       "results": [
         {
           "name": "Temperature",
