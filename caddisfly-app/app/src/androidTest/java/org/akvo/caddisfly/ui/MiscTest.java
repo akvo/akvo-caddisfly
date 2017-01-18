@@ -44,6 +44,8 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Method;
 import java.text.DecimalFormatSymbols;
 
+import timber.log.Timber;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -175,7 +177,6 @@ public class MiscTest {
                     method.setAccessible(true);
                     method.invoke(typeListActivity);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     assertEquals(e.getMessage(), 0, 1);
                 }
             }
@@ -213,7 +214,6 @@ public class MiscTest {
                     method.setAccessible(true);
                     method.invoke(activity);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     assertEquals(e.getMessage(), 0, 1);
                 }
             }
@@ -257,7 +257,7 @@ public class MiscTest {
         try {
             mDevice.pressRecentApps();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
         sleep(2000);

@@ -27,11 +27,16 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.util.ApiUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AboutActivity extends BaseActivity {
 
     private static final int CHANGE_MODE_MIN_CLICKS = 10;
+    @BindView(R.id.textVersion)
+    TextView textVersion;
     private int clickCount = 0;
 
     @Override
@@ -39,67 +44,48 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
-                        Toast.LENGTH_SHORT).show();
+        ButterKnife.bind(this);
 
-                AppPreferences.disableDiagnosticMode();
-
-                switchLayoutForDiagnosticOrUserMode();
-
-                changeActionBarStyleBasedOnCurrentMode();
-            }
-        });
-
-        TextView buttonSoftwareNotices = (TextView) findViewById(R.id.buttonSoftwareNotices);
-        buttonSoftwareNotices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
-                dialog.show(getFragmentManager(), "NoticesDialog");
-            }
-        });
-
-        TextView textVersion = (TextView) findViewById(R.id.textVersion);
         textVersion.setText(CaddisflyApp.getAppVersion());
 
-        textVersion.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                if (!AppPreferences.isDiagnosticMode()) {
-                    clickCount++;
-
-                    //Turn on diagnostic mode if the user clicks on the version text 10 times
-                    if (clickCount >= CHANGE_MODE_MIN_CLICKS) {
-                        clickCount = 0;
-                        Toast.makeText(getBaseContext(), getString(
-                                R.string.diagnosticModeEnabled), Toast.LENGTH_SHORT).show();
-                        AppPreferences.enableDiagnosticMode();
-
-                        changeActionBarStyleBasedOnCurrentMode();
-
-                        switchLayoutForDiagnosticOrUserMode();
-                    }
-                }
-            }
-        });
-
-        //A indication whether the app was installed via Store or manually
-        View imageStoreIcon = findViewById(R.id.viewInstallType);
-        if (ApiUtil.isStoreVersion(this)) {
-            imageStoreIcon.setVisibility(View.GONE);
-        } else {
-            imageStoreIcon.setVisibility(View.VISIBLE);
-        }
+        setTitle(R.string.about);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setTitle(R.string.about);
+    @OnClick(R.id.textLinkSoftwareNotices)
+    public void showSoftwareNotices() {
+        NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
+        dialog.show(getFragmentManager(), "NoticesDialog");
+    }
+
+    @OnClick(R.id.fabDisableDiagnostics)
+    public void disableDiagnosticsMode() {
+        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                Toast.LENGTH_SHORT).show();
+
+        AppPreferences.disableDiagnosticMode();
+
+        switchLayoutForDiagnosticOrUserMode();
+
+        changeActionBarStyleBasedOnCurrentMode();
+    }
+
+    @OnClick(R.id.textVersion)
+    public void switchToDiagnosticMode() {
+        if (!AppPreferences.isDiagnosticMode()) {
+            clickCount++;
+
+            // Turn on diagnostic mode if user clicks on version text CHANGE_MODE_MIN_CLICKS times
+            if (clickCount >= CHANGE_MODE_MIN_CLICKS) {
+                clickCount = 0;
+                Toast.makeText(getBaseContext(), getString(
+                        R.string.diagnosticModeEnabled), Toast.LENGTH_SHORT).show();
+                AppPreferences.enableDiagnosticMode();
+
+                changeActionBarStyleBasedOnCurrentMode();
+
+                switchLayoutForDiagnosticOrUserMode();
+            }
+        }
     }
 
     @Override

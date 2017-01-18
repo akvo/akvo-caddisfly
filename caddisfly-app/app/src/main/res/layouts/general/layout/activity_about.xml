@@ -96,7 +96,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/buttonSoftwareNotices"
+                android:id="@+id/textLinkSoftwareNotices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -105,13 +105,6 @@
                 android:text="@string/legalInformation"
                 android:textColor="@color/cyan"
                 android:textSize="15sp" />
-
-            <View
-                android:id="@+id/viewInstallType"
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#f1f1f1" />
 
         </LinearLayout>
     </LinearLayout>

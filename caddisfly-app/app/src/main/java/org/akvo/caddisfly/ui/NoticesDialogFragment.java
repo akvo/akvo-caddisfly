@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +30,12 @@ import android.webkit.WebView;
 
 import org.akvo.caddisfly.R;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NoticesDialogFragment extends DialogFragment {
-
-
-    private static final String TAG = "NoticesDialogFragment";
 
     public NoticesDialogFragment() {
         // Required empty public constructor
@@ -63,7 +61,7 @@ public class NoticesDialogFragment extends DialogFragment {
             webNotices.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             webNotices.loadUrl("file:///android_asset/open_source_licenses.html");
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return view;
     }

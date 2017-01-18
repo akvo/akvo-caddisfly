@@ -79,7 +79,6 @@ public class AppPreferencesTest {
         } catch (NoSuchMethodException e) {
             assertEquals("Error in method call, check method name", "<correctMethodName>", methodName);
         } catch (Exception e) {
-            e.printStackTrace();
             assertEquals("Unknown error", 1, 0);
         }
     }

@@ -36,6 +36,8 @@ import org.hamcrest.Matcher;
 
 import java.util.Collection;
 
+import timber.log.Timber;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -106,7 +108,7 @@ public final class TestUtil {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 

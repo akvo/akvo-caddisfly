@@ -44,6 +44,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import timber.log.Timber;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -58,11 +61,11 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 
 public final class TestHelper {
 
-    private static final HashMap<String, String> STRING_HASH_MAP_EN = new HashMap<>();
-    private static final HashMap<String, String> STRING_HASH_MAP_FR = new HashMap<>();
-    private static final HashMap<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
+    private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
+    private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
+    private static final Map<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
     private static final boolean TAKE_SCREENSHOTS = false;
-    public static HashMap<String, String> currentHashMap;
+    public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
     public static String mCurrentLanguage = "en";
     private static int mCounter;
@@ -157,12 +160,10 @@ public final class TestHelper {
     }
 
     public static void takeScreenshot() {
-        if (TAKE_SCREENSHOTS) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                File path = new File(Environment.getExternalStorageDirectory().getPath()
-                        + "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
-                mDevice.takeScreenshot(path, 0.5f, 60);
-            }
+        if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            File path = new File(Environment.getExternalStorageDirectory().getPath()
+                    + "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png");
+            mDevice.takeScreenshot(path, 0.5f, 60);
         }
     }
 
@@ -215,7 +216,7 @@ public final class TestHelper {
             mDevice.waitForWindowUpdate("", 2000);
 
         } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 
@@ -236,11 +237,11 @@ public final class TestHelper {
                     addButton.click();
                 }
             } catch (UiObjectNotFoundException e) {
-                e.printStackTrace();
+                Timber.e(e);
             }
         }
 
-       // mDevice.findObject(By.text("Caddisfly Tests")).click();
+        // mDevice.findObject(By.text("Caddisfly Tests")).click();
     }
 
     public static void enterDiagnosticMode() {

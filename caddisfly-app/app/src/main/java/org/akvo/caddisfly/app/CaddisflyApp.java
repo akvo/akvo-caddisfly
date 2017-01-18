@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -41,6 +42,8 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 public class CaddisflyApp extends Application {
 
@@ -106,6 +109,10 @@ public class CaddisflyApp extends Application {
     public void onCreate() {
         super.onCreate();
         setApp(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     /**
