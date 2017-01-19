@@ -236,7 +236,7 @@ public class CaddisflyApp extends Application {
             res.updateConfiguration(config, dm);
 
             //if this session was launched from an external app then do not restart this app
-            if (!isExternal) {
+            if (!isExternal && handler != null) {
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
             }

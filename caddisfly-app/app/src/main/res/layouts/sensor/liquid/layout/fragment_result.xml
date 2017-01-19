@@ -38,7 +38,7 @@
         android:textColor="#fff"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:text="Electrical Conductivity" />
+        tools:text="Fluoride" />
 
     <TextView
         android:id="@+id/textDilution"

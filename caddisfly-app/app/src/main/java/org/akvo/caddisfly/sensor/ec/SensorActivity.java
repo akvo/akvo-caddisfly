@@ -147,7 +147,7 @@ public class SensorActivity extends BaseActivity {
                     handler.postDelayed(this, IDENTIFY_DELAY_MILLIS);
                     break;
                 case 1:
-                    handler.postDelayed(runnable, 100);
+                    handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
                 default:
                     Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
@@ -203,7 +203,7 @@ public class SensorActivity extends BaseActivity {
 
         deviceStatus = 0;
 
-        handler.postDelayed(validateDeviceRunnable, 1000);
+        handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 3);
     }
 
     private void requestResult() {
@@ -279,6 +279,8 @@ public class SensorActivity extends BaseActivity {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
         }
+
+        progressWait.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -352,6 +354,10 @@ public class SensorActivity extends BaseActivity {
                 return;
             }
 
+            if (deviceStatus == 2) {
+                return;
+            }
+
             String[] resultArray = value.split(",");
 
             if (AppPreferences.getShowDebugMessages()) {
@@ -406,6 +412,8 @@ public class SensorActivity extends BaseActivity {
                     buttonAcceptResult.setVisibility(View.VISIBLE);
                     textSubtitle.setText(R.string.sensorConnected);
                 } else {
+                    textResult.setText(EMPTY_STRING);
+                    textUnit.setText(EMPTY_STRING);
                     textResult.setVisibility(View.INVISIBLE);
                     textUnit.setVisibility(View.INVISIBLE);
                     progressWait.setVisibility(View.VISIBLE);

@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.preference;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ScrollView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.opencv.android.BaseLoaderCallback;
@@ -125,7 +127,11 @@ public class SettingsActivity extends BaseActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (getApplicationContext().getString(R.string.languageKey).equals(s)) {
-            finish();
+            CaddisflyApp.getApp().setAppLanguage(null, false, null);
+            Intent resultIntent = new Intent(getIntent());
+            resultIntent.getBooleanExtra("refresh", true);
+            setResult(RESULT_OK, resultIntent);
+            recreate();
         }
 
         if (getApplicationContext().getString(R.string.selectedThemeKey).equals(s)) {

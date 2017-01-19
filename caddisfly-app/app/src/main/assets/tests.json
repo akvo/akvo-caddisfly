@@ -45,7 +45,7 @@
       ]
     },
     {
-      "name": "Electrical Conductivity",
+      "name": "Water Electrical Conductivity",
       "description": "Electrical Conductivity of water. 0 - 20.000 μS/cm",
       "subtype": "sensor",
       "tags": ["water quality"],

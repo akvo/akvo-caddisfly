@@ -54,6 +54,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity {
@@ -61,101 +65,191 @@ public class MainActivity extends BaseActivity {
     private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-
-    private final WeakRefHandler handler = new WeakRefHandler(this);
-    private boolean mShouldClose = false;
-    private View coordinatorLayout;
+    private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
+    private final Handler finishOnSurveyOpenedHandler = new Handler();
+    @BindView(R.id.coordinatorLayout)
+    View coordinatorLayout;
+    @BindView(R.id.layoutDiagnostics)
+    View layoutDiagnostics;
+    private Runnable finishRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        ButterKnife.bind(this);
 
-        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
-                        Toast.LENGTH_SHORT).show();
+        makeUpgrades();
+    }
 
-                AppPreferences.disableDiagnosticMode();
+    /**
+     * Navigate to the survey
+     */
+    @OnClick(R.id.buttonSurvey)
+    void navigateToSurvey() {
+        Intent intent = getPackageManager()
+                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        if (intent == null) {
+            alertDependantAppNotFound();
+        } else {
 
-                switchLayoutForDiagnosticOrUserMode();
-
-                changeActionBarStyleBasedOnCurrentMode();
-            }
-        });
-
-        findViewById(R.id.buttonCalibrate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.buttonSensors).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-                if (hasOtg) {
-                    final Intent intent = new Intent(getBaseContext(), SensorTypeListActivity.class);
-                    intent.putExtra("internal", true);
-                    startActivity(intent);
-                } else {
-                    alertFeatureNotSupported();
+            finishRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    finish();
                 }
+            };
+
+            finishOnSurveyOpenedHandler.postDelayed(finishRunnable, AUTO_FINISH_DELAY_MILLIS);
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Navigate to the strip tests
+     */
+    @OnClick(R.id.buttonStripTest)
+    void navigateToStripTest() {
+        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                SensorConstants.TESTS_META_FILENAME);
+        if (file.exists()) {
+
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+            if (!ApiUtil.hasPermissions(getBaseContext(), permissions)) {
+                ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
+            } else {
+                startStripTest();
             }
-        });
+        } else {
+            startStripTest();
+        }
+    }
 
-        findViewById(R.id.buttonSurvey).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSurvey();
-            }
-        });
+    @OnClick(R.id.buttonSensors)
+    public void navigateToSensors() {
+        boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
+        if (hasOtg) {
+            final Intent intent = new Intent(getBaseContext(), SensorTypeListActivity.class);
+            intent.putExtra("internal", true);
+            startActivity(intent);
+        } else {
+            alertFeatureNotSupported();
+        }
+    }
 
-        final Activity activity = this;
+    @OnClick(R.id.buttonCalibrate)
+    public void navigateToCalibrate() {
+        final Intent intent = new Intent(getBaseContext(), TypeListActivity.class);
+        startActivity(intent);
+    }
 
-        findViewById(R.id.buttonStripTest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @OnClick(R.id.fabDisableDiagnostics)
+    public void disableDiagnostics() {
+        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                Toast.LENGTH_SHORT).show();
 
-                File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
-                        SensorConstants.TESTS_META_FILENAME);
-                if (file.exists()) {
+        AppPreferences.disableDiagnosticMode();
 
-                    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        switchLayoutForDiagnosticOrUserMode();
 
-                    if (!ApiUtil.hasPermissions(getBaseContext(), permissions)) {
-                        ActivityCompat.requestPermissions(activity, permissions, PERMISSION_ALL);
-                    } else {
-                        startStripTest();
-                    }
-                } else {
-                    startStripTest();
-                }
+        changeActionBarStyleBasedOnCurrentMode();
+    }
 
-            }
-        });
+    private void startStripTest() {
+        final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
+        intent.putExtra("internal", true);
+        startActivity(intent);
+    }
 
-        // TODO: remove upgrade code when obsolete
-        upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
-        upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        setTitle(R.string.appName);
+    }
 
-        // change the old name of custom config folder from config to custom-config
-        final File oldFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
-                + FileHelper.ROOT_DIRECTORY + File.separator + "config");
-        final File newFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
-                + FileHelper.ROOT_DIRECTORY + File.separator + "custom-config");
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        if (oldFolder.exists() && oldFolder.isDirectory()) {
-            //noinspection ResultOfMethodCallIgnored
-            oldFolder.renameTo(newFolder);
+        // The app is active again, stop the timer that is about to close the app
+        finishOnSurveyOpenedHandler.removeCallbacks(finishRunnable);
+
+        switchLayoutForDiagnosticOrUserMode();
+
+        CaddisflyApp.getApp().setAppLanguage(null, false, refreshHandler);
+
+        if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
+            PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
+            refreshHandler.sendEmptyMessage(0);
+        }
+    }
+
+    /**
+     * Show the diagnostic mode layout
+     */
+    private void switchLayoutForDiagnosticOrUserMode() {
+        if (AppPreferences.isDiagnosticMode()) {
+            layoutDiagnostics.setVisibility(View.VISIBLE);
+        } else {
+            layoutDiagnostics.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.actionSettings) {
+            final Intent intent = new Intent(this, SettingsActivity.class);
+            startActivityForResult(intent, 100);
+            return true;
         }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            if (data.getBooleanExtra("refresh", false)) {
+                this.recreate();
+            }
+        }
+    }
+
+    /**
+     * Alert shown when a feature is not supported by the device
+     */
+    private void alertFeatureNotSupported() {
+        String message = String.format("%s%n%n%s", getString(R.string.phoneDoesNotSupport),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtil.showMessage(this, R.string.notSupported, message);
+    }
+
+    private void alertDependantAppNotFound() {
+        String message = String.format("%s%n%n%s", getString(R.string.errorAkvoFlowRequired),
+                getString(R.string.pleaseContactSupport));
+
+        AlertUtil.showMessage(this, R.string.notFound, message);
     }
 
     @Override
@@ -204,20 +298,21 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void startStripTest() {
-        final Intent intent = new Intent(getBaseContext(), TestTypeListActivity.class);
-        intent.putExtra("internal", true);
-        startActivity(intent);
-    }
+    // TODO: remove upgrade code when obsolete
+    private void makeUpgrades() {
+        upgradeFolder("FLUOR", SensorConstants.FLUORIDE_ID);
+        upgradeFolder("CHLOR", SensorConstants.FREE_CHLORINE_ID);
 
-    /**
-     * Alert shown when a feature is not supported by the device
-     */
-    private void alertFeatureNotSupported() {
-        String message = String.format("%s%n%n%s", getString(R.string.phoneDoesNotSupport),
-                getString(R.string.pleaseContactSupport));
+        // change the old name of custom config folder from config to custom-config
+        final File oldFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "config");
+        final File newFolder = new File(FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false)
+                + FileHelper.ROOT_DIRECTORY + File.separator + "custom-config");
 
-        AlertUtil.showMessage(this, R.string.notSupported, message);
+        if (oldFolder.exists() && oldFolder.isDirectory()) {
+            //noinspection ResultOfMethodCallIgnored
+            oldFolder.renameTo(newFolder);
+        }
     }
 
     // TODO: remove upgrade code when obsolete
@@ -244,91 +339,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-        setTitle(R.string.appName);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mShouldClose = false;
-        switchLayoutForDiagnosticOrUserMode();
-
-        CaddisflyApp.getApp().setAppLanguage(null, false, handler);
-
-        if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
-            PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
-            handler.sendEmptyMessage(0);
-        }
-    }
-
-    /**
-     * Show the diagnostic mode layout
-     */
-    private void switchLayoutForDiagnosticOrUserMode() {
-        if (AppPreferences.isDiagnosticMode()) {
-            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
-        } else {
-            if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
-                findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.actionSettings) {
-            final Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void startSurvey() {
-        Intent intent = getPackageManager()
-                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
-        if (intent == null) {
-            alertDependantAppNotFound();
-        } else {
-            mShouldClose = true;
-            (new Handler()).postDelayed(new Runnable() {
-                public void run() {
-                    if (mShouldClose) {
-                        finish();
-                    }
-                }
-            }, AUTO_FINISH_DELAY_MILLIS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-    }
-
-    private void alertDependantAppNotFound() {
-        String message = String.format("%s%n%n%s", getString(R.string.errorAkvoFlowRequired),
-                getString(R.string.pleaseContactSupport));
-
-        AlertUtil.showMessage(this, R.string.notFound, message);
-    }
-
     /**
      * Handler to restart the app after language has been changed
      */
@@ -347,6 +357,5 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 }
 

@@ -21,12 +21,12 @@
 
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
-        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorPrimaryDark">@color/akvo_orange_dark</item>
     </style>
 
     <style name="AppTheme.Orange" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorPrimary">@color/akvo_orange</item>
+        <item name="colorPrimaryDark">@color/akvo_orange_dark</item>
         <item name="colorAccent">@color/cyan</item>
         <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>

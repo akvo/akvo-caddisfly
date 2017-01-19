@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:paddingBottom="18sp"
-        android:paddingTop="18sp"
+        android:paddingBottom="20sp"
+        android:paddingTop="20sp"
         android:textIsSelectable="false"
         android:textSize="18sp"
         tools:text="Contaminant" />
