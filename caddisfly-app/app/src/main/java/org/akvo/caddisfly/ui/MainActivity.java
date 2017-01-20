@@ -228,10 +228,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 100) {
-            if (data.getBooleanExtra("refresh", false)) {
-                this.recreate();
-            }
+        if (requestCode == 100 && PreferencesUtil.getBoolean(this, R.string.refreshKey, false)) {
+            PreferencesUtil.setBoolean(this, R.string.refreshKey, false);
+            this.recreate();
         }
     }
 

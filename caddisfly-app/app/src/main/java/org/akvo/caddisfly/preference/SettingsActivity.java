@@ -131,6 +131,7 @@ public class SettingsActivity extends BaseActivity
             Intent resultIntent = new Intent(getIntent());
             resultIntent.getBooleanExtra("refresh", true);
             setResult(RESULT_OK, resultIntent);
+            PreferencesUtil.setBoolean(this, R.string.refreshKey, true);
             recreate();
         }
 

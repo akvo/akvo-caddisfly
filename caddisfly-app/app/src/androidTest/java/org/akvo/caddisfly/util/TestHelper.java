@@ -99,16 +99,16 @@ public final class TestHelper {
         config.locale = new Locale(testLanguage);
         Resources res = new Resources(assets, metrics, config);
 
-        addString("language", "English", "Français");
+        addString(TestConstant.LANGUAGE, "English", "Français");
         addString("otherLanguage", "Français", "English");
-        addString("fluoride", "Fluoride", res.getString(R.string.fluoride));
+        addString(TestConstant.FLUORIDE, "Fluoride", res.getString(R.string.fluoride));
         addString("chlorine", "Free Chlorine", res.getString(R.string.freeChlorine));
         addString("survey", "Survey", res.getString(R.string.survey));
         addString("sensors", "Sensors", res.getString(R.string.sensors));
         addString("electricalConductivity", "Water Electrical Conductivity", res.getString(R.string.electricalConductivity));
         addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
-        addString("useExternalSource", "Use External Source", res.getString(R.string.useExternalSource));
+        addString(TestConstant.USE_EXTERNAL_SOURCE, "Use External Source", res.getString(R.string.useExternalSource));
         addString("next", "Next", res.getString(R.string.next));
 
         // Restore device-specific locale
@@ -182,9 +182,9 @@ public final class TestHelper {
 
     public static void clickExternalSourceButton(int index) {
 
-        findButtonInScrollable("useExternalSource");
+        findButtonInScrollable(TestConstant.USE_EXTERNAL_SOURCE);
 
-        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get("useExternalSource")));
+        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(TestConstant.USE_EXTERNAL_SOURCE)));
         buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app
@@ -207,7 +207,8 @@ public final class TestHelper {
             mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
 
             // New Android OS seems to popup a button for external app
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && buttonText.equals("useExternalSource")) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)) {
                 sleep(1000);
                 mDevice.findObject(By.text("Akvo Caddisfly")).click();
                 sleep(1000);

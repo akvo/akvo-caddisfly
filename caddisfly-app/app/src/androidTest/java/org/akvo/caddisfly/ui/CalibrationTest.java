@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.TestConstant;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -119,7 +120,7 @@ public class CalibrationTest {
 
         sleep(4000);
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.menuLoad)).perform(click());
 
@@ -168,7 +169,7 @@ public class CalibrationTest {
 
         sleep(4000);
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.menuLoad)).perform(click());
 
@@ -182,7 +183,7 @@ public class CalibrationTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -244,7 +245,7 @@ public class CalibrationTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 

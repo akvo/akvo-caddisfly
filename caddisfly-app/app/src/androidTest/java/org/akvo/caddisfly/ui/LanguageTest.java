@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.content.Intent;
+import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
@@ -30,6 +32,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.util.TestConstant;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -97,7 +100,7 @@ public class LanguageTest {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
     }
 
     @Test
@@ -116,7 +119,7 @@ public class LanguageTest {
         loadData(mActivityRule.getActivity(), language);
 
         try {
-            onView(withText(currentHashMap.get("language"))).perform(click());
+            onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
             onData(hasToString(startsWith(currentHashMap.get("otherLanguage")))).perform(click());
             onView(withId(R.id.actionSettings)).perform(click());
         } catch (Exception ignored) {
@@ -124,7 +127,15 @@ public class LanguageTest {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
+
+        SystemClock.sleep(2000);
+
+        mDevice.pressBack();
+
+        SystemClock.sleep(2000);
+
+        mActivityRule.launchActivity(new Intent());
 
         onView(withText(currentHashMap.get("survey"))).perform(click());
 
@@ -142,10 +153,10 @@ public class LanguageTest {
 
         Espresso.pressBack();
 
-        onView(withText(currentHashMap.get("language"))).perform(click());
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
 
-        onView(withText(currentHashMap.get("language"))).perform(click());
-        onData(hasToString(startsWith(currentHashMap.get("language")))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
     }
 }

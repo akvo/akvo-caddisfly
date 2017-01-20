@@ -35,6 +35,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.TestConstant;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -131,7 +132,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.menuLoad)).perform(click());
 
@@ -151,7 +152,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -297,7 +298,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.menuLoad)).perform(click());
 
@@ -315,7 +316,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 

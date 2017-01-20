@@ -51,7 +51,6 @@
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensors</string>
     <string name="connectCorrectSensor">Connect %s sensor</string>
-    <string name="wrongSensor">Wrong Sensor</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
