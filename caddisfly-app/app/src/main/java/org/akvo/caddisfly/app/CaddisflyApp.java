@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.app;
@@ -22,11 +25,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -36,9 +39,11 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 public class CaddisflyApp extends Application {
 
@@ -52,6 +57,10 @@ public class CaddisflyApp extends Application {
      */
     public static CaddisflyApp getApp() {
         return app;
+    }
+
+    private static void setApp(CaddisflyApp value) {
+        app = value;
     }
 
     public static String getAppLanguage() {
@@ -99,7 +108,11 @@ public class CaddisflyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
+        setApp(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     /**
@@ -109,7 +122,7 @@ public class CaddisflyApp extends Application {
         if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
             setDefaultTest();
         } else {
-            loadTestConfigurationByUuid(mCurrentTestInfo.getUuid().get(0));
+            loadTestConfigurationByUuid(mCurrentTestInfo.getId());
         }
     }
 
@@ -118,7 +131,7 @@ public class CaddisflyApp extends Application {
      */
     public void setDefaultTest() {
 
-        ArrayList<TestInfo> tests;
+        List<TestInfo> tests;
         tests = TestConfigHelper.loadTestsList();
         if (tests.size() > 0) {
             mCurrentTestInfo = tests.get(0);
@@ -158,7 +171,7 @@ public class CaddisflyApp extends Application {
 
         final Context context = getApplicationContext();
         for (Swatch swatch : testInfo.getSwatches()) {
-            String key = String.format(Locale.US, "%s-%.2f", testInfo.getCode(), swatch.getValue());
+            String key = String.format(Locale.US, "%s-%.2f", testInfo.getId(), swatch.getValue());
             swatch.setColor(PreferencesUtil.getInt(context, key, 0));
         }
     }
@@ -219,13 +232,11 @@ public class CaddisflyApp extends Application {
                 || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
             config.locale = locale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                config.setLayoutDirection(locale);
-            }
+            config.setLayoutDirection(locale);
             res.updateConfiguration(config, dm);
 
             //if this session was launched from an external app then do not restart this app
-            if (!isExternal) {
+            if (!isExternal && handler != null) {
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
             }

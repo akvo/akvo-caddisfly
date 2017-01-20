@@ -1,17 +1,20 @@
 <!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly.
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,8 +36,8 @@
         android:background="?colorPrimary"
         android:orientation="vertical"
         android:paddingBottom="20dp"
-        android:paddingEnd="10dp"
-        android:paddingStart="20dp"
+        android:paddingEnd="6dp"
+        android:paddingStart="16dp"
         tools:ignore="UnknownIdInLayout">
 
         <TextView
@@ -44,7 +47,7 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-light"
             android:textColor="#fff"
-            android:textSize="30sp"
+            android:textSize="25sp"
             tools:text="Contaminant" />
 
         <TextView
@@ -76,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutTitleBar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="70dp"
         android:indeterminate="true"
         android:indeterminateTint="?progressTint"
         android:indeterminateTintMode="src_in"
@@ -105,7 +108,7 @@
             tools:text="20000" />
 
         <TextView
-            android:id="@+id/textName"
+            android:id="@+id/textUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
@@ -114,16 +117,17 @@
             android:shadowRadius="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:textColorSecondaryInverse"
-            tools:text="Celsius" />
+            tools:text="μS/cm" />
 
         <TextView
-            android:id="@+id/textTemperature"
+            android:id="@+id/textResult2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:alpha="0.9"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:textColorSecondaryInverse"
-            android:textSize="66sp"
+            android:textSize="60sp"
             android:visibility="visible"
             tools:text="24" />
 
@@ -133,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-12dp"
             android:alpha="0.4"
-            android:shadowColor="#cccccc"
+            android:shadowColor="#3c4a5b"
             android:shadowRadius="1"
             android:text="@string/celsius"
             android:textAppearance="?android:attr/textAppearanceMedium"

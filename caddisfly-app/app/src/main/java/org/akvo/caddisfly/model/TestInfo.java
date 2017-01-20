@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.model;
@@ -30,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,8 +44,8 @@ public class TestInfo {
     private static final String TAG = "TestInfo";
 
     private static final double RESULT_ERROR_MARGIN = 0.2;
-    private final HashMap names;
-    private final List<String> uuid;
+    private final String name;
+    private final String uuid;
     private final List<Swatch> swatches;
     private final TestType testType;
     private final List<Integer> dilutions;
@@ -51,7 +53,6 @@ public class TestInfo {
     private String unit;
     private boolean requiresCalibration;
     private boolean allInteger = true;
-    private boolean isDiagnostic;
     private boolean mIsDirty;
     private int monthsValid = 12;
     private boolean isGroup;
@@ -63,15 +64,20 @@ public class TestInfo {
     private boolean useGrayScale;
     private String shortCode;
     private int hueTrend;
+    private double[] rangeValues;
+    private String deviceId;
+    private String responseFormat;
 
-    public TestInfo(HashMap names, TestType testType, String[] swatchArray,
+    public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
-                    List<String> uuids, JSONArray resultsArray) {
-        this.names = names == null ? null : (HashMap) names.clone();
+                    String uuid, JSONArray resultsArray) {
+        this.name = name;
         this.testType = testType;
-        this.uuid = uuids;
+        this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
+
+        rangeValues = new double[swatchArray.length];
 
         for (int i = 0; i < swatchArray.length; i++) {
 
@@ -93,6 +99,7 @@ public class TestInfo {
             }
             addSwatch(swatch);
 
+            rangeValues[i] = Double.valueOf(range);
         }
 
         if (swatches.size() > 0) {
@@ -120,7 +127,7 @@ public class TestInfo {
             for (int ii = 0; ii < resultsArray.length(); ii++) {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
-                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("description"), patchObj.getString("unit")));
+                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"), patchObj.getString("unit")));
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
@@ -133,9 +140,9 @@ public class TestInfo {
     }
 
     public TestInfo() {
-        names = null;
+        name = null;
         testType = TestType.COLORIMETRIC_LIQUID;
-        this.uuid = new ArrayList<>();
+        this.uuid = "";
         this.unit = "";
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
@@ -154,29 +161,14 @@ public class TestInfo {
     }
 
     public String getName() {
-        return getName("en");
-    }
-
-    public String getName(String languageCode) {
-        if (names != null) {
-            if (names.containsKey(languageCode)) {
-                return names.get(languageCode).toString();
-            } else if (names.containsKey("en")) {
-                return names.get("en").toString();
-            }
-        }
-        return "";
+        return name;
     }
 
     public TestType getType() {
         return testType;
     }
 
-    public String getCode() {
-        return uuid.size() > 0 ? uuid.get(0) : "";
-    }
-
-    public List<String> getUuid() {
+    public String getId() {
         return uuid;
     }
 
@@ -215,15 +207,6 @@ public class TestInfo {
         return dilutions.size() > 1;
     }
 
-    public boolean getIsDiagnostic() {
-        return isDiagnostic;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public void setIsDiagnostic(boolean value) {
-        isDiagnostic = value;
-    }
-
     /**
      * Gets if this test type requires calibration
      *
@@ -245,6 +228,10 @@ public class TestInfo {
 
     public int getMonthsValid() {
         return monthsValid;
+    }
+
+    public void setMonthsValid(int monthsValid) {
+        this.monthsValid = monthsValid;
     }
 
     public boolean hasDecimalPlace() {
@@ -321,16 +308,32 @@ public class TestInfo {
         this.shortCode = shortCode;
     }
 
-    public void setMonthsValid(int monthsValid) {
-        this.monthsValid = monthsValid;
+    public int getHueTrend() {
+        return hueTrend;
     }
 
     public void setHueTrend(int hueTrend) {
         this.hueTrend = hueTrend;
     }
 
-    public int getHueTrend() {
-        return hueTrend;
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public double[] getRangeValues() {
+        return rangeValues.clone();
+    }
+
+    public String getResponseFormat() {
+        return responseFormat;
+    }
+
+    public void setResponseFormat(String responseFormat) {
+        this.responseFormat = responseFormat;
     }
 
     public static class SubTest {

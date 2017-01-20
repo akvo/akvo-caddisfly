@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.ui;
@@ -19,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +30,12 @@ import android.webkit.WebView;
 
 import org.akvo.caddisfly.R;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class NoticesDialogFragment extends DialogFragment {
-
-
-    private static final String TAG = "NoticesDialogFragment";
 
     public NoticesDialogFragment() {
         // Required empty public constructor
@@ -60,7 +61,7 @@ public class NoticesDialogFragment extends DialogFragment {
             webNotices.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             webNotices.loadUrl("file:///android_asset/open_source_licenses.html");
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return view;
     }

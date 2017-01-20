@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.helper;
@@ -29,7 +32,7 @@ public final class FileHelper {
     // Folders
     public static final String ROOT_DIRECTORY = File.separator + "Akvo Caddisfly";
     private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
-    private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "config"; // Calibration files
+    private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "custom-config"; // Calibration files
     private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
     private static final String DIR_CARD = ROOT_DIRECTORY + File.separator + "color-card"; // Calibration files
 

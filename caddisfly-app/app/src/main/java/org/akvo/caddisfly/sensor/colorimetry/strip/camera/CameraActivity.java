@@ -1,21 +1,26 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -35,7 +40,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.TestStatus;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.ResultActivity;
@@ -43,6 +47,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.LevelView;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.FinderPattern;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
@@ -507,10 +512,22 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 title = R.string.qualityCheckFailed;
         }
 
-        Intent intent = new Intent(getIntent());
-        intent.putExtra(SensorConstants.ERROR, title);
-        setResult(100, intent);
-        finish();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        AlertDialog alertDialog = AlertUtil.showAlert(this, title,
+                R.string.tryTestingInAWellLitArea, R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }, null, null);
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     @Override

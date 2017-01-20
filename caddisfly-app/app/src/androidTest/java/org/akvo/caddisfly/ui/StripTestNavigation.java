@@ -1,7 +1,27 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly.
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.akvo.caddisfly.ui;
 
 
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -56,7 +76,7 @@ public class StripTestNavigation {
     @Test
     public void stripTestNav() {
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonStripTest), withText("Strip Test"),
+                allOf(ViewMatchers.withId(R.id.buttonStripTest), withText("Strip Test"),
                         withParent(withId(R.id.mainLayout)),
                         isDisplayed()));
         appCompatButton.perform(click());

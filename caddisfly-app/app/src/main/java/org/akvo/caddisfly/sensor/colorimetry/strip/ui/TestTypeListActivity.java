@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
@@ -32,11 +35,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.AlertUtil;
 import org.json.JSONException;
 
 import java.util.Collections;
@@ -90,10 +93,11 @@ public class TestTypeListActivity extends BaseActivity {
     }
 
     private void startDetailActivity(String uuid) {
-        Intent detailIntent = new Intent(getBaseContext(), BrandInfoActivity.class);
-        detailIntent.putExtra(Constant.UUID, uuid);
-        detailIntent.putExtra("internal", getIntent().getBooleanExtra("internal", false));
-        startActivityForResult(detailIntent, 100);
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, BrandInfoActivity.class);
+        intent.putExtra(Constant.UUID, uuid);
+        startActivityForResult(intent, 100);
     }
 
     @Override
@@ -101,18 +105,9 @@ public class TestTypeListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) {
-
-            Intent intent = new Intent(getIntent());
-            setResult(resultCode, intent);
-
-            if (resultCode == RESULT_OK) {
-                intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-                intent.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
-            } else {
-                if (data != null && data.hasExtra(SensorConstants.ERROR)) {
-                    AlertUtil.showAlert(this, data.getIntExtra(SensorConstants.ERROR, R.string.qualityCheckFailed),
-                            R.string.tryTestingInAWellLitArea, R.string.ok, null, null, null);
-                }
+            if (data != null) {
+                Intent intent = new Intent(data);
+                setResult(resultCode, intent);
             }
 
             // If an external activity is expecting the result then finish
@@ -202,6 +197,11 @@ public class TestTypeListActivity extends BaseActivity {
 
                     holder.textView.setText(brand.getName());
                     holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
+//                    if (brand.isCustomTest()) {
+//                        holder.imageIcon.setVisibility(View.VISIBLE);
+//                    } else {
+//                        holder.imageIcon.setVisibility(View.INVISIBLE);
+//                    }
                 }
             }
             return view;
@@ -214,11 +214,14 @@ public class TestTypeListActivity extends BaseActivity {
             private final TextView textView;
             @NonNull
             private final TextView textSubtitle;
+//            @NonNull
+//            private final ImageView imageIcon;
 
             ViewHolder(@NonNull View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
                 textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);
+//                imageIcon = (ImageView) v.findViewById(R.id.imageIcon);
             }
         }
     }

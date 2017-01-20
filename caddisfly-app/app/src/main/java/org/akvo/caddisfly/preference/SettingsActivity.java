@@ -1,21 +1,25 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.preference;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ScrollView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.opencv.android.BaseLoaderCallback;
@@ -67,7 +72,7 @@ public class SettingsActivity extends BaseActivity
                 .registerOnSharedPreferenceChangeListener(this);
 
         if (AppPreferences.isDiagnosticMode()) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
         }
     }
 
@@ -122,7 +127,12 @@ public class SettingsActivity extends BaseActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (getApplicationContext().getString(R.string.languageKey).equals(s)) {
-            finish();
+            CaddisflyApp.getApp().setAppLanguage(null, false, null);
+            Intent resultIntent = new Intent(getIntent());
+            resultIntent.getBooleanExtra("refresh", true);
+            setResult(RESULT_OK, resultIntent);
+            PreferencesUtil.setBoolean(this, R.string.refreshKey, true);
+            recreate();
         }
 
         if (getApplicationContext().getString(R.string.selectedThemeKey).equals(s)) {

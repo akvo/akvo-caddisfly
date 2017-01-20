@@ -1,23 +1,27 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.helper;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -37,6 +41,7 @@ import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -51,6 +56,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public final class SwatchHelper {
+
+    private static final String TAG = "SwatchHelper";
 
     private static final int MAX_DISTANCE = 999;
     private static final int MAX_DIFFERENCE = 150;
@@ -147,50 +154,6 @@ public final class SwatchHelper {
     }
 
     /**
-     * Calculate the slope of the linear trend for a range of colors
-     *
-     * @param swatches the range of colors
-     * @return The slope value
-     */
-    public static double calculateSlope(List<Swatch> swatches) {
-
-        double a = 0, b, c, d;
-        double xSum = 0, xSquaredSum = 0, ySum = 0;
-        double slope;
-
-        float[] colorHSV = new float[3];
-
-        float[] hValue = new float[swatches.size()];
-
-        for (int i = 0; i < swatches.size(); i++) {
-            //noinspection ResourceType
-            Color.colorToHSV(swatches.get(i).getColor(), colorHSV);
-            hValue[i] = colorHSV[0];
-            if (hValue[i] < 100) {
-                hValue[i] += 360;
-            }
-            a += swatches.get(i).getValue() * hValue[i];
-            xSum += swatches.get(i).getValue();
-            xSquaredSum += Math.pow(swatches.get(i).getValue(), 2);
-
-            ySum += hValue[i];
-        }
-
-        //Calculate the slope
-        a *= swatches.size();
-        b = xSum * ySum;
-        c = xSquaredSum * swatches.size();
-        d = Math.pow(xSum, 2);
-        slope = (a - b) / (c - d);
-
-        if (Double.isNaN(slope)) {
-            slope = 32;
-        }
-
-        return slope;
-    }
-
-    /**
      * Validate the color by looking for missing color, duplicate colors, color out of sequence etc...
      *
      * @param testInfo the test Information
@@ -214,7 +177,7 @@ public final class SwatchHelper {
                 break;
             }
             for (Swatch swatch2 : swatches) {
-                if (swatch1 != swatch2 && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
+                if (!swatch1.equals(swatch2) && ColorUtil.areColorsSimilar(swatch1.getColor(), swatch2.getColor())) {
                     //Duplicate color
                     result = false;
                     break;
@@ -449,7 +412,7 @@ public final class SwatchHelper {
                     swatches.add(clonedSwatch);
                 }
             } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
 
         }
@@ -519,10 +482,10 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
-    public static ArrayList<Swatch> loadCalibrationFromFile(Context context, String fileName) throws Exception {
-        final ArrayList<Swatch> swatchList = new ArrayList<>();
+    public static List<Swatch> loadCalibrationFromFile(Context context, String fileName) throws IOException {
+        final List<Swatch> swatchList = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+                CaddisflyApp.getApp().getCurrentTestInfo().getId());
 
         List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
 
@@ -533,10 +496,10 @@ public final class SwatchHelper {
             for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
                 String line = calibrationDetails.get(i);
                 if (!line.contains("=")) {
-                    String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+                    String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
                     if (line.contains("Calibrated:")) {
                         Calendar calendar = Calendar.getInstance();
-                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd HH:mm");
                         if (date != null) {
                             calendar.setTime(date);
@@ -546,7 +509,7 @@ public final class SwatchHelper {
                     }
                     if (line.contains("ReagentExpiry:")) {
                         Calendar calendar = Calendar.getInstance();
-                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(":") + 1),
+                        Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd");
                         if (date != null) {
                             calendar.setTime(date);
@@ -556,19 +519,19 @@ public final class SwatchHelper {
                     }
 
                     if (line.contains("ReagentBatch:")) {
-                        String batch = line.substring(line.indexOf(":") + 1).trim();
+                        String batch = line.substring(line.indexOf(':') + 1).trim();
                         PreferencesUtil.setString(context, testCode,
                                 R.string.batchNumberKey, batch);
                     }
 
                     if (line.contains("LED RGB:")) {
-                        String rgb = line.substring(line.indexOf(":") + 1).trim();
+                        String rgb = line.substring(line.indexOf(':') + 1).trim();
                         PreferencesUtil.setString(context, testCode,
                                 R.string.ledRgbKey, rgb);
                     }
 
                     if (line.contains("DetectBackdrop:")) {
-                        Boolean detect = !Boolean.valueOf(line.substring(line.indexOf(":") + 1).trim());
+                        Boolean detect = !Boolean.valueOf(line.substring(line.indexOf(':') + 1).trim());
                         PreferencesUtil.setBoolean(context, R.string.noBackdropDetectionKey, detect);
                     }
 
@@ -593,7 +556,7 @@ public final class SwatchHelper {
                 }
 
             } else {
-                throw new Exception();
+                throw new IOException();
             }
         }
         return swatchList;
@@ -604,12 +567,12 @@ public final class SwatchHelper {
      *
      * @param swatches List of swatch colors to be saved
      */
-    public static void saveCalibratedSwatches(Context context, ArrayList<Swatch> swatches) {
+    public static void saveCalibratedSwatches(Context context, List<Swatch> swatches) {
 
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         for (Swatch swatch : swatches) {
             String key = String.format(Locale.US, "%s-%.2f",
-                    currentTestInfo.getCode(), swatch.getValue());
+                    currentTestInfo.getId(), swatch.getValue());
 
             PreferencesUtil.setInt(context, key, swatch.getColor());
         }
@@ -685,7 +648,7 @@ public final class SwatchHelper {
         try {
             return nf.parse(text).doubleValue();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             return 0.0;
         }
     }

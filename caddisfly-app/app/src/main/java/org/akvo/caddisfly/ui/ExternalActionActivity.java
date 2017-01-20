@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.ui;
@@ -22,7 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,13 +45,11 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.turbidity.TimeLapseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -113,6 +113,12 @@ public class ExternalActionActivity extends BaseActivity {
             CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
             String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
+            if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
+
+                // old version of survey does not expect image in result
+                mCallerExpectsImageInResult = false;
+            }
+
             if (mTestTypeUuid == null) {
 
                 //todo: remove when obsolete
@@ -121,19 +127,13 @@ public class ExternalActionActivity extends BaseActivity {
 
                 if (code.equalsIgnoreCase("strip")) {
                     final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
+                    colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                     return;
                 }
 
-                //Switch temperature to ec, since temperature is returned along with ec in json result
-                if (code.equalsIgnoreCase("tempe") && AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
-                    code = "econd";
-                }
-
                 mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
 
-                // old version of survey does not expect image in result
-                mCallerExpectsImageInResult = false;
             }
 
             //Get the test config by uuid
@@ -143,9 +143,8 @@ public class ExternalActionActivity extends BaseActivity {
                 ((TextView) findViewById(R.id.textTitle)).setText(getTestName(questionTitle));
                 alertTestTypeNotSupported();
             } else {
-                Configuration config = getResources().getConfiguration();
                 ((TextView) findViewById(R.id.textTitle)).setText(
-                        CaddisflyApp.getApp().getCurrentTestInfo().getName(config.locale.getLanguage()));
+                        CaddisflyApp.getApp().getCurrentTestInfo().getName());
 
                 String[] permissions = {};
                 if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
@@ -225,8 +224,7 @@ public class ExternalActionActivity extends BaseActivity {
         final Activity activity = this;
 
         String message = getString(R.string.errorCalibrationIncomplete,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName(
-                        getResources().getConfiguration().locale.getLanguage()));
+                CaddisflyApp.getApp().getCurrentTestInfo().getName());
         message = String.format(MESSAGE_TWO_LINE_FORMAT, message,
                 getString(R.string.doYouWantToCalibrate));
 
@@ -296,7 +294,7 @@ public class ExternalActionActivity extends BaseActivity {
                 }
 
                 long milliseconds = PreferencesUtil.getLong(this,
-                        CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                        CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                         R.string.calibrationExpiryDateKey);
                 if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
                     alertCalibrationExpired();
@@ -308,11 +306,7 @@ public class ExternalActionActivity extends BaseActivity {
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
                     intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    if (AppPreferences.useExternalCamera()) {
-                        intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
-                    } else {
-                        intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                    }
+                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 }
 
                 intent.putExtra(Constant.UUID, uuid);
@@ -339,12 +333,6 @@ public class ExternalActionActivity extends BaseActivity {
                 } else {
                     alertFeatureNotSupported();
                 }
-                break;
-            case TURBIDITY_COLIFORMS:
-
-                final Intent turbidityIntent = new Intent(context, TimeLapseActivity.class);
-                startActivityForResult(turbidityIntent, REQUEST_TEST);
-
                 break;
         }
     }

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly.
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -45,7 +48,9 @@
     <string name="done" tools:ignore="UnusedResources">Done</string>
 
     <!--External-->
-    <string name="electricalConductivity" tools:ignore="UnusedResources">Electrical Conductivity</string>
+    <string name="sensor">Sensor</string>
+    <string name="sensors">Sensors</string>
+    <string name="connectCorrectSensor">Connect %s sensor</string>
 
     <!--Messages-->
     <string name="pleaseWait">Please wait…</string>
@@ -105,10 +110,10 @@
     <string name="warning">Warning</string>
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
     <string name="sensorNotFound">Sensor not found</string>
-    <string name="deviceConnectSensor">Please connect Akvo EC Sensor</string>
-    <string name="calibratePoint">Calibrate %d μS/cm</string>
+    <string name="deviceConnectSensor">Connect sensor</string>
+    <string name="calibratePoint">Calibrate %.0f μS/cm</string>
     <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
-    <string name="getEcSolutionReady">Get ready the fluid with EC of %d μS/cm</string>
+    <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
     <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
@@ -116,7 +121,7 @@
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
-    <string name="dipSensorInSample">Dip sensor in sample liquid</string>
+    <string name="dipSensorInSample">Dip sensor in sample</string>
 
     <!--About Screen-->
     <string name="waterQualitySystem">Water Quality System</string>
@@ -161,7 +166,6 @@
 
     <!--StripTest-->
     <!--paths to assets-->
-    <string name="strips_json">strips.json</string>
     <string name="strips_instruction_json">strips-instruction.json</string>
     <string name="striptest_images" translatable="false">images/striptest</string>
     <string name="instruction_images" translatable="false">images/instructions</string>

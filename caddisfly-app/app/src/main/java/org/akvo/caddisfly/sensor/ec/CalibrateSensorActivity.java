@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.ec;
@@ -24,7 +27,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -33,7 +35,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,7 @@ import android.widget.ViewAnimator;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -54,14 +56,14 @@ import java.util.Set;
 
 public class CalibrateSensorActivity extends BaseActivity implements EditSensorIdentity.OnFragmentInteractionListener {
 
-    private static final String TAG = "CalibrateSensorActivity";
-
     private static final String LINE_FEED = "\r\n";
+    private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int INITIAL_DELAY_MILLIS = 2000;
-    private static final int PROGRESS_MAX = 15;
-    private static final int CALIBRATION_DELAY_MILLIS = 15000;
+    private static final int PROGRESS_MAX = 10;
+    private static final int CALIBRATION_DELAY_MILLIS = 8000;
     private static final int SAVING_DELAY_MILLIS = 4000;
-    private final int[] calibrationPoints = new int[]{141, 235, 470, 1413, 3000, 12880};
+
+    private final Handler handler = new Handler();
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -84,7 +86,8 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         }
     };
-    private final WeakRefHandler progressHandler = new WeakRefHandler(this);
+    private TestInfo mCurrentTestInfo;
+    private double[] calibrationPoints;
     private ProgressDialog progressDialog;
     private ViewAnimator viewAnimator;
     private boolean deviceHasId = false;
@@ -118,6 +121,36 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     @NonNull
     private String mReceivedData = "";
     private FloatingActionButton fabEdit;
+    private int deviceStatus = 0;
+    private final Runnable validateDeviceRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            String data = "device\r\n";
+            if (usbService != null && usbService.isUsbConnected()) {
+                // if UsbService was correctly bound, Send data
+                usbService.write(data.getBytes(StandardCharsets.UTF_8));
+            } else {
+                return;
+            }
+
+            switch (deviceStatus) {
+
+                case 0:
+                    handler.postDelayed(this, IDENTIFY_DELAY_MILLIS);
+                    break;
+                case 1:
+                    handler.postDelayed(runnable, 100);
+                    break;
+                default:
+                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+                            mCurrentTestInfo.getName()),
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onResume() {
@@ -132,7 +165,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     public void onPause() {
         super.onPause();
         unregisterReceiver(mUsbReceiver);
-        unbindService(usbConnection);
+        if (usbConnection != null) {
+            unbindService(usbConnection);
+        }
     }
 
     private void setFilters() {
@@ -161,6 +196,11 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        deviceStatus = 0;
+
+        handler.postDelayed(validateDeviceRunnable, 100);
+
     }
 
     @Override
@@ -170,6 +210,11 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         mContext = this;
 
+        //final Intent intent = getIntent();
+        //String mUuid = intent.getStringExtra(Constant.UUID);
+        //CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
         mHandler = new UsbDataHandler(this);
 
         viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
@@ -178,16 +223,14 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         Button buttonFinishCalibrate = (Button) findViewById(R.id.buttonFinishCalibrate);
         Button buttonNext = (Button) findViewById(R.id.buttonNext);
 
-        fabEdit =
-                (FloatingActionButton) findViewById(R.id.fabEdit);
+        fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
 
-
-        Configuration conf = getResources().getConfiguration();
-        if (!CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()).isEmpty()) {
+        if (!mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    CaddisflyApp.getApp().getCurrentTestInfo().getName(conf.locale.getLanguage()));
+                    mCurrentTestInfo.getName());
         }
 
+        calibrationPoints = mCurrentTestInfo.getRangeValues();
         textHeading = (TextView) findViewById(R.id.textHeading);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         textInformation = (TextView) findViewById(R.id.textInformation);
@@ -226,7 +269,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     }, INITIAL_DELAY_MILLIS);
 
                 } else {
-                    AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+                    AlertUtil.showMessage(mContext, R.string.sensorNotFound,
+                            getString(R.string.connectCorrectSensor,
+                                    mCurrentTestInfo.getName()));
                 }
             }
         });
@@ -253,7 +298,10 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     calibratePoint(calibrationPoints, calibrationIndex);
                     calibrationIndex++;
                 } else {
-                    AlertUtil.showMessage(mContext, R.string.sensorNotFound, R.string.deviceConnectSensor);
+                    AlertUtil.showMessage(mContext, R.string.sensorNotFound,
+                            getString(R.string.connectCorrectSensor,
+                                    mCurrentTestInfo.getName()));
+
                 }
             }
         });
@@ -284,7 +332,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         }
     }
 
-    private void calibratePoint(final int[] calibrations, final int index) {
+    private void calibratePoint(final double[] calibrations, final int index) {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(R.string.pleaseWait);
@@ -295,24 +343,19 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
-        new Thread(new Runnable() {
-            @Override
+        final Handler progressHandler = new Handler();
+        Runnable progressRunnable = new Runnable() {
             public void run() {
-                try {
-                    while (progressDialog.getProgress() <= progressDialog
-                            .getMax()) {
-                        Thread.sleep(1000);
-                        progressHandler.sendMessage(progressHandler.obtainMessage());
-                        if (progressDialog.getProgress() == progressDialog
-                                .getMax()) {
-                            progressDialog.dismiss();
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
+                progressDialog.incrementProgressBy(1);
+                if (progressDialog.getProgress() == progressDialog.getMax()) {
+                    progressDialog.dismiss();
+                } else {
+                    progressHandler.postDelayed(this, 1000);
                 }
             }
-        }).start();
+        };
+
+        progressHandler.postDelayed(progressRunnable, 100);
 
         new Handler().postDelayed(new Runnable() {
 
@@ -325,8 +368,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
-
-                        progressDialog.dismiss();
 
                         if (calibrationIndex > 5) {
 
@@ -365,12 +406,6 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_out, R.anim.slide_back_in);
-    }
-
     private void displayId(String value) {
         value = value.replace(LINE_FEED, "");
         textId.setText(value);
@@ -392,36 +427,33 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 String getIdRequest = "GET ID" + LINE_FEED;
                 usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
 
-                savingProgressDialog.dismiss();
-
                 displayInformation(calibrationIndex);
 
                 if (viewAnimator.getDisplayedChild() == 0) {
                     viewAnimator.showNext();
                     fabEdit.setVisibility(View.VISIBLE);
+                    savingProgressDialog.dismiss();
                 }
             }
         }, SAVING_DELAY_MILLIS);
 
     }
 
-    /**
-     * Handler to restart the app after language has been changed
-     */
-    private static class WeakRefHandler extends Handler {
-        @NonNull
-        private final WeakReference<CalibrateSensorActivity> ref;
+    private void displayResult(String result) {
 
-        WeakRefHandler(CalibrateSensorActivity ref) {
-            this.ref = new WeakReference<>(ref);
+        if (deviceStatus == 0) {
+            if (result.contains(" ")) {
+                if (result.startsWith(mCurrentTestInfo.getDeviceId())) {
+                    deviceStatus = 1;
+                } else {
+                    deviceStatus = 2;
+                }
+            }
+            return;
         }
 
-        @Override
-        public void handleMessage(Message msg) {
-            CalibrateSensorActivity f = ref.get();
-            if (f != null) {
-                f.progressDialog.incrementProgressBy(1);
-            }
+        if (!result.contains("OK")) {
+            displayId(result);
         }
     }
 
@@ -445,9 +477,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 if (sensorActivity != null) {
                     sensorActivity.mReceivedData += data;
                     if (sensorActivity.mReceivedData.contains(LINE_FEED)) {
-                        if (!sensorActivity.mReceivedData.contains("OK")) {
-                            sensorActivity.displayId(sensorActivity.mReceivedData);
-                        }
+
+                        sensorActivity.displayResult(sensorActivity.mReceivedData.trim());
+
                         sensorActivity.mReceivedData = "";
                     }
                 }

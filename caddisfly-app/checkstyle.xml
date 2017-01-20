@@ -159,7 +159,11 @@ https://raw.githubusercontent.com/noveogroup/android-check/master/android-check-
         <module name="FinalClass" />
         <module name="HideUtilityClassConstructor" />
         <module name="InterfaceIsType" />
-        <module name="VisibilityModifier" />
+        <module name="VisibilityModifier">
+            <!-- ignore fields annotated with @Inject, @BindView, @BindViews, @AutoBundleField, @VisibleForTesting-->
+            <property name="ignoreAnnotationCanonicalNames" value="Inject" />
+            <property name="ignoreAnnotationCanonicalNames" value="BindView" />
+        </module>
 
 
         <!-- Miscellaneous other checks.                   -->

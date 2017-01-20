@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly.
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
-        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorPrimaryDark">@color/akvo_orange_dark</item>
     </style>
 
     <style name="AppTheme.Orange" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorPrimary">@color/akvo_orange</item>
+        <item name="colorPrimaryDark">@color/akvo_orange_dark</item>
         <item name="colorAccent">@color/cyan</item>
         <item name="textColorPrimary">@color/white</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
@@ -42,7 +45,6 @@
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
         <item name="progressTintInverse">@color/yellow</item>
-        <item name="listArrowRight">@drawable/arrow_right_light</item>
     </style>
 
     <style name="AppTheme.OrangeBlue" parent="Theme.AppCompat.Light.NoActionBar">
@@ -65,7 +67,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/arrow_right_light</item>
     </style>
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.NoActionBar">
@@ -88,7 +89,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/arrow_right_dark</item>
     </style>
 
     <style name="AppTheme.BlueOrange" parent="Theme.AppCompat.Light.NoActionBar">
@@ -111,7 +111,6 @@
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/arrow_right_dark</item>
     </style>
 
     <style name="AppTheme.Flow" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -134,6 +133,5 @@
         <item name="toolbarHeight">@dimen/flow_toolbar_height</item>
         <item name="toolbarMargin">@dimen/flow_toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
-        <item name="listArrowRight">@drawable/arrow_right_dark</item>
     </style>
 </resources>

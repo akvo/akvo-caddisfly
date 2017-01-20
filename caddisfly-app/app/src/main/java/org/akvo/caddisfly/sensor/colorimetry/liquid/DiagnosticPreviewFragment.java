@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
@@ -24,7 +27,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -35,7 +37,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ShakeDetector;
@@ -44,11 +45,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.usb.DeviceFilter;
-import org.akvo.caddisfly.usb.USBMonitor;
 import org.akvo.caddisfly.util.ImageUtil;
-
-import java.util.List;
 
 public class DiagnosticPreviewFragment extends DialogFragment implements CameraDialog.Cancelled {
 
@@ -71,15 +68,7 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
 
         sound = new SoundPoolPlayer(getActivity());
 
-        USBMonitor usbMonitor = new USBMonitor(getActivity(), null);
-
-        final List<DeviceFilter> filter = DeviceFilter.getDeviceFilters(getActivity(), R.xml.camera_device_filter);
-        List<UsbDevice> usbDeviceList = usbMonitor.getDeviceList(filter.get(0));
-        if (usbDeviceList.size() > 0 && usbDeviceList.get(0).getVendorId() != AppConfig.ARDUINO_VENDOR_ID) {
-            mCameraDialog = ExternalCameraFragment.newInstance();
-        } else {
-            mCameraDialog = CameraDialogFragment.newInstance();
-        }
+        mCameraDialog = CameraDialogFragment.newInstance();
 
         final DiagnosticPreviewFragment currentDialog = this;
 

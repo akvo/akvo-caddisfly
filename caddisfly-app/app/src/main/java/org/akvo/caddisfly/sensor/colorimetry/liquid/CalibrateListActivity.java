@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
@@ -56,10 +59,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -130,7 +133,7 @@ public class CalibrateListActivity extends BaseActivity
         textSubtitle2 = (TextView) findViewById(R.id.textSubtitle2);
 
         ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
-                getCurrentTestInfo().getName(getResources().getConfiguration().locale.getLanguage()));
+                getCurrentTestInfo().getName());
 
         fabEditCalibration =
                 (FloatingActionButton) findViewById(R.id.fabEditCalibration);
@@ -172,21 +175,21 @@ public class CalibrateListActivity extends BaseActivity
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        testInfo.setCalibrationDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationDateKey));
+        testInfo.setCalibrationDate(PreferencesUtil.getLong(this, testInfo.getId(), R.string.calibrationDateKey));
 
         if (testInfo.getCalibrationDate() >= 0) {
             textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM)
                     .format(new Date(testInfo.getCalibrationDate())));
         }
 
-        testInfo.setExpiryDate(PreferencesUtil.getLong(this, testInfo.getCode(), R.string.calibrationExpiryDateKey));
+        testInfo.setExpiryDate(PreferencesUtil.getLong(this, testInfo.getId(), R.string.calibrationExpiryDateKey));
 
         if (testInfo.getExpiryDate() >= 0) {
             textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
                     DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(testInfo.getExpiryDate()))));
         }
 
-        testInfo.setBatchNumber(PreferencesUtil.getString(this, testInfo.getCode(), R.string.batchNumberKey, ""));
+        testInfo.setBatchNumber(PreferencesUtil.getString(this, testInfo.getId(), R.string.batchNumberKey, ""));
 
         textSubtitle.setText(testInfo.getBatchNumber());
 
@@ -207,19 +210,6 @@ public class CalibrateListActivity extends BaseActivity
 
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-//        String key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationDateKey));
-//        long calibrationDate = PreferencesUtil.getLong(this, key);
-        //Show calibration details dialog if this is an incomplete calibration from more than an hour ago
-//        Calendar currentDate = Calendar.getInstance();
-//        if (currentDate.getTimeInMillis() - calibrationDate > 1000 * 60 * 1) {
-//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.batchNumberKey));
-//            PreferencesUtil.removeKey(this, key);
-//            key = String.format("%s_%s", currentTestInfo.getCode(), getString(R.string.calibrationExpiryDateKey));
-//            PreferencesUtil.removeKey(this, key);
-//            showEditCalibrationDetailsDialog();
-//            return;
-//        }
-
         fabEditCalibration.setEnabled(false);
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
@@ -228,7 +218,7 @@ public class CalibrateListActivity extends BaseActivity
         }, FREEZE_BUTTON_DELAY_MILLIS);
 
         //Show edit calibration details dialog if required
-        Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getCode(), R.string.calibrationExpiryDateKey);
+        Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getId(), R.string.calibrationExpiryDateKey);
         if (expiryDate < Calendar.getInstance().getTimeInMillis()) {
             showEditCalibrationDetailsDialog(true);
             return;
@@ -239,11 +229,7 @@ public class CalibrateListActivity extends BaseActivity
 
         if (AppPreferences.useExternalCamera() || !ApiUtil.isCameraInUse(this, null)) {
             final Intent intent = new Intent(getIntent());
-            if (AppPreferences.useExternalCamera()) {
-                intent.setClass(getBaseContext(), ColorimetryLiquidExternalActivity.class);
-            } else {
-                intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-            }
+            intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
             intent.putExtra("isCalibration", true);
             intent.putExtra("swatchValue", swatch.getValue());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -261,7 +247,7 @@ public class CalibrateListActivity extends BaseActivity
                 Swatch swatch = CaddisflyApp.getApp().getCurrentTestInfo().getSwatch(mPosition);
 
                 long calibratedDate = PreferencesUtil.getLong(this,
-                        CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                        CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                         R.string.calibrationDateKey);
 
                 if (resultCode == Activity.RESULT_OK) {
@@ -270,7 +256,7 @@ public class CalibrateListActivity extends BaseActivity
                     //Save date if this is the first swatch calibrated
                     if (calibratedDate < 0 || SwatchHelper.getCalibratedSwatchCount(
                             CaddisflyApp.getApp().getCurrentTestInfo().getSwatches()) == 1) {
-                        PreferencesUtil.setLong(this, CaddisflyApp.getApp().getCurrentTestInfo().getCode(),
+                        PreferencesUtil.setLong(this, CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                                 R.string.calibrationDateKey, Calendar.getInstance().getTimeInMillis());
                         loadDetails();
                     }
@@ -293,7 +279,7 @@ public class CalibrateListActivity extends BaseActivity
      */
     private void saveCalibratedData(@NonNull Swatch swatch, final int resultColor) {
         String colorKey = String.format(Locale.US, "%s-%.2f",
-                CaddisflyApp.getApp().getCurrentTestInfo().getCode(), swatch.getValue());
+                CaddisflyApp.getApp().getCurrentTestInfo().getId(), swatch.getValue());
 
         if (resultColor == 0) {
             PreferencesUtil.removeKey(getApplicationContext(), colorKey);
@@ -302,7 +288,7 @@ public class CalibrateListActivity extends BaseActivity
             PreferencesUtil.setInt(getApplicationContext(), colorKey, resultColor);
         }
 
-        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getCode();
+        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
 
         //Save a backup of the calibration details
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(this,
@@ -334,7 +320,7 @@ public class CalibrateListActivity extends BaseActivity
                     R.layout.row_text);
 
             final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION,
-                    CaddisflyApp.getApp().getCurrentTestInfo().getCode());
+                    CaddisflyApp.getApp().getCurrentTestInfo().getId());
 
             File[] listFilesTemp = null;
             if (path.exists() && path.isDirectory()) {
@@ -364,7 +350,7 @@ public class CalibrateListActivity extends BaseActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 String fileName = listFiles[which].getName();
                                 try {
-                                    final ArrayList<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
+                                    final List<Swatch> swatchList = SwatchHelper.loadCalibrationFromFile(getBaseContext(), fileName);
 
                                     (new AsyncTask<Void, Void, Void>() {
                                         @Nullable

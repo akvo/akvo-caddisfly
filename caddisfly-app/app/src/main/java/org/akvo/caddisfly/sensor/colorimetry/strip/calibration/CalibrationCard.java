@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
@@ -19,6 +22,7 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -62,6 +66,8 @@ public final class CalibrationCard {
     private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
     private static final SparseIntArray versionNumberMap = new SparseIntArray();
+    // array to cache the loaded card calibration versions
+    private static final SparseArray<CalibrationData> calibrationsMeta = new SparseArray<>();
     private static boolean errorFound;
 
     private CalibrationCard() {
@@ -94,71 +100,99 @@ public final class CalibrationCard {
         return value;
     }
 
+    public static boolean isCardVersionEstablished() {
+        int mostFrequent = 0;
+        int prevMostFrequent = 0;
+
+        for (int i = 0; i < versionNumberMap.size(); i++) {
+            int key = versionNumberMap.keyAt(i);
+            int frequency = versionNumberMap.get(key);
+            if (frequency > mostFrequent) {
+                prevMostFrequent = mostFrequent;
+                mostFrequent = frequency;
+            }
+        }
+
+        return mostFrequent - prevMostFrequent > 5;
+    }
+
     public static CalibrationData readCalibrationFile() throws CalibrationException {
 
         int version = getMostFrequentVersionNumber();
-        String calFileName = "calibration" + version + ".json";
-        String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
-        if (json != null) {
-            try {
-                CalibrationData calData = new CalibrationData();
+        CalibrationData calibrationData = calibrationsMeta.get(version);
 
-                JSONObject obj = new JSONObject(json);
+        // if calibration data has already been loaded then return the cached data else load and cache
+        if (calibrationData == null) {
 
-                // general data
+            String calFileName = "calibration" + version + ".json";
+            String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
+
+            if (json != null) {
+                try {
+                    CalibrationData calData = new CalibrationData();
+
+                    JSONObject obj = new JSONObject(json);
+
+                    // general data
 //                calData.date = obj.getString("date");
 //                calData.cardVersion = obj.getString("cardVersion");
 //                calData.unit = obj.getString("unit");
 
-                // sizes
-                JSONObject calDataJSON = obj.getJSONObject("calData");
-                calData.setPatchSize(calDataJSON.getDouble("patchSize"));
-                calData.hSize = calDataJSON.getDouble("hSize");
-                calData.vSize = calDataJSON.getDouble("vSize");
+                    // sizes
+                    JSONObject calDataJSON = obj.getJSONObject("calData");
+                    calData.setPatchSize(calDataJSON.getDouble("patchSize"));
+                    calData.hSize = calDataJSON.getDouble("hSize");
+                    calData.vSize = calDataJSON.getDouble("vSize");
 
-                // locations
-                JSONArray locJSON = calDataJSON.getJSONArray("locations");
-                for (int i = 0; i < locJSON.length(); i++) {
-                    JSONObject loc = locJSON.getJSONObject(i);
-                    calData.addLocation(loc.getString("l"), loc.getDouble("x"), loc.getDouble("y"), loc.getBoolean("gray"));
+                    // locations
+                    JSONArray locJSON = calDataJSON.getJSONArray("locations");
+                    for (int i = 0; i < locJSON.length(); i++) {
+                        JSONObject loc = locJSON.getJSONObject(i);
+                        calData.addLocation(loc.getString("l"), loc.getDouble("x"), loc.getDouble("y"), loc.getBoolean("gray"));
+                    }
+
+                    // colors
+                    JSONArray colJSON = calDataJSON.getJSONArray("calValues");
+                    for (int i = 0; i < colJSON.length(); i++) {
+                        JSONObject cal = colJSON.getJSONObject(i);
+                        // we scale the Lab values in the same way as openCV does
+                        calData.addCal(cal.getString("l"), cal.getDouble("CIE_L") * 2.55, cal.getDouble("CIE_A") + 128, cal.getDouble("CIE_B") + 128);
+                    }
+
+                    // white lines
+                    JSONArray linesJSON = obj.getJSONObject("whiteData").getJSONArray("lines");
+                    for (int i = 0; i < linesJSON.length(); i++) {
+                        JSONObject line = linesJSON.getJSONObject(i);
+                        JSONArray p = line.getJSONArray("p");
+                        calData.addWhiteLine(p.getDouble(0), p.getDouble(1), p.getDouble(2), p.getDouble(3), line.getDouble("width"));
+                    }
+
+                    // strip area
+                    JSONArray stripArea = obj.getJSONObject("stripAreaData").getJSONArray("area");
+                    calData.setStripArea(stripArea.getDouble(0), stripArea.getDouble(1), stripArea.getDouble(2), stripArea.getDouble(3));
+
+                    errorFound = false;
+
+                    calibrationsMeta.put(version, calData);
+
+                    return calData;
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error reading calibration file", e);
                 }
-
-                // colors
-                JSONArray colJSON = calDataJSON.getJSONArray("calValues");
-                for (int i = 0; i < colJSON.length(); i++) {
-                    JSONObject cal = colJSON.getJSONObject(i);
-                    // we scale the Lab values in the same way as openCV does
-                    calData.addCal(cal.getString("l"), cal.getDouble("CIE_L") * 2.55, cal.getDouble("CIE_A") + 128, cal.getDouble("CIE_B") + 128);
+            } else {
+                // Wait for a few version readings before declaring error
+                if (versionNumberMap.get(version) > 3) {
+                    initialize();
+                    errorFound = true;
+                    throw new CalibrationException("Unknown version of color card");
                 }
-
-                // white lines
-                JSONArray linesJSON = obj.getJSONObject("whiteData").getJSONArray("lines");
-                for (int i = 0; i < linesJSON.length(); i++) {
-                    JSONObject line = linesJSON.getJSONObject(i);
-                    JSONArray p = line.getJSONArray("p");
-                    calData.addWhiteLine(p.getDouble(0), p.getDouble(1), p.getDouble(2), p.getDouble(3), line.getDouble("width"));
-                }
-
-                // strip area
-                JSONArray stripArea = obj.getJSONObject("stripAreaData").getJSONArray("area");
-                calData.setStripArea(stripArea.getDouble(0), stripArea.getDouble(1), stripArea.getDouble(2), stripArea.getDouble(3));
-
-                errorFound = false;
-                return calData;
-
-            } catch (JSONException e) {
-                Log.e(TAG, "Error reading calibration file", e);
             }
+            return null;
         } else {
-            // Wait for a few version readings before declaring error
-            if (versionNumberMap.get(version) > 3) {
-                initialize();
-                errorFound = true;
-                throw new CalibrationException("Unknown version of color card");
-            }
+            return calibrationData;
         }
-        return null;
     }
 
     @SuppressWarnings("SameParameterValue")

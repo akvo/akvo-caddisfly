@@ -1,22 +1,26 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly.
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
@@ -42,11 +46,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-7dp"
                 android:layout_marginTop="2dp"
-                android:drawableEnd="?listArrowRight"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
-                android:paddingStart="22dp"
+                android:paddingStart="16dp"
                 android:text="@string/survey"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
@@ -58,28 +61,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
-                android:paddingStart="22dp"
+                android:paddingStart="16dp"
                 android:text="@string/stripTest"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
 
             <Button
-                android:id="@+id/buttonEcSensor"
+                android:id="@+id/buttonSensors"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
-                android:paddingStart="22dp"
-                android:text="@string/electricalConductivity"
+                android:paddingStart="16dp"
+                android:text="@string/sensors"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
@@ -90,11 +91,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-7dp"
-                android:drawableEnd="?listArrowRight"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
-                android:paddingStart="22dp"
+                android:paddingStart="16dp"
                 android:text="@string/calibrate"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
@@ -137,5 +137,5 @@
             app:backgroundTint="@color/diagnostic"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>
-</merge>
+</android.support.design.widget.CoordinatorLayout>
 

@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.detect;
@@ -130,8 +133,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         // Set imageCount to current number
                         imageCount = imageNo;
 
-                        listener.showMessage();
-
                         byte[] data = FileUtil.readByteArray(context, Constant.DATA + imageNo);
                         if (data == null) {
                             throw new IOException();
@@ -142,7 +143,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             labImg = makeLab(data);
                         } catch (Exception e) {
                             if (context != null) {
-                                listener.showError(context.getString(R.string.error_conversion));
+                                Log.e(TAG, context.getString(R.string.error_conversion), e);
                             }
                             continue;
                         }
@@ -154,7 +155,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                             }
                         } catch (Exception e) {
                             if (context != null) {
-                                listener.showError(context.getString(R.string.error_no_finder_pattern_info));
+                                Log.e(TAG, context.getString(R.string.error_no_finder_pattern_info), e);
                             }
                             continue;
                         }
@@ -165,7 +166,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 divideIntoCalibrationAndStripArea();
                             }
                         } catch (Exception e) {
-                            listener.showError(e.getMessage());
+                            Log.e(TAG, e.getMessage(), e);
                             continue;
                         }
 
@@ -185,7 +186,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         //calibrate
                         Mat calibrationMat;
                         try {
-                            listener.showMessage();
                             CalibrationResultData calResult = getCalibratedImage(warpMat);
                             if (calResult == null) {
                                 return null;
@@ -203,7 +203,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
 //                                        + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 //                            }
                         } catch (Exception e) {
-                            listener.showError(e.getMessage());
+                            Log.e(TAG, e.getMessage(), e);
                             return null;
                         }
 
@@ -226,7 +226,6 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                         }
 
                         if (stripArea != null) {
-                            listener.showMessage();
                             Mat strip = null;
                             try {
                                 StripTest.Brand brand = stripTest.getBrand(context, uuid);
@@ -240,7 +239,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 labStrip = strip.clone();
                             } else {
                                 if (context != null) {
-                                    listener.showError(context.getString(R.string.error_calibrating));
+                                    Log.e(TAG, context.getString(R.string.error_calibrating));
                                 }
                                 labStrip = stripArea.clone();
 
@@ -282,11 +281,10 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
             } catch (@NonNull JSONException | IOException e) {
 
                 if (context != null) {
-                    listener.showError(context.getString(R.string.error_cut_out_strip));
+                    Log.e(TAG, context.getString(R.string.error_cut_out_strip));
                 }
             }
         }
-        listener.showMessage();
         return null;
     }
 

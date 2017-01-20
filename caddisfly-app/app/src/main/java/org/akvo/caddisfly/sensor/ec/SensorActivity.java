@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.ec;
@@ -23,11 +26,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +46,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.json.JSONObject;
@@ -50,30 +54,35 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 public class SensorActivity extends BaseActivity {
 
+    private static final String TAG = "SensorActivity";
+    private static final String EMPTY_STRING = "";
     private static final int REQUEST_DELAY_MILLIS = 2000;
+    private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
     private static final int FINISH_DELAY_MILLIS = 3000;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
+    private final List<String> results = new ArrayList<>();
     private TestInfo mCurrentTestInfo;
     private Toast debugToast;
-    private String mEc25Value = "";
-    private String mTemperature = "";
     private boolean mIsInternal = false;
     private LinearLayout layoutResult;
     private ProgressBar progressWait;
     private TextView textResult;
-    private TextView textTemperature;
+    private TextView textResult2;
     private TextView textUnit;
+    private TextView textUnit2;
     private Button buttonAcceptResult;
     private TextView textSubtitle;
-    private String mReceivedData = "";
+    private String mReceivedData = EMPTY_STRING;
     private UsbService usbService;
     private MyHandler mHandler;
     private ImageView imageUsbConnection;
@@ -112,12 +121,41 @@ public class SensorActivity extends BaseActivity {
             }
         }
     };
-
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             requestResult();
             handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+        }
+    };
+    private int deviceStatus = 0;
+
+    private final Runnable validateDeviceRunnable = new Runnable() {
+        @Override
+        public void run() {
+            String data = "device\r\n";
+            if (usbService != null && usbService.isUsbConnected()) {
+                // if UsbService was correctly bound, Send data
+                usbService.write(data.getBytes(StandardCharsets.UTF_8));
+            } else {
+                displayNotConnectedView();
+            }
+
+            switch (deviceStatus) {
+
+                case 0:
+                    handler.postDelayed(this, IDENTIFY_DELAY_MILLIS);
+                    break;
+                case 1:
+                    handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
+                    break;
+                default:
+                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+                            mCurrentTestInfo.getName()),
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+            }
         }
     };
 
@@ -134,13 +172,14 @@ public class SensorActivity extends BaseActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        setTitle("Sensor");
+        setTitle(R.string.sensor);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(runnable);
+        handler.removeCallbacks(validateDeviceRunnable);
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
     }
@@ -162,7 +201,9 @@ public class SensorActivity extends BaseActivity {
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        handler.postDelayed(runnable, 100);
+        deviceStatus = 0;
+
+        handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 3);
     }
 
     private void requestResult() {
@@ -192,20 +233,22 @@ public class SensorActivity extends BaseActivity {
         setContentView(R.layout.activity_sensor);
 
         final Intent intent = getIntent();
+        String mUuid = intent.getStringExtra(Constant.UUID);
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
+        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
-        textResult = (TextView) findViewById(R.id.textResult);
-        textTemperature = (TextView) findViewById(R.id.textTemperature);
-        progressWait = (ProgressBar) findViewById(R.id.progressWait);
-        textUnit = (TextView) findViewById(R.id.textName);
-        TextView textUnit2 = (TextView) findViewById(R.id.textUnit2);
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        progressWait = (ProgressBar) findViewById(R.id.progressWait);
+        textResult = (TextView) findViewById(R.id.textResult);
+        textResult2 = (TextView) findViewById(R.id.textResult2);
+        textUnit = (TextView) findViewById(R.id.textUnit);
+        textUnit2 = (TextView) findViewById(R.id.textUnit2);
         imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);
 
         textSubtitle.setText(R.string.deviceConnectSensor);
-
-        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
@@ -218,20 +261,12 @@ public class SensorActivity extends BaseActivity {
 
                 Intent resultIntent = new Intent(intent);
 
-                ArrayList<String> results = new ArrayList<>();
-                results.add(mEc25Value);
-                results.add(mTemperature);
-
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "");
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, EMPTY_STRING, null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
                 // TODO: Remove this when obsolete
                 // Backward compatibility. Return plain text result
-                if (mCurrentTestInfo != null && mCurrentTestInfo.getShortCode().equalsIgnoreCase("TEMPE")) {
-                    resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, mTemperature);
-                } else {
-                    resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, mEc25Value);
-                }
+                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(0));
 
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
@@ -240,16 +275,12 @@ public class SensorActivity extends BaseActivity {
 
         layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
-        Configuration config = getResources().getConfiguration();
-        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
+        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getName(config.locale.getLanguage()));
+                    mCurrentTestInfo.getName());
         }
 
-        if (mIsInternal) {
-            textTemperature.setVisibility(View.VISIBLE);
-            textUnit2.setVisibility(View.VISIBLE);
-        }
+        progressWait.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -263,19 +294,28 @@ public class SensorActivity extends BaseActivity {
     }
 
     private void displayNotConnectedView() {
-        mReadData.setLength(0);
-        progressWait.setVisibility(View.GONE);
-        layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
-        imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
-        buttonAcceptResult.setVisibility(View.GONE);
-        textSubtitle.setText(R.string.deviceConnectSensor);
+        if (!isFinishing()) {
+            mReadData.setLength(0);
+            progressWait.setVisibility(View.GONE);
+            layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+            imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
+            buttonAcceptResult.setVisibility(View.GONE);
+            textSubtitle.setText(R.string.deviceConnectSensor);
 
-        if (!mIsInternal) {
-            (new Handler()).postDelayed(new Runnable() {
-                public void run() {
-                    finish();
-                }
-            }, FINISH_DELAY_MILLIS);
+            if (!mIsInternal) {
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+                        if (!isFinishing()) {
+                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+                                    mCurrentTestInfo.getName()),
+                                    Toast.LENGTH_SHORT).show();
+
+                            finish();
+                        }
+
+                    }
+                }, FINISH_DELAY_MILLIS);
+            }
         }
     }
 
@@ -285,12 +325,12 @@ public class SensorActivity extends BaseActivity {
             Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
         }
 
+        // reject value if corrupt
         if (value.startsWith(".") || value.startsWith(",")) {
             return;
         }
 
-        Configuration config = getResources().getConfiguration();
-
+        // clean up data
         value = value.trim();
         if (value.contains("\r\n")) {
             String[] values = value.split("\r\n");
@@ -299,81 +339,99 @@ public class SensorActivity extends BaseActivity {
             }
         }
 
-        final String result = value;
-        if (!result.isEmpty()) {
+        value = value.trim();
+        if (!value.isEmpty()) {
 
-            String[] resultArray = result.split(",");
+            // if device not yet validated then check if device id is ok
+            if (deviceStatus == 0) {
+                if (value.contains(" ")) {
+                    if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
+                        deviceStatus = 1;
+                    } else {
+                        deviceStatus = 2;
+                    }
+                }
+                return;
+            }
+
+            if (deviceStatus == 2) {
+                return;
+            }
+
+            String[] resultArray = value.split(",");
 
             if (AppPreferences.getShowDebugMessages()) {
+                final String finalValue = value;
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (debugToast == null) {
-                            debugToast = Toast.makeText(getBaseContext(), result.trim(), Toast.LENGTH_LONG);
+                            debugToast = Toast.makeText(getBaseContext(), finalValue, Toast.LENGTH_LONG);
                         }
-                        debugToast.setText(result.trim());
+                        debugToast.setText(finalValue);
                         debugToast.show();
                     }
                 });
             }
 
-            if (resultArray.length > 1) {
+            if (resultArray.length == mCurrentTestInfo.getResponseFormat().split(",").length) {
+
+                // use the response format to display the results in test id order
+                String responseFormat = mCurrentTestInfo.getResponseFormat().replace("$", EMPTY_STRING)
+                        .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
+                results.clear();
+
+                String[] tempString = new String[mCurrentTestInfo.getSubTests().size()];
 
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
-                }
 
-                double temperature;
-                long ec25Value;
-
-                try {
-                    temperature = Double.parseDouble(resultArray[0]);
-                    mTemperature = String.format(Locale.US, "%.1f", temperature);
-                } catch (NumberFormatException e) {
-                    mTemperature = "";
-                }
-
-                try {
-                    ec25Value = Math.round(Double.parseDouble(resultArray[1]));
-                } catch (NumberFormatException e) {
-                    ec25Value = -1;
-                }
-
-                if (ec25Value > -1) {
-                    mEc25Value = Long.toString(ec25Value);
-                } else {
-                    mEc25Value = "";
-                }
-
-                if (mCurrentTestInfo != null && mCurrentTestInfo.getCode().equals("TEMPE")) {
-                    textSubtitle.setText(R.string.sensorConnected);
-                    textResult.setText(mTemperature);
-                    if (!mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
-                        textUnit.setText(mCurrentTestInfo.getUnit());
+                    int index = responseFormat.indexOf(String.valueOf(i + 1));
+                    try {
+                        if (resultArray[i].equalsIgnoreCase("nan")) {
+                            tempString[index] = EMPTY_STRING;
+                        } else if (index > -1) {
+                            double result = Double.parseDouble(resultArray[i]);
+                            tempString[index] = String.format(Locale.US, "%.1f", result);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage(), e);
+                        return;
                     }
-                    buttonAcceptResult.setVisibility(View.VISIBLE);
+                }
+
+                Collections.addAll(results, tempString);
+
+                // display the results
+                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0
+                        && !results.get(0).equals(EMPTY_STRING)) {
+                    textResult.setText(results.get(0));
+                    textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
+                    textResult.setVisibility(View.VISIBLE);
+                    textUnit.setVisibility(View.VISIBLE);
                     progressWait.setVisibility(View.GONE);
+                    buttonAcceptResult.setVisibility(View.VISIBLE);
+                    textSubtitle.setText(R.string.sensorConnected);
                 } else {
-                    if (mEc25Value.isEmpty()) {
-                        textResult.setText("");
-                        progressWait.setVisibility(View.VISIBLE);
-                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
-                            textUnit.setText(mCurrentTestInfo.getUnit());
-                        }
-                        buttonAcceptResult.setVisibility(View.GONE);
-                        textSubtitle.setText(R.string.dipSensorInSample);
-                    } else {
-                        textResult.setText(String.format(Locale.US, "%d", ec25Value));
-                        progressWait.setVisibility(View.GONE);
-                        buttonAcceptResult.setVisibility(View.VISIBLE);
-                        textSubtitle.setText(R.string.sensorConnected);
-                        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName(config.locale.getLanguage()).isEmpty()) {
-                            textUnit.setText(mCurrentTestInfo.getUnit());
-                        }
-                    }
+                    textResult.setText(EMPTY_STRING);
+                    textUnit.setText(EMPTY_STRING);
+                    textResult.setVisibility(View.INVISIBLE);
+                    textUnit.setVisibility(View.INVISIBLE);
+                    progressWait.setVisibility(View.VISIBLE);
+                    buttonAcceptResult.setVisibility(View.GONE);
+                    textSubtitle.setText(R.string.dipSensorInSample);
                 }
 
-                textTemperature.setText(mTemperature);
+                if (mCurrentTestInfo.getSubTests().size() > 1 && results.size() > 1) {
+                    textResult2.setText(results.get(1));
+                    textUnit2.setText(mCurrentTestInfo.getSubTests().get(1).getUnit());
+                    textResult2.setVisibility(View.VISIBLE);
+                    textUnit2.setVisibility(View.VISIBLE);
+                } else {
+                    textResult2.setVisibility(View.GONE);
+                    textUnit2.setVisibility(View.GONE);
+                }
 
+                // if test is not via survey then do not show the accept button
                 if (mIsInternal) {
                     buttonAcceptResult.setVisibility(View.GONE);
                 }
@@ -404,7 +462,7 @@ public class SensorActivity extends BaseActivity {
                     sensorActivity.mReceivedData += data;
                     if (sensorActivity.mReceivedData.contains("\r\n")) {
                         sensorActivity.displayResult(sensorActivity.mReceivedData);
-                        sensorActivity.mReceivedData = "";
+                        sensorActivity.mReceivedData = EMPTY_STRING;
                     }
                 }
             }

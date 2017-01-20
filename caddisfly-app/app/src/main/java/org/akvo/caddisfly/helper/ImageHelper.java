@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.helper;
@@ -29,9 +32,10 @@ import org.opencv.imgproc.Imgproc;
 public final class ImageHelper {
 
     private static final Scalar COLOR_GREEN = new Scalar(0, 255, 0);
-    private static final int MAX_RADIUS = 70;
-    private static final int MIN_CIRCLE_CENTER_DISTANCE = 70;
     private static final int MIN_RADIUS = 30;
+    private static final int MAX_RADIUS = 70;
+    // minimum distance between the center coordinates of detected circles in pixels
+    private static final int MIN_CIRCLE_CENTER_DISTANCE = 70;
     private static final double RESOLUTION_INVERSE_RATIO = 1.2d;
 
     private ImageHelper() {
@@ -63,14 +67,6 @@ public final class ImageHelper {
         // reduce the noise so we avoid false circle detection
         //Imgproc.GaussianBlur(grayMat, grayMat, new Size(9, 9), 2, 2);
 
-        // accumulator value
-        double dp = RESOLUTION_INVERSE_RATIO;
-        // minimum distance between the center coordinates of detected circles in pixels
-        double minDist = MIN_CIRCLE_CENTER_DISTANCE;
-
-        // min and max radii (set these values as you desire)
-        int minRadius = MIN_RADIUS, maxRadius = MAX_RADIUS;
-
         // param1 = gradient value used to handle edge detection
         // param2 = Accumulator threshold value for the
         // cv2.CV_HOUGH_GRADIENT method.
@@ -86,8 +82,8 @@ public final class ImageHelper {
 
         // find the circle in the image
         Imgproc.HoughCircles(grayMat, circles,
-                Imgproc.CV_HOUGH_GRADIENT, dp, minDist, param1,
-                param2, minRadius, maxRadius);
+                Imgproc.CV_HOUGH_GRADIENT, RESOLUTION_INVERSE_RATIO, (double) MIN_CIRCLE_CENTER_DISTANCE, param1,
+                param2, MIN_RADIUS, MAX_RADIUS);
 
         int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
 

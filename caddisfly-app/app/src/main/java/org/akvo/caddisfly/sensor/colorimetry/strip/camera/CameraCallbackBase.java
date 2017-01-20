@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
@@ -104,7 +107,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         int titleLevel = 0;
 
         try {
-            if (possibleCenters != null && possibleCenters.size() == 4) {
+            if (possibleCenters != null) {
                 bgr = new Mat(previewSize.height, previewSize.width, CvType.CV_8UC3);
 
                 //convert preview data to Mat object
@@ -342,8 +345,12 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 if (listener != null) {
                     listener.showFinderPatterns(possibleCenters, previewSize, finderPatternColor);
                 }
-                int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
-                CalibrationCard.addVersionNumber(versionNumber);
+
+                // if card version has been read and established then no need to decode again
+                if (!CalibrationCard.isCardVersionEstablished()) {
+                    int versionNumber = CalibrationCard.decodeCalibrationCardCode(possibleCenters, bitMatrix);
+                    CalibrationCard.addVersionNumber(versionNumber);
+                }
                 calibrationData = CalibrationCard.readCalibrationFile();
             } else {
                 listener.showFinderPatterns(null, null, 1);

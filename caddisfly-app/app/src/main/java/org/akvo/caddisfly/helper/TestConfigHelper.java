@@ -1,23 +1,27 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.helper;
 
 import android.os.Build;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -26,6 +30,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -37,14 +42,15 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Utility functions to parse a text config json text
  */
 public final class TestConfigHelper {
+
+    private static final String TAG = "TestConfigHelper";
 
     // Files
     private static final String CONFIG_FILE = "tests.json";
@@ -64,7 +70,7 @@ public final class TestConfigHelper {
 
         if (uuid != null && !uuid.isEmpty()) {
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 String jsonText;
                 switch (i) {
@@ -73,29 +79,23 @@ public final class TestConfigHelper {
                         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
                         jsonText = FileUtil.loadTextFromFile(file);
                         break;
-                    case 2:
-                        // Load any experimental tests if app is in diagnostic mode
-                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json");
-                        break;
                     default:
                         // Load the pre-configured tests from the app
-                        jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+                        jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
                 }
                 try {
                     JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
                     for (int j = 0; j < array.length(); j++) {
                         JSONObject item = array.getJSONObject(j);
 
-                        JSONArray uuidArray = item.getJSONArray("uuid");
-                        for (int k = 0; k < uuidArray.length(); k++) {
-                            if (uuid.equalsIgnoreCase(uuidArray.getString(k))) {
-                                return loadTest(item);
-                            }
+                        String newUuid = item.getString(SensorConstants.UUID);
+                        if (uuid.equalsIgnoreCase(newUuid)) {
+                            return loadTest(item);
                         }
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
 
             }
@@ -108,30 +108,24 @@ public final class TestConfigHelper {
      *
      * @return ArrayList of TestInfo instances filled with config
      */
-    public static ArrayList<TestInfo> loadTestsList() {
+    public static List<TestInfo> loadTestsList() {
 
-        ArrayList<TestInfo> tests = new ArrayList<>();
+        List<TestInfo> tests = new ArrayList<>();
 
         // Load the pre-configured tests from the app
-        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("tests_config.json"), false, -1);
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME), -1);
 
         // Load any custom tests from the custom test config file
         File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
         if (file.exists()) {
-            loadTests(tests, FileUtil.loadTextFromFile(file), false, R.string.customTests);
-        }
-
-        // Load any experimental tests if app is in diagnostic mode
-        if (AppPreferences.isDiagnosticMode()) {
-            loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset("experimental_tests_config.json"),
-                    true, R.string.experimental);
+            loadTests(tests, FileUtil.loadTextFromFile(file), R.string.customTests);
         }
 
         return tests;
     }
 
-    private static void loadTests(ArrayList<TestInfo> tests, String jsonText,
-                                  boolean isDiagnostic, @StringRes int groupName) {
+    private static void loadTests(List<TestInfo> tests, String jsonText,
+                                  @StringRes int groupName) {
 
         int groupIndex = tests.size();
 
@@ -141,40 +135,27 @@ public final class TestConfigHelper {
             for (int i = 0; i < array.length(); i++) {
                 try {
                     JSONObject item = array.getJSONObject(i);
+                    String uuid = item.getString(SensorConstants.UUID);
 
                     // get uuids
-                    JSONArray uuidArray = item.getJSONArray("uuid");
-                    ArrayList<String> uuids = new ArrayList<>();
-                    for (int ii = 0; ii < uuidArray.length(); ii++) {
-
-                        String newUuid = uuidArray.getString(ii);
-                        boolean found = false;
-                        for (TestInfo test : tests) {
-                            for (String uuid : test.getUuid()) {
-                                if (uuid.equalsIgnoreCase(newUuid)) {
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            uuids.add(newUuid);
+                    boolean found = false;
+                    for (TestInfo test : tests) {
+                        if (uuid.equalsIgnoreCase(test.getId())) {
+                            found = true;
+                            break;
                         }
                     }
-
-                    if (uuids.isEmpty()) {
+                    if (found) {
                         continue;
                     }
 
                     TestInfo testInfo = loadTest(item);
-                    if (testInfo != null) {
-                        testInfo.setIsDiagnostic(isDiagnostic);
-                    }
 
                     //Create TestInfo object
                     tests.add(testInfo);
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                 }
             }
 
@@ -184,14 +165,11 @@ public final class TestConfigHelper {
                 testGroup.setGroup(true);
                 testGroup.setRequiresCalibration(true);
                 testGroup.setGroupName(groupName);
-                if (isDiagnostic) {
-                    testGroup.setIsDiagnostic(true);
-                }
                 tests.add(groupIndex, testGroup);
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }
@@ -204,8 +182,7 @@ public final class TestConfigHelper {
             TestType type;
             if (item.has("subtype")) {
                 switch (item.getString("subtype")) {
-                    case "color":
-                    case "colour":
+                    case "liquid-chamber":
                         type = TestType.COLORIMETRIC_LIQUID;
                         break;
                     case "strip":
@@ -215,10 +192,6 @@ public final class TestConfigHelper {
                     case "sensor":
                         type = TestType.SENSOR;
                         break;
-                    case "coliform":
-                    case "coliforms":
-                        type = TestType.TURBIDITY_COLIFORMS;
-                        break;
                     default:
                         return null;
                 }
@@ -227,20 +200,7 @@ public final class TestConfigHelper {
             }
 
             //Get the name for this test
-            JSONArray nameArray = item.getJSONArray("name");
-
-            HashMap<String, String> namesHashTable =
-                    new HashMap<>(nameArray.length(), nameArray.length());
-
-            //Load test names in different languages
-            for (int j = 0; j < nameArray.length(); j++) {
-                if (!nameArray.isNull(j)) {
-                    Iterator iterator = nameArray.getJSONObject(j).keys();
-                    String key = (String) iterator.next();
-                    String name = nameArray.getJSONObject(j).getString(key);
-                    namesHashTable.put(key, name);
-                }
-            }
+            String name = item.getString("name");
 
             //Load results
             JSONArray resultsArray = null;
@@ -273,38 +233,35 @@ public final class TestConfigHelper {
             }
 
             // get uuids
-            JSONArray uuidArray = item.getJSONArray("uuid");
-            ArrayList<String> uuids = new ArrayList<>();
-            for (int ii = 0; ii < uuidArray.length(); ii++) {
-                String newUuid = uuidArray.getString(ii);
-                if (!uuids.contains(newUuid)) {
-                    uuids.add(newUuid);
-                }
-            }
+            String uuid = item.getString(SensorConstants.UUID);
 
-            testInfo = new TestInfo(namesHashTable, type, rangesArray,
-                    defaultColorsArray, dilutionsArray, uuids, resultsArray);
+            testInfo = new TestInfo(name, type, rangesArray,
+                    defaultColorsArray, dilutionsArray, uuid, resultsArray);
 
-            testInfo.setShortCode(item.has("shortCode") ? item.getString("shortCode") : "");
+            testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
+
+            testInfo.setDeviceId(item.has("deviceId") ? item.getString("deviceId") : "Unknown");
+
+            testInfo.setResponseFormat(item.has("responseFormat") ? item.getString("responseFormat") : "");
 
             testInfo.setUseGrayScale(item.has("grayScale") && item.getBoolean("grayScale"));
 
             testInfo.setMonthsValid(item.has("monthsValid") ? item.getInt("monthsValid") : DEFAULT_MONTHS_VALID);
 
             //if calibrate not specified then default to false otherwise use specified value
-            testInfo.setRequiresCalibration(item.has("calibrate") && item.getString("calibrate").equalsIgnoreCase("true"));
+            testInfo.setRequiresCalibration(item.has("calibrate") && item.getBoolean("calibrate"));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
 
         return testInfo;
     }
 
-    public static JSONObject getJsonResult(TestInfo testInfo, ArrayList<String> results, int color,
-                                           String resultImageUrl) {
+    public static JSONObject getJsonResult(TestInfo testInfo, List<String> results, int color,
+                                           String resultImageUrl, StripTest.GroupType groupingType) {
 
         JSONObject resultJson = new JSONObject();
 
@@ -312,7 +269,7 @@ public final class TestConfigHelper {
 
             resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
             resultJson.put(SensorConstants.NAME, testInfo.getName());
-            resultJson.put(SensorConstants.UUID, testInfo.getUuid());
+            resultJson.put(SensorConstants.UUID, testInfo.getId());
 
 
             JSONArray resultsJsonArray = new JSONArray();
@@ -343,6 +300,10 @@ public final class TestConfigHelper {
                 }
 
                 resultsJsonArray.put(subTestJson);
+
+                if (groupingType == StripTest.GroupType.GROUP) {
+                    break;
+                }
             }
 
             resultJson.put(SensorConstants.RESULT, resultsJsonArray);
@@ -365,7 +326,7 @@ public final class TestConfigHelper {
             resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
         }
         return resultJson;
     }
@@ -409,18 +370,19 @@ public final class TestConfigHelper {
         if (!shortCode.isEmpty()) {
 
             // Load the pre-configured tests from the app
-            String jsonText = AssetsManager.getInstance().loadJSONFromAsset("tests_config.json");
+            String jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
             try {
                 JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = array.getJSONObject(i);
-                    if (item.has("shortCode") && shortCode.equalsIgnoreCase(item.getString("shortCode"))) {
-                        return item.getJSONArray("uuid").getString(0);
+                    if (item.has(SensorConstants.SHORT_CODE)
+                            && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
+                        return item.getString(SensorConstants.UUID);
                     }
                 }
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return null;

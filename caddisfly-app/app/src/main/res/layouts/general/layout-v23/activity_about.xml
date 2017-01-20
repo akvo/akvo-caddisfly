@@ -1,19 +1,21 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
-  ~ This file is part of Akvo Caddisfly
+  ~ This file is part of Akvo Caddisfly.
   ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
-  ~ the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
-  ~ either version 3 of the License or any later version.
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
   ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License included below for more details.
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
   ~
-  ~ The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
-
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -77,9 +79,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@null"
                 android:minHeight="80dp"
                 android:minWidth="80dp"
-                android:contentDescription="@null"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
@@ -93,7 +95,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/buttonSoftwareNotices"
+                android:id="@+id/textLinkSoftwareNotices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -102,13 +104,6 @@
                 android:text="@string/legalInformation"
                 android:textColor="@color/cyan"
                 android:textSize="15sp" />
-
-            <View
-                android:id="@+id/viewInstallType"
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#e4e4e4" />
 
         </LinearLayout>
     </LinearLayout>

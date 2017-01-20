@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.ui;
@@ -38,7 +41,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidExternalActivity;
 import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -68,7 +70,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {
-        CaddisflyApp.getApp().loadTestConfigurationByUuid(testInfo.getUuid().get(0));
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(testInfo.getId());
 
         switch (testInfo.getType()) {
             case COLORIMETRIC_LIQUID:
@@ -114,11 +116,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
             final Intent intent;
             if (getIntent().getBooleanExtra("runTest", false)) {
-                if (AppPreferences.useExternalCamera()) {
-                    intent = new Intent(this, ColorimetryLiquidExternalActivity.class);
-                } else {
-                    intent = new Intent(this, ColorimetryLiquidActivity.class);
-                }
+                intent = new Intent(this, ColorimetryLiquidActivity.class);
             } else {
                 intent = new Intent(this, CalibrateListActivity.class);
             }

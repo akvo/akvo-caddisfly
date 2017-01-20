@@ -1,17 +1,20 @@
 /*
  * Copyright (C) Stichting Akvo (Akvo Foundation)
  *
- * This file is part of Akvo Caddisfly
+ * This file is part of Akvo Caddisfly.
  *
- * Akvo Caddisfly is free software: you can redistribute it and modify it under the terms of
- * the GNU Affero General Public License (AGPL) as published by the Free Software Foundation,
- * either version 3 of the License or any later version.
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Akvo Caddisfly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License included below for more details.
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * The full license text can also be seen at <http://www.gnu.org/licenses/agpl.html>.
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
@@ -53,12 +56,6 @@ import java.util.List;
  * Then we update the UI:
  * First it shows if quality checks are OK
  * <p/>
- * It uses an instance of
- * ProgressIndicatorView to indicate if
- * a. it is time to take a picture
- * b. the picture is taken
- * <p/>
- * If all pictures are taken it shows an animation of a spinning circle while doing a DetectStripTask
  */
 public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
@@ -76,7 +73,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private JSONArray imagePatchArray = new JSONArray();
     private long initTimeMillis;
     /*
-     * Update the ProgressIndicatorView every second
+     * Update the progress every second
     */
     @Nullable
     private final Runnable countdownRunnable = new Runnable() {
@@ -263,7 +260,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     /*
    * Keep track of the time.
    * We start a runnable (countdownRunnable) that update the partial_progress view (afterwards that takes care of itself)
-   * We know beforehand at what intervals the patches are due from the values in strips.json
+   * We know beforehand at what intervals the patches are due from the values in tests config json
    * so we can use a handler and runnable to post them at exactly that interval from start countdown
     */
     private void startCountdown() {
@@ -279,8 +276,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         //initialise the global initial time
         initTimeMillis = System.currentTimeMillis();
 
-        //post the runnable responsible for updating the
-        // ProgressIndicatorView
+        //post the runnable responsible for updating progress
         if (handler != null) {
             handler.post(countdownRunnable);
         }
