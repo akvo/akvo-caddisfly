@@ -37,7 +37,7 @@
         android:orientation="vertical"
         android:paddingBottom="20dp"
         android:paddingEnd="6dp"
-        android:paddingStart="16dp"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         tools:ignore="UnknownIdInLayout">
 
         <TextView

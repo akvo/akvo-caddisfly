@@ -20,9 +20,11 @@
 package org.akvo.caddisfly.sensor.ec;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -30,6 +32,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,10 +72,10 @@ public class SensorActivity extends BaseActivity {
     private static final int IDENTIFY_DELAY_MILLIS = 500;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
-    private static final int FINISH_DELAY_MILLIS = 3000;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private final List<String> results = new ArrayList<>();
+    private AlertDialog alertDialog;
     private TestInfo mCurrentTestInfo;
     private Toast debugToast;
     private boolean mIsInternal = false;
@@ -129,7 +134,6 @@ public class SensorActivity extends BaseActivity {
         }
     };
     private int deviceStatus = 0;
-
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -148,16 +152,47 @@ public class SensorActivity extends BaseActivity {
                     break;
                 case 1:
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
+                    alertDialog.dismiss();
                     break;
                 default:
-                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                            mCurrentTestInfo.getName()),
-                            Toast.LENGTH_SHORT).show();
-                    finish();
+                    if (!alertDialog.isShowing()) {
+                        alertDialog.show();
+                    }
+                    handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
+//                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+//                            mCurrentTestInfo.getName()),
+//                            Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
+    private static AlertDialog createAlert(@NonNull final Activity context, @StringRes int title, String message,
+                                           @StringRes int okButtonText,
+                                           @Nullable DialogInterface.OnClickListener cancelListener) {
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(false);
+
+
+        if (cancelListener == null) {
+            cancelListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    context.finish();
+                }
+            };
+        }
+
+        builder.setNegativeButton(okButtonText, cancelListener);
+
+        return builder.create();
+    }
 
     @Override
     public void onResume() {
@@ -202,6 +237,8 @@ public class SensorActivity extends BaseActivity {
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
         deviceStatus = 0;
+
+        alertDialog.dismiss();
 
         handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 3);
     }
@@ -278,6 +315,11 @@ public class SensorActivity extends BaseActivity {
         if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
+
+            String message = getString(R.string.connectCorrectSensor,
+                    mCurrentTestInfo.getName());
+
+            alertDialog = createAlert(this, R.string.wrongSensor, message, R.string.cancel, null);
         }
 
         progressWait.setVisibility(View.VISIBLE);
@@ -302,20 +344,19 @@ public class SensorActivity extends BaseActivity {
             buttonAcceptResult.setVisibility(View.GONE);
             textSubtitle.setText(R.string.deviceConnectSensor);
 
-            if (!mIsInternal) {
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        if (!isFinishing()) {
-                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName()),
-                                    Toast.LENGTH_SHORT).show();
-
-                            finish();
-                        }
-
-                    }
-                }, FINISH_DELAY_MILLIS);
-            }
+//            if (!mIsInternal) {
+//                (new Handler()).postDelayed(new Runnable() {
+//                    public void run() {
+//                        if (!isFinishing()) {
+//                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
+//                                    mCurrentTestInfo.getName()), Toast.LENGTH_SHORT).show();
+//
+//                            finish();
+//                        }
+//
+//                    }
+//                }, FINISH_DELAY_MILLIS);
+//            }
         }
     }
 
@@ -356,6 +397,8 @@ public class SensorActivity extends BaseActivity {
 
             if (deviceStatus == 2) {
                 return;
+            } else {
+                alertDialog.dismiss();
             }
 
             String[] resultArray = value.split(",");
