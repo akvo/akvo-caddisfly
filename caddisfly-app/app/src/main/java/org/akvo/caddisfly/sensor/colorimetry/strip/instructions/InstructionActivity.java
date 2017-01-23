@@ -66,8 +66,20 @@ public class InstructionActivity extends BaseActivity {
         if (instructions != null) {
             for (int i = 0; i < instructions.length(); i++) {
                 try {
+
+                    Object item = instructions.getJSONObject(i).get("text");
+                    JSONArray jsonArray;
+
+                    if (item instanceof JSONArray) {
+                        jsonArray = (JSONArray) item;
+                    } else {
+                        String text = (String) item;
+                        jsonArray = new JSONArray();
+                        jsonArray.put(text);
+                    }
+
                     fragments.add(InstructionDetailFragment.newInstance(
-                            instructions.getJSONObject(i).getString("text"),
+                            jsonArray,
                             instructions.getJSONObject(i).has("png")
                                     ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {

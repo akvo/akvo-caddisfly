@@ -33,6 +33,11 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
+import org.akvo.caddisfly.util.StringUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class InstructionDetailFragment extends Fragment {
     /**
@@ -48,10 +53,23 @@ public class InstructionDetailFragment extends Fragment {
     public InstructionDetailFragment() {
     }
 
-    public static InstructionDetailFragment newInstance(String text, String imageName) {
+    public static InstructionDetailFragment newInstance(JSONArray text, String imageName) {
         InstructionDetailFragment fragment = new InstructionDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_ITEM_TEXT, text);
+
+
+        ArrayList<String> listdata = new ArrayList<String>();
+        if (text != null) {
+            for (int i = 0; i < text.length(); i++) {
+                try {
+                    listdata.add(text.getString(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        args.putStringArrayList(ARG_ITEM_TEXT, listdata);
         args.putString(ARG_ITEM_IMAGE, imageName);
         fragment.setArguments(args);
         return fragment;
@@ -69,11 +87,11 @@ public class InstructionDetailFragment extends Fragment {
                     setImageDrawable(instructionDrawable);
         }
 
-        String instructionText = getArguments().getString(ARG_ITEM_TEXT);
+        ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
             LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_instructions);
-            for (String instruction : instructionText.split("<!")) {
+            for (String instruction : instructionText) {
                 TextView textView = new TextView(getActivity());
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.mediumTextSize));
@@ -90,6 +108,7 @@ public class InstructionDetailFragment extends Fragment {
                     textView.setTextColor(Color.DKGRAY);
                 }
                 String text = instruction.replaceAll(">", "");
+                text = StringUtil.getStringResourceByName(getContext(), text);
                 if (!text.isEmpty()) {
                     textView.append(text);
                     linearLayout.addView(textView);

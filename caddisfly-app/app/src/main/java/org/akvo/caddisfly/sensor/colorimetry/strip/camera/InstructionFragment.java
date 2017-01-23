@@ -38,6 +38,7 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -101,8 +102,20 @@ public class InstructionFragment extends CameraSharedFragmentBase {
             if (instructions != null) {
                 try {
                     for (int i = 0; i < instructions.length(); i++) {
-                        for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
-                            showInstruction(linearLayout, instruction, Typeface.NORMAL);
+
+                        Object item = instructions.getJSONObject(i).get("text");
+                        JSONArray jsonArray;
+
+                        if (item instanceof JSONArray) {
+                            jsonArray = (JSONArray) item;
+                        } else {
+                            String text = (String) item;
+                            jsonArray = new JSONArray();
+                            jsonArray.put(text);
+                        }
+
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            showInstruction(linearLayout, jsonArray.getString(j), Typeface.NORMAL);
                         }
                     }
                 } catch (JSONException e) {
@@ -160,6 +173,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         }
 
         String text = instruction.replaceAll(">", "");
+        text = StringUtil.getStringResourceByName(getContext(), text);
         if (!text.isEmpty()) {
             textView.append(text);
             linearLayout.addView(textView);

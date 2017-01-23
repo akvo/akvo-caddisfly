@@ -5,19 +5,23 @@
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "Dip the strip and move back and forth for 30 seconds in water. Afterwards, dry off excess water. (e.g. place it on a towel)",
+          "text": "dip_strip_move_back_forth",
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "dry_off_excess_water",
+          "png": ""
+        },
+        {
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -27,19 +31,19 @@
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "instructions": [
         {
-          "text": "Dip strip into water for 1 second.",
+          "text": "dip_strip_into_water",
           "png": "instruction_dip"
         },
         {
-          "text": "<!>Do not shake excess water from the test strip.<!>",
+          "text": "<!>do_not_shake_excess_water<!>",
           "png": ""
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -49,27 +53,27 @@
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "instructions": [
         {
-          "text": "Fill HALF of the vial with sample water.",
+          "text": "fill_half_with_sample",
           "png": ""
         },
         {
-          "text": "Open one foil packet and add powder contents to vial.",
+          "text": "open_one_foil_and_add_powder",
           "png": ""
         },
         {
-          "text": "Cap vial and shake rapidly for 5 seconds. Remove cap.",
+          "text": "cap_vial_and_shake_rapidly",
           "png": ""
         },
         {
-          "text": "Dip a test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.",
+          "text": "dip_strip_move_back_forth_15_seconds",
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Start test immediately.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -79,19 +83,22 @@
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "Dip a strip into water and remove immediately. Do not shake excess water from strip",
+          "text": [
+            "dip_strip_into_water_and_remove",
+            "do_not_shake_excess_water"
+          ],
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -110,19 +117,22 @@
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "Dip a strip into water for 5 seconds and remove. Do not shake excess water from strip",
+          "text": [
+            "dip_strip_5_seconds_and_remove",
+            "do_not_shake_excess_water"
+          ],
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -132,19 +142,19 @@
       "uuid": "ce84aa91-28b9-4a8a-b57a-da7b0382570b",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "Dip a strip into water for 1 second and remove.",
+          "text": "dip_strip_into_water",
           "png": "instruction_dip"
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -154,7 +164,7 @@
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
@@ -171,11 +181,11 @@
           "text": "Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel."
         },
         {
-          "text": "Place strip onto black area.",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -185,7 +195,7 @@
       "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
       "instructions": [
         {
-          "text": "Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+          "text": "conduct_test_per_instructions"
         }
       ]
     },
@@ -204,11 +214,11 @@
           "text": "Wait 20 minutes. Swirl twice during the reaction period"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -228,11 +238,11 @@
           "text": "Wait 20 minutes. Swirl twice during the reaction period"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
@@ -242,7 +252,7 @@
       "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
       "instructions": [
         {
-          "text": "Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis."
+          "text": "conduct_test_per_instructions"
         }
       ]
     },
@@ -251,22 +261,22 @@
       "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "instructions": [
         {
-          "text": "Collect water sample",
+          "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "Dip a strip in the water for at least 2 seconds and remove.",
+          "text": "dip_strip_in_water_2_seconds",
           "png": "instruction_dip"
         },
         {
-          "text": "Shake excess water from the strip"
+          "text": "shake_excess_water"
         },
         {
-          "text": "Place strip onto black area. ",
+          "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
-          "text": "Press 'Start' button.",
+          "text": "press_start_button",
           "png": ""
         }
       ]
