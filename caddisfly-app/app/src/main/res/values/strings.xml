@@ -19,8 +19,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="appName">"Akvo Caddisfly"</string>
-
     <!--Common-->
     <string name="ok">OK</string>
     <string name="retry">Retry</string>
@@ -222,5 +220,14 @@
     <string name="dip_strip_5_seconds_and_remove">Dip a strip into water for 5 seconds and remove.</string>
     <string name="dip_strip_into_water_and_remove">Dip a strip into water and remove immediately.</string>
     <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis.</string>
+    <string name="immerse_reaction_zone">Immerse the reaction zone of the test strip in the pretreated sample (15 – 30 °C) for 1 sec</string>
+    <string name="allow_excess_liquid">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
+    <string name="add_reagent_k1">Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min.</string>
+    <string name="follow_the_instructions_for_reagents">Follow the instructions that came with the testing kit for adding reagents</string>
+    <string name="wait_20_minutes_swirl_twice">Wait 20 minutes. Swirl twice during the reaction period</string>
+    <string name="collect_50ml_sample">Collect 50 ml water sample using the provided bottle.</string>
+    <string name="collect_9.6ml_sample">Collect 9.6 ml water sample using the small square container.</string>
+    <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>
+    <string name="sample_size_for_4000_range">This sample size is for the range 0 – 4000 ppb</string>
 
 </resources>

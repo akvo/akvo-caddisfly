@@ -102,12 +102,12 @@ public class InstructionDetailFragment extends Fragment {
                 textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                         getResources().getDisplayMetrics()), 1.0f);
 
-                if (instruction.contains(">")) {
+                if (instruction.contains("<!>")) {
                     textView.setTextColor(Color.RED);
                 } else {
                     textView.setTextColor(Color.DKGRAY);
                 }
-                String text = instruction.replaceAll(">", "");
+                String text = instruction.replaceAll("<!>", "");
                 text = StringUtil.getStringResourceByName(getContext(), text);
                 if (!text.isEmpty()) {
                     textView.append(text);

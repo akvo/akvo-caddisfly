@@ -19,6 +19,8 @@
 
 <resources>
 
+    <string name="appName">"Akvo Caddisfly"</string>
+
     <string-array name="languages">
         <item>English</item>
         <item>Français</item>

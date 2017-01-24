@@ -157,7 +157,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin),
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin));
 
-        if (instruction.contains(">")) {
+        if (instruction.contains("<!>")) {
             textView.setTextColor(Color.RED);
         } else {
             textView.setTextColor(Color.DKGRAY);
@@ -172,7 +172,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                     getResources().getDimension(R.dimen.titleTextSize));
         }
 
-        String text = instruction.replaceAll(">", "");
+        String text = instruction.replaceAll("<!>", "");
         text = StringUtil.getStringResourceByName(getContext(), text);
         if (!text.isEmpty()) {
             textView.append(text);
