@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.Spanned;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -173,9 +174,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         }
 
         String text = instruction.replaceAll("<!>", "");
-        text = StringUtil.getStringResourceByName(getContext(), text);
+        Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
         if (!text.isEmpty()) {
-            textView.append(text);
+            textView.append(spanned);
             linearLayout.addView(textView);
         }
     }

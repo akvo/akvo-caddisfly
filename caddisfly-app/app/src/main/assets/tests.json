@@ -145,7 +145,6 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
-      "background": "#4540D2",
       "hasImage": true,
       "results": [
         {
@@ -231,7 +230,6 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
-      "background": "#60bbc2",
       "hasImage": true,
       "results": [
         {
@@ -321,7 +319,6 @@
       "length": 82.6,
       "height": 5.2,
       "unit": "mm",
-      "background": "#F97B1A",
       "hasImage": true,
       "results": [
         {
@@ -523,7 +520,6 @@
       "length": 82.7,
       "height": 5,
       "unit": "mm",
-      "background": "#60bbc2",
       "hasImage": true,
       "results": [
         {
@@ -867,7 +863,7 @@
       "tags": ["water quality"],
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "calibration": "29 Sep 2016 using X-Rite iPro2",
-      "brand": "EZ Arsenic High Range Test Kit, HACH 2822800",
+      "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-500",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
@@ -924,7 +920,7 @@
       "tags": ["water quality"],
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "calibration": "12 Jan 2016",
-      "brand": "EZ Arsenic High Range Test Kit, HACH 2822800",
+      "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-4000",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",

@@ -9,12 +9,11 @@
           "png": "instruction_collect_sample"
         },
         {
-          "text": "dip_strip_move_back_forth",
+          "text": [
+            "dip_strip_move_back_forth_30_seconds",
+            "dry_off_excess_water_place_on_towel"
+          ],
           "png": "instruction_dip"
-        },
-        {
-          "text": "dry_off_excess_water",
-          "png": ""
         },
         {
           "text": "place_strip_in_black_area",
@@ -65,7 +64,10 @@
           "png": ""
         },
         {
-          "text": "dip_strip_move_back_forth_15_seconds",
+          "text": [
+            "dip_strip_move_back_forth_15_seconds",
+            "remove_shake_excess_water"
+          ],
           "png": "instruction_dip"
         },
         {
@@ -108,7 +110,10 @@
       "uuid": "39e7ea7e-9884-407d-a99a-ac3b4d9c9599",
       "instructions": [
         {
-          "text": "conduct_test_per_instructions"
+          "text": [
+            "conduct_test_per_instructions",
+            "when_ready_place_strip_on_card"
+          ]
         }
       ]
     },
@@ -195,7 +200,10 @@
       "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
       "instructions": [
         {
-          "text": "conduct_test_per_instructions"
+          "text": [
+            "conduct_test_per_instructions",
+            "when_ready_place_strip_on_card"
+          ]
         }
       ]
     },
@@ -258,7 +266,10 @@
       "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
       "instructions": [
         {
-          "text": "conduct_test_per_instructions"
+          "text": [
+            "conduct_test_per_instructions",
+            "when_ready_place_strip_on_card"
+          ]
         }
       ]
     },

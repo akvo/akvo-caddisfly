@@ -20,19 +20,21 @@
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.Spanned;
 
 public final class StringUtil {
 
     private StringUtil() {
     }
 
-    public static String getStringResourceByName(Context context, String key) {
+    public static Spanned getStringResourceByName(Context context, String key) {
         String packageName = context.getPackageName();
         int resId = context.getResources().getIdentifier(key, "string", packageName);
         if (resId == 0) {
-            return key;
+            return Spannable.Factory.getInstance().newSpannable(key);
         } else {
-            return context.getString(resId);
+            return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
         }
     }
 }

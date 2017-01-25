@@ -206,7 +206,7 @@
     <!--Test Instructions-->
     <string name="collect_water_sample">Collect water sample</string>
     <string name="dip_strip_move_back_forth_30_seconds">Dip the strip into sample and move back and forth for 30 seconds in water.</string>
-    <string name="dry_off_excess_water">Dry off excess water.</string>
+    <string name="dry_off_excess_water_place_on_towel">Dry off excess water. (e.g. place it on a towel)</string>
     <string name="place_strip_in_black_area">Place strip onto black area on the color card.</string>
     <string name="press_start_button">Press <b>Start</b> button.</string>
     <string name="dip_strip_into_water">Dip strip into water for 1 second.</string>
@@ -214,12 +214,13 @@
     <string name="fill_half_with_sample">Fill HALF of the vial with sample water.</string>
     <string name="open_one_foil_and_add_powder">Open one foil packet and add powder contents to vial.</string>
     <string name="cap_vial_and_shake_rapidly">Cap vial and shake rapidly for 5 seconds. Remove cap.</string>
-    <string name="dip_strip_move_back_forth_15_seconds">Dip the test strip into sample vial and rapidly move back and forth underwater for 15 seconds. Remove and shake excess water from test strip.</string>
+    <string name="dip_strip_move_back_forth_15_seconds">Dip the test strip into sample vial and rapidly move back and forth underwater for 15 seconds.</string>
     <string name="shake_excess_water">Shake excess water from the strip</string>
     <string name="dip_strip_in_water_2_seconds">Dip a strip in the water for at least 2 seconds and remove.</string>
     <string name="dip_strip_5_seconds_and_remove">Dip a strip into water for 5 seconds and remove.</string>
     <string name="dip_strip_into_water_and_remove">Dip a strip into water and remove immediately.</string>
-    <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.\r\n\r\nWhen ready, place the strip within the black area on the color card for analysis.</string>
+    <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.</string>
+    <string name="when_ready_place_strip_on_card">When ready, place the strip within the black area on the color card for analysis.</string>
     <string name="immerse_reaction_zone">Immerse the reaction zone of the test strip in the pretreated sample (15 – 30 °C) for 1 sec</string>
     <string name="allow_excess_liquid">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
     <string name="add_reagent_k1">Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min.</string>
@@ -229,5 +230,6 @@
     <string name="collect_9.6ml_sample">Collect 9.6 ml water sample using the small square container.</string>
     <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>
     <string name="sample_size_for_4000_range">This sample size is for the range 0 – 4000 ppb</string>
+    <string name="remove_shake_excess_water">Remove and shake excess water from test strip.</string>
 
 </resources>
