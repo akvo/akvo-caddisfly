@@ -286,7 +286,7 @@
           "png": "instruction_dip"
         },
         {
-          "text": "shake_excess_water"
+          "text": "remove_shake_excess_water"
         },
         {
           "text": "place_strip_in_black_area",

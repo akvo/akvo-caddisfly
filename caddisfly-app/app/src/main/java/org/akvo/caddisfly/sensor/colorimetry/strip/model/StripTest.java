@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 import android.content.Context;
 import android.util.Log;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -190,7 +189,7 @@ public class StripTest {
                     JSONObject strip;
 
                     JSONObject instructionObj = new JSONObject(AssetsManager.getInstance()
-                            .loadJSONFromAsset(context.getString(R.string.strips_instruction_json)));
+                            .loadJSONFromAsset("strips-instruction.json"));
                     JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
 
                     for (int i = 0; i < stripsJson.length(); i++) {
