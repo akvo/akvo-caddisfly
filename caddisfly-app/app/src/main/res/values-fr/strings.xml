@@ -36,10 +36,13 @@
     <string name="calibrating">En cours d\'étalonnage</string>
     <string name="settings">Paramètres</string>
     <string name="about">A propos</string>
+    <string name="name">Nom</string>
     <string name="version" tools:ignore="UnusedResources">Version</string>
+    <string name="deleted">Effacé</string>
+    <string name="required">Obligatoire</string>
+    <string name="survey">Enquête</string>
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
-    <string name="survey">Enquête</string>
 
     <!--Messages-->
     <string name="pleaseWait">Veuillez attendre…</string>
@@ -81,27 +84,6 @@
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-    <!--Diagnostic Mode: Messages-->
-    <string name="diagnosticModeEnabled">Mode diagnostique activé</string>
-    <string name="diagnosticModeDisabled">Mode diagnostique désactivé</string>
-    <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveInvalidFileName">Nom de fichier incorrect</string>
-    <string name="fileAlreadyExists">Ce fichier existe déjà</string>
-    <string name="doYouWantToOverwrite">Voulez-vous remplacer ce fichier?</string>
-    <string name="overwrite">Remplacer</string>
-    <string name="loadCalibration">Charger l\'étalonnage</string>
-    <string name="notFound">Introuvable</string>
-    <string name="loadFilesNotAvailable">Aucun étalonnage préalablement enregistré</string>
-    <string name="deleteConfirm">Les éléments sélectionnés seront supprimés</string>
-    <string name="errorLoadingFile">Erreur de chargement du fichier</string>
-
-    <!--Diagnostic Mode: Settings-->
-    <string name="diagnostics">Diagnostiques</string>
-    <string name="fileSaved">File saved</string>
-    <string name="calibrationLoaded">%1$s loaded</string>
-    <string name="name">Nom</string>
-    <string name="deleted">Effacé</string>
-    <string name="required">Obligatoire</string>
 
     <!--Strip Test-->
     <string name="error_calibrating">Erreur calibrage</string>
@@ -116,19 +98,17 @@
     <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="next">Suivant</string>
 
-    <!--end Strip Test-->
-
     <!--Test Instructions-->
     <string name="collect_water_sample">Collectez un échantillon d\'eau</string>
     <string name="dip_strip_move_back_forth_30_seconds">Déplacez la bande d\'avant en arrière pendant 30 secondes dans de l\'eau.</string>
     <string name="dry_off_excess_water_place_on_towel">Ensuite, séchez l\'excès d\'eau. (placer sur une serviette)</string>
     <string name="place_strip_in_black_area">Placez la bande sur la zone noire</string>
     <string name="press_start_button">Appuyer sur <b>Commencer</b>.</string>
-    <string name="dip_strip_into_water">Plongez la bande dans l\'eau pendant 1 seconde.</string>
+    <string name="dip_strip_into_water_1_second">Plongez la bande dans l\'eau pendant 1 seconde.</string>
     <string name="do_not_shake_excess_water">Ne pas secouer l\'excès d\'eau de la bande test.</string>
-    <string name="fill_half_with_sample">Remplissez le flacon échantillon à moitié avec de l\'eau de l\'échantillon.</string>
+    <string name="fill_half_with_sample">Remplissez le flacon à moitié avec de l\'eau de l\'échantillon.</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.</string>
-    <string name="cap_vial_and_shake_rapidly">Rebouchez le flacon et agitez rapidement pendant 5 secondes. Enlever le bouchon.</string>
+    <string name="cap_vial_and_shake_rapidly">Rebouchez le flacon et secouer rapidement pendant 5 secondes. Enlever le bouchon.</string>
     <string name="dip_strip_move_back_forth_15_seconds">Trempez une bande de test dans le flacon échantillon et remuez le rapidement d\'avant en arrière sous l\'eau pendant 15 secondes.</string>
     <string name="remove_shake_excess_water">Retirez la bande et secouez l\'excès d\'eau.</string>
     <string name="dip_strip_in_water_2_seconds">Plongez la bande dans l\'eau pendant 2 secondes et retirez la.</string>

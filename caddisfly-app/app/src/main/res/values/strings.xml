@@ -131,26 +131,8 @@
     <string name="calibrationDetails">Calibration Details</string>
     <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
-    <!--Diagnostic Mode: Messages -->
-    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
-    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
-
-    <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveInvalidFileName">Invalid file name</string>
-    <string name="fileAlreadyExists">File already exists</string>
-    <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
-    <string name="overwrite">Overwrite</string>
-    <string name="loadCalibration">Load Calibration</string>
-    <string name="notFound">Not Found</string>
-    <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
-    <string name="deleteConfirm">Selected items will be deleted</string>
-    <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
-    <string name="fileSaved">File saved</string>
-    <string name="calibrationLoaded">%1$s loaded</string>
-
     <string name="customTests">Custom tests</string>
 
-    <string name="diagnostics">Diagnostics</string>
     <string name="deviceConnected">Device connected</string>
     <string name="go">Go</string>
     <string name="next">Next</string>
@@ -164,10 +146,6 @@
     <string name="testWithDilution">Test with Dilution</string>
 
     <!--StripTest-->
-    <!--paths to assets-->
-    <string name="striptest_images" translatable="false">images/striptest</string>
-    <string name="instruction_images" translatable="false">images/instructions</string>
-
     <string name="error_calibrating">Calibration failed</string>
     <string name="error_conversion">Could not convert image</string>
     <string name="error_cut_out_strip">No strip found</string>
@@ -208,7 +186,7 @@
     <string name="dry_off_excess_water_place_on_towel">Dry off excess water. (e.g. place it on a towel)</string>
     <string name="place_strip_in_black_area">Place strip onto black area on the color card.</string>
     <string name="press_start_button">Press <b>Start</b> button.</string>
-    <string name="dip_strip_into_water">Dip strip into water for 1 second.</string>
+    <string name="dip_strip_into_water_1_second">Dip strip into water for 1 second.</string>
     <string name="do_not_shake_excess_water">Do not shake excess water from the test strip.</string>
     <string name="fill_half_with_sample">Fill HALF of the vial with sample water.</string>
     <string name="open_one_foil_and_add_powder">Open one foil packet and add powder contents to vial.</string>

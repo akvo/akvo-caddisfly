@@ -114,25 +114,6 @@
       ]
     },
     {
-      "name": "Temperature",
-      "description": "This test is deprecated and will be removed in future versions",
-      "subtype": "sensor",
-      "deviceId": "WaterEC",
-      "uuid": "07302aa0-21eb-4570-8264-62b77659101c",
-      "brand": "Akvo Caddisfly",
-      "shortCode": "tempe",
-      "ranges": "0",
-      "hasImage": false,
-      "responseFormat": "$1,$0",
-      "results": [
-        {
-          "name": "Temperature",
-          "id": 1,
-          "unit": "°Celsius"
-        }
-      ]
-    },
-    {
       "name": "Total Chlorine & Free Chlorine",
       "description": "Measures chlorine and free chlorine in water. 0 - 10 ppm",
       "subtype": "striptest",

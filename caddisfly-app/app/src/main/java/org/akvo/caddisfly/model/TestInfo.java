@@ -67,6 +67,7 @@ public class TestInfo {
     private double[] rangeValues;
     private String deviceId;
     private String responseFormat;
+    private boolean deprecated;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -334,6 +335,14 @@ public class TestInfo {
 
     public void setResponseFormat(String responseFormat) {
         this.responseFormat = responseFormat;
+    }
+
+    public boolean getIsDeprecated() {
+        return deprecated;
+    }
+
+    public void setIsDeprecated(boolean value) {
+        this.deprecated = value;
     }
 
     public static class SubTest {
