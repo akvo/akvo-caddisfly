@@ -365,58 +365,6 @@
       ]
     },
     {
-      "name": "pH",
-      "description": "pH mid range",
-      "subtype": "striptest",
-      "tags": ["water quality"],
-      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
-      "calibration": "measured on 16-12-2016 using X-Rite iPro2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
-      "brand": "HACH 27456",
-      "groupingType": "INDIVIDUAL",
-      "illuminant": "D65-2deg",
-      "length": 82.7,
-      "height": 5,
-      "unit": "mm",
-      "background": "#60bbc2",
-      "hasImage": true,
-      "results": [
-        {
-          "id":1,
-          "name":"pH",
-          "unit": "",
-          "patchPos":3.6,
-          "patchWidth":6,
-          "timeLapse":15,
-          "colors":[
-            {
-              "value": 4,
-              "lab":[65.86,-6.20,38.88]
-            },
-            {
-              "value": 5,
-              "lab":[58.43,-16.68,20.57]
-            },
-            {
-              "value": 6,
-              "lab":[51.42,-18.74,1.80]
-            },
-            {
-              "value": 7,
-              "lab":[45.94,-13.70,-8.27]
-            },
-            {
-              "value": 8,
-              "lab":[42.09,4.38,-23.57]
-            },
-            {
-              "value": 9,
-              "lab":[39.86,14.81,-32.57]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name":  "Phosphate",
       "description": "Phosphate, 0 - 100 ppm.",
       "subtype": "striptest",
@@ -563,172 +511,52 @@
       ]
     },
     {
-      "name": "Arsenic (0 - 500)",
-      "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-500 ppm range is used.",
+      "name": "pH",
+      "description": "pH mid range",
       "subtype": "striptest",
       "tags": ["water quality"],
-      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
-      "calibration": "29 Sep 2016 using X-Rite iPro2",
-      "brand": "HACH 28001 Dual Range",
-      "image": "HACH-28001-0-500",
-      "imageScale": "centerCrop",
+      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
+      "calibration": "measured on 16-12-2016 using X-Rite iPro2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
+      "brand": "HACH 27456",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
-      "length": 82.3,
-      "height": 12.8,
+      "length": 82.7,
+      "height": 5,
       "unit": "mm",
+      "background": "#60bbc2",
       "hasImage": true,
       "results": [
         {
-          "id": 1,
-          "name": "Arsenic",
-          "unit": "ppb",
-          "patchPos": 6.2,
-          "patchWidth": 3,
-          "timeLapse": 0,
+          "id":1,
+          "name":"pH",
+          "unit": "",
+          "patchPos":3.6,
+          "patchWidth":6,
+          "timeLapse":15,
           "colors":[
             {
-              "value": 0,
-              "lab": [94.123,-0.922,2.181]
+              "value": 4,
+              "lab":[65.86,-6.20,38.88]
             },
             {
-              "value": 10,
-              "lab": [93.914,-4.498,10.313]
+              "value": 5,
+              "lab":[58.43,-16.68,20.57]
             },
             {
-              "value": 25,
-              "lab": [93.016,-8.063,28.930]
+              "value": 6,
+              "lab":[51.42,-18.74,1.80]
             },
             {
-              "value": 50,
-              "lab": [88.457,-2.156,39.327]
+              "value": 7,
+              "lab":[45.94,-13.70,-8.27]
             },
             {
-              "value": 100,
-              "lab": [82.350,8.176,44.959]
+              "value": 8,
+              "lab":[42.09,4.38,-23.57]
             },
             {
-              "value": 250,
-              "lab": [74.212,15.276,41.299]
-            },
-            {
-              "value": 500,
-              "lab": [69.650,15.524,36.894]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Arsenic (0 - 4000)",
-      "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-4000 ppm range is used.",
-      "subtype": "striptest",
-      "tags": ["water quality"],
-      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
-      "calibration": "12 Jan 2016",
-      "brand": "HACH 28001 Dual Range",
-      "image": "HACH-28001-0-4000",
-      "imageScale": "centerCrop",
-      "groupingType": "INDIVIDUAL",
-      "illuminant": "D65-2deg",
-      "length": 82.3,
-      "height": 12.8,
-      "unit": "mm",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Arsenic",
-          "unit": "ppb",
-          "patchPos": 5.5,
-          "patchWidth": 3,
-          "timeLapse": 0,
-          "colors":[
-            {
-              "value": 0,
-              "lab": [95.22,-0.43,3.03]
-            },
-            {
-              "value": 75,
-              "lab": [92.32,-9.65,47.36]
-            },
-            {
-              "value": 175,
-              "lab": [90.24,-7.83,49.23]
-            },
-            {
-              "value": 500,
-              "lab": [72.07,15.98,61.50]
-            },
-            {
-              "value": 1500,
-              "lab": [67.78,23.69,54.87]
-            },
-            {
-              "value": 4000,
-              "lab": [49.37,26.81,42.77]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Arsenic",
-      "subtype": "striptest",
-      "tags": ["water quality"],
-      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
-      "calibration": "16 Nov 2016",
-      "brand": "Econo-Quick 481298",
-      "groupingType": "INDIVIDUAL",
-      "illuminant": "D65-2deg",
-      "length": 72.30,
-      "height": 5.10,
-      "unit": "mm",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Arsenic",
-          "unit": "ppb",
-          "patchPos": 6.0,
-          "patchWidth": 6,
-          "timeLapse": 0,
-          "colors":[
-            {
-              "value": 0,
-              "lab": [91.96,0.44,4.62]
-            },
-            {
-              "value": 10,
-              "lab": [90.95,-1.02,8.50]
-            },
-            {
-              "value": 25,
-              "lab": [91.93,-3.16,14.18]
-            },
-            {
-              "value": 50,
-              "lab": [91.16,-5.31,26.41]
-            },
-            {
-              "value": 100,
-              "lab": [85.60,1.93,40.78]
-            },
-            {
-              "value": 200,
-              "lab": [76.25,12.30,40.53]
-            },
-            {
-              "value": 300,
-              "lab": [68.95,15.15,35.70]
-            },
-            {
-              "value": 500,
-              "lab": [61.89,14.79,30.24]
-            },
-            {
-              "value": 1000,
-              "lab": [54.23,11.06,22.64]
+              "value": 9,
+              "lab":[39.86,14.81,-32.57]
             }
           ]
         }
@@ -1027,6 +855,178 @@
             {
               "value": 14,
               "lab":[51.04,37.94,-25.23]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arsenic (0 - 500)",
+      "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-500 ppm range is used.",
+      "subtype": "striptest",
+      "tags": ["water quality"],
+      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
+      "calibration": "29 Sep 2016 using X-Rite iPro2",
+      "brand": "EZ Arsenic High Range Test Kit, HACH 2822800",
+      "image": "HACH-2822800-500",
+      "imageScale": "centerCrop",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 82.3,
+      "height": 12.8,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Arsenic",
+          "unit": "ppb",
+          "patchPos": 6.2,
+          "patchWidth": 3,
+          "timeLapse": 0,
+          "colors":[
+            {
+              "value": 0,
+              "lab": [94.123,-0.922,2.181]
+            },
+            {
+              "value": 10,
+              "lab": [93.914,-4.498,10.313]
+            },
+            {
+              "value": 25,
+              "lab": [93.016,-8.063,28.930]
+            },
+            {
+              "value": 50,
+              "lab": [88.457,-2.156,39.327]
+            },
+            {
+              "value": 100,
+              "lab": [82.350,8.176,44.959]
+            },
+            {
+              "value": 250,
+              "lab": [74.212,15.276,41.299]
+            },
+            {
+              "value": 500,
+              "lab": [69.650,15.524,36.894]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arsenic (0 - 4000)",
+      "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-4000 ppm range is used.",
+      "subtype": "striptest",
+      "tags": ["water quality"],
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
+      "calibration": "12 Jan 2016",
+      "brand": "EZ Arsenic High Range Test Kit, HACH 2822800",
+      "image": "HACH-2822800-4000",
+      "imageScale": "centerCrop",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 82.3,
+      "height": 12.8,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Arsenic",
+          "unit": "ppb",
+          "patchPos": 5.5,
+          "patchWidth": 3,
+          "timeLapse": 0,
+          "colors":[
+            {
+              "value": 0,
+              "lab": [95.22,-0.43,3.03]
+            },
+            {
+              "value": 75,
+              "lab": [92.32,-9.65,47.36]
+            },
+            {
+              "value": 175,
+              "lab": [90.24,-7.83,49.23]
+            },
+            {
+              "value": 500,
+              "lab": [72.07,15.98,61.50]
+            },
+            {
+              "value": 1500,
+              "lab": [67.78,23.69,54.87]
+            },
+            {
+              "value": 4000,
+              "lab": [49.37,26.81,42.77]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arsenic",
+      "subtype": "striptest",
+      "tags": ["water quality"],
+      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
+      "calibration": "16 Nov 2016",
+      "brand": "Econo-Quick 481298",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 72.30,
+      "height": 5.10,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Arsenic",
+          "unit": "ppb",
+          "patchPos": 6.0,
+          "patchWidth": 6,
+          "timeLapse": 0,
+          "colors":[
+            {
+              "value": 0,
+              "lab": [91.96,0.44,4.62]
+            },
+            {
+              "value": 10,
+              "lab": [90.95,-1.02,8.50]
+            },
+            {
+              "value": 25,
+              "lab": [91.93,-3.16,14.18]
+            },
+            {
+              "value": 50,
+              "lab": [91.16,-5.31,26.41]
+            },
+            {
+              "value": 100,
+              "lab": [85.60,1.93,40.78]
+            },
+            {
+              "value": 200,
+              "lab": [76.25,12.30,40.53]
+            },
+            {
+              "value": 300,
+              "lab": [68.95,15.15,35.70]
+            },
+            {
+              "value": 500,
+              "lab": [61.89,14.79,30.24]
+            },
+            {
+              "value": 1000,
+              "lab": [54.23,11.06,22.64]
             }
           ]
         }
