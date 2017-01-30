@@ -185,7 +185,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 mWaitingForStillness = true;
 
-                showError(getString(R.string.errorTestInterrupted), null);
+                showError(String.format("%s\r\n\r\n%s", R.string.errorTestInterrupted,
+                        R.string.doNotMoveDeviceDuringTest), null);
             }
         }, new ShakeDetector.OnNoShakeListener() {
             @Override
@@ -506,7 +507,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
+                                showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+                                        R.string.checkChamberPlacement), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
                                 return;
@@ -565,7 +567,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         if (mResults.size() == 0) {
             // Analysis failed. Display error
-            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+            showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+                    R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
         } else {
 
             mTestCompleted = true;
@@ -651,14 +654,16 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     showDiagnosticResultDialog(true, EMPTY_STRING, color, mIsCalibration);
                 } else {
                     if (mIsCalibration) {
-                        showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+                        showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+                                R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
                         PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
                     } else {
                         PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
 
-                        showError(getString(R.string.errorTestFailed), ImageUtil.getBitmap(data));
+                        showError(String.format("%s\r\n%s", R.string.errorTestFailed,
+                                R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
                     }
                 }
             } else {

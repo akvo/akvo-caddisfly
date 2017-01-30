@@ -39,6 +39,7 @@ android {
         }
     }
 
+
 //    signingConfigs {
 //        caddisflyRelease {
 //            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
@@ -107,7 +108,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.6.1'
+    testCompile 'org.assertj:assertj-core:3.6.2'
     testCompile 'org.robolectric:robolectric:3.2.2'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     androidTestCompile 'com.android.support.test:rules:0.5'

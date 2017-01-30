@@ -32,7 +32,7 @@
     <string name="load">Load</string>
     <string name="swatches">Swatches</string>
     <string name="calibrate">Calibrate</string>
-    <string name="calibrated" tools:ignore="UnusedResources">Calibrated</string>
+    <string name="calibrated">Calibrated</string>
     <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
@@ -44,57 +44,24 @@
     <string name="expires">Expires</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
+    <string name="result">Result</string>
+    <string name="warning">Warning</string>
+    <string name="pleaseWait">Please wait…</string>
+    <string name="language">Language</string>
+    <string name="notSupported">Not Supported</string>
+    <string name="cameraBusy">Camera Busy</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensors</string>
-    <string name="connectCorrectSensor">Connect %s sensor</string>
-    <string name="wrongSensor">Wrong Sensor</string>
-
-    <!--Messages-->
-    <string name="pleaseWait">Please wait…</string>
-    <string name="notSupported">Not Supported</string>
-    <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
-    <string name="cameraBusy">Camera Busy</string>
-    <string name="cannotUseCamera">Can\'t use camera. Make sure flashlight is off and close any apps that may be using the camera</string>
-    <string name="cameraNotAvailable">Camera not available</string>
-    <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
-    <string name="tryRestarting">If the problem continues, please restart this device</string>
-    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
-    <string name="storagePermission">Storage permission is required</string>
-    <string name="cameraAndStoragePermissions">Camera &amp; storage permissions are required</string>
-
-    <!--Main Screen-->
-    <string name="cannotCalibrate">Cannot calibrate</string>
-    <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
-    <string name="cannotStartTest">Cannot start test</string>
-    <string name="errorTestNotAvailable">Requested test is not available</string>
-    <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
-    <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
-
-    <!--Settings Screen-->
-    <string name="language">Language</string>
 
     <!--Calibration Screen-->
-    <string name="errorLoadingConfiguration">Could not load configuration information</string>
-    <string name="pleaseContactSupport">Please contact technical support</string>
     <string name="calibrationIsInvalid">Invalid calibration</string>
     <string name="tryRecalibrating">Try recalibrating</string>
     <string name="reagentExpiry">Reagent expiry</string>
     <string name="reagentBatch">Reagent batch</string>
     <string name="rgb_example_value">RGB (e.g. 255.255.255)</string>
     <string name="expired">Expired</string>
-    <string name="calibrateWithNewReagent">Recalibrate with fresh reagent</string>
-
-    <!--Test Progress Screen-->
-    <string name="placeDevice">Place device face down on a flat surface</string>
-    <string name="errorTestInterrupted">Test was interrupted. Do not move the phone during the test</string>
-    <string name="errorTestFailed">Colour does not match any calibrated colours. Check chamber placement</string>
-
-    <!--Result Screen-->
-    <string name="result">Result</string>
-    <string name="highLevelsFound">High level of contamination</string>
-    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--Dilution Selection Dialog-->
     <string name="selectDilution">Select amount of dilution</string>
@@ -106,18 +73,10 @@
     <string name="acceptResult">Accept Result</string>
 
     <!--EC Sensor Calibration-->
-    <string name="warning">Warning</string>
-    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
-    <string name="sensorNotFound">Sensor not found</string>
     <string name="deviceConnectSensor">Connect sensor</string>
     <string name="calibratePoint">Calibrate %.0f μS/cm</string>
-    <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
-    <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
-    <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
-    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
-    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="celsius">°Celsius</string>
     <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample</string>
@@ -129,83 +88,106 @@
 
     <string name="selectTest">Select Test</string>
     <string name="calibrationDetails">Calibration Details</string>
-    <string name="chamberNotFound">Could not complete test. Check that the chamber has been placed correctly</string>
 
     <string name="customTests">Custom tests</string>
 
     <string name="deviceConnected">Device connected</string>
     <string name="go">Go</string>
     <string name="next">Next</string>
-
     <string name="saving">Saving</string>
     <string name="sensorDetails">Sensor Details</string>
     <string name="verifySensorDetails">Verify sensor details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>
-    <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
     <string name="testWithDilution">Test with Dilution</string>
+
+    <!--StripTest-->
+    <string name="brightness">Brightness</string>
+    <string name="instructions">Instructions</string>
+    <string name="shadows">Shadows</string>
+    <string name="prepare_test">Prepare for test</string>
+    <string name="taking_photo">Taking photo</string>
+    <string name="waiting_for">Waiting for %s</string>
+    <string name="success_quality_checks">Success! Quality check passed</string>
+    <string name="prepareForCalibration">Prepare for calibration</string>
+    <string name="stripTest">Strip Test</string>
+    <string name="no_result">No result</string>
+    <string name="continue_anyway">Continue anyway</string>
+    <string name="just_a_moment">Just a moment…</string>
+    <string name="checking_quality">Checking light quality</string>
+    <string name="seconds">Sec.</string>
+    <string name="detecting_color_card">Looking for colour card</string>
+    <string name="ready_for_photo">Ready for photo</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="stop_test">Stop test</string>
+    <string name="noData">No data</string>
+
+    <!--Alerts-->
+
+    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
+    <string name="cannotStartTest">Cannot start test</string>
+    <string name="errorTestNotAvailable">Requested test is not available</string>
+    <string name="pleaseContactSupport">Please contact technical support</string>
+
+    <!--Permission-->
+    <string name="storagePermission">Storage permission is required</string>
+    <string name="cameraAndStoragePermissions">Camera &amp; storage permissions are required</string>
+
+    <!--Sensor-->
+    <string name="incorrectDevice">Incorrect Device</string>
+    <string name="connectCorrectSensor">Connect %s sensor</string>
+
+    <!--Messages-->
+    <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
+    <string name="cannotUseCamera">Can\'t use camera. Make sure flashlight is off and close any apps that may be using the camera</string>
+    <string name="cameraNotAvailable">Camera not available</string>
+    <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
+    <string name="tryRestarting">If the problem continues, please restart this device</string>
+    <string name="cannotCalibrate">Cannot calibrate</string>
+    <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
+    <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
+    <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
+
+    <!--Calibration Screen-->
+    <string name="errorLoadingConfiguration">Could not load configuration information</string>
+    <string name="calibrateWithNewReagent">Recalibrate with fresh reagent</string>
+
+    <!--Test Progress Screen-->
+    <string name="placeDevice">Place device face down on a flat surface</string>
+    <string name="errorTestInterrupted">Test was interrupted.</string>
+    <string name="doNotMoveDeviceDuringTest">Do not move the phone during the test</string>
+    <string name="errorTestFailed">Colour does not match any calibrated colours.</string>
+    <string name="chamberNotFound">Could not complete test.</string>
+    <string name="checkChamberPlacement">Check that the chamber has been placed correctly.</string>
+
+    <!--Result Screen-->
+    <string name="highLevelsFound">High level of contamination</string>
+    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
+
+    <!--EC Sensor Calibration-->
+    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
+    <string name="sensorNotFound">Sensor not found</string>
+    <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
+    <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
+    <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
+    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
+    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
+    <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
 
     <!--StripTest-->
     <string name="error_calibrating">Calibration failed</string>
     <string name="error_conversion">Could not convert image</string>
     <string name="error_cut_out_strip">No strip found</string>
     <string name="error_no_finder_pattern_info">No info about finder patterns</string>
-    <string name="light">Brightness</string>
     <string name="no_data">No data for patch</string>
-    <string name="instructions">Instructions</string>
-    <string name="contrast">Shadows</string>
-    <string name="prepare_test">Prepare for test</string>
     <string name="start_camera_instruction">Place the strip in the black area on the colour card and hold camera above the card to analyse.</string>
     <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above colour card and adjust position until check succeeds.</string>
-    <string name="taking_photo">Taking photo</string>
-    <string name="waiting_for">Waiting for %s</string>
-    <string name="success_quality_checks">Success! Quality check passed</string>
-    <string name="noData">No data</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
-    <string name="prepareForCalibration">Prepare for calibration</string>
-    <string name="stripTest">Strip Test</string>
-    <string name="no_result">No result</string>
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
-    <string name="continue_anyway">Continue anyway</string>
-    <string name="just_a_moment">Just a moment…</string>
     <string name="qualityCheckFailed">Quality check failed</string>
     <string name="tryTestingInAWellLitArea">Place the colour card in an area with good light and no shadows and try again.</string>
-    <string name="checking_quality">Checking light quality</string>
-    <string name="seconds">Sec.</string>
-    <string name="detecting_color_card">Looking for colour card</string>
-    <string name="ready_for_photo">Ready for photo</string>
-    <string name="color_card_not_found">Colour card not found</string>
     <string name="shadows_detected">Shadows/reflections detected</string>
     <string name="better_light_required">Better light required</string>
-    <string name="do_not_show_again">Do not show again</string>
-    <string name="stop_test">Stop test</string>
-
-    <!--Test Instructions-->
-    <string name="collect_water_sample">Collect water sample</string>
-    <string name="dip_strip_move_back_forth_30_seconds">Dip the strip into sample and move back and forth for 30 seconds in water.</string>
-    <string name="dry_off_excess_water_place_on_towel">Dry off excess water. (e.g. place it on a towel)</string>
-    <string name="place_strip_in_black_area">Place strip onto black area on the color card.</string>
-    <string name="press_start_button">Press <b>Start</b> button.</string>
-    <string name="dip_strip_into_water_1_second">Dip strip into water for 1 second.</string>
-    <string name="do_not_shake_excess_water">Do not shake excess water from the test strip.</string>
-    <string name="fill_half_with_sample">Fill HALF of the vial with sample water.</string>
-    <string name="open_one_foil_and_add_powder">Open one foil packet and add powder contents to vial.</string>
-    <string name="cap_vial_and_shake_rapidly">Cap vial and shake rapidly for 5 seconds. Remove cap.</string>
-    <string name="dip_strip_move_back_forth_15_seconds">Dip the test strip into sample vial and rapidly move back and forth underwater for 15 seconds.</string>
-    <string name="dip_strip_in_water_2_seconds">Dip a strip in the water for at least 2 seconds and remove.</string>
-    <string name="dip_strip_5_seconds_and_remove">Dip a strip into water for 5 seconds and remove.</string>
-    <string name="dip_strip_into_water_and_remove">Dip a strip into water and remove immediately.</string>
-    <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.</string>
-    <string name="when_ready_place_strip_on_card">When ready, place the strip within the black area on the color card for analysis.</string>
-    <string name="immerse_reaction_zone">Immerse the reaction zone of the test strip in the pretreated sample (15 – 30 °C) for 1 sec</string>
-    <string name="allow_excess_liquid">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
-    <string name="add_reagent_k1">Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min.</string>
-    <string name="follow_the_instructions_for_reagents">Follow the instructions that came with the testing kit for adding reagents</string>
-    <string name="wait_20_minutes_swirl_twice">Wait 20 minutes. Swirl twice during the reaction period</string>
-    <string name="collect_50ml_sample">Collect 50 ml water sample using the provided bottle.</string>
-    <string name="collect_9.6ml_sample">Collect 9.6 ml water sample using the small square container.</string>
-    <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>
-    <string name="sample_size_for_4000_range">This sample size is for the range 0 – 4000 ppb</string>
-    <string name="remove_shake_excess_water">Remove and shake excess water from test strip.</string>
+    <string name="color_card_not_found">Colour card not found</string>
 
 </resources>

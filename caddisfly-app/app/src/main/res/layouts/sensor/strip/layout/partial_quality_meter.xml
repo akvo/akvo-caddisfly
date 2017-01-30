@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/light"
+            android:text="@string/brightness"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/contrast"
+            android:text="@string/shadows"
             android:textColor="@android:color/tertiary_text_dark" />
 
     </LinearLayout>

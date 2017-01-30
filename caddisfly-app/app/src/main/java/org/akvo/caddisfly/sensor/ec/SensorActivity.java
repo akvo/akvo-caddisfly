@@ -319,7 +319,7 @@ public class SensorActivity extends BaseActivity {
             String message = getString(R.string.connectCorrectSensor,
                     mCurrentTestInfo.getName());
 
-            alertDialog = createAlert(this, R.string.wrongSensor, message, R.string.cancel, null);
+            alertDialog = createAlert(this, R.string.incorrectDevice, message, R.string.cancel, null);
         }
 
         progressWait.setVisibility(View.VISIBLE);
