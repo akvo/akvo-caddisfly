@@ -1,8 +1,74 @@
 {
   "tests": [
     {
-      "name": "Total Chlorine & Free Chlorine",
-      "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
+      "name": "Arsenic",
+      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
+      "instructions": [
+        {
+          "text": [
+            "conduct_test_per_instructions",
+            "when_ready_place_strip_on_card"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range (0 - 4000)",
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
+      "instructions": [
+        {
+          "text": [
+            "collect_9.6ml_sample",
+            "<!>sample_size_for_4000_range<!>"
+          ],
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "follow_the_instructions_for_reagents"
+        },
+        {
+          "text": "wait_20_minutes_swirl_twice"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Arsenic Dual Range (0 - 500)",
+      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
+      "instructions": [
+        {
+          "text": [
+            "collect_50ml_sample",
+            "<!>sample_size_for_500_range<!>"
+          ],
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "follow_the_instructions_for_reagents"
+        },
+        {
+          "text": "wait_20_minutes_swirl_twice"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Chloride - Quantofix",
+      "uuid": "4c3a4192-c484-4329-8240-71e4c7cd2280",
       "instructions": [
         {
           "text": "collect_water_sample",
@@ -10,10 +76,14 @@
         },
         {
           "text": [
-            "dip_strip_move_back_forth_30_seconds",
-            "dry_off_excess_water_place_on_towel"
+            "dip_strip_into_water_1_second",
+            "remove_shake_excess_water"
           ],
           "png": "instruction_dip"
+        },
+        {
+          "text": "wait_for_1_minute",
+          "png": ""
         },
         {
           "text": "place_strip_in_black_area",
@@ -48,25 +118,17 @@
       ]
     },
     {
-      "name": "Total Iron",
-      "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
+      "name": "pH",
+      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "instructions": [
         {
-          "text": "fill_half_with_sample",
-          "png": ""
-        },
-        {
-          "text": "open_one_foil_and_add_powder",
-          "png": ""
-        },
-        {
-          "text": "cap_vial_and_shake_rapidly",
-          "png": ""
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
         },
         {
           "text": [
-            "dip_strip_move_back_forth_15_seconds",
-            "remove_shake_excess_water"
+            "dip_strip_into_water_and_remove",
+            "do_not_shake_excess_water"
           ],
           "png": "instruction_dip"
         },
@@ -81,19 +143,19 @@
       ]
     },
     {
-      "name": "pH",
-      "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
+      "name": "pH colorpHast",
+      "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "instructions": [
         {
           "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": [
-            "dip_strip_into_water_and_remove",
-            "do_not_shake_excess_water"
-          ],
+          "text": "dip_strip_in_water_2_seconds",
           "png": "instruction_dip"
+        },
+        {
+          "text": "remove_shake_excess_water"
         },
         {
           "text": "place_strip_in_black_area",
@@ -196,97 +258,52 @@
       ]
     },
     {
-      "name": "Ammonia",
-      "uuid": "2684f3f5-1c40-4cb2-a38d-0fa9b5de8829",
-      "instructions": [
-        {
-          "text": [
-            "conduct_test_per_instructions",
-            "when_ready_place_strip_on_card"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Arsenic Dual Range (0 - 500)",
-      "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
-      "instructions": [
-        {
-          "text": [
-            "collect_50ml_sample",
-            "<!>sample_size_for_500_range<!>"
-          ],
-          "png": "instruction_collect_sample"
-        },
-        {
-          "text": "follow_the_instructions_for_reagents"
-        },
-        {
-          "text": "wait_20_minutes_swirl_twice"
-        },
-        {
-          "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
-        },
-        {
-          "text": "press_start_button",
-          "png": ""
-        }
-      ]
-    },
-    {
-      "name": "Arsenic Dual Range (0 - 4000)",
-      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
-      "instructions": [
-        {
-          "text": [
-            "collect_9.6ml_sample",
-            "<!>sample_size_for_4000_range<!>"
-          ],
-          "png": "instruction_collect_sample"
-        },
-        {
-          "text": "follow_the_instructions_for_reagents"
-        },
-        {
-          "text": "wait_20_minutes_swirl_twice"
-        },
-        {
-          "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
-        },
-        {
-          "text": "press_start_button",
-          "png": ""
-        }
-      ]
-    },
-    {
-      "name": "Arsenic",
-      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
-      "instructions": [
-        {
-          "text": [
-            "conduct_test_per_instructions",
-            "when_ready_place_strip_on_card"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "pH colorpHast",
-      "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
+      "name": "Total Chlorine & Free Chlorine",
+      "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "instructions": [
         {
           "text": "collect_water_sample",
           "png": "instruction_collect_sample"
         },
         {
-          "text": "dip_strip_in_water_2_seconds",
+          "text": [
+            "dip_strip_move_back_forth_30_seconds",
+            "dry_off_excess_water_place_on_towel"
+          ],
           "png": "instruction_dip"
         },
         {
-          "text": "remove_shake_excess_water"
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Total Iron",
+      "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
+      "instructions": [
+        {
+          "text": "fill_half_with_sample",
+          "png": ""
+        },
+        {
+          "text": "open_one_foil_and_add_powder",
+          "png": ""
+        },
+        {
+          "text": "cap_vial_and_shake_rapidly",
+          "png": ""
+        },
+        {
+          "text": [
+            "dip_strip_move_back_forth_15_seconds",
+            "remove_shake_excess_water"
+          ],
+          "png": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
