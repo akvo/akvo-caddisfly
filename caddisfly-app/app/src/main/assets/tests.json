@@ -248,7 +248,7 @@
           "unit": "ppm",
           "patchPos":4.25,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -282,7 +282,7 @@
           "unit": "ppm",
           "patchPos":11.5,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -316,7 +316,7 @@
           "unit": "ppm",
           "patchPos":19,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -350,7 +350,7 @@
           "unit": "ppm",
           "patchPos":26,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -384,7 +384,7 @@
           "unit": "ppm",
           "patchPos":33.25,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -455,6 +455,121 @@
           "id": 1,
           "unit": "ppm"
         }
+      ]
+    },
+    {
+      "name": "Hardness, Alkalinity, pH",
+      "description": "5 in 1 test",
+      "subtype": "striptest",
+      "tags": ["water quality"],
+      "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
+      "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
+      "brand": "HACH 2755250",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 82.5,
+      "height": 5.1,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id":1,
+          "name":"Total Hardness",
+          "unit": "ppm",
+          "patchPos":30.5,
+          "patchWidth":6,
+          "timeLapse":30,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[38.22,-22.93,18.39]
+            },
+            {
+              "value": 25,
+              "lab":[36.76,-11.90,16.70]
+            },
+            {
+              "value": 50,
+              "lab":[37.91,0.69,16.93]
+            },
+            {
+              "value": 120,
+              "lab":[35.60,13.82,31.07]
+            },
+            {
+              "value": 250,
+              "lab":[42.37,30.31,28.56]
+            },
+            {
+              "value": 425,
+              "lab":[46.97,36.84,34.49]
+            }
+          ]
+        },
+        {
+          "id":2,
+          "name":"Total Alkalinity",
+          "unit": "ppm",
+          "patchPos":44,
+          "patchWidth":6,
+          "timeLapse":30,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[69.47,8.04,51.69]
+            },
+            {
+              "value": 40,
+              "lab":[64.32,-7.08,43.56]
+            },
+            {
+              "value": 80,
+              "lab":[54.10,-14.35,34.82]
+            },
+            {
+              "value": 120,
+              "lab":[54.40,-11.77,10.01]
+            },
+            {
+              "value": 180,
+              "lab":[40.79,-18.18,2.59]
+            },
+            {
+              "value": 240,
+              "lab":[45.40,-12.01,-6.89]
+            }
+          ]
+        },
+        {
+          "id":3,
+          "name":"pH",
+          "unit": "",
+          "patchPos":57,
+          "patchWidth":6,
+          "timeLapse":30,
+          "colors":[
+            {
+              "value": 6.2,
+              "lab":[68.01,17.84,51.43]
+            },
+            {
+              "value": 6.8,
+              "lab":[62.54,35.28,51.50]
+            },
+            {
+              "value": 7.2,
+              "lab":[53.10,43.10,49.53]
+            },
+            {
+              "value": 7.8,
+              "lab":[48.94,42.75,27.80]
+            },
+            {
+              "value": 8.4,
+              "lab":[48.03,62.81,25.06]
+            }
+          ]
+        },
       ]
     },
     {

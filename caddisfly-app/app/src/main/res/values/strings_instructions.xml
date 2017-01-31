@@ -43,7 +43,6 @@
     <string name="remove_shake_excess_water">Remove and shake excess water from test strip.</string>
     <string name="do_not_shake_excess_water">Do not shake excess water from the test strip.</string>
     <string name="allow_excess_liquid_to_run_off">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
-    <string name="wait_for_1_minute">Wait for 1 minute</string>
     <string name="add_reagent_k1">Add 1 drop of reagent K-1 on the reaction zone and allow to react for 1 min.</string>
     <string name="follow_the_instructions_for_reagents">Follow the instructions that came with the testing kit for adding reagents</string>
     <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.</string>
