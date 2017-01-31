@@ -2,6 +2,60 @@
   "comment": "This file contains the metadata for tests. IMPORTANT: *DO NOT* change the uuid values",
   "tests":[
     {
+      "name": "Ammonium",
+      "subtype": "striptest",
+      "tags": ["water quality", "soil quality"],
+      "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
+      "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
+      "brand": "Quantofix 91315",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 95,
+      "height": 5.5,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Ammonium",
+          "unit": "ppm",
+          "patchPos": 4.5,
+          "patchWidth": 6,
+          "timeLapse": 0,
+          "colors":[
+            {
+              "value": 0,
+              "lab": [76.04,-2.35,3.91]
+            },
+            {
+              "value": 10,
+              "lab": [77.62,-4.37,24.42]
+            },
+            {
+              "value": 25,
+              "lab": [73.09,-0.74,39.61]
+            },
+            {
+              "value": 50,
+              "lab": [64.74,9.63,49.54]
+            },
+            {
+              "value": 100,
+              "lab": [57.22,21.18,52.84]
+            },
+            {
+              "value": 200,
+              "lab": [51.09,30.29,48.77]
+            },
+            {
+              "value": 400,
+              "lab": [45.58,32.22,41.81]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Arsenic",
       "subtype": "striptest",
       "tags": ["water quality"],

@@ -1,6 +1,38 @@
 {
   "tests": [
     {
+      "name": "Ammonium - Quantofix",
+      "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
+      "instructions": [
+        {
+          "text": "collect_5ml_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": [
+            "add_10_drops_nh4_reagent",
+            "swirl_to_dissolve_reagent"
+          ],
+          "png": ""
+        },
+        {
+          "text": [
+            "dip_strip_5_seconds_and_remove",
+            "remove_shake_excess_water"
+          ],
+          "png": "instruction_dip"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
       "name": "Arsenic",
       "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
       "instructions": [
