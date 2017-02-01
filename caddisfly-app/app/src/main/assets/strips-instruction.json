@@ -99,7 +99,7 @@
       ]
     },
     {
-      "name": "Hardness, Alkalinity, pH",
+      "name": "Hardness, Alkalinity, pH, Total & Free Chlorine",
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
       "instructions": [
         {
@@ -110,6 +110,21 @@
           "text": [
             "dip_strip_into_water_1_second",
             "do_not_shake_excess_water"
+          ],
+          "png": "instruction_dip"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        },
+        {
+          "text": [
+            "dip_strip_move_back_forth_30_seconds",
+            "dry_off_excess_water_place_on_towel"
           ],
           "png": "instruction_dip"
         },

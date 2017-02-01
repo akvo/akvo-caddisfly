@@ -458,7 +458,7 @@
       ]
     },
     {
-      "name": "Hardness, Alkalinity, pH",
+      "name": "Hardness, Alkalinity, pH, Total & Free Chlorine",
       "description": "5 in 1 test",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -474,8 +474,76 @@
       "results": [
         {
           "id":1,
-          "name":"Total Hardness",
+          "name":"Total Chlorine",
           "unit": "ppm",
+          "patchPos":3,
+          "patchWidth":6,
+          "timeLapse":60,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[90.78,-1.35,3.08]
+            },
+            {
+              "value": 0.5,
+              "lab":[77.43,15.25,-11.69]
+            },
+            {
+              "value": 1,
+              "lab":[68.24,22.01,-12.95]
+            },
+            {
+              "value": 2,
+              "lab":[61.25,26.89,-14.37]
+            },
+            {
+              "value": 4,
+              "lab":[50.52,37.97,-21.77]
+            },
+            {
+              "value": 10,
+              "lab":[41.11,28.77,-17.75]
+            }
+          ]
+        },
+        {
+          "id":2,
+          "name":"Free Chlorine",
+          "unit": "ppm",
+          "patchPos":17,
+          "patchWidth":6,
+          "timeLapse":60,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[88.26,-0.29,13.39]
+            },
+            {
+              "value": 0.5,
+              "lab":[75.27,4.32,-1.40]
+            },
+            {
+              "value": 1,
+              "lab":[77.15,11.64,-13.44]
+            },
+            {
+              "value": 2,
+              "lab":[60.75,22.79,-19.70]
+            },
+            {
+              "value": 4,
+              "lab":[53.77,28.81,-22.55]
+            },
+            {
+              "value": 10,
+              "lab":[43.46,28.72,-22.35]
+            }
+          ]
+        },
+        {
+          "id":3,
+          "name":"Total Hardness",
+          "unit": "gpg",
           "patchPos":30.5,
           "patchWidth":6,
           "timeLapse":30,
@@ -507,7 +575,7 @@
           ]
         },
         {
-          "id":2,
+          "id":4,
           "name":"Total Alkalinity",
           "unit": "ppm",
           "patchPos":44,
@@ -541,7 +609,7 @@
           ]
         },
         {
-          "id":3,
+          "id":5,
           "name":"pH",
           "unit": "",
           "patchPos":57,
@@ -569,7 +637,7 @@
               "lab":[48.03,62.81,25.06]
             }
           ]
-        },
+        }
       ]
     },
     {
