@@ -191,7 +191,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             StripTest stripTest = new StripTest();
             //get the patches ordered by time-lapse
-            patches = stripTest.getBrand(getContext(), uuid).getPatches();
+            patches = stripTest.getBrand(uuid).getPatches();
         }
 
         showBrightness(-1);
@@ -289,7 +289,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
         StripTest stripTest = new StripTest();
 
-        patches = stripTest.getBrand(getContext(), uuid).getPatches();
+        patches = stripTest.getBrand(uuid).getPatches();
 
         for (int i = 0; i < patches.size(); i++) {
 

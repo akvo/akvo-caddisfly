@@ -185,7 +185,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 mWaitingForStillness = true;
 
-                showError(String.format("%s\r\n\r\n%s", R.string.errorTestInterrupted,
+                showError(String.format("%s%n%n%s", R.string.errorTestInterrupted,
                         R.string.doNotMoveDeviceDuringTest), null);
             }
         }, new ShakeDetector.OnNoShakeListener() {
@@ -507,7 +507,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+                                showError(String.format("%s%n%s", R.string.chamberNotFound,
                                         R.string.checkChamberPlacement), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
@@ -567,7 +567,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         if (mResults.size() == 0) {
             // Analysis failed. Display error
-            showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+            showError(String.format("%s%n%s", R.string.chamberNotFound,
                     R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
         } else {
 
@@ -654,7 +654,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     showDiagnosticResultDialog(true, EMPTY_STRING, color, mIsCalibration);
                 } else {
                     if (mIsCalibration) {
-                        showError(String.format("%s\r\n%s", R.string.chamberNotFound,
+                        showError(String.format("%s%n%s", R.string.chamberNotFound,
                                 R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
                         PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
@@ -662,7 +662,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
 
-                        showError(String.format("%s\r\n%s", R.string.errorTestFailed,
+                        showError(String.format("%s%n%s", R.string.errorTestFailed,
                                 R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
                     }
                 }

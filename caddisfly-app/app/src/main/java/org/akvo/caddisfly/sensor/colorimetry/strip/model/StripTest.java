@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
@@ -38,7 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by linda on 8/19/15
+ * Holds information about the test.
  */
 public class StripTest {
 
@@ -124,7 +123,7 @@ public class StripTest {
         return null;
     }
 
-    public List<Brand> getBrandsAsList(Context context) {
+    public List<Brand> getBrandsAsList() {
 
         StripTest.clearStripTests();
         List<Brand> brandNames = new ArrayList<>();
@@ -143,7 +142,7 @@ public class StripTest {
                         continue;
                     }
 
-                    brandNames.add(getBrand(context, strip.getString(SensorConstants.UUID)));
+                    brandNames.add(getBrand(strip.getString(SensorConstants.UUID)));
                 }
             }
 
@@ -153,12 +152,12 @@ public class StripTest {
         return brandNames;
     }
 
-    public Brand getBrand(Context context, String uuid) {
-        return new Brand(context, uuid);
+    public Brand getBrand(String uuid) {
+        return new Brand(uuid);
     }
 
-    public int getPatchCount(Context context, String uuid) {
-        return getBrand(context, uuid).getPatches().size();
+    public int getPatchCount(String uuid) {
+        return getBrand(uuid).getPatches().size();
     }
 
     public enum GroupType {
@@ -177,7 +176,7 @@ public class StripTest {
         private GroupType groupingType;
         private JSONArray instructions;
 
-        Brand(Context context, String uuid) {
+        Brand(String uuid) {
 
             this.uuid = uuid;
             try {
@@ -255,6 +254,7 @@ public class StripTest {
                                         });
                                         break;
                                     case INDIVIDUAL:
+                                    default:
                                         // sort by time delay for analyzing each patch
                                         Collections.sort(patches, new Comparator<Patch>() {
                                             @Override

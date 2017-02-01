@@ -96,7 +96,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
             String uuid = getArguments().getString(Constant.UUID);
 
             StripTest stripTest = new StripTest();
-            JSONArray instructions = stripTest.getBrand(getContext(), uuid).getInstructions();
+            JSONArray instructions = stripTest.getBrand(uuid).getInstructions();
 
             showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
 

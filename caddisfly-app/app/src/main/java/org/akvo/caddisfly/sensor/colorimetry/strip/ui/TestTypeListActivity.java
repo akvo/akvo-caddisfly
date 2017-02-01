@@ -66,7 +66,7 @@ public class TestTypeListActivity extends BaseActivity {
             stripTest = new StripTest();
         }
 
-        brands = stripTest.getBrandsAsList(this);
+        brands = stripTest.getBrandsAsList();
 
         if (brands != null) {
             //order alpha-numeric on brand
@@ -119,10 +119,9 @@ public class TestTypeListActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -40,9 +40,11 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 public class InstructionDetailFragment extends Fragment {
     /**
-     * The fragment arguments for the contents to be displayed
+     * The fragment arguments for the contents to be displayed.
      */
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
@@ -59,18 +61,18 @@ public class InstructionDetailFragment extends Fragment {
         Bundle args = new Bundle();
 
 
-        ArrayList<String> listdata = new ArrayList<String>();
+        ArrayList<String> arrayList = new ArrayList<>();
         if (text != null) {
             for (int i = 0; i < text.length(); i++) {
                 try {
-                    listdata.add(text.getString(i));
+                    arrayList.add(text.getString(i));
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Timber.e(e);
                 }
             }
         }
 
-        args.putStringArrayList(ARG_ITEM_TEXT, listdata);
+        args.putStringArrayList(ARG_ITEM_TEXT, arrayList);
         args.putString(ARG_ITEM_IMAGE, imageName);
         fragment.setArguments(args);
         return fragment;

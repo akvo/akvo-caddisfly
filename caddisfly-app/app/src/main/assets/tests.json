@@ -458,7 +458,7 @@
       ]
     },
     {
-      "name": "Hardness, Alkalinity, pH, Total & Free Chlorine",
+      "name": "Total & Free Chlorine, Total Hardness, Total Alkalinity, pH",
       "description": "5 in 1 test",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -478,7 +478,7 @@
           "unit": "ppm",
           "patchPos":3,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeLapse":70,
           "colors":[
             {
               "value": 0,
@@ -512,7 +512,7 @@
           "unit": "ppm",
           "patchPos":17,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeLapse":70,
           "colors":[
             {
               "value": 0,

@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -62,13 +61,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
- * Created by linda on 7/7/15
+ * The activity that displays the camera preview.
  */
 @SuppressWarnings("deprecation")
 public class CameraActivity extends BaseActivity implements CameraViewListener {
-
-    private static final String TAG = "CameraActivity";
 
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private static final int PROGRESS_FADE_DURATION_MILLIS = 4000;
@@ -216,7 +215,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 }
 
             } catch (Exception e) {
-                Log.e(TAG, "Could not start preview");
+                Timber.e(e);
             }
         }
     }
@@ -230,10 +229,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 ).commit();
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 
+    @Override
     public void onPause() {
         releaseResources();
         if (!isFinishing()) {
@@ -269,13 +269,14 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
         }
     }
 
+    @Override
     public void onResume() {
 
         uuid = getIntent().getStringExtra(Constant.UUID);
 
         if (uuid != null) {
             StripTest stripTest = new StripTest();
-            setTitle(stripTest.getBrand(this, uuid).getName());
+            setTitle(stripTest.getBrand(uuid).getName());
 
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
 
@@ -288,7 +289,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
         super.onResume();
     }
 
-    // Store previewLayout info in global properties for later use
+    /**
+     * Store previewLayout info in global properties for later use.
+     */
     public void setPreviewProperties() {
         if (mCamera != null && cameraPreview != null) {
             previewFormat = mCamera.getParameters().getPreviewFormat();
@@ -496,6 +499,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         releaseResources();
 
+        finderPatternIndicatorView.clearPatterns();
+        finderPatternIndicatorView.invalidate();
+
         int title;
         switch (status) {
             case DETECTING_COLOR_CARD:
@@ -562,6 +568,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                     if (value <= Constant.GET_READY_SECONDS && mCameraPaused) {
                         mCameraPaused = false;
                         if (cameraPreview != null) {
+                            finderPatternIndicatorView.setVisibility(View.VISIBLE);
                             cameraPreview.setVisibility(View.VISIBLE);
                         }
                         mCamera.startPreview();
@@ -612,10 +619,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
