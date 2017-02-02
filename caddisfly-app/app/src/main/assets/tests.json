@@ -1468,7 +1468,7 @@
       ]
     },
     {
-      "name": "Water - Total Chlorine & Free Chlorine",
+      "name": "Water - Total & Free Chlorine",
       "description": "Measures chlorine and free chlorine in water. 0 - 10 ppm",
       "subtype": "striptest",
       "tags": ["water quality"],
