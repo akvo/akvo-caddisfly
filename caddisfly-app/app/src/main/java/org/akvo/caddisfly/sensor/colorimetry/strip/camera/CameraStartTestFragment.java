@@ -89,7 +89,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             }
 
             if (getStatus() == TestStatus.QUALITY_CHECK_DONE) {
-                if (patchesCovered < patches.size() - 1) {
+                if (imagePatchArray.length() < patches.size()) {
                     if (mListener != null) {
                         int secondsLeft = (int) (Math.max(0, patches.get(patchesCovered + 1).getTimeLapse() - timeLapsed));
 

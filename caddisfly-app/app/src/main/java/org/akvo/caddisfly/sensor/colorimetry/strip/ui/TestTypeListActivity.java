@@ -182,10 +182,11 @@ public class TestTypeListActivity extends BaseActivity {
                             if (ranges.length() > 0) {
                                 ranges.append(", ");
                             }
-                            ranges.append(String.format(Locale.US, "%.0f - %.0f",
-                                    patch.getColors().getJSONObject(0).getDouble(SensorConstants.VALUE),
-                                    patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
-
+                            if (patch.getColors().length() > 0) {
+                                ranges.append(String.format(Locale.US, "%.0f - %.0f",
+                                        patch.getColors().getJSONObject(0).getDouble(SensorConstants.VALUE),
+                                        patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
+                            }
                         } catch (JSONException e) {
                             Log.e(TAG, e.getMessage(), e);
                         }

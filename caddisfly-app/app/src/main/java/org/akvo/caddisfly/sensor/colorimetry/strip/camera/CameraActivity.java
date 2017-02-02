@@ -22,18 +22,23 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -72,6 +77,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private static final long CAMERA_PREVIEW_DELAY = 500;
     private static final int PROGRESS_FADE_DURATION_MILLIS = 4000;
     private static final int LONG_TIME = 35;
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
     private boolean torchModeOn = false;
@@ -154,12 +160,16 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private TimerView timerCountdown;
     private boolean mCameraPaused;
     private InstructionFragment instructionFragment;
+    private LinearLayout parentLayout;
+    private Snackbar snackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_camera_view);
+
+        parentLayout = (LinearLayout) findViewById(R.id.activity_cameraMainLayout);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -577,11 +587,31 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                     if (value > LONG_TIME && !mCameraPaused) {
                         mCameraPaused = true;
                         if (cameraPreview != null) {
-                            finderPatternIndicatorView.clearPatterns();
-                            finderPatternIndicatorView.invalidate();
                             cameraPreview.setVisibility(View.INVISIBLE);
                         }
                         stopPreview();
+
+                        (new Handler()).postDelayed(new Runnable() {
+                            public void run() {
+                                finderPatternIndicatorView.clearPatterns();
+                                finderPatternIndicatorView.invalidate();
+                            }
+                        }, 100);
+
+                        snackbar = Snackbar
+                                .make(parentLayout, getString(R.string.you_can_set_phone_aside),
+                                        Snackbar.LENGTH_INDEFINITE);
+
+                        TypedValue typedValue = new TypedValue();
+                        getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                        snackbar.setActionTextColor(typedValue.data);
+                        View snackView = snackbar.getView();
+                        TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+                        textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+                        textView.setTextColor(Color.WHITE);
+                        snackbar.show();
                     }
 
                     // start the camera preview again in last few seconds
@@ -592,6 +622,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                             cameraPreview.setVisibility(View.VISIBLE);
                         }
                         mCamera.startPreview();
+
+                        sound.playShortResource(R.raw.futurebeep2);
+
+                        snackbar.dismiss();
                     }
 
                     if (value == Constant.GET_READY_SECONDS && max > 60) {

@@ -184,6 +184,7 @@
     <string name="no_data">No data for patch</string>
     <string name="start_camera_instruction">Place the strip in the black area on the colour card and hold camera above the card to analyse.</string>
     <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above colour card and adjust position until check succeeds.</string>
+    <string name="you_can_set_phone_aside">You can set the phone aside until the countdown progress reaches green.</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
     <string name="qualityCheckFailed">Quality check failed</string>
