@@ -82,7 +82,7 @@
     <string name="dipSensorInSample">Dip sensor in sample</string>
 
     <!--About Screen-->
-    <string name="waterQualitySystem">Water Quality System</string>
+    <string name="waterQualitySystem">Water &amp; Soil Quality System</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <string name="legalInformation">Legal Information</string>
 
