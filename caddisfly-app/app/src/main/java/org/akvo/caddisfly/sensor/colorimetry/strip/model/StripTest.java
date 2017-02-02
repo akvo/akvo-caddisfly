@@ -224,17 +224,18 @@ public class StripTest {
 
                                     JSONObject patchObj = patchesArray.getJSONObject(ii);
 
-                                    String patchName = patchObj.getString("name");
-                                    double patchPos = patchObj.getDouble("patchPos");
                                     int id = patchObj.getInt("id");
-                                    int patchWidth = patchObj.getInt("patchWidth");
-                                    double timeLapse = patchObj.getDouble("timeLapse");
+                                    String patchName = patchObj.getString("name");
                                     String unit = patchObj.getString("unit");
-                                    JSONArray colors;
-                                    colors = patchObj.has("colours") ? patchObj.getJSONArray("colours") : patchObj.getJSONArray("colors");
+                                    String formula = patchObj.has("formula") ? patchObj.getString("formula") : "";
+                                    double patchPos = patchObj.has("patchPos") ? patchObj.getDouble("patchPos") : 0;
+                                    int patchWidth = patchObj.has("patchWidth") ? patchObj.getInt("patchWidth") : 0;
+                                    double timeLapse = patchObj.has("timeLapse") ? patchObj.getDouble("timeLapse") : 0;
+                                    JSONArray colors = patchObj.has("colors") ? patchObj.getJSONArray("colors") : new JSONArray();
                                     int phase = patchObj.has("phase") ? patchObj.getInt("phase") : 1;
 
-                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos, timeLapse, unit, colors, phase));
+                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos,
+                                            timeLapse, unit, formula, colors, phase));
                                 }
 
                                 switch (groupingType) {
@@ -338,10 +339,11 @@ public class StripTest {
 
             private final JSONArray colors;
             private final int phase;
+            private final String formula;
 
             @SuppressWarnings("SameParameterValue")
             Patch(int id, String desc, double width, double height, double position,
-                  double timeLapse, String unit, JSONArray colors, int phase) {
+                  double timeLapse, String unit, String formula, JSONArray colors, int phase) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;
@@ -351,6 +353,7 @@ public class StripTest {
                 this.unit = unit;
                 this.colors = colors;
                 this.phase = phase;
+                this.formula = formula;
             }
 
             public int getId() {
@@ -389,6 +392,9 @@ public class StripTest {
                 return phase;
             }
 
+            public String getFormula() {
+                return formula;
+            }
         }
     }
 }

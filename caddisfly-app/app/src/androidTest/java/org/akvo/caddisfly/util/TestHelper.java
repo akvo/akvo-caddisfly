@@ -68,6 +68,7 @@ public final class TestHelper {
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
     public static String mCurrentLanguage = "en";
+    @SuppressWarnings("FieldCanBeLocal")
     private static int mCounter;
 
     private TestHelper() {

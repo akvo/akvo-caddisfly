@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.test.helper;
 
+import android.util.SparseArray;
+
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
@@ -28,8 +30,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -44,8 +44,8 @@ public class ResultsTest {
         TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.FLUORIDE_ID);
         assert testInfo != null;
 
-        ArrayList<String> results = new ArrayList<>();
-        results.add("> 2.0");
+        SparseArray<String> results = new SparseArray<>();
+        results.put(1, "> 2.0");
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
 
@@ -64,9 +64,9 @@ public class ResultsTest {
         TestInfo testInfo = TestConfigHelper.loadTestByUuid("f88237b7-be3d-4fac-bbee-ab328eefcd14");
         assert testInfo != null;
 
-        ArrayList<String> results = new ArrayList<>();
-        results.add("32432");
-        results.add("29.5");
+        SparseArray<String> results = new SparseArray<>();
+        results.put(1, "32432");
+        results.put(2, "29.5");
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
 

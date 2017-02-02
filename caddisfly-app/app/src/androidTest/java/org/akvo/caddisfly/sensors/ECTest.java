@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensors;
 
-
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;

@@ -39,6 +39,7 @@ import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -227,7 +228,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Acquire a wake lock to prevent the screen from turning off during the analysis process
+     * Acquire a wake lock to prevent the screen from turning off during the analysis process.
      */
     private void acquireWakeLock() {
         if (wakeLock == null || !wakeLock.isHeld()) {
@@ -242,7 +243,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Start the test by displaying the partial_progress bar
+     * Start the test by displaying the partial_progress bar.
      */
     private void dismissShakeAndStartTest() {
         mSensorManager.unregisterListener(mShakeDetector);
@@ -251,7 +252,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Show an error message dialog
+     * Show an error message dialog.
      *
      * @param message the message to be displayed
      * @param bitmap  any bitmap image to displayed along with error message
@@ -281,7 +282,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * In diagnostic mode show the diagnostic results dialog
+     * In diagnostic mode show the diagnostic results dialog.
      *
      * @param testFailed    if test has failed then dialog knows to show the retry button
      * @param result        the result shown to the user
@@ -351,7 +352,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Display error message for configuration not loading correctly
+     * Display error message for configuration not loading correctly.
      */
     private void alertCouldNotLoadConfig() {
         String message = String.format("%s%n%n%s",
@@ -367,7 +368,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Get the test result by analyzing the bitmap
+     * Get the test result by analyzing the bitmap.
      *
      * @param bitmap the bitmap of the photo taken during analysis
      */
@@ -554,7 +555,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Analyze the result and display the appropriate success/fail message
+     * Analyze the result and display the appropriate success/fail message.
      * <p/>
      * If the result value is too high then display the high contamination level message
      *
@@ -779,10 +780,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 resultIntent.putExtra(SensorConstants.IMAGE, path);
             }
 
-            ArrayList<String> results = new ArrayList<>();
-            results.add(resultText);
-
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+            SparseArray<String> results = new SparseArray<>();
+            results.put(testInfo.getSubTests().get(0).getId(), resultText);
+
             JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color,
                     resultImageUrl, null);
 
@@ -815,10 +817,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -22,6 +22,7 @@ package org.akvo.caddisfly.helper;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -50,7 +51,7 @@ import timber.log.Timber;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEPRECATED_TESTS_FILENAME;
 
 /**
- * Utility functions to parse a text config json text
+ * Utility functions to parse a text config json text.
  */
 public final class TestConfigHelper {
 
@@ -62,7 +63,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Returns a TestInfo instance filled with test config for the given uuid
+     * Returns a TestInfo instance filled with test config for the given uuid.
      *
      * @param uuid the test uuid
      * @return the TestInfo instance
@@ -110,7 +111,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Load all the tests and their configurations from the json config text
+     * Load all the tests and their configurations from the json config text.
      *
      * @return ArrayList of TestInfo instances filled with config
      */
@@ -271,7 +272,7 @@ public final class TestConfigHelper {
         return testInfo;
     }
 
-    public static JSONObject getJsonResult(TestInfo testInfo, List<String> results, int color,
+    public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results, int color,
                                            String resultImageUrl, StripTest.GroupType groupingType) {
 
         JSONObject resultJson = new JSONObject();
@@ -370,7 +371,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Returns a Uuid for the given shortCode
+     * Returns a Uuid for the given shortCode.
      *
      * @param shortCode the test shortCode
      * @return the Uuid

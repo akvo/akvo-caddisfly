@@ -36,6 +36,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -58,9 +59,6 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -74,7 +72,7 @@ public class SensorActivity extends BaseActivity {
     private static final int ANIMATION_DURATION_LONG = 1500;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
-    private final List<String> results = new ArrayList<>();
+    private final SparseArray<String> results = new SparseArray<>();
     private AlertDialog alertDialog;
     private TestInfo mCurrentTestInfo;
     private Toast debugToast;
@@ -327,10 +325,9 @@ public class SensorActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -436,13 +433,12 @@ public class SensorActivity extends BaseActivity {
                             double result = Double.parseDouble(resultArray[i]);
                             tempString[index] = String.format(Locale.US, "%.1f", result);
                         }
+                        results.put(index, tempString[index]);
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         return;
                     }
                 }
-
-                Collections.addAll(results, tempString);
 
                 // display the results
                 if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0

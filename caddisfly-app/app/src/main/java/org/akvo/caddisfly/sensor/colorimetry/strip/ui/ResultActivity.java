@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.ResultUtil;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.MathUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,11 +70,11 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import timber.log.Timber;
 
@@ -83,12 +85,14 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
     private static final Scalar GREEN_COLOR = new Scalar(0, 255, 0);
     private static final int MAX_RGB_INT_VALUE = 255;
     private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
-    private final List<String> results = new ArrayList<>();
+    private final SparseArray<String> results = new SparseArray<>();
     private Button buttonSave;
     private Button buttonCancel;
     @Nullable
     private Mat resultImage = null;
     private String resultImageUrl;
+    private TextView finalResultTextView;
+    private StripTest.Brand.Patch finalResultPatch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -229,7 +233,9 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         // cycle over the patches and interpret them
         if (imagePatchArray != null) {
             // if this strip is of type 'GROUP', take the first image and use that for all the patches
+            AtomicInteger workCounter;
             if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
+                workCounter = new AtomicInteger(1);
                 // handle grouping case
                 boolean isInvalidStrip = FileUtil.fileExists(this, Constant.STRIP + "0" + Constant.ERROR);
                 strip = ResultUtil.getMatFromFile(this, patches.get(0).getId());
@@ -237,9 +243,10 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     // create empty mat to serve as a template
                     resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
                             new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
-                    new BitmapTask(isInvalidStrip, strip, true, brand, patches, 0).execute(strip);
+                    new BitmapTask(isInvalidStrip, strip, true, brand, patches, 0, workCounter).execute(strip);
                 }
             } else {
+                workCounter = new AtomicInteger(patches.size());
                 // if this strip is of type 'INDIVIDUAL' handle patch by patch
                 for (int i = 0; i < patches.size(); i++) { // handle patch
                     // read strip from file
@@ -251,7 +258,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                             resultImage = new Mat(0, strip.cols(), CvType.CV_8UC3,
                                     new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
                         }
-                        new BitmapTask(false, strip, false, brand, patches, i).execute(strip);
+                        new BitmapTask(false, strip, false, brand, patches, i, workCounter).execute(strip);
                     }
                 }
             }
@@ -294,6 +301,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         private final List<StripTest.Brand.Patch> patches;
         private final int patchNum;
         private final Mat strip;
+        private final AtomicInteger workCounter;
         private String unit;
         private int id;
         private String patchDescription;
@@ -307,13 +315,14 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         private double resultValue = -1;
 
         BitmapTask(boolean invalid, Mat strip, Boolean grouped, StripTest.Brand brand,
-                   List<StripTest.Brand.Patch> patches, int patchNum) {
+                   List<StripTest.Brand.Patch> patches, int patchNum, AtomicInteger workCounter) {
             this.invalid = invalid;
             this.grouped = grouped;
             this.strip = strip;
             this.brand = brand;
             this.patches = patches;
             this.patchNum = patchNum;
+            this.workCounter = workCounter;
         }
 
         @Nullable
@@ -427,6 +436,9 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 }
             }
 
+            if (colors.length() < 1) {
+                return null;
+            }
             ////////////// Create Image ////////////////////
 
             // create Mat to hold strip itself
@@ -497,10 +509,11 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
 
-            //put resultValue in resultJsonArr
+            // add result to results list
             if (!combined.empty()) {
-                results.add(Double.isNaN(resultValue) ? ""
-                        : String.valueOf(ResultUtil.roundSignificant(resultValue)));
+                results.put(patches.get(patchNum).getId(),
+                        Double.isNaN(resultValue) ? ""
+                                : String.valueOf(ResultUtil.roundSignificant(resultValue)));
             }
 
             combined.release();
@@ -536,9 +549,10 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             ImageView imageResult = (ImageView) itemResult.findViewById(R.id.image_result);
 
+            TextView textResult = (TextView) itemResult.findViewById(R.id.text_result);
+
             if (stripBitmap != null) {
                 imageResult.setImageBitmap(stripBitmap);
-                TextView textResult = (TextView) itemResult.findViewById(R.id.text_result);
 
                 if (!invalid) {
 
@@ -584,6 +598,15 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     }
 
                     if (resultValue > -1) {
+
+                        try {
+                            if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
+                                resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
+                            }
+                        } catch (Exception e) {
+                            Timber.e(e);
+                        }
+
                         if (resultValue < 1.0) {
                             textResult.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
                         } else {
@@ -597,27 +620,49 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     textResult.setText(R.string.no_result);
                 }
             } else {
-                textTitle.append("\n\n" + getResources().getString(R.string.no_data));
+                if (!patches.get(patchNum).getFormula().isEmpty()) {
+                    finalResultPatch = patches.get(patchNum);
+                    finalResultTextView = textResult;
+                } else {
+                    textTitle.append("\n\n" + getResources().getString(R.string.no_data));
+                }
                 invalid = true;
             }
-
-            // check if at least one result was returned
-            boolean resultAvailable = false;
-            boolean isInternal = getIntent().getBooleanExtra("internal", false);
-            for (String value : results) {
-                if (!value.isEmpty()) {
-                    resultAvailable = true;
-                    break;
-                }
-            }
-            // show the save button only if at least one result is available
-            buttonSave.setVisibility(isInternal || !resultAvailable ? View.GONE : View.VISIBLE);
-            buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
             layout.addView(itemResult);
 
-            new DeleteTask().execute();
+            // Job is done, decrement the work counter.
+            int tasksLeft = this.workCounter.decrementAndGet();
+            // If the count has reached zero, all async tasks have finished.
+            if (tasksLeft == 0) {
+
+                if (finalResultTextView != null) {
+                    try {
+                        if (!finalResultPatch.getFormula().isEmpty()) {
+
+                            resultValue = MathUtil.eval(String.format(finalResultPatch.getFormula(),
+                                    Double.parseDouble(results.get(2)), Double.parseDouble(results.get(3))));
+
+                            finalResultTextView.setText(String.format(Locale.getDefault(), "%.2f %s",
+                                    resultValue, finalResultPatch.getUnit()));
+
+                        }
+                    } catch (Exception e) {
+                        Timber.e(e);
+                    }
+                }
+
+                // check if at least one result was returned
+                boolean resultAvailable = results.size() > 0;
+                boolean isInternal = getIntent().getBooleanExtra("internal", false);
+
+                // show the save button only if at least one result is available
+                buttonSave.setVisibility(isInternal || !resultAvailable ? View.GONE : View.VISIBLE);
+                buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
+
+                new DeleteTask().execute();
+            }
         }
 
         private class PatchMat {

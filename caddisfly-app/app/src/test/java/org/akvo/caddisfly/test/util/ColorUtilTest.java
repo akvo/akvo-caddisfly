@@ -21,35 +21,40 @@ package org.akvo.caddisfly.test.util;
 
 import android.graphics.Color;
 
-import junit.framework.TestCase;
-
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.ColorUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("unused")
-public class ColorUtilTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("unused")
+public class ColorUtilTest {
+
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         ClassUtil.assertUtilityClassWellDefined(ColorUtil.class);
     }
 
-    public void testGetDistance() throws Exception {
+    @Test
+    public void testGetDistance() {
         double distance = ColorUtil.getColorDistance(Color.rgb(200, 200, 200), Color.rgb(100, 100, 100));
         assertEquals(173.20508075688772, distance, 0);
     }
 
-    public void testGetColorRgbString() throws Exception {
+    @Test
+    public void testGetColorRgbString() {
         String rgb = ColorUtil.getColorRgbString(-13850285);
         assertEquals("44  169  83", rgb);
     }
 
-    public void testAutoGenerateColors() throws Exception {
+    @Test
+    public void testAutoGenerateColors() {
         TestInfo testInfo = new TestInfo();
 
         for (int i = 0; i < 5; i++) {
@@ -69,13 +74,15 @@ public class ColorUtilTest extends TestCase {
         }
     }
 
-    public void testGetColorFromRgb() throws Exception {
+    @Test
+    public void testGetColorFromRgb()  {
         int color = ColorUtil.getColorFromRgb("44  169  83");
         assertEquals(-13850285, color);
 
     }
 
-    public void testGetBrightness() throws Exception {
+    @Test
+    public void testGetBrightness() {
         int brightness = ColorUtil.getBrightness(Color.rgb(200, 255, 30));
         assertEquals(233, brightness);
     }
