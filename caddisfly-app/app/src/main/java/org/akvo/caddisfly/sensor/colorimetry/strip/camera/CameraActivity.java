@@ -153,6 +153,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     };
     private TimerView timerCountdown;
     private boolean mCameraPaused;
+    private InstructionFragment instructionFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -398,6 +399,25 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.layout_cameraPlaceholder, currentFragment)
                     .commit();
+        } else if (currentFragment instanceof CameraStartTestFragment) {
+
+            if (instructionFragment == null) {
+
+                instructionFragment = InstructionFragment.newInstance(uuid, 2);
+
+                getSupportFragmentManager().beginTransaction()
+                        .hide(currentFragment)
+                        .add(R.id.layout_instructionLayout, instructionFragment)
+                        .commit();
+            } else {
+
+                getSupportFragmentManager().beginTransaction()
+                        .remove(instructionFragment)
+                        .show(currentFragment)
+                        .commit();
+
+                currentFragment.onResume();
+            }
         }
     }
 

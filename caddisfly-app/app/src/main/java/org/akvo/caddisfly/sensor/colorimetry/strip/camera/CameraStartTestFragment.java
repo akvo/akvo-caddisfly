@@ -38,8 +38,11 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.detector.FinderPatternInfo;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Activities that contain this fragment must implement the
@@ -110,6 +113,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     };
     private PercentageMeterView exposureView;
     private PercentageMeterView contrastView;
+    private boolean secondPhase;
 
     public CameraStartTestFragment() {
         // Required empty public constructor
@@ -242,6 +246,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (secondPhase && mListener != null) {
+            mListener.takeNextPicture((long) 1000);
+        }
+    }
+
+    @Override
     void showBrightness(double value) {
 
         if (exposureView != null) {
@@ -281,10 +293,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             handler.post(countdownRunnable);
         }
 
-        //start the CameraPreviewCallback in preview mode (not taking pictures, but doing quality checks
-        //mListener.startNextPreview(0);
-
-        //Post the CameraPreviewCallback in take picture mode on time for each patch (the posting is done in the CameraActivity itself)
         uuid = getArguments().getString(Constant.UUID);
 
         StripTest stripTest = new StripTest();
@@ -300,7 +308,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
 
             //tell CameraActivity when it is time to take the next picture
             //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
-            if (mListener != null) {
+            if (mListener != null && patches.get(i).getPhase() < 2) {
                 mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
             }
         }
@@ -325,19 +333,38 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         // before this loop has run.
         //we need to add 1 to patchesCovered at the start of the for loop, because we use it to get an object from
         // the list of patches, which of course starts counting at 0.
-        for (int i = patchesCovered + 1; i < patches.size(); i++) {
+        for (int i = 0; i < patches.size(); i++) {
+
+            if (!secondPhase && patches.get(i).getPhase() > 1) {
+                continue;
+            }
 
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
             if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
 
-                //keep track of which patches are 'done'
-                patchesCovered = i;
+                boolean found = false;
+                try {
+                    for (int j = 0; j < imagePatchArray.length(); j++) {
+                        JSONArray temp = (JSONArray) imagePatchArray.get(j);
+                        if (temp.getInt(1) == patches.get(i).getId()) {
+                            found = true;
+                        }
+                    }
+                } catch (JSONException e) {
+                    Timber.e(e);
+                }
 
-                //keep track of which image belongs to which patch
-                JSONArray array = new JSONArray();
-                array.put(imageCount);
-                array.put(patches.get(i).getId());
-                imagePatchArray.put(array);
+                if (!found) {
+                    //keep track of which image belongs to which patch
+                    JSONArray array = new JSONArray();
+                    array.put(imageCount);
+                    array.put(patches.get(i).getId());
+                    imagePatchArray.put(array);
+
+                    //keep track of which patches are 'done'
+                    patchesCovered = imagePatchArray.length() - 1;
+                }
+
 
             }
         }
@@ -370,7 +397,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     public boolean dataSent() {
 
         //check if we do have images for all patches
-        if (patchesCovered == patches.size() - 1) {
+        if (imagePatchArray.length() == patches.size()) {
             //stop the preview callback from repeating itself
             if (mListener != null) {
                 mListener.stopCallback();
@@ -381,6 +408,15 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
                 //write image/patch info to internal storage
                 FileUtil.writeToInternalStorage(getActivity(), Constant.IMAGE_PATCH, imagePatchArray.toString());
                 return true;
+            }
+        } else if (imagePatchArray.length() == 3) {
+            if (handler != null) {
+                handler.removeCallbacks(countdownRunnable);
+            }
+
+            secondPhase = true;
+            if (mListener != null) {
+                mListener.nextFragment();
             }
         }
         return false;

@@ -215,6 +215,7 @@
           "png": ""
         },
         {
+          "phase": 2,
           "text": [
             "<b>stage_two</b>",
             "dip_strip_move_back_forth_30_seconds",
@@ -223,10 +224,12 @@
           "png": "instruction_dip"
         },
         {
+          "phase": 2,
           "text": "place_strip_in_black_area",
           "png": "instruction_place_strip"
         },
         {
+          "phase": 2,
           "text": "press_start_button",
           "png": ""
         }

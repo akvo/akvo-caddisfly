@@ -716,7 +716,8 @@
           "unit": "ppm",
           "patchPos":3,
           "patchWidth":6,
-          "timeLapse":70,
+          "timeLapse":0,
+          "phase": 2,
           "colors":[
             {
               "value": 0,
@@ -750,7 +751,8 @@
           "unit": "ppm",
           "patchPos":17,
           "patchWidth":6,
-          "timeLapse":70,
+          "timeLapse":0,
+          "phase": 2,
           "colors":[
             {
               "value": 0,

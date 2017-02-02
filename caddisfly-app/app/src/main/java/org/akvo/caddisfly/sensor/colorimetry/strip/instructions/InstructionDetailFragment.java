@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -105,12 +106,21 @@ public class InstructionDetailFragment extends Fragment {
                 textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                         getResources().getDisplayMetrics()), 1.0f);
 
+                String text = instruction;
                 if (instruction.contains("<!>")) {
+                    text = instruction.replaceAll("<!>", "");
                     textView.setTextColor(Color.RED);
                 } else {
                     textView.setTextColor(Color.DKGRAY);
                 }
-                String text = instruction.replaceAll("<!>", "");
+
+                if (instruction.contains("<b>")) {
+                    text = text.replaceAll("<b>", "").replaceAll("</b>", "");
+                    textView.setTypeface(null, Typeface.BOLD);
+                } else {
+                    textView.setTextColor(Color.DKGRAY);
+                }
+
                 Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
                 if (!text.isEmpty()) {
                     textView.append(spanned);

@@ -109,6 +109,8 @@
     <string name="taking_photo">Taking photo</string>
     <string name="waiting_for">Waiting for %s</string>
     <string name="success_quality_checks">Success! Quality check passed</string>
+    <string name="stage_one">Stage 1:</string>
+    <string name="stage_two">Stage 2:</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="stripTest">Strip Test</string>
     <string name="no_result">No result</string>
