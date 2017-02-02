@@ -126,6 +126,8 @@ public class NavigationTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
+        mDevice.waitForWindowUpdate("", 1000);
+
         //About Screen
         takeScreenshot();
 
@@ -292,37 +294,50 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        //clickExternalSourceButton("next");
+        clickExternalSourceButton(1);
 
-//        clickExternalSourceButton("useExternalSource", 0);
-//
 //        //Calibration incomplete
-//        takeScreenshot();
+        takeScreenshot();
 //
-//        onView(withId(android.R.id.button2)).perform(click());
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        //EC
-        //clickExternalSourceButton(1);
+        onView(withId(android.R.id.button2)).perform(click());
+
+        clickExternalSourceButton("next");
+
+        clickExternalSourceButton(0);
 
         //Connect EC Sensor Screen
-        //takeScreenshot();
+        takeScreenshot();
 
-        //mDevice.pressBack();
+        mDevice.pressBack();
 
-        //pH
-//        clickExternalSourceButton(2);
+        // SEC
+        clickExternalSourceButton(1);
+
+        mDevice.pressBack();
+
+        // Soil Moisture
+        clickExternalSourceButton(2);
+
+        mDevice.pressBack();
+
+        clickExternalSourceButton("next");
+
+        clickExternalSourceButton("next");
+
+        clickExternalSourceButton("next");
+
+        //Phosphate
+        clickExternalSourceButton(0);
+
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.ok)).perform(click());
 
         mDevice.pressBack();
-
-        //Caffeine
-        //clickExternalSourceButton(3);
-
-        //Test type not available
-        //takeScreenshot();
 
         //mDevice.pressBack();
         //onView(withId(android.R.id.button1)).perform(click());
