@@ -2,7 +2,245 @@
   "comment": "This file contains the metadata for tests. IMPORTANT: *DO NOT* change the uuid values",
   "tests":[
     {
-      "name": "Ammonium",
+      "name": "Soil - Available Nitrogen",
+      "description": "Measures nitrate and nitrite in water. Nitrate 0 - 50 ppm, Nitrite 0 - 3.0 ppm",
+      "subtype": "striptest",
+      "tags": ["soil quality"],
+      "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
+      "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
+      "brand": "HACH 27454",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 82.6,
+      "height": 5.2,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id":1,
+          "name":"Available Nitrogen",
+          "unit": "kg/ha",
+          "patchPos":3.3,
+          "patchWidth":6,
+          "timeLapse":60,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[81.57,-1.10,10.30]
+            },
+            {
+              "value": 1,
+              "lab":[79.41,3.80,8.74]
+            },
+            {
+              "value": 2,
+              "lab":[77.44,8.25,5.98]
+            },
+            {
+              "value": 5,
+              "lab":[71.57,20.89,-0.05]
+            },
+            {
+              "value": 10,
+              "lab":[65.16,32.56,-5.13]
+            },
+            {
+              "value": 20,
+              "lab":[57.42,50.66,-11.23]
+            },
+            {
+              "value": 50,
+              "lab":[43.66,66.87,-14.09]
+            }
+          ]
+        },
+        {
+          "id":2,
+          "name":"Available Nitrogen",
+          "unit": "kg/ha",
+          "patchPos": 16.8,
+          "patchWidth":6,
+          "timeLapse":30,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[86.23,-1.15,2.84]
+            },
+            {
+              "value": 0.15,
+              "lab":[82.55,5.69,-0.57]
+            },
+            {
+              "value": 0.3,
+              "lab":[80.29,11.74,-2.93]
+            },
+            {
+              "value": 1.0,
+              "lab":[72.66,28.62,-9.70]
+            },
+            {
+              "value": 1.5,
+              "lab":[69.52,36.77,-12.47]
+            },
+            {
+              "value": 3.0,
+              "lab":[61.65,49.53,-15.35]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name":  "Soil - Available Phosphorous",
+      "description": "Phosphorous, 0 - 100 kg/ha.",
+      "subtype": "striptest",
+      "tags": ["soil quality"],
+      "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
+      "calibration": "07-12-2016 using X-Rite i1Pro 2",
+      "brand": "Quantofix 91320",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 95.2,
+      "height": 5.5,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id":1,
+          "name":"Phosphorous",
+          "unit": "kg/ha",
+          "patchPos":5,
+          "patchWidth":6,
+          "timeLapse":0,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[89.28,-4.67,1.61]
+            },
+            {
+              "value": 3,
+              "lab":[84.82,-11.54,-0.02]
+            },
+            {
+              "value": 10,
+              "lab":[79.03,-18.32,-4.59]
+            },
+            {
+              "value": 25,
+              "lab":[68.00,-25.37,-8.72]
+            },
+            {
+              "value": 50,
+              "lab":[59.41,-26.55,-10.43]
+            },
+            {
+              "value": 100,
+              "lab":[47.95,-26.89,-11.32]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Soil - Available Potassium",
+      "description": "Potassium, 0 - 1000 ppm.",
+      "subtype": "striptest",
+      "tags": ["soil quality"],
+      "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
+      "calibration": "18-11-2016 using X-Rite i1Pro 2",
+      "brand": "MERCK 117985",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 74,
+      "height": 6,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Available Potassium",
+          "unit": "kg/ha",
+          "patchPos": 4.5,
+          "patchWidth": 7,
+          "timeLapse": 0,
+          "colors":[
+            {
+              "value": 0,
+              "lab": [78.90,12.62,47.41]
+            },
+            {
+              "value": 250,
+              "lab": [73.59,24.18,53.73]
+            },
+            {
+              "value": 450,
+              "lab": [65.05,41.19,55.50]
+            },
+            {
+              "value": 700,
+              "lab": [59.62,50.94,54.60]
+            },
+            {
+              "value": 1000,
+              "lab": [53.77,58.94,52.64]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Soil - pH",
+      "description": "pH mid range",
+      "subtype": "striptest",
+      "tags": ["water quality"],
+      "uuid": "895845dd-9990-49f3-b611-420551851acd",
+      "calibration": "16 Dec 2016 using X-Rite i1Pro 2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
+      "brand": "HACH 27456",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 82.7,
+      "height": 5,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id":1,
+          "name":"pH",
+          "unit": "",
+          "patchPos":3.6,
+          "patchWidth":6,
+          "timeLapse":15,
+          "colors":[
+            {
+              "value": 4,
+              "lab":[65.86,-6.20,38.88]
+            },
+            {
+              "value": 5,
+              "lab":[58.43,-16.68,20.57]
+            },
+            {
+              "value": 6,
+              "lab":[51.42,-18.74,1.80]
+            },
+            {
+              "value": 7,
+              "lab":[45.94,-13.70,-8.27]
+            },
+            {
+              "value": 8,
+              "lab":[42.09,4.38,-23.57]
+            },
+            {
+              "value": 9,
+              "lab":[39.86,14.81,-32.57]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Water - Ammonium",
       "subtype": "striptest",
       "tags": ["water quality", "soil quality"],
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
@@ -56,7 +294,7 @@
       ]
     },
     {
-      "name": "Arsenic",
+      "name": "Water - Arsenic",
       "subtype": "striptest",
       "tags": ["water quality"],
       "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
@@ -118,7 +356,7 @@
       ]
     },
     {
-      "name": "Arsenic (0 - 4000)",
+      "name": "Water - Arsenic (0 - 4000)",
       "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-4000 ppm range is used.",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -171,7 +409,7 @@
       ]
     },
     {
-      "name": "Arsenic (0 - 500)",
+      "name": "Water - Arsenic (0 - 500)",
       "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-500 ppm range is used.",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -228,7 +466,7 @@
       ]
     },
     {
-      "name":  "Chloride",
+      "name":  "Water - Chloride",
       "description": "Chloride, 0 - ≥3000 ppm.",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -415,7 +653,7 @@
       ]
     },
     {
-      "name": "Fluoride",
+      "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
       "subtype": "liquid-chamber",
       "tags": ["water quality"],
@@ -438,7 +676,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Water - Free Chlorine",
       "description": "Measures Free chlorine in water. 0 - 1 ppm",
       "subtype": "liquid-chamber",
       "tags": ["water quality"],
@@ -458,7 +696,7 @@
       ]
     },
     {
-      "name": "Total & Free Chlorine, Total Hardness, Total Alkalinity, pH",
+      "name": "Water - Chlorine, Hardness, Alkalinity, pH",
       "description": "5 in 1 test",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -641,7 +879,7 @@
       ]
     },
     {
-      "name": "Nitrate - N & Nitrite - N",
+      "name": "Water - Nitrate - N & Nitrite - N",
       "description": "Measures nitrate and nitrite in water. Nitrate 0 - 50 ppm, Nitrite 0 - 3.0 ppm",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -730,7 +968,7 @@
       ]
     },
     {
-      "name": "pH",
+      "name": "Water - pH",
       "description": "pH mid range",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -781,7 +1019,7 @@
       ]
     },
     {
-      "name": "pH (0 - 14)",
+      "name": "Water - pH (0 - 14)",
       "description": "pH, range 0 - 14",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -1079,7 +1317,7 @@
       ]
     },
     {
-      "name":  "Phosphate",
+      "name":  "Water - Phosphate",
       "description": "Phosphate, 0 - 100 ppm.",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -1130,7 +1368,7 @@
       ]
     },
     {
-      "name": "Potassium",
+      "name": "Water - Potassium",
       "description": "Potassium, 0 - 1000 ppm.",
       "subtype": "striptest",
       "tags": ["water quality", "soil quality"],
@@ -1177,7 +1415,7 @@
       ]
     },
     {
-      "name": "Soil Electrical Conductivity",
+      "name": "Soil - Electrical Conductivity",
       "description": "Electrical conductivity of soil",
       "subtype": "sensor",
       "tags": ["soil quality"],
@@ -1202,7 +1440,7 @@
       ]
     },
     {
-      "name": "Soil Moisture",
+      "name": "Soil - Moisture",
       "description": "Moisture content of soil",
       "subtype": "sensor",
       "tags": ["soil quality"],
@@ -1220,7 +1458,7 @@
       ]
     },
     {
-      "name": "Total Chlorine & Free Chlorine",
+      "name": "Water - Total Chlorine & Free Chlorine",
       "description": "Measures chlorine and free chlorine in water. 0 - 10 ppm",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -1305,7 +1543,7 @@
       ]
     },
     {
-      "name": "Total Iron",
+      "name": "Water - Total Iron",
       "description": "Total dissolved iron",
       "subtype": "striptest",
       "tags": ["water quality"],
@@ -1360,7 +1598,7 @@
       ]
     },
     {
-      "name": "Water Electrical Conductivity",
+      "name": "Water - Electrical Conductivity",
       "description": "Electrical Conductivity of water. 0 - 20.000 μS/cm",
       "subtype": "sensor",
       "tags": ["water quality"],

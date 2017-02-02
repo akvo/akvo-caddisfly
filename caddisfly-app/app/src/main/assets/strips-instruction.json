@@ -1,6 +1,96 @@
 {
   "tests": [
     {
+      "name": "Soil - Available Nitrogen",
+      "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
+      "instructions": [
+        {
+          "text": "dip_strip_into_water_and_remove",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "<!>do_not_shake_excess_water<!>",
+          "png": ""
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Soil - Available Phosphorous",
+      "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
+      "instructions": [
+        {
+          "text": [
+            "conduct_test_per_instructions",
+            "when_ready_place_strip_on_card"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Soil - Available Potassium",
+      "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
+      "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "immerse_reaction_zone",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "allow_excess_liquid_to_run_off"
+        },
+        {
+          "text": "add_reagent_k1"
+        },
+        {
+          "text": "allow_excess_liquid_to_run_off"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
+      "name": "Soil - pH",
+      "uuid": "895845dd-9990-49f3-b611-420551851acd",
+      "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": [
+            "dip_strip_into_water_and_remove",
+            "do_not_shake_excess_water"
+          ],
+          "png": "instruction_dip"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
       "name": "Ammonium - Quantofix",
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
       "instructions": [
@@ -18,7 +108,7 @@
         {
           "text": [
             "dip_strip_5_seconds_and_remove",
-            "remove_shake_excess_water"
+            "shake_excess_water"
           ],
           "png": "instruction_dip"
         },
@@ -103,7 +193,10 @@
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
       "instructions": [
         {
-          "text": "collect_water_sample",
+          "text": [
+            "<b>stage_one</b>",
+            "collect_water_sample"
+          ],
           "png": "instruction_collect_sample"
         },
         {
@@ -123,6 +216,7 @@
         },
         {
           "text": [
+            "<b>stage_two</b>",
             "dip_strip_move_back_forth_30_seconds",
             "dry_off_excess_water_place_on_towel"
           ],
@@ -149,7 +243,7 @@
         {
           "text": [
             "dip_strip_into_water_1_second",
-            "remove_shake_excess_water"
+            "shake_excess_water"
           ],
           "png": "instruction_dip"
         },
@@ -223,7 +317,7 @@
           "png": "instruction_dip"
         },
         {
-          "text": "remove_shake_excess_water"
+          "text": "shake_excess_water"
         },
         {
           "text": "place_strip_in_black_area",
@@ -244,31 +338,6 @@
             "conduct_test_per_instructions",
             "when_ready_place_strip_on_card"
           ]
-        }
-      ]
-    },
-    {
-      "name": "Phosphate",
-      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
-      "instructions": [
-        {
-          "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
-        },
-        {
-          "text": [
-            "dip_strip_5_seconds_and_remove",
-            "do_not_shake_excess_water"
-          ],
-          "png": "instruction_dip"
-        },
-        {
-          "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
-        },
-        {
-          "text": "press_start_button",
-          "png": ""
         }
       ]
     },
@@ -369,7 +438,7 @@
         {
           "text": [
             "dip_strip_move_back_forth_15_seconds",
-            "remove_shake_excess_water"
+            "shake_excess_water"
           ],
           "png": "instruction_dip"
         },

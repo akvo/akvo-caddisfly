@@ -170,7 +170,7 @@ public class ECTest {
 
         SystemClock.sleep(7000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water Electrical Conductivity")));
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity")));
 
         onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
 
@@ -211,7 +211,7 @@ public class ECTest {
 
         SystemClock.sleep(6000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water Electrical Conductivity")));
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity")));
 
         onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
 

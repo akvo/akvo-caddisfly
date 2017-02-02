@@ -30,7 +30,7 @@
     <string name="dip_strip_move_back_forth_15_seconds">Trempez une bande de test dans le flacon échantillon et remuez le rapidement d\'avant en arrière sous l\'eau pendant 15 secondes.</string>
     <string name="dip_strip_move_back_forth_30_seconds">Déplacez la bande d\'avant en arrière pendant 30 secondes dans de l\'eau.</string>
     <string name="dry_off_excess_water_place_on_towel">Ensuite, séchez l\'excès d\'eau. (placer sur une serviette)</string>
-    <string name="remove_shake_excess_water">Retirez la bande et secouez l\'excès d\'eau.</string>
+    <string name="shake_excess_water">Retirez la bande et secouez l\'excès d\'eau.</string>
     <string name="do_not_shake_excess_water">Ne pas secouer l\'excès d\'eau de la bande test.</string>
     <string name="fill_half_with_sample">Remplissez le flacon à moitié avec de l\'eau de l\'échantillon.</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un sachet plastique et ajouter le contenu de poudre dans le flacon.</string>
