@@ -610,6 +610,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                         TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
                         textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                         textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+                        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         textView.setTextColor(Color.WHITE);
                         snackbar.show();
                     }

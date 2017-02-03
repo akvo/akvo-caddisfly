@@ -33,8 +33,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import android.text.Spanned;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
@@ -55,6 +54,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
+import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -157,40 +157,10 @@ public class SensorActivity extends BaseActivity {
                         alertDialog.show();
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
-//                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-//                            mCurrentTestInfo.getName()),
-//                            Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
-
-    private static AlertDialog createAlert(@NonNull final Activity context, @StringRes int title, String message,
-                                           @StringRes int okButtonText,
-                                           @Nullable DialogInterface.OnClickListener cancelListener) {
-
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(context);
-
-        builder.setTitle(title)
-                .setMessage(message)
-                .setCancelable(false);
-
-
-        if (cancelListener == null) {
-            cancelListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                    context.finish();
-                }
-            };
-        }
-
-        builder.setNegativeButton(okButtonText, cancelListener);
-
-        return builder.create();
-    }
 
     @Override
     public void onResume() {
@@ -314,10 +284,27 @@ public class SensorActivity extends BaseActivity {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
 
-            String message = getString(R.string.connectCorrectSensor,
-                    mCurrentTestInfo.getName());
+            String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
+                    getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
+            Spanned spanned = StringUtil.fromHtml(message);
 
-            alertDialog = createAlert(this, R.string.incorrectDevice, message, R.string.cancel, null);
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+
+            builder.setTitle(R.string.incorrectDevice)
+                    .setMessage(spanned)
+                    .setCancelable(true);
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+
+            alertDialog = builder.create();
+            alertDialog.show();
         }
 
         progressWait.setVisibility(View.VISIBLE);
@@ -340,20 +327,6 @@ public class SensorActivity extends BaseActivity {
             imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
             buttonAcceptResult.setVisibility(View.GONE);
             textSubtitle.setText(R.string.deviceConnectSensor);
-
-//            if (!mIsInternal) {
-//                (new Handler()).postDelayed(new Runnable() {
-//                    public void run() {
-//                        if (!isFinishing()) {
-//                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-//                                    mCurrentTestInfo.getName()), Toast.LENGTH_SHORT).show();
-//
-//                            finish();
-//                        }
-//
-//                    }
-//                }, FINISH_DELAY_MILLIS);
-//            }
         }
     }
 
@@ -432,8 +405,8 @@ public class SensorActivity extends BaseActivity {
                         } else if (index > -1) {
                             double result = Double.parseDouble(resultArray[i]);
                             tempString[index] = String.format(Locale.US, "%.1f", result);
+                            results.put(index, tempString[index]);
                         }
-                        results.put(index, tempString[index]);
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         return;

@@ -39,7 +39,6 @@ android {
         }
     }
 
-
 //    signingConfigs {
 //        caddisflyRelease {
 //            storeFile file(CADDISFLY_RELEASE_STORE_FILE)

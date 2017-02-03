@@ -412,6 +412,14 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 colors = patches.get(0).getColors();
 
             } else {
+
+                //set the colors needed to calculate resultValue
+                colors = patches.get(patchNum).getColors();
+
+                if (colors.length() < 1) {
+                    return null;
+                }
+
                 double ratioW = strip.width() / brand.getStripLength();
                 double x = patches.get(patchNum).getPosition() * ratioW;
                 double y = strip.height() / 2d;
@@ -426,9 +434,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 colorDetected = ResultUtil.getPatchColor(mat, patchCenter, subMatSize);
                 double[] colorValueLab = colorDetected.getLab().val;
 
-                //set the colors needed to calculate resultValue
-                colors = patches.get(patchNum).getColors();
-
                 try {
                     resultValue = ResultUtil.calculateResultSingle(colorValueLab, colors, id);
                 } catch (Exception e) {
@@ -436,9 +441,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 }
             }
 
-            if (colors.length() < 1) {
-                return null;
-            }
             ////////////// Create Image ////////////////////
 
             // create Mat to hold strip itself

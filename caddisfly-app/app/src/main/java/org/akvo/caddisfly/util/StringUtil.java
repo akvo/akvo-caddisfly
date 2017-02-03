@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.util;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.Spanned;
 
@@ -36,5 +37,16 @@ public final class StringUtil {
         } else {
             return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html) {
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }
