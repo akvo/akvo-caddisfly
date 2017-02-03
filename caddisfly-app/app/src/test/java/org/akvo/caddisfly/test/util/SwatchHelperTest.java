@@ -21,20 +21,27 @@ package org.akvo.caddisfly.test.util;
 
 import android.graphics.Color;
 
-import junit.framework.TestCase;
-
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
+import org.junit.Before;
+import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
-public class SwatchHelperTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    public void setUp() throws Exception {
-        super.setUp();
-        ClassUtil.assertUtilityClassWellDefined(SwatchHelper.class);
+@SuppressWarnings("unused")
+public class SwatchHelperTest {
+
+    @Before
+    public void setUp() {
+        try {
+            ClassUtil.assertUtilityClassWellDefined(SwatchHelper.class);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     private Result createNewResult(double value) {
@@ -47,7 +54,8 @@ public class SwatchHelperTest extends TestCase {
         return new Result(null, results);
     }
 
-    public void testGetAverageResult() throws Exception {
+    @Test
+    public void testGetAverageResult() {
 
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -66,6 +74,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-1, result, 0);
     }
 
+    @Test
     public void testAverage2() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -80,6 +89,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-1.0, result, 0);
     }
 
+    @Test
     public void testAverage3() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -90,6 +100,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-1, result, 0);
     }
 
+    @Test
     public void testAverage4() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -101,6 +112,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-1.0, result, 0);
     }
 
+    @Test
     public void testAverage5() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -126,6 +138,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-1, result, 0);
     }
 
+    @Test
     public void testAverage7() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -139,6 +152,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(1.63, result, 0);
     }
 
+    @Test
     public void testAverage8() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6));
@@ -153,6 +167,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(1.63, result, 0);
     }
 
+    @Test
     public void testGetAverageColor1() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
@@ -167,6 +182,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-16777216, color);
     }
 
+    @Test
     public void testGetAverageColor2() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
@@ -178,6 +194,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-16777216, color);
     }
 
+    @Test
     public void testGetAverageColor3() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
@@ -191,6 +208,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-16777216, color);
     }
 
+    @Test
     public void testGetAverageColor4() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(255, 255, 255)));
@@ -204,6 +222,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-16777216, color);
     }
 
+    @Test
     public void testGetAverageColor5() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(225, 1, 1)));
@@ -217,6 +236,7 @@ public class SwatchHelperTest extends TestCase {
         assertEquals(-16777216, color);
     }
 
+    @Test
     public void testGetAverageColor6() {
         ArrayList<Result> results = new ArrayList<>();
         results.add(createNewResult(1.6, Color.rgb(179, 128, 81)));

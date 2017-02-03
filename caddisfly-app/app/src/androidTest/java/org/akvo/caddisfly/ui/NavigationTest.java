@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.TestConstant;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -303,7 +304,7 @@ public class NavigationTest {
 
         onView(withId(android.R.id.button2)).perform(click());
 
-        clickExternalSourceButton("next");
+        clickExternalSourceButton(TestConstant.NEXT);
 
         clickExternalSourceButton(0);
 
@@ -322,11 +323,11 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        clickExternalSourceButton("next");
+        clickExternalSourceButton(TestConstant.NEXT);
 
-        clickExternalSourceButton("next");
+        clickExternalSourceButton(TestConstant.NEXT);
 
-        clickExternalSourceButton("next");
+        clickExternalSourceButton(TestConstant.NEXT);
 
         //Phosphate
         clickExternalSourceButton(0);

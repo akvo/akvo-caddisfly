@@ -61,7 +61,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ExternalActionActivity extends BaseActivity {
 
-    private static final int CODE_LENGTH = 7;
     private static final int REQUEST_TEST = 1;
     private static final int PERMISSION_ALL = 1;
     private static final String MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s";

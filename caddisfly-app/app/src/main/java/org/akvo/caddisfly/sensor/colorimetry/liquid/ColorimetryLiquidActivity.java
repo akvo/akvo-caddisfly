@@ -146,7 +146,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
         if (mIsCalibration && getSupportActionBar() != null) {
             String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
-                    getResources().getString(R.string.calibrate),
+                    getString(R.string.calibrate),
                     mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             textDilution.setText(subTitle);
         }
@@ -186,8 +186,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 mWaitingForStillness = true;
 
-                showError(String.format("%s%n%n%s", R.string.errorTestInterrupted,
-                        R.string.doNotMoveDeviceDuringTest), null);
+                showError(String.format("%s%n%n%s", getString(R.string.errorTestInterrupted),
+                        getString(R.string.doNotMoveDeviceDuringTest)), null);
             }
         }, new ShakeDetector.OnNoShakeListener() {
             @Override
@@ -508,8 +508,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError(String.format("%s%n%s", R.string.chamberNotFound,
-                                        R.string.checkChamberPlacement), ImageUtil.getBitmap(bytes));
+                                showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+                                        getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
                                 return;
@@ -568,8 +568,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         if (mResults.size() == 0) {
             // Analysis failed. Display error
-            showError(String.format("%s%n%s", R.string.chamberNotFound,
-                    R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
+            showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+                    getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
         } else {
 
             mTestCompleted = true;
@@ -655,16 +655,16 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     showDiagnosticResultDialog(true, EMPTY_STRING, color, mIsCalibration);
                 } else {
                     if (mIsCalibration) {
-                        showError(String.format("%s%n%s", R.string.chamberNotFound,
-                                R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
+                        showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+                                getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                         PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
                     } else {
                         PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
 
-                        showError(String.format("%s%n%s", R.string.errorTestFailed,
-                                R.string.checkChamberPlacement), ImageUtil.getBitmap(data));
+                        showError(String.format("%s%n%s", getString(R.string.errorTestFailed),
+                                getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                     }
                 }
             } else {
