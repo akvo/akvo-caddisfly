@@ -22,6 +22,7 @@ package org.akvo.caddisfly.sensors;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
@@ -37,7 +38,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.ToastMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -50,7 +50,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -128,25 +127,48 @@ public class ECTest {
         ViewInteraction relativeLayout = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
-                        2),
+                        0),
                         isDisplayed()));
+
         relativeLayout.perform(click());
 
-        SystemClock.sleep(7000);
+        SystemClock.sleep(10000);
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        SystemClock.sleep(5000);
+
+        Espresso.pressBack();
+
+        mDevice.pressBack();
+
+        mActivityRule.launchActivity(null);
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                        withParent(withId(R.id.mainLayout)),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
 
         ViewInteraction relativeLayout6 = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
-                        2),
+                        1),
                         isDisplayed()));
         relativeLayout6.perform(click());
 
-        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest)));
+        //onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest)));
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(10000);
 
-        onView(withText("Connect Soil Moisture sensor"))
-                .inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        //onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+
+        String message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Moisture sensor.";
+
+        //onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).perform(click());
 
         ViewInteraction relativeLayout2 = onView(
                 allOf(childAtPosition(
@@ -157,13 +179,10 @@ public class ECTest {
 
         SystemClock.sleep(1000);
 
-        onView(withText("Connect Soil Electrical Conductivity sensor"))
-                .inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-
         ViewInteraction relativeLayout3 = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
-                        0),
+                        2),
                         isDisplayed()));
         relativeLayout3.perform(click());
 

@@ -255,7 +255,7 @@ public class NavigationTest {
             //EC not found dialog
             takeScreenshot();
 
-            onView(withId(android.R.id.button2)).perform(click());
+            onView(withId(android.R.id.button1)).perform(click());
 
         } catch (Exception ex) {
             String message = String.format("%s\r\n\r\n%s", mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
@@ -331,9 +331,9 @@ public class NavigationTest {
         //Phosphate
         clickExternalSourceButton(0);
 
-        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
+        //onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
-        //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.ok)).perform(click());
 

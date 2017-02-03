@@ -119,12 +119,12 @@ public class SensorTest {
 
             onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
 
-            String message = mActivityRule.getActivity().getString(R.string.connectCorrectSensor,
-                    mActivityRule.getActivity().getString(R.string.electricalConductivity));
+            String message = "The expected sensor was not found.\n\n" +
+                    "Connect the Water - Electrical Conductivity sensor.";
 
             onView(withText(message)).check(matches(isDisplayed()));
 
-            onView(withId(android.R.id.button2)).perform(click());
+            onView(withId(android.R.id.button1)).perform(click());
 
         } catch (Exception ex) {
             String message = String.format("%s\r\n\r\n%s",
@@ -155,12 +155,12 @@ public class SensorTest {
 
             onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
 
-            String message = mActivityRule.getActivity().getString(R.string.connectCorrectSensor,
-                    mActivityRule.getActivity().getString(R.string.electricalConductivity));
+            String message = "The expected sensor was not found.\n\n" +
+                    "Connect the Water - Electrical Conductivity sensor.";
 
             onView(withText(message)).check(matches(isDisplayed()));
 
-            onView(withId(android.R.id.button2)).perform(click());
+            onView(withId(android.R.id.button1)).perform(click());
 
         } catch (Exception ex) {
             String message = String.format("%s\r\n\r\n%s",
@@ -171,8 +171,6 @@ public class SensorTest {
 
             onView(withText(R.string.ok)).perform(click());
         }
-
-        Espresso.pressBack();
 
         Espresso.pressBack();
 

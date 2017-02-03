@@ -284,6 +284,8 @@ public class SensorActivity extends BaseActivity {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
 
+            progressWait.setVisibility(View.GONE);
+
             String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
                     getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
             Spanned spanned = StringUtil.fromHtml(message);
@@ -293,7 +295,7 @@ public class SensorActivity extends BaseActivity {
 
             builder.setTitle(R.string.incorrectDevice)
                     .setMessage(spanned)
-                    .setCancelable(true);
+                    .setCancelable(false);
 
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -305,9 +307,9 @@ public class SensorActivity extends BaseActivity {
 
             alertDialog = builder.create();
             alertDialog.show();
+        } else {
+            progressWait.setVisibility(View.VISIBLE);
         }
-
-        progressWait.setVisibility(View.VISIBLE);
     }
 
     @Override
