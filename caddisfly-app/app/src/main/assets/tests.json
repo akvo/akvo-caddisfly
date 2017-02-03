@@ -20,7 +20,7 @@
           "id":1,
           "name":"Available Nitrogen",
           "unit": "kg/ha",
-          "formula": "((%1$f + %2$f) * 5) / 2.24"
+          "formula": "((%1$f + %2$f) * 5) * 2.24"
         },
         {
           "id":2,
@@ -115,10 +115,10 @@
           "id":1,
           "name":"Available Phosphorous",
           "unit": "kg/ha",
-          "formula": "((%1$f * 0.326138) * 5) / 2.24",
+          "formula": "((%1$f * 0.326138) * 5) * 2.24",
           "patchPos":5,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,
@@ -167,7 +167,7 @@
           "id": 1,
           "name": "Available Potassium",
           "unit": "kg/ha",
-          "formula": "(%1$f * 5) / 2.24",
+          "formula": "(%1$f * 5) * 2.24",
           "patchPos": 4.5,
           "patchWidth": 7,
           "timeLapse": 0,
@@ -215,6 +215,7 @@
           "id":1,
           "name":"pH",
           "unit": "",
+          "formula": "(%1$f * 115) / 100",
           "patchPos":3.6,
           "patchWidth":6,
           "timeLapse":15,
@@ -1347,7 +1348,7 @@
           "unit": "ppm",
           "patchPos":5,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeLapse":60,
           "colors":[
             {
               "value": 0,

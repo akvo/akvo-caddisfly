@@ -5,6 +5,10 @@
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
       "instructions": [
         {
+          "text": "collect_mehlich_extraction_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
           "text": "dip_strip_into_water_and_remove",
           "png": "instruction_dip"
         },
@@ -27,7 +31,7 @@
       "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
       "instructions": [
         {
-          "text": "collect_5ml_sample",
+          "text": "collect_5ml_mehlich_sample",
           "png": ""
         },
         {
@@ -73,7 +77,7 @@
       "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
       "instructions": [
         {
-          "text": "collect_water_sample",
+          "text": "collect_mehlich_extraction_sample",
           "png": "instruction_collect_sample"
         },
         {
@@ -104,7 +108,7 @@
       "uuid": "895845dd-9990-49f3-b611-420551851acd",
       "instructions": [
         {
-          "text": "collect_water_sample",
+          "text": "collect_water_extraction_sample",
           "png": "instruction_collect_sample"
         },
         {
@@ -298,6 +302,10 @@
       "name": "Water - Nitrate - N & Nitrite - N",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
         {
           "text": "dip_strip_into_water_and_remove",
           "png": "instruction_dip"

@@ -47,7 +47,7 @@
             android:numeric="integer"
             android:title="Sampling times" />
         <EditTextPreference
-            android:defaultValue="30"
+            android:defaultValue="40"
             android:dialogMessage="Enter a value below 400"
             android:key="@string/colorDistanceToleranceKey"
             android:maxLength="3"

@@ -163,8 +163,8 @@ public class ECTest {
 
         //onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
 
-        String message = "The expected sensor was not found.\n\n" +
-                "Connect the Soil - Moisture sensor.";
+//        String message = "The expected sensor was not found.\n\n" +
+//                "Connect the Soil - Moisture sensor.";
 
         //onView(withText(message)).check(matches(isDisplayed()));
 

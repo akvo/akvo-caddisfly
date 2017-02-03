@@ -59,9 +59,11 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.Set;
 
+/**
+ * The activity that displays the results for the connected sensor.
+ */
 public class SensorActivity extends BaseActivity {
 
     private static final String TAG = "SensorActivity";
@@ -271,7 +273,7 @@ public class SensorActivity extends BaseActivity {
 
                 // TODO: Remove this when obsolete
                 // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(0));
+                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
 
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
@@ -395,20 +397,14 @@ public class SensorActivity extends BaseActivity {
                         .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
                 results.clear();
 
-                String[] tempString = new String[mCurrentTestInfo.getSubTests().size()];
-
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
-
-                    int index = responseFormat.indexOf(String.valueOf(i + 1));
                     try {
-                        if (resultArray[i].equalsIgnoreCase("nan")) {
-                            tempString[index] = EMPTY_STRING;
-                        } else if (index > -1) {
-                            double result = Double.parseDouble(resultArray[i]);
-                            tempString[index] = String.format(Locale.US, "%.1f", result);
-                            results.put(index, tempString[index]);
-                        }
+
+                        double result = Double.parseDouble(resultArray[i]);
+
+                        results.put(Integer.parseInt(responseFormat.substring(i, i + 1)), String.valueOf(result));
+
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                         return;
@@ -417,8 +413,8 @@ public class SensorActivity extends BaseActivity {
 
                 // display the results
                 if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0
-                        && !results.get(0).equals(EMPTY_STRING)) {
-                    textResult.setText(results.get(0));
+                        && !results.get(1).equals(EMPTY_STRING)) {
+                    textResult.setText(results.get(1));
                     textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
                     textResult.setVisibility(View.VISIBLE);
                     textUnit.setVisibility(View.VISIBLE);
@@ -436,7 +432,7 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 if (mCurrentTestInfo.getSubTests().size() > 1 && results.size() > 1) {
-                    textResult2.setText(results.get(1));
+                    textResult2.setText(results.get(2));
                     textUnit2.setText(mCurrentTestInfo.getSubTests().get(1).getUnit());
                     textResult2.setVisibility(View.VISIBLE);
                     textUnit2.setVisibility(View.VISIBLE);

@@ -85,6 +85,9 @@ import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_270;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
 
+/**
+ * The activity where the test chamber type test is conducted.
+ */
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
@@ -92,6 +95,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         CameraDialog.Cancelled {
 
     private static final String EMPTY_STRING = "";
+    public static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
     private static final String TAG = "ColorLiquidActivity";
     private static final int RESULT_RESTART_TEST = 3;
@@ -174,6 +178,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
+
             @Override
             public void onShake() {
                 if ((mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
@@ -186,7 +191,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 mWaitingForStillness = true;
 
-                showError(String.format("%s%n%n%s", getString(R.string.errorTestInterrupted),
+                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
                         getString(R.string.doNotMoveDeviceDuringTest)), null);
             }
         }, new ShakeDetector.OnNoShakeListener() {
@@ -355,7 +360,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
      * Display error message for configuration not loading correctly.
      */
     private void alertCouldNotLoadConfig() {
-        String message = String.format("%s%n%n%s",
+        String message = String.format(TWO_SENTENCE_FORMAT,
                 getString(R.string.errorLoadingConfiguration),
                 getString(R.string.pleaseContactSupport));
         AlertUtil.showError(this, R.string.error, message, null, R.string.ok,
@@ -508,7 +513,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+                                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
                                         getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
@@ -568,7 +573,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         if (mResults.size() == 0) {
             // Analysis failed. Display error
-            showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+            showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
                     getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
         } else {
 
@@ -655,7 +660,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     showDiagnosticResultDialog(true, EMPTY_STRING, color, mIsCalibration);
                 } else {
                     if (mIsCalibration) {
-                        showError(String.format("%s%n%s", getString(R.string.chamberNotFound),
+                        showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
                                 getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                         PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
@@ -663,7 +668,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
 
-                        showError(String.format("%s%n%s", getString(R.string.errorTestFailed),
+                        showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
                                 getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                     }
                 }

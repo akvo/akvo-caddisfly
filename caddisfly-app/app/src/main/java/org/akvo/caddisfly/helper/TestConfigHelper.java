@@ -272,6 +272,15 @@ public final class TestConfigHelper {
         return testInfo;
     }
 
+    /**
+     * Creates the json result containing the results for test.
+     * @param testInfo information about the test
+     * @param results the results for the test
+     * @param color the color extracted
+     * @param resultImageUrl the url of the image
+     * @param groupingType type of grouping
+     * @return the result in json format
+     */
     public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results, int color,
                                            String resultImageUrl, StripTest.GroupType groupingType) {
 
@@ -293,7 +302,7 @@ public final class TestConfigHelper {
 
                 // If a result exists for the sub test id then add it
                 if (results.size() >= subTest.getId()) {
-                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId() - 1));
+                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId()));
                 }
 
                 if (color > -1) {
