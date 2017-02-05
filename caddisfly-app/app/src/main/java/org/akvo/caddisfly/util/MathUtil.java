@@ -48,7 +48,7 @@ public final class MathUtil {
                 nextChar();
                 double x = parseExpression();
                 if (pos < str.length()) {
-                    throw new RuntimeException("Unexpected: " + (char) ch);
+                    throw new IllegalArgumentException("Unexpected: " + (char) ch);
                 }
                 return x;
             }
@@ -127,10 +127,10 @@ public final class MathUtil {
                             x = Math.tan(Math.toRadians(x));
                             break;
                         default:
-                            throw new RuntimeException("Unknown function: " + func);
+                            throw new IllegalArgumentException("Unknown function: " + func);
                     }
                 } else {
-                    throw new RuntimeException("Unexpected: " + (char) ch);
+                    throw new IllegalArgumentException("Unexpected: " + (char) ch);
                 }
 
                 if (eat('^')) {

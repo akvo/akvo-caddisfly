@@ -89,6 +89,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         }
     };
+
     private TestInfo mCurrentTestInfo;
     private double[] calibrationPoints;
     private ProgressDialog progressDialog;
@@ -319,6 +320,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
                 finish();
             }
         });
@@ -395,6 +397,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                                     R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
                                             finish();
                                         }
                                     }, null, null);
@@ -417,10 +420,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -51,7 +51,7 @@ public class CaddisflyApp extends Application {
     private TestInfo mCurrentTestInfo = new TestInfo();
 
     /**
-     * Gets the singleton app object
+     * Gets the singleton app object.
      *
      * @return the singleton app
      */
@@ -69,7 +69,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Gets the app version
+     * Gets the app version.
      *
      * @return The version name and number
      */
@@ -93,7 +93,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Gets the current TestInfo
+     * Gets the current TestInfo.
      *
      * @return the current test info
      */
@@ -116,7 +116,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Initialize the current test by loading the configuration and calibration information
+     * Initialize the current test by loading the configuration and calibration information.
      */
     public void initializeCurrentTest() {
         if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
@@ -127,7 +127,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Select the first test type in the configuration file as the current test
+     * Select the first test type in the configuration file as the current test.
      */
     public void setDefaultTest() {
 
@@ -142,7 +142,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Load the test configuration for the given uuid
+     * Load the test configuration for the given uuid.
      *
      * @param uuid the uuid of the test
      */
@@ -163,7 +163,7 @@ public class CaddisflyApp extends Application {
     }
 
     /**
-     * Load any user calibrated swatches
+     * Load any user calibrated swatches.
      *
      * @param testInfo The type of test
      */

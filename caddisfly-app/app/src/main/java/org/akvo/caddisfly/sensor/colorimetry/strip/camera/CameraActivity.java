@@ -555,7 +555,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        dialogInterface.dismiss();
                     }
                 }, null, null);
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

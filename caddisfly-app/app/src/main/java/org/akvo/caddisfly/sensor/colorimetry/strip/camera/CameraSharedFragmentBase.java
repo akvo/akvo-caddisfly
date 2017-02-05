@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -42,13 +41,13 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
- * Created by linda on 11/25/15
+ * The base fragment for fragments added to the CameraActivity.
  */
 @SuppressWarnings("deprecation")
 public abstract class CameraSharedFragmentBase extends Fragment {
-
-    private static final String TAG = "CamSharedFragmentBase";
 
     private static final int PROGRESS_FADE_DURATION_MILLIS = 3000;
     private static final long INITIAL_DELAY_MILLIS = 200;
@@ -98,7 +97,9 @@ public abstract class CameraSharedFragmentBase extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    textSwitcher.setText(getString(R.string.detecting_color_card));
+                    if (isAdded()) {
+                        textSwitcher.setText(getString(R.string.detecting_color_card));
+                    }
                 }
             }, INITIAL_DELAY_MILLIS);
         }
@@ -162,7 +163,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 //                }
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 

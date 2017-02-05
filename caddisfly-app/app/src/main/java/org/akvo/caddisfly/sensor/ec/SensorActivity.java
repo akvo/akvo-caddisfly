@@ -34,7 +34,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.Spanned;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,12 +60,13 @@ import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * The activity that displays the results for the connected sensor.
  */
 public class SensorActivity extends BaseActivity {
 
-    private static final String TAG = "SensorActivity";
     private static final String EMPTY_STRING = "";
     private static final int REQUEST_DELAY_MILLIS = 2000;
     private static final int IDENTIFY_DELAY_MILLIS = 500;
@@ -155,6 +155,7 @@ public class SensorActivity extends BaseActivity {
                     alertDialog.dismiss();
                     break;
                 default:
+                    progressWait.setVisibility(View.GONE);
                     if (!alertDialog.isShowing()) {
                         alertDialog.show();
                     }
@@ -286,8 +287,6 @@ public class SensorActivity extends BaseActivity {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
 
-            progressWait.setVisibility(View.GONE);
-
             String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
                     getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
             Spanned spanned = StringUtil.fromHtml(message);
@@ -308,10 +307,9 @@ public class SensorActivity extends BaseActivity {
             });
 
             alertDialog = builder.create();
-            alertDialog.show();
-        } else {
-            progressWait.setVisibility(View.VISIBLE);
         }
+        progressWait.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -406,7 +404,7 @@ public class SensorActivity extends BaseActivity {
                         results.put(Integer.parseInt(responseFormat.substring(i, i + 1)), String.valueOf(result));
 
                     } catch (Exception e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                         return;
                     }
                 }

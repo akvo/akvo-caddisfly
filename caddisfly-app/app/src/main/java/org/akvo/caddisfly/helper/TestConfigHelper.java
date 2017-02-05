@@ -248,8 +248,6 @@ public final class TestConfigHelper {
             testInfo = new TestInfo(name, type, rangesArray,
                     defaultColorsArray, dilutionsArray, uuid, resultsArray);
 
-            testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
-
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
             testInfo.setDeviceId(item.has("deviceId") ? item.getString("deviceId") : "Unknown");

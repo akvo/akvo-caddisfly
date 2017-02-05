@@ -71,6 +71,7 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
 
+@SuppressWarnings("PMD.NcssMethodCount")
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class NavigationTest {

@@ -203,12 +203,14 @@ public class ExternalActionActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, null,
                 new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }
@@ -216,7 +218,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     /**
-     * Alert message for calibration incomplete or invalid
+     * Alert message for calibration incomplete or invalid.
      */
     private void alertCalibrationIncomplete() {
 
@@ -235,12 +237,14 @@ public class ExternalActionActivity extends BaseActivity {
                         startActivity(intent);
 
                         activity.setResult(Activity.RESULT_CANCELED);
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         activity.setResult(Activity.RESULT_CANCELED);
+                        dialogInterface.dismiss();
                         finish();
                     }
                 },
@@ -248,6 +252,7 @@ public class ExternalActionActivity extends BaseActivity {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
                         activity.setResult(Activity.RESULT_CANCELED);
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }
@@ -262,7 +267,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     /**
-     * Start the appropriate test based on the current test type
+     * Start the appropriate test based on the current test type.
      */
     private void startTest(String uuid) {
         Context context = this;
@@ -276,6 +281,7 @@ public class ExternalActionActivity extends BaseActivity {
                         R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
                                 finish();
                             }
                         }
@@ -333,11 +339,12 @@ public class ExternalActionActivity extends BaseActivity {
                     alertFeatureNotSupported();
                 }
                 break;
+            default:
         }
     }
 
     /**
-     * Alert shown when a feature is not supported by the device
+     * Alert shown when a feature is not supported by the device.
      */
     private void alertFeatureNotSupported() {
         String message = String.format(ExternalActionActivity.MESSAGE_TWO_LINE_FORMAT, getString(R.string.phoneDoesNotSupport),
@@ -348,12 +355,14 @@ public class ExternalActionActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, null,
                 new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }
@@ -391,7 +400,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     /**
-     * Alert displayed when an unsupported contaminant test type was requested
+     * Alert displayed when an unsupported contaminant test type was requested.
      */
     private void alertTestTypeNotSupported() {
 
@@ -403,12 +412,14 @@ public class ExternalActionActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, null,
                 new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }
@@ -433,7 +444,7 @@ public class ExternalActionActivity extends BaseActivity {
     }
 
     /**
-     * Handler to restart the app after language has been changed
+     * Handler to restart the app after language has been changed.
      */
     private static class WeakRefHandler extends Handler {
         @NonNull

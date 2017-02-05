@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensors;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
@@ -50,6 +49,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -124,6 +124,8 @@ public class ECTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
+        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
+
         ViewInteraction relativeLayout = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
@@ -132,23 +134,16 @@ public class ECTest {
 
         relativeLayout.perform(click());
 
-        SystemClock.sleep(10000);
+        SystemClock.sleep(7000);
+
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+
+        String message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Electrical Conductivity sensor.";
+
+        onView(withText(message)).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.button2)).perform(click());
-
-        SystemClock.sleep(5000);
-
-        Espresso.pressBack();
-
-        mDevice.pressBack();
-
-        mActivityRule.launchActivity(null);
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
-                        withParent(withId(R.id.mainLayout)),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
 
         ViewInteraction relativeLayout6 = onView(
                 allOf(childAtPosition(
@@ -157,46 +152,35 @@ public class ECTest {
                         isDisplayed()));
         relativeLayout6.perform(click());
 
-        //onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest)));
+        SystemClock.sleep(7000);
 
-        SystemClock.sleep(10000);
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
 
-        //onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+        message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Moisture sensor.";
 
-//        String message = "The expected sensor was not found.\n\n" +
-//                "Connect the Soil - Moisture sensor.";
-
-        //onView(withText(message)).check(matches(isDisplayed()));
+        onView(withText(message)).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.button2)).perform(click());
 
         ViewInteraction relativeLayout2 = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
-                        1),
+                        2),
                         isDisplayed()));
         relativeLayout2.perform(click());
 
-        SystemClock.sleep(1000);
-
-        ViewInteraction relativeLayout3 = onView(
-                allOf(childAtPosition(
-                        withId(R.id.list_types),
-                        2),
-                        isDisplayed()));
-        relativeLayout3.perform(click());
-
         SystemClock.sleep(7000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity")));
+        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor"))).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected")));
+        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected"))).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textUnit), withText("μS/cm")));
+        onView(allOf(withId(R.id.textUnit), withText("μS/cm"))).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textUnit2), withText("°Celsius")));
+        onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -209,6 +193,33 @@ public class ECTest {
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton2.perform(click());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                        withParent(withId(R.id.mainLayout)),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
+
+        ViewInteraction relativeLayout1 = onView(
+                allOf(childAtPosition(
+                        withId(R.id.list_types),
+                        0),
+                        isDisplayed()));
+
+        relativeLayout1.perform(click());
+
+        SystemClock.sleep(7000);
+
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+
+        message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Electrical Conductivity sensor.";
+
+        onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).perform(click());
 
     }
 

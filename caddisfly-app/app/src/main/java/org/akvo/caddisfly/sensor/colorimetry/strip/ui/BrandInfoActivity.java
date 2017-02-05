@@ -237,6 +237,7 @@ public class BrandInfoActivity extends BaseActivity {
                             })
                             .setNegativeButton(R.string.stop_test, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
                                     finish();
                                 }
                             }).show();

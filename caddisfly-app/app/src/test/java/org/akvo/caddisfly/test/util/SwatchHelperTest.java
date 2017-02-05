@@ -30,6 +30,8 @@ import org.junit.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("unused")
@@ -40,7 +42,7 @@ public class SwatchHelperTest {
         try {
             ClassUtil.assertUtilityClassWellDefined(SwatchHelper.class);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 

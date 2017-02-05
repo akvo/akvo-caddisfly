@@ -31,59 +31,59 @@ public class PreferencesUtilTest extends TestCase {
         ClassUtil.assertUtilityClassWellDefined(TestConfigHelper.class);
     }
 
-    public void testGetBoolean() throws Exception {
+    public void testGetBoolean() {
 
     }
 
-    public void testSetBoolean() throws Exception {
+    public void testSetBoolean() {
 
     }
 
-    public void testGetInt() throws Exception {
+    public void testGetInt() {
 
     }
 
-    public void testGetInt1() throws Exception {
+    public void testGetInt1() {
 
     }
 
-    public void testSetInt() throws Exception {
+    public void testSetInt() {
 
     }
 
-    public void testSetInt1() throws Exception {
+    public void testSetInt1() {
 
     }
 
-    public void testSetDouble() throws Exception {
+    public void testSetDouble() {
 
     }
 
-    public void testGetLong() throws Exception {
+    public void testGetLong() {
 
     }
 
-    public void testGetLong1() throws Exception {
+    public void testGetLong1() {
 
     }
 
-    public void testSetLong() throws Exception {
+    public void testSetLong() {
 
     }
 
-    public void testGetString() throws Exception {
+    public void testGetString() {
 
     }
 
-    public void testRemoveKey() throws Exception {
+    public void testRemoveKey() {
 
     }
 
-    public void testContains() throws Exception {
+    public void testContains() {
 
     }
 
-    public void testGetDouble() throws Exception {
+    public void testGetDouble() {
 
     }
 }

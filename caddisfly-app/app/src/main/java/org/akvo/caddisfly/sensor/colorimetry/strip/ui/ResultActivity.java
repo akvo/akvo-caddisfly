@@ -662,7 +662,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
                     String value = results.get(key);
                     resultAvailable = value != null && !value.isEmpty();
-                    if (resultAvailable){
+                    if (resultAvailable) {
                         break;
                     }
                 }

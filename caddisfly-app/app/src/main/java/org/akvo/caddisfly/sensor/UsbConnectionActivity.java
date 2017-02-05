@@ -30,7 +30,7 @@ import android.os.Handler;
 import org.akvo.caddisfly.R;
 
 /**
- * A partial_progress dialog to the show that the usb external device is connected
+ * A partial_progress dialog to the show that the usb external device is connected.
  */
 public class UsbConnectionActivity extends Activity {
 
@@ -66,9 +66,6 @@ public class UsbConnectionActivity extends Activity {
                     public void run() {
                         try {
                             progressDialog.dismiss();
-//                            Intent intent = new Intent("my-event");
-//                            intent.putExtra("message", "data");
-//                            LocalBroadcastManager.getInstance(CaddisflyApp.getApp()).sendBroadcast(intent);
                         } catch (Exception ignored) {
 
                         }

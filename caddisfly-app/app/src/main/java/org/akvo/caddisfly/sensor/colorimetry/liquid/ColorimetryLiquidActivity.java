@@ -38,7 +38,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
 import android.view.MenuItem;
@@ -81,6 +80,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_270;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
@@ -95,9 +96,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
         CameraDialog.Cancelled {
 
     private static final String EMPTY_STRING = "";
-    public static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
+    private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
-    private static final String TAG = "ColorLiquidActivity";
     private static final int RESULT_RESTART_TEST = 3;
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
@@ -278,6 +278,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         releaseResources();
                         setResult(Activity.RESULT_CANCELED);
                         finish();
@@ -367,6 +368,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, null, null);
@@ -422,7 +424,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             } catch (CloneNotSupportedException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
 
             //use all the swatches for an all steps analysis
@@ -547,7 +549,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
-                            Log.e(TAG, e.getMessage(), e);
+                            Timber.e(e);
                             finish();
                         }
                     }
