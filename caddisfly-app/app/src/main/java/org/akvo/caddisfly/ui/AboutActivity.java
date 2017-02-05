@@ -32,11 +32,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * Activity to display info about the app.
+ */
 public class AboutActivity extends BaseActivity {
 
     private static final int CHANGE_MODE_MIN_CLICKS = 10;
+
+    /**
+     * To display version number.
+     */
     @BindView(R.id.textVersion)
     TextView textVersion;
+
     private int clickCount = 0;
 
     @Override
@@ -51,12 +59,18 @@ public class AboutActivity extends BaseActivity {
         setTitle(R.string.about);
     }
 
+    /**
+     * Displays legal information.
+     */
     @OnClick(R.id.textLinkSoftwareNotices)
     public void showSoftwareNotices() {
         NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
         dialog.show(getFragmentManager(), "NoticesDialog");
     }
 
+    /**
+     * Disables diagnostic mode.
+     */
     @OnClick(R.id.fabDisableDiagnostics)
     public void disableDiagnosticsMode() {
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
@@ -69,12 +83,14 @@ public class AboutActivity extends BaseActivity {
         changeActionBarStyleBasedOnCurrentMode();
     }
 
+    /**
+     * Turn on diagnostic mode if user clicks on version text CHANGE_MODE_MIN_CLICKS times.
+     */
     @OnClick(R.id.textVersion)
     public void switchToDiagnosticMode() {
         if (!AppPreferences.isDiagnosticMode()) {
             clickCount++;
 
-            // Turn on diagnostic mode if user clicks on version text CHANGE_MODE_MIN_CLICKS times
             if (clickCount >= CHANGE_MODE_MIN_CLICKS) {
                 clickCount = 0;
                 Toast.makeText(getBaseContext(), getString(
@@ -95,7 +111,7 @@ public class AboutActivity extends BaseActivity {
     }
 
     /**
-     * Show the diagnostic mode layout
+     * Show the diagnostic mode layout.
      */
     private void switchLayoutForDiagnosticOrUserMode() {
         if (AppPreferences.isDiagnosticMode()) {
