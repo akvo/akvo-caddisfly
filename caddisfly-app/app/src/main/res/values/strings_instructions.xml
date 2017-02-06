@@ -35,7 +35,7 @@
     <string name="add_10_drops_nh4_reagent">Add <b>10 drops</b> of NH4+-1 reagent</string>
     <string name="cap_vial_and_shake_rapidly">Cap vial and shake rapidly for <b>5 seconds</b>. Remove cap.</string>
     <string name="wait_20_minutes_swirl_twice">Wait <b>20 minutes</b>. Swirl twice during the reaction period</string>
-    <string name="swirl_to_mix_reagent">Swirl to mix the reagent</string>
+    <string name="swirl_to_mix_reagent">Swirl the sample to mix the reagent</string>
     <string name="put_6_drops_of_reagent_in_another_container">In the smaller container tube put <b>6 drops</b> of <b>reagent 2</b></string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
     <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
