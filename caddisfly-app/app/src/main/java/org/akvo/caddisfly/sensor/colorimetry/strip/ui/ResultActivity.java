@@ -511,6 +511,20 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
 
+            if (resultValue > -1) {
+
+                try {
+                    if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
+                        resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
+                    }
+                } catch (Exception e) {
+                    Timber.e(e);
+                }
+
+            } else {
+                invalid = true;
+            }
+
             // add result to results list
             if (!combined.empty()) {
                 results.put(patches.get(patchNum).getId(),
@@ -600,14 +614,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     }
 
                     if (resultValue > -1) {
-
-                        try {
-                            if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
-                                resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
-                            }
-                        } catch (Exception e) {
-                            Timber.e(e);
-                        }
 
                         if (resultValue < 1.0) {
                             textResult.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
