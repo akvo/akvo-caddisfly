@@ -38,7 +38,7 @@
         android:paddingBottom="20dp"
         android:paddingEnd="6dp"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        tools:ignore="UnknownIdInLayout">
+        tools:ignore="UnknownId,UnknownIdInLayout">
 
         <TextView
             android:id="@+id/textTitle"
@@ -128,7 +128,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:textColorSecondaryInverse"
             android:textSize="60sp"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:text="24" />
 
         <TextView
@@ -142,7 +142,7 @@
             android:text="@string/celsius"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:textColorSecondaryInverse"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonAcceptResult"
