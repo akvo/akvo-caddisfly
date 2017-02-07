@@ -80,6 +80,9 @@ import timber.log.Timber;
 
 import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 
+/**
+ * Activity that displays the results.
+ */
 public class ResultActivity extends BaseActivity implements DetectStripListener {
 
     private static final Scalar GREEN_COLOR = new Scalar(0, 255, 0);
@@ -158,19 +161,13 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         }
     }
 
-    /*
-    * Create an Intent that holds information about the preview data:
-    * preview format
-    * preview width
-    * preview height
-    *
-    * and information about the strip test brand we are now handling
-    *
-    * It is used to
-    * a. start an Activity with this intent
-    * b. start an AsyncTask passing this intent as param
-    *
-    * in the method dataSent() above
+    /**
+     * Creates an Intent that holds information about the preview data.
+     *
+     * @param format the format
+     * @param width  the width
+     * @param height the height
+     * @return the intent
      */
     @NonNull
     private Intent createDetectStripIntent(int format, int width, int height) {
@@ -183,8 +180,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         detectStripIntent.putExtra(Constant.FORMAT, format);
         detectStripIntent.putExtra(Constant.WIDTH, width);
         detectStripIntent.putExtra(Constant.HEIGHT, height);
-
-        //detectStripIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         return detectStripIntent;
     }
@@ -441,12 +436,40 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 }
             }
 
-            ////////////// Create Image ////////////////////
-
-            // create Mat to hold strip itself
             if (patchCenter == null) {
                 return null;
+            } else {
+                // Create the image that displays result with other color information
+                createResultImage(mat, colors, patchCenter, analyzedArea, patchArea, resultMatWidth);
             }
+
+            // Calculate the true value of results if formula exists
+            if (resultValue > -1) {
+
+                try {
+                    if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
+                        resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
+                    }
+                } catch (Exception e) {
+                    Timber.e(e);
+                }
+
+            } else {
+                invalid = true;
+            }
+
+            // Put the result into results list
+            results.put(patches.get(patchNum).getId(),
+                    Double.isNaN(resultValue) ? ""
+                            : String.valueOf(ResultUtil.roundSignificant(resultValue)));
+
+            return null;
+        }
+
+        private void createResultImage(Mat mat, JSONArray colors, Point patchCenter,
+                                       Mat analyzedArea, Mat patchArea, int resultMatWidth) {
+
+            // create Mat to hold strip itself
             mat = ResultUtil.createStripMat(mat, patchCenter, grouped, resultMatWidth);
 
             // Create Mat to hold patchDescription of patch
@@ -511,27 +534,6 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 resultImage = ResultUtil.concatenate(resultImage, combined);
             }
 
-            if (resultValue > -1) {
-
-                try {
-                    if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
-                        resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
-                    }
-                } catch (Exception e) {
-                    Timber.e(e);
-                }
-
-            } else {
-                invalid = true;
-            }
-
-            // add result to results list
-            if (!combined.empty()) {
-                results.put(patches.get(patchNum).getId(),
-                        Double.isNaN(resultValue) ? ""
-                                : String.valueOf(ResultUtil.roundSignificant(resultValue)));
-            }
-
             combined.release();
             mat.release();
             valueMeasuredMat.release();
@@ -546,14 +548,12 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 resultPatchAreas.release();
             }
             descMat.release();
-
-            return null;
         }
 
-        /*
-        * Puts the result on screen.
-        * data is taken from the globals stripBitmap, resultValue, colorDetected and unit variables
-        */
+        /**
+         * Puts the result on screen.
+         * data is taken from the globals stripBitmap, resultValue, colorDetected and unit variables
+         */
         protected void onPostExecute(Void result) {
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -647,16 +647,23 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
                 if (finalResultTextView != null) {
                     try {
+                        // todo: fix the hardcoding of the result indexes
                         if (!finalResultPatch.getFormula().isEmpty()) {
 
                             resultValue = MathUtil.eval(String.format(finalResultPatch.getFormula(),
                                     Double.parseDouble(results.get(2)), Double.parseDouble(results.get(3))));
+
+                            results.put(1, String.valueOf(ResultUtil.roundSignificant(resultValue)));
 
                             finalResultTextView.setText(String.format(Locale.getDefault(), "%.2f %s",
                                     resultValue, finalResultPatch.getUnit()));
 
                         }
                     } catch (Exception e) {
+                        // Set all values to null as this result should not be sent to server
+                        results.put(2, null);
+                        results.put(3, null);
+                        finalResultTextView.setText(R.string.no_result);
                         Timber.e(e);
                     }
                 }
