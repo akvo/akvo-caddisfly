@@ -421,6 +421,31 @@
       ]
     },
     {
+      "name": "Phosphate",
+      "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
+      "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": [
+            "dip_strip_5_seconds_and_remove",
+            "do_not_shake_excess_water"
+          ],
+          "png": "instruction_dip"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ]
+    },
+    {
       "name": "Water - Potassium",
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
       "instructions": [
