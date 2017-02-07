@@ -24,7 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.ArrayList;
@@ -50,8 +49,6 @@ public class DiagnosticInfoActivity extends BaseActivity {
         infoList.add(String.format(Locale.getDefault(), "Number of tests%ns:%d  e:%d",
                 PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0),
                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0)));
-
-        infoList.add(String.format("Installed from%n%s", ApiUtil.isStoreVersion(this) ? "Play store" : "apk file"));
 
         ArrayAdapter<String> infoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, infoList);
 

@@ -42,7 +42,7 @@ public class SelectDilutionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_dilution);
 
-        setTitle("Select Dilution");
+        setTitle(R.string.dilution);
 
         Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
         Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);

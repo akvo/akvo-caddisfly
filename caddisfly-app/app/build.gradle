@@ -29,8 +29,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 166
-        versionName "1.0.0 Beta 9.0"
-        resConfigs "en", "en_US", "fr"
+        versionName "1.0.0 Alpha 8.5"
+        resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->
             def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
