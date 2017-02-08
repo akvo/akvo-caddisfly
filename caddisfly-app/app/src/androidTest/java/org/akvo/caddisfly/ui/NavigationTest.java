@@ -333,9 +333,9 @@ public class NavigationTest {
         //Phosphate
         clickExternalSourceButton(0);
 
-        //onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+        //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.ok)).perform(click());
 

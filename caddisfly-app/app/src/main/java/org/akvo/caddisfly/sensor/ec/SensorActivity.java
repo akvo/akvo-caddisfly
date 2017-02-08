@@ -68,8 +68,8 @@ import timber.log.Timber;
 public class SensorActivity extends BaseActivity {
 
     private static final String EMPTY_STRING = "";
-    private static final int REQUEST_DELAY_MILLIS = 1800;
-    private static final int IDENTIFY_DELAY_MILLIS = 400;
+    private static final int REQUEST_DELAY_MILLIS = 1500;
+    private static final int IDENTIFY_DELAY_MILLIS = 300;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
     private final StringBuilder mReadData = new StringBuilder();
@@ -126,7 +126,7 @@ public class SensorActivity extends BaseActivity {
             }
         }
     };
-    private int identityCount = 0;
+    private int identityCheck = 0;
     private int deviceStatus = 0;
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
@@ -175,7 +175,7 @@ public class SensorActivity extends BaseActivity {
         super.onResume();
 
         deviceStatus = 0;
-        identityCount = 0;
+        identityCheck = 0;
 
         setFilters();  // Start listening notifications from UsbService
 
@@ -194,7 +194,7 @@ public class SensorActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         deviceStatus = 0;
-        identityCount = 0;
+        identityCheck = 0;
         handler.removeCallbacks(runnable);
         handler.removeCallbacks(validateDeviceRunnable);
         unregisterReceiver(mUsbReceiver);
@@ -368,15 +368,14 @@ public class SensorActivity extends BaseActivity {
             if (deviceStatus == 0) {
                 if (value.contains(" ")) {
                     if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
-                        if (identityCount > 0) {
                             progressWait.setVisibility(View.VISIBLE);
                             hideNotConnectedView();
                             deviceStatus = 1;
-                        } else {
-                            identityCount++;
-                        }
                     } else {
-                        deviceStatus = 2;
+                        if (identityCheck > 1) {
+                            deviceStatus = 2;
+                        }
+                        identityCheck++;
                     }
                 }
                 return;

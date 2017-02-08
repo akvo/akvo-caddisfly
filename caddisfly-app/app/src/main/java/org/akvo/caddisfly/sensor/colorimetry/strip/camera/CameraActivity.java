@@ -624,13 +624,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                         }
                         mCamera.startPreview();
 
-                        sound.playShortResource(R.raw.futurebeep2);
+                        playReadySound();
 
                         snackbar.dismiss();
-                    }
-
-                    if (value == Constant.GET_READY_SECONDS && max > 60) {
-                        playSound();
                     }
                 }
 
@@ -659,6 +655,10 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         };
         handler.post(runnable);
+    }
+
+    private void playReadySound() {
+        sound.playShortResource(R.raw.beep);
     }
 
     private void showResults() {
